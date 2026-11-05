@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0b0d10;
+  --color-panel: #12151a;
+  --color-panel-2: #171b21;
+  --color-panel-3: #1d222a;
+  --color-line: #252b34;
+  --color-line-2: #2f3640;
+  --color-ink: #ebe8e1;
+  --color-muted: #8b919b;
+  --color-faint: #5d636c;
+  --color-gold: #d4a24c;
+  --color-gold-2: #f0c879;
+  --color-up: #4fc48c;
+  --color-down: #e8615a;
+  --color-warn: #e8b04a;
+  --color-rose: #c2416b;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-bg text-ink antialiased;
+    font-feature-settings: "tnum" 1, "cv11" 1;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 35%, transparent);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-2) transparent;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-xl border border-line bg-panel;
+  }
+  .panel-title {
+    @apply text-[15px] font-semibold tracking-tight text-ink;
+  }
+  .panel-sub {
+    @apply text-xs font-normal text-muted;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md border border-line px-2 py-0.5 text-xs text-muted transition-colors hover:border-line-2 hover:text-ink;
+  }
+  .chip-active {
+    @apply border-gold/60 bg-gold/10 text-gold-2;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-line bg-panel-2 px-3 py-1.5 text-sm text-ink transition-colors hover:border-line-2 hover:bg-panel-3 disabled:opacity-50;
+  }
+  .btn-gold {
+    @apply border-gold/70 bg-gold/15 text-gold-2 hover:bg-gold/25;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent hover:bg-panel-3;
+  }
+  .input {
+    @apply w-full rounded-lg border border-line bg-panel-2 px-3 py-1.5 text-sm text-ink placeholder:text-faint focus:border-gold/60 focus:outline-none;
+  }
+  .label {
+    @apply mb-1 block text-xs text-muted;
+  }
+  .table-base {
+    @apply w-full text-left text-[13px];
+  }
+  .table-base th {
+    @apply whitespace-nowrap px-2 py-1.5 text-[11px] font-medium text-muted;
+  }
+  .table-base td {
+    @apply whitespace-nowrap px-2 py-1.5;
+  }
+  .table-base tbody tr {
+    @apply border-t border-line/70;
+  }
+  .table-hover tbody tr {
+    @apply cursor-pointer transition-colors hover:bg-panel-3/60;
+  }
+  .kpi-label {
+    @apply text-xs text-muted;
+  }
+  .kpi-value {
+    @apply text-[22px] font-semibold tracking-tight;
+  }
+}
+
+.recharts-wrapper,
+.recharts-surface {
+  outline: none;
+}
+.recharts-tooltip-cursor {
+  stroke: var(--color-line-2);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.18s ease-out both;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.caret::after {
+  content: "▍";
+  margin-left: 1px;
+  color: var(--color-gold);
+  animation: blink 1s step-start infinite;
+}
