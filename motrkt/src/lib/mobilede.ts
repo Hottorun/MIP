@@ -85,9 +85,10 @@ function matchScore(v: Variant, text: string): number | null {
   const own = new Set(words(v.name));
   for (const s of siblings) for (const w of words(s.name)) if (w.length > 1 && !own.has(w) && !generic.has(w) && text.includes(` ${w} `)) return null;
   // Other generation codes of the same model in the title ("993" in a 964 search) exclude the ad.
+  const code = (name: string) => name.split(".")[0].toLowerCase();
   for (const gid of model.generationIds) {
-    const other = generationById.get(gid)!;
-    if (gid !== gen.id && /^\d{3}$|^[a-z]\d+$/i.test(other.name) && text.includes(` ${other.name.toLowerCase()} `)) return null;
+    const other = code(generationById.get(gid)!.name);
+    if (other !== code(gen.name) && /^\d{3}$|^[a-z]\d+$/i.test(other) && text.includes(` ${other} `)) return null;
   }
   return required.length;
 }

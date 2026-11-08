@@ -52,7 +52,8 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
     if (y < 1998) list.push("Rost (v. a. Kotflügel, Schweller, Wagenheberaufnahmen)");
     if (y < 1998) list.push("Motor (Ölverlust, Kopfdichtung, Stehbolzen)");
     if (generationName === "964") list.push("Zweimassenschwungrad und Verteilerantrieb");
-    if (["996", "997"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
+    // M96/M97 engines; the 997.2 got the new 9A1 engine without intermediate shaft.
+    if (["996.1", "996.2", "997.1"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
       list.push("IMS-Lager und Zylinderlaufbahnen (M96/M97)");
     if (y >= 1998) list.push("Wartungsnachweise und Software-/Steuergerätestand");
   }
@@ -169,10 +170,45 @@ build();
 
 export const DEFAULT_VARIANT_ID = "porsche-911-964-carrera-rs";
 
-/** Former variants that are now an option of another variant (old links and saved data point to the new one). */
+/** Former variant ids (e.g. before the split into 991.1/991.2, or GT3 Touring, now a GT3 option) → current id. Old links and saved data follow them. */
 export const VARIANT_ALIASES: Record<string, string> = {
-  "porsche-911-991-gt3-touring": "porsche-911-991-gt3",
-  "porsche-911-992-gt3-touring": "porsche-911-992-gt3",
+  "porsche-911-991-gt3-touring": "porsche-911-991-2-gt3",
+  "porsche-911-992-gt3-touring": "porsche-911-992-1-gt3",
+  "porsche-911-996-carrera": "porsche-911-996-1-carrera",
+  "porsche-911-996-turbo": "porsche-911-996-1-turbo",
+  "porsche-911-996-gt3": "porsche-911-996-1-gt3",
+  "porsche-911-996-gt2": "porsche-911-996-1-gt2",
+  "porsche-911-996-carrera-4s": "porsche-911-996-2-carrera-4s",
+  "porsche-911-996-targa": "porsche-911-996-2-targa",
+  "porsche-911-996-turbo-s": "porsche-911-996-2-turbo-s",
+  "porsche-911-996-gt3-rs": "porsche-911-996-2-gt3-rs",
+  "porsche-911-997-carrera-s": "porsche-911-997-1-carrera-s",
+  "porsche-911-997-turbo": "porsche-911-997-1-turbo",
+  "porsche-911-997-gt3": "porsche-911-997-1-gt3",
+  "porsche-911-997-gt3-rs": "porsche-911-997-1-gt3-rs",
+  "porsche-911-997-gt2": "porsche-911-997-1-gt2",
+  "porsche-911-997-turbo-s": "porsche-911-997-2-turbo-s",
+  "porsche-911-997-sport-classic": "porsche-911-997-2-sport-classic",
+  "porsche-911-997-speedster": "porsche-911-997-2-speedster",
+  "porsche-911-997-gt3-rs-4-0": "porsche-911-997-2-gt3-rs-4-0",
+  "porsche-911-997-gt2-rs": "porsche-911-997-2-gt2-rs",
+  "porsche-911-991-carrera-s": "porsche-911-991-1-carrera-s",
+  "porsche-911-991-turbo-s": "porsche-911-991-1-turbo-s",
+  "porsche-911-991-50-jahre-edition": "porsche-911-991-1-50-jahre-edition",
+  "porsche-911-991-gt3": "porsche-911-991-1-gt3",
+  "porsche-911-991-gt3-rs": "porsche-911-991-1-gt3-rs",
+  "porsche-911-991-r": "porsche-911-991-1-r",
+  "porsche-911-991-carrera-t": "porsche-911-991-2-carrera-t",
+  "porsche-911-991-speedster": "porsche-911-991-2-speedster",
+  "porsche-911-991-gt2-rs": "porsche-911-991-2-gt2-rs",
+  "porsche-911-992-carrera-s": "porsche-911-992-1-carrera-s",
+  "porsche-911-992-carrera-gts": "porsche-911-992-1-carrera-gts",
+  "porsche-911-992-turbo-s": "porsche-911-992-1-turbo-s",
+  "porsche-911-992-sport-classic": "porsche-911-992-1-sport-classic",
+  "porsche-911-992-dakar": "porsche-911-992-1-dakar",
+  "porsche-911-992-s-t": "porsche-911-992-1-s-t",
+  "porsche-911-992-gt3": "porsche-911-992-1-gt3",
+  "porsche-911-992-gt3-rs": "porsche-911-992-1-gt3-rs",
 };
 
 export function resolveVariantId(id: string): string {

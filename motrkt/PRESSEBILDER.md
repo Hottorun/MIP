@@ -2,7 +2,7 @@
 
 Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom; Bilder von der Vorstellung tragen das Badge „Vorstellung“. Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
-Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Für 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996 Carrera 4S, 996 GT3 RS, 997 Turbo S, 997 GT3 RS, 997 GT2 RS und 912 Coupé gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
+Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Für 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996.2 Carrera, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS und 912 Coupé gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
@@ -208,7 +208,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 GT2 (993) Coppa Florio, 2025“; „1995, Porsche 911 GT2“
 - Offizielle Bilder im Markt-Tab: 2
 
-### Porsche 911 (996) Carrera
+### Porsche 911 (996.1) Carrera
 
 - Präsentationsfarbe: Zenithblau Metallic (Zenith Blue Metallic) (wahrscheinlich)
 - Vorstellung: IAA Frankfurt 1997
@@ -217,22 +217,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „1998, 911 Carrera Coupé, 3.4 litre, Design“; „1998, 911 Carrera Coupé, Type 996, 3.4 litre, Generations“; „2001, 911 Carrera Coupé, Type 996, 3.4 litre, Generations“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (996) Carrera 4S
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
-
-### Porsche 911 (996) Targa
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „911 Targa 3.6 (MY 2002)“; „Porsche 911 (996) Targa“; „911 Targa (996), 2022“
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (996) Turbo
+### Porsche 911 (996.1) Turbo
 
 - Präsentationsfarbe: Arktissilber Metallic (Arctic Silver Metallic) (unsicher)
 - Vorstellung: IAA Frankfurt 1999
@@ -240,32 +225,16 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „5th generation“; „5th generation“; „5th generation“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (996) Turbo S
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „911 Turbo S Coupé (996), 2022“; „911 Turbo S Coupé (996), 2022“; „911 Turbo S Coupé (996), 2022“
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (996) GT3
+### Porsche 911 (996.1) GT3
 
 - Präsentationsfarbe: Arktissilber Metallic (Arctic Silver Metallic) (belegt)
 - Vorstellung: Genfer Autosalon 1999
 - Offizielle Seite: [25 Jahre 911 GT3](https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-performance-37556.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
-- Bilder im Markt-Tab: „911 GT3 (996)“; „1999, Porsche 911 GT3“; „911 GT3 (996), 2024“
+- Bilder im Markt-Tab: „911 GT3 (996.1), 2019“; „911 GT3 (996.1), 2019“; „911 GT3 (996.1), 2019“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (996) GT3 RS
-
-- Präsentationsfarbe: Carraraweiß mit roten Schriftzügen (Carrara White with red decals) (belegt)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [25 Jahre 911 GT3](https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-performance-37556.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
-
-### Porsche 911 (996) GT2
+### Porsche 911 (996.1) GT2
 
 - Präsentationsfarbe: Arktissilber Metallic (Arctic Silver Metallic) (wahrscheinlich)
 - Vorstellung: nicht belegt
@@ -274,7 +243,53 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „2004, Porsche 911 GT2“
 - Offizielle Bilder im Markt-Tab: 1
 
-### Porsche 911 (997) Carrera S
+### Porsche 911 (996.2) Carrera
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2001
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (996.2) Carrera 4S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (996.2) Targa
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Targa 3.6 (MY 2002)“; „Porsche 911 (996) Targa“; „911 Targa (996), 2022“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (996.2) Turbo S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Turbo S Coupé (996), 2022“; „911 Turbo S Coupé (996), 2022“; „911 Turbo S Coupé (996), 2022“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (996.2) GT3
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2003
+- Offizielle Seite: [20 Jahre 911 GT3: sechs Generationen](https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 GT3 (996.2), 2019“; „911 GT3 (996.2), 2019“; „911 GT3 (996.2), 2019“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (996.2) GT3 RS
+
+- Präsentationsfarbe: Carraraweiß mit roten Schriftzügen (Carrara White with red decals) (belegt)
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 GT3](https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-performance-37556.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (997.1) Carrera S
 
 - Präsentationsfarbe: Sealgraumetallic (Seal Grey Metallic) (unsicher)
 - Vorstellung: nicht belegt
@@ -283,38 +298,15 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „2005, 911 Carrera S, 3.8 litres, Aerokit Cup, Porsche Exclusive“
 - Offizielle Bilder im Markt-Tab: 1
 
-### Porsche 911 (997) Turbo
+### Porsche 911 (997.1) Turbo
 
 - Präsentationsfarbe: Kobaltblaumetallic (Cobalt Blue Metallic) (wahrscheinlich)
 - Vorstellung: Genfer Autosalon 2006
 - Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „2006, 911 Turbo Coupé, Type 997, Generations“; „6th generation“; „6th generation“
-- Offizielle Bilder im Markt-Tab: 3
+- Bilder im Markt-Tab: „2006, 911 Turbo Coupé, Type 997, Generations“; „6th generation“
+- Offizielle Bilder im Markt-Tab: 2
 
-### Porsche 911 (997) Turbo S
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Pressemappe 911 Turbo S: Geschichte](https://newsroom.porsche.com/en/press-kits/pfv-porsche-911-turbo-s/Porsche-911-Turbo-S--history.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
-
-### Porsche 911 (997) Sport Classic
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „911 Sport Classic, Typ 997, 2009“
-- Offizielle Bilder im Markt-Tab: 1
-
-### Porsche 911 (997) Speedster
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: Pariser Autosalon 2010
-- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „911 Speedster, model year 2011“; „911 Speedster, model year 2011“; „911 Speedster, Typ 997, 2010“
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (997) GT3
+### Porsche 911 (997.1) GT3
 
 - Präsentationsfarbe: Carraraweiß (Carrara White) (wahrscheinlich)
 - Vorstellung: Genfer Autosalon 2006
@@ -323,7 +315,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 GT3 (997.1), 2019“; „911 GT3 (997.1), 2019“; „911 GT3 (997.1), 2019“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (997) GT3 RS
+### Porsche 911 (997.1) GT3 RS
 
 - Präsentationsfarbe: Orange mit Schwarz (Orange with black) (wahrscheinlich)
 - Vorstellung: nicht belegt
@@ -331,7 +323,69 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
 - Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
 
-### Porsche 911 (997) GT3 RS 4.0
+### Porsche 911 (997.1) GT2
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 997](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-%28997%29,-2004-012.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Porsche 911 (997) GT2“; „Porsche 911 (997) GT2“; „Porsche 911 (997) GT2“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (997.2) Carrera S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2008
+- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 997](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (997.2) Turbo
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2009
+- Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (997.2) Turbo S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 911 Turbo S: Geschichte](https://newsroom.porsche.com/en/press-kits/pfv-porsche-911-turbo-s/Porsche-911-Turbo-S--history.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „6th generation“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche 911 (997.2) Sport Classic
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Sport Classic, Typ 997, 2009“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche 911 (997.2) Speedster
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Pariser Autosalon 2010
+- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Speedster, model year 2011“; „911 Speedster, model year 2011“; „911 Speedster, Typ 997, 2010“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (997.2) GT3
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Genfer Autosalon 2009
+- Offizielle Seite: [20 Jahre 911 GT3: sechs Generationen](https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 GT3 (997.2), 2019“; „911 GT3 (997.2), 2019“; „911 GT3 (997.2), 2019“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (997.2) GT3 RS
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [997.2 GT3 RS „Hebe“](https://newsroom.porsche.com/en/2020/sport-lifestyle/porsche-gb-997-911-gt3-rs-hebe-birthday-zaid-hamid-21925.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „997.2 GT3 RS "Hebe", 2020“; „997.2 GT3 RS "Hebe", 2020“; „997.2 GT3 RS "Hebe", 2020“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (997.2) GT3 RS 4.0
 
 - Präsentationsfarbe: Carraraweiß (Carrara White) (wahrscheinlich)
 - Vorstellung: nicht belegt
@@ -340,15 +394,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 GT3 RS 4.0 (997.2), Black Forest, Germany, 2026, Top Gear“; „911 GT3 RS 4.0 (997.2), Black Forest, Germany, 2026, Top Gear“; „911 GT3 RS 4.0 (997.2), Black Forest, Germany, 2026, Top Gear“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (997) GT2
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 997](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-%28997%29,-2004-012.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „Porsche 911 (997) GT2“; „Porsche 911 (997) GT2“; „Porsche 911 (997) GT2“
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (997) GT2 RS
+### Porsche 911 (997.2) GT2 RS
 
 - Präsentationsfarbe: GT-Silbermetallic (GT Silver Metallic) (wahrscheinlich)
 - Vorstellung: nicht belegt
@@ -356,7 +402,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „Porsche 911 (997) GT2“; „60 Years of Porsche 911 - Historic advertising posters“
 - Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
 
-### Porsche 911 (991) Carrera S
+### Porsche 911 (991.1) Carrera S
 
 - Präsentationsfarbe: Platinsilbermetallic (Platinum Silver Metallic) (unsicher)
 - Vorstellung: IAA Frankfurt 2011
@@ -365,15 +411,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „2012, 911 Carrera Coupé, Typ 991, 3.4 litre, Generations“; „2012, 911 Carrera Coupé, Type 991, 3.4 litre, Generations“; „2011, 911 Carrera S Cabriolet, Type 991, Generations“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (991) Carrera T
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Der neue 911 Carrera T](https://newsroom.porsche.com/en/products/porsche-911-carrera-t-puristic-performance-driving-pleasure-touring-14410.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „911 Carrera T, 2017“; „911 Carrera T, 2017“; „911 Carrera T, 2017“
-- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
-
-### Porsche 911 (991) Turbo S
+### Porsche 911 (991.1) Turbo S
 
 - Präsentationsfarbe: Rhodiumsilbermetallic (Rhodium Silver Metallic) (unsicher)
 - Vorstellung: nicht belegt
@@ -381,7 +419,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 (991), 911 Turbo S“; „7th generation“; „7th generation“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (991) 50 Jahre Edition
+### Porsche 911 (991.1) 50 Jahre Edition
 
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: IAA Frankfurt 2013
@@ -389,24 +427,16 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911, 50th anniversary edition, 2013“; „911, 50th anniversary edition, 2013“; „911, 50th anniversary edition, 2013“
 - Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
-### Porsche 911 (991) Speedster
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: New York Auto Show 2019
-- Offizielle Seite: [Geschichte der Porsche Speedster](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „911 Speedster, 2019“; „911 Speedster, 2019“; „911 Speedster, 2019“
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (991) GT3
+### Porsche 911 (991.1) GT3
 
 - Präsentationsfarbe: Indischrot (Guards Red) (wahrscheinlich)
 - Vorstellung: Genfer Autosalon 2013
 - Offizielle Seite: [25 Jahre 911 GT3](https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-performance-37556.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
-- Bilder im Markt-Tab: „911 GT3 (991.1), 2019“; „911 GT3 (991.1), 2019“; „911 GT3 (991)“; „911 GT3 with Touring-Package, 2017“
-- Offizielle Bilder im Markt-Tab: 4
+- Bilder im Markt-Tab: „911 GT3 (991.1), 2019“; „911 GT3 (991.1), 2019“
+- Offizielle Bilder im Markt-Tab: 2
 
-### Porsche 911 (991) GT3 RS
+### Porsche 911 (991.1) GT3 RS
 
 - Präsentationsfarbe: Lavaorange (Lava Orange) (belegt)
 - Vorstellung: Genfer Autosalon 2015
@@ -415,7 +445,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 GT3 RS, 2015“; „911 GT3 RS, 2015“; „911 GT3 RS, 2015“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (991) R
+### Porsche 911 (991.1) R
 
 - Präsentationsfarbe: Weiß (White) mit roten Streifen (with red stripes) (belegt)
 - Vorstellung: Genfer Autosalon 2016
@@ -424,7 +454,55 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 R, 2016“; „911 R, 2016“; „911 R, 2016“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (991) GT2 RS
+### Porsche 911 (991.2) Carrera S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2015
+- Offizielle Seite: [Der neue 911 Carrera](https://newsroom.porsche.com/en/products/porsche-911-carrera-new-2015-11366.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Carrera S, 2015“; „911 Carrera S, 2015“
+- Offizielle Bilder im Markt-Tab: 2 (davon 2 von der Vorstellung)
+
+### Porsche 911 (991.2) Carrera T
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Der neue 911 Carrera T](https://newsroom.porsche.com/en/products/porsche-911-carrera-t-puristic-performance-driving-pleasure-touring-14410.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Carrera T, 2017“; „911 Carrera T, 2017“; „911 Carrera T, 2017“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (991.2) Turbo S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Detroit Auto Show 2016
+- Offizielle Seite: [Die neuen 911 Turbo und 911 Turbo S](https://newsroom.porsche.com/en/products/porsche-911-turbo-911-turbo-s-sportscar-12061.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Turbo S, 2015“; „911 Turbo S, 2015“; „911 Turbo S, 2015“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (991.2) Speedster
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: New York Auto Show 2019
+- Offizielle Seite: [Geschichte der Porsche Speedster](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Speedster, 2019“; „911 Speedster, 2019“; „911 Speedster, 2019“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (991.2) GT3
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Genfer Autosalon 2017
+- Offizielle Seite: [Weltpremiere 911 GT3](https://newsroom.porsche.com/en/products/porsche-911-gt3-world-premiere-geneva-motor-show-gims-2017-13466.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 GT3, 2017“; „911 GT3, 2017“; „911 GT3 (991.2), 2019“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
+
+### Porsche 911 (991.2) GT3 RS
+
+- Präsentationsfarbe: Lizardgrün (Lizard Green) (wahrscheinlich)
+- Vorstellung: Genfer Autosalon 2018
+- Offizielle Seite: [Weltpremiere 911 GT3 RS](https://newsroom.porsche.com/en/products/porsche-911-gt3-rs-world-premiere-motorsport-naturally-aspired-engine-geneva-motor-show-weissach-aerodynamics-interior-chassis-technology-clubsport-14896.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 GT3 RS, 2018“; „911 GT3 RS, 2018“; „911 GT3 RS, 2018“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (991.2) GT2 RS
 
 - Präsentationsfarbe: GT-Silbermetallic (GT Silver Metallic) (wahrscheinlich)
 - Vorstellung: Goodwood Festival of Speed 2017
@@ -433,7 +511,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 GT2 RS, 2017“; „911 GT2 RS, 2017“; „911 GT2 RS, 2017“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (992) Carrera S
+### Porsche 911 (992.1) Carrera S
 
 - Präsentationsfarbe: Racinggelb (Racing Yellow) (wahrscheinlich)
 - Vorstellung: Los Angeles Auto Show 2018
@@ -442,7 +520,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 Carrera S (992), 2018“; „911 Carrera S (992), 2018“
 - Offizielle Bilder im Markt-Tab: 2
 
-### Porsche 911 (992) Carrera GTS
+### Porsche 911 (992.1) Carrera GTS
 
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
@@ -450,7 +528,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 Carrera GTS, 2021“; „911 Carrera GTS, 2021“; „911 Carrera GTS, 2021“
 - Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
-### Porsche 911 (992) Turbo S
+### Porsche 911 (992.1) Turbo S
 
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: Online-Premiere 2020 (Genfer Autosalon abgesagt)
@@ -458,7 +536,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 Turbo S, 2020“; „911 Turbo S, 2020“; „911 Turbo S, 2020“
 - Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
-### Porsche 911 (992) Sport Classic
+### Porsche 911 (992.1) Sport Classic
 
 - Präsentationsfarbe: Sportgraumetallic (Sport Grey Metallic) (belegt)
 - Vorstellung: Weltpremiere 2022
@@ -467,7 +545,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 Sport Classic, 2022“; „911 Sport Classic, 2022“; „911 Sport Classic, 2022“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (992) Dakar
+### Porsche 911 (992.1) Dakar
 
 - Präsentationsfarbe: Weiß/Enzianblaumetallic, Rallye Design Paket (White/Gentian Blue Metallic, Rallye Design Package) (belegt)
 - Vorstellung: Los Angeles Auto Show 2022
@@ -476,7 +554,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 Dakar, 2022“; „911 Dakar, 2022“; „911 Dakar, 2022“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (992) S/T
+### Porsche 911 (992.1) S/T
 
 - Präsentationsfarbe: Shorebluemetallic (Shore Blue Metallic) (belegt)
 - Vorstellung: Weltpremiere 2023
@@ -485,7 +563,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „Porsche 911 S/T with Heritage Design Package, 2023“; „Porsche 911 S/T, 2023“; „Porsche 911 S/T, 2023“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (992) GT3
+### Porsche 911 (992.1) GT3
 
 - Präsentationsfarbe: Haifischblau (Shark Blue) (belegt)
 - Vorstellung: Online-Weltpremiere 2021
@@ -494,13 +572,45 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „911 GT3, 2021“; „911 GT3, 2021“; „911 GT3, 2021“; „911 GT3 Touring, 2021“
 - Offizielle Bilder im Markt-Tab: 4
 
-### Porsche 911 (992) GT3 RS
+### Porsche 911 (992.1) GT3 RS
 
 - Präsentationsfarbe: Weiß (White) (wahrscheinlich)
 - Vorstellung: Weltpremiere 2022
 - Offizielle Seite: [Weltpremiere 911 GT3 RS](https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html) – Pressemitteilung zur Vorstellung
 - Bilder im Markt-Tab: „911 GT3 RS, 2022“; „911 GT3 RS, 2022“; „911 GT3 RS, 2022“
 - Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (992.2) Carrera GTS
+
+- Präsentationsfarbe: Schiefergrau Neo (Slate Grey Neo) (wahrscheinlich)
+- Vorstellung: Weltpremiere 2024
+- Offizielle Seite: [Weltpremiere 911 Carrera GTS T-Hybrid](https://newsroom.porsche.com/en/2024/products/porsche-new-911-world-premiere-hybrid-36322.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Carrera GTS, 2024“; „911 Carrera GTS, 2024“; „911 Carrera GTS, 2024“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (992.2) Carrera S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Der neue 911 Carrera S](https://newsroom.porsche.com/en/2025/products/porsche-911-carrera-s-and-cabriolet-38315.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „911 Carrera S, 2025“; „911 Carrera S, 2025“; „911 Carrera S, 2025“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (992.2) Turbo S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Mobility 2025
+- Offizielle Seite: [Der neue 911 Turbo S](https://newsroom.porsche.com/en/2025/products/porsche-911-turbo-s-top-of-the-range-model-twin-turbo-performance-hybrid-40446.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Turbo S, 2025“; „911 Turbo S, 2025“; „911 Turbo S, 2025“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (992.2) GT3
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Weltpremiere 2024
+- Offizielle Seite: [Weltpremiere 911 GT3](https://newsroom.porsche.com/en_US/2024/products/porsche-the-2025-911-gt3-double-premiere-37598.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 GT3“; „911 GT3 with Weissach Package“; „911 GT3 with Weissach Package“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
 ### Porsche 912 Coupé
 

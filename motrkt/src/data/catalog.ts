@@ -145,12 +145,12 @@ export const CATALOG: BrandDef[] = [
             ],
           },
           {
-            name: "996",
-            years: [1997, 2005],
+            name: "996.1",
+            years: [1997, 2001],
             shape: "modern911",
             variants: [
-              v("Carrera", [1997, 2005], 56733, 36_000, 0.041, 300, 3.4, 77_000, {
-                body: { Coupé: 0.62, Cabriolet: 0.34, Targa: 0.04 },
+              v("Carrera", [1997, 2001], 56733, 30_000, 0.045, 300, 3.4, 69_336, {
+                body: { Coupé: 0.65, Cabriolet: 0.35 },
                 gearbox: { Manual: 0.6, Automatik: 0.4 },
                 transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#b7babe",
@@ -159,12 +159,30 @@ export const CATALOG: BrandDef[] = [
                 drive: "Allrad (AWD)",
                 tags: ["Turbo", "Allrad"],
                 gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#151619",
               }),
-              v("GT3", [1999, 2005], 4181, 146_000, 0.083, 381, 3.6, 102_000, { tags: ["Leichtbau"], color: "#e9e8e1" }),
-              v("GT3 RS", [2003, 2004], 682, 276_000, 0.097, 381, 3.6, 120_000, { tags: ["Leichtbau"], color: "#e9e8e1" }),
+              v("GT3", [1999, 2001], 1868, 158_000, 0.085, 360, 3.6, 91_777, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
               v("GT2", [2001, 2005], 1287, 241_000, 0.089, 462, 3.6, 185_000, {
                 tags: ["Turbo", "Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b7babe",
+              }),
+            ],
+          },
+          {
+            name: "996.2",
+            years: [2001, 2005],
+            shape: "modern911",
+            variants: [
+              v("Carrera", [2001, 2004], 35000, 38_000, 0.04, 320, 3.6, 73_000, {
+                body: { Coupé: 0.62, Cabriolet: 0.38 },
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#b7babe",
               }),
               v("Carrera 4S", [2001, 2005], 23000, 48_000, 0.039, 320, 3.6, 93_000, {
@@ -188,36 +206,72 @@ export const CATALOG: BrandDef[] = [
                 transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#151619",
               }),
+              v("GT3", [2003, 2005], 2313, 140_000, 0.08, 381, 3.6, 102_112, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+              v("GT3 RS", [2003, 2004], 682, 276_000, 0.097, 381, 3.6, 120_000, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
             ],
           },
           {
-            name: "997",
-            years: [2004, 2012],
+            name: "997.1",
+            years: [2004, 2008],
             shape: "modern911",
             variants: [
-              v("Carrera S", [2004, 2012], 41059, 62_000, 0.045, 355, 3.8, 90_000, {
+              v("Carrera S", [2004, 2008], 41000, 55_000, 0.045, 355, 3.8, 86_900, {
                 body: { Coupé: 0.65, Cabriolet: 0.3, Targa: 0.05 },
                 gearbox: { Manual: 0.55, Automatik: 0.45 },
-                transmission: "6-Gang Schaltgetriebe / Tiptronic S / PDK",
-                color: "#1f6fd0",
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#7d7f7a",
               }),
-              v("Turbo", [2006, 2012], 22000, 97_000, 0.052, 480, 3.6, 136_000, {
+              v("Turbo", [2006, 2009], 19000, 88_000, 0.05, 480, 3.6, 133_603, {
                 drive: "Allrad (AWD)",
                 tags: ["Turbo", "Allrad"],
+                body: { Coupé: 0.7, Cabriolet: 0.3 },
                 gearbox: { Manual: 0.4, Automatik: 0.6 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#151619",
               }),
-              v("GT3", [2006, 2012], 4600, 192_000, 0.099, 435, 3.8, 108_000, { tags: ["Leichtbau"], color: "#e9e8e1" }),
-              v("GT3 RS", [2006, 2011], 3000, 286_000, 0.104, 450, 3.8, 136_000, { tags: ["Leichtbau"], color: "#ee7a12" }),
-              v("GT3 RS 4.0", [2011, 2011], 600, 545_000, 0.118, 500, 4.0, 179_000, { tags: ["Leichtbau"], color: "#e9e8e1" }),
-              v("GT2 RS", [2010, 2011], 500, 495_000, 0.102, 620, 3.6, 237_000, {
-                tags: ["Turbo", "Leichtbau"],
-                color: "#151619",
+              v("GT3", [2006, 2008], 2378, 175_000, 0.095, 415, 3.6, 108_083, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+              v("GT3 RS", [2006, 2008], 1900, 250_000, 0.1, 415, 3.6, 129_659, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#ee7a12",
               }),
               v("GT2", [2007, 2009], 1242, 285_000, 0.071, 530, 3.6, 189_000, {
                 tags: ["Turbo", "Leichtbau"],
                 transmission: "6-Gang Schaltgetriebe",
                 color: "#b7babe",
+              }),
+            ],
+          },
+          {
+            name: "997.2",
+            years: [2008, 2012],
+            shape: "modern911",
+            variants: [
+              v("Carrera S", [2008, 2012], 15000, 76_000, 0.05, 385, 3.8, 94_000, {
+                body: { Coupé: 0.65, Cabriolet: 0.3, Targa: 0.05 },
+                gearbox: { Manual: 0.45, Automatik: 0.55 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#1f6fd0",
+              }),
+              v("Turbo", [2009, 2012], 9000, 105_000, 0.052, 500, 3.8, 145_000, {
+                drive: "Allrad (AWD)",
+                tags: ["Turbo", "Allrad"],
+                body: { Coupé: 0.7, Cabriolet: 0.3 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#151619",
               }),
               v("Turbo S", [2010, 2012], 4000, 128_000, 0.048, 530, 3.8, 169_000, {
                 drive: "Allrad (AWD)",
@@ -236,75 +290,122 @@ export const CATALOG: BrandDef[] = [
                 transmission: "7-Gang PDK",
                 color: "#1f6fb5",
               }),
+              v("GT3", [2009, 2011], 2200, 215_000, 0.1, 435, 3.8, 116_947, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+              v("GT3 RS", [2009, 2011], 1500, 330_000, 0.105, 450, 3.8, 145_871, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+              v("GT3 RS 4.0", [2011, 2011], 600, 545_000, 0.118, 500, 4.0, 179_000, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+              v("GT2 RS", [2010, 2011], 500, 495_000, 0.102, 620, 3.6, 237_000, {
+                tags: ["Turbo", "Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#151619",
+              }),
             ],
           },
           {
-            name: "991",
-            years: [2011, 2019],
+            name: "991.1",
+            years: [2011, 2015],
             shape: "modern911",
             variants: [
-              v("Carrera S", [2011, 2019], 60000, 82_000, 0.038, 420, 3.0, 108_000, {
+              v("Carrera S", [2011, 2015], 35000, 72_000, 0.035, 400, 3.8, 102_436, {
                 body: { Coupé: 0.6, Cabriolet: 0.32, Targa: 0.08 },
                 gearbox: { Manual: 0.25, Automatik: 0.75 },
                 transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#b7babe",
               }),
-              v("GT3", [2013, 2019], 5900, 158_000, 0.064, 500, 4.0, 140_000, {
-                tags: ["Leichtbau"],
-                gearbox: { Manual: 0.35, Automatik: 0.65 },
-                color: "#3aa83a",
-              }),
-              v("GT3 RS", [2015, 2019], 6400, 206_000, 0.058, 520, 4.0, 196_000, { tags: ["Leichtbau"], ...PDK, color: "#ee7a12" }),
-              v("R", [2016, 2016], 991, 341_000, 0.071, 500, 4.0, 190_000, { tags: ["Leichtbau"], color: "#e9e8e1" }),
-              v("Turbo S", [2013, 2019], 26000, 134_000, 0.031, 580, 3.8, 196_000, {
+              v("Turbo S", [2013, 2015], 10000, 112_000, 0.025, 560, 3.8, 195_256, {
                 drive: "Allrad (AWD)",
                 tags: ["Turbo", "Allrad"],
                 ...PDK,
                 color: "#151619",
-              }),
-              v("GT2 RS", [2017, 2019], 1000, 395_000, 0.061, 700, 3.8, 285_000, {
-                tags: ["Turbo", "Leichtbau"],
-                ...PDK,
-                color: "#b7babe",
               }),
               v("50 Jahre Edition", [2013, 2014], 1963, 152_000, 0.058, 430, 3.8, 124_000, {
                 gearbox: { Manual: 0.5, Automatik: 0.5 },
                 transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#3b5a52",
               }),
-              v("Carrera T", [2017, 2019], 5000, 108_000, 0.041, 370, 3.0, 107_000, {
-                gearbox: { Manual: 0.6, Automatik: 0.4 },
-                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#7d7f7a",
-              }),
-              v("Speedster", [2019, 2019], 1948, 335_000, 0.069, 510, 4.0, 269_000, {
-                body: { Roadster: 1 },
+              v("GT3", [2013, 2016], 2700, 132_000, 0.05, 475, 3.8, 137_303, { tags: ["Leichtbau"], ...PDK, color: "#3aa83a" }),
+              v("GT3 RS", [2015, 2016], 4000, 188_000, 0.05, 500, 4.0, 181_690, { tags: ["Leichtbau"], ...PDK, color: "#ee7a12" }),
+              v("R", [2016, 2016], 991, 341_000, 0.071, 500, 4.0, 190_000, {
+                tags: ["Leichtbau"],
                 transmission: "6-Gang Schaltgetriebe",
                 color: "#e9e8e1",
               }),
             ],
           },
           {
-            name: "992",
-            years: [2019, null],
+            name: "991.2",
+            years: [2015, 2019],
             shape: "modern911",
             variants: [
-              v("Carrera S", [2019, null], 52000, 132_000, 0.015, 450, 3.0, 125_000, {
+              v("Carrera S", [2015, 2019], 25000, 92_000, 0.04, 420, 3.0, 110_000, {
+                body: { Coupé: 0.6, Cabriolet: 0.32, Targa: 0.08 },
+                gearbox: { Manual: 0.25, Automatik: 0.75 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("Carrera T", [2017, 2019], 5000, 108_000, 0.041, 370, 3.0, 107_000, {
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("Turbo S", [2016, 2019], 16000, 142_000, 0.032, 580, 3.8, 202_000, {
+                drive: "Allrad (AWD)",
+                tags: ["Turbo", "Allrad"],
+                ...PDK,
+                color: "#151619",
+              }),
+              v("Speedster", [2019, 2019], 1948, 335_000, 0.069, 510, 4.0, 269_000, {
+                body: { Roadster: 1 },
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+              v("GT3", [2017, 2019], 3200, 172_000, 0.065, 500, 4.0, 152_416, {
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("GT3 RS", [2018, 2019], 2400, 228_000, 0.06, 520, 4.0, 195_137, { tags: ["Leichtbau"], ...PDK, color: "#3aa83a" }),
+              v("GT2 RS", [2017, 2019], 1000, 395_000, 0.061, 700, 3.8, 285_000, {
+                tags: ["Turbo", "Leichtbau"],
+                ...PDK,
+                color: "#b7babe",
+              }),
+            ],
+          },
+          {
+            name: "992.1",
+            years: [2019, 2024],
+            shape: "modern911",
+            variants: [
+              v("Carrera S", [2019, 2024], 52000, 132_000, 0.015, 450, 3.0, 125_000, {
                 body: { Coupé: 0.65, Cabriolet: 0.3, Targa: 0.05 },
                 gearbox: { Manual: 0.12, Automatik: 0.88 },
                 transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
                 color: "#cfccc2",
               }),
-              v("GT3", [2021, null], 9000, 206_000, 0.028, 510, 4.0, 167_000, {
-                tags: ["Leichtbau"],
-                gearbox: { Manual: 0.3, Automatik: 0.7 },
-                color: "#5fc9a9",
+              v("Carrera GTS", [2021, 2024], 15000, 148_000, 0.032, 480, 3.0, 148_000, {
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
+                color: "#151619",
               }),
-              v("GT3 RS", [2022, null], 7500, 334_000, 0.046, 525, 4.0, 229_000, { tags: ["Leichtbau"], ...PDK, color: "#3aa83a" }),
-              v("S/T", [2023, 2024], 1963, 468_000, 0.085, 525, 4.0, 292_000, {
-                tags: ["Leichtbau"],
-                transmission: "6-Gang Schaltgetriebe",
-                color: "#5fc9a9",
+              v("Turbo S", [2020, 2024], 10000, 215_000, 0.028, 650, 3.7, 216_000, {
+                ...AWD,
+                tags: ["Turbo", "Allrad"],
+                gearbox: { Automatik: 1 },
+                transmission: "8-Gang PDK",
+                color: "#b7babe",
               }),
               v("Sport Classic", [2022, 2023], 1250, 334_000, 0.062, 550, 3.7, 272_000, {
                 tags: ["Turbo"],
@@ -312,12 +413,52 @@ export const CATALOG: BrandDef[] = [
                 color: "#7d7f7a",
               }),
               v("Dakar", [2022, 2024], 2500, 264_000, 0.041, 480, 3.0, 223_000, { ...AWD, ...PDK, color: "#cfccc2" }),
-              v("Carrera GTS", [2021, 2024], 15000, 148_000, 0.032, 480, 3.0, 148_000, {
-                gearbox: { Manual: 0.2, Automatik: 0.8 },
-                transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
-                color: "#151619",
+              v("S/T", [2023, 2024], 1963, 468_000, 0.085, 525, 4.0, 292_000, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#5fc9a9",
               }),
-              v("Turbo S", [2020, 2024], 10000, 215_000, 0.028, 650, 3.7, 216_000, { ...AWD, tags: ["Turbo", "Allrad"], gearbox: { Automatik: 1 }, transmission: "8-Gang PDK", color: "#b7babe" }),
+              v("GT3", [2021, 2024], 9000, 206_000, 0.028, 510, 4.0, 167_000, {
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.3, Automatik: 0.7 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#5fc9a9",
+              }),
+              v("GT3 RS", [2022, null], 7500, 334_000, 0.046, 525, 4.0, 229_000, { tags: ["Leichtbau"], ...PDK, color: "#3aa83a" }),
+            ],
+          },
+          {
+            name: "992.2",
+            years: [2024, null],
+            shape: "modern911",
+            variants: [
+              v("Carrera S", [2025, null], 8000, 158_000, 0, 480, 3.0, 154_800, {
+                body: { Coupé: 0.7, Cabriolet: 0.3 },
+                ...PDK,
+                transmission: "8-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("Carrera GTS", [2024, null], 9000, 172_000, 0, 541, 3.6, 170_600, {
+                body: { Coupé: 0.65, Cabriolet: 0.25, Targa: 0.1 },
+                tags: ["Hybrid"],
+                ...PDK,
+                transmission: "8-Gang PDK (T-Hybrid)",
+                color: "#3b5a52",
+              }),
+              v("Turbo S", [2025, null], 3000, 285_000, 0, 711, 3.6, 271_000, {
+                ...AWD,
+                tags: ["Turbo", "Allrad", "Hybrid"],
+                body: { Coupé: 0.65, Cabriolet: 0.35 },
+                gearbox: { Automatik: 1 },
+                transmission: "8-Gang PDK (T-Hybrid)",
+                color: "#b7babe",
+              }),
+              v("GT3", [2025, null], 3000, 245_000, 0, 510, 4.0, 230_000, {
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.35, Automatik: 0.65 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#5fc9a9",
+              }),
             ],
           },
         ],

@@ -692,7 +692,7 @@
     ],
     "note": "Porsche: 172 built 1995-1997 (Coppa Florio article), 194 units total incl. MY1998 (Jan's GT2 article). en.wikipedia's '57' is not supported by Porsche. 430 PS MY1996-97, 450 PS MY1998."
   },
-  "porsche-911-996-carrera": {
+  "porsche-911-996-1-carrera": {
     "launchColor": {
       "name": "Zenithblau Metallic (Zenith Blue Metallic)",
       "hex": "#2C4A8E",
@@ -703,10 +703,6 @@
     "specs": {
       "hp": 300,
       "liters": 3.4,
-      "years": [
-        1997,
-        2005
-      ],
       "newPrice": {
         "amount": 135610,
         "currency": "DEM",
@@ -756,7 +752,7 @@
     ],
     "note": "Launch Oct 1997 Coupé only at 135,610 DM (AMS: 'über 135.000 Mark'; exact figure from secondary sources). 300 PS/3.4 l applies to 996.1 (to MY2001); 996.2 Carrera from MY2002 = 320 PS/3.6 l. Production 56,733 appears only in a non-authoritative list (jtcars.net) as 996.1 Carrera 2 total; not verified. Our 77,000 EUR is ~7,700 EUR above the 1997 launch price. No Commons photo could be confirmed as Zenith Blue; hero is a dark blue metallic 996.1 Carrera (shade not verified)."
   },
-  "porsche-911-996-turbo": {
+  "porsche-911-996-1-turbo": {
     "launchColor": {
       "name": "Arktissilber Metallic (Arctic Silver Metallic)",
       "hex": "#B9BBBC",
@@ -815,7 +811,7 @@
     ],
     "note": "Porsche: 20,499 built up to and including MY2005; 309 kW/420 PS; offered from January 2000. Launch price not verified (AUTO BILD lists from 128,676 EUR; a 234,900 DM figure = 120,102 EUR is unconfirmed)."
   },
-  "porsche-911-996-gt3": {
+  "porsche-911-996-1-gt3": {
     "launchColor": {
       "name": "Arktissilber Metallic (Arctic Silver Metallic)",
       "hex": "#B9BBBC",
@@ -824,13 +820,9 @@
       "note": "Porsche Newsroom: the first 911 GT3 (996), Arctic Silver Metallic, is the car used for the world premiere at Geneva 1999."
     },
     "specs": {
-      "production": 4181,
+      "production": 1868,
       "hp": 360,
       "liters": 3.6,
-      "years": [
-        1999,
-        2005
-      ],
       "newPrice": {
         "amount": 179500,
         "currency": "DEM",
@@ -881,7 +873,7 @@
     ],
     "note": "Launch GT3 (996.1, 1999-2001): 360 PS, 179,500 DM (91,777 EUR), 1,868 built. 996.2 GT3 (2003-2005): 381 PS, 102,112 EUR, 2,313 built (2003-04). 4,181 = 1,868 + 2,313. Our 381 PS / 102,000 EUR describe the 996.2, not the launch car."
   },
-  "porsche-911-996-gt3-rs": {
+  "porsche-911-996-2-gt3-rs": {
     "launchColor": {
       "name": "Carraraweiß mit roten Schriftzügen (Carrara White with red decals)",
       "hex": "#F2F1EC",
@@ -945,7 +937,7 @@
       }
     ]
   },
-  "porsche-911-996-gt2": {
+  "porsche-911-996-1-gt2": {
     "launchColor": {
       "name": "Arktissilber Metallic (Arctic Silver Metallic)",
       "hex": "#B9BBBC",
@@ -1010,7 +1002,7 @@
     ],
     "note": "Press-release list price 159,100 EUR excl. VAT = 184,674 EUR incl. German VAT (quoted by Stuttcars). 462 PS to MY2003, 483 PS from MY2004. Production 1,287 (963 996.1 + 324 996.2) from enthusiast sources, not Porsche."
   },
-  "porsche-911-997-carrera-s": {
+  "porsche-911-997-1-carrera-s": {
     "launchColor": {
       "name": "Sealgraumetallic (Seal Grey Metallic)",
       "hex": "#6E7173",
@@ -1021,10 +1013,6 @@
     "specs": {
       "hp": 355,
       "liters": 3.8,
-      "years": [
-        2004,
-        2012
-      ],
       "sources": [
         "https://de.wikipedia.org/wiki/Porsche_997",
         "https://en.wikipedia.org/wiki/Porsche_911_(997)",
@@ -1068,7 +1056,7 @@
     ],
     "note": "Launch 997.1: 355 PS / 3.8 l (3824 cc); 997.2 (2008): 385 PS. German launch price for Carrera S not verified; Porsche newsroom gives only the MY2005 911 Carrera Coupe at EUR 75,200 (AutoScout24 cites EUR 86,949 for Carrera S, probably post-2007 VAT price). Production not verified (stuttcars lists 27,237 for 997.1 C2S coupe only). Hero is a grey metallic 997.1 Carrera S; exact shade not verified."
   },
-  "porsche-911-997-turbo": {
+  "porsche-911-997-1-turbo": {
     "launchColor": {
       "name": "Kobaltblaumetallic (Cobalt Blue Metallic)",
       "hex": "#2B4FA0",
@@ -1079,10 +1067,6 @@
     "specs": {
       "hp": 480,
       "liters": 3.6,
-      "years": [
-        2006,
-        2012
-      ],
       "newPrice": {
         "amount": 133603,
         "currency": "EUR",
@@ -1132,7 +1116,7 @@
     ],
     "note": "Launch 997.1: 480 PS / 3.6 l; 997.2 Turbo (2009): 500 PS / 3.8 l DFI. Price at 16% VAT, Feb 2006. Commons has no Cobalt Blue 997 Turbo; the hero shows the silver car on the Geneva 2006 world-premiere stand (so the show car may have been silver, while the main press photo was blue)."
   },
-  "porsche-911-997-gt3": {
+  "porsche-911-997-1-gt3": {
     "launchColor": {
       "name": "Carraraweiß (Carrara White)",
       "hex": "#F1F1EC",
@@ -1143,10 +1127,6 @@
     "specs": {
       "hp": 415,
       "liters": 3.6,
-      "years": [
-        2006,
-        2012
-      ],
       "newPrice": {
         "amount": 108083,
         "currency": "EUR",
@@ -1185,7 +1165,7 @@
     ],
     "note": "Launch 997.1: 415 PS / 3.6 l; 997.2 GT3 (2009): 435 PS / 3.8 l, EUR 116,947."
   },
-  "porsche-911-997-gt3-rs": {
+  "porsche-911-997-1-gt3-rs": {
     "launchColor": {
       "name": "Orange mit Schwarz (Orange with black)",
       "hex": "#F47B20",
@@ -1196,10 +1176,6 @@
     "specs": {
       "hp": 415,
       "liters": 3.6,
-      "years": [
-        2006,
-        2011
-      ],
       "newPrice": {
         "amount": 129659,
         "currency": "EUR",
@@ -1249,7 +1225,7 @@
     ],
     "note": "Launch 997.1 GT3 RS (Oct 2006): 415 PS / 3.6 l. 997.2 GT3 RS (2009): 450 PS / 3.8 l, EUR 145,871."
   },
-  "porsche-911-997-gt3-rs-4-0": {
+  "porsche-911-997-2-gt3-rs-4-0": {
     "launchColor": {
       "name": "Carraraweiß (Carrara White)",
       "hex": "#F1F1EC",
@@ -1303,7 +1279,7 @@
       }
     ]
   },
-  "porsche-911-997-gt2-rs": {
+  "porsche-911-997-2-gt2-rs": {
     "launchColor": {
       "name": "GT-Silbermetallic (GT Silver Metallic)",
       "hex": "#A9ACAE",
@@ -1368,7 +1344,7 @@
       }
     ]
   },
-  "porsche-911-991-carrera-s": {
+  "porsche-911-991-1-carrera-s": {
     "launchColor": {
       "name": "Platinsilbermetallic (Platinum Silver Metallic)",
       "hex": "#B5B3AC",
@@ -1379,10 +1355,6 @@
     "specs": {
       "hp": 400,
       "liters": 3.8,
-      "years": [
-        2011,
-        2019
-      ],
       "newPrice": {
         "amount": 102436,
         "currency": "EUR",
@@ -1432,7 +1404,7 @@
     ],
     "note": "Launch 991.1: 400 PS / 3.8 l. 991.2 facelift (IAA 2015): 420 PS / 3.0 l biturbo. Shade of silver not verified; the IAA 2011 world-premiere stand car was dark blue metallic (image 2)."
   },
-  "porsche-911-991-gt3": {
+  "porsche-911-991-1-gt3": {
     "launchColor": {
       "name": "Indischrot (Guards Red)",
       "hex": "#C8102E",
@@ -1443,10 +1415,6 @@
     "specs": {
       "hp": 475,
       "liters": 3.8,
-      "years": [
-        2013,
-        2019
-      ],
       "newPrice": {
         "amount": 137303,
         "currency": "EUR",
@@ -1495,7 +1463,7 @@
     ],
     "note": "Launch 991.1: 475 PS / 3.8 l (price from republished Porsche press release). 991.2 GT3 (2017): 500 PS / 4.0 l. The Geneva 2013 world-premiere stand car photographed on Commons is white (image 2); red was used in the press photos."
   },
-  "porsche-911-991-gt3-rs": {
+  "porsche-911-991-1-gt3-rs": {
     "launchColor": {
       "name": "Lavaorange (Lava Orange)",
       "hex": "#F2581F",
@@ -1506,10 +1474,6 @@
     "specs": {
       "hp": 500,
       "liters": 4.0,
-      "years": [
-        2015,
-        2019
-      ],
       "newPrice": {
         "amount": 181690,
         "currency": "EUR",
@@ -1559,7 +1523,7 @@
     ],
     "note": "Launch 991.1 (Geneva 2015): 500 PS. 991.2 GT3 RS (2018): 520 PS, EUR 195,137."
   },
-  "porsche-911-991-r": {
+  "porsche-911-991-1-r": {
     "launchColor": {
       "name": "Weiß (White) mit roten Streifen (with red stripes)",
       "hex": "#F2F2EE",
@@ -1623,7 +1587,7 @@
       }
     ]
   },
-  "porsche-911-991-turbo-s": {
+  "porsche-911-991-1-turbo-s": {
     "launchColor": {
       "name": "Rhodiumsilbermetallic (Rhodium Silver Metallic)",
       "hex": "#B9BCBD",
@@ -1634,10 +1598,6 @@
     "specs": {
       "hp": 560,
       "liters": 3.8,
-      "years": [
-        2013,
-        2019
-      ],
       "newPrice": {
         "amount": 195256,
         "currency": "EUR",
@@ -1687,7 +1647,7 @@
     ],
     "note": "Launch 991.1: 560 PS / 3.8 l; 991.2 Turbo S (2016): 580 PS. Price from Porsche press release as reproduced by stuttcars. Hero is a silver 991.1 Turbo S; exact silver shade not verified."
   },
-  "porsche-911-991-gt2-rs": {
+  "porsche-911-991-2-gt2-rs": {
     "launchColor": {
       "name": "GT-Silbermetallic (GT Silver Metallic)",
       "hex": "#A9ACAE",
@@ -1751,7 +1711,7 @@
     ],
     "note": "No official production figure."
   },
-  "porsche-911-992-carrera-s": {
+  "porsche-911-992-1-carrera-s": {
     "launchColor": {
       "name": "Racinggelb (Racing Yellow)",
       "hex": "#F7D417",
@@ -1762,10 +1722,6 @@
     "specs": {
       "hp": 450,
       "liters": 3.0,
-      "years": [
-        2019,
-        null
-      ],
       "newPrice": {
         "amount": 120125,
         "currency": "EUR",
@@ -1815,7 +1771,7 @@
     ],
     "note": "Hero shows a Racing Yellow Carrera S on a Porsche show stand (Commons), consistent with the LA 2018 premiere car."
   },
-  "porsche-911-992-gt3": {
+  "porsche-911-992-1-gt3": {
     "launchColor": {
       "name": "Haifischblau (Shark Blue)",
       "hex": "#0B6FB8",
@@ -1826,10 +1782,6 @@
     "specs": {
       "hp": 510,
       "liters": 4.0,
-      "years": [
-        2021,
-        null
-      ],
       "newPrice": {
         "amount": 167518,
         "currency": "EUR",
@@ -1877,7 +1829,7 @@
       }
     ]
   },
-  "porsche-911-992-gt3-rs": {
+  "porsche-911-992-1-gt3-rs": {
     "launchColor": {
       "name": "Weiß (White)",
       "hex": "#F2F2EE",
@@ -1938,7 +1890,7 @@
       }
     ]
   },
-  "porsche-911-992-s-t": {
+  "porsche-911-992-1-s-t": {
     "launchColor": {
       "name": "Shorebluemetallic (Shore Blue Metallic)",
       "hex": "#5E8FAE",
@@ -2001,7 +1953,7 @@
       }
     ]
   },
-  "porsche-911-992-sport-classic": {
+  "porsche-911-992-1-sport-classic": {
     "launchColor": {
       "name": "Sportgraumetallic (Sport Grey Metallic)",
       "hex": "#8C9496",
@@ -2065,7 +2017,7 @@
       }
     ]
   },
-  "porsche-911-992-dakar": {
+  "porsche-911-992-1-dakar": {
     "launchColor": {
       "name": "Weiß/Enzianblaumetallic, Rallye Design Paket (White/Gentian Blue Metallic, Rallye Design Package)",
       "hex": "#F2F2EE",
