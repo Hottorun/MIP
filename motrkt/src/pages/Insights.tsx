@@ -16,7 +16,6 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
-import { ArrowUpRight, Lightbulb } from "lucide-react";
 import { brands, variants, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
 import { brandIndex, changeOver, cycleData, getMetrics, marketIndex, mean, RANGES, rebase, sliceRange, type RangeKey } from "../data/market";
@@ -57,21 +56,20 @@ function segmentRows(defs: typeof ERAS) {
 
 export default function Insights() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-12">
       <div>
-        <h1 className="font-serif text-3xl">Insights</h1>
-        <p className="text-sm text-muted">Zyklen, Segmente und Rendite-Risiko-Profile über alle {variants.length} beobachteten Varianten · Datenstand {date(AS_OF)}</p>
+        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Insights</h1>
+        <p className="mt-1 text-[14px] text-muted">Wie sich der Markt für alle {variants.length} Varianten entwickelt, Stand {date(AS_OF)}.</p>
       </div>
       <Reports />
-      <div className="grid gap-4 xl:grid-cols-2">
+      <div className={cn("grid gap-6", brands.length > 1 && "xl:grid-cols-2")}>
         <MarketCycle />
-        <BrandComparison />
+        {brands.length > 1 && <BrandComparison />}
       </div>
       <TrendHeatmap />
-      <Segments />
-      <div className="grid gap-4 xl:grid-cols-2">
+      <div className="grid gap-6 xl:grid-cols-2">
+        <Segments />
         <RiskScatter mode="rarity" />
-        <RiskScatter mode="vol" />
       </div>
     </div>
   );
@@ -191,7 +189,7 @@ function Segments() {
   return (
     <Card
       title="Segmentanalyse"
-      sub="Ø Veränderung 12M und Ø CAGR 5J je Segment"
+      sub="Durchschnittliche Wertentwicklung je Gruppe"
       actions={
         <Segmented
           options={[
@@ -218,15 +216,15 @@ function Segments() {
                     title={`${label} · ${payload[0].payload.count} Varianten`}
                     rows={[
                       { label: "Ø 12M", value: pct(Number(payload[0].payload.change12m) / 100), color: "var(--color-gold)" },
-                      { label: "Ø CAGR 5J", value: pct(Number(payload[0].payload.cagr5) / 100), color: "#5f8fd6" },
+                      { label: "Ø CAGR 5J", value: pct(Number(payload[0].payload.cagr5) / 100), color: "var(--color-line-2)" },
                     ]}
                   />
                 ) : null
               }
             />
-            <Legend wrapperStyle={{ fontSize: 12, color: "var(--color-muted)" }} formatter={(v) => (v === "change12m" ? "Ø Veränderung 12M" : "Ø CAGR 5J")} />
-            <Bar dataKey="change12m" fill="var(--color-gold)" radius={[4, 4, 0, 0]} isAnimationActive={false} />
-            <Bar dataKey="cagr5" fill="#5f8fd6" radius={[4, 4, 0, 0]} isAnimationActive={false} />
+            <Legend wrapperStyle={{ fontSize: 13, color: "var(--color-muted)" }} formatter={(v) => (v === "change12m" ? "Letzte 12 Monate" : "Pro Jahr, letzte 5 Jahre")} />
+            <Bar dataKey="change12m" fill="var(--color-gold)" isAnimationActive={false} />
+            <Bar dataKey="cagr5" fill="var(--color-line-2)" isAnimationActive={false} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -356,21 +354,17 @@ function Reports() {
   }, []);
 
   return (
-    <section>
-      <h2 className="mb-2 flex items-center gap-2 text-[15px] font-semibold">
-        <Lightbulb className="size-4 text-gold" /> Insight-Berichte
-      </h2>
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {reports.map((r) => (
-          <Link key={r.title} to={r.href} className="panel group flex flex-col p-4 transition-colors hover:border-gold/50">
-            <div className="text-sm font-semibold">{r.title}</div>
-            <p className="mt-1 flex-1 text-[13px] leading-relaxed text-muted">{r.body}</p>
-            <span className="mt-2 inline-flex items-center gap-1 text-xs text-gold group-hover:underline">
-              {r.cta} <ArrowUpRight className="size-3" />
-            </span>
+    <section className="grid gap-x-10 gap-y-8 border-y border-line py-8 md:grid-cols-3">
+      {reports
+        .filter((r) => brands.length > 1 || !r.title.startsWith("Marke"))
+        .slice(0, 3)
+        .map((r) => (
+          <Link key={r.title} to={r.href} className="group flex flex-col">
+            <h2 className="font-serif text-[19px] leading-snug group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{r.title}</h2>
+            <p className="mt-2 flex-1 text-[14px] leading-relaxed text-muted">{r.body}</p>
+            <span className="mt-3 text-[13px] text-ink">{r.cta}</span>
           </Link>
         ))}
-      </div>
     </section>
   );
 }

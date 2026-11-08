@@ -1,102 +1,83 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BellPlus, Trash2, X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../../data/db";
-import { getSeries } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import { useStore } from "../../state/store";
-import { cn, date, eur } from "../../lib/format";
-import { BrandEmblem, Card, Delta, Empty, Modal, Pill, Segmented, Sparkline } from "../ui";
-
-const momentumTone = { Stark: "up", Moderat: "gold", Neutral: "neutral", Schwach: "down" } as const;
+import { cn, eur } from "../../lib/format";
+import { CarImage } from "../CarImage";
+import { Delta, Empty, Modal, Pill, Section, Segmented } from "../ui";
 
 export function WatchlistSection() {
   const { watchlist, toggleWatch, alerts, removeAlert, toast } = useStore();
   const [alertFor, setAlertFor] = useState<string | null>(null);
+  const watched = watchlist.flatMap((id) => {
+    const v = variantById.get(id);
+    return v ? [v] : [];
+  });
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-      <Card title="Watchlist" sub={`${watchlist.length} Varianten`}>
-        {watchlist.length === 0 ? (
-          <Empty>Noch keine Fahrzeuge auf der Watchlist. Nutze den Stern auf einer Marktseite.</Empty>
+    <>
+      <Section title="Beobachtet" sub={watched.length ? `${watched.length} Varianten` : undefined}>
+        {watched.length === 0 ? (
+          <Empty>Noch nichts beobachtet. Auf der Seite eines Fahrzeugs findest du „Beobachten“.</Empty>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="table-base">
-              <thead>
-                <tr>
-                  <th>Fahrzeug</th>
-                  <th className="text-right">Marktwert</th>
-                  <th className="text-right">12M</th>
-                  <th>Momentum</th>
-                  <th>1J</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {watchlist.map((id) => {
-                  const v = variantById.get(id);
-                  if (!v) return null;
-                  const m = getMetrics(id);
-                  return (
-                    <tr key={id}>
-                      <td>
-                        <Link to={`/markt/${id}`} className="flex items-center gap-2 hover:text-gold-2">
-                          <BrandEmblem brandId={v.brandId} size={16} />
-                          {variantTitle(v)}
-                        </Link>
-                      </td>
-                      <td className="text-right tabular-nums">{eur(m.value)}</td>
-                      <td className="text-right">
-                        <Delta value={m.change12m} />
-                      </td>
-                      <td>
-                        <Pill tone={momentumTone[m.momentum]}>{m.momentum}</Pill>
-                      </td>
-                      <td>
-                        <Sparkline values={getSeries(id).slice(-52).map((p) => p.value)} width={90} height={24} />
-                      </td>
-                      <td className="text-right">
-                        <button className="btn btn-ghost px-2 py-1 text-xs" onClick={() => setAlertFor(id)} title="Preisalarm anlegen">
-                          <BellPlus className="size-3.5" /> Alarm
-                        </button>
-                        <button
-                          className="btn btn-ghost px-2 py-1 text-xs text-muted"
-                          onClick={() => {
-                            toggleWatch(id);
-                            toast("Von der Watchlist entfernt", "info");
-                          }}
-                          aria-label="Von der Watchlist entfernen"
-                        >
-                          <X className="size-3.5" />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <ul id="watchlist" className="grid scroll-mt-28 grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+            {watched.map((v) => {
+              const m = getMetrics(v.id);
+              return (
+                <li key={v.id}>
+                  <Link to={`/markt/${v.id}`} className="group block">
+                    <div className="overflow-hidden">
+                      <CarImage variant={v} className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
+                    </div>
+                    <div className="mt-3 flex items-baseline justify-between gap-3">
+                      <span className="min-w-0 truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
+                      <span className="shrink-0 font-serif text-[16px] tabular-nums">{eur(m.value, { compact: true })}</span>
+                    </div>
+                  </Link>
+                  <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
+                    <span>
+                      <Delta value={m.change12m} arrow={false} /> <span className="text-muted">in 12 Monaten</span>
+                    </span>
+                    <span className="flex gap-3">
+                      <button className="text-muted hover:text-ink" onClick={() => setAlertFor(v.id)}>
+                        Preisalarm
+                      </button>
+                      <button
+                        className="text-muted hover:text-ink"
+                        onClick={() => {
+                          toggleWatch(v.id);
+                          toast("Nicht mehr beobachtet", "info");
+                        }}
+                      >
+                        Entfernen
+                      </button>
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         )}
-      </Card>
+      </Section>
 
-      <Card title="Preisalarme" sub={`${alerts.length} aktiv`}>
-        {alerts.length === 0 ? (
-          <Empty>Keine Preisalarme. Lege einen über „Alarm“ in der Watchlist an.</Empty>
-        ) : (
-          <ul className="space-y-2">
+      {alerts.length > 0 && (
+        <Section title="Preisalarme">
+          <ul className="max-w-3xl">
             {alerts.map((a) => {
               const v = variantById.get(a.variantId);
               if (!v) return null;
               const value = getMetrics(v.id).value;
               const hit = a.direction === "above" ? value >= a.threshold : value <= a.threshold;
               return (
-                <li key={a.id} className="flex items-center gap-3 rounded-lg border border-line bg-panel-2 px-3 py-2">
+                <li key={a.id} className="flex items-center gap-4 border-b border-line py-4">
                   <div className="min-w-0 flex-1">
-                    <Link to={`/markt/${v.id}`} className="block truncate text-sm hover:text-gold-2">
-                      {variantTitle(v)}
+                    <Link to={`/markt/${v.id}`} className="block truncate font-serif text-[16px] hover:text-gold-2">
+                      {variantTitle(v, { brand: false })}
                     </Link>
-                    <div className="text-xs text-muted">
-                      {a.direction === "above" ? "über" : "unter"} {eur(a.threshold)} · aktuell {eur(value)} · seit {date(a.createdAt)}
+                    <div className="text-[13px] text-muted">
+                      Wenn der Wert {a.direction === "above" ? "über" : "unter"} {eur(a.threshold)} {a.direction === "above" ? "steigt" : "fällt"}. Aktuell {eur(value)}.
                     </div>
                   </div>
                   <Pill tone={hit ? "gold" : "neutral"}>{hit ? "ausgelöst" : "aktiv"}</Pill>
@@ -108,17 +89,17 @@ export function WatchlistSection() {
                     }}
                     aria-label="Alarm löschen"
                   >
-                    <Trash2 className="size-4" />
+                    <Trash2 className="size-4" strokeWidth={1.5} />
                   </button>
                 </li>
               );
             })}
           </ul>
-        )}
-      </Card>
+        </Section>
+      )}
 
       <AlertModal variantId={alertFor} onClose={() => setAlertFor(null)} />
-    </div>
+    </>
   );
 }
 
@@ -159,7 +140,7 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
             Abbrechen
           </button>
           <button className="btn btn-gold" onClick={save}>
-            Alarm speichern
+            Alarm setzen
           </button>
         </>
       }
@@ -167,8 +148,8 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
       {v && (
         <div className="space-y-3">
           <div>
-            <div className="text-sm">{variantTitle(v)}</div>
-            <div className="text-xs text-muted">Aktueller Marktwert: {eur(value)}</div>
+            <div className="font-serif text-[17px]">{variantTitle(v)}</div>
+            <div className="text-[13px] text-muted">Aktueller Marktwert: {eur(value)}</div>
           </div>
           <div>
             <label className="label">Benachrichtigen, wenn der Marktwert</label>

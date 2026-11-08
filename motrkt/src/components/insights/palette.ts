@@ -1,18 +1,18 @@
 /** Distinct chart colours per brand (the emblem colours are too similar to tell apart in charts). */
 export const BRAND_CHART_COLORS: Record<string, string> = {
-  porsche: "#d4a24c",
-  ferrari: "#e8615a",
+  porsche: "#8b6232",
+  ferrari: "#9a3b2c",
 };
 
-export const SERIES_PALETTE = ["#d4a24c", "#5f8fd6", "#e8615a", "#4fc48c", "#c27cf0", "#e8b04a", "#6fd3d0", "#b9bec6", "#f08a5d", "#8fd14f"];
+export const SERIES_PALETTE = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378", "#6e4a63", "#b08a3e", "#4c7a73", "#8f8170", "#a5592f", "#6f7a3a"];
 
-export const brandColor = (brandId: string) => BRAND_CHART_COLORS[brandId] ?? "#8b919b";
+export const brandColor = (brandId: string) => BRAND_CHART_COLORS[brandId] ?? "#a38f77";
 
 /** Diverging red/green cell colour for a change ratio, saturating at ±`cap`. */
 export function divergingColor(ratio: number, cap = 0.06): string {
   const a = Math.min(1, Math.abs(ratio) / cap);
-  if (Math.abs(ratio) < 0.001) return "rgba(139,145,155,0.12)";
-  return ratio > 0 ? `rgba(79,196,140,${0.12 + a * 0.68})` : `rgba(232,97,90,${0.12 + a * 0.68})`;
+  if (Math.abs(ratio) < 0.001) return "rgba(163,143,119,0.15)";
+  return ratio > 0 ? `rgba(79,107,58,${0.12 + a * 0.68})` : `rgba(154,59,44,${0.12 + a * 0.68})`;
 }
 
 /** Jan-1 ticks for time axes (every `step` years) so year labels never repeat. */

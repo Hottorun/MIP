@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { BadgeCheck, Briefcase, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
+import { Briefcase, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
 import { brandById, brands, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, CONDITION_SCORE, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
@@ -10,7 +10,7 @@ import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
 import { type Scene } from "../components/CarArt";
 import { CarImage } from "../components/CarImage";
-import { BrandEmblem, Card, Delta, Empty, Modal, Pill, Sparkline } from "../components/ui";
+import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline } from "../components/ui";
 
 type SortKey = "deal" | "priceAsc" | "priceDesc" | "newest" | "mileage";
 type SellerFilter = "" | Listing["sellerType"];
@@ -18,6 +18,8 @@ type SellerFilter = "" | Listing["sellerType"];
 const SCENES: Scene[] = ["mountain", "studio", "sunset", "city", "track"];
 const CONDITIONS: Condition[] = ["1", "1-", "2+", "2", "2-", "3"];
 const PAGE = 24;
+const filterSelect = "border-b border-line-2 pb-1 focus:border-ink focus:outline-none";
+const filterInput = "border-b border-line-2 bg-transparent pb-1 placeholder:text-faint focus:border-ink focus:outline-none";
 
 type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number; scene: Scene };
 
@@ -40,9 +42,9 @@ function enrich(list: Listing[]): Enriched[] {
 }
 
 function dealLabel(deal: number): { label: string; tone: "up" | "neutral" | "down" } {
-  if (deal < -0.07) return { label: "Top-Deal", tone: "up" };
-  if (deal > 0.07) return { label: "Über Markt", tone: "down" };
-  return { label: "Fair", tone: "neutral" };
+  if (deal < -0.07) return { label: "Unter Marktwert", tone: "up" };
+  if (deal > 0.07) return { label: "Über Marktwert", tone: "down" };
+  return { label: "Fairer Preis", tone: "neutral" };
 }
 
 export default function Buy() {
@@ -66,6 +68,7 @@ export default function Buy() {
   const [text, setText] = useState("");
   const [sort, setSort] = useState<SortKey>("deal");
   const [visible, setVisible] = useState(PAGE);
+  const [moreFilters, setMoreFilters] = useState(false);
 
   const live = useLiveListings();
   const [preferLive, setPreferLive] = useState(true);
@@ -144,46 +147,42 @@ export default function Buy() {
   const digits = (s: string) => s.replace(/\D/g, "");
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-serif text-[28px] leading-tight">Kaufen</h1>
-          <p className="text-sm text-muted">
-            {num(all.length)} {showingLive ? "Live-Inserate von mobile.de" : "Demo-Inserate"} · bewertet gegen den MOTRKT-Marktwert (Zustand &amp; Laufleistung
-            berücksichtigt)
+          <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Kaufen</h1>
+          <p className="mt-1 max-w-2xl text-[14px] text-muted">
+            {num(all.length)} {showingLive ? "Inserate live von mobile.de" : "Demo-Inserate"}, jeweils verglichen mit dem fairen Marktwert für Zustand und Laufleistung.
           </p>
           <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} />
         </div>
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-muted">Sortierung</span>
-          <select className="input w-auto" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-            <option value="deal">Deal-Score</option>
+        <label className="flex items-center gap-2 text-[14px] text-muted">
+          Sortiert nach
+          <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+            <option value="deal">Bester Preis zum Marktwert</option>
             <option value="priceAsc">Preis aufsteigend</option>
             <option value="priceDesc">Preis absteigend</option>
             <option value="newest">Neueste zuerst</option>
             <option value="mileage">Laufleistung</option>
           </select>
-        </div>
+        </label>
       </div>
 
-      <Card bodyClassName="space-y-3">
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
-          <div className="col-span-2">
-            <label className="label">Suche</label>
-            <div className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-faint" />
-              <input className="input pl-8" value={text} onChange={(e) => setText(e.target.value)} placeholder="Modell, Stadt, Händler, FIN …" />
-            </div>
+      <div className="space-y-4 border-y border-line py-5 text-[14px]">
+        <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
+          <div className="flex w-72 items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink">
+            <Search className="size-4 text-muted" strokeWidth={1.5} />
+            <input className="min-w-0 flex-1 bg-transparent focus:outline-none" value={text} onChange={(e) => setText(e.target.value)} placeholder="Modell, Stadt, Händler oder FIN" aria-label="Inserate durchsuchen" />
           </div>
-          <div>
-            <label className="label">Marke</label>
+          {brands.length > 1 && (
             <select
-              className="input"
+              className={filterSelect}
               value={brand}
               onChange={(e) => {
                 setBrand(e.target.value);
                 setModel("");
               }}
+              aria-label="Marke"
             >
               <option value="">Alle Marken</option>
               {brands.map((b) => (
@@ -192,82 +191,76 @@ export default function Buy() {
                 </option>
               ))}
             </select>
+          )}
+          <select className={filterSelect} value={model} onChange={(e) => setModel(e.target.value)} aria-label="Modell">
+            <option value="">Alle Modelle</option>
+            {brandModels.map((m) => (
+              <option key={m.id} value={m.id}>
+                {brand || brands.length === 1 ? m.name : `${brandById.get(m.brandId)!.name} ${m.name}`}
+              </option>
+            ))}
+          </select>
+          <div className="flex items-center gap-2">
+            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder="Preis ab €" value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} aria-label="Preis ab" />
+            <span className="text-faint">bis</span>
+            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder="€" value={priceMax} onChange={(e) => setPriceMax(digits(e.target.value))} aria-label="Preis bis" />
           </div>
-          <div>
-            <label className="label">Modell</label>
-            <select className="input" value={model} onChange={(e) => setModel(e.target.value)}>
-              <option value="">Alle Modelle</option>
-              {brandModels.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {brand ? m.name : `${brandById.get(m.brandId)!.name} ${m.name}`}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="label">Preis von / bis (€)</label>
-            <div className="flex gap-1">
-              <input className="input px-2" inputMode="numeric" placeholder="min" value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} />
-              <input className="input px-2" inputMode="numeric" placeholder="max" value={priceMax} onChange={(e) => setPriceMax(digits(e.target.value))} />
+          <button className="text-muted underline-offset-4 hover:text-ink hover:underline" onClick={() => setMoreFilters((m) => !m)} aria-expanded={moreFilters}>
+            {moreFilters ? "Weniger Filter" : "Weitere Filter"}
+          </button>
+        </div>
+        {moreFilters && (
+          <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
+            <div className="flex items-center gap-2">
+              <input className={cn(filterInput, "w-20")} inputMode="numeric" placeholder="Baujahr" value={yearFrom} onChange={(e) => setYearFrom(digits(e.target.value).slice(0, 4))} aria-label="Baujahr ab" />
+              <span className="text-faint">bis</span>
+              <input className={cn(filterInput, "w-20")} inputMode="numeric" placeholder="Baujahr" value={yearTo} onChange={(e) => setYearTo(digits(e.target.value).slice(0, 4))} aria-label="Baujahr bis" />
             </div>
-          </div>
-          <div>
-            <label className="label">Baujahr von / bis</label>
-            <div className="flex gap-1">
-              <input className="input px-2" inputMode="numeric" placeholder="von" value={yearFrom} onChange={(e) => setYearFrom(digits(e.target.value).slice(0, 4))} />
-              <input className="input px-2" inputMode="numeric" placeholder="bis" value={yearTo} onChange={(e) => setYearTo(digits(e.target.value).slice(0, 4))} />
-            </div>
-          </div>
-          <div>
-            <label className="label">max. Laufleistung</label>
-            <input className="input" inputMode="numeric" placeholder="km" value={maxKm} onChange={(e) => setMaxKm(digits(e.target.value))} />
-          </div>
-          <div>
-            <label className="label">Verkäufer</label>
-            <select className="input" value={seller} onChange={(e) => setSeller(e.target.value as SellerFilter)}>
-              <option value="">Alle</option>
+            <input className={cn(filterInput, "w-36")} inputMode="numeric" placeholder="Max. Laufleistung km" value={maxKm} onChange={(e) => setMaxKm(digits(e.target.value))} aria-label="Maximale Laufleistung" />
+            <select className={filterSelect} value={seller} onChange={(e) => setSeller(e.target.value as SellerFilter)} aria-label="Verkäufer">
+              <option value="">Alle Verkäufer</option>
               <option value="Händler">Händler</option>
               <option value="Privat">Privat</option>
               <option value="Auktion">Auktion</option>
             </select>
+            <select className={filterSelect} value={minCondition} onChange={(e) => setMinCondition(e.target.value as Condition | "")} aria-label="Mindestzustand">
+              <option value="">Jeder Zustand</option>
+              {CONDITIONS.map((c) => (
+                <option key={c} value={c}>
+                  mindestens Note {c}
+                </option>
+              ))}
+            </select>
+            <button className={cn("chip", matchingOnly && "chip-active")} onClick={() => setMatchingOnly((m) => !m)}>
+              Nur Matching Numbers
+            </button>
           </div>
-        </div>
+        )}
         <div className="flex flex-wrap items-center gap-2">
-          <select className="input w-auto py-1 text-xs" value={minCondition} onChange={(e) => setMinCondition(e.target.value as Condition | "")} aria-label="Mindestzustand">
-            <option value="">Zustand: alle</option>
-            {CONDITIONS.map((c) => (
-              <option key={c} value={c}>
-                mind. Note {c}
-              </option>
-            ))}
-          </select>
-          <button className={cn("chip", matchingOnly && "chip-active")} onClick={() => setMatchingOnly((m) => !m)}>
-            <BadgeCheck className="size-3.5" /> Nur Matching Numbers
-          </button>
           <button className={cn("chip", savedOnly && "chip-active")} onClick={() => setSavedOnly((m) => !m)}>
-            <Heart className="size-3.5" /> Nur gemerkte ({savedListings.length})
+            <Heart className="size-3.5" strokeWidth={1.5} /> Gemerkt ({savedListings.length})
           </button>
           {variantFilter && (
             <span className="chip chip-active">
-              Variante: {variantTitle(variantFilter)}
-              <button onClick={clearVariant} aria-label="Variantenfilter entfernen" className="ml-0.5 hover:text-ink">
+              {variantTitle(variantFilter)}
+              <button onClick={clearVariant} aria-label="Variantenfilter entfernen">
                 <X className="size-3" />
               </button>
             </span>
           )}
-          <span className="ml-auto text-xs text-muted">
-            {num(filtered.length)} Treffer · <span className="text-up">{num(topDeals)} Top-Deals</span>
+          <span className="ml-auto text-[13px] text-muted">
+            {num(filtered.length)} Inserate, davon {num(topDeals)} deutlich unter Marktwert
           </span>
-          <button className="btn btn-ghost px-2 py-1 text-xs text-muted" onClick={reset}>
-            <X className="size-3.5" /> Zurücksetzen
+          <button className="text-[13px] text-muted hover:text-ink" onClick={reset}>
+            Filter zurücksetzen
           </button>
         </div>
-      </Card>
+      </div>
 
       {filtered.length === 0 ? (
         <Empty>Keine Inserate für diese Filter. {savedOnly && "Merke dir Inserate über das Herz-Symbol."}</Empty>
       ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.slice(0, visible).map((e) => (
             <ListingCard key={e.l.id} e={e} saved={savedListings.includes(e.l.id)} onSave={() => toggleSavedListing(e.l.id)} onOpen={() => openListing(e.l.id)} />
           ))}
@@ -295,50 +288,35 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
   const { l, v } = e;
   const d = dealLabel(e.deal);
   return (
-    <article className="panel group flex cursor-pointer flex-col overflow-hidden transition-colors hover:border-line-2" onClick={onOpen}>
-      <div className="relative aspect-[5/2] overflow-hidden">
+    <article className="group cursor-pointer" onClick={onOpen}>
+      <div className="relative aspect-[4/3] overflow-hidden bg-panel-3">
         {l.images?.[0] ? (
-          <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+          <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
         ) : (
-          <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03]" label={l.title} />
+          <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full transition-transform duration-500 group-hover:scale-[1.02]" label={l.title} />
         )}
-        {l.source === "mobile.de" && <span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white/90">mobile.de</span>}
+        {l.source === "mobile.de" && <span className="absolute bottom-3 left-3 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] text-ink">mobile.de</span>}
         <button
           onClick={(ev) => {
             ev.stopPropagation();
             onSave();
           }}
-          className={cn("absolute top-2 right-2 rounded-full bg-black/50 p-1.5 backdrop-blur", saved ? "text-rose" : "text-white/80 hover:text-white")}
+          className={cn("absolute top-3 right-3 rounded-full bg-bg/85 p-2 text-ink transition-opacity focus-visible:opacity-100", saved ? "opacity-100" : "opacity-0 group-hover:opacity-100")}
           aria-label={saved ? "Nicht mehr merken" : "Inserat merken"}
+          aria-pressed={saved}
         >
-          <Heart className="size-4" fill={saved ? "currentColor" : "none"} />
+          <Heart className="size-4" strokeWidth={1.5} fill={saved ? "currentColor" : "none"} />
         </button>
-        <span className="absolute top-2 left-2 rounded-md bg-black/70 backdrop-blur">
-          <Pill tone={d.tone}>
-            {d.label} {pct(e.deal)}
-          </Pill>
-        </span>
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-3">
-        <div className="flex items-start gap-2">
-          <BrandEmblem brandId={v.brandId} size={18} />
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-semibold">{variantTitle(v)}</div>
-            <div className="truncate text-xs text-muted">
-              {l.year} · {km(l.mileage)} · {flag(l.country)} {l.city}
-            </div>
-          </div>
-        </div>
-        <div className="mt-auto flex items-end justify-between pt-2">
-          <div className="text-xs text-muted">
-            {l.sellerType} · {l.conditionUnknown ? "Zustand k. A." : `Note ${l.condition}`}
-            {l.matchingNumbers && <BadgeCheck className="ml-1 inline size-3.5 text-gold" aria-label="Matching Numbers" />}
-          </div>
-          <div className="text-right">
-            <div className="text-base font-semibold tabular-nums">{eur(l.price)}</div>
-            <div className="text-[11px] text-faint">fair {eur(e.fair, { compact: true })}</div>
-          </div>
-        </div>
+      <div className="mt-3 flex items-baseline justify-between gap-3">
+        <span className="min-w-0 truncate font-serif text-[16.5px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
+        <span className="shrink-0 font-serif text-[16.5px] tabular-nums">{eur(l.price)}</span>
+      </div>
+      <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
+        <span className="min-w-0 truncate text-muted">
+          {l.year}, {km(l.mileage)}, {l.city}
+        </span>
+        <span className={cn("shrink-0", d.tone === "up" ? "text-up" : d.tone === "down" ? "text-down" : "text-muted")}>{d.label}</span>
       </div>
     </article>
   );

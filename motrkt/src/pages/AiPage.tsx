@@ -1,13 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { Cpu, Eye, Sparkles } from "lucide-react";
-import { brands, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
+import { brands, variantById, variantShortTitle, variantTitle, variants } from "../data/db";
 import { getMetrics } from "../data/market";
 import { useStore } from "../state/store";
 import { fetchCopilotStatus, type CopilotStatus } from "../lib/copilot";
-import { eur, km, num, pct } from "../lib/format";
 import { Copilot } from "../components/Copilot";
-import { BrandEmblem, Card, Delta, Pill } from "../components/ui";
+import { Card, Pill } from "../components/ui";
 
 function promptGroups(name: string, sibling: string | undefined) {
   return [
@@ -31,7 +28,7 @@ function promptGroups(name: string, sibling: string | undefined) {
 }
 
 export default function AiPage() {
-  const { lastVariantId, portfolio, watchlist } = useStore();
+  const { lastVariantId } = useStore();
   const [focus, setFocus] = useState(lastVariantId);
   const [prompt, setPrompt] = useState<{ text: string; nonce: number }>();
   const [status, setStatus] = useState<CopilotStatus | null>(null);
@@ -45,7 +42,6 @@ export default function AiPage() {
   }, []);
 
   const v = variantById.get(focus) ?? variantById.get(lastVariantId)!;
-  const m = getMetrics(v.id);
   const sibling = useMemo(
     () =>
       variants
@@ -56,16 +52,14 @@ export default function AiPage() {
   const groups = promptGroups(variantShortTitle(v), sibling?.name);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
       <div>
-        <h1 className="flex items-center gap-2 font-serif text-3xl tracking-tight">
-          AI Co-Pilot <Sparkles className="size-5 text-gold" /> <Pill tone="gold">Beta</Pill>
-        </h1>
-        <p className="text-sm text-muted">Fragen zu Bewertung, Vergleich, Risiko und Portfolio – beantwortet auf Basis der MOTRKT-Marktdaten.</p>
+        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Co-Pilot</h1>
+        <p className="mt-1 text-[14px] text-muted">Frag nach Bewertung, Vergleich, Kaufrisiko oder deinem Portfolio. Die Antworten beruhen auf unseren Marktdaten.</p>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <section className="panel flex min-h-[520px] flex-col p-4" style={{ height: "calc(100vh - 170px)" }}>
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+        <section className="panel flex min-h-[520px] flex-col p-5" style={{ height: "calc(100vh - 220px)" }}>
           <Copilot mode="full" focusVariantId={v.id} prompt={prompt} />
         </section>
 
@@ -87,37 +81,7 @@ export default function AiPage() {
             <p className="mt-2 text-xs text-muted">Der Co-Pilot bezieht Fragen ohne konkrete Fahrzeugnennung auf dieses Fahrzeug.</p>
           </Card>
 
-          <Card title={<span className="inline-flex items-center gap-1.5"><Eye className="size-4 text-gold" /> Was der Co-Pilot sieht</span>}>
-            <div className="mb-2 flex items-center gap-2">
-              <BrandEmblem brandId={v.brandId} />
-              <Link to={`/markt/${v.id}`} className="min-w-0 flex-1 truncate font-medium hover:text-gold-2">
-                {variantTitle(v)}
-              </Link>
-            </div>
-            <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
-              <dt className="text-muted">Marktwert</dt>
-              <dd className="text-right tabular-nums">{eur(m.value)}</dd>
-              <dt className="text-muted">12M</dt>
-              <dd className="text-right"><Delta value={m.change12m} /></dd>
-              <dt className="text-muted">CAGR 5J</dt>
-              <dd className="text-right tabular-nums">{pct(m.cagr5)}</dd>
-              <dt className="text-muted">Volatilität</dt>
-              <dd className="text-right tabular-nums">{pct(m.vol1y, { signed: false })}</dd>
-              <dt className="text-muted">Rarity / Liquidität</dt>
-              <dd className="text-right tabular-nums">{m.rarityScore} / {m.liquidity}</dd>
-              <dt className="text-muted">Transaktionen 12M</dt>
-              <dd className="text-right tabular-nums">{num(m.sales12m)}</dd>
-              <dt className="text-muted">Median-Laufleistung</dt>
-              <dd className="text-right tabular-nums">{km(m.medianMileage)}</dd>
-              <dt className="text-muted">Bauzeit</dt>
-              <dd className="text-right">{yearsLabel(v.years)}</dd>
-            </dl>
-            <div className="mt-3 border-t border-line pt-2 text-xs text-muted">
-              Außerdem im Kontext: Portfolio ({portfolio.length} Fahrzeuge), Watchlist ({watchlist.length}), Markenindizes und Top-Mover des Gesamtmarkts.
-            </div>
-          </Card>
-
-          <Card title={<span className="inline-flex items-center gap-1.5"><Cpu className="size-4 text-gold" /> Modus</span>}>
+          <Card title="Modus">
             {status === null ? (
               <p className="text-xs text-muted">Prüfe Verbindung …</p>
             ) : status.ai ? (
@@ -135,17 +99,17 @@ export default function AiPage() {
             )}
           </Card>
 
-          <Card title="Prompt-Bibliothek">
+          <Card title="Vorschläge">
             <div className="space-y-3">
               {groups.map((g) => (
                 <div key={g.title}>
-                  <div className="mb-1 text-[11px] font-medium uppercase tracking-wider text-faint">{g.title}</div>
+                  <div className="mb-1.5 text-[13px] text-muted">{g.title}</div>
                   <div className="flex flex-col gap-1">
                     {g.prompts.map((p) => (
                       <button
                         key={p}
                         onClick={() => setPrompt({ text: p, nonce: Date.now() })}
-                        className="rounded-lg border border-line bg-panel-2 px-2.5 py-1.5 text-left text-xs text-ink/90 transition-colors hover:border-gold/50 hover:bg-panel-3"
+                        className="border-b border-line py-1.5 text-left text-[13.5px] text-ink/90 transition-colors hover:text-gold"
                       >
                         {p}
                       </button>

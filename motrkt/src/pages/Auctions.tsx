@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowDown, ArrowUp, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, Gavel, Search, Star, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, Search, Star, X } from "lucide-react";
 import { brands, variantById, variantShortTitle, variantTitle, variants } from "../data/db";
 import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, DAY, WEEK, getAllSales, getAuctionEvents } from "../data/generate";
 import { getMetrics, mean } from "../data/market";
 import type { AuctionEvent, Sale } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
-import { BrandEmblem, Card, ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps } from "../components/ui";
+import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps } from "../components/ui";
 
 type Source = "Alle" | "Auktion" | "Händler" | "Privat";
 type Period = "3M" | "12M" | "5J";
@@ -171,27 +171,37 @@ export default function Auctions() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="font-serif text-[28px] leading-tight">Auktionen &amp; Transaktionen</h1>
-          <p className="text-sm text-muted">
-            {num(getAllSales().length)} erfasste Verkäufe der letzten 5 Jahre · {getAuctionEvents().length} kommende Auktionen
-          </p>
+    <div className="space-y-16">
+      <div>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Auktionen</h1>
+            <p className="mt-1 text-[14px] text-muted">
+              {num(getAllSales().length)} erfasste Verkäufe der letzten fünf Jahre und {getAuctionEvents().length} kommende Auktionen
+            </p>
+          </div>
+          <Segmented
+            options={[
+              { value: "3M" as const, label: "3 Monate" },
+              { value: "12M" as const, label: "12 Monate" },
+              { value: "5J" as const, label: "5 Jahre" },
+            ]}
+            value={period}
+            onChange={setPeriod}
+          />
         </div>
-        <Segmented options={["3M", "12M", "5J"] as const} value={period} onChange={setPeriod} />
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Kpi label="Auktionslose" value={num(kpis.lots)} sub={`${num(kpis.count)} Transaktionen gesamt`} />
-        <Kpi label="Verkaufsquote" value={pct(kpis.sellThrough, { signed: false })} sub="verkauft / angeboten (Auktion)" />
-        <Kpi label="Ø Zuschlag vs. Schätzung" value={<Delta value={kpis.premium} arrow={false} />} sub="bezogen auf Schätzungsmitte" />
-        <Kpi label="Umsatz" value={eur(kpis.revenue, { compact: true })} sub={`Zeitraum ${period}`} />
+        <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-line py-6 lg:grid-cols-4">
+          <Kpi label="Angebotene Lose" value={num(kpis.lots)} />
+          <Kpi label="Davon verkauft" value={pct(kpis.sellThrough, { signed: false, digits: 0 })} />
+          <Kpi label="Zuschlag gegenüber Schätzung" value={<Delta value={kpis.premium} arrow={false} />} />
+          <Kpi label="Umsatz" value={eur(kpis.revenue, { compact: true })} />
+        </dl>
       </div>
 
       <UpcomingAuctions />
 
-      <Card title="Ergebnisse & Transaktionen" sub={`${num(sorted.length)} Treffer`} bodyClassName="space-y-3">
+      <Section title="Ergebnisse" sub={`${num(sorted.length)} Verkäufe`}>
+        <div className="space-y-4">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
           <div className="col-span-2">
             <label className="label">Suche</label>
@@ -200,7 +210,7 @@ export default function Auctions() {
               <input className="input pl-8" value={text} onChange={(e) => setText(e.target.value)} placeholder="ID, FIN, Haus, Fahrzeug …" />
             </div>
           </div>
-          <div>
+          <div className={cn(brands.length < 2 && "hidden")}>
             <label className="label">Marke</label>
             <select className="input" value={brand} onChange={(e) => setBrand(e.target.value)}>
               <option value="">Alle Marken</option>
@@ -259,14 +269,11 @@ export default function Auctions() {
               <thead>
                 <tr>
                   <Th k="date" sort={sort} onSort={toggleSort}>Datum</Th>
-                  <Th k="id" sort={sort} onSort={toggleSort}>ID</Th>
                   <Th k="vehicle" sort={sort} onSort={toggleSort}>Fahrzeug</Th>
-                  <Th k="house" sort={sort} onSort={toggleSort}>Haus / Quelle</Th>
-                  <Th k="condition" sort={sort} onSort={toggleSort}>Zustand</Th>
+                  <Th k="house" sort={sort} onSort={toggleSort}>Verkauft über</Th>
                   <Th k="mileage" sort={sort} onSort={toggleSort} right>Laufleistung</Th>
                   <Th k="price" sort={sort} onSort={toggleSort} right>Preis</Th>
-                  <Th k="estimate" sort={sort} onSort={toggleSort} right>Schätzung</Th>
-                  <Th k="trend" sort={sort} onSort={toggleSort} right>vs. Marktwert</Th>
+                  <Th k="trend" sort={sort} onSort={toggleSort} right>Zum Marktwert</Th>
                 </tr>
               </thead>
               <tbody>
@@ -275,24 +282,14 @@ export default function Auctions() {
                   return (
                     <tr key={`${s.id}-${s.variantId}-${s.date}-${s.vin}`} onClick={() => setSelected(s)}>
                       <td className="text-muted">{date(s.date)}</td>
-                      <td className="font-mono text-xs text-muted">{s.id}</td>
-                      <td>
-                        <span className="flex items-center gap-2">
-                          <BrandEmblem brandId={v.brandId} size={16} />
-                          {variantTitle(v)}
-                        </span>
-                      </td>
+                      <td className="font-serif">{variantTitle(v, { brand: false })}</td>
                       <td>
                         <span className="text-ink/90">{s.house}</span>
                         {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{s.source}</span>}
                       </td>
-                      <td>{s.conditionUnknown ? <span className="text-faint">–</span> : s.condition}</td>
                       <td className="text-right tabular-nums">{km(s.mileage)}</td>
-                      <td className="text-right font-medium tabular-nums">{s.price === null ? <span className="text-xs font-normal text-down">nicht verkauft</span> : eur(s.price)}</td>
-                      <td className="text-right text-xs text-muted tabular-nums">
-                        {s.estimateLow ? `${eur(s.estimateLow, { compact: true })}–${eur(s.estimateHigh, { compact: true })}` : "–"}
-                      </td>
-                      <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} />}</td>
+                      <td className="text-right font-serif tabular-nums">{s.price === null ? <span className="font-sans text-[13px] text-faint italic">nicht verkauft</span> : eur(s.price)}</td>
+                      <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} arrow={false} />}</td>
                     </tr>
                   );
                 })}
@@ -316,9 +313,10 @@ export default function Auctions() {
             </button>
           </div>
         </div>
-      </Card>
+        </div>
+      </Section>
 
-      <Card title="Auktionsvolumen & Verkaufsquote" sub="letzte 24 Monate · aktuelle Filter (ohne Zeitraum)">
+      <Section title="Volumen und Verkaufsquote" sub="Letzte 24 Monate, mit den gewählten Filtern">
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={monthly} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
@@ -348,19 +346,18 @@ export default function Auctions() {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-      </Card>
+      </Section>
 
       <SaleModal sale={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }
 
-function Kpi({ label, value, sub }: { label: string; value: React.ReactNode; sub: string }) {
+function Kpi({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="panel px-4 py-3">
-      <div className="kpi-label">{label}</div>
-      <div className="kpi-value mt-0.5">{value}</div>
-      <div className="text-[11px] text-faint">{sub}</div>
+    <div>
+      <dt className="kpi-label">{label}</dt>
+      <dd className="mt-1 font-serif text-[28px] leading-tight">{value}</dd>
     </div>
   );
 }
@@ -393,9 +390,9 @@ function UpcomingAuctions() {
   }, [eventParam]);
 
   return (
-    <Card title="Kommende Auktionen" sub="Kataloge mit MOTRKT-Bewertung">
-      <div className="space-y-2">
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-4">
+    <Section title="Kommende Auktionen" sub="Lose mit unserer Bewertung, zum Öffnen anklicken">
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 border-t border-l border-line md:grid-cols-2 xl:grid-cols-4">
           {events.map((e) => {
             const days = Math.round((e.date - AS_OF) / DAY);
             const low = e.lots.reduce((s, l) => s + l.estimateLow, 0);
@@ -405,32 +402,23 @@ function UpcomingAuctions() {
               <button
                 key={e.id}
                 onClick={() => setOpen(active ? null : e.id)}
-                className={cn(
-                  "rounded-lg border p-3 text-left transition-colors",
-                  active ? "border-gold/60 bg-gold/10" : "border-line bg-panel-2 hover:border-line-2 hover:bg-panel-3",
-                )}
+                aria-expanded={active}
+                className={cn("border-r border-b border-line p-5 text-left transition-colors", active ? "bg-panel" : "hover:bg-panel-2")}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="flex items-center gap-1.5 text-xs text-gold">
-                    <Gavel className="size-3.5" /> {e.house}
+                <div className="flex items-baseline justify-between gap-2 text-[13px] text-muted">
+                  <span>{date(e.date)}</span>
+                  <span>in {days} Tagen</span>
+                </div>
+                <div className="mt-3 font-serif text-[18px] leading-snug">{e.house}</div>
+                <div className="truncate text-[14px] text-ink/80">{e.title}</div>
+                <div className="mt-3 flex items-baseline justify-between gap-2 text-[13px] text-muted">
+                  <span>
+                    {e.city}, {e.lots.length} Lose
                   </span>
-                  <Pill tone={days <= 30 ? "gold" : "neutral"} className="text-[10px]">
-                    in {days} Tagen
-                  </Pill>
+                  <ChevronDown className={cn("size-4 self-center transition-transform", active && "rotate-180")} strokeWidth={1.5} />
                 </div>
-                <div className="mt-1.5 truncate text-sm font-semibold">{e.title}</div>
-                <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
-                  <span>{flag(e.country)}</span> {e.city}
-                  <CalendarDays className="ml-1 size-3" /> {date(e.date)}
-                </div>
-                <div className="mt-2 flex items-center justify-between text-xs">
-                  <span className="text-muted">{e.lots.length} Lose</span>
-                  <span className="tabular-nums">
-                    {eur(low, { compact: true })} – {eur(high, { compact: true })}
-                  </span>
-                </div>
-                <div className="mt-1 flex justify-center text-faint">
-                  <ChevronDown className={cn("size-3.5 transition-transform", active && "rotate-180")} />
+                <div className="mt-1 text-[13px] text-muted tabular-nums">
+                  Schätzung {eur(low, { compact: true })} bis {eur(high, { compact: true })}
                 </div>
               </button>
             );
@@ -443,14 +431,14 @@ function UpcomingAuctions() {
               ref={(el) => {
                 if (el) refs.current.set(e.id, el);
               }}
-              className="animate-fade-in scroll-mt-4 rounded-lg border border-line bg-panel-2/60 p-3"
+              className="animate-fade-in scroll-mt-28 border border-line bg-panel p-5"
             >
               <LotTable event={e} />
             </div>
           ) : null,
         )}
       </div>
-    </Card>
+    </Section>
   );
 }
 

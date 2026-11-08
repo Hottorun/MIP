@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowDown, ArrowUp, GitCompare, LayoutGrid, List, Search, Star, X } from "lucide-react";
+import { ArrowDown, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
 import { brands, modelById, models, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { AS_OF, WEEK, getSeries } from "../data/generate";
 import { getMetrics, rebase } from "../data/market";
@@ -9,15 +9,13 @@ import type { Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, num, pct } from "../lib/format";
 import { CarImage } from "../components/CarImage";
-import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Pill, ScoreBar, Segmented, Sparkline, axisProps } from "../components/ui";
+import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps } from "../components/ui";
 
 type SortKey = "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
 const SORTS: { value: SortKey; label: string }[] = [
   { value: "value", label: "Marktwert" },
   { value: "change12m", label: "12M" },
   { value: "cagr5", label: "CAGR 5J" },
-  { value: "rarity", label: "Rarity" },
-  { value: "liquidity", label: "Liquidität" },
   { value: "year", label: "Bauzeit" },
 ];
 const ERAS = [
@@ -27,7 +25,7 @@ const ERAS = [
   { id: "modern", label: "Ab 2005", test: (y: number) => y >= 2005 },
 ];
 const TAGS = ["Turbo", "Leichtbau", "Allrad", "Hybrid"];
-const COMPARE_COLORS = ["#d4a24c", "#5f8fd6", "#4fc48c", "#c2416b"];
+const COMPARE_COLORS = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378"];
 const MAX_COMPARE = 4;
 
 function sortValue(v: Variant, key: SortKey): number | string {
@@ -117,66 +115,67 @@ export default function Models() {
   };
 
   return (
-    <div className={cn("space-y-4", compare.length > 0 && "pb-20")}>
-      <div className="flex flex-wrap items-end justify-between gap-3">
+    <div className={cn("space-y-8", compare.length > 0 && "pb-24")}>
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-serif text-3xl tracking-tight">Modelle & Varianten</h1>
-          <p className="text-sm text-muted">
+          <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Modelle</h1>
+          <p className="mt-1 text-[14px] text-muted">
             {filtered.length} von {variants.length} Varianten
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Segmented
-            options={[
-              { value: "grid", label: <LayoutGrid className="size-3.5" /> },
-              { value: "table", label: <List className="size-3.5" /> },
-            ]}
-            value={view}
-            onChange={(v) => setView(v as "grid" | "table")}
-          />
-        </div>
+        <Segmented
+          options={[
+            { value: "grid", label: "Galerie" },
+            { value: "table", label: "Liste" },
+          ]}
+          value={view}
+          onChange={(v) => setView(v as "grid" | "table")}
+        />
       </div>
 
-      <div className="panel space-y-3 p-3">
+      <div className="space-y-4 border-y border-line py-5">
+        {brands.length > 1 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "" })}>
+              Alle Marken
+            </button>
+            {brands.map((b) => (
+              <button
+                key={b.id}
+                className={cn("chip", effectiveBrand === b.id && "chip-active")}
+                onClick={() => setFilter({ marke: effectiveBrand === b.id ? "" : b.id, modell: "" })}
+              >
+                {b.name}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-1.5">
-          <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "" })}>
-            Alle Marken
+          <button className={cn("chip", !modelId && "chip-active")} onClick={() => setFilter({ modell: "" })}>
+            Alle Modelle
           </button>
-          {brands.map((b) => (
+          {brandModels.map((m) => (
             <button
-              key={b.id}
-              className={cn("chip", effectiveBrand === b.id && "chip-active")}
-              onClick={() => setFilter({ marke: effectiveBrand === b.id ? "" : b.id, modell: "" })}
+              key={m.id}
+              className={cn("chip", modelId === m.id && "chip-active")}
+              onClick={() => setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId })}
             >
-              <BrandEmblem brandId={b.id} size={14} /> {b.name}
+              {effectiveBrand || brands.length === 1 ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
+              {m.name}
             </button>
           ))}
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex h-8 w-56 items-center gap-2 rounded-lg border border-line bg-panel-2 px-2.5 focus-within:border-gold/60">
-            <Search className="size-3.5 text-muted" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Variante suchen …" className="min-w-0 flex-1 bg-transparent text-sm focus:outline-none" />
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[14px]">
+          <div className="flex w-60 items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink">
+            <Search className="size-4 text-muted" strokeWidth={1.5} />
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Variante suchen" className="min-w-0 flex-1 bg-transparent focus:outline-none" />
             {query && (
-              <button onClick={() => setQuery("")} aria-label="Leeren">
+              <button onClick={() => setQuery("")} aria-label="Suche leeren">
                 <X className="size-3.5 text-muted" />
               </button>
             )}
           </div>
-          <select
-            className="input h-8 w-48 py-0"
-            value={modelId}
-            onChange={(e) => setFilter({ modell: e.target.value, marke: e.target.value ? modelById.get(e.target.value)!.brandId : effectiveBrand })}
-            aria-label="Modell"
-          >
-            <option value="">Alle Modelle</option>
-            {brandModels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {effectiveBrand ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
-                {m.name}
-              </option>
-            ))}
-          </select>
-          <select className="input h-8 w-36 py-0" value={era} onChange={(e) => setEra(e.target.value)} aria-label="Epoche">
+          <select className="border-b border-line-2 pb-1 focus:border-ink focus:outline-none" value={era} onChange={(e) => setEra(e.target.value)} aria-label="Epoche">
             <option value="">Alle Epochen</option>
             {ERAS.map((e) => (
               <option key={e.id} value={e.id}>
@@ -184,24 +183,24 @@ export default function Models() {
               </option>
             ))}
           </select>
-          <div className="flex gap-1">
+          <div className="flex flex-wrap gap-1.5">
             {TAGS.map((t) => (
               <button key={t} className={cn("chip", tags.includes(t) && "chip-active")} onClick={() => setTags((ts) => (ts.includes(t) ? ts.filter((x) => x !== t) : [...ts, t]))}>
                 {t}
               </button>
             ))}
           </div>
-          <div className="ml-auto flex items-center gap-1.5 text-xs text-muted">
-            Sortieren
-            <select className="input h-8 w-32 py-0" value={sort} onChange={(e) => setSort(e.target.value as SortKey)} aria-label="Sortierung">
+          <div className="ml-auto flex items-center gap-2 text-muted">
+            Sortiert nach
+            <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => setSort(e.target.value as SortKey)} aria-label="Sortierung">
               {SORTS.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}
                 </option>
               ))}
             </select>
-            <button className="btn h-8 px-2" onClick={() => setDesc((d) => !d)} aria-label="Richtung umkehren">
-              {desc ? <ArrowDown className="size-3.5" /> : <ArrowUp className="size-3.5" />}
+            <button className="p-1 text-ink" onClick={() => setDesc((d) => !d)} aria-label={desc ? "Aufsteigend sortieren" : "Absteigend sortieren"}>
+              {desc ? <ArrowDown className="size-4" strokeWidth={1.5} /> : <ArrowUp className="size-4" strokeWidth={1.5} />}
             </button>
           </div>
         </div>
@@ -210,7 +209,7 @@ export default function Models() {
       {filtered.length === 0 ? (
         <Empty>Keine Varianten für diese Filter.</Empty>
       ) : view === "grid" ? (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((v) => (
             <VariantCard
               key={v.id}
@@ -224,7 +223,7 @@ export default function Models() {
           ))}
         </div>
       ) : (
-        <div className="panel overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="table-base table-hover">
             <thead>
               <tr>
@@ -235,9 +234,6 @@ export default function Models() {
                 <SortTh label="Marktwert" k="value" sort={sort} desc={desc} onSort={headerSort} right />
                 <SortTh label="12M" k="change12m" sort={sort} desc={desc} onSort={headerSort} right />
                 <SortTh label="CAGR 5J" k="cagr5" sort={sort} desc={desc} onSort={headerSort} right />
-                <SortTh label="Rarity" k="rarity" sort={sort} desc={desc} onSort={headerSort} right />
-                <SortTh label="Liquidität" k="liquidity" sort={sort} desc={desc} onSort={headerSort} right />
-                <th>5J</th>
                 <th>Einschätzung</th>
                 <th>Vergl.</th>
               </tr>
@@ -252,24 +248,14 @@ export default function Models() {
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
                       </button>
                     </td>
-                    <td>
-                      <span className="flex items-center gap-2">
-                        <BrandEmblem brandId={v.brandId} size={16} />
-                        {variantTitle(v)}
-                      </span>
-                    </td>
+                    <td className="font-serif">{variantTitle(v)}</td>
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
-                    <td className="text-right font-medium tabular-nums">{eur(m.value)}</td>
+                    <td className="text-right font-serif tabular-nums">{eur(m.value)}</td>
                     <td className="text-right">
                       <Delta value={m.change12m} />
                     </td>
                     <td className="text-right tabular-nums">{pct(m.cagr5)}</td>
-                    <td className="text-right tabular-nums">{m.rarityScore}</td>
-                    <td className="text-right tabular-nums">{m.liquidity}</td>
-                    <td>
-                      <Sparkline values={getSeries(v.id).slice(-260).filter((_, i) => i % 4 === 0).map((p) => p.value)} width={80} height={22} />
-                    </td>
                     <td>
                       <RecPill code={m.recommendation.code} label={m.recommendation.label} />
                     </td>
@@ -285,10 +271,10 @@ export default function Models() {
       )}
 
       {compare.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-4 lg:pl-64">
-          <div className="panel animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 px-4 py-2.5 shadow-2xl shadow-black/60">
-            <GitCompare className="size-4 text-gold" />
-            <span className="text-sm text-muted">
+        <div className="fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-5">
+          <div className="animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 rounded-[3px] border border-line bg-panel px-5 py-3 shadow-[0_20px_50px_-20px_rgba(58,42,29,0.4)]">
+            <GitCompare className="size-4 text-muted" strokeWidth={1.5} />
+            <span className="text-[14px] text-muted">
               Vergleich ({compare.length}/{MAX_COMPARE})
             </span>
             {compare.map((id, i) => (
@@ -350,72 +336,51 @@ function VariantCard({
   onOpen: () => void;
 }) {
   const m = getMetrics(v.id);
-  const spark = getSeries(v.id)
-    .slice(-260)
-    .filter((_, i) => i % 3 === 0)
-    .map((p) => p.value);
   return (
     <div
       role="link"
       tabIndex={0}
       onClick={onOpen}
       onKeyDown={(e) => e.key === "Enter" && onOpen()}
-      className={cn("panel group cursor-pointer overflow-hidden transition-colors hover:border-gold/50", compared && "border-gold/60")}
+      className="group cursor-pointer"
     >
-      <div className="relative">
-        <CarImage variant={v} scene="studio" className="block aspect-[5/2] w-full" label={variantTitle(v)} />
+      <div className="relative overflow-hidden">
+        <CarImage variant={v} scene="studio" className="block aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
         <button
           onClick={(e) => {
             e.stopPropagation();
             onWatch();
           }}
-          className={cn("absolute top-2 right-2 rounded-full bg-black/40 p-1.5 backdrop-blur", watched ? "text-gold" : "text-ink/70 hover:text-ink")}
-          aria-label={watched ? "Von Watchlist entfernen" : "Zur Watchlist"}
+          className={cn(
+            "absolute top-3 right-3 rounded-full bg-bg/85 p-2 transition-opacity focus-visible:opacity-100",
+            watched ? "text-ink opacity-100" : "text-ink opacity-0 group-hover:opacity-100",
+          )}
+          aria-label={watched ? "Nicht mehr beobachten" : "Beobachten"}
+          aria-pressed={watched}
         >
-          <Star className={cn("size-4", watched && "fill-current")} />
+          <Star className={cn("size-4", watched && "fill-current")} strokeWidth={1.5} />
         </button>
-        <div className="absolute top-2 left-2">
-          <RecPill code={m.recommendation.code} label={m.recommendation.label} />
-        </div>
       </div>
-      <div className="space-y-2 px-3.5 pt-2.5 pb-3">
-        <div className="flex items-start gap-2">
-          <BrandEmblem brandId={v.brandId} size={18} />
-          <div className="min-w-0 flex-1">
-            <div className="truncate font-medium group-hover:text-gold-2">{variantTitle(v)}</div>
-            <div className="text-xs text-muted">
-              {yearsLabel(v.years)} · {num(v.production)} Stk. · {v.hp} PS
-            </div>
-          </div>
-        </div>
-        <div className="flex items-end justify-between gap-2">
-          <div>
-            <div className="text-lg font-semibold tabular-nums">{eur(m.value)}</div>
-            <div className="flex gap-3 text-xs">
-              <span>
-                <span className="text-muted">12M </span>
-                <Delta value={m.change12m} arrow={false} />
-              </span>
-              <span>
-                <span className="text-muted">CAGR </span>
-                <span className="tabular-nums">{pct(m.cagr5)}</span>
-              </span>
-            </div>
-          </div>
-          <Sparkline values={spark} width={96} height={32} />
-        </div>
-        <div>
-          <div className="mb-1 flex justify-between text-[11px] text-muted">
-            <span>Rarity</span>
-            <span className="tabular-nums">{m.rarityScore}/100</span>
-          </div>
-          <ScoreBar value={m.rarityScore} />
-        </div>
-        <label className="flex items-center gap-2 text-xs text-muted" onClick={(e) => e.stopPropagation()}>
-          <input type="checkbox" className="accent-[var(--color-gold)]" checked={compared} onChange={onCompare} />
-          Vergleichen
-        </label>
+      <div className="mt-3 flex items-baseline justify-between gap-3">
+        <span className="min-w-0 truncate font-serif text-[16.5px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
+        <span className="shrink-0 font-serif text-[16px] tabular-nums">{eur(m.value, { compact: true })}</span>
       </div>
+      <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
+        <span>
+          {yearsLabel(v.years)}, {v.hp} PS
+        </span>
+        <Delta value={m.change12m} arrow={false} />
+      </div>
+      <button
+        className={cn("mt-2 text-[13px] transition-colors", compared ? "text-ink underline underline-offset-4" : "text-faint hover:text-ink")}
+        onClick={(e) => {
+          e.stopPropagation();
+          onCompare();
+        }}
+        aria-pressed={compared}
+      >
+        {compared ? "Im Vergleich" : "Vergleichen"}
+      </button>
     </div>
   );
 }
@@ -447,8 +412,6 @@ function CompareView({ ids }: { ids: string[] }) {
     { label: "CAGR 5J", get: (v) => pct(getMetrics(v.id).cagr5) },
     { label: "Volatilität 1J", get: (v) => pct(getMetrics(v.id).vol1y, { signed: false }) },
     { label: "Max. Drawdown 5J", get: (v) => <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> },
-    { label: "Rarity", get: (v) => `${getMetrics(v.id).rarityScore}/100` },
-    { label: "Liquidität", get: (v) => `${getMetrics(v.id).liquidity}/100` },
     { label: "Stückzahl", get: (v) => num(v.production) },
     { label: "Leistung", get: (v) => `${v.hp} PS` },
     { label: "Neupreis", get: (v) => `${eur(v.newPrice)} (${v.years[0]})` },
