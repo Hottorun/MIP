@@ -254,5 +254,133 @@
     "url": "https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html",
     "kind": "history",
     "title": "Porsche Classic: 959 S Werksrestaurierung"
+  },
+  "porsche-356-356-pre-a-coupe": {
+    "url": "https://newsroom.porsche.com/en/2025/history/porsche-75-years-zuffenhausen-production-anniversary-39059.html",
+    "kind": "history",
+    "title": "75 Jahre Produktion in Zuffenhausen"
+  },
+  "porsche-356-356-b-coupe": {
+    "url": "https://newsroom.porsche.com/en/history/porsche-356-no-1-roadster-super-coupe-speedster-carrera-cabriolet-switzerland-bern-70-years-sports-cars-15858.html",
+    "kind": "history",
+    "event": "IAA Frankfurt 1959",
+    "title": "70 Jahre Porsche Sportwagen: 356 in der Schweiz"
+  },
+  "porsche-356-356-c-coupe": {
+    "url": "https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html",
+    "kind": "history",
+    "event": "IAA Frankfurt 1963",
+    "title": "Porsche Klassik: Vom 356 zum 912"
+  },
+  "porsche-912-912-e": {
+    "url": "https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html",
+    "kind": "history",
+    "title": "Porsche Klassik: Der Prototyp des 912 E"
+  },
+  "porsche-911-964-turbo-s-leichtbau": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html",
+    "kind": "history",
+    "event": "Genfer Autosalon 1992",
+    "title": "Porsche Exclusive: Sonderwünsche und Kleinserien"
+  },
+  "porsche-911-964-carrera-rs-3-8": {
+    "url": "https://newsroom.porsche.com/en/2023/company/porsche-911-carrera-rs-autobot-mirage-transformers-rise-of-the-beasts-32589.html",
+    "kind": "history",
+    "title": "911 Carrera RS 3.8 in „Transformers: Rise of the Beasts“"
+  },
+  "porsche-911-964-turbo-3-6": {
+    "url": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+    "kind": "history",
+    "title": "Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen"
+  },
+  "porsche-911-993-carrera-4": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation---Design-und-Modellvarianten.html",
+    "kind": "history",
+    "title": "Pressemappe 60 Jahre 911: Generation 993"
+  },
+  "porsche-911-993-targa": {
+    "url": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
+    "kind": "history",
+    "title": "Geschichte des Porsche 911 Targa"
+  },
+  "porsche-911-993-carrera-s": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-–-Der-letzte-seiner-Art.html",
+    "kind": "history",
+    "title": "30 Jahre 911 Carrera (993)"
+  },
+  "porsche-911-996-carrera-4s": {
+    "url": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+    "kind": "history",
+    "title": "25 Jahre 911 Generation 996"
+  },
+  "porsche-911-996-targa": {
+    "url": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+    "kind": "history",
+    "title": "25 Jahre 911 Generation 996"
+  },
+  "porsche-911-996-turbo-s": {
+    "url": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+    "kind": "history",
+    "title": "25 Jahre 911 Generation 996"
+  },
+  "porsche-911-997-gt2": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-997-turbo-s": {
+    "url": "https://newsroom.porsche.com/en/press-kits/pfv-porsche-911-turbo-s/Porsche-911-Turbo-S--history.html",
+    "kind": "history",
+    "title": "Pressemappe 911 Turbo S: Geschichte"
+  },
+  "porsche-911-997-sport-classic": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html",
+    "kind": "history",
+    "title": "Porsche Exclusive: Sonderwünsche und Kleinserien"
+  },
+  "porsche-911-997-speedster": {
+    "url": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
+    "kind": "history",
+    "event": "Pariser Autosalon 2010",
+    "title": "Porsche Exclusive: Sonderwünsche und Kleinserien"
+  },
+  "porsche-911-991-50-jahre-edition": {
+    "url": "https://newsroom.porsche.com/en/2019/products/porsche-911-50-years-anniversary-edition-19212.html",
+    "kind": "premiere",
+    "event": "IAA Frankfurt 2013",
+    "title": "911 Sondermodell „50 Jahre 911“"
+  },
+  "porsche-911-991-carrera-t": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-911-carrera-t-puristic-performance-driving-pleasure-touring-14410.html",
+    "kind": "premiere",
+    "title": "Der neue 911 Carrera T"
+  },
+  "porsche-911-991-gt3-touring": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html",
+    "kind": "premiere",
+    "event": "IAA Frankfurt 2017",
+    "title": "Weltpremiere 911 GT3 mit Touring-Paket"
+  },
+  "porsche-911-991-speedster": {
+    "url": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
+    "kind": "history",
+    "event": "New York Auto Show 2019",
+    "title": "Geschichte der Porsche Speedster"
+  },
+  "porsche-911-992-carrera-gts": {
+    "url": "https://newsroom.porsche.com/en_US/2021/products/porsche-911-gts-models-premiere-24878.html",
+    "kind": "premiere",
+    "title": "Die neuen 911 GTS-Modelle"
+  },
+  "porsche-911-992-turbo-s": {
+    "url": "https://newsroom.porsche.com/en/2020/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20110.html",
+    "kind": "premiere",
+    "event": "Online-Premiere 2020 (Genfer Autosalon abgesagt)",
+    "title": "Der neue 911 Turbo S"
+  },
+  "porsche-911-992-gt3-touring": {
+    "url": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html",
+    "kind": "premiere",
+    "title": "Der neue 911 GT3 mit Touring-Paket"
   }
 }

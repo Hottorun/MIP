@@ -275,7 +275,7 @@ export const CATALOG: BrandDef[] = [
                 ...PDK,
                 color: "#b7babe",
               }),
-              v("50 Jahre 911", [2013, 2014], 1963, 152_000, 0.058, 430, 3.8, 124_000, {
+              v("50 Jahre Edition", [2013, 2014], 1963, 152_000, 0.058, 430, 3.8, 124_000, {
                 gearbox: { Manual: 0.5, Automatik: 0.5 },
                 transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#3b5a52",

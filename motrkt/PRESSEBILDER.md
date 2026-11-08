@@ -2,7 +2,7 @@
 
 Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom, wo möglich von der Vorstellung (Badge „Vorstellung“). Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
-Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Für 996 GT3 RS, 997 GT3 RS und 997 GT2 RS gibt es noch kein offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
+Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Für 964 Turbo 3.6, 993 Carrera S, 996 Carrera 4S, 996 GT3 RS, 997 Turbo S, 997 GT3 RS und 997 GT2 RS gibt es noch kein eindeutig zuzuordnendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
@@ -15,6 +15,54 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 „Bilder auf der Seite“ sind die Bildtitel, wie sie im Porsche Newsroom stehen.
 
 ## Porsche
+
+### Porsche 356 Pre-A Coupé
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [75 Jahre Produktion in Zuffenhausen](https://newsroom.porsche.com/en/2025/history/porsche-75-years-zuffenhausen-production-anniversary-39059.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „356 Pre-A, 911 Carrera GTS (992.2, l-r), Porsche Exclusive Manufaktur, Stuttgart-Zuffenhausen, 2025“; „356 Pre-A, Taycan production, Stuttgart-Zuffenhausen, 2025“; „356 Coupé and Cabriolet production, Stuttgart-Zuffenhausen, 1951“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 356 A Coupé
+
+- Präsentationsfarbe: Silbermetallic (Annahme) (unsicher)
+- Vorstellung: IAA Frankfurt 1955
+- Offizielle Seite: [Porsche Klassik: Vom 356 zum 912](https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder auf der Seite: „Porsche 356 C, Porsche 912 (r-l), 2023, Porsche AG“; „Photo album, 2023, Porsche AG“; „Porsche 356 C, Porsche 912, 2023, Porsche AG“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 356 B Coupé
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 1959
+- Offizielle Seite: [70 Jahre Porsche Sportwagen: 356 in der Schweiz](https://newsroom.porsche.com/en/history/porsche-356-no-1-roadster-super-coupe-speedster-carrera-cabriolet-switzerland-bern-70-years-sports-cars-15858.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „356 B 1600 Super 90 Coupé, 356 B 2000 GS Carrera 2 Cabriolet, 356 A 1600 S Speedster, 356 A 1600 S Coupé, Switzerland, 2018“; „356 B 1600 Super 90 Coupé, Switzerland, 2018“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 356 C Coupé
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 1963
+- Offizielle Seite: [Porsche Klassik: Vom 356 zum 912](https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Porsche 356 C, Porsche 912 (r-l), 2023“; „1964, 901 (r.), 356 C Coupé (l.)“; „Peter Ellinghorst, Porsche 912, Porsche 356 C (l-r), 2023“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 356 Speedster
+
+- Präsentationsfarbe: Rot (vermutlich Signalrot) (wahrscheinlich)
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Geschichte der Porsche Speedster](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder auf der Seite: „356 Speedster, model year 1955, Porsche AG“; „356 Speedster, model year 1954, Porsche AG“; „911 Speedster Concept, 2018, Porsche AG“; „The Porsche 911 Speedster“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 356 Carrera 2
+
+- Präsentationsfarbe: Silbermetallic (Annahme) (unsicher)
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Christophorus: 356 – Vertikale Verkostung](https://newsroom.porsche.com/de_CH/szene-historie/stehsatz-christophorus_DE/porsche--356-2-vertikale-verkostung-christophorus-389-22824.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder auf der Seite: „Porsche 356, 2018, Porsche AG“; „Porsche 356-001, 2018, Porsche AG“
+- Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 911 (964) Carrera 2
 
@@ -32,20 +80,19 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „Porsche 911 (964) Targa“; „60 Years of Porsche 911 - Historic advertising posters“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (964) Carrera RS
-
-- Präsentationsfarbe: Rubinsternrot (Rubystone Red) (unsicher)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 964](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-%28964%29,-1988---1994.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder auf der Seite: „Porsche 911 (964) Targa“; „60 Years of Porsche 911 - Historic advertising posters“
-- Offizielle Bilder im Markt-Tab: 3
-
 ### Porsche 911 (964) Turbo
 
 - Präsentationsfarbe: Amethyst Metallic (Amethyst Metallic) (unsicher)
 - Vorstellung: Genfer Autosalon 1990
 - Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (964) Turbo 3.6
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein eindeutig zuzuordnendes Bild gefunden, Markt-Tab zeigt eine Illustration
 
 ### Porsche 911 (964) Speedster
 
@@ -55,6 +102,30 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „356 Speedster, model year 1955, Porsche AG“; „356 Speedster, model year 1954, Porsche AG“; „911 Speedster Concept, 2018, Porsche AG“; „The Porsche 911 Speedster“
 - Offizielle Bilder im Markt-Tab: 1
 
+### Porsche 911 (964) Carrera RS
+
+- Präsentationsfarbe: Rubinsternrot (Rubystone Red) (unsicher)
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 964](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-%28964%29,-1988---1994.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder auf der Seite: „Porsche 911 (964) Targa“; „60 Years of Porsche 911 - Historic advertising posters“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (964) Turbo S Leichtbau
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Genfer Autosalon 1992
+- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Turbo S, lightweight construction, 1992 - 1993“; „1993, 911 Turbo S, 3.3 litre“; „911 Turbo S, Sachsen Classic 2018“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (964) Carrera RS 3.8
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [911 Carrera RS 3.8 in „Transformers: Rise of the Beasts“](https://newsroom.porsche.com/en/2023/company/porsche-911-carrera-rs-autobot-mirage-transformers-rise-of-the-beasts-32589.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Porsche 911 Carrera RS 3.8 (964), Transformers: Rise of the Beasts, 2023“
+- Offizielle Bilder im Markt-Tab: 2
+
 ### Porsche 911 (993) Carrera
 
 - Präsentationsfarbe: Polarsilber Metallic (Polar Silver Metallic) (wahrscheinlich)
@@ -62,6 +133,14 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Offizielle Seite: [30 Jahre 911 Carrera (993)](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-–-Der-letzte-seiner-Art.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „Porsche 911 (993) Carrera 4S“
 - Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (993) Carrera 4
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 993](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation---Design-und-Modellvarianten.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „1995, 911 Carrera 4 Coupé, 911 Carrera Coupé, 911 Carrera Cabriolet“
+- Offizielle Bilder im Markt-Tab: 1
 
 ### Porsche 911 (993) Carrera 4S
 
@@ -71,13 +150,20 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „Porsche 911 (993) Carrera 4S“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (993) Carrera RS
+### Porsche 911 (993) Targa
 
-- Präsentationsfarbe: Speedgelb (Speed Yellow) (unsicher)
+- Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
-- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 993](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation-Porsche-911,-%28993%29,-1993-1998.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder auf der Seite: „Porsche 911 (993) Carrera 4S“; „60 Years of Porsche 911 - Historic advertising posters“
+- Offizielle Seite: [Geschichte des Porsche 911 Targa](https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Targa 3.6 (MY 1997)“; „911 Targa 3.6 (993)“
 - Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (993) Carrera S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [30 Jahre 911 Carrera (993)](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-–-Der-letzte-seiner-Art.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein eindeutig zuzuordnendes Bild gefunden, Markt-Tab zeigt eine Illustration
 
 ### Porsche 911 (993) Turbo
 
@@ -91,6 +177,14 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: Arktissilber Metallic (Arctic Silver Metallic) (unsicher)
 - Vorstellung: nicht belegt
 - Offizielle Seite: [„White Giants“: 964 Turbo 3.6, 993 Turbo S, 991 Turbo](https://newsroom.porsche.com/en/history/porsche-history-white-giants-991-turbo-964-turbo-3-6-993-turbo-s-13863.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (993) Carrera RS
+
+- Präsentationsfarbe: Speedgelb (Speed Yellow) (unsicher)
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 993](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation-Porsche-911,-%28993%29,-1993-1998.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder auf der Seite: „Porsche 911 (993) Carrera 4S“; „60 Years of Porsche 911 - Historic advertising posters“
 - Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 911 (993) GT2
@@ -109,11 +203,34 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 Carrera 4 Millennium (996), 911 GT3 (996), 911 Turbo S Coupé (996), l-r,  2022, Porsche AG“; „front row:  911 GT3 (996), 911 Turbo S Coupé (996), 911 Carrera 4 Millennium (996), 911 Carrera 4 Cabriolet (996), back row: 911 GT1 `98, 911 Targa (996), 911 GT3 RSR, 911 GT1 street version,  911 GT3 Cup (996), 2022, Porsche AG“; „911 Carrera 4 Cabriolet (996), 2022, Porsche AG“; „911 GT3 (996), 2022, Porsche AG“
 - Offizielle Bilder im Markt-Tab: 2
 
+### Porsche 911 (996) Carrera 4S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein eindeutig zuzuordnendes Bild gefunden, Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (996) Targa
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Targa (996), 2022“; „Porsche 911 (996) Targa“
+- Offizielle Bilder im Markt-Tab: 3
+
 ### Porsche 911 (996) Turbo
 
 - Präsentationsfarbe: Arktissilber Metallic (Arctic Silver Metallic) (unsicher)
 - Vorstellung: IAA Frankfurt 1999
 - Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (996) Turbo S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Turbo S Coupé (996), 2022“
 - Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 911 (996) GT3
@@ -155,6 +272,29 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Offizielle Bilder im Markt-Tab: 3
 
+### Porsche 911 (997) Turbo S
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 911 Turbo S: Geschichte](https://newsroom.porsche.com/en/press-kits/pfv-porsche-911-turbo-s/Porsche-911-Turbo-S--history.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein eindeutig zuzuordnendes Bild gefunden, Markt-Tab zeigt eine Illustration
+
+### Porsche 911 (997) Sport Classic
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Sport Classic, Typ 997, 2009“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche 911 (997) Speedster
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Pariser Autosalon 2010
+- Offizielle Seite: [Porsche Exclusive: Sonderwünsche und Kleinserien](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Speedster, model year 2011“; „911 Speedster, Typ 997, 2010“
+- Offizielle Bilder im Markt-Tab: 3
+
 ### Porsche 911 (997) GT3
 
 - Präsentationsfarbe: Carraraweiß (Carrara White) (wahrscheinlich)
@@ -179,6 +319,14 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
 - Offizielle Bilder im Markt-Tab: 3
 
+### Porsche 911 (997) GT2
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 997](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-%28997%29,-2004-012.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Porsche 911 (997) GT2“
+- Offizielle Bilder im Markt-Tab: 3
+
 ### Porsche 911 (997) GT2 RS
 
 - Präsentationsfarbe: GT-Silbermetallic (GT Silver Metallic) (wahrscheinlich)
@@ -194,6 +342,37 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Offizielle Seite: [Pressemappe 60 Jahre 911: Generation 991](https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/7.-Generation-Porsche-911,-%28991%29,-2011-2019.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „Porsche 911 (991) Tribute to Nr. 57“; „60 Years of Porsche 911 - Historic advertising posters“
 - Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (991) Carrera T
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Der neue 911 Carrera T](https://newsroom.porsche.com/en/products/porsche-911-carrera-t-puristic-performance-driving-pleasure-touring-14410.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Carrera T, 2017“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (991) Turbo S
+
+- Präsentationsfarbe: Rhodiumsilbermetallic (Rhodium Silver Metallic) (unsicher)
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (991) 50 Jahre Edition
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2013
+- Offizielle Seite: [911 Sondermodell „50 Jahre 911“](https://newsroom.porsche.com/en/2019/products/porsche-911-50-years-anniversary-edition-19212.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911, 50th anniversary edition, 2013“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (991) Speedster
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: New York Auto Show 2019
+- Offizielle Seite: [Geschichte der Porsche Speedster](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „911 Speedster, New York Auto Show 2019“; „911 Speedster, 2019“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
 
 ### Porsche 911 (991) GT3
 
@@ -219,12 +398,13 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 R, 2016, Porsche AG“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 911 (991) Turbo S
+### Porsche 911 (991) GT3 Touring
 
-- Präsentationsfarbe: Rhodiumsilbermetallic (Rhodium Silver Metallic) (unsicher)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 3
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2017
+- Offizielle Seite: [Weltpremiere 911 GT3 mit Touring-Paket](https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 GT3 with Touring-Package, 2017“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
 ### Porsche 911 (991) GT2 RS
 
@@ -242,28 +422,21 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 Carrera 4S (992), Los Angeles Auto Show, 2018, Porsche AG“; „911 Carrera 4S (992), 2018, Porsche AG“; „911 (original 911), world premiere Porsche 911, Los Angeles, 2018, Porsche AG“; „911 (G model), world premiere Porsche 911, Los Angeles, 2018, Porsche AG“
 - Offizielle Bilder im Markt-Tab: 4 (davon 4 von der Vorstellung)
 
-### Porsche 911 (992) GT3
+### Porsche 911 (992) Carrera GTS
 
-- Präsentationsfarbe: Haifischblau (Shark Blue) (belegt)
-- Vorstellung: Online-Weltpremiere 2021
-- Offizielle Seite: [Weltpremiere 911 GT3](https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-world-premiere-livestream-23624.html) – Pressemitteilung zur Vorstellung
-- Bilder auf der Seite: „911 GT3, 2021, Porsche AG“; „Highlight clip: the new 911 GT3 at the Nuerburgring“; „The interior of the new 911 GT3“; „Technical Illustrations of the new 911 GT3“
-- Offizielle Bilder im Markt-Tab: 3
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Die neuen 911 GTS-Modelle](https://newsroom.porsche.com/en_US/2021/products/porsche-911-gts-models-premiere-24878.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Carrera GTS, 2021“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
-### Porsche 911 (992) GT3 RS
+### Porsche 911 (992) Turbo S
 
-- Präsentationsfarbe: Weiß (White) (wahrscheinlich)
-- Vorstellung: Weltpremiere 2022
-- Offizielle Seite: [Weltpremiere 911 GT3 RS](https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html) – Pressemitteilung zur Vorstellung
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (992) S/T
-
-- Präsentationsfarbe: Shorebluemetallic (Shore Blue Metallic) (belegt)
-- Vorstellung: Weltpremiere 2023
-- Offizielle Seite: [Weltpremiere 911 S/T](https://newsroom.porsche.com/en/2023/products/porsche-911-s-t-world-premiere-60-years-911-33363.html) – Pressemitteilung zur Vorstellung
-- Bilder auf der Seite: „Porsche 911 S/T with Heritage Design Package and Porsche 911 S/T, 2023, Porsche AG“; „Porsche 911 S/T“; „Porsche 911 S/T Walkaround“
-- Offizielle Bilder im Markt-Tab: 3
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Online-Premiere 2020 (Genfer Autosalon abgesagt)
+- Offizielle Seite: [Der neue 911 Turbo S](https://newsroom.porsche.com/en/2020/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20110.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 Turbo S, 2020“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
 ### Porsche 911 (992) Sport Classic
 
@@ -281,28 +454,35 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 Dakar, 2022, Porsche AG“; „Studio footage of the 911 Dakar“; „Highlights from LA Auto Show 2022“; „Test programme of the 911 Dakar“
 - Offizielle Bilder im Markt-Tab: 4 (davon 3 von der Vorstellung)
 
-### Porsche 356 A Coupé
+### Porsche 911 (992) S/T
 
-- Präsentationsfarbe: Silbermetallic (Annahme) (unsicher)
-- Vorstellung: IAA Frankfurt 1955
-- Offizielle Seite: [Porsche Klassik: Vom 356 zum 912](https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder auf der Seite: „Porsche 356 C, Porsche 912 (r-l), 2023, Porsche AG“; „Photo album, 2023, Porsche AG“; „Porsche 356 C, Porsche 912, 2023, Porsche AG“
-- Offizielle Bilder im Markt-Tab: 2
-
-### Porsche 356 Speedster
-
-- Präsentationsfarbe: Rot (vermutlich Signalrot) (wahrscheinlich)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Geschichte der Porsche Speedster](https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder auf der Seite: „356 Speedster, model year 1955, Porsche AG“; „356 Speedster, model year 1954, Porsche AG“; „911 Speedster Concept, 2018, Porsche AG“; „The Porsche 911 Speedster“
+- Präsentationsfarbe: Shorebluemetallic (Shore Blue Metallic) (belegt)
+- Vorstellung: Weltpremiere 2023
+- Offizielle Seite: [Weltpremiere 911 S/T](https://newsroom.porsche.com/en/2023/products/porsche-911-s-t-world-premiere-60-years-911-33363.html) – Pressemitteilung zur Vorstellung
+- Bilder auf der Seite: „Porsche 911 S/T with Heritage Design Package and Porsche 911 S/T, 2023, Porsche AG“; „Porsche 911 S/T“; „Porsche 911 S/T Walkaround“
 - Offizielle Bilder im Markt-Tab: 3
 
-### Porsche 356 Carrera 2
+### Porsche 911 (992) GT3
 
-- Präsentationsfarbe: Silbermetallic (Annahme) (unsicher)
+- Präsentationsfarbe: Haifischblau (Shark Blue) (belegt)
+- Vorstellung: Online-Weltpremiere 2021
+- Offizielle Seite: [Weltpremiere 911 GT3](https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-world-premiere-livestream-23624.html) – Pressemitteilung zur Vorstellung
+- Bilder auf der Seite: „911 GT3, 2021, Porsche AG“; „Highlight clip: the new 911 GT3 at the Nuerburgring“; „The interior of the new 911 GT3“; „Technical Illustrations of the new 911 GT3“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 (992) GT3 Touring
+
+- Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
-- Offizielle Seite: [Christophorus: 356 – Vertikale Verkostung](https://newsroom.porsche.com/de_CH/szene-historie/stehsatz-christophorus_DE/porsche--356-2-vertikale-verkostung-christophorus-389-22824.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder auf der Seite: „Porsche 356, 2018, Porsche AG“; „Porsche 356-001, 2018, Porsche AG“
+- Offizielle Seite: [Der neue 911 GT3 mit Touring-Paket](https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „911 GT3 Touring, 2021“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 911 (992) GT3 RS
+
+- Präsentationsfarbe: Weiß (White) (wahrscheinlich)
+- Vorstellung: Weltpremiere 2022
+- Offizielle Seite: [Weltpremiere 911 GT3 RS](https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html) – Pressemitteilung zur Vorstellung
 - Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 912 Coupé
@@ -311,6 +491,14 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Vorstellung: nicht belegt
 - Offizielle Seite: [Porsche Klassik: Vom 356 zum 912](https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „Porsche 356 C, Porsche 912 (r-l), 2023, Porsche AG“; „Photo album, 2023, Porsche AG“; „Porsche 356 C, Porsche 912, 2023, Porsche AG“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 912 E
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [Porsche Klassik: Der Prototyp des 912 E](https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „912 E, 2022“
 - Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 930 Turbo 3.0
@@ -336,30 +524,6 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „Porsche 911 Speedster, Sonderwunsch, 2025, Porsche AG“; „356 B Carrera 2, 2025, Porsche AG“; „911  2.0 rally model, 2025, Porsche AG“; „959, 2025, Porsche AG“
 - Offizielle Bilder im Markt-Tab: 2
 
-### Porsche 918 Spyder
-
-- Präsentationsfarbe: Liquid Metal Silber (Liquid Metal Silver) (wahrscheinlich)
-- Vorstellung: IAA Frankfurt 2013
-- Offizielle Seite: [Pressemappe Porsche Museum: 918 Spyder](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-918-Spyder.html) – Modellseite des Herstellers
-- Bilder auf der Seite: „Porsche 918 Spyder“
-- Offizielle Bilder im Markt-Tab: 3 (davon 1 von der Vorstellung)
-
-### Porsche 918 Spyder Weissach
-
-- Präsentationsfarbe: Martini Racing Design (Weiß mit Martini-Streifen) (wahrscheinlich)
-- Vorstellung: IAA Frankfurt 2013
-- Offizielle Seite: [Pressemappe Porsche Museum: 918 Spyder](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-918-Spyder.html) – Modellseite des Herstellers
-- Bilder auf der Seite: „Porsche 918 Spyder“
-- Offizielle Bilder im Markt-Tab: 1 (davon 1 von der Vorstellung)
-
-### Porsche Carrera GT
-
-- Präsentationsfarbe: GT-Silber Metallic (GT Silver Metallic) (wahrscheinlich)
-- Vorstellung: Pariser Autosalon 2000 (Studie), Genfer Autosalon 2003 (Serie)
-- Offizielle Seite: [25 Jahre Weltpremiere Carrera GT](https://newsroom.porsche.com/en/2025/history/porsche-25-years-world-premiere-carrera-gt-40609.html) – Pressemitteilung zur Vorstellung
-- Bilder auf der Seite: „Carrera GT, model year 2004“; „Carrera GT, technical details: Vehicle construction (model year 2004)“; „From prototype to perfection“
-- Offizielle Bilder im Markt-Tab: 2 (davon 1 von der Vorstellung)
-
 ### Porsche 959 Komfort
 
 - Präsentationsfarbe: Grand-Prix-Weiß (Grand Prix White) (wahrscheinlich)
@@ -375,3 +539,27 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Offizielle Seite: [Porsche Classic: 959 S Werksrestaurierung](https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „959 S, Porsche Classic, 2022, Porsche AG“
 - Offizielle Bilder im Markt-Tab: 3
+
+### Porsche Carrera GT
+
+- Präsentationsfarbe: GT-Silber Metallic (GT Silver Metallic) (wahrscheinlich)
+- Vorstellung: Pariser Autosalon 2000 (Studie), Genfer Autosalon 2003 (Serie)
+- Offizielle Seite: [25 Jahre Weltpremiere Carrera GT](https://newsroom.porsche.com/en/2025/history/porsche-25-years-world-premiere-carrera-gt-40609.html) – Pressemitteilung zur Vorstellung
+- Bilder auf der Seite: „Carrera GT, model year 2004“; „Carrera GT, technical details: Vehicle construction (model year 2004)“; „From prototype to perfection“
+- Offizielle Bilder im Markt-Tab: 2 (davon 1 von der Vorstellung)
+
+### Porsche 918 Spyder
+
+- Präsentationsfarbe: Liquid Metal Silber (Liquid Metal Silver) (wahrscheinlich)
+- Vorstellung: IAA Frankfurt 2013
+- Offizielle Seite: [Pressemappe Porsche Museum: 918 Spyder](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-918-Spyder.html) – Modellseite des Herstellers
+- Bilder auf der Seite: „Porsche 918 Spyder“
+- Offizielle Bilder im Markt-Tab: 3 (davon 1 von der Vorstellung)
+
+### Porsche 918 Spyder Weissach
+
+- Präsentationsfarbe: Martini Racing Design (Weiß mit Martini-Streifen) (wahrscheinlich)
+- Vorstellung: IAA Frankfurt 2013
+- Offizielle Seite: [Pressemappe Porsche Museum: 918 Spyder](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-918-Spyder.html) – Modellseite des Herstellers
+- Bilder auf der Seite: „Porsche 918 Spyder“
+- Offizielle Bilder im Markt-Tab: 1 (davon 1 von der Vorstellung)
