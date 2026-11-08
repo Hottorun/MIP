@@ -2,7 +2,7 @@
 
 Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom; Bilder von der Vorstellung tragen das Badge „Vorstellung“. Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
-Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Für 356 B Coupé, 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996 Carrera 4S, 996 GT3 RS, 997 Turbo S, 997 GT3 RS, 997 GT2 RS und 912 Coupé gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
+Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Für 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996 Carrera 4S, 996 GT3 RS, 997 Turbo S, 997 GT3 RS, 997 GT2 RS und 912 Coupé gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
@@ -38,7 +38,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: IAA Frankfurt 1959
 - Offizielle Seite: [70 Jahre Porsche Sportwagen: 356 in der Schweiz](https://newsroom.porsche.com/en/history/porsche-356-no-1-roadster-super-coupe-speedster-carrera-cabriolet-switzerland-bern-70-years-sports-cars-15858.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Bilder im Markt-Tab: „Porsche 356 B Coupé, 2026“; „356 B, 2022“; „356 B, 2022“
+- Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 356 C Coupé
 

@@ -1263,5 +1263,28 @@
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true
   }
+ ],
+ "porsche-356-356-b-coupe": [
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=336176&w=1620&h=936&crop=1&public=1&cs=e6625d4738ebb637",
+   "caption": "Porsche 356 B Coupé, 2026",
+   "page": "https://newsroom.porsche.com/en/2026/scene-passion/porsche-garage-ivaylo-popivantchev-42826.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/AU_local/2022/History_AU/Motorclassica-2022/DSC03736_lo.jpg/jcr:content/DSC03736_lo.jpg",
+   "caption": "356 B, 2022",
+   "page": "https://newsroom.porsche.com/en_AU/2022/history/porsche-356-B-wins-at-motorclassica-2022-30021.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/AU_local/2022/History_AU/Motorclassica-2022/DSC03737_lo.jpg/jcr:content/DSC03737_lo.jpg",
+   "caption": "356 B, 2022",
+   "page": "https://newsroom.porsche.com/en_AU/2022/history/porsche-356-B-wins-at-motorclassica-2022-30021.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  }
  ]
 }
