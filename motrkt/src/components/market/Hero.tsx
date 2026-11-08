@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bell, BellRing, ChevronLeft, ChevronRight, ImageIcon, Star, Trash2 } from "lucide-react";
+import { Bell, BellRing, ChevronLeft, ChevronRight, ExternalLink, ImageIcon, Star, Trash2 } from "lucide-react";
 import { brandById, generationById, modelById, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
@@ -76,6 +76,7 @@ export function Hero({ variant }: { variant: Variant }) {
       </div>
 
       <Gallery variant={variant} />
+      {variant.officialLink && <OfficialLinkRow variant={variant} />}
       <AlertModal open={alertOpen} onClose={() => setAlertOpen(false)} variant={variant} />
     </div>
   );
@@ -84,7 +85,7 @@ export function Hero({ variant }: { variant: Variant }) {
 function Gallery({ variant }: { variant: Variant }) {
   const [index, setIndex] = useState(0);
   useEffect(() => setIndex(0), [variant.id]);
-  const photos = variant.photos;
+  const photos = variant.marketPhotos;
   if (photos.length === 0) return <IllustratedGallery variant={variant} />;
   const n = photos.length;
   const go = (d: number) => setIndex((i) => (i + d + n) % n);
@@ -115,6 +116,9 @@ function Gallery({ variant }: { variant: Variant }) {
           <div className="text-xs text-white/90">{photo.caption}</div>
           <PhotoCredit photo={photo} />
         </div>
+        {photo.premiere && (
+          <div className="absolute top-2 left-2 rounded-md bg-gold/90 px-2 py-0.5 text-xs font-medium text-black">Vorstellung</div>
+        )}
         <div className="absolute top-2 right-2 flex items-center gap-1.5 rounded-md bg-black/50 px-2 py-0.5 text-xs text-white/90">
           <ImageIcon className="size-3.5" /> {index + 1} / {n}
         </div>
@@ -270,6 +274,24 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
         </div>
       )}
     </Modal>
+  );
+}
+
+/** Link to the manufacturer's own photos; those images may not be copied into the app without permission. */
+function OfficialLinkRow({ variant }: { variant: Variant }) {
+  const l = variant.officialLink!;
+  const source = variant.brandId === "ferrari" ? "ferrari.com" : "Porsche Newsroom";
+  const label = l.kind === "premiere" ? "Offizielle Pressebilder der Vorstellung" : "Offizielle Bilder beim Hersteller";
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm">
+      <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-medium text-ink hover:text-gold" title={l.title}>
+        <ImageIcon className="size-4 text-gold" />
+        {label}
+        <ExternalLink className="size-3.5 text-muted" />
+      </a>
+      <span className="text-xs text-muted">{source}</span>
+      {l.event && <span className="border-l border-line pl-3 text-xs text-muted">Vorstellung: {l.event}</span>}
+    </div>
   );
 }
 

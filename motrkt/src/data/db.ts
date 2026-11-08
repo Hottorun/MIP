@@ -1,7 +1,7 @@
 import { CATALOG, PAINTS } from "./catalog";
 import type { Brand, Generation, Model, Variant, VariantOption, VariantSeed } from "./types";
 import { rng, slug } from "../lib/random";
-import { realData } from "./real";
+import { launchPhotos, officialLinks, realData, type Photo } from "./real";
 import { isBrandEnabled } from "../config";
 
 /** Normalised catalog: brands → models → generations → variants, plus lookup maps. */
@@ -109,6 +109,14 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
   return list.slice(0, 5);
 }
 
+/** Market tab gallery: presentation photos, then other photos in the launch colour; all photos if none match. */
+function marketPhotos(id: string, photos: Photo[]): Photo[] {
+  const premiere = (launchPhotos[id] ?? []).filter((p) => p.file);
+  const inLaunchColor = photos.filter((p) => p.launchColor && !premiere.some((q) => q.file === p.file));
+  const picked = [...premiere, ...inLaunchColor];
+  return picked.length ? picked : photos;
+}
+
 let built = false;
 function build() {
   if (built) return;
@@ -168,6 +176,8 @@ function build() {
             color: real?.launchColor?.hex ?? s.color ?? paint[0].hex,
             launchColor: real?.launchColor,
             photos: (real?.images ?? []).filter((p) => p.file),
+            marketPhotos: marketPhotos(id, (real?.images ?? []).filter((p) => p.file)),
+            officialLink: officialLinks[id],
             specSources: specs?.sources ?? [],
             options: buildOptions(b.id, s, id),
             shape: g.shape,

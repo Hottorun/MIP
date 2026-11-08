@@ -45,6 +45,10 @@ export type Variant = Required<Omit<VariantSeed, "vol" | "options" | "tags">> & 
   launchColor?: import("./real").LaunchColor;
   /** Freely licensed photos with attribution (Wikimedia Commons); empty → illustrated fallback. */
   photos: import("./real").Photo[];
+  /** Market tab gallery: presentation photos first, then photos in the launch colour (falls back to `photos`). */
+  marketPhotos: import("./real").Photo[];
+  /** Market tab: manufacturer page with the official photos (Porsche Newsroom, ferrari.com). */
+  officialLink?: import("./real").OfficialLink;
   /** Sources for verified specs. */
   specSources: string[];
 };
