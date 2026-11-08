@@ -11,8 +11,9 @@ import { cn, date, eur, num, pct } from "../lib/format";
 import { CarImage } from "../components/CarImage";
 import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps } from "../components/ui";
 
-type SortKey = "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
+type SortKey = "series" | "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
 const SORTS: { value: SortKey; label: string }[] = [
+  { value: "series", label: "Modellreihe" },
   { value: "value", label: "Marktwert" },
   { value: "change12m", label: "12M" },
   { value: "cagr5", label: "CAGR 5J" },
@@ -53,6 +54,11 @@ function groupSections(list: Variant[]): Section[] {
   return [...map.values()].sort((a, b) => a.order - b.order);
 }
 
+/** Catalog order: generations in build order, within each standard models first, special models last. */
+const seriesIndex = new Map(variants.map((v, i) => [v.id, i]));
+/** Sorts that read naturally ascending (A→Z, oldest first, catalog order). */
+const ASCENDING: SortKey[] = ["series", "name", "year"];
+
 function sortValue(v: Variant, key: SortKey): number | string {
   const m = getMetrics(v.id);
   switch (key) {
@@ -68,6 +74,8 @@ function sortValue(v: Variant, key: SortKey): number | string {
       return m.liquidity;
     case "year":
       return v.years[0];
+    case "series":
+      return seriesIndex.get(v.id)!;
     case "name":
       return variantTitle(v);
   }
@@ -86,8 +94,8 @@ export default function Models() {
   const [query, setQuery] = useState("");
   const [era, setEra] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [sort, setSort] = useState<SortKey>("value");
-  const [desc, setDesc] = useState(true);
+  const [sort, setSort] = useState<SortKey>("series");
+  const [desc, setDesc] = useState(false);
   const [view, setView] = useState<"grid" | "table">("grid");
   const [compare, setCompare] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -145,7 +153,7 @@ export default function Models() {
     if (sort === key) setDesc((d) => !d);
     else {
       setSort(key);
-      setDesc(key !== "name");
+      setDesc(!ASCENDING.includes(key));
     }
   };
 
@@ -253,7 +261,11 @@ export default function Models() {
           </div>
           <div className="ml-auto flex items-center gap-2 text-muted">
             Sortiert nach
-            <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => setSort(e.target.value as SortKey)} aria-label="Sortierung">
+            <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => {
+                const key = e.target.value as SortKey;
+                setSort(key);
+                setDesc(!ASCENDING.includes(key));
+              }} aria-label="Sortierung">
               {SORTS.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}

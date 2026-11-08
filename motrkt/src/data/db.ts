@@ -108,6 +108,18 @@ function firstYear(m: { name: string; generations: { years: [number, number | nu
   return DEBUT_YEAR[m.name] ?? Math.min(...m.generations.map((g) => g.years[0]));
 }
 
+/**
+ * Order within a generation: 0 standard (Carrera, Targa, Coupé), 1 Turbo, 2 special editions,
+ * 3 GT / RS / lightweight, 4 GT2 (most extreme, always last).
+ */
+function variantTier(name: string): number {
+  if (/\bGT2\b/.test(name)) return 4;
+  if (/\b(GT3|RS|R|Leichtbau|Weissach)\b|^959 Sport$|^356 Carrera/.test(name)) return 3;
+  if (/Speedster|Sport Classic|Dakar|S\/T|50 Jahre|Flachbau/.test(name)) return 2;
+  if (/^Turbo\b/.test(name)) return 1;
+  return 0;
+}
+
 let built = false;
 function build() {
   if (built) return;
@@ -143,8 +155,8 @@ function build() {
         model.generationIds.push(genId);
         generations.push(gen);
         generationById.set(genId, gen);
-        // Variants in order of first build year (stable: same year keeps catalog order).
-        const seeds = [...g.variants].sort((x, y) => x.years[0] - y.years[0]);
+        // Standard models first, special models last; within a tier by first build year.
+        const seeds = [...g.variants].sort((x, y) => variantTier(x.name) - variantTier(y.name) || x.years[0] - y.years[0]);
         for (const s of seeds) {
           const id = `${genId}-${slug(s.name)}`;
           const paint = PAINTS[b.id];
