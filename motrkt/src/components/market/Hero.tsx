@@ -8,6 +8,7 @@ import { useStore } from "../../state/store";
 import { cn, eur, num } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { BrandEmblem, Modal, Pill } from "../ui";
+import { PhotoCredit } from "../CarImage";
 
 export function Hero({ variant }: { variant: Variant }) {
   const { watchlist, toggleWatch, alerts, toast } = useStore();
@@ -51,6 +52,7 @@ export function Hero({ variant }: { variant: Variant }) {
                 {f}
               </span>
             ))}
+            {variant.launchColor && <LaunchColorChip variant={variant} />}
           </div>
         </div>
         <div className="flex items-center gap-1">
@@ -80,6 +82,62 @@ export function Hero({ variant }: { variant: Variant }) {
 }
 
 function Gallery({ variant }: { variant: Variant }) {
+  const [index, setIndex] = useState(0);
+  useEffect(() => setIndex(0), [variant.id]);
+  const photos = variant.photos;
+  if (photos.length === 0) return <IllustratedGallery variant={variant} />;
+  const n = photos.length;
+  const go = (d: number) => setIndex((i) => (i + d + n) % n);
+  const photo = photos[index];
+  return (
+    <div
+      className="flex flex-col gap-1.5"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowLeft") go(-1);
+        if (e.key === "ArrowRight") go(1);
+      }}
+      aria-label="Bildergalerie"
+    >
+      <div className="group relative aspect-[3/2] overflow-hidden rounded-xl border border-line bg-panel-2">
+        <img key={photo.file} src={photo.file} alt={photo.caption ?? variantTitle(variant)} className="animate-fade-in size-full object-cover" />
+        {n > 1 && (
+          <>
+            <button onClick={() => go(-1)} className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white/90 hover:bg-black/60" aria-label="Vorheriges Bild">
+              <ChevronLeft className="size-5" />
+            </button>
+            <button onClick={() => go(1)} className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white/90 hover:bg-black/60" aria-label="Nächstes Bild">
+              <ChevronRight className="size-5" />
+            </button>
+          </>
+        )}
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-3 pt-8 pb-2">
+          <div className="text-xs text-white/90">{photo.caption}</div>
+          <PhotoCredit photo={photo} />
+        </div>
+        <div className="absolute top-2 right-2 flex items-center gap-1.5 rounded-md bg-black/50 px-2 py-0.5 text-xs text-white/90">
+          <ImageIcon className="size-3.5" /> {index + 1} / {n}
+        </div>
+      </div>
+      {n > 1 && (
+        <div className="grid grid-cols-5 gap-1.5">
+          {photos.map((p, i) => (
+            <button
+              key={p.file}
+              onClick={() => setIndex(i)}
+              className={cn("aspect-[3/2] overflow-hidden rounded-md border transition-colors", i === index ? "border-gold" : "border-line opacity-75 hover:opacity-100")}
+              aria-label={`Bild ${i + 1}`}
+            >
+              <img src={p.file} alt="" loading="lazy" className="size-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function IllustratedGallery({ variant }: { variant: Variant }) {
   const [index, setIndex] = useState(0);
   const n = GALLERY.length;
   useEffect(() => setIndex(0), [variant.id]);
@@ -112,7 +170,7 @@ function Gallery({ variant }: { variant: Variant }) {
         <button onClick={() => go(1)} className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white/90 hover:bg-black/60" aria-label="Nächstes Bild">
           <ChevronRight className="size-5" />
         </button>
-        <div className="absolute bottom-2 left-3 text-xs text-white/80 drop-shadow">{GALLERY[index].caption}</div>
+        <div className="absolute bottom-2 left-3 text-xs text-white/80 drop-shadow">{GALLERY[index].caption} · Illustration (kein freies Foto verfügbar)</div>
         <div className="absolute right-2 bottom-2 flex items-center gap-1.5 rounded-md bg-black/50 px-2 py-0.5 text-xs text-white/90">
           <ImageIcon className="size-3.5" /> {index + 1} / {n}
         </div>
@@ -212,5 +270,27 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
         </div>
       )}
     </Modal>
+  );
+}
+
+function LaunchColorChip({ variant }: { variant: Variant }) {
+  const c = variant.launchColor!;
+  const conf = { high: "belegt", medium: "wahrscheinlich", low: "unsicher" }[c.confidence ?? "low"];
+  const body = (
+    <>
+      <span className="size-3 rounded-full border border-white/30" style={{ background: c.hex }} />
+      Präsentationsfarbe: <span className="text-ink">{c.name}</span>
+      <span className="text-[11px] text-faint">({conf})</span>
+    </>
+  );
+  const cls = "inline-flex items-center gap-1.5 border-l border-line pl-3";
+  return c.source ? (
+    <a href={c.source} target="_blank" rel="noreferrer" className={cn(cls, "hover:text-ink")} title={c.note ?? "Quelle öffnen"}>
+      {body}
+    </a>
+  ) : (
+    <span className={cls} title={c.note}>
+      {body}
+    </span>
   );
 }

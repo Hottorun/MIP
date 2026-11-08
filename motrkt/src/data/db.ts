@@ -1,6 +1,8 @@
 import { CATALOG, PAINTS } from "./catalog";
 import type { Brand, Generation, Model, Variant, VariantOption, VariantSeed } from "./types";
 import { rng, slug } from "../lib/random";
+import { realData } from "./real";
+import { isBrandEnabled } from "../config";
 
 /** Normalised catalog: brands → models → generations → variants, plus lookup maps. */
 
@@ -13,6 +15,8 @@ export const brandById = new Map<string, Brand>();
 export const modelById = new Map<string, Model>();
 export const generationById = new Map<string, Generation>();
 export const variantById = new Map<string, Variant>();
+/** Variant ids of brands that are switched off in src/config.ts (kept so stored data and imports are not treated as unknown). */
+export const hiddenVariantIds = new Set<string>();
 
 const MARKET_BASE: Record<string, Record<string, number>> = {
   porsche: { Deutschland: 32, USA: 24, UK: 12, Japan: 8, "Rest Europa": 18, "Naher Osten": 6 },
@@ -110,6 +114,15 @@ function build() {
   if (built) return;
   built = true;
   for (const b of CATALOG) {
+    if (!isBrandEnabled(b.id)) {
+      for (const m of b.models)
+        for (const g of m.generations) {
+          const modelId = `${b.id}-${slug(m.name)}`;
+          const genId = g.name === m.name ? modelId : `${modelId}-${slug(g.name)}`;
+          for (const s of g.variants) hiddenVariantIds.add(`${genId}-${slug(s.name)}`);
+        }
+      continue;
+    }
     const brand: Brand = { id: b.id, name: b.name, country: b.country, color: b.color, featured: b.featured };
     brands.push(brand);
     brandById.set(brand.id, brand);
@@ -132,8 +145,15 @@ function build() {
         for (const s of g.variants) {
           const id = `${genId}-${slug(s.name)}`;
           const paint = PAINTS[b.id];
+          const real = realData[id];
+          const specs = real?.specs;
           const variant: Variant = {
             ...s,
+            ...(specs?.production ? { production: specs.production } : {}),
+            ...(specs?.hp ? { hp: specs.hp } : {}),
+            ...(specs?.liters ? { liters: specs.liters } : {}),
+            ...(specs?.years ? { years: specs.years } : {}),
+            ...(specs?.newPrice?.eur ? { newPrice: Math.round(specs.newPrice.eur) } : {}),
             id,
             brandId: b.id,
             modelId: model.id,
@@ -145,7 +165,10 @@ function build() {
             drive: s.drive ?? (g.shape === "wedge" || g.shape === "hyper" ? "Mittelmotor, Heck (RWD)" : "Heck (RWD)"),
             transmission:
               s.transmission ?? (s.gearbox?.Automatik === 1 ? "Automatik / Doppelkupplung" : "5-Gang Schaltgetriebe"),
-            color: s.color ?? paint[0].hex,
+            color: real?.launchColor?.hex ?? s.color ?? paint[0].hex,
+            launchColor: real?.launchColor,
+            photos: (real?.images ?? []).filter((p) => p.file),
+            specSources: specs?.sources ?? [],
             options: buildOptions(b.id, s, id),
             shape: g.shape,
             markets: buildMarkets(b.id, id),

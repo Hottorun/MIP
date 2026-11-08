@@ -1,0 +1,34 @@
+porsche-911-964-carrera-2 | Porsche 911 (964) Carrera 2 | 1989–1994 | production 19484 | 250 PS | 3.6 l | newPrice EUR 50500 | current color #1f3f8f
+porsche-911-964-carrera-4 | Porsche 911 (964) Carrera 4 | 1989–1994 | production 13353 | 250 PS | 3.6 l | newPrice EUR 58900 | current color #b7babe
+porsche-911-964-carrera-rs | Porsche 911 (964) Carrera RS | 1992–1994 | production 2282 | 260 PS | 3.6 l | newPrice EUR 74400 | current color #7a1f3d
+porsche-911-964-turbo | Porsche 911 (964) Turbo | 1990–1994 | production 5097 | 320 PS | 3.3 l | newPrice EUR 100500 | current color #b3121b
+porsche-911-964-speedster | Porsche 911 (964) Speedster | 1993–1994 | production 936 | 250 PS | 3.6 l | newPrice EUR 66000 | current color #e9e8e1
+porsche-911-993-carrera | Porsche 911 (993) Carrera | 1994–1998 | production 38626 | 285 PS | 3.6 l | newPrice EUR 64000 | current color #1f3f8f
+porsche-911-993-carrera-4s | Porsche 911 (993) Carrera 4S | 1995–1998 | production 6948 | 285 PS | 3.6 l | newPrice EUR 76000 | current color #151619
+porsche-911-993-carrera-rs | Porsche 911 (993) Carrera RS | 1995–1996 | production 1014 | 300 PS | 3.8 l | newPrice EUR 82000 | current color #efc11a
+porsche-911-993-turbo | Porsche 911 (993) Turbo | 1995–1998 | production 5978 | 408 PS | 3.6 l | newPrice EUR 105000 | current color #b7babe
+porsche-911-993-turbo-s | Porsche 911 (993) Turbo S | 1997–1998 | production 345 | 450 PS | 3.6 l | newPrice EUR 155000 | current color #efc11a
+porsche-911-993-gt2 | Porsche 911 (993) GT2 | 1995–1998 | production 57 | 430 PS | 3.6 l | newPrice EUR 145000 | current color #e9e8e1
+porsche-911-996-carrera | Porsche 911 (996) Carrera | 1997–2005 | production 56733 | 300 PS | 3.4 l | newPrice EUR 77000 | current color #b7babe
+porsche-911-996-turbo | Porsche 911 (996) Turbo | 2000–2005 | production 20499 | 420 PS | 3.6 l | newPrice EUR 120000 | current color #151619
+porsche-911-996-gt3 | Porsche 911 (996) GT3 | 1999–2005 | production 4181 | 381 PS | 3.6 l | newPrice EUR 102000 | current color #e9e8e1
+porsche-911-996-gt3-rs | Porsche 911 (996) GT3 RS | 2003–2004 | production 682 | 381 PS | 3.6 l | newPrice EUR 120000 | current color #e9e8e1
+porsche-911-996-gt2 | Porsche 911 (996) GT2 | 2001–2005 | production 1287 | 462 PS | 3.6 l | newPrice EUR 185000 | current color #b7babe
+porsche-911-997-carrera-s | Porsche 911 (997) Carrera S | 2004–2012 | production 41059 | 355 PS | 3.8 l | newPrice EUR 90000 | current color #1f6fd0
+porsche-911-997-turbo | Porsche 911 (997) Turbo | 2006–2012 | production 22000 | 480 PS | 3.6 l | newPrice EUR 136000 | current color #151619
+porsche-911-997-gt3 | Porsche 911 (997) GT3 | 2006–2012 | production 4600 | 435 PS | 3.8 l | newPrice EUR 108000 | current color #e9e8e1
+porsche-911-997-gt3-rs | Porsche 911 (997) GT3 RS | 2006–2011 | production 3000 | 450 PS | 3.8 l | newPrice EUR 136000 | current color #ee7a12
+porsche-911-997-gt3-rs-4-0 | Porsche 911 (997) GT3 RS 4.0 | 2011 | production 600 | 500 PS | 4 l | newPrice EUR 179000 | current color #e9e8e1
+porsche-911-997-gt2-rs | Porsche 911 (997) GT2 RS | 2010–2011 | production 500 | 620 PS | 3.6 l | newPrice EUR 237000 | current color #151619
+porsche-911-991-carrera-s | Porsche 911 (991) Carrera S | 2011–2019 | production 60000 | 420 PS | 3 l | newPrice EUR 108000 | current color #b7babe
+porsche-911-991-gt3 | Porsche 911 (991) GT3 | 2013–2019 | production 5900 | 500 PS | 4 l | newPrice EUR 140000 | current color #3aa83a
+porsche-911-991-gt3-rs | Porsche 911 (991) GT3 RS | 2015–2019 | production 6400 | 520 PS | 4 l | newPrice EUR 196000 | current color #ee7a12
+porsche-911-991-r | Porsche 911 (991) R | 2016 | production 991 | 500 PS | 4 l | newPrice EUR 190000 | current color #e9e8e1
+porsche-911-991-turbo-s | Porsche 911 (991) Turbo S | 2013–2019 | production 26000 | 580 PS | 3.8 l | newPrice EUR 196000 | current color #151619
+porsche-911-991-gt2-rs | Porsche 911 (991) GT2 RS | 2017–2019 | production 1000 | 700 PS | 3.8 l | newPrice EUR 285000 | current color #b7babe
+porsche-911-992-carrera-s | Porsche 911 (992) Carrera S | 2019–heute | production 52000 | 450 PS | 3 l | newPrice EUR 125000 | current color #cfccc2
+porsche-911-992-gt3 | Porsche 911 (992) GT3 | 2021–heute | production 9000 | 510 PS | 4 l | newPrice EUR 167000 | current color #5fc9a9
+porsche-911-992-gt3-rs | Porsche 911 (992) GT3 RS | 2022–heute | production 7500 | 525 PS | 4 l | newPrice EUR 229000 | current color #3aa83a
+porsche-911-992-s-t | Porsche 911 (992) S/T | 2023–2024 | production 1963 | 525 PS | 4 l | newPrice EUR 292000 | current color #5fc9a9
+porsche-911-992-sport-classic | Porsche 911 (992) Sport Classic | 2022–2023 | production 1250 | 550 PS | 3.7 l | newPrice EUR 272000 | current color #7d7f7a
+porsche-911-992-dakar | Porsche 911 (992) Dakar | 2022–2024 | production 2500 | 480 PS | 3 l | newPrice EUR 223000 | current color #cfccc2

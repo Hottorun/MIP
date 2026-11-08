@@ -7,8 +7,9 @@ import type { Variant } from "../../data/types";
 import { getListings, getSeries } from "../../data/generate";
 import { cycleData, getMetrics, holdingValue, modelIndex, monthlyChanges, portfolioSeries } from "../../data/market";
 import { useStore } from "../../state/store";
+import { useLiveListings } from "../../state/liveListings";
 import { cn, eur, flag, km, num, pct } from "../../lib/format";
-import { CarArt } from "../CarArt";
+import { CarImage } from "../CarImage";
 import { Copilot } from "../Copilot";
 import { Card, ChartTooltipBox, Pill, Sparkline, axisProps } from "../ui";
 
@@ -165,15 +166,21 @@ export function PortfolioMini() {
 }
 
 export function ListingsMini({ variant }: { variant: Variant }) {
-  const listings = getListings(variant.id);
+  const live = useLiveListings();
+  const liveForVariant = live.listings.filter((l) => l.variantId === variant.id);
+  const listings = liveForVariant.length ? liveForVariant : getListings(variant.id);
   return (
-    <Card title="Inserate / Neue Angebote" sub="(Marktplatz)">
+    <Card title="Inserate / Neue Angebote" sub={liveForVariant.length ? "(mobile.de live)" : "(Marktplatz, Demo)"}>
       <ul className="space-y-2">
         {listings.slice(0, 3).map((l, i) => (
           <li key={l.id}>
             <Link to={`/kaufen?inserat=${l.id}`} className="flex items-center gap-3 rounded-lg p-1 transition-colors hover:bg-panel-3">
               <div className="h-11 w-20 shrink-0 overflow-hidden rounded-md border border-line">
-                <CarArt className="size-full" shape={variant.shape} color={l.colorHex} scene={(["studio", "mountain", "city"] as const)[i % 3]} />
+                {l.images?.[0] ? (
+                  <img src={l.images[0]} alt="" loading="lazy" className="size-full object-cover" />
+                ) : (
+                  <CarImage className="size-full" variant={variant} index={i} fallbackColor={l.colorHex} scene={(["studio", "mountain", "city"] as const)[i % 3]} />
+                )}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="truncate text-[13px] font-medium">{variantTitle(variant, { brand: false })}</div>

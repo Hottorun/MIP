@@ -1,6 +1,7 @@
 import { brandById, paintsFor, variantById, variants } from "./db";
 import type { AuctionEvent, Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
 import { rng, type Rng } from "../lib/random";
+import { realSalesFor } from "./real/sales";
 
 /** Synthetic but internally consistent market data, generated deterministically from the catalog. */
 
@@ -69,6 +70,40 @@ export function variantVolatility(v: Variant) {
 const seriesCache = new Map<string, PricePoint[]>();
 
 /** Weekly median-value series ending at `v.value` with the configured 5-year CAGR. */
+/**
+ * Market value and 5y trend implied by imported real sales (condition-normalised to "2+").
+ * Value: median of sold prices in the last 24 months (≥ 3, outliers beyond 0.5–2× median dropped).
+ * Trend: log-linear fit over the last 5 years when ≥ 8 sales span ≥ 3 years (shorter windows are too noisy and
+ * get extrapolated over 5 years); otherwise null → the catalog's long-run CAGR is used.
+ */
+export function realAnchor(variantId: string): { value: number; cagr: number | null; n: number } | null {
+  const norm = realSalesFor(variantId)
+    .filter((s) => s.price !== null && s.date <= AS_OF)
+    .map((s) => ({ date: s.date, p: s.price! / CONDITION_FACTOR[s.condition] }));
+  const med = (xs: number[]) => {
+    const a = [...xs].sort((x, y) => x - y);
+    return a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2;
+  };
+  const recentRaw = norm.filter((s) => s.date >= AS_OF - 104 * WEEK).map((s) => s.p);
+  if (recentRaw.length < 3) return null;
+  const m0 = med(recentRaw);
+  const recent = recentRaw.filter((p) => p >= m0 * 0.5 && p <= m0 * 2);
+  if (recent.length < 3) return null;
+  const value = med(recent);
+
+  const pts = norm
+    .filter((s) => s.date >= AS_OF - 260 * WEEK && s.p >= value * 0.35 && s.p <= value * 2.5)
+    .map((s) => ({ t: yearFrac(s.date), y: Math.log(s.p) }));
+  let cagr: number | null = null;
+  if (pts.length >= 8 && Math.max(...pts.map((p) => p.t)) - Math.min(...pts.map((p) => p.t)) >= 3) {
+    const xm = pts.reduce((a, p) => a + p.t, 0) / pts.length;
+    const ym = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+    const b = pts.reduce((a, p) => a + (p.t - xm) * (p.y - ym), 0) / pts.reduce((a, p) => a + (p.t - xm) ** 2, 0);
+    cagr = Math.max(-0.1, Math.min(0.2, Math.exp(b) - 1));
+  }
+  return { value, cagr, n: recent.length };
+}
+
 export function getSeries(variantId: string): PricePoint[] {
   const cached = seriesCache.get(variantId);
   if (cached) return cached;
@@ -90,8 +125,11 @@ export function getSeries(variantId: string): PricePoint[] {
     noise = phi * noise + r.normal(0, s);
     raw[i] = beta * cycleAt(t) + noise;
   }
+  const anchor = realAnchor(v.id);
+  const endValue = anchor?.value ?? v.value;
+  const cagr = anchor?.cagr ?? v.cagr;
   const w = Math.min(260, n - 1);
-  const target = (w / 52) * Math.log(1 + v.cagr);
+  const target = (w / 52) * Math.log(1 + cagr);
   const drift = w > 0 ? (target - (raw[n - 1] - raw[n - 1 - w])) / w : 0;
   const end = raw[n - 1] + drift * (n - 1);
 
@@ -99,7 +137,7 @@ export function getSeries(variantId: string): PricePoint[] {
   const out: PricePoint[] = new Array(n);
   for (let i = 0; i < n; i++) {
     const t = SERIES_START + (startIdx + i) * WEEK;
-    const value = v.value * Math.exp(raw[i] + drift * i - end);
+    const value = endValue * Math.exp(raw[i] + drift * i - end);
     const lambda = base * seasonality(t) * r.range(0.75, 1.25) * (i < 26 && startIdx > 0 ? 0.4 : 1);
     out[i] = { t, value, volume: r.poisson(lambda) };
   }
@@ -249,6 +287,12 @@ export function getSales(variantId: string): Sale[] {
   const v = variantById.get(variantId);
   if (!v) return [];
   const series = getSeries(variantId);
+  const real = realSalesFor(variantId);
+  if (real.length) {
+    const out: Sale[] = real.map((s) => ({ ...s, trend: s.price === null ? 0 : s.price / valueAt(series, s.date) - 1 }));
+    salesCache.set(variantId, out);
+    return out;
+  }
   const r = rng(`sales:${v.id}`);
   const brand = brandById.get(v.brandId)!;
   const auctionShare = Math.min(0.82, Math.max(0.3, 0.45 + 0.12 * Math.log10(v.value / 50_000) + r.range(-0.06, 0.06)));
@@ -317,6 +361,10 @@ export function getSales(variantId: string): Sale[] {
 }
 
 let allSalesCache: Sale[] | null = null;
+export function hasRealSales(variantId: string): boolean {
+  return realSalesFor(variantId).length > 0;
+}
+
 export function getAllSales(): Sale[] {
   if (!allSalesCache) {
     allSalesCache = variants.flatMap((v) => getSales(v.id)).sort((a, b) => b.date - a.date);

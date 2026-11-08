@@ -4,7 +4,7 @@ import { generationById, variantById, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics, inflationFactor } from "../../data/market";
 import { MARKET_TO_ISO } from "../../data/generate";
-import { cn, eur, flag, num, pct } from "../../lib/format";
+import { cn, eur, flag, hostOf, num, pct } from "../../lib/format";
 import { Card, Donut } from "../ui";
 import { WorldMap, type MarketRegion } from "../WorldMap";
 
@@ -83,6 +83,17 @@ export function SpecsCard({ variant }: { variant: Variant }) {
           </div>
         ))}
       </dl>
+      {variant.specSources.length > 0 && (
+        <div className="mt-2 text-[11px] text-faint">
+          Quellen:{" "}
+          {variant.specSources.map((s, i) => (
+            <a key={s} href={s} target="_blank" rel="noreferrer" className="hover:text-gold">
+              {i > 0 && ", "}
+              {hostOf(s)}
+            </a>
+          ))}
+        </div>
+      )}
     </Card>
   );
 }

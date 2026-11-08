@@ -1,0 +1,1564 @@
+{
+  "porsche-356-356-a-coupe": {
+    "launchColor": {
+      "name": "Silbermetallic (Annahme)",
+      "hex": "#b5b8ba",
+      "source": "https://de.wikipedia.org/wiki/Porsche_356",
+      "confidence": "low",
+      "note": "356 A introduced autumn 1955 (IAA Frankfurt). No source found naming the colour of the first show or press car; silver is a best guess."
+    },
+    "specs": {
+      "production": 21045,
+      "hp": 60,
+      "liters": 1.6,
+      "years": [
+        1955,
+        1959
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356",
+        "https://en.wikipedia.org/wiki/Porsche_356"
+      ]
+    },
+    "note": "Production 21,045 is the whole 356 A series (Coupé, Cabriolet, Speedster). 60 PS / 1582 cc refers to the 1600 version. 356 A list prices ranged from 11,400 to 15,750 DM depending on version; no single Coupé 1600 price verified.",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-a-coupe-1.jpg",
+        "title": "File:1957 Porsche 356 1600 Coupe.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1957_Porsche_356_1600_Coupe.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 A 1600 Coupé (1957) in Rot"
+      },
+      {
+        "file": "/cars/porsche-356-356-a-coupe-2.jpg",
+        "title": "File:1956 Porsche 356 A in Jade Green Metallic, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1956_Porsche_356_A_in_Jade_Green_Metallic,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 A Coupé (1956) in Jadegrün Metallic"
+      },
+      {
+        "file": "/cars/porsche-356-356-a-coupe-3.jpg",
+        "title": "File:1957 Porsche 356 - svl.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1957_Porsche_356_-_svl.jpg",
+        "author": "Rex Gray from Southern California",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 A Coupé (1957), Seitenansicht"
+      }
+    ]
+  },
+  "porsche-356-356-speedster": {
+    "launchColor": {
+      "name": "Rot (vermutlich Signalrot)",
+      "hex": "#b5121b",
+      "source": "https://www.sportscarmarket.com/profile/1955-porsche-356-speedster",
+      "confidence": "medium",
+      "note": "US importer Max Hoffman first showed the red prototype #80002 at the Watkins Glen races, 17-18 Sept 1954; the name \"Speedster\" appeared in a Porsche press release the following week. Exact paint name not documented; early cars were offered in Speedster Blue, red and white."
+    },
+    "specs": {
+      "production": 4854,
+      "years": [
+        1954,
+        1958
+      ],
+      "newPrice": {
+        "amount": 12200,
+        "currency": "DEM",
+        "eur": 6238,
+        "year": 1955
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_356",
+        "https://de.wikipedia.org/wiki/Porsche_356"
+      ]
+    },
+    "note": "Production 4,854 (all years) per en.wikipedia. Price: 12,200 DM ex works at introduction (de.wikipedia, year not stated; US price 1954 was US$2,995). Engines varied (1500: 55 PS, 1500 S: 70 PS, 1600: 60/75 PS), so no single power figure given.",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-speedster-1.jpg",
+        "title": "File:55 Porsche Speedster (8942217292).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:55_Porsche_Speedster_(8942217292).jpg",
+        "author": "Greg Gjerdingen from Willmar, USA",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 356 Speedster (1955) in Rot"
+      },
+      {
+        "file": "/cars/porsche-356-356-speedster-2.jpg",
+        "title": "File:1955 Porsche 356 Pre-A Speedster.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1955_Porsche_356_Pre-A_Speedster.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 356 Pre-A Speedster (1955) in Rot"
+      },
+      {
+        "file": "/cars/porsche-356-356-speedster-3.jpg",
+        "title": "File:Paris - RM auctions - 20150204 - Porsche 356 Pre-A Speedster - 1955 - 001.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Paris_-_RM_auctions_-_20150204_-_Porsche_356_Pre-A_Speedster_-_1955_-_001.jpg",
+        "author": "Thesupermat",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 Pre-A Speedster (1955) in Hellblau-Metallic"
+      }
+    ]
+  },
+  "porsche-356-356-carrera-2": {
+    "launchColor": {
+      "name": "Silbermetallic (Annahme)",
+      "hex": "#b5b8ba",
+      "source": "https://www.supercars.net/blog/1962-porsche-356b2000gs-carrera-2/",
+      "confidence": "low",
+      "note": "Presented at the IAA Frankfurt, September 1961. No source found naming the show car's colour; best guess."
+    },
+    "specs": {
+      "production": 436,
+      "hp": 130,
+      "liters": 2.0,
+      "years": [
+        1962,
+        1964
+      ],
+      "newPrice": {
+        "amount": 23700,
+        "currency": "DEM",
+        "eur": 12118,
+        "year": 1962
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356",
+        "https://www.supercars.net/blog/1962-porsche-356b2000gs-carrera-2/"
+      ]
+    },
+    "note": "436 = 310 on 356 B (T6) + 126 on 356 C, per several secondary sources (not Wikipedia). Price 23,700 DM for the Coupé per de.wikipedia (year not stated; assumed 1962).",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-carrera-2-1.jpg",
+        "title": "File:1963 Porsche 356 B Carrera 2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1963_Porsche_356_B_Carrera_2.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 B Carrera 2 (1963) in Blau"
+      },
+      {
+        "file": "/cars/porsche-356-356-carrera-2-2.jpg",
+        "title": "File:Rétromobile 2017 - Porsche 356 Carrera 2 GS - 1963 - 001.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:R%C3%A9tromobile_2017_-_Porsche_356_Carrera_2_GS_-_1963_-_001.jpg",
+        "author": "Thesupermat",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 Carrera 2 GS (1963) in Grau-Metallic, Rétromobile 2017"
+      },
+      {
+        "file": "/cars/porsche-356-356-carrera-2-3.jpg",
+        "title": "File:SC06 Porsche 356 Carrera 2 Coupe.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:SC06_Porsche_356_Carrera_2_Coupe.jpg",
+        "author": "Brett Weinstein (Wikipedia User: Nrbelex)",
+        "license": "CC BY-SA 2.5",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 Carrera 2 Coupé"
+      }
+    ]
+  },
+  "porsche-912-912-coupe": {
+    "launchColor": {
+      "name": "Elfenbein (Ivory) (Annahme)",
+      "hex": "#e6dfc8",
+      "source": "https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html",
+      "confidence": "low",
+      "note": "Production started 5 April 1965 (no dedicated show debut). No source found naming the colour of the first press cars; best guess."
+    },
+    "specs": {
+      "production": 30745,
+      "hp": 90,
+      "liters": 1.6,
+      "years": [
+        1965,
+        1969
+      ],
+      "newPrice": {
+        "amount": 16250,
+        "currency": "DEM",
+        "eur": 8308,
+        "year": 1965
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_912",
+        "https://en.wikipedia.org/wiki/Porsche_912",
+        "https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html"
+      ]
+    },
+    "note": "30,745 is total 912 production 1965-69 incl. ~2,500 Targa (en.wikipedia: nearly 30,000 Coupés).",
+    "images": [
+      {
+        "file": "/cars/porsche-912-912-coupe-1.jpg",
+        "title": "File:1965 Porsche 912 Coupe.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1965_Porsche_912_Coupe.jpg",
+        "author": "Coolalabright",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 912 Coupé (1965) in Blau"
+      },
+      {
+        "file": "/cars/porsche-912-912-coupe-2.jpg",
+        "title": "File:1965 Porsche 912 (16504989858).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1965_Porsche_912_(16504989858).jpg",
+        "author": "Jeremy from Sydney, Australia",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 912 (1965) in Rot, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-912-912-coupe-3.jpg",
+        "title": "File:13-05-05 Oldtimerteffen Liblar Porsche weiss 01.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:13-05-05_Oldtimerteffen_Liblar_Porsche_weiss_01.jpg",
+        "author": "Achim Raschka (talk)",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 912 Coupé in Weiß"
+      }
+    ]
+  },
+  "porsche-930-turbo-3-0": {
+    "launchColor": {
+      "name": "Vipergrün Diamant (Viper Green Diamond)",
+      "hex": "#4a8a3c",
+      "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-beginning-of-the-series.html",
+      "confidence": "high",
+      "note": "Series-production 911 Turbo 3.0 unveiled 3 Oct 1974 at the Paris Motor Show, \"Painted in Viper Green Diamond\" with black leather and tartan seat centres (Porsche Newsroom). Hex is an approximation of the metallic green. (The 1973 IAA Turbo study was silver.)"
+    },
+    "specs": {
+      "production": 2850,
+      "hp": 260,
+      "liters": 3.0,
+      "years": [
+        1975,
+        1977
+      ],
+      "newPrice": {
+        "amount": 65800,
+        "currency": "DEM",
+        "eur": 33643,
+        "year": 1975
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+        "https://de.wikipedia.org/wiki/Porsche_930"
+      ]
+    },
+    "note": "Production: 2,850 per Porsche (first three years); de.wikipedia gives 2,876, en.wikipedia 2,819.",
+    "images": [
+      {
+        "file": "/cars/porsche-930-turbo-3-0-1.jpg",
+        "title": "File:1976 Porsche 930 Turbo, Emerald Green met, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1976_Porsche_930_Turbo,_Emerald_Green_met,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.0 (930) von 1976 in Smaragdgrün Metallic"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-0-2.jpg",
+        "title": "File:1976 Porsche 930 Turbo, Emerald Green met, rear left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1976_Porsche_930_Turbo,_Emerald_Green_met,_rear_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.0 (930) von 1976, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-0-3.jpg",
+        "title": "File:1976 Porsche 911 Turbo Carrera (42871386680).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1976_Porsche_911_Turbo_Carrera_(42871386680).jpg",
+        "author": "Sicnag",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo Carrera (930) von 1976"
+      }
+    ]
+  },
+  "porsche-930-turbo-3-3": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#c8102e",
+      "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+      "confidence": "low",
+      "note": "Introduced for model year 1978. No source found naming the colour of the first show or press car; Guards Red is a best guess."
+    },
+    "specs": {
+      "production": 17381,
+      "hp": 300,
+      "liters": 3.3,
+      "years": [
+        1978,
+        1989
+      ],
+      "newPrice": {
+        "amount": 135000,
+        "currency": "DEM",
+        "eur": 69024,
+        "year": 1989
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_930",
+        "https://en.wikipedia.org/wiki/Porsche_930"
+      ]
+    },
+    "note": "Production 17,381 per de.wikipedia (en.wikipedia: 18,770). Price is the 1989 coupé list price; no 1978 launch price found.",
+    "images": [
+      {
+        "file": "/cars/porsche-930-turbo-3-3-1.jpg",
+        "title": "File:1981 Porsche 911 Turbo 3.3 LC23.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1981_Porsche_911_Turbo_3.3_LC23.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo 3.3 (930) von 1981 in Indischrot"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-2.jpg",
+        "title": "File:Porsche 911 930 Turbo 3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_930_Turbo_3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo 3.3 (930) in Rot, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-3.jpg",
+        "title": "File:Porsche 911 Turbo (Typ 930-3.3) ADAC Deutschland Klassik 2018 6290583.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_Turbo_(Typ_930-3.3)_ADAC_Deutschland_Klassik_2018_6290583.jpg",
+        "author": "Ermell",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.3 (930) in Silber, Seitenansicht"
+      }
+    ]
+  },
+  "porsche-930-turbo-3-3-flachbau": {
+    "launchColor": {
+      "name": "Grand-Prix-Weiß (Grand Prix White)",
+      "hex": "#f1f1ec",
+      "source": "https://www.porsche.com/stories/innovation/discover-the-porsche-930-turbo-slantnose/",
+      "confidence": "low",
+      "note": "Special-order (Sonderwunsch) option from 1981, series option M505/M506 from 1986/87; no public launch car documented. Porsche's own slantnose story is illustrated with a white car; the first Sonderwunsch road car (for Mansour Ojjeh) was Brilliant Red, the early factory prototype WP0ZZZ93ZBS000136 Montego Black metallic."
+    },
+    "specs": {
+      "production": 948,
+      "hp": 330,
+      "liters": 3.3,
+      "years": [
+        1981,
+        1989
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_930",
+        "https://de.wikipedia.org/wiki/Porsche_930"
+      ]
+    },
+    "note": "948 = 58 handbuilt with bumper headlights + 204 handbuilt with pop-up lights + 686 series cars (Porsche Exclusive, from 1984/86). 330 PS applies with the factory WLS power kit (from 1983/84). Conversion cost up to 27,500 DM (1985) on top of the Turbo price.",
+    "images": [
+      {
+        "file": "/cars/porsche-930-turbo-3-3-flachbau-1.jpg",
+        "title": "File:Porsche 911 (930) Turbo Flatnose in Grand Prix White, front right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(930)_Turbo_Flatnose_in_Grand_Prix_White,_front_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo Flachbau (930) in Grand-Prix-Weiß"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-flachbau-2.jpg",
+        "title": "File:Porsche 930 Turbo flachbau in Guards Red, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_930_Turbo_flachbau_in_Guards_Red,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo Flachbau (930) in Indischrot"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-flachbau-3.jpg",
+        "title": "File:Porsche 930 Turbo flachbau in Guards Red, rear left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_930_Turbo_flachbau_in_Guards_Red,_rear_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo Flachbau (930) in Indischrot, Heckansicht"
+      }
+    ]
+  },
+  "porsche-918-918-spyder": {
+    "launchColor": {
+      "name": "Liquid Metal Silber (Liquid Metal Silver)",
+      "hex": "#a3a6a4",
+      "source": "https://www.dkeng.co.uk/Vehicle_Archive/1894/porsche_918_spyder.html",
+      "confidence": "medium",
+      "note": "Production car premiered at the IAA Frankfurt, September 2013 (concept: Geneva 2010). Liquid Metal Silver and Liquid Metal Chrome Blue were the communication colours; a dealer archive states the first production car shown at IAA 2013 was Liquid Metal Silver. Not confirmed by a Porsche document."
+    },
+    "specs": {
+      "production": 918,
+      "hp": 887,
+      "liters": 4.6,
+      "years": [
+        2013,
+        2015
+      ],
+      "newPrice": {
+        "amount": 768026,
+        "currency": "EUR",
+        "eur": 768026,
+        "year": 2013
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_918_Spyder"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-918-918-spyder-1.jpg",
+        "title": "File:2013 Greater Los Angeles Auto Show (11123904533).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2013_Greater_Los_Angeles_Auto_Show_(11123904533).jpg",
+        "author": "Tracey Adams from Atascadero, USA",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 918 Spyder in Liquid Metal Silber, Los Angeles Auto Show 2013"
+      },
+      {
+        "file": "/cars/porsche-918-918-spyder-2.jpg",
+        "title": "File:2014 Lone Star Le Mans (15111137370).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Lone_Star_Le_Mans_(15111137370).jpg",
+        "author": "Barrett Sonntag",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 918 Spyder, Seitenansicht"
+      }
+    ]
+  },
+  "porsche-918-918-spyder-weissach": {
+    "launchColor": {
+      "name": "Martini Racing Design (Weiß mit Martini-Streifen)",
+      "hex": "#f2f2ef",
+      "source": "https://www.conceptcarz.com/z21705/porsche-918-spyder-martini-livery.aspx",
+      "confidence": "medium",
+      "note": "In 2013 Porsche presented the Weissach package on a 918 test car in the Martini Racing design (Porsche/Martini partnership; design offered exclusively for the 918 with Weissach package). Salzburg (red/white) and matte-black designs were the other factory liveries."
+    },
+    "specs": {
+      "hp": 887,
+      "liters": 4.6,
+      "years": [
+        2013,
+        2015
+      ],
+      "newPrice": {
+        "amount": 839426,
+        "currency": "EUR",
+        "eur": 839426,
+        "year": 2013
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_918_Spyder"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-918-918-spyder-weissach-1.jpg",
+        "title": "File:Porsche 918 Spyder Weissach Package (35894559670).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_918_Spyder_Weissach_Package_(35894559670).jpg",
+        "author": "Alexandre Prévot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 918 Spyder mit Weissach-Paket im Martini Racing Design"
+      },
+      {
+        "file": "/cars/porsche-918-918-spyder-weissach-2.jpg",
+        "title": "File:2014 Porsche 918 Spyder - Weissach Package.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Porsche_918_Spyder_-_Weissach_Package.jpg",
+        "author": "Edvvc on Flickr : https://www.flickr.com/photos/edvvc/",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 918 Spyder mit Weissach-Paket im Salzburg-Design"
+      },
+      {
+        "file": "/cars/porsche-918-918-spyder-weissach-3.jpg",
+        "title": "File:HK 灣仔北 Wan Chai North 香港會展 HKCEC 蘇富比 Sotheby's Auction preview 2015 sliver 保時捷 Porsche 918 Weissach Spyder roadshow April 2024 R12S 103.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:HK_%E7%81%A3%E4%BB%94%E5%8C%97_Wan_Chai_North_%E9%A6%99%E6%B8%AF%E6%9C%83%E5%B1%95_HKCEC_%E8%98%87%E5%AF%8C%E6%AF%94_Sotheby%27s_Auction_preview_2015_sliver_%E4%BF%9D%E6%99%82%E6%8D%B7_Porsche_918_Weissach_Spyder_roadshow_April_2024_R12S_103.jpg",
+        "author": "YUEO YRUAIN LUKAM",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 918 Spyder mit Weissach-Paket in Silber"
+      }
+    ]
+  },
+  "porsche-carrera-gt-carrera-gt": {
+    "launchColor": {
+      "name": "GT-Silber Metallic (GT Silver Metallic)",
+      "hex": "#b3b6b8",
+      "source": "https://www.secret-classics.com/en/porsche-carrera-gt-recommissioned-2/",
+      "confidence": "medium",
+      "note": "Concept shown at the Louvre/Paris Motor Show in September 2000 (prototype 9R3/M 001 recorded as silver); production car premiered at Geneva in March 2003. GT Silver was the presentation colour of the press pictures; about 70% of cars were built in it."
+    },
+    "specs": {
+      "production": 1270,
+      "hp": 612,
+      "liters": 5.7,
+      "years": [
+        2003,
+        2006
+      ],
+      "newPrice": {
+        "amount": 452690,
+        "currency": "EUR",
+        "eur": 452690,
+        "year": 2003
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Carrera_GT"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-carrera-gt-carrera-gt-1.jpg",
+        "title": "File:-i---i- (3707989409).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:-i---i-_(3707989409).jpg",
+        "author": "Damian Morys from New York City, United States",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche Carrera GT in GT-Silber Metallic"
+      },
+      {
+        "file": "/cars/porsche-carrera-gt-carrera-gt-2.jpg",
+        "title": "File:-i---i- (3743996413).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:-i---i-_(3743996413).jpg",
+        "author": "Damian Morys from New York City, United States",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche Carrera GT in GT-Silber Metallic, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-carrera-gt-carrera-gt-3.jpg",
+        "title": "File:2003 Porsche Carrera GT-1 (30487918866).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_Carrera_GT-1_(30487918866).jpg",
+        "author": "naeem mayet",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche Carrera GT (2003) in GT-Silber Metallic, Frontansicht"
+      }
+    ]
+  },
+  "porsche-959-959-komfort": {
+    "launchColor": {
+      "name": "Grand-Prix-Weiß (Grand Prix White)",
+      "hex": "#f1f1ec",
+      "source": "https://www.stuttcars.com/the-porsche-959-story/",
+      "confidence": "medium",
+      "note": "The 1983 IAA \"Gruppe B\" study was pearl white; the production 959 debuted at the IAA Frankfurt in September 1985 (also shown as a cutaway). White is the 959's communication colour in period material; exact paint of the 1985 show car not documented."
+    },
+    "specs": {
+      "production": 263,
+      "hp": 450,
+      "liters": 2.85,
+      "years": [
+        1986,
+        1988
+      ],
+      "newPrice": {
+        "amount": 420000,
+        "currency": "DEM",
+        "eur": 214743,
+        "year": 1987
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_959",
+        "https://en.wikipedia.org/wiki/Porsche_959",
+        "https://www.sportscarmarket.com/kb/porsche-959"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-959-959-komfort-1.jpg",
+        "title": "File:Porsche 959 GIMS 2024 1X7A2269.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_GIMS_2024_1X7A2269.jpg",
+        "author": "Alexander-93",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 959 in Weiß (Porsche Museum)"
+      },
+      {
+        "file": "/cars/porsche-959-959-komfort-2.jpg",
+        "title": "File:Porsche 959 (1988) in the Porsche-Museum (2009) IMG 2756.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_(1988)_in_the_Porsche-Museum_(2009)_IMG_2756.jpg",
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 959 (1988) in Silber, Porsche Museum"
+      },
+      {
+        "file": "/cars/porsche-959-959-komfort-3.jpg",
+        "title": "File:Porsche 959 Concept Car Gruppe B 1983 (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_Concept_Car_Gruppe_B_1983_(cropped).jpg",
+        "author": "leduardo",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": false,
+        "launchColor": true,
+        "caption": "Porsche Gruppe B Studie (IAA 1983), Vorläufer des 959, Perlweiß"
+      }
+    ]
+  },
+  "porsche-959-959-sport": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#c8102e",
+      "source": "https://www.stuttcars.com/rare-1988-porsche-959-sport-up-for-auction/",
+      "confidence": "low",
+      "note": "The 959 Sport (29 built) was offered only in Grand Prix White or Guards Red; Porsche's own museum example is Guards Red. No documented launch/press car."
+    },
+    "specs": {
+      "production": 29,
+      "hp": 515,
+      "liters": 2.85,
+      "years": [
+        1987,
+        1988
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_959",
+        "https://en.wikipedia.org/wiki/Porsche_959"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-959-959-sport-1.jpg",
+        "title": "File:Porsche, Techno-Classica 2018, Essen (IMG 9723).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche,_Techno-Classica_2018,_Essen_(IMG_9723).jpg",
+        "author": "Matti Blume",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 959 Sport in Indischrot (Porsche Museum)"
+      },
+      {
+        "file": "/cars/porsche-959-959-sport-2.jpg",
+        "title": "File:Mondial de l'Automobile 2012, Paris - France (8677991499).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mondial_de_l%27Automobile_2012,_Paris_-_France_(8677991499).jpg",
+        "author": "Mic from Reading - Berkshire, United Kingdom",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 959 Sport in Indischrot, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-959-959-sport-3.jpg",
+        "title": "File:Porsche 959 S 1X7A7874 (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_S_1X7A7874_(cropped).jpg",
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 959 S in Silber"
+      }
+    ]
+  },
+  "ferrari-f40-f40": {
+    "images": [
+      {
+        "file": "/cars/ferrari-f40-f40-1.jpg",
+        "title": "File:1989 Ferrari F40 (86660).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1989_Ferrari_F40_(86660).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F40, Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-f40-f40-2.jpg",
+        "title": "File:1989 Ferrari F40 3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1989_Ferrari_F40_3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F40, Heckansicht in Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-f40-f40-3.jpg",
+        "title": "File:1987-11-15 Fiorano Ferrari F40 espo.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1987-11-15_Fiorano_Ferrari_F40_espo.jpg",
+        "author": "Unknown photographer",
+        "license": "Public domain",
+        "licenseUrl": null,
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F40 in Fiorano, November 1987"
+      }
+    ],
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://en.wikipedia.org/wiki/Ferrari_F40",
+      "confidence": "high",
+      "note": "Revealed 21 July 1987 in Maranello; all cars left the factory in Rosso Corsa (Wikipedia, citing factory data)."
+    },
+    "specs": {
+      "production": 1315,
+      "hp": 478,
+      "liters": 2.9,
+      "years": [
+        1987,
+        1992
+      ],
+      "newPrice": {
+        "amount": 444000,
+        "currency": "DEM",
+        "eur": 227015,
+        "year": 1989
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Ferrari_F40",
+        "https://en.wikipedia.org/wiki/Ferrari_F40"
+      ]
+    }
+  },
+  "ferrari-testarossa-testarossa": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://www.red-headed.com/testarossa_production.html",
+      "confidence": "medium",
+      "note": "Presented 2 Oct 1984 at the Lido, Paris (eve of the Paris Salon). Ferrari press chief Franco Gozzi recalls the spotlight \"lighting like a fire, the car's red color\"; exact paint name not documented in the sources found."
+    },
+    "specs": {
+      "production": 7177,
+      "hp": 390,
+      "liters": 4.9,
+      "years": [
+        1984,
+        1991
+      ],
+      "newPrice": {
+        "amount": 222300,
+        "currency": "DEM",
+        "eur": 113660,
+        "year": 1985
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Ferrari_Testarossa",
+        "https://en.wikipedia.org/wiki/Ferrari_Testarossa"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-testarossa-testarossa-1.jpg",
+        "title": "File:1986 Ferrari Testarossa.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1986_Ferrari_Testarossa.jpg",
+        "author": "Ssu",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari Testarossa (1986), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-testarossa-testarossa-2.jpg",
+        "title": "File:1986 Ferrari Testasrossa Monodado.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1986_Ferrari_Testasrossa_Monodado.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari Testarossa Monospecchio (frühe Version mit hohem Einzelspiegel), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-testarossa-testarossa-3.jpg",
+        "title": "File:1986 Ferrari Testarossa being unloaded.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1986_Ferrari_Testarossa_being_unloaded.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari Testarossa (1986), Seitenansicht"
+      }
+    ]
+  },
+  "ferrari-testarossa-512-tr": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://www.red-headed.com/512tr_production.html",
+      "confidence": "low",
+      "note": "Press preview Maranello 13 Nov 1991, public debut Los Angeles Salon 2 Jan 1992. No source found naming the colour of the show/press cars; Rosso Corsa assumed as Ferrari's standard communication colour of the period."
+    },
+    "specs": {
+      "production": 2261,
+      "hp": 428,
+      "liters": 4.9,
+      "years": [
+        1991,
+        1994
+      ],
+      "newPrice": {
+        "amount": 320000,
+        "currency": "DEM",
+        "eur": 163613,
+        "year": 1992
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Ferrari_Testarossa",
+        "https://www.red-headed.com/512tr_production.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-testarossa-512-tr-1.jpg",
+        "title": "File:1992 Ferrari 512 TR Petersen Automotive Museum.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1992_Ferrari_512_TR_Petersen_Automotive_Museum.jpg",
+        "author": "TaurusEmerald",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 512 TR (1992), Rosso Corsa, Petersen Automotive Museum"
+      },
+      {
+        "file": "/cars/ferrari-testarossa-512-tr-2.jpg",
+        "title": "File:1992 Ferrari 512 TR right side.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:1992_Ferrari_512_TR_right_side.JPG",
+        "author": "BrokenSphere",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 512 TR (1992), Seitenansicht"
+      },
+      {
+        "file": "/cars/ferrari-testarossa-512-tr-3.jpg",
+        "title": "File:1992 Ferrari 512 TR (2).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1992_Ferrari_512_TR_(2).jpg",
+        "author": "Ethan Llamas",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 512 TR (1992), Heckansicht"
+      }
+    ]
+  },
+  "ferrari-testarossa-f512-m": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://red-headed.com/f512m_production.html",
+      "confidence": "medium",
+      "note": "Debut Paris Salon Oct 1994: a red car (s/n 99818) on the Pozzi/Ferrari importer stand and a yellow one (s/n 99854) on the Pininfarina stand."
+    },
+    "specs": {
+      "production": 501,
+      "hp": 440,
+      "liters": 4.9,
+      "years": [
+        1994,
+        1996
+      ],
+      "newPrice": {
+        "amount": 332000,
+        "currency": "DEM",
+        "eur": 169749,
+        "year": 1995
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Ferrari_Testarossa",
+        "https://red-headed.com/f512m_production.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-testarossa-f512-m-1.jpg",
+        "title": "File:1995 Ferrari F512 M in Rosso Corsa, front right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Ferrari_F512_M_in_Rosso_Corsa,_front_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F512 M (1995), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-testarossa-f512-m-2.jpg",
+        "title": "File:1995 Ferrari F512 M in Rosso Corsa, rear left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Ferrari_F512_M_in_Rosso_Corsa,_rear_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F512 M (1995), Rosso Corsa, Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-testarossa-f512-m-3.jpg",
+        "title": "File:1996 Ferrari F512 M 4.9 V12 (54219313837).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1996_Ferrari_F512_M_4.9_V12_(54219313837).jpg",
+        "author": "Rutger van der Maar",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Ferrari F512 M (1996) in Gelb"
+      }
+    ]
+  },
+  "ferrari-288-gto-288-gto": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://de.wikipedia.org/wiki/Ferrari_288_GTO",
+      "confidence": "high",
+      "note": "Presented at the 1984 Geneva Motor Show; per Wikipedia the factory delivered the car only in Rosso Corsa (\"Ab Werk wurde der Wagen nur in der Farbe Rosso Corsa ausgeliefert\")."
+    },
+    "specs": {
+      "production": 272,
+      "hp": 400,
+      "liters": 2.86,
+      "years": [
+        1984,
+        1986
+      ],
+      "newPrice": {
+        "amount": 265000,
+        "currency": "DEM",
+        "eur": 135492,
+        "year": 1984
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Ferrari_288_GTO"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-288-gto-288-gto-1.jpg",
+        "title": "File:Ferrari 288 GTO (1).JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:Ferrari_288_GTO_(1).JPG",
+        "author": "GTHO",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 288 GTO, Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-288-gto-288-gto-2.jpg",
+        "title": "File:1984 Ferrari 288 GTO rear.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1984_Ferrari_288_GTO_rear.jpg",
+        "author": "TTTNIS",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 288 GTO (1984), Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-288-gto-288-gto-3.jpg",
+        "title": "File:1987-06 Orvieto Ferrari 288 GTO.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1987-06_Orvieto_Ferrari_288_GTO.jpg",
+        "author": "Unknown photographer",
+        "license": "Public domain",
+        "licenseUrl": null,
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 288 GTO in Orvieto, Juni 1987"
+      }
+    ]
+  },
+  "ferrari-f355-f355-berlinetta": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://commons.wikimedia.org/wiki/File:199405_F355_unveiling_2.jpg",
+      "confidence": "medium",
+      "note": "Shown at Geneva (March 1994); press unveiling at Fiorano on 24 May 1994, where period photos show a red Berlinetta (next to a yellow GTS). Paint name inferred as Rosso Corsa."
+    },
+    "specs": {
+      "production": 4871,
+      "hp": 380,
+      "liters": 3.5,
+      "years": [
+        1994,
+        1999
+      ],
+      "newPrice": {
+        "amount": 220000,
+        "currency": "DEM",
+        "eur": 112484,
+        "year": 1995
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_F355",
+        "https://de.wikipedia.org/wiki/Ferrari_F355"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-f355-f355-berlinetta-1.jpg",
+        "title": "File:1995 Ferrari F355 (51264920037).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Ferrari_F355_(51264920037).jpg",
+        "author": "Jones028 from Hong Kong",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F355 Berlinetta (1995), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-f355-f355-berlinetta-2.jpg",
+        "title": "File:199405 F355 fiorano.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:199405_F355_fiorano.jpg",
+        "author": "Erremm",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F355 Berlinetta bei der Pressevorstellung in Fiorano, Mai 1994"
+      },
+      {
+        "file": "/cars/ferrari-f355-f355-berlinetta-3.jpg",
+        "title": "File:199405 F355 unveiling 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:199405_F355_unveiling_1.jpg",
+        "author": "Erremm",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Enthüllung des F355 vor der Presse, Fiorano, 24. Mai 1994"
+      }
+    ],
+    "note": "Production 4,871 per en.wikipedia (3,829 manual + 1,042 F1); de.wikipedia gives 3,938 + 1,044. Price (ca. 220,000 DM, 1995) is for the F355 range."
+  },
+  "ferrari-f355-f355-spider": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://en.wikipedia.org/wiki/Ferrari_F355",
+      "confidence": "low",
+      "note": "The Spider debuted in 1995 (reportedly unveiled in Monaco). No source found naming the launch car's colour; Rosso Corsa assumed. Giallo Modena was also prominent in early publicity models."
+    },
+    "specs": {
+      "production": 3717,
+      "hp": 380,
+      "liters": 3.5,
+      "years": [
+        1995,
+        1999
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_F355"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-f355-f355-spider-1.jpg",
+        "title": "File:1998 Ferrari F355 Spider 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1998_Ferrari_F355_Spider_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F355 Spider (1998), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-f355-f355-spider-2.jpg",
+        "title": "File:1999 Ferrari F355 Spider.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1999_Ferrari_F355_Spider.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari F355 Spider (1999), Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-f355-f355-spider-3.jpg",
+        "title": "File:1995 Ferrari F355 Spider 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Ferrari_F355_Spider_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Ferrari F355 Spider (1995), Giallo Modena"
+      }
+    ]
+  },
+  "ferrari-550-550-maranello": {
+    "launchColor": {
+      "name": "Argento Nürburgring (Nürburgring-Silber)",
+      "hex": "#a9acb0",
+      "source": "https://www.artcurial.com/en/sales/6144/lots/97-a",
+      "confidence": "medium",
+      "note": "Unveiled at the Nürburgring (Ferrari Racing Days, June/July 1996); the silver shade was named after the launch venue and press-launch cars wore it (Artcurial lot notes on an ex-press-launch car). Not confirmed by a Ferrari document."
+    },
+    "specs": {
+      "production": 3083,
+      "hp": 485,
+      "liters": 5.5,
+      "years": [
+        1996,
+        2001
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_550",
+        "https://de.wikipedia.org/wiki/Ferrari_550_Maranello"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-550-550-maranello-1.jpg",
+        "title": "File:1997 Ferrari 550 Maranello.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1997_Ferrari_550_Maranello.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 550 Maranello (1997) in Silber"
+      },
+      {
+        "file": "/cars/ferrari-550-550-maranello-2.jpg",
+        "title": "File:1998 Ferrari 550 Maranello (7446284114).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1998_Ferrari_550_Maranello_(7446284114).jpg",
+        "author": "InSapphoWeTrust from Los Angeles, California, USA",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 550 Maranello (1998) in Silber, Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-550-550-maranello-3.jpg",
+        "title": "File:550Mar.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:550Mar.JPG",
+        "author": "Jagvar at English Wikipedia",
+        "license": "Public domain",
+        "licenseUrl": null,
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 550 Maranello in Silber"
+      }
+    ]
+  },
+  "ferrari-550-550-barchetta-pininfarina": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "http://www.barchetta.cc/All.ferraris/2000.paris.motor.show.list/index.html",
+      "confidence": "high",
+      "note": "Public debut at the Paris Motor Show (Mondial de l'Automobile), September 2000: unveiled by Luca di Montezemolo and Sergio Pininfarina \"finished in gleaming rosso corsa with a grey interior\" (Keith Bluemel, show report)."
+    },
+    "specs": {
+      "production": 448,
+      "hp": 485,
+      "liters": 5.5,
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_550",
+        "https://de.wikipedia.org/wiki/Ferrari_550_Maranello"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-550-550-barchetta-pininfarina-1.jpg",
+        "title": "File:2001 Ferrari 550 Barchetta no 135, front right side edit.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Ferrari_550_Barchetta_no_135,_front_right_side_edit.jpg",
+        "author": "Mr.choppers, edited by Daniel Case on May 18, 2018",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 550 Barchetta Pininfarina (2001), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-550-550-barchetta-pininfarina-2.jpg",
+        "title": "File:2001 Ferrari 550 Barchetta no 135, rear right side.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Ferrari_550_Barchetta_no_135,_rear_right_side.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 550 Barchetta Pininfarina (2001), Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-550-550-barchetta-pininfarina-3.jpg",
+        "title": "File:2001 Ferrari 550 Barchetta Pininfarina Petersen Automotive Museum.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Ferrari_550_Barchetta_Pininfarina_Petersen_Automotive_Museum.jpg",
+        "author": "TaurusEmerald",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 550 Barchetta Pininfarina, Petersen Automotive Museum"
+      }
+    ]
+  },
+  "ferrari-308-308-gtb-vetroresina": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://en.wikipedia.org/wiki/Ferrari_308_GTB/GTS",
+      "confidence": "low",
+      "note": "Debut at the Paris Motor Show, October 1975. No source found that names the colour of the show car or the first press cars; Rosso Corsa assumed."
+    },
+    "specs": {
+      "production": 808,
+      "hp": 255,
+      "liters": 2.9,
+      "years": [
+        1975,
+        1977
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_308_GTB/GTS",
+        "https://de.wikipedia.org/wiki/Ferrari_308"
+      ]
+    },
+    "note": "Production: 808 per Ferrari/en.wikipedia; other sources give 712. Power: 255 PS (European spec) per en.wikipedia; de.wikipedia tables conflict (227/256 PS).",
+    "images": [
+      {
+        "file": "/cars/ferrari-308-308-gtb-vetroresina-1.jpg",
+        "title": "File:Ferrari 308GTB Lightweight (1976) - 14453314104 (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Ferrari_308GTB_Lightweight_(1976)_-_14453314104_(cropped).jpg",
+        "author": "Original:  Steve Glover from Bolton, Lancs., England / Derivative work:  Danyele",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 308 GTB Vetroresina (1976) in Rot"
+      },
+      {
+        "file": "/cars/ferrari-308-308-gtb-vetroresina-2.jpg",
+        "title": "File:Paris - Bonhams 2016 - Ferrari 308 GT Vetroresina Berlinette - 1976 - 001.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Paris_-_Bonhams_2016_-_Ferrari_308_GT_Vetroresina_Berlinette_-_1976_-_001.jpg",
+        "author": "Thesupermat",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Ferrari 308 GTB Vetroresina (1976) in Silber"
+      },
+      {
+        "file": "/cars/ferrari-308-308-gtb-vetroresina-3.jpg",
+        "title": "File:Paris - Bonhams 2016 - Ferrari 308 GT Vetroresina Berlinette - 1976 - 003.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Paris_-_Bonhams_2016_-_Ferrari_308_GT_Vetroresina_Berlinette_-_1976_-_003.jpg",
+        "author": "Thesupermat",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Ferrari 308 GTB Vetroresina (1976) in Silber, Seitenansicht"
+      }
+    ]
+  },
+  "ferrari-308-308-gts-quattrovalvole": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "https://en.wikipedia.org/wiki/Ferrari_308_GTB/GTS",
+      "confidence": "low",
+      "note": "Launched at the Paris Motor Show, October 1982 (GTB and GTS). Only a low-quality secondary source says the first-shown car was red; exact paint not documented."
+    },
+    "specs": {
+      "production": 3042,
+      "hp": 240,
+      "liters": 2.9,
+      "years": [
+        1982,
+        1985
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_308_GTB/GTS",
+        "https://de.wikipedia.org/wiki/Ferrari_308"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-308-308-gts-quattrovalvole-1.jpg",
+        "title": "File:Ferrari 308 GTS quattrovalvole (2015-07-05 Sp).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Ferrari_308_GTS_quattrovalvole_(2015-07-05_Sp).jpg",
+        "author": "Lothar Spurzem",
+        "license": "CC BY-SA 3.0 de",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 308 GTS Quattrovalvole in Rot"
+      },
+      {
+        "file": "/cars/ferrari-308-308-gts-quattrovalvole-2.jpg",
+        "title": "File:1985 Ferrari 308 GTS Quattrovalvole, rear right, 05-11-2024.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1985_Ferrari_308_GTS_Quattrovalvole,_rear_right,_05-11-2024.jpg",
+        "author": "MercurySable99",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 308 GTS Quattrovalvole (1985), Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-308-308-gts-quattrovalvole-3.jpg",
+        "title": "File:Ferrari 308 GTS Quattrovalvole (14515229115).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Ferrari_308_GTS_Quattrovalvole_(14515229115).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 308 GTS Quattrovalvole, Seitenansicht"
+      }
+    ]
+  },
+  "ferrari-360-360-modena": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "http://www.barchetta.cc/english/all.ferraris/detail/115163.360.modena.htm",
+      "confidence": "medium",
+      "note": "World debut at the Geneva Motor Show, 9 March 1999: the Ferrari display car s/n 115163 is recorded as rosso corsa with beige interior (barchetta.cc registry)."
+    },
+    "specs": {
+      "production": 8800,
+      "hp": 400,
+      "liters": 3.6,
+      "years": [
+        1999,
+        2005
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_360",
+        "https://de.wikipedia.org/wiki/Ferrari_360"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-360-360-modena-1.jpg",
+        "title": "File:1999 Ferrari 360 Modena.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1999_Ferrari_360_Modena.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 360 Modena (1999), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-360-360-modena-2.jpg",
+        "title": "File:2001 Ferrari 360 Modena 2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Ferrari_360_Modena_2.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 360 Modena (2001), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-360-360-modena-3.jpg",
+        "title": "File:2000 Ferrari 360 Modena (3947576509).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2000_Ferrari_360_Modena_(3947576509).jpg",
+        "author": "Spanish Coches",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 360 Modena (2000), Rosso Corsa"
+      }
+    ]
+  },
+  "ferrari-360-360-challenge-stradale": {
+    "launchColor": {
+      "name": "Rosso Scuderia",
+      "hex": "#e3241b",
+      "source": "https://www.conceptcarz.com/vehicle/z8145/ferrari-360-challenge-stradale.aspx",
+      "confidence": "high",
+      "note": "Geneva Motor Show, March 2003. Ferrari press text: \"The colour of the car on the Ferrari stand in Geneva will be the new Rosso Scuderia, the same red of the Formula 1 cars, with decorations recalling Ferraris used in customer races\" (i.e. the tricolore stripe)."
+    },
+    "specs": {
+      "production": 1288,
+      "hp": 425,
+      "liters": 3.6,
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ferrari_360"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-360-360-challenge-stradale-1.jpg",
+        "title": "File:2005 Ferrari 360 Challenge Stradale.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2005_Ferrari_360_Challenge_Stradale.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 360 Challenge Stradale in Rot mit Tricolore-Streifen"
+      },
+      {
+        "file": "/cars/ferrari-360-360-challenge-stradale-2.jpg",
+        "title": "File:2003 Ferrari 360 Challenge Stradale rear.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Ferrari_360_Challenge_Stradale_rear.jpg",
+        "author": "TTTNIS",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 360 Challenge Stradale (2003), Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-360-360-challenge-stradale-3.jpg",
+        "title": "File:2004 Ferrari 360 Challenge Stradale F1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2004_Ferrari_360_Challenge_Stradale_F1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari 360 Challenge Stradale (2004) mit Tricolore-Streifen"
+      }
+    ]
+  },
+  "ferrari-enzo-enzo": {
+    "launchColor": {
+      "name": "Rosso Corsa",
+      "hex": "#d40000",
+      "source": "http://www.barchetta.cc/all.ferraris/events-stories/events/2002/enzo-ferrari-presentation/enzo-ferrari-story/index.html",
+      "confidence": "medium",
+      "note": "Officially shown at the Paris Motor Show, September 2002. At the preceding owners' presentation in Maranello/Fiorano (June 2002) the main display car was a red example (s/n 128778), with a yellow car shown alongside; Pininfarina's Paris stand had a Giallo Modena car. Exact red paint name not stated."
+    },
+    "specs": {
+      "production": 400,
+      "hp": 660,
+      "liters": 6.0,
+      "years": [
+        2002,
+        2004
+      ],
+      "newPrice": {
+        "amount": 662000,
+        "currency": "EUR",
+        "eur": 662000,
+        "year": 2002
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Ferrari_Enzo_Ferrari",
+        "https://en.wikipedia.org/wiki/Enzo_Ferrari_(automobile)"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/ferrari-enzo-enzo-1.jpg",
+        "title": "File:2003 Enzo Ferrari at Greenwich 2018, front right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Enzo_Ferrari_at_Greenwich_2018,_front_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari Enzo (2003), Rosso Corsa"
+      },
+      {
+        "file": "/cars/ferrari-enzo-enzo-2.jpg",
+        "title": "File:2003 Enzo Ferrari at Greenwich 2018, rear right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Enzo_Ferrari_at_Greenwich_2018,_rear_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari Enzo (2003), Heckansicht"
+      },
+      {
+        "file": "/cars/ferrari-enzo-enzo-3.jpg",
+        "title": "File:2003 Enzo Ferrari (2210886318).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Enzo_Ferrari_(2210886318).jpg",
+        "author": "Joe Ross from Lansing, Michigan",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Ferrari Enzo bei der Nordamerika-Premiere, Detroit, Januar 2003"
+      }
+    ],
+    "note": "Production 400 per de.wikipedia (349 + 50 + 1 charity car); en.wikipedia currently states 498. Price ~662,000 EUR base per de.wikipedia (year not stated there; assumed 2002 launch)."
+  }
+}
