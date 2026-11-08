@@ -119,7 +119,9 @@ function build() {
     const brand: Brand = { id: b.id, name: b.name, country: b.country, color: b.color, featured: b.featured };
     brands.push(brand);
     brandById.set(brand.id, brand);
-    for (const m of b.models) {
+    // Models in order of their first build year: 356, 912, 930, 959, 911 (from the 964), Carrera GT, 918.
+    const byFirstYear = [...b.models].sort((x, y) => Math.min(...x.generations.map((g) => g.years[0])) - Math.min(...y.generations.map((g) => g.years[0])));
+    for (const m of byFirstYear) {
       const model: Model = {
         id: `${b.id}-${slug(m.name)}`,
         brandId: b.id,
