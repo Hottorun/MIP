@@ -309,7 +309,7 @@ export default function Models() {
             <tbody>
               {sections.flatMap((s) => [
                 <tr key={`h-${s.key}`} className="pointer-events-none">
-                  <td colSpan={9} className="pt-6 pb-2 font-serif text-[17px] text-ink">
+                  <td colSpan={9} className="pt-6 pb-2 font-serif text-[17px] font-bold text-ink">
                     {s.title} {s.sub && <span className="ml-2 font-sans text-[13px] text-muted">{s.sub}</span>}
                   </td>
                 </tr>,
@@ -322,7 +322,7 @@ export default function Models() {
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
                       </button>
                     </td>
-                    <td className="font-serif">{variantTitle(v)}</td>
+                    <td className="font-serif font-bold">{variantTitle(v)}</td>
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
                     <td className="text-right font-serif tabular-nums">{eur(m.value)}</td>
@@ -383,7 +383,7 @@ export default function Models() {
 function SectionHeading({ section }: { section: Section }) {
   return (
     <div className="mb-5 flex items-baseline gap-3 border-b border-line pb-2">
-      <h2 className="font-serif text-[24px] leading-tight text-ink">{section.title}</h2>
+      <h2 className="font-serif text-[24px] leading-tight font-bold text-ink">{section.title}</h2>
       {section.sub && <span className="text-[13px] text-muted">{section.sub}</span>}
       <span className="ml-auto text-[13px] text-muted">
         {section.items.length} {section.items.length === 1 ? "Variante" : "Varianten"}
@@ -449,7 +449,7 @@ function VariantCard({
         </button>
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
-        <span className="min-w-0 truncate font-serif text-[16.5px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
+        <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
         <span className="shrink-0 font-serif text-[16px] tabular-nums">{eur(m.value, { compact: true })}</span>
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
