@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { getVariant, variantTitle } from "../data/db";
 import type { Variant } from "../data/types";
 import { useStore } from "../state/store";
@@ -35,6 +35,9 @@ export default function Market() {
       </div>
     );
   }
+
+  // Old link of a former variant (e.g. GT3 Touring) → the variant it now belongs to.
+  if (variantId !== variant.id) return <Navigate to={`/markt/${variant.id}`} replace />;
 
   return <MarketPage key={variant.id} variant={variant} />;
 }

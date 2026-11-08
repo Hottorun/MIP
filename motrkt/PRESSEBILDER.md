@@ -403,8 +403,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Vorstellung: Genfer Autosalon 2013
 - Offizielle Seite: [25 Jahre 911 GT3](https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-performance-37556.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „911 GT3 models, 2024, Porsche AG“; „911 GT3 (996), 2024, Porsche AG“; „911 GT3 (997), Porsche AG“; „911 GT3 (991), Porsche AG“
-- Bilder im Markt-Tab: „911 GT3 (991.1), 2019“; „911 GT3 (991.1), 2019“; „911 GT3 (991)“
-- Offizielle Bilder im Markt-Tab: 3
+- Bilder im Markt-Tab: „911 GT3 (991.1), 2019“; „911 GT3 (991.1), 2019“; „911 GT3 (991)“; „911 GT3 with Touring-Package, 2017“
+- Offizielle Bilder im Markt-Tab: 4
 
 ### Porsche 911 (991) GT3 RS
 
@@ -423,14 +423,6 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „911 R, 2016, Porsche AG“
 - Bilder im Markt-Tab: „911 R, 2016“; „911 R, 2016“; „911 R, 2016“
 - Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (991) GT3 Touring
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: IAA Frankfurt 2017
-- Offizielle Seite: [Weltpremiere 911 GT3 mit Touring-Paket](https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „911 GT3 with Touring-Package, 2017“; „911 GT3 with Touring-Package, 2017“; „911 GT3 with Touring-Package, 2017“
-- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
 ### Porsche 911 (991) GT2 RS
 
@@ -499,16 +491,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Vorstellung: Online-Weltpremiere 2021
 - Offizielle Seite: [Weltpremiere 911 GT3](https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-world-premiere-livestream-23624.html) – Pressemitteilung zur Vorstellung
 - Bilder auf der Seite: „911 GT3, 2021, Porsche AG“; „Highlight clip: the new 911 GT3 at the Nuerburgring“; „The interior of the new 911 GT3“; „Technical Illustrations of the new 911 GT3“
-- Bilder im Markt-Tab: „911 GT3, 2021“; „911 GT3, 2021“; „911 GT3, 2021“
-- Offizielle Bilder im Markt-Tab: 3
-
-### Porsche 911 (992) GT3 Touring
-
-- Präsentationsfarbe: nicht recherchiert
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Der neue 911 GT3 mit Touring-Paket](https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „911 GT3 Touring, 2021“; „911 GT3 Touring, 2021“; „911 GT3 Touring, 2021“
-- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+- Bilder im Markt-Tab: „911 GT3, 2021“; „911 GT3, 2021“; „911 GT3, 2021“; „911 GT3 Touring, 2021“
+- Offizielle Bilder im Markt-Tab: 4
 
 ### Porsche 911 (992) GT3 RS
 

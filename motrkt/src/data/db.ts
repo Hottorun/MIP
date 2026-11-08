@@ -36,7 +36,7 @@ function buildMarkets(brandId: string, id: string) {
 /** Curated value-relevant options (src/data/options.ts); fallback: manual gearbox where Tiptronic/PDK existed, special paint. */
 function buildOptions(seed: VariantSeed, id: string): VariantOption[] {
   const curated = OPTIONS[id];
-  if (curated) return curated.map(([name, impact]) => ({ name, standard: false, impact }));
+  if (curated) return curated.map(([name, impact, requires]) => ({ name, standard: false, impact, ...(requires ? { requires } : {}) }));
   const manualShare = seed.gearbox?.Manual ?? 1;
   const opts: VariantOption[] = [];
   if (manualShare > 0 && manualShare < 0.99) opts.push({ name: "Schaltgetriebe", standard: false, impact: 0.1 });
@@ -169,8 +169,18 @@ build();
 
 export const DEFAULT_VARIANT_ID = "porsche-911-964-carrera-rs";
 
+/** Former variants that are now an option of another variant (old links and saved data point to the new one). */
+export const VARIANT_ALIASES: Record<string, string> = {
+  "porsche-911-991-gt3-touring": "porsche-911-991-gt3",
+  "porsche-911-992-gt3-touring": "porsche-911-992-gt3",
+};
+
+export function resolveVariantId(id: string): string {
+  return VARIANT_ALIASES[id] ?? id;
+}
+
 export function getVariant(id: string | undefined): Variant | undefined {
-  return id ? variantById.get(id) : undefined;
+  return id ? variantById.get(resolveVariantId(id)) : undefined;
 }
 
 function includesModel(v: Variant, modelName: string) {

@@ -4,7 +4,8 @@
  * listings (Hagerty, Elferspot, Classic.com, RM Sotheby's, Total 911); effects multiply.
  * Only options that buyers pay noticeably more (or less) for are listed.
  */
-type Opt = [name: string, impact: number];
+/** [name, impact, name of an option it requires] */
+type Opt = [name: string, impact: number, requires?: string];
 
 // Shared building blocks
 const manual = (impact: number, label = "Schaltgetriebe (statt Tiptronic)"): Opt => [label, impact];
@@ -102,18 +103,24 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-991-turbo-s": [lift(), exhaust(), buckets(0.03), pts(0.06)],
   "porsche-911-991-50-jahre-edition": [manual(0.12, "Schaltgetriebe (statt PDK)"), chrono(), pccb(0.02)],
   "porsche-911-991-speedster": [heritage(), lift(0.02), pts(0.06)],
-  "porsche-911-991-gt3": [manual(0.15, "Schaltgetriebe (nur 991.2, statt PDK)"), clubsport(0.02), pccb(), lift(0.04), buckets(0.06), pts()],
+  "porsche-911-991-gt3": [
+    manual(0.15, "Schaltgetriebe (nur 991.2, statt PDK)"),
+    ["Touring-Paket (ohne Heckflügel, 2017–2019)", 0.05, "Schaltgetriebe (nur 991.2, statt PDK)"],
+    clubsport(0.02),
+    pccb(),
+    lift(0.04),
+    buckets(0.06),
+    pts(),
+  ],
   "porsche-911-991-gt3-rs": [weissach(), lift(0.04), pccb(), pts()],
   "porsche-911-991-r": [lift(), pts(0.1)],
-  "porsche-911-991-gt3-touring": [lift(0.04), pccb(), buckets(), pts()],
   "porsche-911-991-gt2-rs": [weissach(0.12), lift(), pts(0.06)],
 
   // 992
   "porsche-911-992-carrera-s": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), ["Hinterachslenkung", 0.02], pccb(0.02), lift(0.02), buckets(0.03), pts(0.06)],
   "porsche-911-992-carrera-gts": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Leichtbau-Paket", 0.04], lift(0.02), buckets(0.03), pts(0.06)],
   "porsche-911-992-turbo-s": [["Leichtbau-Design-Paket", 0.04], lift(0.02), exhaust(), pts(0.06)],
-  "porsche-911-992-gt3": [manual(0.08, "Schaltgetriebe (statt PDK)"), clubsport(0.02), lift(0.04), pccb(), buckets(), pts()],
-  "porsche-911-992-gt3-touring": [manual(0.08, "Schaltgetriebe (statt PDK)"), lift(0.04), pccb(), buckets(), pts()],
+  "porsche-911-992-gt3": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Touring-Paket (ohne Heckflügel)", 0.1], clubsport(0.02), lift(0.04), pccb(), buckets(), pts()],
   "porsche-911-992-gt3-rs": [weissach(0.08), lift(0.04), clubsport(0.01), pts()],
   "porsche-911-992-s-t": [heritage(0.1), lift(), pts(0.06)],
   "porsche-911-992-sport-classic": [lift(0.02), pts(0.06)],

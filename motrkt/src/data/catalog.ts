@@ -277,10 +277,6 @@ export const CATALOG: BrandDef[] = [
                 transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#7d7f7a",
               }),
-              v("GT3 Touring", [2017, 2019], 2000, 192_000, 0.062, 500, 4.0, 152_000, {
-                transmission: "6-Gang Schaltgetriebe",
-                color: "#b7babe",
-              }),
               v("Speedster", [2019, 2019], 1948, 335_000, 0.069, 510, 4.0, 269_000, {
                 body: { Roadster: 1 },
                 transmission: "6-Gang Schaltgetriebe",
@@ -322,11 +318,6 @@ export const CATALOG: BrandDef[] = [
                 color: "#151619",
               }),
               v("Turbo S", [2020, 2024], 10000, 215_000, 0.028, 650, 3.7, 216_000, { ...AWD, tags: ["Turbo", "Allrad"], gearbox: { Automatik: 1 }, transmission: "8-Gang PDK", color: "#b7babe" }),
-              v("GT3 Touring", [2021, 2024], 5000, 232_000, 0.047, 510, 4.0, 169_000, {
-                gearbox: { Manual: 0.7, Automatik: 0.3 },
-                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#3b5a52",
-              }),
             ],
           },
         ],

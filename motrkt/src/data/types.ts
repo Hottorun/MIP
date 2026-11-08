@@ -52,7 +52,13 @@ export type Variant = Required<Omit<VariantSeed, "vol" | "tags">> & {
   specSources: string[];
 };
 
-export type VariantOption = { name: string; standard: boolean; impact: number /* value impact, e.g. 0.04 */ };
+export type VariantOption = {
+  name: string;
+  standard: boolean;
+  impact: number /* value impact, e.g. 0.04 */;
+  /** Name of an option this one only came with (picked together, e.g. 991 GT3 Touring → manual gearbox). */
+  requires?: string;
+};
 
 export type Generation = {
   id: string;

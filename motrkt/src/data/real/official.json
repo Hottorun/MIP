@@ -355,12 +355,6 @@
     "kind": "premiere",
     "title": "Der neue 911 Carrera T"
   },
-  "porsche-911-991-gt3-touring": {
-    "url": "https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html",
-    "kind": "premiere",
-    "event": "IAA Frankfurt 2017",
-    "title": "Weltpremiere 911 GT3 mit Touring-Paket"
-  },
   "porsche-911-991-speedster": {
     "url": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
     "kind": "history",
@@ -377,10 +371,5 @@
     "kind": "premiere",
     "event": "Online-Premiere 2020 (Genfer Autosalon abgesagt)",
     "title": "Der neue 911 Turbo S"
-  },
-  "porsche-911-992-gt3-touring": {
-    "url": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html",
-    "kind": "premiere",
-    "title": "Der neue 911 GT3 mit Touring-Paket"
   }
 }

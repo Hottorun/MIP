@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Holding, PriceAlert } from "../data/types";
-import { DEFAULT_VARIANT_ID, hiddenVariantIds, variantById } from "../data/db";
+import { DEFAULT_VARIANT_ID, hiddenVariantIds, resolveVariantId, variantById } from "../data/db";
 
 export type ChatMessage = { id: string; role: "user" | "assistant"; content: string; source?: "claude" | "local" };
 export type Toast = { id: string; message: string; tone: "info" | "success" | "error" };
@@ -55,7 +55,15 @@ type HiddenItems = Pick<Persisted, "watchlist" | "portfolio" | "alerts">;
  * Split stored data into what the current catalog shows and items of brands switched off in src/config.ts.
  * Hidden items are written back unchanged on every save, so nothing is lost when a brand is re-enabled.
  */
-function partition(state: Persisted): { visible: Persisted; hidden: HiddenItems } {
+function partition(stored: Persisted): { visible: Persisted; hidden: HiddenItems } {
+  // Former variants (e.g. GT3 Touring) live on as an option of another variant.
+  const state: Persisted = {
+    ...stored,
+    watchlist: [...new Set(stored.watchlist.map(resolveVariantId))],
+    portfolio: stored.portfolio.map((h) => ({ ...h, variantId: resolveVariantId(h.variantId) })),
+    alerts: stored.alerts.map((a) => ({ ...a, variantId: resolveVariantId(a.variantId) })),
+    lastVariantId: resolveVariantId(stored.lastVariantId),
+  };
   const visible = { ...state };
   const hidden: HiddenItems = { watchlist: [], portfolio: [], alerts: [] };
   visible.watchlist = state.watchlist.filter((id) => (hiddenVariantIds.has(id) ? !hidden.watchlist.push(id) : variantById.has(id)));

@@ -438,6 +438,13 @@
    "page": "https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-performance-37556.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911-GT3-2017/911-GT3-mit-Touring-Paket/b2-02_Porsche_GT3_Seite02_var.jpg/jcr:content/b2-02_Porsche_GT3_Seite02_var.jpg",
+   "caption": "911 GT3 with Touring-Package, 2017",
+   "page": "https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-991-gt3-rs": [
@@ -567,6 +574,13 @@
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/New-911-GT3/P21_0095_a3_rgb.jpeg/jcr:content/P21_0095_a3_rgb.jpeg",
    "caption": "911 GT3, 2021",
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-world-premiere-livestream-23624.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2021/Products/911-GT3-Touring-Package/b-/CZ22V16OX0023_RGB.jpeg/jcr:content/CZ22V16OX0023_RGB.jpeg",
+   "caption": "911 GT3 Touring, 2021",
+   "page": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
@@ -1137,32 +1151,6 @@
    "premiere": true
   }
  ],
- "porsche-911-991-gt3-touring": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911-GT3-2017/911-GT3-mit-Touring-Paket/b2-02_Porsche_GT3_Seite02_var.jpg/jcr:content/b2-02_Porsche_GT3_Seite02_var.jpg",
-   "caption": "911 GT3 with Touring-Package, 2017",
-   "page": "https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911-GT3-2017/911-GT3-mit-Touring-Paket/Galerie/b-01_Porsche_GT3_34_Front01-02_var.jpg/jcr:content/b-01_Porsche_GT3_34_Front01%2302_var.jpg",
-   "caption": "911 GT3 with Touring-Package, 2017",
-   "page": "https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911-GT3-2017/911-GT3-mit-Touring-Paket/Galerie/b-03_Porsche_GT3_34_Heck04_var.jpg/jcr:content/b-03_Porsche_GT3_34_Heck04_var.jpg",
-   "caption": "911 GT3 with Touring-Package, 2017",
-   "page": "https://newsroom.porsche.com/en/products/porsche-iaa-2017-911-gt3-touring-package-world-premiere-manual-transmission-rear-spoiler-14133.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  }
- ],
  "porsche-911-991-speedster": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/The-new-911-Speedster-goes-into-production/pictures/b-P19_0358_a5_rgb.jpg/jcr:content/b-P19_0358_a5_rgb.jpg",
@@ -1233,32 +1221,6 @@
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/911-Turbo-S/Images/Gallery-4/b-P20_0127_a3_rgb.jpeg/jcr:content/b-P20_0127_a3_rgb.jpeg",
    "caption": "911 Turbo S, 2020",
    "page": "https://newsroom.porsche.com/en/2020/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20110.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  }
- ],
- "porsche-911-992-gt3-touring": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2021/Products/911-GT3-Touring-Package/b-/CZ22V16OX0023_RGB.jpeg/jcr:content/CZ22V16OX0023_RGB.jpeg",
-   "caption": "911 GT3 Touring, 2021",
-   "page": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/911-GT3-Touring-Package/b-/Gallery-1/S21_2129_fine.jpeg/jcr:content/S21_2129_fine.jpeg",
-   "caption": "911 GT3 Touring, 2021",
-   "page": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/911-GT3-Touring-Package/b-/Gallery-1/CZ22V16OX0019_RGB.jpeg/jcr:content/CZ22V16OX0019_RGB.jpeg",
-   "caption": "911 GT3 Touring, 2021",
-   "page": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-touring-package-premiere-24794.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true

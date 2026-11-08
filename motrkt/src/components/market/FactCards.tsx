@@ -56,7 +56,15 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
   const options = variant.options.filter((o) => !o.standard);
   const base = getMetrics(variant.id).value;
   const factor = optionFactor(variant, picked);
-  const toggle = (name: string) => onPick(picked.includes(name) ? picked.filter((n) => n !== name) : [...picked, name]);
+  const toggle = (name: string) => {
+    if (picked.includes(name)) {
+      const dependants = options.filter((o) => o.requires === name).map((o) => o.name);
+      onPick(picked.filter((n) => n !== name && !dependants.includes(n)));
+    } else {
+      const req = options.find((o) => o.name === name)?.requires;
+      onPick([...new Set([...picked, name, ...(req ? [req] : [])])]);
+    }
+  };
 
   return (
     <div>
@@ -85,7 +93,10 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
                 >
                   {on && <Check className="size-3" strokeWidth={3} />}
                 </span>
-                <span className="flex-1">{o.name}</span>
+                <span className="flex-1">
+                  {o.name}
+                  {o.requires && <span className="block text-[12.5px] text-faint">nur mit {o.requires.replace(/ \(.+\)$/, "")}</span>}
+                </span>
                 <span className={cn("tabular-nums", o.impact >= 0 ? "text-up" : "text-down")}>{pct(o.impact, { digits: 0 })}</span>
               </label>
             </li>
