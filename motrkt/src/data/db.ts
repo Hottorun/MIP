@@ -102,6 +102,12 @@ function marketPhotos(id: string): Photo[] {
   return [...photos.filter((p) => p.premiere), ...photos.filter((p) => !p.premiere)];
 }
 
+/** The 911 counts from its 1963 debut, not from the oldest generation in the catalog (964). */
+const DEBUT_YEAR: Record<string, number> = { "911": 1963 };
+function firstYear(m: { name: string; generations: { years: [number, number | null] }[] }) {
+  return DEBUT_YEAR[m.name] ?? Math.min(...m.generations.map((g) => g.years[0]));
+}
+
 let built = false;
 function build() {
   if (built) return;
@@ -119,8 +125,8 @@ function build() {
     const brand: Brand = { id: b.id, name: b.name, country: b.country, color: b.color, featured: b.featured };
     brands.push(brand);
     brandById.set(brand.id, brand);
-    // Models in order of their first build year: 356, 912, 930, 959, 911 (from the 964), Carrera GT, 918.
-    const byFirstYear = [...b.models].sort((x, y) => Math.min(...x.generations.map((g) => g.years[0])) - Math.min(...y.generations.map((g) => g.years[0])));
+    // Models in order of first build year: 356, 911, 912, 930, 959, Carrera GT, 918.
+    const byFirstYear = [...b.models].sort((x, y) => firstYear(x) - firstYear(y));
     for (const m of byFirstYear) {
       const model: Model = {
         id: `${b.id}-${slug(m.name)}`,
