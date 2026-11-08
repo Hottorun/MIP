@@ -1,38 +1,50 @@
 @import "tailwindcss";
 
+/*
+ * Cream paper, espresso ink, a single cognac accent.
+ * Token names are kept from the original dark theme (panel, ink, gold …) so every page picks up the palette.
+ */
 @theme {
-  --color-bg: #0b0d10;
-  --color-panel: #12151a;
-  --color-panel-2: #171b21;
-  --color-panel-3: #1d222a;
-  --color-line: #252b34;
-  --color-line-2: #2f3640;
-  --color-ink: #ebe8e1;
-  --color-muted: #8b919b;
-  --color-faint: #5d636c;
-  --color-gold: #d4a24c;
-  --color-gold-2: #f0c879;
-  --color-up: #4fc48c;
-  --color-down: #e8615a;
-  --color-warn: #e8b04a;
-  --color-rose: #c2416b;
+  --color-bg: #efe7d7;
+  --color-panel: #f7f2e8;
+  --color-panel-2: #f2ebde;
+  --color-panel-3: #e8dfcd;
+  --color-line: #dccfb8;
+  --color-line-2: #c6b699;
+  --color-ink: #3a2a1d;
+  --color-muted: #78624d;
+  --color-faint: #a38f77;
+  --color-gold: #8b6232;
+  --color-gold-2: #6d4a22;
+  --color-up: #4f6b3a;
+  --color-down: #9a3b2c;
+  --color-warn: #9c7224;
+  --color-rose: #8e3b4a;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --font-sans: "Jost", "Futura", "Century Gothic", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Libre Caslon Text", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-display: "Libre Caslon Display", "Libre Caslon Text", "Iowan Old Style", Georgia, serif;
 }
 
 @layer base {
   html,
   body,
   #root {
-    height: 100%;
+    min-height: 100%;
   }
   body {
-    @apply bg-bg text-ink antialiased;
-    font-feature-settings: "tnum" 1, "cv11" 1;
+    @apply bg-bg font-sans text-ink antialiased;
+    font-size: 15px;
+    font-feature-settings: "tnum" 1;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-normal;
+    font-feature-settings: "tnum" 0, "onum" 1;
   }
   ::selection {
-    background: color-mix(in srgb, var(--color-gold) 35%, transparent);
+    background: color-mix(in srgb, var(--color-gold) 25%, transparent);
   }
   * {
     scrollbar-width: thin;
@@ -45,62 +57,68 @@
     cursor: default;
   }
   :focus-visible {
-    outline: 2px solid var(--color-gold);
-    outline-offset: 2px;
+    outline: 1.5px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+  select {
+    background-color: transparent;
   }
 }
 
 @layer components {
   .panel {
-    @apply rounded-xl border border-line bg-panel;
+    @apply rounded-[3px] border border-line bg-panel;
   }
   .panel-title {
-    @apply text-[15px] font-semibold tracking-tight text-ink;
+    @apply font-serif text-[19px] leading-snug text-ink;
   }
   .panel-sub {
-    @apply text-xs font-normal text-muted;
+    @apply font-sans text-[13px] text-muted;
   }
   .chip {
-    @apply inline-flex items-center gap-1 rounded-md border border-line px-2 py-0.5 text-xs text-muted transition-colors hover:border-line-2 hover:text-ink;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
   }
   .chip-active {
-    @apply border-gold/60 bg-gold/10 text-gold-2;
+    @apply border-ink bg-ink text-bg hover:border-ink hover:text-bg;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-1.5 rounded-lg border border-line bg-panel-2 px-3 py-1.5 text-sm text-ink transition-colors hover:border-line-2 hover:bg-panel-3 disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-[2px] border border-line-2 bg-transparent px-4 py-2 text-[14px] text-ink transition-colors hover:border-ink disabled:opacity-40;
   }
   .btn-gold {
-    @apply border-gold/70 bg-gold/15 text-gold-2 hover:bg-gold/25;
+    @apply border-ink bg-ink text-bg hover:bg-gold-2 hover:border-gold-2;
   }
   .btn-ghost {
-    @apply border-transparent bg-transparent hover:bg-panel-3;
+    @apply border-transparent hover:border-transparent hover:bg-panel-3;
   }
   .input {
-    @apply w-full rounded-lg border border-line bg-panel-2 px-3 py-1.5 text-sm text-ink placeholder:text-faint focus:border-gold/60 focus:outline-none;
+    @apply w-full rounded-[2px] border border-line-2 bg-panel px-3 py-2 text-[14px] text-ink placeholder:text-faint focus:border-ink focus:outline-none;
   }
   .label {
-    @apply mb-1 block text-xs text-muted;
+    @apply mb-1 block text-[13px] text-muted;
+  }
+  .link {
+    @apply text-ink underline decoration-line-2 underline-offset-4 transition-colors hover:decoration-ink;
   }
   .table-base {
-    @apply w-full text-left text-[13px];
+    @apply w-full text-left text-[14px];
   }
   .table-base th {
-    @apply whitespace-nowrap px-2 py-1.5 text-[11px] font-medium text-muted;
+    @apply px-2 py-2 text-[13px] font-normal whitespace-nowrap text-muted;
   }
   .table-base td {
-    @apply whitespace-nowrap px-2 py-1.5;
+    @apply px-2 py-2.5 whitespace-nowrap;
   }
   .table-base tbody tr {
-    @apply border-t border-line/70;
+    @apply border-t border-line;
   }
   .table-hover tbody tr {
-    @apply cursor-pointer transition-colors hover:bg-panel-3/60;
+    @apply cursor-pointer transition-colors hover:bg-panel-2;
   }
   .kpi-label {
-    @apply text-xs text-muted;
+    @apply text-[13px] text-muted;
   }
   .kpi-value {
-    @apply text-[22px] font-semibold tracking-tight;
+    @apply font-serif text-[24px] leading-tight;
   }
 }
 
@@ -115,15 +133,13 @@
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(4px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 .animate-fade-in {
-  animation: fade-in 0.18s ease-out both;
+  animation: fade-in 0.25s ease-out both;
 }
 @keyframes blink {
   50% {
@@ -135,4 +151,13 @@
   margin-left: 1px;
   color: var(--color-gold);
   animation: blink 1s step-start infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
