@@ -80,6 +80,7 @@ export default function Models() {
   const brandId = params.get("marke") ?? "";
   const modelId = params.get("modell") ?? "";
   const generationId = params.get("generation") ?? "";
+  const variantId = params.get("variante") ?? "";
   const effectiveBrand = brandId || (modelId ? modelById.get(modelId)?.brandId ?? "" : "");
 
   const [query, setQuery] = useState("");
@@ -91,7 +92,7 @@ export default function Models() {
   const [compare, setCompare] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
 
-  const setFilter = (next: { marke?: string; modell?: string; generation?: string }) => {
+  const setFilter = (next: { marke?: string; modell?: string; generation?: string; variante?: string }) => {
     const p = new URLSearchParams(params);
     for (const [k, v] of Object.entries(next)) {
       if (v) p.set(k, v);
@@ -107,6 +108,7 @@ export default function Models() {
       if (effectiveBrand && v.brandId !== effectiveBrand) return false;
       if (modelId && v.modelId !== modelId) return false;
       if (generationId && v.generationId !== generationId) return false;
+      if (variantId && v.id !== variantId) return false;
       if (eraDef && !eraDef.test(v.years[0])) return false;
       if (tags.length && !tags.every((t) => v.tags.includes(t))) return false;
       if (q && !variantTitle(v).toLowerCase().includes(q)) return false;
@@ -118,10 +120,13 @@ export default function Models() {
       const c = typeof x === "string" ? x.localeCompare(y as string) : (x as number) - (y as number);
       return desc ? -c : c;
     });
-  }, [effectiveBrand, modelId, generationId, era, tags, query, sort, desc]);
+  }, [effectiveBrand, modelId, generationId, variantId, era, tags, query, sort, desc]);
   const sections = useMemo(() => groupSections(filtered), [filtered]);
   const selectedModel = modelId ? modelById.get(modelId) : undefined;
   const modelGenerations = selectedModel && selectedModel.generationIds.length > 1 ? selectedModel.generationIds.map((id) => generationById.get(id)!) : [];
+  // Variants of the chosen generation (or of a single-generation model), in catalog order: e.g. 964 → Carrera 2, Carrera 4, Carrera RS …
+  const variantGenId = generationId || (selectedModel?.generationIds.length === 1 ? selectedModel.generationIds[0] : "");
+  const subVariants = variantGenId ? generationById.get(variantGenId)!.variantIds.map((id) => variantById.get(id)!) : [];
 
   const brandModels = models.filter((m) => !effectiveBrand || m.brandId === effectiveBrand);
 
@@ -166,14 +171,14 @@ export default function Models() {
       <div className="space-y-4 border-y border-line py-5">
         {brands.length > 1 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "", generation: "" })}>
+            <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "", generation: "", variante: "" })}>
               Alle Marken
             </button>
             {brands.map((b) => (
               <button
                 key={b.id}
                 className={cn("chip", effectiveBrand === b.id && "chip-active")}
-                onClick={() => setFilter({ marke: effectiveBrand === b.id ? "" : b.id, modell: "", generation: "" })}
+                onClick={() => setFilter({ marke: effectiveBrand === b.id ? "" : b.id, modell: "", generation: "", variante: "" })}
               >
                 {b.name}
               </button>
@@ -181,14 +186,14 @@ export default function Models() {
           </div>
         )}
         <div className="flex flex-wrap items-center gap-1.5">
-          <button className={cn("chip", !modelId && "chip-active")} onClick={() => setFilter({ modell: "", generation: "" })}>
+          <button className={cn("chip", !modelId && "chip-active")} onClick={() => setFilter({ modell: "", generation: "", variante: "" })}>
             Alle Modelle
           </button>
           {brandModels.map((m) => (
             <button
               key={m.id}
               className={cn("chip", modelId === m.id && "chip-active")}
-              onClick={() => setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId, generation: "" })}
+              onClick={() => setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId, generation: "", variante: "" })}
             >
               {effectiveBrand || brands.length === 1 ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
               {m.name}
@@ -198,12 +203,25 @@ export default function Models() {
         {modelGenerations.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="mr-1 text-[13px] text-muted">Generation</span>
-            <button className={cn("chip", !generationId && "chip-active")} onClick={() => setFilter({ generation: "" })}>
+            <button className={cn("chip", !generationId && "chip-active")} onClick={() => setFilter({ generation: "", variante: "" })}>
               Alle
             </button>
             {modelGenerations.map((g) => (
-              <button key={g.id} className={cn("chip", generationId === g.id && "chip-active")} onClick={() => setFilter({ generation: generationId === g.id ? "" : g.id })}>
+              <button key={g.id} className={cn("chip", generationId === g.id && "chip-active")} onClick={() => setFilter({ generation: generationId === g.id ? "" : g.id, variante: "" })}>
                 {g.name} <span className="text-faint">{yearsLabel(g.years)}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        {subVariants.length > 1 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="mr-1 text-[13px] text-muted">Variante</span>
+            <button className={cn("chip", !variantId && "chip-active")} onClick={() => setFilter({ variante: "" })}>
+              Alle
+            </button>
+            {subVariants.map((v) => (
+              <button key={v.id} className={cn("chip", variantId === v.id && "chip-active")} onClick={() => setFilter({ variante: variantId === v.id ? "" : v.id })}>
+                {v.name}
               </button>
             ))}
           </div>
