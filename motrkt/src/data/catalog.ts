@@ -70,14 +70,6 @@ export const CATALOG: BrandDef[] = [
               v("Carrera RS", [1992, 1994], 2282, 378_000, 0.108, 260, 3.6, 74_400, {
                 tags: ["Leichtbau"],
                 color: "#7a1f3d",
-                options: [
-                  "Schaltgetriebe (Serie)|std",
-                  "Sportsitze (Serie)|std",
-                  "Leichtbau-Ausstattung (RS-spezifisch)|std",
-                  "Clubsport-Paket (selten)|0.16",
-                  "Farbsonderwunsch (z. B. Rubinstern, Speedgelb)|0.07",
-                  "Touring-Ausstattung (Komfortsitze, el. Fensterheber)|-0.03",
-                ],
               }),
               v("Turbo", [1990, 1994], 5097, 236_000, 0.079, 320, 3.3, 100_500, {
                 tags: ["Turbo"],

@@ -3,6 +3,7 @@ import type { Brand, Generation, Model, Variant, VariantOption, VariantSeed } fr
 import { rng, slug } from "../lib/random";
 import { launchPhotos, officialLinks, realData, type Photo } from "./real";
 import { isBrandEnabled } from "../config";
+import { OPTIONS } from "./options";
 
 /** Normalised catalog: brands → models → generations → variants, plus lookup maps. */
 
@@ -32,49 +33,14 @@ function buildMarkets(brandId: string, id: string) {
     .sort((a, b) => b.share - a.share);
 }
 
-const OPTION_POOL: Record<string, [string, number][]> = {
-  classicPorsche: [
-    ["Sperrdifferenzial", 0.04],
-    ["Schiebedach", -0.02],
-    ["Farbsonderwunsch (Paint to Sample)", 0.09],
-    ["Sportsitze", 0.03],
-    ["Klimaanlage", 0.01],
-    ["Werks-Sportfahrwerk (M030)", 0.05],
-  ],
-  modernPorsche: [
-    ["Weissach-Paket", 0.08],
-    ["Keramikbremse (PCCB)", 0.03],
-    ["Lift-System Vorderachse", 0.02],
-    ["Vollschalensitze (Carbon)", 0.04],
-    ["Paint to Sample", 0.1],
-    ["Clubsport-Paket", 0.03],
-  ],
-};
-
-function optionPool(brandId: string, seed: VariantSeed) {
-  if (brandId === "porsche") return seed.years[0] >= 1997 ? OPTION_POOL.modernPorsche : OPTION_POOL.classicPorsche;
-  return OPTION_POOL[brandId];
-}
-
-function buildOptions(brandId: string, seed: VariantSeed, id: string): VariantOption[] {
-  if (seed.options) {
-    return seed.options.map((o) => {
-      const [name, flag] = o.split("|");
-      return flag === "std" ? { name, standard: true, impact: 0 } : { name, standard: false, impact: Number(flag) };
-    });
-  }
-  const r = rng(`options:${id}`);
-  const manualShare = seed.gearbox?.Manual ?? (seed.gearbox ? 0 : 1);
-  const opts: VariantOption[] = [
-    { name: manualShare >= 0.99 ? "Schaltgetriebe (Serie)" : seed.transmission ?? "Getriebe", standard: true, impact: 0 },
-  ];
-  if (manualShare > 0 && manualShare < 0.99) opts.push({ name: "Schaltgetriebe (Wunsch)", standard: false, impact: 0.12 });
-  const pool = [...optionPool(brandId, seed)];
-  const n = Math.min(pool.length, 3 + r.int(0, 1));
-  for (let i = 0; i < n; i++) {
-    const [name, impact] = pool.splice(r.int(0, pool.length - 1), 1)[0];
-    opts.push({ name, standard: false, impact });
-  }
+/** Curated value-relevant options (src/data/options.ts); fallback: manual gearbox where Tiptronic/PDK existed, special paint. */
+function buildOptions(seed: VariantSeed, id: string): VariantOption[] {
+  const curated = OPTIONS[id];
+  if (curated) return curated.map(([name, impact]) => ({ name, standard: false, impact }));
+  const manualShare = seed.gearbox?.Manual ?? 1;
+  const opts: VariantOption[] = [];
+  if (manualShare > 0 && manualShare < 0.99) opts.push({ name: "Schaltgetriebe", standard: false, impact: 0.1 });
+  opts.push({ name: "Farbsonderwunsch (Sonderlack ab Werk)", standard: false, impact: 0.06 });
   return opts;
 }
 
@@ -186,7 +152,7 @@ function build() {
             marketPhotos: marketPhotos(id),
             officialLink: officialLinks[id],
             specSources: specs?.sources ?? [],
-            options: buildOptions(b.id, s, id),
+            options: buildOptions(s, id),
             shape: g.shape,
             markets: buildMarkets(b.id, id),
             weaknesses: buildWeaknesses(b.id, s, g.name),
@@ -249,4 +215,9 @@ export function paintsFor(brandId: string) {
 export function yearsLabel([a, b]: [number, number | null]): string {
   if (b === null) return `${a}–heute`;
   return a === b ? `${a}` : `${a}–${b}`;
+}
+
+/** Value factor for the picked options (effects multiply), e.g. 1.12 = +12 %. */
+export function optionFactor(v: Variant, picked: string[]): number {
+  return v.options.filter((o) => !o.standard && picked.includes(o.name)).reduce((f, o) => f * (1 + o.impact), 1);
 }

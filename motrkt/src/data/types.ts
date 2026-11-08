@@ -26,10 +26,9 @@ export type VariantSeed = {
   drive?: string;
   transmission?: string;
   color?: string; // signature paint for the illustrations
-  options?: string[];
 };
 
-export type Variant = Required<Omit<VariantSeed, "vol" | "options" | "tags">> & {
+export type Variant = Required<Omit<VariantSeed, "vol" | "tags">> & {
   id: string;
   brandId: string;
   modelId: string;

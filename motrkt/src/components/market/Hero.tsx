@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
-import { brandById, generationById, modelById, variantById, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
+import { brandById, generationById, modelById, optionFactor, variantById, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { getSales, hasRealSales } from "../../data/generate";
 import { useStore } from "../../state/store";
-import { cn, eur, num } from "../../lib/format";
+import { cn, eur, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill } from "../ui";
 import { PhotoCredit } from "../CarImage";
 
 /** Product-page top: photograph on the left, a calm summary column on the right. */
-export function Hero({ variant }: { variant: Variant }) {
+export function Hero({ variant, picked }: { variant: Variant; picked: string[] }) {
   const brand = brandById.get(variant.brandId)!;
   const model = modelById.get(variant.modelId)!;
   const gen = generationById.get(variant.generationId)!;
@@ -39,19 +39,20 @@ export function Hero({ variant }: { variant: Variant }) {
           {variant.marketPhotos.length ? <Gallery variant={variant} /> : <IllustratedGallery variant={variant} />}
           {variant.officialLink && <OfficialLink variant={variant} />}
         </div>
-        <Summary variant={variant} />
+        <Summary variant={variant} picked={picked} />
       </div>
     </div>
   );
 }
 
-function Summary({ variant }: { variant: Variant }) {
+function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
   const { watchlist, toggleWatch, alerts, toast } = useStore();
   const [alertOpen, setAlertOpen] = useState(false);
   const brand = brandById.get(variant.brandId)!;
   const model = modelById.get(variant.modelId)!;
   const gen = generationById.get(variant.generationId)!;
   const m = getMetrics(variant.id);
+  const factor = optionFactor(variant, picked);
   const watched = watchlist.includes(variant.id);
   const alertCount = alerts.filter((a) => a.variantId === variant.id).length;
   const real = hasRealSales(variant.id);
@@ -81,14 +82,34 @@ function Summary({ variant }: { variant: Variant }) {
       <p className="mt-2 font-serif text-[16px] text-muted italic">{yearsLabel(variant.years)}</p>
 
       <div className="mt-8 border-t border-line pt-6">
-        <div className="text-[13px] text-muted">Marktwert, Median</div>
+        <div className="text-[13px] text-muted">{picked.length ? "Schätzwert mit Ausstattung" : "Marktwert, Median"}</div>
         <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <span className="font-serif text-[36px] leading-none">{eur(Math.round(m.value / 1000) * 1000)}</span>
-          <span className="text-[14px]">
-            <Delta value={m.change12m} arrow={false} /> <span className="text-muted">in 12 Monaten</span>
-          </span>
+          <span className="font-serif text-[36px] leading-none">{eur(Math.round((m.value * factor) / 1000) * 1000)}</span>
+          {picked.length ? (
+            <span className={cn("text-[14px]", factor >= 1 ? "text-up" : "text-down")}>
+              {pct(factor - 1)} <span className="text-muted">durch {picked.length === 1 ? "1 Option" : `${picked.length} Optionen`}</span>
+            </span>
+          ) : (
+            <span className="text-[14px]">
+              <Delta value={m.change12m} arrow={false} /> <span className="text-muted">in 12 Monaten</span>
+            </span>
+          )}
         </div>
-        <p className="mt-2 text-[13px] text-faint">{real ? `Aus ${getSales(variant.id).length} belegten Verkäufen` : "Demo-Daten"}</p>
+        <p className="mt-2 text-[13px] text-faint">
+          {picked.length ? `Median ohne Optionen ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
+          {real ? `Aus ${getSales(variant.id).length} belegten Verkäufen` : "Demo-Daten"}
+          {variant.options.length > 0 && (
+            <>
+              {" · "}
+              <button
+                onClick={() => document.getElementById("ausstattung")?.scrollIntoView({ behavior: "smooth" })}
+                className="text-muted underline decoration-line-2 underline-offset-2 hover:text-ink"
+              >
+                {picked.length ? "Ausstattung ändern" : "Ausstattung wählen"}
+              </button>
+            </>
+          )}
+        </p>
         <div className="mt-6 grid grid-cols-2 gap-2">
           <button
             className={cn("btn", !watched && "btn-gold")}

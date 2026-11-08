@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getVariant, variantTitle } from "../data/db";
+import type { Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { Hero } from "../components/market/Hero";
 import { ValuePanel } from "../components/market/ValuePanel";
@@ -35,15 +36,21 @@ export default function Market() {
     );
   }
 
+  return <MarketPage key={variant.id} variant={variant} />;
+}
+
+/** Keyed by variant, so the option selection starts empty for every car. */
+function MarketPage({ variant }: { variant: Variant }) {
+  const [picked, setPicked] = useState<string[]>([]);
   return (
-    <div className="space-y-24" key={variant.id}>
-      <Hero variant={variant} />
+    <div className="space-y-24">
+      <Hero variant={variant} picked={picked} />
       <ValuePanel variant={variant} />
       <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-2">
         <RecentSales variant={variant} />
         <Assessment variant={variant} />
       </div>
-      <Details variant={variant} />
+      <Details variant={variant} picked={picked} onPick={setPicked} />
       <Listings variant={variant} />
     </div>
   );
