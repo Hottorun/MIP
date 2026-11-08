@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Holding, PriceAlert } from "../data/types";
-import { DEFAULT_VARIANT_ID, variantById } from "../data/db";
+import { DEFAULT_VARIANT_ID, hiddenVariantIds, variantById } from "../data/db";
 
 export type ChatMessage = { id: string; role: "user" | "assistant"; content: string; source?: "claude" | "local" };
 export type Toast = { id: string; message: string; tone: "info" | "success" | "error" };
@@ -26,6 +26,9 @@ export const DEFAULT_STATE: Persisted = {
     "mercedes-190-e-w201-2-5-16-evolution-ii",
     "lamborghini-countach-25th-anniversary",
     "porsche-911-997-gt2-rs",
+    "porsche-959-959-komfort",
+    "porsche-carrera-gt-carrera-gt",
+    "porsche-911-992-s-t",
   ],
   alerts: [
     { id: "a1", variantId: "porsche-911-964-carrera-rs", direction: "above", threshold: 375_000, createdAt: d(2026, 6, 2) },
@@ -46,20 +49,35 @@ export const DEFAULT_STATE: Persisted = {
   chat: [],
 };
 
+type HiddenItems = Pick<Persisted, "watchlist" | "portfolio" | "alerts">;
+
+/**
+ * Split stored data into what the current catalog shows and items of brands switched off in src/config.ts.
+ * Hidden items are written back unchanged on every save, so nothing is lost when a brand is re-enabled.
+ */
+function partition(state: Persisted): { visible: Persisted; hidden: HiddenItems } {
+  const visible = { ...state };
+  const hidden: HiddenItems = { watchlist: [], portfolio: [], alerts: [] };
+  visible.watchlist = state.watchlist.filter((id) => (hiddenVariantIds.has(id) ? !hidden.watchlist.push(id) : variantById.has(id)));
+  visible.portfolio = state.portfolio.filter((h) => (hiddenVariantIds.has(h.variantId) ? !hidden.portfolio.push(h) : variantById.has(h.variantId)));
+  visible.alerts = state.alerts.filter((a) => (hiddenVariantIds.has(a.variantId) ? !hidden.alerts.push(a) : variantById.has(a.variantId)));
+  if (!variantById.has(visible.lastVariantId)) visible.lastVariantId = DEFAULT_VARIANT_ID;
+  return { visible, hidden };
+}
+
+let hiddenItems: HiddenItems = { watchlist: [], portfolio: [], alerts: [] };
+
 function load(): Persisted {
+  let stored: Persisted = DEFAULT_STATE;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_STATE;
-    const parsed = { ...DEFAULT_STATE, ...JSON.parse(raw) } as Persisted;
-    // Drop references to variants that no longer exist in the catalog.
-    parsed.watchlist = parsed.watchlist.filter((id) => variantById.has(id));
-    parsed.portfolio = parsed.portfolio.filter((h) => variantById.has(h.variantId));
-    parsed.alerts = parsed.alerts.filter((a) => variantById.has(a.variantId));
-    if (!variantById.has(parsed.lastVariantId)) parsed.lastVariantId = DEFAULT_VARIANT_ID;
-    return parsed;
+    if (raw) stored = { ...DEFAULT_STATE, ...JSON.parse(raw) } as Persisted;
   } catch {
-    return DEFAULT_STATE;
+    /* corrupt or unavailable storage – fall back to the demo state */
   }
+  const { visible, hidden } = partition(stored);
+  hiddenItems = hidden;
+  return visible;
 }
 
 const uid = () => Math.random().toString(36).slice(2, 10);
@@ -71,7 +89,15 @@ function useStoreValue() {
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          ...state,
+          watchlist: [...state.watchlist, ...hiddenItems.watchlist],
+          portfolio: [...state.portfolio, ...hiddenItems.portfolio],
+          alerts: [...state.alerts, ...hiddenItems.alerts],
+        }),
+      );
     } catch {
       /* storage full or unavailable – keep working in memory */
     }
@@ -123,7 +149,9 @@ function useStoreValue() {
         setState((s) => ({ ...s, chat: typeof update === "function" ? update(s.chat) : update }));
       },
       resetAll() {
-        setState(DEFAULT_STATE);
+        const { visible, hidden } = partition(DEFAULT_STATE);
+        hiddenItems = hidden;
+        setState(visible);
       },
     }),
     [],

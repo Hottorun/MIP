@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { BadgeCheck, Briefcase, ExternalLink, Heart, Mail, Search, Star, X } from "lucide-react";
+import { BadgeCheck, Briefcase, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
 import { brandById, brands, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
-import { AS_OF, CONDITION_FACTOR, CONDITION_SCORE, COUNTRY_NAMES, DAY, getAllListings, getListings, getSeries } from "../data/generate";
+import { AS_OF, CONDITION_FACTOR, CONDITION_SCORE, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
+import { useLiveListings } from "../state/liveListings";
 import { getMetrics } from "../data/market";
 import type { Condition, Listing, Variant } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
-import { CarArt, type Scene } from "../components/CarArt";
+import { type Scene } from "../components/CarArt";
+import { CarImage } from "../components/CarImage";
 import { BrandEmblem, Card, Delta, Empty, Modal, Pill, Sparkline } from "../components/ui";
 
 type SortKey = "deal" | "priceAsc" | "priceDesc" | "newest" | "mileage";
@@ -26,10 +28,8 @@ function mileageAdjustment(v: Variant, l: Listing) {
   return Math.min(1.08, Math.max(0.88, 1 + 0.06 * (1 - l.mileage / typical)));
 }
 
-let enrichedCache: Enriched[] | null = null;
-function enrichedListings(): Enriched[] {
-  if (enrichedCache) return enrichedCache;
-  enrichedCache = getAllListings().map((l, i) => {
+function enrich(list: Listing[]): Enriched[] {
+  return list.map((l, i) => {
     const v = variantById.get(l.variantId)!;
     const value = getMetrics(v.id).value;
     const condFactor = CONDITION_FACTOR[l.condition];
@@ -37,7 +37,6 @@ function enrichedListings(): Enriched[] {
     const fair = value * condFactor * kmFactor;
     return { l, v, value, condFactor, kmFactor, fair, deal: l.price / fair - 1, scene: SCENES[i % SCENES.length] };
   });
-  return enrichedCache;
 }
 
 function dealLabel(deal: number): { label: string; tone: "up" | "neutral" | "down" } {
@@ -68,7 +67,12 @@ export default function Buy() {
   const [sort, setSort] = useState<SortKey>("deal");
   const [visible, setVisible] = useState(PAGE);
 
-  const all = useMemo(() => enrichedListings(), []);
+  const live = useLiveListings();
+  const [preferLive, setPreferLive] = useState(true);
+  const liveAvailable = live.listings.length > 0;
+  const showingLive = preferLive && liveAvailable;
+  const source = showingLive ? live.listings : getAllListings();
+  const all = useMemo(() => enrich(source), [source]);
   const brandModels = models.filter((m) => !brand || m.brandId === brand);
 
   const filtered = useMemo(() => {
@@ -145,8 +149,10 @@ export default function Buy() {
         <div>
           <h1 className="font-serif text-[28px] leading-tight">Kaufen</h1>
           <p className="text-sm text-muted">
-            {num(all.length)} aktive Inserate · bewertet gegen den MOTRKT-Marktwert (Zustand &amp; Laufleistung berücksichtigt)
+            {num(all.length)} {showingLive ? "Live-Inserate von mobile.de" : "Demo-Inserate"} · bewertet gegen den MOTRKT-Marktwert (Zustand &amp; Laufleistung
+            berücksichtigt)
           </p>
+          <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} />
         </div>
         <div className="flex items-center gap-2 text-sm">
           <span className="text-muted">Sortierung</span>
@@ -275,7 +281,7 @@ export default function Buy() {
         </div>
       )}
 
-      {selected && <ListingModal e={selected} onClose={() => openListing(null)} onOpen={openListing} />}
+      {selected && <ListingModal e={selected} all={all} onClose={() => openListing(null)} onOpen={openListing} />}
       {selectedId && !selected && (
         <Modal open onClose={() => openListing(null)} title="Inserat nicht gefunden">
           <p className="text-sm text-muted">Das Inserat {selectedId} ist nicht mehr aktiv.</p>
@@ -291,7 +297,12 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
   return (
     <article className="panel group flex cursor-pointer flex-col overflow-hidden transition-colors hover:border-line-2" onClick={onOpen}>
       <div className="relative aspect-[5/2] overflow-hidden">
-        <CarArt shape={v.shape} color={l.colorHex} scene={e.scene} className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03]" label={l.title} />
+        {l.images?.[0] ? (
+          <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+        ) : (
+          <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03]" label={l.title} />
+        )}
+        {l.source === "mobile.de" && <span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white/90">mobile.de</span>}
         <button
           onClick={(ev) => {
             ev.stopPropagation();
@@ -320,7 +331,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
         </div>
         <div className="mt-auto flex items-end justify-between pt-2">
           <div className="text-xs text-muted">
-            {l.sellerType} · Note {l.condition}
+            {l.sellerType} · {l.conditionUnknown ? "Zustand k. A." : `Note ${l.condition}`}
             {l.matchingNumbers && <BadgeCheck className="ml-1 inline size-3.5 text-gold" aria-label="Matching Numbers" />}
           </div>
           <div className="text-right">
@@ -333,7 +344,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
   );
 }
 
-function ListingModal({ e, onClose, onOpen }: { e: Enriched; onClose: () => void; onOpen: (id: string) => void }) {
+function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[]; onClose: () => void; onOpen: (id: string) => void }) {
   const { l, v } = e;
   const { watchlist, toggleWatch, addHolding, toast } = useStore();
   const [inquiry, setInquiry] = useState(false);
@@ -344,9 +355,8 @@ function ListingModal({ e, onClose, onOpen }: { e: Enriched; onClose: () => void
   const watched = watchlist.includes(v.id);
   const m = getMetrics(v.id);
   const spark = getSeries(v.id).slice(-52).map((p) => p.value);
-  const similar = getListings(v.id)
-    .filter((o) => o.id !== l.id)
-    .map((o) => enrichedListings().find((x) => x.l.id === o.id)!)
+  const similar = all
+    .filter((o) => o.v.id === v.id && o.l.id !== l.id)
     .sort((a, b) => a.deal - b.deal)
     .slice(0, 4);
 
@@ -370,14 +380,20 @@ function ListingModal({ e, onClose, onOpen }: { e: Enriched; onClose: () => void
   const specs: [string, React.ReactNode][] = [
     ["Inserat-ID", <span className="font-mono">{l.id}</span>],
     ["FIN", <span className="font-mono">{l.vin}</span>],
+    ...(l.source === "mobile.de"
+      ? ([
+          ["Vorbesitzer", l.previousOwners ?? "k. A."],
+          ["Unfallschaden", l.accidentDamaged === null || l.accidentDamaged === undefined ? "k. A." : l.accidentDamaged ? <span className="text-warn">Ja</span> : "Nein"],
+        ] as [string, React.ReactNode][])
+      : []),
     ["Baujahr", `${l.year} (Bauzeit ${yearsLabel(v.years)})`],
     ["Laufleistung", km(l.mileage)],
-    ["Zustand", `Note ${l.condition}`],
+    ["Zustand", l.conditionUnknown ? "k. A. (Bewertung nimmt Note 2 an)" : `Note ${l.condition}`],
     ["Farbe", <span className="inline-flex items-center gap-1.5"><span className="inline-block size-3 rounded-full border border-white/20" style={{ background: l.colorHex }} />{l.color}</span>],
     ["Karosserie", l.body],
     ["Getriebe", l.gearbox === "Manual" ? "Schaltgetriebe" : "Automatik"],
-    ["Leistung", `${v.hp} PS · ${num(v.liters, 1)} l`],
-    ["Matching Numbers", l.matchingNumbers ? "Ja" : <span className="text-warn">Nein</span>],
+    ["Leistung", `${l.powerPs ?? v.hp} PS · ${num(v.liters, 1)} l`],
+    ["Matching Numbers", l.source === "mobile.de" ? "k. A." : l.matchingNumbers ? "Ja" : <span className="text-warn">Nein</span>],
     ["Servicehistorie", l.serviceHistory ? "Lückenlos" : <span className="text-warn">Unvollständig</span>],
     ["Standort", `${flag(l.country)} ${l.city}, ${COUNTRY_NAMES[l.country] ?? l.country}`],
     ["Anbieter", `${l.seller} (${l.sellerType})`],
@@ -416,7 +432,7 @@ function ListingModal({ e, onClose, onOpen }: { e: Enriched; onClose: () => void
           >
             <Briefcase className="size-4" /> {added ? "Im Portfolio" : "Als gekauft ins Portfolio"}
           </button>
-          <button className="btn btn-gold" onClick={() => setInquiry((i) => !i)}>
+          <button className="btn btn-gold" hidden={Boolean(l.url)} onClick={() => setInquiry((i) => !i)}>
             <Mail className="size-4" /> Anfrage senden
           </button>
         </>
@@ -424,7 +440,23 @@ function ListingModal({ e, onClose, onOpen }: { e: Enriched; onClose: () => void
     >
       <div className="space-y-4">
         <div className="overflow-hidden rounded-lg border border-line">
-          <CarArt shape={v.shape} color={l.colorHex} scene={e.scene} className="aspect-[5/2] h-auto w-full" label={l.title} />
+          {l.images?.length ? (
+            <div className="flex snap-x gap-1 overflow-x-auto">
+              {l.images.map((src) => (
+                <img key={src} src={src} alt={l.title} className="aspect-[4/3] h-56 shrink-0 snap-start object-cover" />
+              ))}
+            </div>
+          ) : (
+            <>
+              <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="aspect-[5/2] w-full" label={l.title} credit />
+              {v.photos.length > 0 && <p className="px-3 py-1.5 text-[11px] text-faint">Symbolfoto des Modells – das inserierte Fahrzeug ist {l.color}.</p>}
+            </>
+          )}
+          {l.url && (
+            <a href={l.url} target="_blank" rel="noreferrer" className="flex items-center justify-between border-t border-line px-3 py-2 text-sm text-gold hover:bg-panel-3">
+              Inserat bei mobile.de ansehen und Anbieter kontaktieren <ExternalLink className="size-4" />
+            </a>
+          )}
         </div>
 
         {inquiry && (
@@ -499,7 +531,7 @@ function ListingModal({ e, onClose, onOpen }: { e: Enriched; onClose: () => void
                 const sd = dealLabel(s.deal);
                 return (
                   <button key={s.l.id} onClick={() => onOpen(s.l.id)} className="flex items-center gap-3 rounded-lg border border-line bg-panel-2 p-2 text-left hover:border-line-2 hover:bg-panel-3">
-                    <CarArt shape={s.v.shape} color={s.l.colorHex} scene={s.scene} className="h-12 w-28 shrink-0 rounded" />
+                    <CarImage variant={s.v} fallbackColor={s.l.colorHex} scene={s.scene} className="h-12 w-28 shrink-0 rounded" />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-xs text-muted">
                         {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {s.l.city}
@@ -527,6 +559,54 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
     <div className="flex justify-between gap-3">
       <span className="text-muted">{label}</span>
       <span className="tabular-nums">{value}</span>
+    </div>
+  );
+}
+
+function SourceBar({
+  live,
+  preferLive,
+  setPreferLive,
+}: {
+  live: ReturnType<typeof useLiveListings>;
+  preferLive: boolean;
+  setPreferLive: (v: boolean) => void;
+}) {
+  if (live.status === "checking") return null;
+  if (live.status === "off") {
+    return (
+      <p className="mt-1 text-xs text-faint">
+        Demo-Inserate. Für echte Angebote mobile.de-API-Zugang in <code>.env</code> eintragen (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) und
+        neu starten.
+      </p>
+    );
+  }
+  return (
+    <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs">
+      <span className="inline-flex rounded-md border border-line p-0.5">
+        <button className={cn("rounded px-2 py-0.5", preferLive ? "bg-gold/20 text-gold-2" : "text-muted")} onClick={() => setPreferLive(true)}>
+          mobile.de live
+        </button>
+        <button className={cn("rounded px-2 py-0.5", !preferLive ? "bg-gold/20 text-gold-2" : "text-muted")} onClick={() => setPreferLive(false)}>
+          Demo
+        </button>
+      </span>
+      {live.status === "loading" && (
+        <span className="inline-flex items-center gap-1 text-muted">
+          <Loader2 className="size-3.5 animate-spin" /> lade mobile.de … {live.listings.length} zugeordnet
+        </span>
+      )}
+      {live.status === "ready" && (
+        <span className="text-muted">
+          {live.listings.length} Inserate den Varianten zugeordnet{live.loadedAt ? ` · Stand ${new Date(live.loadedAt).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}` : ""}
+        </span>
+      )}
+      {live.error && <span className="text-down">{live.error}</span>}
+      {(live.status === "ready" || live.status === "error") && (
+        <button className="inline-flex items-center gap-1 text-gold hover:underline" onClick={live.refresh}>
+          <RefreshCw className="size-3" /> aktualisieren
+        </button>
+      )}
     </div>
   );
 }

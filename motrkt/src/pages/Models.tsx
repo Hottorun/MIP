@@ -8,7 +8,7 @@ import { getMetrics, rebase } from "../data/market";
 import type { Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, num, pct } from "../lib/format";
-import { CarArt } from "../components/CarArt";
+import { CarImage } from "../components/CarImage";
 import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Pill, ScoreBar, Segmented, Sparkline, axisProps } from "../components/ui";
 
 type SortKey = "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
@@ -363,7 +363,7 @@ function VariantCard({
       className={cn("panel group cursor-pointer overflow-hidden transition-colors hover:border-gold/50", compared && "border-gold/60")}
     >
       <div className="relative">
-        <CarArt shape={v.shape} color={v.color} scene="studio" className="block aspect-[5/2] w-full" label={variantTitle(v)} />
+        <CarImage variant={v} scene="studio" className="block aspect-[5/2] w-full" label={variantTitle(v)} />
         <button
           onClick={(e) => {
             e.stopPropagation();

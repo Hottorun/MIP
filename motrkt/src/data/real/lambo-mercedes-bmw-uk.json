@@ -1,0 +1,1635 @@
+{
+  "lamborghini-miura-p400": {
+    "launchColor": {
+      "name": "Arancio (Orange)",
+      "hex": "#ee6a1a",
+      "source": "https://www.lamborghini.com/en-en/news/lamborghini-miura-first-supercar-history",
+      "confidence": "high",
+      "note": "Lamborghini: an orange car was presented on the Bertone stand at Geneva, 10 March 1966 (prototype chassis 0502, Arancio over black per supercarnostalgia.com)."
+    },
+    "specs": {
+      "production": 275,
+      "hp": 350,
+      "liters": 3.9,
+      "years": [
+        1966,
+        1969
+      ],
+      "newPrice": {
+        "amount": 20000,
+        "currency": "USD",
+        "eur": 40904,
+        "year": 1966,
+        "note": "launch price per en.wikipedia; EUR via approx. 1966 rate 1 USD = 4.00 DEM"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Miura"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-miura-p400-1.jpg",
+        "title": "File:1967 Lamborghini Miura P400.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1967_Lamborghini_Miura_P400.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Miura P400 (1967), Arancio"
+      },
+      {
+        "file": "/cars/lamborghini-miura-p400-2.jpg",
+        "title": "File:1966 Lamborghini Miura P400 (4445525383).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1966_Lamborghini_Miura_P400_(4445525383).jpg",
+        "author": "Davide Oliva from Italy",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Miura P400 (1966), Ausstellung Mitomacchina, MART Rovereto"
+      }
+    ]
+  },
+  "lamborghini-miura-p400-s": {
+    "launchColor": {
+      "name": "Verde Miura (Miura-Grün)",
+      "hex": "#8cc63f",
+      "source": "https://supercarnostalgia.com/blog/lamborghini-miura-p400-s-svr-chassis-3781",
+      "confidence": "medium",
+      "note": "Turin show car 1968 (chassis 3781) was built in Verde Miura with Gobi/beige interior; secondary source."
+    },
+    "specs": {
+      "production": 338,
+      "hp": 370,
+      "liters": 3.9,
+      "years": [
+        1968,
+        1971
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Miura"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-miura-p400-s-1.jpg",
+        "title": "File:1968 Lamborghini Miura P400 S LC23.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1968_Lamborghini_Miura_P400_S_LC23.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Miura P400 S (1968), Verde Miura"
+      },
+      {
+        "file": "/cars/lamborghini-miura-p400-s-2.jpg",
+        "title": "File:1970 Lamborghini Miura S SP 25.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1970_Lamborghini_Miura_S_SP_25.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Miura P400 S (1970), Verde Miura"
+      }
+    ]
+  },
+  "lamborghini-miura-p400-sv": {
+    "launchColor": {
+      "name": "Verde Metallizzato (Grünmetallic)",
+      "hex": "#2f6b3c",
+      "source": "https://www.topgear.com/car-news/classic/1971-lambo-miura-sv-show-car-has-been-restored-and-it-amazing",
+      "confidence": "high",
+      "note": "Geneva 1971 show car chassis 4846, restored by Lamborghini Polo Storico to its original Verde Metallizzato with gold wheels/sills (also supercarnostalgia.com/blog/lamborghini-miura-p400-sv-chassis-4846)."
+    },
+    "specs": {
+      "production": 150,
+      "hp": 385,
+      "liters": 3.9,
+      "years": [
+        1971,
+        1973
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Miura"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-miura-p400-sv-1.jpg",
+        "title": "File:Lamborghini Miura P400 SV (26479743006).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Lamborghini_Miura_P400_SV_(26479743006).jpg",
+        "author": "Andrew Bone from Weymouth, England",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Miura P400 SV, Verde Metallizzato"
+      },
+      {
+        "file": "/cars/lamborghini-miura-p400-sv-2.jpg",
+        "title": "File:1971 Lamborghini Miura P400 SV HCC23.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1971_Lamborghini_Miura_P400_SV_HCC23.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Miura P400 SV (1971), Gold"
+      }
+    ]
+  },
+  "lamborghini-countach-lp400-periscopio": {
+    "launchColor": {
+      "name": "Rosso (Rot)",
+      "hex": "#c1121c",
+      "source": "https://supercarnostalgia.com/blog/lamborghini-countach-lp400-chassis-1120001",
+      "confidence": "medium",
+      "note": "LP400 production version debuted at Geneva 1973 on chassis 1120001 in Rosso/Nero (also Revs Institute). en.wikipedia notes the third prototype with final production body shown at Geneva 1974 was bright yellow."
+    },
+    "specs": {
+      "production": 157,
+      "hp": 375,
+      "liters": 3.9,
+      "years": [
+        1974,
+        1978
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Countach"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-countach-lp400-periscopio-1.jpg",
+        "title": "File:Lamborghini Countach (4350223296).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Lamborghini_Countach_(4350223296).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Countach LP400, Rosso"
+      },
+      {
+        "file": "/cars/lamborghini-countach-lp400-periscopio-2.jpg",
+        "title": "File:FoS20162016 0623 090034AA (27250796354).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:FoS20162016_0623_090034AA_(27250796354).jpg",
+        "author": "Matthew Lamb",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Countach LP400 Periscopio, Giallo, Goodwood 2016"
+      }
+    ]
+  },
+  "lamborghini-countach-lp5000-quattrovalvole": {
+    "launchColor": {
+      "name": "Rosso Siviglia (Rot)",
+      "hex": "#b3121b",
+      "source": "https://en.wikipedia.org/wiki/Lamborghini_Countach",
+      "confidence": "low",
+      "note": "Colour of the Geneva 1985 show car not found in any source; red chosen as the most common period press/brochure colour (best guess)."
+    },
+    "specs": {
+      "production": 610,
+      "hp": 455,
+      "liters": 5.2,
+      "years": [
+        1985,
+        1988
+      ],
+      "note": "Lamborghini's own history article gives 631 units",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Countach",
+        "https://www.lamborghini.com/en-en/history/milestones",
+        "https://www.lamborghini.com/en-en/news/50-years-ago-the-first-countach-in-santagata-bolognese"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-countach-lp5000-quattrovalvole-1.jpg",
+        "title": "File:1985 Lamborghini Countach 5000 Quattrovalvole in Rosso, front right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1985_Lamborghini_Countach_5000_Quattrovalvole_in_Rosso,_front_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Countach 5000 Quattrovalvole, Rosso"
+      },
+      {
+        "file": "/cars/lamborghini-countach-lp5000-quattrovalvole-2.jpg",
+        "title": "File:Lamborghini Countach 5000 quattrovalvole (25051111454).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Lamborghini_Countach_5000_quattrovalvole_(25051111454).jpg",
+        "author": "先従隗始",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Countach 5000 Quattrovalvole, Weiß"
+      }
+    ]
+  },
+  "lamborghini-countach-25th-anniversary": {
+    "launchColor": {
+      "name": "Rosso (Rot)",
+      "hex": "#b5121b",
+      "source": "https://exclusivecarregistry.com/details/lamborghini/countach/68293",
+      "confidence": "low",
+      "note": "Launch show car colour not found. The first EU-spec car, kept by the factory as press car (driven by Sandro Munari) and pictured in the 25th Anniversary brochure, was Rosso with Panna leather (registry claim)."
+    },
+    "specs": {
+      "production": 658,
+      "hp": 455,
+      "liters": 5.2,
+      "years": [
+        1988,
+        1990
+      ],
+      "sources": [
+        "https://www.lamborghini.com/en-en/news/50-years-ago-the-first-countach-in-santagata-bolognese",
+        "https://www.lamborghini.com/en-en/news/automobili-lamborghini-at-chantilly-arts-elegance-2024",
+        "https://en.wikipedia.org/wiki/Lamborghini_Countach"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-countach-25th-anniversary-1.jpg",
+        "title": "File:1989 Lamborghini Countach 25th Anniversary.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1989_Lamborghini_Countach_25th_Anniversary.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Countach 25th Anniversary (1989), Rosso"
+      },
+      {
+        "file": "/cars/lamborghini-countach-25th-anniversary-2.jpg",
+        "title": "File:1988 Lamborghini Countach 25th Anniversary Silver.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1988_Lamborghini_Countach_25th_Anniversary_Silver.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Countach 25th Anniversary (1988), Silber"
+      }
+    ]
+  },
+  "lamborghini-diablo-diablo-vt": {
+    "launchColor": {
+      "name": "Rosso (Rot)",
+      "hex": "#b0131d",
+      "source": "https://supercarnostalgia.com/blog/lamborghini-diablo-and-diablo-vt",
+      "confidence": "low",
+      "note": "Debut at Geneva, March 1993 confirmed; colour of the show/press car not found — best guess."
+    },
+    "specs": {
+      "hp": 492,
+      "liters": 5.7,
+      "years": [
+        1993,
+        1998
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Diablo",
+        "https://supercarnostalgia.com/blog/lamborghini-diablo-and-diablo-vt"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-diablo-diablo-vt-1.jpg",
+        "title": "File:1996 Lamborghini Diablo VT 5.7 V12 (54226219205).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1996_Lamborghini_Diablo_VT_5.7_V12_(54226219205).jpg",
+        "author": "Rutger van der Maar",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Diablo VT (1996), Rosso"
+      },
+      {
+        "file": "/cars/lamborghini-diablo-diablo-vt-2.jpg",
+        "title": "File:1993 Lamborghini Diablo VT Coupé in Grigio, front.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1993_Lamborghini_Diablo_VT_Coup%C3%A9_in_Grigio,_front.jpg",
+        "author": "Alexandre Prévot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Diablo VT (1993), Grigio"
+      }
+    ]
+  },
+  "lamborghini-diablo-diablo-sv": {
+    "launchColor": {
+      "name": "Giallo (Gelb)",
+      "hex": "#f2c300",
+      "source": "https://www.lamborghini.com/en-en/news/lamborghini-diablos-30th-anniversary-with-cesare-cremonini",
+      "confidence": "low",
+      "note": "Debut at Geneva 1995 confirmed by Lamborghini; colour of the show car not found — yellow (with SV side graphics) is a best guess."
+    },
+    "specs": {
+      "hp": 510,
+      "liters": 5.7,
+      "years": [
+        1995,
+        1999
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Diablo",
+        "https://www.lamborghini.com/en-en/news/lamborghini-diablos-30th-anniversary-with-cesare-cremonini"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-diablo-diablo-sv-1.jpg",
+        "title": "File:Lamborghini Diablo SV (52165142765).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Lamborghini_Diablo_SV_(52165142765).jpg",
+        "author": "Alexandre Prevot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Diablo SV (1999), Giallo"
+      },
+      {
+        "file": "/cars/lamborghini-diablo-diablo-sv-2.jpg",
+        "title": "File:Lamborghini Diablo SV 1998 2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Lamborghini_Diablo_SV_1998_2.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Diablo SV (1998), Arancio"
+      }
+    ]
+  },
+  "lamborghini-diablo-diablo-gt": {
+    "launchColor": {
+      "name": "Arancio (Orange)",
+      "hex": "#f07818",
+      "source": "https://rmsothebys.com/auctions/lf16/lots/r129-1999-lamborghini-diablo-gt/",
+      "confidence": "low",
+      "note": "Prototype shown at Geneva March 1999; GT was offered in orange, grey, black and yellow. Orange press cars only mentioned by an unreliable blog — best guess."
+    },
+    "specs": {
+      "production": 80,
+      "hp": 575,
+      "liters": 6.0,
+      "years": [
+        1999,
+        2000
+      ],
+      "note": "Wikipedia text says 80, spec table 83",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Diablo"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-diablo-diablo-gt-1.jpg",
+        "title": "File:2000 Lamborghini Diablo GT Orange.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2000_Lamborghini_Diablo_GT_Orange.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Diablo GT, Arancio, Goodwood 2023"
+      },
+      {
+        "file": "/cars/lamborghini-diablo-diablo-gt-2.jpg",
+        "title": "File:2000 Lamborghini Diablo GT 2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2000_Lamborghini_Diablo_GT_2.jpg",
+        "author": "Calreyn88",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Diablo GT, Arancio"
+      }
+    ]
+  },
+  "lamborghini-murcielago-lp640-coupe": {
+    "launchColor": {
+      "name": "Grigio Telesto (Grau, unmetallisiert)",
+      "hex": "#8a8d8f",
+      "source": "https://commons.wikimedia.org/wiki/File:2006-03-03_Motorshow_Geneva_072.JPG",
+      "confidence": "medium",
+      "note": "Geneva 2006 world-premiere car is clearly a solid light grey in Commons photos from the show; paint name inferred."
+    },
+    "specs": {
+      "hp": 640,
+      "liters": 6.5,
+      "years": [
+        2006,
+        2010
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Lamborghini_Murci%C3%A9lago",
+        "https://www.carbodydesign.com/archive/2006/02/25-lamborghini-murcielago-lp640/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-murcielago-lp640-coupe-1.jpg",
+        "title": "File:2006-03-03 Motorshow Geneva 072.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2006-03-03_Motorshow_Geneva_072.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Murciélago LP640, Weltpremiere Genfer Autosalon 2006"
+      },
+      {
+        "file": "/cars/lamborghini-murcielago-lp640-coupe-2.jpg",
+        "title": "File:Gray Lamborghini LP640.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Gray_Lamborghini_LP640.jpg",
+        "author": "Lamborghini_LP640_Murcielago.jpg: Ian Hughes\nderivative work: AniRaptor2001 (talk)",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Murciélago LP640, Grau metallic"
+      }
+    ]
+  },
+  "lamborghini-murcielago-lp670-4-superveloce": {
+    "launchColor": {
+      "name": "Giallo Orion (Gelb)",
+      "hex": "#f2b705",
+      "source": "https://www.lambocars.com/murcielago-lp670-4-superveloce/",
+      "confidence": "medium",
+      "note": "A bright yellow SV was unveiled at Geneva on 3 March 2009 (also visible in Commons show photo); Giallo Orion name from the registry/auction description of the Geneva & Frankfurt show car."
+    },
+    "specs": {
+      "production": 186,
+      "hp": 670,
+      "liters": 6.5,
+      "years": [
+        2009,
+        2010
+      ],
+      "newPrice": {
+        "amount": 275000,
+        "currency": "GBP",
+        "eur": 308000,
+        "year": 2009,
+        "note": "UK list price incl. tax per Cars UK; EUR at approx. 2009 rate 1 GBP = 1.12 EUR"
+      },
+      "note": "350 planned, 186 sold per Cars UK/Lambocars; Wikipedia cites an unofficial registry with 268",
+      "sources": [
+        "https://www.carsuk.net/lamborghini-murcielago-lp670-4-sv-official/",
+        "https://en.wikipedia.org/wiki/Lamborghini_Murci%C3%A9lago"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/lamborghini-murcielago-lp670-4-superveloce-1.jpg",
+        "title": "File:LamborghiniMurciélagoSuperVeloceAutosalon09.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:LamborghiniMurci%C3%A9lagoSuperVeloceAutosalon09.JPG",
+        "author": "Lurwyler",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Lamborghini Murciélago LP 670-4 SuperVeloce, Giallo, Genfer Autosalon 2009"
+      },
+      {
+        "file": "/cars/lamborghini-murcielago-lp670-4-superveloce-2.jpg",
+        "title": "File:Lamborghini Murciélago LP 670–4 SuperVeloce at Sepang International Circuit, Malaysia.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:Lamborghini_Murci%C3%A9lago_LP_670%E2%80%934_SuperVeloce_at_Sepang_International_Circuit,_Malaysia.JPG",
+        "author": "Aero777",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Lamborghini Murciélago LP 670-4 SuperVeloce, Arancio"
+      }
+    ]
+  },
+  "mercedes-sl-w198-300-sl-flugelturer": {
+    "launchColor": {
+      "name": "Silbergrau metallic (DB 180)",
+      "hex": "#a9adb0",
+      "source": "https://de.wikipedia.org/wiki/Mercedes-Benz_W_198",
+      "confidence": "medium",
+      "note": "World premiere New York, 6 Feb 1954; the show car's colour is not documented in the sources found. Silver-grey DB 180 was the standard colour and that of the 1954 Paris Salon car."
+    },
+    "specs": {
+      "production": 1400,
+      "hp": 215,
+      "liters": 3.0,
+      "years": [
+        1954,
+        1957
+      ],
+      "newPrice": {
+        "amount": 29000,
+        "currency": "DEM",
+        "eur": 14828,
+        "year": 1954
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_W_198"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-sl-w198-300-sl-flugelturer-1.jpg",
+        "title": "File:Mercedes-Benz 300 SL (52687472408).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_SL_(52687472408).jpg",
+        "author": "Alexandre Prevot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 300 SL Flügeltürer (1954), Silbergrau metallic DB 180"
+      },
+      {
+        "file": "/cars/mercedes-sl-w198-300-sl-flugelturer-2.jpg",
+        "title": "File:Mercedes-Benz 300 SL silver vr.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_SL_silver_vr.jpg",
+        "author": "Stahlkocher",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 300 SL Flügeltürer, Silbergrau"
+      }
+    ]
+  },
+  "mercedes-sl-w198-300-sl-roadster": {
+    "launchColor": {
+      "name": "Rot (DB 534, \"Fire Engine Red\")",
+      "hex": "#a51c22",
+      "source": "https://rmsothebys.com/auctions/mo26/lots/r0109-1957-mercedesbenz-300-sl-roadster/",
+      "confidence": "medium",
+      "note": "Geneva 1957 premiere car (chassis 7500037, first production Roadster) was red over black per its documented history (Mercedes-Benz Classic Center USA report cited in the lot description)."
+    },
+    "specs": {
+      "production": 1858,
+      "hp": 215,
+      "liters": 3.0,
+      "years": [
+        1957,
+        1963
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_W_198"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-sl-w198-300-sl-roadster-1.jpg",
+        "title": "File:1957 Mercedes-Benz W198 300SL Roadster Red (1).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1957_Mercedes-Benz_W198_300SL_Roadster_Red_(1).jpg",
+        "author": "Damian B Oh",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 300 SL Roadster (1957), Rot"
+      },
+      {
+        "file": "/cars/mercedes-sl-w198-300-sl-roadster-2.jpg",
+        "title": "File:Mercedes-Benz 300 SL - left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_SL_-_left.jpg",
+        "author": "This photograph was taken with a Canon PowerShot A520 by User:Jed",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 300 SL Roadster, Rot"
+      }
+    ]
+  },
+  "mercedes-sl-r129-sl-500": {
+    "launchColor": {
+      "name": "Almandinrot metallic",
+      "hex": "#5c1a24",
+      "source": "https://diecastsociety.com/review-norev-mercedes-500-sl-r129/",
+      "confidence": "medium",
+      "note": "Geneva March 1989 world premiere (Mercedes-Benz public archive); show car described as almandine red metallic with 'mittelrot' interior by a model-car review replicating it — secondary source."
+    },
+    "specs": {
+      "hp": 326,
+      "liters": 5.0,
+      "years": [
+        1989,
+        2001
+      ],
+      "note": "326 PS for 1989–1993 500 SL; 320 PS (1993–98) and 306 PS (1998–2001) later",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mercedes-Benz_SL-Class_(R129)",
+        "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/World-premiere-fuer-SL-roadster-in-Geneva.xhtml?oid=4912475"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-sl-r129-sl-500-1.jpg",
+        "title": "File:Mercedes-Benz SL-Klasse (R129) 500 SL (1990) (52870541482).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_SL-Klasse_(R129)_500_SL_(1990)_(52870541482).jpg",
+        "author": "Charles from Port Chester, New York",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Mercedes-Benz 500 SL (R129, 1990)"
+      },
+      {
+        "file": "/cars/mercedes-sl-r129-sl-500-2.jpg",
+        "title": "File:Mercedes-Benz 500 SL R129 (8598310891).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_500_SL_R129_(8598310891).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Mercedes-Benz 500 SL (R129), Dunkelrot metallic"
+      }
+    ]
+  },
+  "mercedes-sl-r129-sl-73-amg": {
+    "launchColor": {
+      "name": "Brillantsilber metallic",
+      "hex": "#c2c5c9",
+      "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_SL-Class_(R129)",
+      "confidence": "low",
+      "note": "Built to order by AMG without a public launch event; no launch colour documented. Best guess."
+    },
+    "specs": {
+      "production": 50,
+      "hp": 525,
+      "liters": 7.3,
+      "note": "Wikipedia: 'Only 50 cars were made'; other sources cite 85",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mercedes-Benz_SL-Class_(R129)"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-sl-r129-sl-73-amg-1.jpg",
+        "title": "File:2001 Mercedes-Benz SL 73 AMG LC26.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Mercedes-Benz_SL_73_AMG_LC26.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Mercedes-Benz SL 73 AMG (R129, 2001), Dunkelblau"
+      },
+      {
+        "file": "/cars/mercedes-sl-r129-sl-73-amg-2.jpg",
+        "title": "File:Mercedes-Benz SL 73 AMG (4963424154).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_SL_73_AMG_(4963424154).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Mercedes-Benz SL 73 AMG (R129), Schwarz"
+      }
+    ]
+  },
+  "mercedes-190-e-w201-2-3-16": {
+    "launchColor": {
+      "name": "Rauchsilber metallic (Smoke Silver)",
+      "hex": "#8f9396",
+      "source": "https://supercarnostalgia.com/blog/mercedes-benz-w201-190-e-23-16",
+      "confidence": "low",
+      "note": "Only two colours were offered (Rauchsilber, Blauschwarz). Colour of the IAA 1983 show car not found; silver chosen after the Nardò record campaign (best guess)."
+    },
+    "specs": {
+      "production": 19487,
+      "hp": 185,
+      "liters": 2.3,
+      "years": [
+        1984,
+        1988
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_Baureihe_201",
+        "https://supercarnostalgia.com/blog/mercedes-benz-w201-190-e-23-16"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-190-e-w201-2-3-16-1.jpg",
+        "title": "File:1986 Mercedes 190E 2.3 16 (24241695098).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1986_Mercedes_190E_2.3_16_(24241695098).jpg",
+        "author": "Kieran White from Manchester, England",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 190 E 2.3-16 (1986), Rauchsilber"
+      },
+      {
+        "file": "/cars/mercedes-190-e-w201-2-3-16-2.jpg",
+        "title": "File:Mercedes-Benz 190E 2.3 16v 'Cosworth' (36303803264).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_190E_2.3_16v_%27Cosworth%27_(36303803264).jpg",
+        "author": "FotoSleuth",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Mercedes-Benz 190 E 2.3-16, Blauschwarz"
+      }
+    ]
+  },
+  "mercedes-190-e-w201-2-5-16-evolution": {
+    "launchColor": {
+      "name": "Blauschwarz metallic (DB 199)",
+      "hex": "#1c2230",
+      "source": "https://www.supercars.net/blog/1989-mercedes-benz-190e-evolution-i/",
+      "confidence": "medium",
+      "note": "Unveiled Geneva March 1989; all 502 cars reportedly finished in blue-black metallic, so the show car colour is inferred."
+    },
+    "specs": {
+      "production": 502,
+      "hp": 204,
+      "liters": 2.5,
+      "years": [
+        1989,
+        1989
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_Baureihe_201"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-190-e-w201-2-5-16-evolution-1.jpg",
+        "title": "File:Mercedes-Benz 190 E 2.5-16 Evolution I DSC 8901.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_190_E_2.5-16_Evolution_I_DSC_8901.jpg",
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 190 E 2.5-16 Evolution, Blauschwarz"
+      },
+      {
+        "file": "/cars/mercedes-190-e-w201-2-5-16-evolution-2.jpg",
+        "title": "File:Mercedes-Benz 190E 2.5-16 Evolution (7457016156).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_190E_2.5-16_Evolution_(7457016156).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 190 E 2.5-16 Evolution, Blauschwarz"
+      }
+    ]
+  },
+  "mercedes-190-e-w201-2-5-16-evolution-ii": {
+    "launchColor": {
+      "name": "Blauschwarz metallic (DB 199)",
+      "hex": "#1c2230",
+      "source": "https://supercarnostalgia.com/blog/mercedes-benz-w201-190-e-25-16-evolution-2",
+      "confidence": "medium",
+      "note": "Unveiled Geneva 8 March 1990; blue-black metallic was the only colour officially offered (two cars reputedly Astralsilber)."
+    },
+    "specs": {
+      "production": 502,
+      "hp": 235,
+      "liters": 2.5,
+      "years": [
+        1990,
+        1990
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_Baureihe_201"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-190-e-w201-2-5-16-evolution-ii-1.jpg",
+        "title": "File:1990 Mercedes-Benz 190 E 2.5-16 Evolution II LC25.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1990_Mercedes-Benz_190_E_2.5-16_Evolution_II_LC25.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 190 E 2.5-16 Evolution II (1990), Blauschwarz"
+      },
+      {
+        "file": "/cars/mercedes-190-e-w201-2-5-16-evolution-ii-2.jpg",
+        "title": "File:Mercedes-Benz 190E 2.5-16 Evo II front - Stuttgart Museum.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_190E_2.5-16_Evo_II_front_-_Stuttgart_Museum.jpg",
+        "author": "GerdeeX",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz 190 E 2.5-16 Evolution II, Mercedes-Benz Museum"
+      }
+    ]
+  },
+  "mercedes-sls-amg-c197-sls-amg-coupe": {
+    "launchColor": {
+      "name": "AMG Le Mans Rot metallic",
+      "hex": "#9e1b20",
+      "source": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_SLS_AMG_IAA_2009.JPG",
+      "confidence": "medium",
+      "note": "The 'Weltpremiere' car on the IAA Frankfurt stand, 15 Sep 2009, is red in Commons photos; AMG Le Mans red was the only red on the launch colour list (benzblogger.com, Sept 2009)."
+    },
+    "specs": {
+      "hp": 571,
+      "liters": 6.2,
+      "years": [
+        2010,
+        2014
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_SLS_AMG"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-sls-amg-c197-sls-amg-coupe-1.jpg",
+        "title": "File:Mercedes C197 SLS AMG.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes_C197_SLS_AMG.jpg",
+        "author": "Klaus J",
+        "license": "Public domain",
+        "licenseUrl": null,
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz SLS AMG, Weltpremiere IAA Frankfurt 2009"
+      },
+      {
+        "file": "/cars/mercedes-sls-amg-c197-sls-amg-coupe-2.jpg",
+        "title": "File:Mercedes Benz SLS AMG C197 (5216448670).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes_Benz_SLS_AMG_C197_(5216448670).jpg",
+        "author": "Christian Flores from Carlsbad / Encinitas, United States of America",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Mercedes-Benz SLS AMG (C197), Silber"
+      }
+    ]
+  },
+  "mercedes-sls-amg-c197-sls-amg-black-series": {
+    "launchColor": {
+      "name": "AMG solarbeam (Gelb)",
+      "hex": "#f3c400",
+      "source": "https://www.autozeitung.de/mercedes-sls-amg-black-series-2013-la-auto-show-2012-50310.html",
+      "confidence": "medium",
+      "note": "Premiered at LA Auto Show Nov 2012; the show car at Detroit Jan 2013 (Commons) and the press imagery are solarbeam yellow."
+    },
+    "specs": {
+      "hp": 631,
+      "liters": 6.2,
+      "years": [
+        2013,
+        2014
+      ],
+      "newPrice": {
+        "amount": 249900,
+        "currency": "EUR",
+        "eur": 249900,
+        "year": 2013
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Mercedes-Benz_SLS_AMG",
+        "https://www.torquenews.com/1084/mercedes-sls-amg-black-series-breaks-conventional-boundaries"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-sls-amg-c197-sls-amg-black-series-1.jpg",
+        "title": "File:2014 Mercedes-Benz SLS AMG Black Series.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Mercedes-Benz_SLS_AMG_Black_Series.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz SLS AMG Black Series, AMG solarbeam"
+      },
+      {
+        "file": "/cars/mercedes-sls-amg-c197-sls-amg-black-series-2.jpg",
+        "title": "File:2014 Mercedes-Benz SLS AMG Black Series (8403236103).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Mercedes-Benz_SLS_AMG_Black_Series_(8403236103).jpg",
+        "author": "Sarah Larson from Ann Arbor, MI, USA",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz SLS AMG Black Series, NAIAS Detroit 2013"
+      }
+    ]
+  },
+  "mercedes-clk-gtr-clk-gtr-strassenversion": {
+    "launchColor": {
+      "name": "Silber (Brillantsilber metallic)",
+      "hex": "#b9bcbf",
+      "source": "https://en.wikipedia.org/wiki/Mercedes-Benz_CLK_GTR",
+      "confidence": "medium",
+      "note": "Road cars and the Mercedes-Benz Museum car are silver; launch car colour not explicitly documented."
+    },
+    "specs": {
+      "production": 20,
+      "liters": 6.9,
+      "years": [
+        1998,
+        1999
+      ],
+      "newPrice": {
+        "amount": 1547620,
+        "currency": "USD",
+        "eur": 1392000,
+        "year": 1998,
+        "note": "Guinness figure per en.wikipedia; EUR at approx. 1998 rate 1 USD = 1.76 DEM"
+      },
+      "note": "Power quoted as 612 PS (often) or 631 PS (en.wikipedia coupé figure) – not included",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mercedes-Benz_CLK_GTR"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/mercedes-clk-gtr-clk-gtr-strassenversion-1.jpg",
+        "title": "File:1998 Mercedes-Benz CLK GTR SP20.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1998_Mercedes-Benz_CLK_GTR_SP20.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz CLK GTR Straßenversion (1998), Silber"
+      },
+      {
+        "file": "/cars/mercedes-clk-gtr-clk-gtr-strassenversion-2.jpg",
+        "title": "File:Mercedes-Benz CLK GTR Stuttgart 2010 001.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_CLK_GTR_Stuttgart_2010_001.jpg",
+        "author": "Kylie & Rob (and Helen)",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Mercedes-Benz CLK GTR, Mercedes-Benz Museum Stuttgart"
+      }
+    ]
+  },
+  "bmw-m1-e26-m1": {
+    "launchColor": {
+      "name": "Alpinweiß (Alpine White)",
+      "hex": "#f1f1ec",
+      "source": "https://www.bimmerfile.com/2008/03/29/thirty-years-of-the-bmw-m1/",
+      "confidence": "high",
+      "note": "BMW AG press release (30th anniversary): 'The star came in pure white' at the Paris Motor Show, October 1978."
+    },
+    "specs": {
+      "production": 453,
+      "hp": 277,
+      "liters": 3.5,
+      "years": [
+        1978,
+        1981
+      ],
+      "newPrice": {
+        "amount": 100000,
+        "currency": "DEM",
+        "eur": 51129,
+        "year": 1978
+      },
+      "note": "453 total incl. 53/54 motorsport cars; 399 road cars",
+      "sources": [
+        "https://en.wikipedia.org/wiki/BMW_M1",
+        "https://www.bimmerfile.com/2008/03/29/thirty-years-of-the-bmw-m1/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-m1-e26-m1-1.jpg",
+        "title": "File:BMW M1 (4632576656).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_M1_(4632576656).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M1 (E26), Alpinweiß"
+      },
+      {
+        "file": "/cars/bmw-m1-e26-m1-2.jpg",
+        "title": "File:BMW M1 (8754868204) (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_M1_(8754868204)_(cropped).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M1 (E26), Alpinweiß"
+      }
+    ]
+  },
+  "bmw-m3-e30-m3": {
+    "launchColor": {
+      "name": "Brillantrot (Brilliant Red)",
+      "hex": "#c8102e",
+      "source": "https://www.bmwgroup-classic.com/en/models/bmw-classics/product-description-page.ad-1558-1.bmw-m3-e30.html",
+      "confidence": "low",
+      "note": "Premiere at IAA Frankfurt, September 1985 confirmed; colour of the show car not found — best guess."
+    },
+    "specs": {
+      "hp": 200,
+      "liters": 2.3,
+      "years": [
+        1986,
+        1991
+      ],
+      "newPrice": {
+        "amount": 59800,
+        "currency": "DEM",
+        "eur": 30575,
+        "year": 1986
+      },
+      "note": "200 PS (195 PS with catalyst) at launch; later 215 PS. Total E30 M3 production 17,970 (en.wikipedia, incl. Evolution models and convertibles)",
+      "sources": [
+        "https://s14.de/en/models/e30-m3/",
+        "https://en.wikipedia.org/wiki/BMW_M3"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-m3-e30-m3-1.jpg",
+        "title": "File:1987 BMW M3 E30 Red SP21.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1987_BMW_M3_E30_Red_SP21.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M3 (E30, 1987), Rot"
+      },
+      {
+        "file": "/cars/bmw-m3-e30-m3-2.jpg",
+        "title": "File:1987 BMW M3 White.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1987_BMW_M3_White.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "BMW M3 (E30, 1987), Alpinweiß"
+      }
+    ]
+  },
+  "bmw-m3-e30-m3-evolution-ii": {
+    "launchColor": {
+      "name": "Macaoblau metallic",
+      "hex": "#1e2a45",
+      "source": "https://s14.de/en/models/e30-m3/",
+      "confidence": "low",
+      "note": "Evo II was offered only in Macaoblau, Misanorot and Nogarosilber; launch car colour not found — best guess."
+    },
+    "specs": {
+      "production": 500,
+      "hp": 220,
+      "liters": 2.3,
+      "years": [
+        1988,
+        1988
+      ],
+      "newPrice": {
+        "amount": 69900,
+        "currency": "DEM",
+        "eur": 35739,
+        "year": 1988
+      },
+      "note": "500 per BMW Group Classic / de.wikipedia; en.wikipedia says 501",
+      "sources": [
+        "https://s14.de/en/models/e30-m3/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-m3-e30-m3-evolution-ii-1.jpg",
+        "title": "File:BMW M3 (E30) Evolution II IAA 2025 DSC 1288.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_M3_(E30)_Evolution_II_IAA_2025_DSC_1288.jpg",
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M3 Evolution II (E30), BMW Welt 2025"
+      },
+      {
+        "file": "/cars/bmw-m3-e30-m3-evolution-ii-2.jpg",
+        "title": "File:E30 M3 Evo II (2541956982).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:E30_M3_Evo_II_(2541956982).jpg",
+        "author": "Darren",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "BMW M3 Evolution II (E30), Nogarosilber"
+      }
+    ]
+  },
+  "bmw-m3-e30-m3-sport-evolution": {
+    "launchColor": {
+      "name": "Brillantrot (Brilliant Red)",
+      "hex": "#c8102e",
+      "source": "https://s14.de/en/models/e30-m3/",
+      "confidence": "low",
+      "note": "Offered only in Brillantrot and Jet Black; the BMW Museum's car is Brillantrot. Launch car colour not documented."
+    },
+    "specs": {
+      "production": 600,
+      "hp": 238,
+      "liters": 2.5,
+      "years": [
+        1990,
+        1990
+      ],
+      "newPrice": {
+        "amount": 85000,
+        "currency": "DEM",
+        "eur": 43460,
+        "year": 1990
+      },
+      "sources": [
+        "https://s14.de/en/models/e30-m3/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-m3-e30-m3-sport-evolution-1.jpg",
+        "title": "File:BMW M3 Sport Evolution in BMW-Museum in Munich, Bayern.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_M3_Sport_Evolution_in_BMW-Museum_in_Munich,_Bayern.JPG",
+        "author": "Jiří Sedláček",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M3 Sport Evolution (E30), Brillantrot, BMW Museum"
+      },
+      {
+        "file": "/cars/bmw-m3-e30-m3-sport-evolution-2.jpg",
+        "title": "File:BMW M3 E30 Sport Evolution (7599599622).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_M3_E30_Sport_Evolution_(7599599622).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "BMW M3 Sport Evolution (E30), Jet Black"
+      }
+    ]
+  },
+  "bmw-m3-e46-m3-coupe": {
+    "launchColor": {
+      "name": "Phoenixgelb metallic (Phoenix Yellow, 445)",
+      "hex": "#cfb53b",
+      "source": "https://www.carpaints.co/paints/detail/phoenix-yellow",
+      "confidence": "medium",
+      "note": "Introduced with the E46 M3 in 2000 and used for launch marketing/brochures; owner testimony says it was the Geneva 2000 unveiling colour (pistonheads)."
+    },
+    "specs": {
+      "hp": 343,
+      "liters": 3.2,
+      "years": [
+        2000,
+        2006
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/BMW_M3"
+      ],
+      "production": 56133
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-m3-e46-m3-coupe-1.jpg",
+        "title": "File:BMW M3 Coupé E46 (14245863196) (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_M3_Coup%C3%A9_E46_(14245863196)_(cropped).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M3 Coupé (E46), Phoenixgelb metallic"
+      },
+      {
+        "file": "/cars/bmw-m3-e46-m3-coupe-2.jpg",
+        "title": "File:BMW E46 M3 Phoenix Yellow (1).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_E46_M3_Phoenix_Yellow_(1).jpg",
+        "author": "Damian B Oh",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M3 Coupé (E46), Phoenixgelb metallic"
+      }
+    ]
+  },
+  "bmw-m3-e46-m3-csl": {
+    "launchColor": {
+      "name": "Silbergrau metallic (Silver Grey)",
+      "hex": "#8f9499",
+      "source": "https://s14.de/en/models/e46-m3-csl/",
+      "confidence": "medium",
+      "note": "Only two colours offered (Silbergrau, Saphirschwarz); press/launch imagery silver grey."
+    },
+    "specs": {
+      "production": 1383,
+      "hp": 360,
+      "liters": 3.2,
+      "years": [
+        2003,
+        2003
+      ],
+      "newPrice": {
+        "amount": 85000,
+        "currency": "EUR",
+        "eur": 85000,
+        "year": 2003
+      },
+      "sources": [
+        "https://s14.de/en/models/e46-m3-csl/",
+        "https://www.classicdriver.com/en/car/bmw/m3/2003/842418",
+        "https://en.wikipedia.org/wiki/BMW_M3"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-m3-e46-m3-csl-1.jpg",
+        "title": "File:2003 BMW M3 CSL Silver HCC23 E46.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_BMW_M3_CSL_Silver_HCC23_E46.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW M3 CSL (E46, 2003), Silbergrau metallic"
+      },
+      {
+        "file": "/cars/bmw-m3-e46-m3-csl-2.jpg",
+        "title": "File:Black BMW M3 CSL E46 fr.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Black_BMW_M3_CSL_E46_fr.jpg",
+        "author": "Darren",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "BMW M3 CSL (E46), Saphirschwarz"
+      }
+    ]
+  },
+  "bmw-z8-e52-z8": {
+    "launchColor": {
+      "name": "Titansilber metallic (Titanium Silver)",
+      "hex": "#b4b7ba",
+      "source": "https://www.evo.co.uk/bmw/z8",
+      "confidence": "medium",
+      "note": "evo: Titanium Silver was the launch (and Bond film) colour; 3,182 of 5,703 cars were painted in it."
+    },
+    "specs": {
+      "production": 5703,
+      "hp": 400,
+      "liters": 4.9,
+      "years": [
+        2000,
+        2003
+      ],
+      "newPrice": {
+        "amount": 235000,
+        "currency": "DEM",
+        "eur": 120154,
+        "year": 2000
+      },
+      "sources": [
+        "https://www.evo.co.uk/bmw/z8",
+        "https://s14.de/en/models/z8/",
+        "https://en.wikipedia.org/wiki/BMW_Z8"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-z8-e52-z8-1.jpg",
+        "title": "File:BMW Z8.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_Z8.JPG",
+        "author": "Thomas doerfer",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW Z8 (E52), Titansilber"
+      },
+      {
+        "file": "/cars/bmw-z8-e52-z8-2.jpg",
+        "title": "File:BMW Z8 (4639732549).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_Z8_(4639732549).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW Z8 (E52), Titansilber"
+      }
+    ]
+  },
+  "bmw-3-0-csl-e9-3-0-csl": {
+    "launchColor": {
+      "name": "Inka (Orange)",
+      "hex": "#e8561e",
+      "source": "https://e9coupe.com/forum/threads/bmw-3-0-csl-the-early-days.6671/",
+      "confidence": "low",
+      "note": "First (carburettor) CSLs were delivered only in Inka, Golf, Colorado and Verona; the Geneva 1971 car's colour is unconfirmed (forum guess Inka or Colorado)."
+    },
+    "specs": {
+      "production": 1265,
+      "hp": 206,
+      "liters": 3.2,
+      "years": [
+        1971,
+        1975
+      ],
+      "note": "180 PS (3.0, carb) 1971–72, 200 PS (3.0 injected) 1972–73, 206 PS (3153 cc) 1973–75",
+      "sources": [
+        "https://en.wikipedia.org/wiki/BMW_E9"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/bmw-3-0-csl-e9-3-0-csl-1.jpg",
+        "title": "File:BMW 3.0 CSL.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:BMW_3.0_CSL.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "BMW 3.0 CSL (E9), Orange"
+      },
+      {
+        "file": "/cars/bmw-3-0-csl-e9-3-0-csl-2.jpg",
+        "title": "File:1974 BMW 3.0 CSL HCC24.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1974_BMW_3.0_CSL_HCC24.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "BMW 3.0 CSL (E9, 1974), Weiß mit M-Streifen"
+      }
+    ]
+  },
+  "astonmartin-db5-db5-saloon": {
+    "launchColor": {
+      "name": "Silver Birch",
+      "hex": "#b7b9b4",
+      "source": "https://en.wikipedia.org/wiki/Aston_Martin_DB5",
+      "confidence": "low",
+      "note": "Debut at Frankfurt, September 1963 (Earls Court per evo); show car colour not found. Prototype DP/216/1 was Dubonnet Red (evo) but is not linked to the show; Silver Birch became the signature colour via Goldfinger (1964). Best guess."
+    },
+    "specs": {
+      "production": 1059,
+      "hp": 286,
+      "liters": 4.0,
+      "years": [
+        1963,
+        1965
+      ],
+      "note": "1,059 is the total for all DB5 bodies (en.wikipedia)",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Aston_Martin_DB5"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/astonmartin-db5-db5-saloon-1.jpg",
+        "title": "File:Aston Martin DB5 (52684959059).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Aston_Martin_DB5_(52684959059).jpg",
+        "author": "Alexandre Prevot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Aston Martin DB5 Saloon (1963), erster Linkslenker DB5/1301/L, Silber"
+      },
+      {
+        "file": "/cars/astonmartin-db5-db5-saloon-2.jpg",
+        "title": "File:1964 Aston Martin DB5 Sports Saloon HCC25.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1964_Aston_Martin_DB5_Sports_Saloon_HCC25.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Aston Martin DB5 Sports Saloon (1964), Blau"
+      }
+    ]
+  },
+  "astonmartin-v8-vantage-v8-vantage": {
+    "launchColor": {
+      "name": "Tankard Grey",
+      "hex": "#4d5052",
+      "source": "https://astonmartins.com/car/v8-vantage-prototype/",
+      "confidence": "medium",
+      "note": "Announced 18 Feb 1977 using a modified 1976 V8 saloon (V8/11470/RCAC) in Tankard Grey with factory plate AMV8; single secondary source."
+    },
+    "specs": {
+      "production": 534,
+      "hp": 385,
+      "liters": 5.3,
+      "years": [
+        1977,
+        1989
+      ],
+      "note": "534 incl. 192 Volantes (342 saloons); 380–450 bhp over the run",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Aston_Martin_V8_Vantage_(1977)",
+        "https://www.astonmartin.com/en-us/models/past-models/v8-vantage"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/astonmartin-v8-vantage-v8-vantage-1.jpg",
+        "title": "File:1985 Aston Martin V8 Vantage.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1985_Aston_Martin_V8_Vantage.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Aston Martin V8 Vantage (1985), Dunkelgrau metallic"
+      },
+      {
+        "file": "/cars/astonmartin-v8-vantage-v8-vantage-2.jpg",
+        "title": "File:1978 Aston Martin V8 Vantage Oscar India BS O24.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1978_Aston_Martin_V8_Vantage_Oscar_India_BS_O24.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Aston Martin V8 Vantage (1978), Blau"
+      }
+    ]
+  },
+  "jaguar-e-type-series-1-3-8-roadster": {
+    "launchColor": {
+      "name": "British Racing Green",
+      "hex": "#1f3d2b",
+      "source": "https://media.jlr.com/archive-jaguar/news/2022/07/jaguar-classic-e-type-60-collection-drive-honours-memorable-geneva-trip-1961",
+      "confidence": "high",
+      "note": "Jaguar: Norman Dewis drove the British Racing Green roadster '77 RW' overnight to the Geneva launch in March 1961 (the coupé '9600 HP' was Opalescent Gunmetal Grey)."
+    },
+    "specs": {
+      "production": 7828,
+      "liters": 3.8,
+      "years": [
+        1961,
+        1964
+      ],
+      "newPrice": {
+        "amount": 2097,
+        "currency": "GBP",
+        "eur": 12008,
+        "year": 1961,
+        "note": "price incl. taxes of The Motor's 1961 road-test car per en.wikipedia; EUR via approx. 1961 rate 1 GBP = 11.20 DEM"
+      },
+      "note": "265 bhp (gross) per en.wikipedia",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jaguar_E-Type"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/jaguar-e-type-series-1-3-8-roadster-1.jpg",
+        "title": "File:1961 Jaguar E-Type Series 1 Roadster.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1961_Jaguar_E-Type_Series_1_Roadster.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Jaguar E-Type Series 1 3.8 Roadster '77 RW' (1961), British Racing Green"
+      },
+      {
+        "file": "/cars/jaguar-e-type-series-1-3-8-roadster-2.jpg",
+        "title": "File:Jaguar E-Type Series 1 3.8 Litre 1961.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Type_Series_1_3.8_Litre_1961.jpg",
+        "author": "DeFacto",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Jaguar E-Type Series 1 3.8 Roadster '77 RW', Jaguar Heritage"
+      }
+    ]
+  },
+  "jaguar-e-type-series-1-4-2-coupe": {
+    "launchColor": {
+      "name": "Old English White",
+      "hex": "#ece6d2",
+      "source": "https://www.iconicauctioneers.com/1964-jaguar-e-type-rec14570-3-stoneleigh-0225",
+      "confidence": "medium",
+      "note": "1964 Earls Court Motor Show 4.2 coupé (chassis 1E20022, later Lofty England's car) was Old English White; auction-house description."
+    },
+    "specs": {
+      "production": 5830,
+      "liters": 4.2,
+      "years": [
+        1964,
+        1968
+      ],
+      "note": "265 bhp (gross) per en.wikipedia; 4.2 engine introduced October 1964",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jaguar_E-Type"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/jaguar-e-type-series-1-4-2-coupe-1.jpg",
+        "title": "File:Jaguar E-Type (1) Travelarz.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Type_(1)_Travelarz.JPG",
+        "author": "Travelarz",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Jaguar E-Type Series 1 4.2 Coupé, Weiß"
+      },
+      {
+        "file": "/cars/jaguar-e-type-series-1-4-2-coupe-2.jpg",
+        "title": "File:Jaguar E-Type 4.2 FHC Series I, TC 24, Essen (TCE43362).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Type_4.2_FHC_Series_I,_TC_24,_Essen_(TCE43362).jpg",
+        "author": "Matti Blume",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Jaguar E-Type Series 1 4.2 Coupé, Grün metallic"
+      }
+    ]
+  },
+  "jaguar-xj220-xj220": {
+    "launchColor": {
+      "name": "Spa Silver",
+      "hex": "#b8bcbf",
+      "source": "https://en.wikipedia.org/wiki/Jaguar_XJ220",
+      "confidence": "medium",
+      "note": "The 1988 NEC concept was painted silver (en.wikipedia); production launch Oct 1991 (Bloxham/Tokyo) colour not found. Spa Silver was one of five production colours."
+    },
+    "specs": {
+      "production": 275,
+      "hp": 550,
+      "liters": 3.5,
+      "years": [
+        1992,
+        1994
+      ],
+      "newPrice": {
+        "amount": 470000,
+        "currency": "GBP",
+        "eur": 660850,
+        "year": 1992,
+        "note": "1992 retail price per en.wikipedia; EUR via approx. 1992 rate 1 GBP = 2.75 DEM"
+      },
+      "note": "Wikipedia gives 275 (intro) and 281 (elsewhere)",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Jaguar_XJ220",
+        "https://supercarnostalgia.com/blog/jaguar-xj220"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/jaguar-xj220-xj220-1.jpg",
+        "title": "File:1993 Jaguar XJ220 SCD24.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1993_Jaguar_XJ220_SCD24.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Jaguar XJ220 (1993), Silber"
+      },
+      {
+        "file": "/cars/jaguar-xj220-xj220-2.jpg",
+        "title": "File:1992 Jaguar XJ220 LC22.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1992_Jaguar_XJ220_LC22.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Jaguar XJ220 (1992), Dunkelrot"
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+porsche-356-356-a-coupe | Porsche 356 A Coupé | 1955–1959 | production 21045 | 60 PS | 1.6 l | newPrice EUR 9500 | current color #b7babe
+porsche-356-356-speedster | Porsche 356 Speedster | 1954–1958 | production 4145 | 75 PS | 1.6 l | newPrice EUR 9000 | current color #e9e8e1
+porsche-356-356-carrera-2 | Porsche 356 Carrera 2 | 1962–1964 | production 436 | 130 PS | 2 l | newPrice EUR 15000 | current color #b3121b
+porsche-912-912-coupe | Porsche 912 Coupé | 1965–1969 | production 30300 | 90 PS | 1.6 l | newPrice EUR 8500 | current color #cfccc2
+porsche-930-turbo-3-0 | Porsche 930 Turbo 3.0 | 1975–1977 | production 2850 | 260 PS | 3 l | newPrice EUR 33000 | current color #741726
+porsche-930-turbo-3-3 | Porsche 930 Turbo 3.3 | 1978–1989 | production 17300 | 300 PS | 3.3 l | newPrice EUR 47000 | current color #151619
+porsche-930-turbo-3-3-flachbau | Porsche 930 Turbo 3.3 Flachbau | 1981–1989 | production 948 | 330 PS | 3.3 l | newPrice EUR 77000 | current color #e9e8e1
+porsche-918-918-spyder | Porsche 918 Spyder | 2013–2015 | production 688 | 887 PS | 4.6 l | newPrice EUR 768000 | current color #b7babe
+porsche-918-918-spyder-weissach | Porsche 918 Spyder Weissach | 2013–2015 | production 230 | 887 PS | 4.6 l | newPrice EUR 840000 | current color #e9e8e1
+porsche-carrera-gt-carrera-gt | Porsche Carrera GT | 2003–2007 | production 1270 | 612 PS | 5.7 l | newPrice EUR 452000 | current color #b7babe
+porsche-959-959-komfort | Porsche 959 Komfort | 1986–1988 | production 263 | 450 PS | 2.85 l | newPrice EUR 210000 | current color #e9e8e1
+porsche-959-959-sport | Porsche 959 Sport | 1987–1988 | production 29 | 515 PS | 2.85 l | newPrice EUR 225000 | current color #b7babe
+ferrari-f40-f40 | Ferrari F40 | 1987–1992 | production 1315 | 478 PS | 2.9 l | newPrice EUR 227000 | current color #c0121f
+ferrari-testarossa-testarossa | Ferrari Testarossa | 1984–1991 | production 7177 | 390 PS | 4.9 l | newPrice EUR 115000 | current color #c0121f
+ferrari-testarossa-512-tr | Ferrari Testarossa 512 TR | 1991–1994 | production 2261 | 428 PS | 4.9 l | newPrice EUR 140000 | current color #131417
+ferrari-testarossa-f512-m | Ferrari Testarossa F512 M | 1994–1996 | production 501 | 440 PS | 4.9 l | newPrice EUR 165000 | current color #f2c00e
+ferrari-288-gto-288-gto | Ferrari 288 GTO | 1984–1987 | production 272 | 400 PS | 2.9 l | newPrice EUR 165000 | current color #c0121f
+ferrari-f355-f355-berlinetta | Ferrari F355 Berlinetta | 1994–1999 | production 4871 | 380 PS | 3.5 l | newPrice EUR 115000 | current color #f2c00e
+ferrari-f355-f355-spider | Ferrari F355 Spider | 1995–1999 | production 3717 | 380 PS | 3.5 l | newPrice EUR 125000 | current color #c0121f
+ferrari-550-550-maranello | Ferrari 550 Maranello | 1996–2002 | production 3083 | 485 PS | 5.5 l | newPrice EUR 175000 | current color #1c2f5e
+ferrari-550-550-barchetta-pininfarina | Ferrari 550 Barchetta Pininfarina | 2000–2001 | production 448 | 485 PS | 5.5 l | newPrice EUR 230000 | current color #a8abaf
+ferrari-308-308-gtb-vetroresina | Ferrari 308 GTB Vetroresina | 1975–1977 | production 712 | 255 PS | 2.9 l | newPrice EUR 30000 | current color #c0121f
+ferrari-308-308-gts-quattrovalvole | Ferrari 308 GTS Quattrovalvole | 1982–1985 | production 3042 | 240 PS | 2.9 l | newPrice EUR 45000 | current color #c0121f
+ferrari-360-360-modena | Ferrari 360 Modena | 1999–2005 | production 8800 | 400 PS | 3.6 l | newPrice EUR 135000 | current color #a8abaf
+ferrari-360-360-challenge-stradale | Ferrari 360 Challenge Stradale | 2003–2004 | production 1288 | 425 PS | 3.6 l | newPrice EUR 172000 | current color #c0121f
+ferrari-enzo-enzo | Ferrari Enzo | 2002–2004 | production 400 | 660 PS | 6 l | newPrice EUR 660000 | current color #c0121f

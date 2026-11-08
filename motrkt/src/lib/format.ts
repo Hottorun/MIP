@@ -18,6 +18,7 @@ export function num(value: number, digits = 0): string {
 }
 
 export function km(value: number): string {
+  if (!value) return "–";
   return `${eur0.format(Math.round(value))} km`;
 }
 
@@ -50,4 +51,12 @@ export function flag(iso: string): string {
 
 export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
+}
+
+export function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
 }

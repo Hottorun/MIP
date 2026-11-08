@@ -286,7 +286,7 @@ export default function Auctions() {
                         <span className="text-ink/90">{s.house}</span>
                         {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{s.source}</span>}
                       </td>
-                      <td>{s.condition}</td>
+                      <td>{s.conditionUnknown ? <span className="text-faint">–</span> : s.condition}</td>
                       <td className="text-right tabular-nums">{km(s.mileage)}</td>
                       <td className="text-right font-medium tabular-nums">{s.price === null ? <span className="text-xs font-normal text-down">nicht verkauft</span> : eur(s.price)}</td>
                       <td className="text-right text-xs text-muted tabular-nums">

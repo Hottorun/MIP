@@ -1,0 +1,34 @@
+lamborghini-miura-p400 | Lamborghini Miura P400 | 1966–1969 | production 275 | 350 PS | 3.9 l | newPrice EUR 40000 | current color #ee7a12
+lamborghini-miura-p400-s | Lamborghini Miura P400 S | 1968–1971 | production 338 | 370 PS | 3.9 l | newPrice EUR 42000 | current color #7fb52b
+lamborghini-miura-p400-sv | Lamborghini Miura P400 SV | 1971–1973 | production 150 | 385 PS | 3.9 l | newPrice EUR 45000 | current color #f4d018
+lamborghini-countach-lp400-periscopio | Lamborghini Countach LP400 Periscopio | 1974–1977 | production 157 | 375 PS | 3.9 l | newPrice EUR 50000 | current color #7fb52b
+lamborghini-countach-lp5000-quattrovalvole | Lamborghini Countach LP5000 Quattrovalvole | 1985–1988 | production 610 | 455 PS | 5.2 l | newPrice EUR 110000 | current color #c0121f
+lamborghini-countach-25th-anniversary | Lamborghini Countach 25th Anniversary | 1988–1990 | production 658 | 455 PS | 5.2 l | newPrice EUR 125000 | current color #eeeeea
+lamborghini-diablo-diablo-vt | Lamborghini Diablo VT | 1993–1998 | production 1000 | 492 PS | 5.7 l | newPrice EUR 190000 | current color #a0151c
+lamborghini-diablo-diablo-sv | Lamborghini Diablo SV | 1995–1999 | production 186 | 510 PS | 5.7 l | newPrice EUR 180000 | current color #f4d018
+lamborghini-diablo-diablo-gt | Lamborghini Diablo GT | 1999–2000 | production 80 | 575 PS | 6 l | newPrice EUR 300000 | current color #ee7a12
+lamborghini-murcielago-lp640-coupe | Lamborghini Murciélago LP640 Coupé | 2006–2010 | production 1400 | 640 PS | 6.5 l | newPrice EUR 250000 | current color #121316
+lamborghini-murcielago-lp670-4-superveloce | Lamborghini Murciélago LP670-4 SuperVeloce | 2009–2010 | production 186 | 670 PS | 6.5 l | newPrice EUR 380000 | current color #ee7a12
+mercedes-sl-w198-300-sl-flugelturer | Mercedes-Benz 300 SL Flügeltürer (W198) | 1954–1957 | production 1400 | 215 PS | 3 l | newPrice EUR 14800 | current color #9da1a7
+mercedes-sl-w198-300-sl-roadster | Mercedes-Benz 300 SL Roadster (W198) | 1957–1963 | production 1858 | 215 PS | 3 l | newPrice EUR 16000 | current color #ebeae6
+mercedes-sl-r129-sl-500 | Mercedes-Benz SL 500 (R129) | 1989–2001 | production 79827 | 326 PS | 5 l | newPrice EUR 75000 | current color #1b2433
+mercedes-sl-r129-sl-73-amg | Mercedes-Benz SL 73 AMG (R129) | 1999–2001 | production 85 | 525 PS | 7.3 l | newPrice EUR 140000 | current color #c2c5c9
+mercedes-190-e-w201-2-3-16 | Mercedes-Benz 190 E (W201) 2.3-16 | 1984–1988 | production 19487 | 185 PS | 2.3 l | newPrice EUR 28000 | current color #1b2433
+mercedes-190-e-w201-2-5-16-evolution | Mercedes-Benz 190 E (W201) 2.5-16 Evolution | 1989 | production 502 | 204 PS | 2.5 l | newPrice EUR 42000 | current color #1b2433
+mercedes-190-e-w201-2-5-16-evolution-ii | Mercedes-Benz 190 E (W201) 2.5-16 Evolution II | 1990 | production 502 | 235 PS | 2.5 l | newPrice EUR 59000 | current color #1b2433
+mercedes-sls-amg-c197-sls-amg-coupe | Mercedes-Benz SLS AMG Coupé (C197) | 2010–2014 | production 7100 | 571 PS | 6.2 l | newPrice EUR 177000 | current color #c2c5c9
+mercedes-sls-amg-c197-sls-amg-black-series | Mercedes-Benz SLS AMG Black Series (C197) | 2013–2014 | production 350 | 631 PS | 6.2 l | newPrice EUR 250000 | current color #ebeae6
+mercedes-clk-gtr-clk-gtr-strassenversion | Mercedes-Benz CLK GTR Straßenversion | 1998–1999 | production 20 | 612 PS | 6.9 l | newPrice EUR 1500000 | current color #c2c5c9
+bmw-m1-e26-m1 | BMW M1 (E26) | 1978–1981 | production 453 | 277 PS | 3.5 l | newPrice EUR 51000 | current color #eeede8
+bmw-m3-e30-m3 | BMW M3 (E30) | 1986–1991 | production 16202 | 215 PS | 2.3 l | newPrice EUR 29000 | current color #a41a1f
+bmw-m3-e30-m3-evolution-ii | BMW M3 Evolution II (E30) | 1988 | production 501 | 220 PS | 2.3 l | newPrice EUR 34000 | current color #eeede8
+bmw-m3-e30-m3-sport-evolution | BMW M3 Sport Evolution (E30) | 1990 | production 600 | 238 PS | 2.5 l | newPrice EUR 41000 | current color #a41a1f
+bmw-m3-e46-m3-coupe | BMW M3 Coupé (E46) | 2000–2006 | production 56133 | 343 PS | 3.2 l | newPrice EUR 58000 | current color #2c6ac3
+bmw-m3-e46-m3-csl | BMW M3 CSL (E46) | 2003–2004 | production 1383 | 360 PS | 3.2 l | newPrice EUR 81000 | current color #a6a9ad
+bmw-z8-e52-z8 | BMW Z8 (E52) | 2000–2003 | production 5703 | 400 PS | 5 l | newPrice EUR 120000 | current color #a6a9ad
+bmw-3-0-csl-e9-3-0-csl | BMW 3.0 CSL (E9) | 1971–1975 | production 1265 | 206 PS | 3.2 l | newPrice EUR 15000 | current color #eeede8
+astonmartin-db5-db5-saloon | Aston Martin DB5 Saloon | 1963–1965 | production 898 | 282 PS | 4 l | newPrice EUR 5000 | current color #b6b8b3
+astonmartin-v8-vantage-v8-vantage | Aston Martin V8 Vantage | 1977–1989 | production 534 | 380 PS | 5.3 l | newPrice EUR 45000 | current color #1f4733
+jaguar-e-type-series-1-3-8-roadster | Jaguar E-Type (Series 1) 3.8 Roadster | 1961–1964 | production 7828 | 265 PS | 3.8 l | newPrice EUR 3000 | current color #21314f
+jaguar-e-type-series-1-4-2-coupe | Jaguar E-Type (Series 1) 4.2 Coupé | 1964–1968 | production 7770 | 265 PS | 4.2 l | newPrice EUR 3200 | current color #a01b1f
+jaguar-xj220-xj220 | Jaguar XJ220 | 1992–1994 | production 275 | 549 PS | 3.5 l | newPrice EUR 470000 | current color #a6a9ad

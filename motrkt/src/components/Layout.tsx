@@ -1,12 +1,13 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useMatch, useNavigate } from "react-router-dom";
-import { Bell, BarChart3, ChevronDown, ChevronRight, CornerDownLeft, RotateCcw, Search, Sparkles, X, CheckCircle2, AlertCircle, Info, Gavel, TrendingUp, Plus } from "lucide-react";
+import { Bell, BarChart3, ChevronDown, ChevronRight, CornerDownLeft, RotateCcw, Search, Sparkles, X, CheckCircle2, AlertCircle, Info, Gavel, TrendingUp, Plus, Upload } from "lucide-react";
 import { brands, generationById, models, variantById, yearsLabel } from "../data/db";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
 import { cn, date } from "../lib/format";
 import { BrandEmblem } from "./ui";
+import { ImportModal } from "./ImportModal";
 
 const NAV = [
   { to: "/markt", label: "Markt" },
@@ -35,7 +36,10 @@ export function Layout() {
             </Suspense>
           </div>
           <footer className="px-5 pb-5 text-center text-[11px] text-faint">
-            MOTRKT · Demo mit synthetischen Marktdaten (Stand {date(Date.UTC(2026, 10, 2))}) · keine Anlageberatung
+            MOTRKT · Werte mit „Echte Daten“ beruhen auf öffentlich berichteten Verkäufen (mit Quelle), übrige Werte, Inserate und kommende Auktionen sind Demo-Daten (Stand {date(Date.UTC(2026, 10, 2))}) · keine Anlageberatung ·{" "}
+            <Link to="/bildnachweise" className="underline-offset-2 hover:text-muted hover:underline">
+              Bildnachweise & Quellen
+            </Link>
           </footer>
         </main>
       </div>
@@ -280,6 +284,7 @@ function NotificationBell() {
 
 function UserMenu() {
   const [open, setOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const { resetAll, toast, portfolio, watchlist, alerts } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
   return (
@@ -303,6 +308,15 @@ function UserMenu() {
             Mein Portfolio
           </Link>
           <button
+            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-panel-3"
+            onClick={() => {
+              setImportOpen(true);
+              setOpen(false);
+            }}
+          >
+            <Upload className="size-3.5" /> Marktdaten importieren (CSV)
+          </button>
+          <button
             className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-down hover:bg-panel-3"
             onClick={() => {
               if (confirm("Portfolio, Watchlist, Alarme und Chatverlauf auf die Demo-Daten zurücksetzen?")) {
@@ -316,6 +330,7 @@ function UserMenu() {
           </button>
         </div>
       )}
+      <ImportModal open={importOpen} onClose={() => setImportOpen(false)} />
     </div>
   );
 }
@@ -369,11 +384,13 @@ function Sidebar() {
             </button>
           </li>
         ))}
+        {brands.some((b) => !b.featured) && (
         <li>
           <button onClick={() => setMoreBrands((m) => !m)} className="flex w-full items-center gap-2.5 px-2 py-1.5 text-xs text-muted hover:text-ink">
             {moreBrands ? <ChevronDown className="size-3.5" /> : <Plus className="size-3.5" />} {moreBrands ? "Weniger Marken" : "Weitere Marken"}
           </button>
         </li>
+        )}
       </ul>
 
       <SectionTitle>Modelle ({brand.name})</SectionTitle>

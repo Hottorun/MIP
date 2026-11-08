@@ -3,6 +3,14 @@ import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
+import { handleMobileDe } from "./mobilede.ts";
+
+// Load secrets from .env (ANTHROPIC_API_KEY, MOBILEDE_USERNAME, MOBILEDE_PASSWORD) without overriding the shell environment.
+try {
+  process.loadEnvFile(".env");
+} catch {
+  /* no .env file – rely on the environment */
+}
 
 const MODEL = "claude-opus-5-5";
 const MAX_MESSAGES = 24;
@@ -150,5 +158,6 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse) {
   if (url.pathname === "/api/copilot" && req.method === "POST") {
     return handleCopilot(req, res);
   }
+  if (url.pathname.startsWith("/api/mobilede/")) return handleMobileDe(req, res, url);
   sendJson(res, 404, { error: "Not found" });
 }

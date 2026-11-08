@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AlertTriangle, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 import { variantById, variantShortTitle, variantsOfBrand } from "../../data/db";
 import type { Body, Gearbox, SaleSource, Variant } from "../../data/types";
 import { getSales } from "../../data/generate";
@@ -84,12 +84,20 @@ export function RecentSales({ variant }: { variant: Variant }) {
                 <td className="text-muted">{date(s.date)}</td>
                 <td>{s.source}</td>
                 <td className="text-right font-semibold tabular-nums">{s.price ? eur(s.price) : <span className="font-normal text-muted">nicht verkauft</span>}</td>
-                <td>{s.condition}</td>
+                <td>{s.conditionUnknown ? <span className="text-faint">–</span> : s.condition}</td>
                 <td className="text-right tabular-nums text-muted">{km(s.mileage)}</td>
                 <td>{s.buyerCountry}</td>
                 <td>{s.originCountry}</td>
                 <td>{s.deliveryCountry}</td>
-                <td className="max-w-40 truncate">{s.house}</td>
+                <td className="max-w-40 truncate">
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 hover:text-gold" title="Quelle öffnen">
+                      {s.house} <ExternalLink className="size-3 shrink-0 text-faint" />
+                    </a>
+                  ) : (
+                    s.house
+                  )}
+                </td>
                 <td className="text-right">{s.price ? <Delta value={s.trend} /> : <span className="text-faint">–</span>}</td>
               </tr>
             ))}

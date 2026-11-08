@@ -1,0 +1,2132 @@
+{
+  "porsche-911-964-carrera-2": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#C4161C",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
+      "confidence": "low",
+      "note": "Best guess only. Carrera 2 joined about a year after the Carrera 4 (MY1990); no source found naming the colour of its launch/press car. The source URL confirms timing and price only."
+    },
+    "specs": {
+      "production": 18219,
+      "hp": 250,
+      "liters": 3.6,
+      "years": [
+        1989,
+        1994
+      ],
+      "newPrice": {
+        "amount": 103500,
+        "currency": "DEM",
+        "eur": 52919,
+        "year": 1989
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
+        "https://en.wikipedia.org/wiki/Porsche_964",
+        "https://de.wikipedia.org/wiki/Porsche_964"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-964-carrera-2-1.jpg",
+        "title": "File:1990 Porsche 911 Carrera 2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1990_Porsche_911_Carrera_2.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera 2 (964), Indischrot"
+      },
+      {
+        "file": "/cars/porsche-911-964-carrera-2-2.jpg",
+        "title": "File:1990 Porsche 911 Carrera 2 (87797).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1990_Porsche_911_Carrera_2_(87797).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera 2 (964), Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-964-carrera-2-3.jpg",
+        "title": "File:1990 Porsche 911 Carrera (964) 2 coupe (28022751366).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1990_Porsche_911_Carrera_(964)_2_coupe_(28022751366).jpg",
+        "author": "Jeremy from Sydney, Australia",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera 2 (964) in Weiß"
+      }
+    ],
+    "note": "Porsche Newsroom: Carrera 2 launched a year after the C4 from 103,500 DM. en.wikipedia: C2 Coupé 18,219 (plus Cabrio 11,013, Targa 3,534, Turbo-look Cabrio 1,532, Speedster 936). Our 19,484 not found in any source. de.wikipedia 1992 price: 122,340 DM."
+  },
+  "porsche-911-964-carrera-4": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#C4161C",
+      "source": "http://misporschesaescala.blogspot.com/2023/02/porsche-964-carrera-4-venturetour.html",
+      "confidence": "medium",
+      "note": "Secondary source: the Paris Salon 1988 premiere car was red (same red as the 1950 Paris 356), and all ~230 'Venturetour' dealer-launch Carrera 4s (March 1989) were red. Paint name inferred as Indischrot/Guards Red (the standard red of the period); no Porsche source naming the paint found."
+    },
+    "specs": {
+      "production": 13353,
+      "hp": 250,
+      "liters": 3.6,
+      "years": [
+        1989,
+        1994
+      ],
+      "newPrice": {
+        "amount": 114500,
+        "currency": "DEM",
+        "eur": 58543,
+        "year": 1988
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
+        "https://en.wikipedia.org/wiki/Porsche_964",
+        "https://de.wikipedia.org/wiki/Porsche_964"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-964-carrera-4-1.jpg",
+        "title": "File:1990 Porsche 911 Carrera 4 (G494 KOF).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1990_Porsche_911_Carrera_4_(G494_KOF).jpg",
+        "author": "Carfanatic2019",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera 4 (964), Indischrot"
+      },
+      {
+        "file": "/cars/porsche-911-964-carrera-4-2.jpg",
+        "title": "File:1990 Porsche 964 Carrera 4 rr.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1990_Porsche_964_Carrera_4_rr.jpg",
+        "author": "Herranderssvensson",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera 4 (964), Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-964-carrera-4-3.jpg",
+        "title": "File:Porsche 911 (9263413255).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(9263413255).jpg",
+        "author": "Antti",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera 4 (964), Seitenansicht"
+      }
+    ],
+    "note": "Price: Porsche Newsroom, launch August 1988. Production 13,353 = Carrera 4 Coupé only (en.wikipedia table; plus 4,802 Cabrio, 1,329 Targa, 911 Jubilee coupé). de.wikipedia 1992 price: 135,550 DM."
+  },
+  "porsche-911-964-carrera-rs": {
+    "launchColor": {
+      "name": "Rubinsternrot (Rubystone Red)",
+      "hex": "#C8326B",
+      "source": "https://newsroom.porsche.com/en/history/porsche-history-911-chameleon-944-928-colourful-tradition-13262.html",
+      "confidence": "low",
+      "note": "Porsche Newsroom heritage pieces repeatedly feature a Rubystone (Star Ruby/Rubystar) 964 Carrera RS (also https://newsroom.porsche.com/en/2019/history/porsche-klassik-911-eight-generations-dna-18914.html), and Rubystone was new for MY1992 (RS launch year). The colour of the Geneva March 1991 show car itself was not found."
+    },
+    "specs": {
+      "production": 2282,
+      "hp": 260,
+      "liters": 3.6,
+      "years": [
+        1991,
+        1992
+      ],
+      "newPrice": {
+        "amount": 145450,
+        "currency": "DEM",
+        "eur": 74367,
+        "year": 1991
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_964",
+        "https://en.wikipedia.org/wiki/Porsche_964"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-964-carrera-rs-1.jpg",
+        "title": "File:964rs.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:964rs.jpg",
+        "author": "964rs",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera RS (964), Rubinsternrot"
+      },
+      {
+        "file": "/cars/porsche-911-964-carrera-rs-2.jpg",
+        "title": "File:MG 1374 (52509516832).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:MG_1374_(52509516832).jpg",
+        "author": "Clemens Vasters from Viersen, Germany, Germany",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera RS (964) im Porsche-Museum, Rubinsternrot"
+      },
+      {
+        "file": "/cars/porsche-911-964-carrera-rs-3.jpg",
+        "title": "File:Porsche 911 (964) Carrera RS (8753863495).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(964)_Carrera_RS_(8753863495).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera RS (964) in Silber"
+      }
+    ],
+    "note": "Shown Geneva March 1991, MY1992 only (production ended 1992; RS 3.8 followed 1993). de.wikipedia: 145,450 DM (1991), 160,000 DM (1992). en.wikipedia: 2,282 Carrera RS 3.6 coupés."
+  },
+  "porsche-911-964-turbo": {
+    "launchColor": {
+      "name": "Amethyst Metallic (Amethyst Metallic)",
+      "hex": "#5B3A6B",
+      "source": "https://www.classicdriver.com/en/car/porsche/911-964-turbo/1990/1004879",
+      "confidence": "low",
+      "note": "Only source is a classified listing claiming this Amethyst metallic car (magenta leather, option 'Geneva Motor Show vehicle') was the first 964 Turbo shown at Geneva March 1990; not confirmed by Porsche. Listing describes it as a 'Turbo S' prototype with 381 PS, so treat with caution."
+    },
+    "specs": {
+      "production": 5097,
+      "hp": 320,
+      "liters": 3.3,
+      "years": [
+        1990,
+        1994
+      ],
+      "newPrice": {
+        "amount": 190250,
+        "currency": "DEM",
+        "eur": 97273,
+        "year": 1991
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_964",
+        "https://en.wikipedia.org/wiki/Porsche_964",
+        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-964-turbo-1.jpg",
+        "title": "File:Porsche 911-964 turbo 1990-1993 frontright 2009-10-04 U.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911-964_turbo_1990-1993_frontright_2009-10-04_U.jpg",
+        "author": "Detectandpreserve",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.3 (964) in Silber"
+      },
+      {
+        "file": "/cars/porsche-911-964-turbo-2.jpg",
+        "title": "File:1991 Porsche 911 Turbo.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1991_Porsche_911_Turbo.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.3 (964), Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-964-turbo-3.jpg",
+        "title": "File:1991 Porsche 964 Turbo in Summer Yellow, front right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1991_Porsche_964_Turbo_in_Summer_Yellow,_front_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.3 (964) in Sommergelb"
+      }
+    ],
+    "note": "Production 5,097 = 3,660 Turbo 3.3 + 1,437 Turbo 3.6 (en.wikipedia). 320 PS/3.3 l applies to Turbo 3.3; Turbo 3.6 (1993-94): 360 PS, 204,000 DM. Premiere Geneva March 1990. Our 100,500 EUR does not match any source (190,250 DM = 97,273 EUR). No Amethyst 964 Turbo photo on Commons; hero shows a silver Turbo 3.3."
+  },
+  "porsche-911-964-speedster": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#C4161C",
+      "source": "https://newsroom.porsche.com/dam/jcr:295bb3cb-e53d-4d9f-a609-1d8b65875765/PAG_911Speedster_PM_EN_EmpCo-Discl.pdf",
+      "confidence": "low",
+      "note": "Best guess. Premiered Paris Salon October 1992 (alongside 968 CS); colour of the show car not found. A documented pre-production prototype (first reg. Dec 1992) was Polar Silver metallic. Source URL is Porsche's Speedster press kit (price/production only)."
+    },
+    "specs": {
+      "production": 930,
+      "hp": 250,
+      "liters": 3.6,
+      "years": [
+        1992,
+        1993
+      ],
+      "newPrice": {
+        "amount": 131500,
+        "currency": "DEM",
+        "eur": 67235,
+        "year": 1993
+      },
+      "sources": [
+        "https://newsroom.porsche.com/dam/jcr:295bb3cb-e53d-4d9f-a609-1d8b65875765/PAG_911Speedster_PM_EN_EmpCo-Discl.pdf",
+        "https://de.wikipedia.org/wiki/Porsche_964"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-964-speedster-1.jpg",
+        "title": "File:Porsche 911, EMS 2024, Essen (P1032186).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911,_EMS_2024,_Essen_(P1032186).jpg",
+        "author": "Matti Blume",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Speedster (964), Indischrot"
+      },
+      {
+        "file": "/cars/porsche-911-964-speedster-2.jpg",
+        "title": "File:MG 1315 (52509505857).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:MG_1315_(52509505857).jpg",
+        "author": "Clemens Vasters from Viersen, Germany, Germany",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera 2 Speedster (964) im Porsche-Museum"
+      },
+      {
+        "file": "/cars/porsche-911-964-speedster-3.jpg",
+        "title": "File:Porsche 911 (964) Speedster (11368956966).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(964)_Speedster_(11368956966).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Speedster (964) in Gelb"
+      }
+    ],
+    "note": "Porsche press kit: 131,500 marks at launch February 1993; 930 narrow-body units built 1992-1993, plus 15 with Turbo wide body. en.wikipedia says 936."
+  },
+  "porsche-911-993-carrera": {
+    "launchColor": {
+      "name": "Polarsilber Metallic (Polar Silver Metallic)",
+      "hex": "#B4B7BA",
+      "source": "https://www.stuttcars.com/porsche-911-993-the-story/",
+      "confidence": "medium",
+      "note": "Stuttcars: on display at the IAA Frankfurt premiere (9 Sept 1993) were a silver Carrera coupé and a yellow/black Supercup car. Polar Silver (92M) was Porsche's silver at the time; exact paint name inferred."
+    },
+    "specs": {
+      "production": 38626,
+      "hp": 272,
+      "liters": 3.6,
+      "years": [
+        1993,
+        1998
+      ],
+      "newPrice": {
+        "amount": 125760,
+        "currency": "DEM",
+        "eur": 64300,
+        "year": 1993
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation-Porsche-911,-(993),-1993-1998.html",
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-%E2%80%93-Der-letzte-seiner-Art.html",
+        "https://en.wikipedia.org/wiki/Porsche_993"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-993-carrera-1.jpg",
+        "title": "File:1995 Porsche 911 Carrera Coupé 3.6 (52768364385).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_Carrera_Coup%C3%A9_3.6_(52768364385).jpg",
+        "author": "Rutger van der Maar",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera (993), Polarsilber"
+      },
+      {
+        "file": "/cars/porsche-911-993-carrera-2.jpg",
+        "title": "File:1997 Porsche 911 993 Carrera.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1997_Porsche_911_993_Carrera.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera (993) in Rot"
+      },
+      {
+        "file": "/cars/porsche-911-993-carrera-3.jpg",
+        "title": "File:1996 Porsche 911 Carrera.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1996_Porsche_911_Carrera.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera (993) in Blau"
+      }
+    ],
+    "note": "Price: MY1994 Carrera Coupé 125,760 DM (Porsche Newsroom). Launch power 200 kW/272 PS; 285 PS (Varioram) only from MY1996. Production 38,626 = Carrera 2 coupé+cabrio, both power versions (en.wikipedia table: 14,541+7,730+8,586+7,769). Whole 993 generation: 68,881 (Porsche)."
+  },
+  "porsche-911-993-carrera-4s": {
+    "launchColor": {
+      "name": "Schwarz (Black)",
+      "hex": "#0E0E10",
+      "source": "https://collectingcars.com/for-sale/1995-porsche-911-993-carrera-4s",
+      "confidence": "low",
+      "note": "Weak evidence: auction description of a black pre-production C4S (one of five prototypes) used by Porsche for promotion throughout 1995. Colour of the IAA Sept 1995 show car not found."
+    },
+    "specs": {
+      "production": 6948,
+      "hp": 285,
+      "liters": 3.6,
+      "years": [
+        1995,
+        1998
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_993",
+        "https://en.wikipedia.org/wiki/Porsche_993",
+        "https://www.stuttcars.com/porsche-911-993-the-story/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-993-carrera-4s-1.jpg",
+        "title": "File:1998 Porsche 911 993 Carrera 4S.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1998_Porsche_911_993_Carrera_4S.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera 4S (993), Schwarz"
+      },
+      {
+        "file": "/cars/porsche-911-993-carrera-4s-2.jpg",
+        "title": "File:Porsche 911 (993) Carrera 4S (6889035035).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(993)_Carrera_4S_(6889035035).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera 4S (993) in Silber"
+      },
+      {
+        "file": "/cars/porsche-911-993-carrera-4s-3.jpg",
+        "title": "File:GER Traben-Trarbach, Moselufer 012.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:GER_Traben-Trarbach,_Moselufer_012.jpg",
+        "author": "-wuppertaler",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera 4S (993), Heckansicht"
+      }
+    ],
+    "note": "Unveiled IAA Frankfurt Sept 1995 (MY1996), Varioram 285 PS, 6,948 built. Launch DM price not verified."
+  },
+  "porsche-911-993-carrera-rs": {
+    "launchColor": {
+      "name": "Speedgelb (Speed Yellow)",
+      "hex": "#F5D100",
+      "source": "https://lutziger-classiccars.com/en/fahrzeuge/porsche-911-carrera-rs-typ-993-01-09-1995-speedgelb-33959-km/",
+      "confidence": "low",
+      "note": "A dealer description states Speed Yellow was the colour the model was presented in in the original sales brochure; not confirmed by Porsche. Shown Geneva March 1995. Standard colours were Black, Riviera Blue, Indian Red, Grand Prix White, Speed Yellow."
+    },
+    "specs": {
+      "production": 1014,
+      "hp": 300,
+      "liters": 3.8,
+      "years": [
+        1995,
+        1996
+      ],
+      "newPrice": {
+        "amount": 147900,
+        "currency": "DEM",
+        "eur": 75620,
+        "year": 1995
+      },
+      "sources": [
+        "https://berlinmotorbooks.de/en/the-colours-of-the-porsche-911-carrera-rs-3-8-of-the-993-generation/",
+        "https://en.wikipedia.org/wiki/Porsche_993",
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-%E2%80%93-Der-letzte-seiner-Art.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-993-carrera-rs-1.jpg",
+        "title": "File:1995 Porsche 911 993 Carrera RS.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_993_Carrera_RS.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera RS (993), Speedgelb"
+      },
+      {
+        "file": "/cars/porsche-911-993-carrera-rs-2.jpg",
+        "title": "File:1995 Porsche 993 Carrera RS in Speed Yellow, rear right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_993_Carrera_RS_in_Speed_Yellow,_rear_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera RS (993), Speedgelb, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-993-carrera-rs-3.jpg",
+        "title": "File:1995 Porsche 993 Carrera RS in Riviera Blue, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_993_Carrera_RS_in_Riviera_Blue,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera RS (993) in Rivierablau mit Clubsport-Aerodynamik"
+      }
+    ],
+    "note": "Price: first listed in the 2-1995 price list at DM 147,900 (Berlin Motorbooks / Porsche 993 book publisher). Production 1,014 incl. 227 Clubsport (en.wikipedia). Our 82,000 EUR is ~6,400 EUR too high."
+  },
+  "porsche-911-993-turbo": {
+    "launchColor": {
+      "name": "Arenarot Metallic (Arena Red Metallic)",
+      "hex": "#6E1A24",
+      "source": "https://rennlist.com/forums/993-turbo-forum/1339082-993-turbo-initial-release-press-kit.html",
+      "confidence": "low",
+      "note": "Forum description of the original factory 993 Turbo launch press kit mentions three 'area red' (Arena Red) colour slides. Premiere Geneva March 1995. Not confirmed by a Porsche source."
+    },
+    "specs": {
+      "production": 6015,
+      "hp": 408,
+      "liters": 3.6,
+      "years": [
+        1995,
+        1998
+      ],
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+        "https://en.wikipedia.org/wiki/Porsche_993"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-993-turbo-1.jpg",
+        "title": "File:1995 Porsche 911 993 Turbo (65641).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_993_Turbo_(65641).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo (993), Arenarot Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-993-turbo-2.jpg",
+        "title": "File:1996 Porsche 911 Turbo 993.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1996_Porsche_911_Turbo_993.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (993) in Silber"
+      },
+      {
+        "file": "/cars/porsche-911-993-turbo-3.jpg",
+        "title": "File:1995 Porsche 911 Turbo.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_Turbo.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (993) in Schwarz"
+      }
+    ],
+    "note": "Porsche Newsroom: 6,015 Turbos built 1995-1998, 300 kW/408 PS; en.wikipedia table says 5,978. Launch DM price not verified."
+  },
+  "porsche-911-993-turbo-s": {
+    "launchColor": {
+      "name": "Arktissilber Metallic (Arctic Silver Metallic)",
+      "hex": "#B9BBBC",
+      "source": "https://www.elferspot.com/en/car/porsche-993-turbo-s-1997-2509320/",
+      "confidence": "low",
+      "note": "Marketplace listing: Arctic Silver Turbo S (reg. S-MN 1906, Weinrot interior) was the factory homologation/press car and appears in the period Porsche press-pack photos. A dealer (Gallery Aaldering) instead claims Arena Red was the official introduction colour. Not confirmed by Porsche."
+    },
+    "specs": {
+      "production": 345,
+      "hp": 450,
+      "liters": 3.6,
+      "years": [
+        1997,
+        1998
+      ],
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-turbo-s-993-1997-1998/",
+        "https://en.wikipedia.org/wiki/Porsche_993",
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-%E2%80%93-Der-letzte-seiner-Art.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-993-turbo-s-1.jpg",
+        "title": "File:1997 Porsche 993 Turbo S in Arctic Silver Metallic, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1997_Porsche_993_Turbo_S_in_Arctic_Silver_Metallic,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo S (993), Arktissilber Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-993-turbo-s-2.jpg",
+        "title": "File:1997 Porsche 993 Turbo S in Arctic Silver Metallic, rear left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1997_Porsche_993_Turbo_S_in_Arctic_Silver_Metallic,_rear_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo S (993), Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-993-turbo-s-3.jpg",
+        "title": "File:Techno-Classica 2018, Essen (IMG 9112).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Techno-Classica_2018,_Essen_(IMG_9112).jpg",
+        "author": "Matti Blume",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo S (993) in Blau"
+      }
+    ],
+    "note": "345 built (176 to US); 331 kW/450 PS (424 hp SAE US). Price 304,650 DM (1997) seen only on a dealer archive page (classicargarage.fr), not verified -> 155,766 EUR if correct."
+  },
+  "porsche-911-993-gt2": {
+    "launchColor": {
+      "name": "Polarsilber Metallic (Polar Silver Metallic)",
+      "hex": "#B4B7BA",
+      "source": "https://radical-mag.com/2025/10/16/porsche-911-gt2-993-1995-1998/",
+      "confidence": "low",
+      "note": "Best guess only. Premiered Geneva March 1995 (with 993 Turbo and Carrera RS); no source found naming the show/press car colour. Silver (Polar, later Arctic) was the most popular GT2 colour; a joint GT2/Carrera RS brochure (WVK 190 310, 02/1995) exists but its cover colour was not found."
+    },
+    "specs": {
+      "production": 194,
+      "hp": 430,
+      "liters": 3.6,
+      "years": [
+        1995,
+        1998
+      ],
+      "newPrice": {
+        "amount": 278875,
+        "currency": "DEM",
+        "eur": 142587,
+        "year": 1996
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2024/scene-passion/porsche-911-993-gt2-coppa-florio-36266.html",
+        "https://newsroom.porsche.com/en/2019/history/porsche-911-gt2-whatsapp-founder-jan-koum-walter-roehrl-frank-troche-14804.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-993-gt2-1.jpg",
+        "title": "File:1995 Porsche 911 993 GT2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_993_GT2.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 (993), Polarsilber"
+      },
+      {
+        "file": "/cars/porsche-911-993-gt2-2.jpg",
+        "title": "File:1995 Porsche 911 993 GT2 (93132).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_993_GT2_(93132).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 (993), Heckansicht mit Heckflügel"
+      },
+      {
+        "file": "/cars/porsche-911-993-gt2-3.jpg",
+        "title": "File:1995 Porsche 911 GT2 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1995_Porsche_911_GT2_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT2 (993) in Blau"
+      }
+    ],
+    "note": "Porsche: 172 built 1995-1997 (Coppa Florio article), 194 units total incl. MY1998 (Jan's GT2 article). en.wikipedia's '57' is not supported by Porsche. 430 PS MY1996-97, 450 PS MY1998."
+  },
+  "porsche-911-996-carrera": {
+    "launchColor": {
+      "name": "Zenithblau Metallic (Zenith Blue Metallic)",
+      "hex": "#2C4A8E",
+      "source": "https://rennlist.com/forums/996-forum/240204-anyone-else-on-this-forum-have-a-zenith-blue-996-a.html",
+      "confidence": "medium",
+      "note": "Owner/forum reports that Zenith Blue was the colour used in all the early 996 introduction literature and the owner's manual; consistent with widely seen 1997 launch imagery. Not confirmed by a Porsche source. Paint code F1 (rennbow.org)."
+    },
+    "specs": {
+      "hp": 300,
+      "liters": 3.4,
+      "years": [
+        1997,
+        2005
+      ],
+      "newPrice": {
+        "amount": 135610,
+        "currency": "DEM",
+        "eur": 69336,
+        "year": 1997
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_996",
+        "https://en.wikipedia.org/wiki/Porsche_911_(996)",
+        "https://www.auto-motor-und-sport.de/oldtimer/porsche-911-996-1997-2006-staerken-schwaechen/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-996-carrera-1.jpg",
+        "title": "File:Porsche 911 (996) Carrera (8106311721).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(996)_Carrera_(8106311721).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera (996) in Blau Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-996-carrera-2.jpg",
+        "title": "File:1999 Porsche 911 996.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1999_Porsche_911_996.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera (996) in Silber"
+      },
+      {
+        "file": "/cars/porsche-911-996-carrera-3.jpg",
+        "title": "File:Porsche 911 (996) Carrera (8106311767).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(996)_Carrera_(8106311767).jpg",
+        "author": "nakhon100",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera (996), Heckansicht"
+      }
+    ],
+    "note": "Launch Oct 1997 Coupé only at 135,610 DM (AMS: 'über 135.000 Mark'; exact figure from secondary sources). 300 PS/3.4 l applies to 996.1 (to MY2001); 996.2 Carrera from MY2002 = 320 PS/3.6 l. Production 56,733 appears only in a non-authoritative list (jtcars.net) as 996.1 Carrera 2 total; not verified. Our 77,000 EUR is ~7,700 EUR above the 1997 launch price. No Commons photo could be confirmed as Zenith Blue; hero is a dark blue metallic 996.1 Carrera (shade not verified)."
+  },
+  "porsche-911-996-turbo": {
+    "launchColor": {
+      "name": "Arktissilber Metallic (Arctic Silver Metallic)",
+      "hex": "#B9BBBC",
+      "source": "https://www.stuttcars.com/porsche-911-996-the-story/",
+      "confidence": "low",
+      "note": "Best guess. Official photos released June 1999, shown IAA Frankfurt Sept 1999; colour of show/press car not found in any source. Source URL documents the timing only."
+    },
+    "specs": {
+      "production": 20499,
+      "hp": 420,
+      "liters": 3.6,
+      "years": [
+        2000,
+        2005
+      ],
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+        "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-996-turbo-1.jpg",
+        "title": "File:2001 Porsche 996 Turbo FOS22.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Porsche_996_Turbo_FOS22.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo (996), Arktissilber"
+      },
+      {
+        "file": "/cars/porsche-911-996-turbo-2.jpg",
+        "title": "File:2002 Porsche 911 Turbo Coupe in Seal Grey Metallic, Rear Left, 05-18-2023.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2002_Porsche_911_Turbo_Coupe_in_Seal_Grey_Metallic,_Rear_Left,_05-18-2023.jpg",
+        "author": "Elise240SX",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (996) in Sealgrau, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-996-turbo-3.jpg",
+        "title": "File:2003 Porsche 911 Turbo.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_Turbo.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (996) in Dunkelblau"
+      }
+    ],
+    "note": "Porsche: 20,499 built up to and including MY2005; 309 kW/420 PS; offered from January 2000. Launch price not verified (AUTO BILD lists from 128,676 EUR; a 234,900 DM figure = 120,102 EUR is unconfirmed)."
+  },
+  "porsche-911-996-gt3": {
+    "launchColor": {
+      "name": "Arktissilber Metallic (Arctic Silver Metallic)",
+      "hex": "#B9BBBC",
+      "source": "https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-walter-roehrl-38134.html",
+      "confidence": "high",
+      "note": "Porsche Newsroom: the first 911 GT3 (996), Arctic Silver Metallic, is the car used for the world premiere at Geneva 1999."
+    },
+    "specs": {
+      "production": 4181,
+      "hp": 360,
+      "liters": 3.6,
+      "years": [
+        1999,
+        2005
+      ],
+      "newPrice": {
+        "amount": 179500,
+        "currency": "DEM",
+        "eur": 91777,
+        "year": 1999
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2024/history/porsche-911-gt3-25-years-walter-roehrl-38134.html",
+        "https://en.wikipedia.org/wiki/Porsche_911_GT3",
+        "https://www.auto-motor-und-sport.de/neuheiten/20-jahre-porsche-911-gt3-sechs-generationen/",
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-996-gt3-1.jpg",
+        "title": "File:1999 Porsche 911 996 GT3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1999_Porsche_911_996_GT3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 (996), Arktissilber"
+      },
+      {
+        "file": "/cars/porsche-911-996-gt3-2.jpg",
+        "title": "File:996 GT3 in Nancy, France (2012-04-08).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:996_GT3_in_Nancy,_France_(2012-04-08).jpg",
+        "author": "Alexandre Prévot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 (996), Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-996-gt3-3.jpg",
+        "title": "File:2000 Porsche 911 GT3 Clubsport in yellow (996) (54380648533).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2000_Porsche_911_GT3_Clubsport_in_yellow_(996)_(54380648533).jpg",
+        "author": "More Cars",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 Clubsport (996) in Speedgelb"
+      }
+    ],
+    "note": "Launch GT3 (996.1, 1999-2001): 360 PS, 179,500 DM (91,777 EUR), 1,868 built. 996.2 GT3 (2003-2005): 381 PS, 102,112 EUR, 2,313 built (2003-04). 4,181 = 1,868 + 2,313. Our 381 PS / 102,000 EUR describe the 996.2, not the launch car."
+  },
+  "porsche-911-996-gt3-rs": {
+    "launchColor": {
+      "name": "Carraraweiß mit roten Schriftzügen (Carrara White with red decals)",
+      "hex": "#F2F1EC",
+      "source": "https://www.porsche.com/international/accessoriesandservice/classic/models/996/996-gt3/",
+      "confidence": "high",
+      "note": "Porsche: GT3 RS offered only in Carrara White with red or blue decals/wheels. The IAA Frankfurt 2003 show car (Wikimedia Commons photo, see images) wore red decals and red wheels."
+    },
+    "specs": {
+      "production": 682,
+      "hp": 381,
+      "liters": 3.6,
+      "years": [
+        2003,
+        2004
+      ],
+      "newPrice": {
+        "amount": 120788,
+        "currency": "EUR",
+        "eur": 120788,
+        "year": 2003
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_911_GT3",
+        "https://www.auto-motor-und-sport.de/neuheiten/20-jahre-porsche-911-gt3-sechs-generationen/",
+        "https://www.porsche.com/stories/innovation/porsche-rs-cars/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-996-gt3-rs-1.jpg",
+        "title": "File:2004 Porsche 911 GT3 RS LC25.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2004_Porsche_911_GT3_RS_LC25.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (996), Carraraweiß mit roten Schriftzügen"
+      },
+      {
+        "file": "/cars/porsche-911-996-gt3-rs-2.jpg",
+        "title": "File:2003 Porsche 911 GT3 RS Type 996 IAA Frankfurt.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_GT3_RS_Type_996_IAA_Frankfurt.jpg",
+        "author": "silver seraph",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (996) auf der IAA 2003"
+      },
+      {
+        "file": "/cars/porsche-911-996-gt3-rs-3.jpg",
+        "title": "File:2003 Porsche 911 996 GT3 RS (36437571650).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_996_GT3_RS_(36437571650).jpg",
+        "author": "The Car Spy",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 RS (996), Carraraweiß mit blauen Schriftzügen"
+      }
+    ]
+  },
+  "porsche-911-996-gt2": {
+    "launchColor": {
+      "name": "Arktissilber Metallic (Arctic Silver Metallic)",
+      "hex": "#B9BBBC",
+      "source": "https://www.porsche.com/usa/accessoriesandservice/classic/models/996/996-gt2/",
+      "confidence": "medium",
+      "note": "Porsche Classic model page illustrates the first-series GT2 (2001-02) with a silver car and the 2003-05 car in red; exact paint name inferred (Arctic Silver was the 996-era silver). Introduced NAIAS Detroit January 2001."
+    },
+    "specs": {
+      "production": 1287,
+      "hp": 462,
+      "liters": 3.6,
+      "years": [
+        2001,
+        2005
+      ],
+      "newPrice": {
+        "amount": 184674,
+        "currency": "EUR",
+        "eur": 184674,
+        "year": 2001
+      },
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-996-gt2/",
+        "https://www.porsche.com/usa/accessoriesandservice/classic/models/996/996-gt2/",
+        "https://en.wikipedia.org/wiki/Porsche_911_GT2"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-996-gt2-1.jpg",
+        "title": "File:2001 Porsche 911 GT2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2001_Porsche_911_GT2.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 (996), Arktissilber"
+      },
+      {
+        "file": "/cars/porsche-911-996-gt2-2.jpg",
+        "title": "File:Porsche 911 GT2 (14131922337).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_GT2_(14131922337).jpg",
+        "author": "FotoSleuth",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 (996), Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-996-gt2-3.jpg",
+        "title": "File:MG 1368 (52510266264).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:MG_1368_(52510266264).jpg",
+        "author": "Clemens Vasters from Viersen, Germany, Germany",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT2 (996) im Porsche-Museum, Gelb"
+      }
+    ],
+    "note": "Press-release list price 159,100 EUR excl. VAT = 184,674 EUR incl. German VAT (quoted by Stuttcars). 462 PS to MY2003, 483 PS from MY2004. Production 1,287 (963 996.1 + 324 996.2) from enthusiast sources, not Porsche."
+  },
+  "porsche-911-997-carrera-s": {
+    "launchColor": {
+      "name": "Sealgraumetallic (Seal Grey Metallic)",
+      "hex": "#6E7173",
+      "source": "https://www.netcarshow.com/porsche/2005-911_carrera_s/",
+      "confidence": "low",
+      "note": "Lead official 2004 press photo of the Carrera S (as reproduced by NetCarShow) shows a mid-grey metallic car; exact paint name inferred (Seal Grey was new for the 997; could be Atlas Grey or Meteor Grey). Forum opinion (https://www.porscheclubgb.com/forum/threads/997-colours.137857/) calls Guards Red the 997 launch colour, but that likely refers to the base Carrera / brochure cars."
+    },
+    "specs": {
+      "hp": 355,
+      "liters": 3.8,
+      "years": [
+        2004,
+        2012
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://en.wikipedia.org/wiki/Porsche_911_(997)",
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-997-carrera-s-1.jpg",
+        "title": "File:2007 Porsche 911 Carrera 2S 3.8.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2007_Porsche_911_Carrera_2S_3.8.jpg",
+        "author": "Vauxford",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera S (997), Grau Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-997-carrera-s-2.jpg",
+        "title": "File:2004-2008 Porsche 911 (997) Carrera S in Petaling Jaya, Malaysia (01).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2004-2008_Porsche_911_(997)_Carrera_S_in_Petaling_Jaya,_Malaysia_(01).jpg",
+        "author": "Aero777",
+        "license": "CC BY-SA 2.5 my",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/my/deed.en",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera S (997) in Silber"
+      },
+      {
+        "file": "/cars/porsche-911-997-carrera-s-3.jpg",
+        "title": "File:2005-03-04 Motorshow Geneva 130.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2005-03-04_Motorshow_Geneva_130.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera S (997) auf dem Genfer Auto-Salon 2005"
+      }
+    ],
+    "note": "Launch 997.1: 355 PS / 3.8 l (3824 cc); 997.2 (2008): 385 PS. German launch price for Carrera S not verified; Porsche newsroom gives only the MY2005 911 Carrera Coupe at EUR 75,200 (AutoScout24 cites EUR 86,949 for Carrera S, probably post-2007 VAT price). Production not verified (stuttcars lists 27,237 for 997.1 C2S coupe only). Hero is a grey metallic 997.1 Carrera S; exact shade not verified."
+  },
+  "porsche-911-997-turbo": {
+    "launchColor": {
+      "name": "Kobaltblaumetallic (Cobalt Blue Metallic)",
+      "hex": "#2B4FA0",
+      "source": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-6-type-997-16489.html",
+      "confidence": "medium",
+      "note": "Porsche newsroom uses 2006 press photo P06_0428 showing a 997 Turbo in a bright metallic blue; paint name inferred as Cobalt Blue Metallic (997-era bright blue). Premiere: Geneva, 28 Feb 2006."
+    },
+    "specs": {
+      "hp": 480,
+      "liters": 3.6,
+      "years": [
+        2006,
+        2012
+      ],
+      "newPrice": {
+        "amount": 133603,
+        "currency": "EUR",
+        "eur": 133603,
+        "year": 2006
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://en.wikipedia.org/wiki/Porsche_911_(997)",
+        "https://www.autobild.de/artikel/preis-porsche-911-turbo-2006--54453.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-997-turbo-1.jpg",
+        "title": "File:2006-03-03 Motorshow Geneva 101.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2006-03-03_Motorshow_Geneva_101.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (997) bei der Weltpremiere, Genfer Auto-Salon 2006"
+      },
+      {
+        "file": "/cars/porsche-911-997-turbo-2.jpg",
+        "title": "File:2006-03-03 Motorshow Geneva 099.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2006-03-03_Motorshow_Geneva_099.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (997), Genf 2006, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-997-turbo-3.jpg",
+        "title": "File:2006 Porsche 911 (997) Turbo - Flickr - The Car Spy (8).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2006_Porsche_911_(997)_Turbo_-_Flickr_-_The_Car_Spy_(8).jpg",
+        "author": "The Car Spy",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo (997) in Schwarz"
+      }
+    ],
+    "note": "Launch 997.1: 480 PS / 3.6 l; 997.2 Turbo (2009): 500 PS / 3.8 l DFI. Price at 16% VAT, Feb 2006. Commons has no Cobalt Blue 997 Turbo; the hero shows the silver car on the Geneva 2006 world-premiere stand (so the show car may have been silver, while the main press photo was blue)."
+  },
+  "porsche-911-997-gt3": {
+    "launchColor": {
+      "name": "Carraraweiß (Carrara White)",
+      "hex": "#F1F1EC",
+      "source": "https://www.ultimatecarpage.com/car/2715/Porsche-997-GT3.html",
+      "confidence": "medium",
+      "note": "Geneva 2006 world-premiere stand photo shows white 997 GT3s (Carrara White was the only solid white in the 997.1 GT3 palette); Rennlist Geneva thread also shows a black car: https://rennlist.com/forums/996-gt2-gt3-forum/257017-pics-of-new-997-gt3-from-geneva-auto-show.html"
+    },
+    "specs": {
+      "hp": 415,
+      "liters": 3.6,
+      "years": [
+        2006,
+        2012
+      ],
+      "newPrice": {
+        "amount": 108083,
+        "currency": "EUR",
+        "eur": 108083,
+        "year": 2006
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://en.wikipedia.org/wiki/Porsche_911_(997)",
+        "https://www.auto-motor-und-sport.de/neuheiten/20-jahre-porsche-911-gt3-sechs-generationen/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-997-gt3-1.jpg",
+        "title": "File:-i---i- (3770986138).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:-i---i-_(3770986138).jpg",
+        "author": "Damian Morys from New York City, United States",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 (997), Carraraweiß"
+      },
+      {
+        "file": "/cars/porsche-911-997-gt3-2.jpg",
+        "title": "File:2006 Porsche 911 997 GT3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2006_Porsche_911_997_GT3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 (997) in Schwarz"
+      }
+    ],
+    "note": "Launch 997.1: 415 PS / 3.6 l; 997.2 GT3 (2009): 435 PS / 3.8 l, EUR 116,947."
+  },
+  "porsche-911-997-gt3-rs": {
+    "launchColor": {
+      "name": "Orange mit Schwarz (Orange with black)",
+      "hex": "#F47B20",
+      "source": "https://www.ultimatecarpage.com/car/2802/Porsche-997-GT3-RS.html",
+      "confidence": "medium",
+      "note": "Show-car photo (2006 launch) shows Orange body with black wing/decals/wheels; Green/black was the other hero combination. Porsche release: standard Arctic Silver or Black, optional Orange or Green. The 997.2 GT3 RS 3.8 (2009) is associated with a white/red scheme per https://www.drive.com.au/news/2023-porsche-911-gt3-rs-leaked/."
+    },
+    "specs": {
+      "hp": 415,
+      "liters": 3.6,
+      "years": [
+        2006,
+        2011
+      ],
+      "newPrice": {
+        "amount": 129659,
+        "currency": "EUR",
+        "eur": 129659,
+        "year": 2006
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_911_(997)",
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://www.auto-motor-und-sport.de/neuheiten/20-jahre-porsche-911-gt3-sechs-generationen/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-997-gt3-rs-1.jpg",
+        "title": "File:2009 12 03 Essen 153404 (4232299474).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2009_12_03_Essen_153404_(4232299474).jpg",
+        "author": "Norbert Schnitzler from Aachen, Deutschland, NRW",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (997), Orange mit schwarzen Akzenten"
+      },
+      {
+        "file": "/cars/porsche-911-997-gt3-rs-2.jpg",
+        "title": "File:2007 Porsche 911 997 GT3 RS.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2007_Porsche_911_997_GT3_RS.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 RS (997) in Schwarz mit orangefarbenen Akzenten"
+      },
+      {
+        "file": "/cars/porsche-911-997-gt3-rs-3.jpg",
+        "title": "File:2008 white Porsche 997 GT3 RS.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2008_white_Porsche_997_GT3_RS.jpg",
+        "author": "J.Smith831",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 RS (997) in Weiß mit roten Akzenten"
+      }
+    ],
+    "note": "Launch 997.1 GT3 RS (Oct 2006): 415 PS / 3.6 l. 997.2 GT3 RS (2009): 450 PS / 3.8 l, EUR 145,871."
+  },
+  "porsche-911-997-gt3-rs-4-0": {
+    "launchColor": {
+      "name": "Carraraweiß (Carrara White)",
+      "hex": "#F1F1EC",
+      "source": "https://www.supercars.net/blog/2011-porsche-911-gt3-rs-4-0/",
+      "confidence": "medium",
+      "note": "Reprinted Porsche press release: 'painted white as standard'; launch cars white with red/grey decals. Other colours only via Paint to Sample."
+    },
+    "specs": {
+      "production": 600,
+      "hp": 500,
+      "liters": 4.0,
+      "years": [
+        2011,
+        2011
+      ],
+      "newPrice": {
+        "amount": 178596,
+        "currency": "EUR",
+        "eur": 178596,
+        "year": 2011
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://en.wikipedia.org/wiki/Porsche_911_(997)",
+        "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-6-type-997-16489.html",
+        "https://www.motorsport-xl.de/news/2011/Automobilsport/Rennsportler-in-limitierter-Auflage-911-GT3-RS-4-0-2030.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-997-gt3-rs-4-0-1.jpg",
+        "title": "File:2011 Porsche 911 GT3 RS 4.0 (90015).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2011_Porsche_911_GT3_RS_4.0_(90015).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS 4.0 (997), Carraraweiß"
+      },
+      {
+        "file": "/cars/porsche-911-997-gt3-rs-4-0-2.jpg",
+        "title": "File:2011 Porsche 911 GT3 RS 4.0 (56409).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2011_Porsche_911_GT3_RS_4.0_(56409).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS 4.0 (997), Heckansicht"
+      }
+    ]
+  },
+  "porsche-911-997-gt2-rs": {
+    "launchColor": {
+      "name": "GT-Silbermetallic (GT Silver Metallic)",
+      "hex": "#A9ACAE",
+      "source": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-6-type-997-16489.html",
+      "confidence": "medium",
+      "note": "Porsche newsroom press photo 'Typ-997-GT2-RS' shows silver car with carbon bonnet; silver name inferred."
+    },
+    "specs": {
+      "production": 500,
+      "hp": 620,
+      "liters": 3.6,
+      "years": [
+        2010,
+        2011
+      ],
+      "newPrice": {
+        "amount": 237578,
+        "currency": "EUR",
+        "eur": 237578,
+        "year": 2010
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://en.wikipedia.org/wiki/Porsche_911_(997)",
+        "https://www.supercars.net/blog/2010-porsche-911-gt2-rs/",
+        "https://www.motorsport-total.com/auto/news/porsches-neuer-supersportler-911-gt2-rs-mit-620-ps-10051201"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-997-gt2-rs-1.jpg",
+        "title": "File:2010-07-04 Silver Porsche 997 GT2 RS 2367x1617.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2010-07-04_Silver_Porsche_997_GT2_RS_2367x1617.jpg",
+        "author": "Brian Snelson from Hockley, Essex, England",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 RS (997), GT-Silbermetallic"
+      },
+      {
+        "file": "/cars/porsche-911-997-gt2-rs-2.jpg",
+        "title": "File:2010 Porsche 911 GT2 RS (1) Mondial de l'automobile Paris.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2010_Porsche_911_GT2_RS_(1)_Mondial_de_l%27automobile_Paris.jpg",
+        "author": "Romain D C",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 RS (997) auf dem Pariser Autosalon 2010"
+      },
+      {
+        "file": "/cars/porsche-911-997-gt2-rs-3.jpg",
+        "title": "File:2010 Porsche 911 GT2 RS LC23.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2010_Porsche_911_GT2_RS_LC23.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT2 RS (997) in Schwarz"
+      }
+    ]
+  },
+  "porsche-911-991-carrera-s": {
+    "launchColor": {
+      "name": "Platinsilbermetallic (Platinum Silver Metallic)",
+      "hex": "#B5B3AC",
+      "source": "https://www.ausmotive.com/2011/08/23/official-991-porsche-911-revealed.html",
+      "confidence": "low",
+      "note": "Official Porsche launch photo set (23 Aug 2011, reproduced by AUSmotive) shows the Carrera S in a warm silver and the base Carrera in Guards Red; exact silver name inferred (Platinum Silver was the 991.1 standard-range silver; could be GT Silver). The IAA 2011 stand car photographed by GTspirit was Dunkelblaumetallic (Dark Blue Metallic): https://gtspirit.com/2011/09/13/iaa-2011-porsche-911-991-carrera-s/"
+    },
+    "specs": {
+      "hp": 400,
+      "liters": 3.8,
+      "years": [
+        2011,
+        2019
+      ],
+      "newPrice": {
+        "amount": 102436,
+        "currency": "EUR",
+        "eur": 102436,
+        "year": 2011
+      },
+      "sources": [
+        "https://newsroom.porsche.com/dam/jcr:05c3198c-772f-4e4d-88ad-b6fce31b66ed/S11_0327_en.pdf",
+        "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-991-carrera-s-1.jpg",
+        "title": "File:2015 Porsche 911 Carrera S.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2015_Porsche_911_Carrera_S.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera S (991), Silber Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-991-carrera-s-2.jpg",
+        "title": "File:Blue Porsche 991 Carrera S fl IAA 2011.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Blue_Porsche_991_Carrera_S_fl_IAA_2011.jpg",
+        "author": "Matti Blume (MB-one)",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera S (991) bei der Weltpremiere auf der IAA 2011, Dunkelblau Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-991-carrera-s-3.jpg",
+        "title": "File:991 Carrera S coupe Porsche Exclusive Goodwood FoS 2012.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:991_Carrera_S_coupe_Porsche_Exclusive_Goodwood_FoS_2012.jpg",
+        "author": "Darren",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera S (991) in Gelb, Goodwood 2012"
+      }
+    ],
+    "note": "Launch 991.1: 400 PS / 3.8 l. 991.2 facelift (IAA 2015): 420 PS / 3.0 l biturbo. Shade of silver not verified; the IAA 2011 world-premiere stand car was dark blue metallic (image 2)."
+  },
+  "porsche-911-991-gt3": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#C8102E",
+      "source": "https://www.evo.co.uk/porsche/911/13052/2013-porsche-911-gt3-news-and-pictures",
+      "confidence": "medium",
+      "note": "Geneva 2013 press photos captioned 'red' (evo gallery); Rennlist at reveal: 'Red is the launch colour again'. Guards Red was the only solid red in the 991 GT3 palette, so shade name inferred."
+    },
+    "specs": {
+      "hp": 475,
+      "liters": 3.8,
+      "years": [
+        2013,
+        2019
+      ],
+      "newPrice": {
+        "amount": 137303,
+        "currency": "EUR",
+        "eur": 137303,
+        "year": 2013
+      },
+      "sources": [
+        "https://www.ausmotive.com/2013/03/05/geneva-2013-porsche-911-gt3-revealed.html",
+        "https://en.wikipedia.org/wiki/Porsche_911_(991)"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-991-gt3-1.jpg",
+        "title": "File:2014 Porsche 911 GT3 (57940).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Porsche_911_GT3_(57940).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 (991), Indischrot"
+      },
+      {
+        "file": "/cars/porsche-911-991-gt3-2.jpg",
+        "title": "File:2013-03-05 Geneva Motor Show 7899.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2013-03-05_Geneva_Motor_Show_7899.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 (991) bei der Weltpremiere, Genfer Auto-Salon 2013"
+      },
+      {
+        "file": "/cars/porsche-911-991-gt3-3.jpg",
+        "title": "File:2014 Porsche 911 GT3 (11914).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Porsche_911_GT3_(11914).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 (991), Indischrot, Heckansicht"
+      }
+    ],
+    "note": "Launch 991.1: 475 PS / 3.8 l (price from republished Porsche press release). 991.2 GT3 (2017): 500 PS / 4.0 l. The Geneva 2013 world-premiere stand car photographed on Commons is white (image 2); red was used in the press photos."
+  },
+  "porsche-911-991-gt3-rs": {
+    "launchColor": {
+      "name": "Lavaorange (Lava Orange)",
+      "hex": "#F2581F",
+      "source": "https://newsroom.porsche.com/en/products/porsche-colors-911-gt3-rs-lizard-green-communication-color-design-barbara-sika-daniela-milosevic-sina-brunner-christophorus-386-15491.html",
+      "confidence": "high",
+      "note": "Porsche newsroom: predecessor GT3 RS 'was presented in Lava Orange' (paint code M2A). The 991.2 GT3 RS (2018) communication colour was Lizard Green (Lizardgrün)."
+    },
+    "specs": {
+      "hp": 500,
+      "liters": 4.0,
+      "years": [
+        2015,
+        2019
+      ],
+      "newPrice": {
+        "amount": 181690,
+        "currency": "EUR",
+        "eur": 181690,
+        "year": 2015
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+        "https://newsroom.porsche.com/dam/jcr:89a80d43-57bf-4359-9a47-c1af9e7efd07/PM20180221e%20-%20A%20clear%20focus%20on%20motorsport_the%20new%20Porsche%20911%20GT3%20RS.PDF"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-991-gt3-rs-1.jpg",
+        "title": "File:2015 Porsche 911 GT3 RS.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2015_Porsche_911_GT3_RS.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (991), Lavaorange"
+      },
+      {
+        "file": "/cars/porsche-911-991-gt3-rs-2.jpg",
+        "title": "File:2015-03-03 Geneva Motor Show 4089.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2015-03-03_Geneva_Motor_Show_4089.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (991) bei der Weltpremiere, Genfer Auto-Salon 2015"
+      },
+      {
+        "file": "/cars/porsche-911-991-gt3-rs-3.jpg",
+        "title": "File:2015 Porsche 911 GT3 RS 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2015_Porsche_911_GT3_RS_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 RS (991) in Ultraviolett"
+      }
+    ],
+    "note": "Launch 991.1 (Geneva 2015): 500 PS. 991.2 GT3 RS (2018): 520 PS, EUR 195,137."
+  },
+  "porsche-911-991-r": {
+    "launchColor": {
+      "name": "Weiß (White) mit roten Streifen (with red stripes)",
+      "hex": "#F2F2EE",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-r-geneva-international-motor-show-12266.html",
+      "confidence": "high",
+      "note": "Porsche Geneva 2016 press photos show White with red full-length stripes; green stripes were the alternative."
+    },
+    "specs": {
+      "production": 991,
+      "hp": 500,
+      "liters": 4.0,
+      "years": [
+        2016,
+        2016
+      ],
+      "newPrice": {
+        "amount": 189544,
+        "currency": "EUR",
+        "eur": 189544,
+        "year": 2016
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/products/porsche-911-r-geneva-international-motor-show-12266.html",
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://en.wikipedia.org/wiki/Porsche_911_(991)"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-991-r-1.jpg",
+        "title": "File:2016-03-01 Geneva Motor Show 1344.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2016-03-01_Geneva_Motor_Show_1344.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 R (991) bei der Weltpremiere, Genf 2016, Weiß mit roten Streifen"
+      },
+      {
+        "file": "/cars/porsche-911-991-r-2.jpg",
+        "title": "File:2016-03-01 Geneva Motor Show 1346.JPG",
+        "page": "https://commons.wikimedia.org/wiki/File:2016-03-01_Geneva_Motor_Show_1346.JPG",
+        "author": "Norbert Aepli, Switzerland (User:Noebu)",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 R (991), Genf 2016, Seitenansicht"
+      },
+      {
+        "file": "/cars/porsche-911-991-r-3.jpg",
+        "title": "File:2016 Porsche 911 R.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2016_Porsche_911_R.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 R (991), Weiß mit grünen Streifen"
+      }
+    ]
+  },
+  "porsche-911-991-turbo-s": {
+    "launchColor": {
+      "name": "Rhodiumsilbermetallic (Rhodium Silver Metallic)",
+      "hex": "#B9BCBD",
+      "source": "https://www.6speedonline.com/forums/991/305033-rhodium-pics-anyone.html",
+      "confidence": "low",
+      "note": "Official launch photos (3 May 2013) clearly show a silver Turbo S (e.g. reproduced at https://www.supercars.net/blog/2013-porsche-911-turbo-s/), but the specific silver is only forum-identified as the then-new Rhodium Silver; could be GT Silver or Platinum Silver."
+    },
+    "specs": {
+      "hp": 560,
+      "liters": 3.8,
+      "years": [
+        2013,
+        2019
+      ],
+      "newPrice": {
+        "amount": 195256,
+        "currency": "EUR",
+        "eur": 195256,
+        "year": 2013
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://www.stuttcars.com/porsche-911-turbo-s-991-2014-2016/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-991-turbo-s-1.jpg",
+        "title": "File:2013 Porsche 911 Turbo S 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2013_Porsche_911_Turbo_S_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo S (991), Silber Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-991-turbo-s-2.jpg",
+        "title": "File:2014 Porsche 911 Turbo S, rear right, 06-21-2026.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Porsche_911_Turbo_S,_rear_right,_06-21-2026.jpg",
+        "author": "MercurySable99",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo S (991) in Blau, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-991-turbo-s-3.jpg",
+        "title": "File:2013 Porsche 911 Turbo S.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2013_Porsche_911_Turbo_S.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo S (991) in Schwarz"
+      }
+    ],
+    "note": "Launch 991.1: 560 PS / 3.8 l; 991.2 Turbo S (2016): 580 PS. Price from Porsche press release as reproduced by stuttcars. Hero is a silver 991.1 Turbo S; exact silver shade not verified."
+  },
+  "porsche-911-991-gt2-rs": {
+    "launchColor": {
+      "name": "GT-Silbermetallic (GT Silver Metallic)",
+      "hex": "#A9ACAE",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-gt2-rs-world-premiere-festival-of-speed-2017-goodwood-13892.html",
+      "confidence": "medium",
+      "note": "Goodwood 2017 world-premiere press photos show silver car with carbon bonnet/roof (Weissach package) and red Alcantara interior; silver name inferred visually as GT Silver."
+    },
+    "specs": {
+      "hp": 700,
+      "liters": 3.8,
+      "years": [
+        2017,
+        2019
+      ],
+      "newPrice": {
+        "amount": 285220,
+        "currency": "EUR",
+        "eur": 285220,
+        "year": 2017
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://en.wikipedia.org/wiki/Porsche_911_(991)",
+        "https://grassrootsmotorsports.com/news/coming-soon-700-horsepower-porsche/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-991-gt2-rs-1.jpg",
+        "title": "File:2018 Porsche 911 991 GT2 RS Weissach.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2018_Porsche_911_991_GT2_RS_Weissach.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 RS (991) mit Weissach-Paket, GT-Silbermetallic"
+      },
+      {
+        "file": "/cars/porsche-911-991-gt2-rs-2.jpg",
+        "title": "File:2018 Porsche 911 GT2 RS 3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2018_Porsche_911_GT2_RS_3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT2 RS (991), GT-Silbermetallic"
+      },
+      {
+        "file": "/cars/porsche-911-991-gt2-rs-3.jpg",
+        "title": "File:2018 Porsche 911 GT2 RS.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2018_Porsche_911_GT2_RS.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT2 RS (991) in Indischrot"
+      }
+    ],
+    "note": "No official production figure."
+  },
+  "porsche-911-992-carrera-s": {
+    "launchColor": {
+      "name": "Racinggelb (Racing Yellow)",
+      "hex": "#F7D417",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-new-eighth-generation-992-timeless-machine-world-premiere-los-angeles-2018-news-tv-live-broadcasting-16473.html",
+      "confidence": "medium",
+      "note": "World-premiere car (Porsche Experience Center LA, 27 Nov 2018) in Porsche newsroom photos captioned '911 Carrera S, world premiere, Los Angeles' is solid yellow; paint name inferred (Racing Yellow was the 992 standard yellow). Studio press shots also used Dolomite Silver."
+    },
+    "specs": {
+      "hp": 450,
+      "liters": 3.0,
+      "years": [
+        2019,
+        null
+      ],
+      "newPrice": {
+        "amount": 120125,
+        "currency": "EUR",
+        "eur": 120125,
+        "year": 2019
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/products/porsche-911-new-eighth-generation-992-timeless-machine-world-premiere-los-angeles-2018-news-tv-live-broadcasting-16473.html",
+        "https://newsroom.porsche.com/en/products/porsche-911-new-eigth-generation-992-timeless-machine-design-icon-praesentation-zell-am-see-oestereich-16858.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-992-carrera-s-1.jpg",
+        "title": "File:Porsche 911 Carrera S (31293970827).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_Carrera_S_(31293970827).jpg",
+        "author": "Nan Palmero from San Antonio, TX, USA",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Carrera S (992), Racinggelb, Messepräsentation"
+      },
+      {
+        "file": "/cars/porsche-911-992-carrera-s-2.jpg",
+        "title": "File:2019 Porsche 911 Carrera S 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2019_Porsche_911_Carrera_S_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera S (992) in Silber"
+      },
+      {
+        "file": "/cars/porsche-911-992-carrera-s-3.jpg",
+        "title": "File:2019 Porsche Carrera S.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2019_Porsche_Carrera_S.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Carrera S (992) in Enzianblau Metallic"
+      }
+    ],
+    "note": "Hero shows a Racing Yellow Carrera S on a Porsche show stand (Commons), consistent with the LA 2018 premiere car."
+  },
+  "porsche-911-992-gt3": {
+    "launchColor": {
+      "name": "Haifischblau (Shark Blue)",
+      "hex": "#0B6FB8",
+      "source": "https://www.carpaints.co/uploads/detail/shark-blue-porsche-911-gt3-992",
+      "confidence": "high",
+      "note": "Paint code D5C; 'used as communication color for the car in 2021'; Porsche premiere photos (16 Feb 2021) show Shark Blue. Also: https://www.motor1.com/news/493170/porsche-911-gt3-blue-paint/"
+    },
+    "specs": {
+      "hp": 510,
+      "liters": 4.0,
+      "years": [
+        2021,
+        null
+      ],
+      "newPrice": {
+        "amount": 167518,
+        "currency": "EUR",
+        "eur": 167518,
+        "year": 2021
+      },
+      "sources": [
+        "https://newsroom.porsche.com/dam/jcr:fb50dab0-0b3d-4b2d-b4d7-70e42fc381cf/PAG_992_GT3_EN.pdf",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-992-gt3-1.jpg",
+        "title": "File:2021 Shark Blue Porsche 911 GT3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2021_Shark_Blue_Porsche_911_GT3.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 (992), Haifischblau"
+      },
+      {
+        "file": "/cars/porsche-911-992-gt3-2.jpg",
+        "title": "File:2021 Porsche 911 GT3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2021_Porsche_911_GT3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 (992) in Weiß"
+      },
+      {
+        "file": "/cars/porsche-911-992-gt3-3.jpg",
+        "title": "File:2021 Porsche 911 GT3 6.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2021_Porsche_911_GT3_6.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 (992) in Indischrot"
+      }
+    ]
+  },
+  "porsche-911-992-gt3-rs": {
+    "launchColor": {
+      "name": "Weiß (White)",
+      "hex": "#F2F2EE",
+      "source": "https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html",
+      "confidence": "medium",
+      "note": "Porsche premiere press photos (17 Aug 2022) show solid White with Pyro Red wheels and side decals (homage to 996/997.2 GT3 RS); paint name not in text but visually confirmed. Corroborated by https://carbuzz.com/news/we-go-through-all-114-porsche-911-gt3-rs-colors/"
+    },
+    "specs": {
+      "hp": 525,
+      "liters": 4.0,
+      "years": [
+        2022,
+        null
+      ],
+      "newPrice": {
+        "amount": 229517,
+        "currency": "EUR",
+        "eur": 229517,
+        "year": 2022
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-992-gt3-rs-1.jpg",
+        "title": "File:2023 Porsche 911 GT3 RS 3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2023_Porsche_911_GT3_RS_3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (992), Weiß mit Pyrorot-Akzenten"
+      },
+      {
+        "file": "/cars/porsche-911-992-gt3-rs-2.jpg",
+        "title": "File:2023 Porsche 911 GT3 RS 5.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2023_Porsche_911_GT3_RS_5.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 GT3 RS (992), Weiß mit Pyrorot-Akzenten, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-911-992-gt3-rs-3.jpg",
+        "title": "File:2023 Porsche 911 GT3 RS 11.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2023_Porsche_911_GT3_RS_11.jpg",
+        "author": "Calreyn88",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 GT3 RS (992) in Grün"
+      }
+    ]
+  },
+  "porsche-911-992-s-t": {
+    "launchColor": {
+      "name": "Shorebluemetallic (Shore Blue Metallic)",
+      "hex": "#5E8FAE",
+      "source": "https://www.carpaints.co/uploads/detail/shore-blue-metallic-porsche-911-s-t-992",
+      "confidence": "high",
+      "note": "Paint code R5G, introduced on and used as communication colour for the S/T; only available with Heritage Design Package (Porsche newsroom names it 'Shoreblue Metallic'). Presented 8 Feb 2023."
+    },
+    "specs": {
+      "production": 1963,
+      "hp": 525,
+      "liters": 4.0,
+      "years": [
+        2023,
+        2024
+      ],
+      "newPrice": {
+        "amount": 292187,
+        "currency": "EUR",
+        "eur": 292187,
+        "year": 2023
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2023/products/porsche-911-s-t-world-premiere-60-years-911-33363.html",
+        "https://de.motor1.com/news/679841/porsche-911-st-premiere-2023/"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-992-s-t-1.jpg",
+        "title": "File:Grey Porsche 911 ST SCD 24.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Grey_Porsche_911_ST_SCD_24.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 S/T (992), Shoreblue Metallic mit Heritage Design Paket"
+      },
+      {
+        "file": "/cars/porsche-911-992-s-t-2.jpg",
+        "title": "File:Porsche 911 S-T IAA 2023 1X7A0525.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_S-T_IAA_2023_1X7A0525.jpg",
+        "author": "Alexander-93",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 S/T (992) auf der IAA 2023, Shoreblue Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-992-s-t-3.jpg",
+        "title": "File:2024 Porsche 911 S T 1.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2024_Porsche_911_S_T_1.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 S/T (992) in Silber"
+      }
+    ]
+  },
+  "porsche-911-992-sport-classic": {
+    "launchColor": {
+      "name": "Sportgraumetallic (Sport Grey Metallic)",
+      "hex": "#8C9496",
+      "source": "https://newsroom.porsche.com/en/2022/products/porsche-911-sport-classic-world-premiere-28164.html",
+      "confidence": "high",
+      "note": "Porsche: 'the first vehicle to feature Sport Grey Metallic paintwork', with Light Sport Grey stripes; presented 28 Apr 2022."
+    },
+    "specs": {
+      "production": 1250,
+      "hp": 550,
+      "liters": 3.7,
+      "years": [
+        2022,
+        2023
+      ],
+      "newPrice": {
+        "amount": 272714,
+        "currency": "EUR",
+        "eur": 272714,
+        "year": 2022
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2022/products/porsche-911-sport-classic-world-premiere-28164.html",
+        "https://de.wikipedia.org/wiki/Porsche_992",
+        "https://www.auto-medienportal.net/artikel/detail/59222"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-992-sport-classic-1.jpg",
+        "title": "File:2022 Porsche 911 (992) Sport Classic.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2022_Porsche_911_(992)_Sport_Classic.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Sport Classic (992), Sportgrau Metallic, Goodwood 2022"
+      },
+      {
+        "file": "/cars/porsche-911-992-sport-classic-2.jpg",
+        "title": "File:2023 Porsche 911 992 Sport Classic (90020).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2023_Porsche_911_992_Sport_Classic_(90020).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Sport Classic (992), Sportgrau Metallic"
+      },
+      {
+        "file": "/cars/porsche-911-992-sport-classic-3.jpg",
+        "title": "File:Porsche 911 Sport Classic (992, 2023) (53619878535).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_Sport_Classic_(992,_2023)_(53619878535).jpg",
+        "author": "Charles from Port Chester, New York",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Sport Classic (992) in Grün"
+      }
+    ]
+  },
+  "porsche-911-992-dakar": {
+    "launchColor": {
+      "name": "Weiß/Enzianblaumetallic, Rallye Design Paket (White/Gentian Blue Metallic, Rallye Design Package)",
+      "hex": "#F2F2EE",
+      "source": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
+      "confidence": "high",
+      "note": "Hero/press photos for LA Auto Show premiere (Nov 2022) show the two-tone Rallye Design livery (#953, Roughroads). Hex is the white base; Gentian Blue Metallic ~#1E3F72. Alternative launch-exclusive paint: Shade Green Metallic."
+    },
+    "specs": {
+      "production": 2500,
+      "hp": 480,
+      "liters": 3.0,
+      "years": [
+        2022,
+        2024
+      ],
+      "newPrice": {
+        "amount": 222020,
+        "currency": "EUR",
+        "eur": 222020,
+        "year": 2022
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
+        "https://newsroom.porsche.com/cs/ppdb/2022/11/nov-porsche-911-dakar.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-911-992-dakar-1.jpg",
+        "title": "File:Porsche 911 992 Dakar (76642).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_992_Dakar_(76642).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Dakar (992) mit Rallye Design Paket"
+      },
+      {
+        "file": "/cars/porsche-911-992-dakar-2.jpg",
+        "title": "File:Porsche 911 992 Dakar (54180).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_992_Dakar_(54180).jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Dakar (992), Rallye Design Paket, Showroom"
+      },
+      {
+        "file": "/cars/porsche-911-992-dakar-3.jpg",
+        "title": "File:2023 Porsche 911 Dakar SCD24.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2023_Porsche_911_Dakar_SCD24.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Dakar (992) in Shadegrün Metallic"
+      }
+    ]
+  }
+}

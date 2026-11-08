@@ -3,7 +3,7 @@ import { Area, Bar, BarChart, ComposedChart, Line, ResponsiveContainer, Tooltip,
 import { ArrowUpRight, Gauge, Receipt, Sparkles, TrendingDown, TrendingUp, Wrench } from "lucide-react";
 import { generationById, modelById, variantTitle } from "../../data/db";
 import type { Variant } from "../../data/types";
-import { AS_OF, WEEK, getSeries } from "../../data/generate";
+import { AS_OF, WEEK, getSales, getSeries, hasRealSales } from "../../data/generate";
 import { RANGES, generationIndex, getMetrics, modelIndex, type RangeKey } from "../../data/market";
 import { cn, date, eur, km, num, pct } from "../../lib/format";
 import { ChartTooltipBox, Pill, Segmented, axisProps } from "../ui";
@@ -67,7 +67,7 @@ export function ValuePanel({ variant }: { variant: Variant }) {
   const side = [
     { icon: Receipt, label: "Ø Verkaufspreis", value: eur(m.avgPrice12m) },
     { icon: Gauge, label: "Median-Laufleistung", value: km(m.medianMileage) },
-    { icon: Wrench, label: "Ø Zustand (Note)", value: num(m.avgCondition, 1) },
+    { icon: Wrench, label: "Ø Zustand (Note)", value: m.avgCondition ? num(m.avgCondition, 1) : "–" },
     {
       icon: m.momentumScore >= 0 ? TrendingUp : TrendingDown,
       label: "Marktmomentum",
@@ -85,7 +85,14 @@ export function ValuePanel({ variant }: { variant: Variant }) {
     <section className="panel flex min-w-0 flex-col">
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 border-b border-line px-5 pt-4 pb-3 md:grid-cols-[minmax(0,1.6fr)_repeat(4,minmax(0,1fr))]">
         <div className="col-span-2 md:col-span-1">
-          <div className="kpi-label">Marktwert (Median)</div>
+          <div className="kpi-label flex items-center gap-2">
+            Marktwert (Median)
+            {hasRealSales(variant.id) ? (
+              <Pill tone="up" className="py-0 text-[10px]">Echte Daten · {getSales(variant.id).length} Verkäufe</Pill>
+            ) : (
+              <Pill className="py-0 text-[10px]" >Demo-Daten</Pill>
+            )}
+          </div>
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-serif text-[34px] leading-none font-semibold tracking-tight">{eur(m.value)}</span>
             <Pill tone={m.change12m >= 0 ? "up" : "down"} className="text-sm">

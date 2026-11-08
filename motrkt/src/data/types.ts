@@ -41,6 +41,12 @@ export type Variant = Required<Omit<VariantSeed, "vol" | "options" | "tags">> & 
   /** first-delivery market split (percent, sums to ~100) */
   markets: { country: string; share: number }[];
   weaknesses: string[];
+  /** Paint the car was first presented in (press launch / world premiere), when researched. */
+  launchColor?: import("./real").LaunchColor;
+  /** Freely licensed photos with attribution (Wikimedia Commons); empty → illustrated fallback. */
+  photos: import("./real").Photo[];
+  /** Sources for verified specs. */
+  specSources: string[];
 };
 
 export type VariantOption = { name: string; standard: boolean; impact: number /* value impact, e.g. 0.04 */ };
@@ -86,6 +92,8 @@ export type Sale = {
   color: string;
   vin: string;
   trend: number; // price vs. market value at that date, e.g. 0.059
+  url?: string; // source link for imported real records
+  conditionUnknown?: boolean; // imported record without a stated condition (normalised as "2")
 };
 
 export type Listing = {
@@ -109,6 +117,14 @@ export type Listing = {
   matchingNumbers: boolean;
   serviceHistory: boolean;
   description: string;
+  /** Set for live mobile.de ads; demo listings leave these undefined. */
+  source?: "mobile.de";
+  url?: string;
+  images?: string[];
+  conditionUnknown?: boolean;
+  powerPs?: number;
+  accidentDamaged?: boolean | null;
+  previousOwners?: number | null;
 };
 
 export type AuctionEvent = {
