@@ -6,9 +6,7 @@ import { cn } from "../lib/format";
 /** Hand-picked opening photographs: one per era, varied paint. `photo` is the index into the variant's photos. */
 const SLIDES = [
   { variantId: "porsche-356-356-speedster", photo: 1 },
-  { variantId: "ferrari-f40-f40", photo: 1 },
   { variantId: "porsche-930-turbo-3-0", photo: 0 },
-  { variantId: "ferrari-testarossa-testarossa", photo: 2 },
   { variantId: "porsche-912-912-coupe", photo: 2 },
   { variantId: "porsche-911-993-carrera-rs", photo: 0 },
   { variantId: "porsche-959-959-komfort", photo: 1 },

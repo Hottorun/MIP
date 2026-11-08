@@ -1,7 +1,6 @@
 /** Distinct chart colours per brand (the emblem colours are too similar to tell apart in charts). */
 export const BRAND_CHART_COLORS: Record<string, string> = {
   porsche: "#8b6232",
-  ferrari: "#9a3b2c",
 };
 
 export const SERIES_PALETTE = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378", "#6e4a63", "#b08a3e", "#4c7a73", "#8f8170", "#a5592f", "#6f7a3a"];

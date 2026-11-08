@@ -20,7 +20,6 @@ export const hiddenVariantIds = new Set<string>();
 
 const MARKET_BASE: Record<string, Record<string, number>> = {
   porsche: { Deutschland: 32, USA: 24, UK: 12, Japan: 8, "Rest Europa": 18, "Naher Osten": 6 },
-  ferrari: { Deutschland: 14, USA: 30, UK: 14, Japan: 9, "Rest Europa": 23, "Naher Osten": 10 },
 };
 
 function buildMarkets(brandId: string, id: string) {
@@ -49,13 +48,6 @@ const OPTION_POOL: Record<string, [string, number][]> = {
     ["Vollschalensitze (Carbon)", 0.04],
     ["Paint to Sample", 0.1],
     ["Clubsport-Paket", 0.03],
-  ],
-  ferrari: [
-    ["Schalensitze (Carbon/Daytona)", 0.04],
-    ["Ferrari Classiche Zertifikat", 0.1],
-    ["Scuderia-Schilder", 0.01],
-    ["Sonderlackierung (Tailor Made)", 0.06],
-    ["Klimaanlage", 0.01],
   ],
 };
 
@@ -97,11 +89,6 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
     if (["996", "997"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
       list.push("IMS-Lager und Zylinderlaufbahnen (M96/M97)");
     if (y >= 1998) list.push("Wartungsnachweise und Software-/Steuergerätestand");
-  } else if (brandId === "ferrari") {
-    list.push("Zahnriemenservice (teils Motor-Ausbau) – Nachweise prüfen");
-    list.push("Classiche-Zertifizierung und Matching Numbers");
-    if (seed.gearbox?.Automatik) list.push("F1-Hydraulik (Pumpe, Aktuatoren)");
-    else list.push("Kupplung und Getriebesynchronisierung");
   }
   if (tags.includes("Leichtbau")) list.push("Rennstreckeneinsatz / Unfallhistorie (Spaltmaße, Lackschichtdicke)");
   if (tags.includes("Turbo")) list.push("Turbolader und Ladeluftkühlung");
@@ -203,7 +190,7 @@ function includesModel(v: Variant, modelName: string) {
   return n.includes(` ${modelName} `);
 }
 
-/** "Porsche 911 (964) Carrera RS", "Ferrari F40" */
+/** "Porsche 911 (964) Carrera RS", "Porsche 959 Komfort" */
 export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string {
   const brand = brandById.get(v.brandId)!;
   const model = modelById.get(v.modelId)!;

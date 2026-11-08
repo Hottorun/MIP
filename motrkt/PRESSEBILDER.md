@@ -1,19 +1,18 @@
 # Offizielle Pressebilder – Liste für die Rechteanfrage
 
-Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom bzw. Bilder von ferrari.com, wo möglich von der Vorstellung (Badge „Vorstellung“). Die Bilder werden direkt von den Servern der Hersteller geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ bzw. „© Ferrari S.p.A.“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
+Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom, wo möglich von der Vorstellung (Badge „Vorstellung“). Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
 Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Für 996 GT3 RS, 997 GT3 RS und 997 GT2 RS gibt es noch kein offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
 - **Porsche:** Porsche Newsroom (newsroom.porsche.com), Pressekontakte der Dr. Ing. h.c. F. Porsche AG, Kommunikation. Für Bilder älterer Modelle (356, 912, 930, 959, 964) zusätzlich das Porsche-Unternehmensarchiv.
-- **Ferrari:** Ferrari Media Centre (media.ferrari.com, Zugang für akkreditierte Medien) bzw. Ferrari Corporate Communication.
 
 ## Was wir anfragen
 
-Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktübersicht, je Modell 1–3 Bilder, mit Quellenangabe „© Porsche AG“ bzw. „© Ferrari S.p.A.“). Das Repository ist öffentlich auf GitHub. Bitte auch klären, ob die Bilder dort abgelegt werden dürfen oder nur verlinkt/eingebettet.
+Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktübersicht, je Modell 1–3 Bilder, mit Quellenangabe „© Porsche AG“). Das Repository ist öffentlich auf GitHub. Bitte auch klären, ob die Bilder dort abgelegt werden dürfen oder nur verlinkt/eingebettet.
 
-„Bilder auf der Seite“ sind die Bildtitel, wie sie im Porsche Newsroom stehen. Bei ferrari.com stehen keine Bildtitel; dort bitte die Galerie der Modellseite anfragen.
+„Bilder auf der Seite“ sind die Bildtitel, wie sie im Porsche Newsroom stehen.
 
 ## Porsche
 
@@ -376,103 +375,3 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Offizielle Seite: [Porsche Classic: 959 S Werksrestaurierung](https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „959 S, Porsche Classic, 2022, Porsche AG“
 - Offizielle Bilder im Markt-Tab: 3
-
-## Ferrari
-
-### Ferrari F40
-
-- Präsentationsfarbe: Rosso Corsa (belegt)
-- Vorstellung: Maranello, Juli 1987
-- Offizielle Seite: [Ferrari F40 – ferrari.com](https://www.ferrari.com/en-EN/auto/f40) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 3
-
-### Ferrari Testarossa
-
-- Präsentationsfarbe: Rosso Corsa (wahrscheinlich)
-- Vorstellung: Pariser Autosalon 1984
-- Offizielle Seite: [Ferrari Testarossa – ferrari.com](https://www.ferrari.com/en-EN/auto/testarossa) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 4
-
-### Ferrari Testarossa 512 TR
-
-- Präsentationsfarbe: Rosso Corsa (unsicher)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Ferrari Testarossa 512 TR – ferrari.com](https://www.ferrari.com/en-EN/auto/512-tr) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 1
-
-### Ferrari Testarossa F512 M
-
-- Präsentationsfarbe: Rosso Corsa (wahrscheinlich)
-- Vorstellung: Pariser Autosalon 1994
-- Offizielle Seite: [Ferrari Testarossa F512 M – ferrari.com](https://www.ferrari.com/en-EN/auto/f512-m) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 2
-
-### Ferrari 288 GTO
-
-- Präsentationsfarbe: Rosso Corsa (belegt)
-- Vorstellung: Genfer Autosalon 1984
-- Offizielle Seite: [Ferrari 288 GTO – ferrari.com](https://www.ferrari.com/en-EN/auto/gto) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 1
-
-### Ferrari F355 Berlinetta
-
-- Präsentationsfarbe: Rosso Corsa (wahrscheinlich)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Ferrari F355 Berlinetta – ferrari.com](https://www.ferrari.com/en-EN/auto/f355-berlinetta) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 2
-
-### Ferrari F355 Spider
-
-- Präsentationsfarbe: Rosso Corsa (unsicher)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Ferrari F355 Spider – ferrari.com](https://www.ferrari.com/en-EN/auto/f355-spider) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 1
-
-### Ferrari 550 Maranello
-
-- Präsentationsfarbe: Argento Nürburgring (Nürburgring-Silber) (wahrscheinlich)
-- Vorstellung: Nürburgring, Juli 1996
-- Offizielle Seite: [Ferrari 550 Maranello – ferrari.com](https://www.ferrari.com/en-EN/auto/550-maranello) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 3
-
-### Ferrari 550 Barchetta Pininfarina
-
-- Präsentationsfarbe: Rosso Corsa (belegt)
-- Vorstellung: Pariser Autosalon 2000
-- Offizielle Seite: [Ferrari 550 Barchetta Pininfarina – ferrari.com](https://www.ferrari.com/en-EN/auto/550-barchetta-pininfarina) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 2
-
-### Ferrari 308 GTB Vetroresina
-
-- Präsentationsfarbe: Rosso Corsa (unsicher)
-- Vorstellung: Pariser Autosalon 1975
-- Offizielle Seite: [Ferrari 308 GTB Vetroresina – ferrari.com](https://www.ferrari.com/en-EN/auto/308-gtb) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 2
-
-### Ferrari 308 GTS Quattrovalvole
-
-- Präsentationsfarbe: Rosso Corsa (unsicher)
-- Vorstellung: nicht belegt
-- Offizielle Seite: [Ferrari 308 GTS Quattrovalvole – ferrari.com](https://www.ferrari.com/en-EN/auto/308-gts-quattrovalvole) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 2
-
-### Ferrari 360 Modena
-
-- Präsentationsfarbe: Rosso Corsa (wahrscheinlich)
-- Vorstellung: Genfer Autosalon 1999
-- Offizielle Seite: [Ferrari 360 Modena – ferrari.com](https://www.ferrari.com/en-EN/auto/360-modena) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 4
-
-### Ferrari 360 Challenge Stradale
-
-- Präsentationsfarbe: Rosso Scuderia (belegt)
-- Vorstellung: Genfer Autosalon 2003
-- Offizielle Seite: [Ferrari 360 Challenge Stradale – ferrari.com](https://www.ferrari.com/en-EN/auto/challenge-stradale) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 3
-
-### Ferrari Enzo
-
-- Präsentationsfarbe: Rosso Corsa (wahrscheinlich)
-- Vorstellung: Pariser Autosalon 2002
-- Offizielle Seite: [Ferrari Enzo – ferrari.com](https://www.ferrari.com/en-EN/auto/enzo-ferrari) – Modellseite des Herstellers
-- Offizielle Bilder im Markt-Tab: 2

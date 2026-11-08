@@ -6,7 +6,7 @@ Your group's variants are listed in scripts/groups/<group>.txt (one per line: id
 For EVERY variant in your file, produce one entry in src/data/real/<group>.json (create it; pretty-printed JSON object keyed by variant id). Write the file incrementally (e.g. after every few variants) so progress is never lost.
 
 ## 1. Launch ("communication") color — required
-The paint the car was first presented to the public in: world-premiere show car, official press photos, or the brochure/launch campaign hero car. Examples of the idea: Ferrari F40 → Rosso Corsa; Porsche 959 → white.
+The paint the car was first presented to the public in: world-premiere show car, official press photos, or the brochure/launch campaign hero car. Examples of the idea: Porsche 959 → white; Porsche 911 Dakar → white with Rallye Design package.
 - Research with WebSearch/WebFetch (manufacturer press archives/newsrooms, museum pages, Wikipedia, reputable registries/press coverage).
 - Record the official paint name (manufacturer language, optionally German translation), a realistic hex value for that paint, a source URL, and confidence: "high" (manufacturer/press source states it), "medium" (consistent secondary sources / clearly visible in launch photos), "low" (best guess). Never invent a source; if unsure, say so in "note" and use "low".
 
@@ -16,7 +16,7 @@ Check production count, power (PS, DIN), displacement (litres), production years
 ## 3. Real photos — 1 to 3 per variant
 Only from Wikimedia Commons, via the helper (rate-limited, refuses non-free licenses):
   python3 scripts/commons.py category "Porsche 964 Carrera RS"     # browse categories (lists subcategories too)
-  python3 scripts/commons.py search "Ferrari F40" --limit 15
+  python3 scripts/commons.py search "Porsche 959" --limit 15
   python3 scripts/commons.py fetch "File:Exact title.jpg" --out public/cars/<variant-id>-1.jpg
 - The FIRST image (-1) is the hero: prefer the exact variant, in its launch color, a clean exterior 3/4 or side view, not heavily modified/race-liveried. If no launch-color photo exists, take the best exact-variant photo.
 - LOOK at candidates before choosing: download to /tmp first or open the preview URL with WebFetch is not enough — use the Read tool on the downloaded file to view it, then fetch the chosen one to public/cars/. Delete rejected downloads from public/cars/.

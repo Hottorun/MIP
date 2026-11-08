@@ -33,7 +33,6 @@ export type MobileAd = {
 // mobile.de reference-data codes (services.mobile.de/refdata/classes/Car/makes/{make}/models).
 const MAKES: Record<string, string> = {
   porsche: "PORSCHE",
-  ferrari: "FERRARI",
 };
 const MODELS: Record<string, string | null> = {
   "porsche-911": "911",
@@ -43,14 +42,6 @@ const MODELS: Record<string, string | null> = {
   "porsche-918": "918",
   "porsche-carrera-gt": "Carrera GT",
   "porsche-959": "959",
-  "ferrari-f40": "F40",
-  "ferrari-testarossa": "Testarossa",
-  "ferrari-288-gto": "288",
-  "ferrari-f355": "F355",
-  "ferrari-550": "550",
-  "ferrari-308": "308",
-  "ferrari-360": "360",
-  "ferrari-enzo": "Enzo Ferrari",
 };
 
 const norm = (s: string) =>
@@ -84,7 +75,7 @@ export function generationQueries(): GenerationQuery[] {
 function matchScore(v: Variant, text: string): number | null {
   const model = modelById.get(v.modelId)!;
   const gen = generationById.get(v.generationId)!;
-  const generic = new Set([...words(model.name), ...words(gen.name), "coupe", "porsche", "ferrari"]);
+  const generic = new Set([...words(model.name), ...words(gen.name), "coupe", "porsche"]);
   const required = words(v.name).filter((w) => !generic.has(w));
   const hasModelCode = MODELS[v.modelId] !== null && MODELS[v.modelId] !== undefined;
   if (!hasModelCode && !text.includes(norm(model.name.replace("-", " ")).trim()) && !words(model.name).every((w) => text.includes(` ${w} `))) return null;

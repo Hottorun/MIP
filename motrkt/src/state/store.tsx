@@ -21,10 +21,10 @@ const d = (y: number, m: number, day = 1) => Date.UTC(y, m - 1, day);
 export const DEFAULT_STATE: Persisted = {
   watchlist: [
     "porsche-911-993-carrera-rs",
-    "ferrari-f40-f40",
-    "ferrari-288-gto-288-gto",
-    "ferrari-testarossa-f512-m",
-    "ferrari-360-360-challenge-stradale",
+    "porsche-918-918-spyder",
+    "porsche-911-991-r",
+    "porsche-911-993-gt2",
+    "porsche-911-964-turbo",
     "porsche-911-997-gt2-rs",
     "porsche-959-959-komfort",
     "porsche-carrera-gt-carrera-gt",
@@ -32,7 +32,7 @@ export const DEFAULT_STATE: Persisted = {
   ],
   alerts: [
     { id: "a1", variantId: "porsche-911-964-carrera-rs", direction: "above", threshold: 375_000, createdAt: d(2026, 6, 2) },
-    { id: "a2", variantId: "ferrari-f40-f40", direction: "below", threshold: 2_400_000, createdAt: d(2026, 8, 14) },
+    { id: "a2", variantId: "porsche-carrera-gt-carrera-gt", direction: "below", threshold: 2_500_000, createdAt: d(2026, 8, 14) },
   ],
   portfolio: [
     { id: "h1", variantId: "porsche-911-964-carrera-rs", purchasePrice: 245_000, purchaseDate: d(2019, 3, 12), mileage: 41_200, condition: "2+", color: "Rubinstern", note: "Deutsche Auslieferung, 2. Hand" },
@@ -40,8 +40,8 @@ export const DEFAULT_STATE: Persisted = {
     { id: "h3", variantId: "porsche-911-997-gt3-rs-4-0", purchasePrice: 360_000, purchaseDate: d(2020, 9, 21), mileage: 9_800, condition: "1-", color: "Grand-Prix-Weiß", note: "Clubsport, keine Rennstrecke" },
     { id: "h4", variantId: "porsche-930-turbo-3-0", purchasePrice: 145_000, purchaseDate: d(2017, 5, 8), mileage: 72_400, condition: "2", color: "Arenarot", note: "Matching Numbers" },
     { id: "h5", variantId: "porsche-356-356-speedster", purchasePrice: 310_000, purchaseDate: d(2016, 4, 18), mileage: 86_000, condition: "2+", color: "Grand-Prix-Weiß", note: "Restauriert 2014 (Dokumentation)" },
-    { id: "h6", variantId: "ferrari-f355-f355-berlinetta", purchasePrice: 98_000, purchaseDate: d(2021, 2, 9), mileage: 36_500, condition: "2", color: "Giallo Modena", note: "Schaltgetriebe, Zahnriemen 2024" },
-    { id: "h7", variantId: "ferrari-308-308-gtb-vetroresina", purchasePrice: 118_000, purchaseDate: d(2019, 11, 28), mileage: 54_300, condition: "2+", color: "Rosso Corsa", note: "" },
+    { id: "h6", variantId: "porsche-911-996-gt3", purchasePrice: 98_000, purchaseDate: d(2021, 2, 9), mileage: 36_500, condition: "2", color: "Arktissilber", note: "Deutsche Auslieferung, Inspektion 2024" },
+    { id: "h7", variantId: "porsche-912-912-coupe", purchasePrice: 58_000, purchaseDate: d(2019, 11, 28), mileage: 54_300, condition: "2+", color: "Elfenbein", note: "" },
   ],
   savedListings: [],
   readNotifications: [],

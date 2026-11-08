@@ -274,7 +274,7 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
 /** Link to the manufacturer's own photos; those images may not be copied into the app without permission. */
 function OfficialLink({ variant }: { variant: Variant }) {
   const l = variant.officialLink!;
-  const source = variant.brandId === "ferrari" ? "ferrari.com" : "Porsche Newsroom";
+  const source = "Porsche Newsroom";
   const label = l.kind === "premiere" ? "Offizielle Pressebilder der Vorstellung" : "Offizielle Bilder beim Hersteller";
   return (
     <p className="mt-6 border-t border-line pt-4 text-[14px]">

@@ -1,5 +1,5 @@
 import porsche911 from "./porsche-911.json";
-import porscheOtherFerrari from "./porsche-other-ferrari.json";
+import porscheOther from "./porsche-other.json";
 import launch from "./launch.json";
 import official from "./official.json";
 
@@ -33,7 +33,7 @@ export type RealSpecs = {
 export type RealEntry = { launchColor?: LaunchColor; specs?: RealSpecs; images?: Photo[]; note?: string };
 
 /**
- * Market tab only: official manufacturer photos (Porsche Newsroom, ferrari.com), keyed by variant id.
+ * Market tab only: official manufacturer photos (Porsche Newsroom), keyed by variant id.
  * Loaded from the manufacturers' servers, not stored in the repo. The other tabs keep using `images`.
  */
 export const launchPhotos = launch as unknown as Record<string, Photo[]>;
@@ -53,5 +53,5 @@ export const officialLinks = official as unknown as Record<string, OfficialLink>
 
 export const realData: Record<string, RealEntry> = {
   ...(porsche911 as unknown as Record<string, RealEntry>),
-  ...(porscheOtherFerrari as unknown as Record<string, RealEntry>),
+  ...(porscheOther as unknown as Record<string, RealEntry>),
 };

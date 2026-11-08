@@ -1,6 +1,6 @@
 # MOTRKT – Marktintelligenz für klassische Sportwagen
 
-Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios klassischer Sportwagen (Porsche und Ferrari).
+Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios klassischer Sportwagen (Porsche).
 
 ## Starten
 
@@ -25,7 +25,7 @@ npm start            # http://localhost:4173 (PORT überschreibbar)
 | `ANTHROPIC_API_KEY` | AI Co-Pilot mit Claude (ohne: lokaler Analysemodus) |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |
 
-Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell Porsche und Ferrari).
+Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell nur Porsche).
 
 ## mobile.de
 

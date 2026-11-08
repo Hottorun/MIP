@@ -1,0 +1,732 @@
+{
+  "porsche-356-356-a-coupe": {
+    "launchColor": {
+      "name": "Silbermetallic (Annahme)",
+      "hex": "#b5b8ba",
+      "source": "https://de.wikipedia.org/wiki/Porsche_356",
+      "confidence": "low",
+      "note": "356 A introduced autumn 1955 (IAA Frankfurt). No source found naming the colour of the first show or press car; silver is a best guess."
+    },
+    "specs": {
+      "production": 21045,
+      "hp": 60,
+      "liters": 1.6,
+      "years": [
+        1955,
+        1959
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356",
+        "https://en.wikipedia.org/wiki/Porsche_356"
+      ]
+    },
+    "note": "Production 21,045 is the whole 356 A series (Coupé, Cabriolet, Speedster). 60 PS / 1582 cc refers to the 1600 version. 356 A list prices ranged from 11,400 to 15,750 DM depending on version; no single Coupé 1600 price verified.",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-a-coupe-1.jpg",
+        "title": "File:1957 Porsche 356 1600 Coupe.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1957_Porsche_356_1600_Coupe.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 A 1600 Coupé (1957) in Rot"
+      },
+      {
+        "file": "/cars/porsche-356-356-a-coupe-2.jpg",
+        "title": "File:1956 Porsche 356 A in Jade Green Metallic, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1956_Porsche_356_A_in_Jade_Green_Metallic,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 A Coupé (1956) in Jadegrün Metallic"
+      },
+      {
+        "file": "/cars/porsche-356-356-a-coupe-3.jpg",
+        "title": "File:1957 Porsche 356 - svl.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1957_Porsche_356_-_svl.jpg",
+        "author": "Rex Gray from Southern California",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 A Coupé (1957), Seitenansicht"
+      }
+    ]
+  },
+  "porsche-356-356-speedster": {
+    "launchColor": {
+      "name": "Rot (vermutlich Signalrot)",
+      "hex": "#b5121b",
+      "source": "https://www.sportscarmarket.com/profile/1955-porsche-356-speedster",
+      "confidence": "medium",
+      "note": "US importer Max Hoffman first showed the red prototype #80002 at the Watkins Glen races, 17-18 Sept 1954; the name \"Speedster\" appeared in a Porsche press release the following week. Exact paint name not documented; early cars were offered in Speedster Blue, red and white."
+    },
+    "specs": {
+      "production": 4854,
+      "years": [
+        1954,
+        1958
+      ],
+      "newPrice": {
+        "amount": 12200,
+        "currency": "DEM",
+        "eur": 6238,
+        "year": 1955
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_356",
+        "https://de.wikipedia.org/wiki/Porsche_356"
+      ]
+    },
+    "note": "Production 4,854 (all years) per en.wikipedia. Price: 12,200 DM ex works at introduction (de.wikipedia, year not stated; US price 1954 was US$2,995). Engines varied (1500: 55 PS, 1500 S: 70 PS, 1600: 60/75 PS), so no single power figure given.",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-speedster-1.jpg",
+        "title": "File:55 Porsche Speedster (8942217292).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:55_Porsche_Speedster_(8942217292).jpg",
+        "author": "Greg Gjerdingen from Willmar, USA",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 356 Speedster (1955) in Rot"
+      },
+      {
+        "file": "/cars/porsche-356-356-speedster-2.jpg",
+        "title": "File:1955 Porsche 356 Pre-A Speedster.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1955_Porsche_356_Pre-A_Speedster.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 356 Pre-A Speedster (1955) in Rot"
+      },
+      {
+        "file": "/cars/porsche-356-356-speedster-3.jpg",
+        "title": "File:Paris - RM auctions - 20150204 - Porsche 356 Pre-A Speedster - 1955 - 001.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Paris_-_RM_auctions_-_20150204_-_Porsche_356_Pre-A_Speedster_-_1955_-_001.jpg",
+        "author": "Thesupermat",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 Pre-A Speedster (1955) in Hellblau-Metallic"
+      }
+    ]
+  },
+  "porsche-356-356-carrera-2": {
+    "launchColor": {
+      "name": "Silbermetallic (Annahme)",
+      "hex": "#b5b8ba",
+      "source": "https://www.supercars.net/blog/1962-porsche-356b2000gs-carrera-2/",
+      "confidence": "low",
+      "note": "Presented at the IAA Frankfurt, September 1961. No source found naming the show car's colour; best guess."
+    },
+    "specs": {
+      "production": 436,
+      "hp": 130,
+      "liters": 2.0,
+      "years": [
+        1962,
+        1964
+      ],
+      "newPrice": {
+        "amount": 23700,
+        "currency": "DEM",
+        "eur": 12118,
+        "year": 1962
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356",
+        "https://www.supercars.net/blog/1962-porsche-356b2000gs-carrera-2/"
+      ]
+    },
+    "note": "436 = 310 on 356 B (T6) + 126 on 356 C, per several secondary sources (not Wikipedia). Price 23,700 DM for the Coupé per de.wikipedia (year not stated; assumed 1962).",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-carrera-2-1.jpg",
+        "title": "File:1963 Porsche 356 B Carrera 2.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1963_Porsche_356_B_Carrera_2.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 B Carrera 2 (1963) in Blau"
+      },
+      {
+        "file": "/cars/porsche-356-356-carrera-2-2.jpg",
+        "title": "File:Rétromobile 2017 - Porsche 356 Carrera 2 GS - 1963 - 001.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:R%C3%A9tromobile_2017_-_Porsche_356_Carrera_2_GS_-_1963_-_001.jpg",
+        "author": "Thesupermat",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 Carrera 2 GS (1963) in Grau-Metallic, Rétromobile 2017"
+      },
+      {
+        "file": "/cars/porsche-356-356-carrera-2-3.jpg",
+        "title": "File:SC06 Porsche 356 Carrera 2 Coupe.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:SC06_Porsche_356_Carrera_2_Coupe.jpg",
+        "author": "Brett Weinstein (Wikipedia User: Nrbelex)",
+        "license": "CC BY-SA 2.5",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 Carrera 2 Coupé"
+      }
+    ]
+  },
+  "porsche-912-912-coupe": {
+    "launchColor": {
+      "name": "Elfenbein (Ivory) (Annahme)",
+      "hex": "#e6dfc8",
+      "source": "https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html",
+      "confidence": "low",
+      "note": "Production started 5 April 1965 (no dedicated show debut). No source found naming the colour of the first press cars; best guess."
+    },
+    "specs": {
+      "production": 30745,
+      "hp": 90,
+      "liters": 1.6,
+      "years": [
+        1965,
+        1969
+      ],
+      "newPrice": {
+        "amount": 16250,
+        "currency": "DEM",
+        "eur": 8308,
+        "year": 1965
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_912",
+        "https://en.wikipedia.org/wiki/Porsche_912",
+        "https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html"
+      ]
+    },
+    "note": "30,745 is total 912 production 1965-69 incl. ~2,500 Targa (en.wikipedia: nearly 30,000 Coupés).",
+    "images": [
+      {
+        "file": "/cars/porsche-912-912-coupe-1.jpg",
+        "title": "File:1965 Porsche 912 Coupe.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1965_Porsche_912_Coupe.jpg",
+        "author": "Coolalabright",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 912 Coupé (1965) in Blau"
+      },
+      {
+        "file": "/cars/porsche-912-912-coupe-2.jpg",
+        "title": "File:1965 Porsche 912 (16504989858).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1965_Porsche_912_(16504989858).jpg",
+        "author": "Jeremy from Sydney, Australia",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 912 (1965) in Rot, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-912-912-coupe-3.jpg",
+        "title": "File:13-05-05 Oldtimerteffen Liblar Porsche weiss 01.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:13-05-05_Oldtimerteffen_Liblar_Porsche_weiss_01.jpg",
+        "author": "Achim Raschka (talk)",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 912 Coupé in Weiß"
+      }
+    ]
+  },
+  "porsche-930-turbo-3-0": {
+    "launchColor": {
+      "name": "Vipergrün Diamant (Viper Green Diamond)",
+      "hex": "#4a8a3c",
+      "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-beginning-of-the-series.html",
+      "confidence": "high",
+      "note": "Series-production 911 Turbo 3.0 unveiled 3 Oct 1974 at the Paris Motor Show, \"Painted in Viper Green Diamond\" with black leather and tartan seat centres (Porsche Newsroom). Hex is an approximation of the metallic green. (The 1973 IAA Turbo study was silver.)"
+    },
+    "specs": {
+      "production": 2850,
+      "hp": 260,
+      "liters": 3.0,
+      "years": [
+        1975,
+        1977
+      ],
+      "newPrice": {
+        "amount": 65800,
+        "currency": "DEM",
+        "eur": 33643,
+        "year": 1975
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+        "https://de.wikipedia.org/wiki/Porsche_930"
+      ]
+    },
+    "note": "Production: 2,850 per Porsche (first three years); de.wikipedia gives 2,876, en.wikipedia 2,819.",
+    "images": [
+      {
+        "file": "/cars/porsche-930-turbo-3-0-1.jpg",
+        "title": "File:1976 Porsche 930 Turbo, Emerald Green met, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1976_Porsche_930_Turbo,_Emerald_Green_met,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.0 (930) von 1976 in Smaragdgrün Metallic"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-0-2.jpg",
+        "title": "File:1976 Porsche 930 Turbo, Emerald Green met, rear left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1976_Porsche_930_Turbo,_Emerald_Green_met,_rear_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.0 (930) von 1976, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-0-3.jpg",
+        "title": "File:1976 Porsche 911 Turbo Carrera (42871386680).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1976_Porsche_911_Turbo_Carrera_(42871386680).jpg",
+        "author": "Sicnag",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo Carrera (930) von 1976"
+      }
+    ]
+  },
+  "porsche-930-turbo-3-3": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#c8102e",
+      "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+      "confidence": "low",
+      "note": "Introduced for model year 1978. No source found naming the colour of the first show or press car; Guards Red is a best guess."
+    },
+    "specs": {
+      "production": 17381,
+      "hp": 300,
+      "liters": 3.3,
+      "years": [
+        1978,
+        1989
+      ],
+      "newPrice": {
+        "amount": 135000,
+        "currency": "DEM",
+        "eur": 69024,
+        "year": 1989
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_930",
+        "https://en.wikipedia.org/wiki/Porsche_930"
+      ]
+    },
+    "note": "Production 17,381 per de.wikipedia (en.wikipedia: 18,770). Price is the 1989 coupé list price; no 1978 launch price found.",
+    "images": [
+      {
+        "file": "/cars/porsche-930-turbo-3-3-1.jpg",
+        "title": "File:1981 Porsche 911 Turbo 3.3 LC23.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1981_Porsche_911_Turbo_3.3_LC23.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo 3.3 (930) von 1981 in Indischrot"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-2.jpg",
+        "title": "File:Porsche 911 930 Turbo 3.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_930_Turbo_3.jpg",
+        "author": "Calreyn88",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo 3.3 (930) in Rot, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-3.jpg",
+        "title": "File:Porsche 911 Turbo (Typ 930-3.3) ADAC Deutschland Klassik 2018 6290583.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_Turbo_(Typ_930-3.3)_ADAC_Deutschland_Klassik_2018_6290583.jpg",
+        "author": "Ermell",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo 3.3 (930) in Silber, Seitenansicht"
+      }
+    ]
+  },
+  "porsche-930-turbo-3-3-flachbau": {
+    "launchColor": {
+      "name": "Grand-Prix-Weiß (Grand Prix White)",
+      "hex": "#f1f1ec",
+      "source": "https://www.porsche.com/stories/innovation/discover-the-porsche-930-turbo-slantnose/",
+      "confidence": "low",
+      "note": "Special-order (Sonderwunsch) option from 1981, series option M505/M506 from 1986/87; no public launch car documented. Porsche's own slantnose story is illustrated with a white car; the first Sonderwunsch road car (for Mansour Ojjeh) was Brilliant Red, the early factory prototype WP0ZZZ93ZBS000136 Montego Black metallic."
+    },
+    "specs": {
+      "production": 948,
+      "hp": 330,
+      "liters": 3.3,
+      "years": [
+        1981,
+        1989
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_930",
+        "https://de.wikipedia.org/wiki/Porsche_930"
+      ]
+    },
+    "note": "948 = 58 handbuilt with bumper headlights + 204 handbuilt with pop-up lights + 686 series cars (Porsche Exclusive, from 1984/86). 330 PS applies with the factory WLS power kit (from 1983/84). Conversion cost up to 27,500 DM (1985) on top of the Turbo price.",
+    "images": [
+      {
+        "file": "/cars/porsche-930-turbo-3-3-flachbau-1.jpg",
+        "title": "File:Porsche 911 (930) Turbo Flatnose in Grand Prix White, front right.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(930)_Turbo_Flatnose_in_Grand_Prix_White,_front_right.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 911 Turbo Flachbau (930) in Grand-Prix-Weiß"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-flachbau-2.jpg",
+        "title": "File:Porsche 930 Turbo flachbau in Guards Red, front left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_930_Turbo_flachbau_in_Guards_Red,_front_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo Flachbau (930) in Indischrot"
+      },
+      {
+        "file": "/cars/porsche-930-turbo-3-3-flachbau-3.jpg",
+        "title": "File:Porsche 930 Turbo flachbau in Guards Red, rear left.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_930_Turbo_flachbau_in_Guards_Red,_rear_left.jpg",
+        "author": "Mr.choppers",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 911 Turbo Flachbau (930) in Indischrot, Heckansicht"
+      }
+    ]
+  },
+  "porsche-918-918-spyder": {
+    "launchColor": {
+      "name": "Liquid Metal Silber (Liquid Metal Silver)",
+      "hex": "#a3a6a4",
+      "source": "https://www.dkeng.co.uk/Vehicle_Archive/1894/porsche_918_spyder.html",
+      "confidence": "medium",
+      "note": "Production car premiered at the IAA Frankfurt, September 2013 (concept: Geneva 2010). Liquid Metal Silver and Liquid Metal Chrome Blue were the communication colours; a dealer archive states the first production car shown at IAA 2013 was Liquid Metal Silver. Not confirmed by a Porsche document."
+    },
+    "specs": {
+      "production": 918,
+      "hp": 887,
+      "liters": 4.6,
+      "years": [
+        2013,
+        2015
+      ],
+      "newPrice": {
+        "amount": 768026,
+        "currency": "EUR",
+        "eur": 768026,
+        "year": 2013
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_918_Spyder"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-918-918-spyder-1.jpg",
+        "title": "File:2013 Greater Los Angeles Auto Show (11123904533).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2013_Greater_Los_Angeles_Auto_Show_(11123904533).jpg",
+        "author": "Tracey Adams from Atascadero, USA",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 918 Spyder in Liquid Metal Silber, Los Angeles Auto Show 2013"
+      },
+      {
+        "file": "/cars/porsche-918-918-spyder-2.jpg",
+        "title": "File:2014 Lone Star Le Mans (15111137370).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Lone_Star_Le_Mans_(15111137370).jpg",
+        "author": "Barrett Sonntag",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 918 Spyder, Seitenansicht"
+      }
+    ]
+  },
+  "porsche-918-918-spyder-weissach": {
+    "launchColor": {
+      "name": "Martini Racing Design (Weiß mit Martini-Streifen)",
+      "hex": "#f2f2ef",
+      "source": "https://www.conceptcarz.com/z21705/porsche-918-spyder-martini-livery.aspx",
+      "confidence": "medium",
+      "note": "In 2013 Porsche presented the Weissach package on a 918 test car in the Martini Racing design (Porsche/Martini partnership; design offered exclusively for the 918 with Weissach package). Salzburg (red/white) and matte-black designs were the other factory liveries."
+    },
+    "specs": {
+      "hp": 887,
+      "liters": 4.6,
+      "years": [
+        2013,
+        2015
+      ],
+      "newPrice": {
+        "amount": 839426,
+        "currency": "EUR",
+        "eur": 839426,
+        "year": 2013
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_918_Spyder"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-918-918-spyder-weissach-1.jpg",
+        "title": "File:Porsche 918 Spyder Weissach Package (35894559670).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_918_Spyder_Weissach_Package_(35894559670).jpg",
+        "author": "Alexandre Prévot from Nancy, France",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 918 Spyder mit Weissach-Paket im Martini Racing Design"
+      },
+      {
+        "file": "/cars/porsche-918-918-spyder-weissach-2.jpg",
+        "title": "File:2014 Porsche 918 Spyder - Weissach Package.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2014_Porsche_918_Spyder_-_Weissach_Package.jpg",
+        "author": "Edvvc on Flickr : https://www.flickr.com/photos/edvvc/",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 918 Spyder mit Weissach-Paket im Salzburg-Design"
+      },
+      {
+        "file": "/cars/porsche-918-918-spyder-weissach-3.jpg",
+        "title": "File:HK 灣仔北 Wan Chai North 香港會展 HKCEC 蘇富比 Sotheby's Auction preview 2015 sliver 保時捷 Porsche 918 Weissach Spyder roadshow April 2024 R12S 103.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:HK_%E7%81%A3%E4%BB%94%E5%8C%97_Wan_Chai_North_%E9%A6%99%E6%B8%AF%E6%9C%83%E5%B1%95_HKCEC_%E8%98%87%E5%AF%8C%E6%AF%94_Sotheby%27s_Auction_preview_2015_sliver_%E4%BF%9D%E6%99%82%E6%8D%B7_Porsche_918_Weissach_Spyder_roadshow_April_2024_R12S_103.jpg",
+        "author": "YUEO YRUAIN LUKAM",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 918 Spyder mit Weissach-Paket in Silber"
+      }
+    ]
+  },
+  "porsche-carrera-gt-carrera-gt": {
+    "launchColor": {
+      "name": "GT-Silber Metallic (GT Silver Metallic)",
+      "hex": "#b3b6b8",
+      "source": "https://www.secret-classics.com/en/porsche-carrera-gt-recommissioned-2/",
+      "confidence": "medium",
+      "note": "Concept shown at the Louvre/Paris Motor Show in September 2000 (prototype 9R3/M 001 recorded as silver); production car premiered at Geneva in March 2003. GT Silver was the presentation colour of the press pictures; about 70% of cars were built in it."
+    },
+    "specs": {
+      "production": 1270,
+      "hp": 612,
+      "liters": 5.7,
+      "years": [
+        2003,
+        2006
+      ],
+      "newPrice": {
+        "amount": 452690,
+        "currency": "EUR",
+        "eur": 452690,
+        "year": 2003
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Carrera_GT"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-carrera-gt-carrera-gt-1.jpg",
+        "title": "File:-i---i- (3707989409).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:-i---i-_(3707989409).jpg",
+        "author": "Damian Morys from New York City, United States",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche Carrera GT in GT-Silber Metallic"
+      },
+      {
+        "file": "/cars/porsche-carrera-gt-carrera-gt-2.jpg",
+        "title": "File:-i---i- (3743996413).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:-i---i-_(3743996413).jpg",
+        "author": "Damian Morys from New York City, United States",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche Carrera GT in GT-Silber Metallic, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-carrera-gt-carrera-gt-3.jpg",
+        "title": "File:2003 Porsche Carrera GT-1 (30487918866).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_Carrera_GT-1_(30487918866).jpg",
+        "author": "naeem mayet",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche Carrera GT (2003) in GT-Silber Metallic, Frontansicht"
+      }
+    ]
+  },
+  "porsche-959-959-komfort": {
+    "launchColor": {
+      "name": "Grand-Prix-Weiß (Grand Prix White)",
+      "hex": "#f1f1ec",
+      "source": "https://www.stuttcars.com/the-porsche-959-story/",
+      "confidence": "medium",
+      "note": "The 1983 IAA \"Gruppe B\" study was pearl white; the production 959 debuted at the IAA Frankfurt in September 1985 (also shown as a cutaway). White is the 959's communication colour in period material; exact paint of the 1985 show car not documented."
+    },
+    "specs": {
+      "production": 263,
+      "hp": 450,
+      "liters": 2.85,
+      "years": [
+        1986,
+        1988
+      ],
+      "newPrice": {
+        "amount": 420000,
+        "currency": "DEM",
+        "eur": 214743,
+        "year": 1987
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_959",
+        "https://en.wikipedia.org/wiki/Porsche_959",
+        "https://www.sportscarmarket.com/kb/porsche-959"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-959-959-komfort-1.jpg",
+        "title": "File:Porsche 959 GIMS 2024 1X7A2269.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_GIMS_2024_1X7A2269.jpg",
+        "author": "Alexander-93",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 959 in Weiß (Porsche Museum)"
+      },
+      {
+        "file": "/cars/porsche-959-959-komfort-2.jpg",
+        "title": "File:Porsche 959 (1988) in the Porsche-Museum (2009) IMG 2756.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_(1988)_in_the_Porsche-Museum_(2009)_IMG_2756.jpg",
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 959 (1988) in Silber, Porsche Museum"
+      },
+      {
+        "file": "/cars/porsche-959-959-komfort-3.jpg",
+        "title": "File:Porsche 959 Concept Car Gruppe B 1983 (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_Concept_Car_Gruppe_B_1983_(cropped).jpg",
+        "author": "leduardo",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": false,
+        "launchColor": true,
+        "caption": "Porsche Gruppe B Studie (IAA 1983), Vorläufer des 959, Perlweiß"
+      }
+    ]
+  },
+  "porsche-959-959-sport": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#c8102e",
+      "source": "https://www.stuttcars.com/rare-1988-porsche-959-sport-up-for-auction/",
+      "confidence": "low",
+      "note": "The 959 Sport (29 built) was offered only in Grand Prix White or Guards Red; Porsche's own museum example is Guards Red. No documented launch/press car."
+    },
+    "specs": {
+      "production": 29,
+      "hp": 515,
+      "liters": 2.85,
+      "years": [
+        1987,
+        1988
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_959",
+        "https://en.wikipedia.org/wiki/Porsche_959"
+      ]
+    },
+    "images": [
+      {
+        "file": "/cars/porsche-959-959-sport-1.jpg",
+        "title": "File:Porsche, Techno-Classica 2018, Essen (IMG 9723).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche,_Techno-Classica_2018,_Essen_(IMG_9723).jpg",
+        "author": "Matti Blume",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 959 Sport in Indischrot (Porsche Museum)"
+      },
+      {
+        "file": "/cars/porsche-959-959-sport-2.jpg",
+        "title": "File:Mondial de l'Automobile 2012, Paris - France (8677991499).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Mondial_de_l%27Automobile_2012,_Paris_-_France_(8677991499).jpg",
+        "author": "Mic from Reading - Berkshire, United Kingdom",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "exact": true,
+        "launchColor": true,
+        "caption": "Porsche 959 Sport in Indischrot, Heckansicht"
+      },
+      {
+        "file": "/cars/porsche-959-959-sport-3.jpg",
+        "title": "File:Porsche 959 S 1X7A7874 (cropped).jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:Porsche_959_S_1X7A7874_(cropped).jpg",
+        "author": "Alexander Migl",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 959 S in Silber"
+      }
+    ]
+  }
+}

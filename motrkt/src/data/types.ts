@@ -47,7 +47,7 @@ export type Variant = Required<Omit<VariantSeed, "vol" | "options" | "tags">> & 
   photos: import("./real").Photo[];
   /** Market tab gallery: official manufacturer photos (presentation first); empty → illustration. */
   marketPhotos: import("./real").Photo[];
-  /** Market tab: manufacturer page with the official photos (Porsche Newsroom, ferrari.com). */
+  /** Market tab: manufacturer page with the official photos (Porsche Newsroom). */
   officialLink?: import("./real").OfficialLink;
   /** Sources for verified specs. */
   specSources: string[];
