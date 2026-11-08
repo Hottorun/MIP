@@ -88,6 +88,19 @@ export const CATALOG: BrandDef[] = [
                 gearbox: { Manual: 0.86, Automatik: 0.14 },
                 color: "#e9e8e1",
               }),
+              v("Turbo S Leichtbau", [1992, 1992], 86, 1_150_000, 0.112, 381, 3.3, 150_800, {
+                tags: ["Turbo", "Leichtbau"],
+                color: "#b3121b",
+              }),
+              v("Carrera RS 3.8", [1993, 1993], 55, 1_350_000, 0.118, 300, 3.8, 115_000, {
+                tags: ["Leichtbau"],
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#efc11a",
+              }),
+              v("Turbo 3.6", [1993, 1994], 1437, 335_000, 0.088, 360, 3.6, 104_300, {
+                tags: ["Turbo"],
+                color: "#151619",
+              }),
             ],
           },
           {
@@ -120,6 +133,23 @@ export const CATALOG: BrandDef[] = [
                 tags: ["Turbo", "Leichtbau"],
                 color: "#e9e8e1",
               }),
+              v("Carrera 4", [1994, 1998], 4000, 108_000, 0.058, 285, 3.6, 68_000, {
+                ...AWD,
+                body: { Coupé: 0.65, Cabriolet: 0.35 },
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b7babe",
+              }),
+              v("Targa", [1996, 1998], 4583, 118_000, 0.059, 285, 3.6, 69_500, {
+                body: { Targa: 1 },
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 4-Stufen Tiptronic S",
+                color: "#1f3f8f",
+              }),
+              v("Carrera S", [1997, 1998], 3714, 168_000, 0.066, 285, 3.6, 71_600, {
+                gearbox: { Manual: 0.75, Automatik: 0.25 },
+                transmission: "6-Gang Schaltgetriebe / 4-Stufen Tiptronic S",
+                color: "#7d7f7a",
+              }),
             ],
           },
           {
@@ -144,6 +174,27 @@ export const CATALOG: BrandDef[] = [
               v("GT2", [2001, 2005], 1287, 241_000, 0.089, 462, 3.6, 185_000, {
                 tags: ["Turbo", "Leichtbau"],
                 color: "#b7babe",
+              }),
+              v("Carrera 4S", [2001, 2005], 23000, 48_000, 0.039, 320, 3.6, 93_000, {
+                ...AWD,
+                body: { Coupé: 0.6, Cabriolet: 0.4 },
+                gearbox: { Manual: 0.65, Automatik: 0.35 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#7d7f7a",
+              }),
+              v("Targa", [2001, 2005], 5100, 42_000, 0.036, 320, 3.6, 87_000, {
+                body: { Targa: 1 },
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#b7babe",
+              }),
+              v("Turbo S", [2004, 2005], 1500, 112_000, 0.052, 450, 3.6, 147_000, {
+                drive: "Allrad (AWD)",
+                tags: ["Turbo", "Allrad"],
+                body: { Coupé: 0.6, Cabriolet: 0.4 },
+                gearbox: { Manual: 0.4, Automatik: 0.6 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#151619",
               }),
             ],
           },
@@ -170,6 +221,28 @@ export const CATALOG: BrandDef[] = [
               v("GT2 RS", [2010, 2011], 500, 495_000, 0.102, 620, 3.6, 237_000, {
                 tags: ["Turbo", "Leichtbau"],
                 color: "#151619",
+              }),
+              v("GT2", [2007, 2009], 1242, 285_000, 0.071, 530, 3.6, 189_000, {
+                tags: ["Turbo", "Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b7babe",
+              }),
+              v("Turbo S", [2010, 2012], 4000, 128_000, 0.048, 530, 3.8, 169_000, {
+                drive: "Allrad (AWD)",
+                tags: ["Turbo", "Allrad"],
+                gearbox: { Automatik: 1 },
+                transmission: "7-Gang PDK",
+                color: "#151619",
+              }),
+              v("Sport Classic", [2009, 2010], 250, 340_000, 0.081, 408, 3.8, 201_000, {
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#7d7f7a",
+              }),
+              v("Speedster", [2010, 2011], 356, 345_000, 0.076, 408, 3.8, 201_000, {
+                body: { Roadster: 1 },
+                gearbox: { Automatik: 1 },
+                transmission: "7-Gang PDK",
+                color: "#1f6fb5",
               }),
             ],
           },
@@ -202,6 +275,25 @@ export const CATALOG: BrandDef[] = [
                 ...PDK,
                 color: "#b7babe",
               }),
+              v("50 Jahre 911", [2013, 2014], 1963, 152_000, 0.058, 430, 3.8, 124_000, {
+                gearbox: { Manual: 0.5, Automatik: 0.5 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#3b5a52",
+              }),
+              v("Carrera T", [2017, 2019], 5000, 108_000, 0.041, 370, 3.0, 107_000, {
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("GT3 Touring", [2017, 2019], 2000, 192_000, 0.062, 500, 4.0, 152_000, {
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b7babe",
+              }),
+              v("Speedster", [2019, 2019], 1948, 335_000, 0.069, 510, 4.0, 269_000, {
+                body: { Roadster: 1 },
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
             ],
           },
           {
@@ -232,6 +324,17 @@ export const CATALOG: BrandDef[] = [
                 color: "#7d7f7a",
               }),
               v("Dakar", [2022, 2024], 2500, 264_000, 0.041, 480, 3.0, 223_000, { ...AWD, ...PDK, color: "#cfccc2" }),
+              v("Carrera GTS", [2021, 2024], 15000, 148_000, 0.032, 480, 3.0, 148_000, {
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
+                color: "#151619",
+              }),
+              v("Turbo S", [2020, 2024], 10000, 215_000, 0.028, 650, 3.7, 216_000, { ...AWD, tags: ["Turbo", "Allrad"], gearbox: { Automatik: 1 }, transmission: "8-Gang PDK", color: "#b7babe" }),
+              v("GT3 Touring", [2021, 2024], 5000, 232_000, 0.047, 510, 4.0, 169_000, {
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#3b5a52",
+              }),
             ],
           },
         ],
@@ -245,6 +348,11 @@ export const CATALOG: BrandDef[] = [
             years: [1948, 1965],
             shape: "roadster",
             variants: [
+              v("356 Pre-A Coupé", [1950, 1955], 7600, 185_000, 0.047, 55, 1.5, 7_000, {
+                body: { Coupé: 0.8, Cabriolet: 0.2 },
+                transmission: "4-Gang Schaltgetriebe",
+                color: "#7d7f7a",
+              }),
               v("356 A Coupé", [1955, 1959], 21045, 136_000, 0.044, 60, 1.6, 9_500, {
                 body: { Coupé: 0.74, Cabriolet: 0.26 },
                 transmission: "4-Gang Schaltgetriebe",
@@ -259,6 +367,16 @@ export const CATALOG: BrandDef[] = [
                 body: { Coupé: 0.7, Cabriolet: 0.3 },
                 transmission: "4-Gang Schaltgetriebe",
                 color: "#b3121b",
+              }),
+              v("356 B Coupé", [1960, 1963], 30900, 98_000, 0.043, 60, 1.6, 9_000, {
+                body: { Coupé: 0.72, Cabriolet: 0.2, Roadster: 0.08 },
+                transmission: "4-Gang Schaltgetriebe",
+                color: "#1f3f8f",
+              }),
+              v("356 C Coupé", [1964, 1965], 16700, 112_000, 0.045, 75, 1.6, 9_500, {
+                body: { Coupé: 0.8, Cabriolet: 0.2 },
+                transmission: "4-Gang Schaltgetriebe",
+                color: "#cfccc2",
               }),
             ],
           },
@@ -277,6 +395,10 @@ export const CATALOG: BrandDef[] = [
                 body: { Coupé: 0.9, Targa: 0.1 },
                 transmission: "4-/5-Gang Schaltgetriebe",
                 color: "#cfccc2",
+              }),
+              v("912 E", [1976, 1976], 2092, 52_000, 0.046, 90, 2.0, 10_000, {
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#b7babe",
               }),
             ],
           },

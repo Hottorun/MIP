@@ -143,7 +143,9 @@ function build() {
         model.generationIds.push(genId);
         generations.push(gen);
         generationById.set(genId, gen);
-        for (const s of g.variants) {
+        // Variants in order of first build year (stable: same year keeps catalog order).
+        const seeds = [...g.variants].sort((x, y) => x.years[0] - y.years[0]);
+        for (const s of seeds) {
           const id = `${genId}-${slug(s.name)}`;
           const paint = PAINTS[b.id];
           const real = realData[id];
