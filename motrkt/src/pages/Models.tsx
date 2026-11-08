@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowDown, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
-import { brands, modelById, models, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
+import { brandById, brands, generationById, modelById, models, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { AS_OF, WEEK, getSeries } from "../data/generate";
 import { getMetrics, rebase } from "../data/market";
 import type { Variant } from "../data/types";
@@ -27,6 +27,31 @@ const ERAS = [
 const TAGS = ["Turbo", "Leichtbau", "Allrad", "Hybrid"];
 const COMPARE_COLORS = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378"];
 const MAX_COMPARE = 4;
+
+/** Section of the model list: one per generation for models with several (911: 964 … 992), else one per model. */
+type Section = { key: string; title: string; sub: string; items: Variant[] };
+
+function sectionOf(v: Variant) {
+  const model = modelById.get(v.modelId)!;
+  if (model.generationIds.length > 1) {
+    const gen = generationById.get(v.generationId)!;
+    return { key: gen.id, title: `${model.name} (${gen.name})`, sub: yearsLabel(gen.years), order: models.indexOf(model) * 100 + model.generationIds.indexOf(gen.id) };
+  }
+  return { key: model.id, title: model.name, sub: "", order: models.indexOf(model) * 100 };
+}
+
+function groupSections(list: Variant[]): Section[] {
+  const map = new Map<string, Section & { order: number }>();
+  for (const v of list) {
+    const s = sectionOf(v);
+    if (!map.has(s.key)) {
+      const brand = brandById.get(v.brandId)!;
+      map.set(s.key, { key: s.key, title: `${brand.name} ${s.title}`, sub: s.sub, order: s.order, items: [] });
+    }
+    map.get(s.key)!.items.push(v);
+  }
+  return [...map.values()].sort((a, b) => a.order - b.order);
+}
 
 function sortValue(v: Variant, key: SortKey): number | string {
   const m = getMetrics(v.id);
@@ -54,6 +79,7 @@ export default function Models() {
   const { watchlist, toggleWatch, toast } = useStore();
   const brandId = params.get("marke") ?? "";
   const modelId = params.get("modell") ?? "";
+  const generationId = params.get("generation") ?? "";
   const effectiveBrand = brandId || (modelId ? modelById.get(modelId)?.brandId ?? "" : "");
 
   const [query, setQuery] = useState("");
@@ -65,7 +91,7 @@ export default function Models() {
   const [compare, setCompare] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
 
-  const setFilter = (next: { marke?: string; modell?: string }) => {
+  const setFilter = (next: { marke?: string; modell?: string; generation?: string }) => {
     const p = new URLSearchParams(params);
     for (const [k, v] of Object.entries(next)) {
       if (v) p.set(k, v);
@@ -80,6 +106,7 @@ export default function Models() {
     const list = variants.filter((v) => {
       if (effectiveBrand && v.brandId !== effectiveBrand) return false;
       if (modelId && v.modelId !== modelId) return false;
+      if (generationId && v.generationId !== generationId) return false;
       if (eraDef && !eraDef.test(v.years[0])) return false;
       if (tags.length && !tags.every((t) => v.tags.includes(t))) return false;
       if (q && !variantTitle(v).toLowerCase().includes(q)) return false;
@@ -91,7 +118,10 @@ export default function Models() {
       const c = typeof x === "string" ? x.localeCompare(y as string) : (x as number) - (y as number);
       return desc ? -c : c;
     });
-  }, [effectiveBrand, modelId, era, tags, query, sort, desc]);
+  }, [effectiveBrand, modelId, generationId, era, tags, query, sort, desc]);
+  const sections = useMemo(() => groupSections(filtered), [filtered]);
+  const selectedModel = modelId ? modelById.get(modelId) : undefined;
+  const modelGenerations = selectedModel && selectedModel.generationIds.length > 1 ? selectedModel.generationIds.map((id) => generationById.get(id)!) : [];
 
   const brandModels = models.filter((m) => !effectiveBrand || m.brandId === effectiveBrand);
 
@@ -136,14 +166,14 @@ export default function Models() {
       <div className="space-y-4 border-y border-line py-5">
         {brands.length > 1 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "" })}>
+            <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "", generation: "" })}>
               Alle Marken
             </button>
             {brands.map((b) => (
               <button
                 key={b.id}
                 className={cn("chip", effectiveBrand === b.id && "chip-active")}
-                onClick={() => setFilter({ marke: effectiveBrand === b.id ? "" : b.id, modell: "" })}
+                onClick={() => setFilter({ marke: effectiveBrand === b.id ? "" : b.id, modell: "", generation: "" })}
               >
                 {b.name}
               </button>
@@ -151,20 +181,33 @@ export default function Models() {
           </div>
         )}
         <div className="flex flex-wrap items-center gap-1.5">
-          <button className={cn("chip", !modelId && "chip-active")} onClick={() => setFilter({ modell: "" })}>
+          <button className={cn("chip", !modelId && "chip-active")} onClick={() => setFilter({ modell: "", generation: "" })}>
             Alle Modelle
           </button>
           {brandModels.map((m) => (
             <button
               key={m.id}
               className={cn("chip", modelId === m.id && "chip-active")}
-              onClick={() => setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId })}
+              onClick={() => setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId, generation: "" })}
             >
               {effectiveBrand || brands.length === 1 ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
               {m.name}
             </button>
           ))}
         </div>
+        {modelGenerations.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="mr-1 text-[13px] text-muted">Generation</span>
+            <button className={cn("chip", !generationId && "chip-active")} onClick={() => setFilter({ generation: "" })}>
+              Alle
+            </button>
+            {modelGenerations.map((g) => (
+              <button key={g.id} className={cn("chip", generationId === g.id && "chip-active")} onClick={() => setFilter({ generation: generationId === g.id ? "" : g.id })}>
+                {g.name} <span className="text-faint">{yearsLabel(g.years)}</span>
+              </button>
+            ))}
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[14px]">
           <div className="flex w-60 items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink">
             <Search className="size-4 text-muted" strokeWidth={1.5} />
@@ -209,17 +252,24 @@ export default function Models() {
       {filtered.length === 0 ? (
         <Empty>Keine Varianten für diese Filter.</Empty>
       ) : view === "grid" ? (
-        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((v) => (
-            <VariantCard
-              key={v.id}
-              v={v}
-              watched={watchlist.includes(v.id)}
-              compared={compare.includes(v.id)}
-              onWatch={() => toggleWatch(v.id)}
-              onCompare={() => toggleCompare(v.id)}
-              onOpen={() => navigate(`/markt/${v.id}`)}
-            />
+        <div className="space-y-14">
+          {sections.map((s) => (
+            <section key={s.key} aria-label={s.title}>
+              <SectionHeading section={s} />
+              <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {s.items.map((v) => (
+                  <VariantCard
+                    key={v.id}
+                    v={v}
+                    watched={watchlist.includes(v.id)}
+                    compared={compare.includes(v.id)}
+                    onWatch={() => toggleWatch(v.id)}
+                    onCompare={() => toggleCompare(v.id)}
+                    onOpen={() => navigate(`/markt/${v.id}`)}
+                  />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       ) : (
@@ -239,7 +289,13 @@ export default function Models() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((v) => {
+              {sections.flatMap((s) => [
+                <tr key={`h-${s.key}`} className="pointer-events-none">
+                  <td colSpan={9} className="pt-6 pb-2 font-serif text-[17px] text-ink">
+                    {s.title} {s.sub && <span className="ml-2 font-sans text-[13px] text-muted">{s.sub}</span>}
+                  </td>
+                </tr>,
+                ...s.items.map((v) => {
                 const m = getMetrics(v.id);
                 return (
                   <tr key={v.id} onClick={() => navigate(`/markt/${v.id}`)}>
@@ -264,7 +320,8 @@ export default function Models() {
                     </td>
                   </tr>
                 );
-              })}
+              }),
+              ])}
             </tbody>
           </table>
         </div>
@@ -301,6 +358,18 @@ export default function Models() {
       <Modal open={compareOpen} onClose={() => setCompareOpen(false)} title="Variantenvergleich" wide>
         <CompareView ids={compare} />
       </Modal>
+    </div>
+  );
+}
+
+function SectionHeading({ section }: { section: Section }) {
+  return (
+    <div className="mb-5 flex items-baseline gap-3 border-b border-line pb-2">
+      <h2 className="font-serif text-[24px] leading-tight text-ink">{section.title}</h2>
+      {section.sub && <span className="text-[13px] text-muted">{section.sub}</span>}
+      <span className="ml-auto text-[13px] text-muted">
+        {section.items.length} {section.items.length === 1 ? "Variante" : "Varianten"}
+      </span>
     </div>
   );
 }
