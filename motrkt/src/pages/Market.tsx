@@ -4,9 +4,9 @@ import { getVariant, variantTitle } from "../data/db";
 import { useStore } from "../state/store";
 import { Hero } from "../components/market/Hero";
 import { ValuePanel } from "../components/market/ValuePanel";
-import { MarketsCard, PriceOptionsCard, ProductionCard, SpecsCard } from "../components/market/FactCards";
-import { AuctionInsights, RecentSales, Recommendation } from "../components/market/SalesSection";
-import { CopilotCard, CyclesCard, ListingsMini, PortfolioMini } from "../components/market/BottomRow";
+import { Details } from "../components/market/FactCards";
+import { Assessment, RecentSales } from "../components/market/SalesSection";
+import { Listings } from "../components/market/BottomRow";
 
 export default function Market() {
   const { variantId } = useParams();
@@ -25,9 +25,10 @@ export default function Market() {
 
   if (!variant) {
     return (
-      <div className="panel mx-auto mt-16 max-w-md p-8 text-center">
-        <p className="text-muted">Dieses Fahrzeug ist nicht im MOTRKT-Katalog.</p>
-        <Link to="/modelle" className="btn btn-gold mt-5">
+      <div className="mx-auto max-w-md py-20 text-center">
+        <h1 className="font-display text-3xl">Nicht im Katalog</h1>
+        <p className="mt-3 text-muted">Dieses Fahrzeug führen wir nicht. Im Modellkatalog findest du alle erfassten Varianten.</p>
+        <Link to="/modelle" className="btn btn-gold mt-8">
           Zum Modellkatalog
         </Link>
       </div>
@@ -35,31 +36,15 @@ export default function Market() {
   }
 
   return (
-    <div className="space-y-4" key={variant.id}>
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,0.78fr)_minmax(0,1fr)]">
-        <Hero variant={variant} />
-        <ValuePanel variant={variant} />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-[1fr_1fr_1.15fr_1fr]">
-        <ProductionCard variant={variant} />
-        <SpecsCard variant={variant} />
-        <MarketsCard variant={variant} />
-        <PriceOptionsCard variant={variant} />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)_minmax(0,1fr)]">
+    <div className="space-y-24" key={variant.id}>
+      <Hero variant={variant} />
+      <ValuePanel variant={variant} />
+      <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-2">
         <RecentSales variant={variant} />
-        <AuctionInsights variant={variant} />
-        <Recommendation variant={variant} />
+        <Assessment variant={variant} />
       </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-[1.2fr_1.05fr_1fr_1fr]">
-        <CyclesCard variant={variant} />
-        <PortfolioMini />
-        <ListingsMini variant={variant} />
-        <CopilotCard variant={variant} />
-      </div>
+      <Details variant={variant} />
+      <Listings variant={variant} />
     </div>
   );
 }

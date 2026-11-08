@@ -12,6 +12,7 @@ export function CarImage({
   fallbackColor,
   credit = false,
   label,
+  eager = false,
 }: {
   variant: Variant;
   index?: number;
@@ -20,6 +21,8 @@ export function CarImage({
   fallbackColor?: string;
   credit?: boolean;
   label?: string;
+  /** Load immediately (above-the-fold images). */
+  eager?: boolean;
 }) {
   const photo = variant.photos[index] ?? variant.photos[0];
   if (!photo) {
@@ -27,15 +30,15 @@ export function CarImage({
   }
   return (
     <div className={cn("relative overflow-hidden bg-panel-3", className)}>
-      <img src={photo.file} alt={photo.caption ?? label ?? ""} loading="lazy" decoding="async" className="size-full object-cover" />
-      {credit && <PhotoCredit photo={photo} className="absolute right-1.5 bottom-1 left-1.5" />}
+      <img src={photo.file} alt={photo.caption ?? label ?? ""} loading={eager ? "eager" : "lazy"} decoding="async" className="size-full object-cover" />
+      {credit && <PhotoCredit photo={photo} className="absolute right-1.5 bottom-1 left-1.5 text-[10px] text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]" />}
     </div>
   );
 }
 
 export function PhotoCredit({ photo, className }: { photo: Photo; className?: string }) {
   return (
-    <div className={cn("truncate text-[10px] text-white/75 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]", className)}>
+    <div className={cn("truncate", className)}>
       Foto:{" "}
       {photo.page ? (
         <a href={photo.page} target="_blank" rel="noreferrer" className="underline-offset-2 hover:underline" onClick={(e) => e.stopPropagation()}>
