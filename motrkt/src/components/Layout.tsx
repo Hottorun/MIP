@@ -369,11 +369,13 @@ function Sidebar() {
             </button>
           </li>
         ))}
-        <li>
-          <button onClick={() => setMoreBrands((m) => !m)} className="flex w-full items-center gap-2.5 px-2 py-1.5 text-xs text-muted hover:text-ink">
-            {moreBrands ? <ChevronDown className="size-3.5" /> : <Plus className="size-3.5" />} {moreBrands ? "Weniger Marken" : "Weitere Marken"}
-          </button>
-        </li>
+        {brands.some((b) => !b.featured) && (
+          <li>
+            <button onClick={() => setMoreBrands((m) => !m)} className="flex w-full items-center gap-2.5 px-2 py-1.5 text-xs text-muted hover:text-ink">
+              {moreBrands ? <ChevronDown className="size-3.5" /> : <Plus className="size-3.5" />} {moreBrands ? "Weniger Marken" : "Weitere Marken"}
+            </button>
+          </li>
+        )}
       </ul>
 
       <SectionTitle>Modelle ({brand.name})</SectionTitle>

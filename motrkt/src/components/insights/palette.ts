@@ -2,11 +2,6 @@
 export const BRAND_CHART_COLORS: Record<string, string> = {
   porsche: "#d4a24c",
   ferrari: "#e8615a",
-  lamborghini: "#8fd14f",
-  mercedes: "#b9bec6",
-  bmw: "#5f8fd6",
-  astonmartin: "#4fc48c",
-  jaguar: "#c27cf0",
 };
 
 export const SERIES_PALETTE = ["#d4a24c", "#5f8fd6", "#e8615a", "#4fc48c", "#c27cf0", "#e8b04a", "#6fd3d0", "#b9bec6", "#f08a5d", "#8fd14f"];

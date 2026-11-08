@@ -216,11 +216,6 @@ export function Modal({
 const EMBLEM_TEXT: Record<string, string> = {
   porsche: "P",
   ferrari: "F",
-  lamborghini: "L",
-  mercedes: "MB",
-  bmw: "B",
-  astonmartin: "AM",
-  jaguar: "J",
 };
 
 /** Neutral brand mark (shield + initials) — deliberately not a reproduction of the real logos. */

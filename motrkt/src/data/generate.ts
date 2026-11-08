@@ -137,11 +137,6 @@ export const AUCTION_HOUSES: { name: string; code: string; weight: number; premi
 const DEALERS: Record<string, string[]> = {
   porsche: ["Porsche Classic Partner", "Specialist Cars GmbH", "Rennsport Classics", "Nordwerk Automobile", "Elfer Garage München"],
   ferrari: ["Ferrari Classiche Partner", "Rosso Heritage", "Scuderia Classics London", "Specialist Cars GmbH"],
-  lamborghini: ["Polo Storico Partner", "Sant'Agata Classics", "Specialist Cars GmbH", "Alpine Classic Cars"],
-  mercedes: ["Mercedes-Benz Classic Center", "Stern Klassik Stuttgart", "Specialist Cars GmbH", "Gallery Westend"],
-  bmw: ["BMW Group Classic Partner", "Weiß-Blau Klassik", "Specialist Cars GmbH", "Gallery Westend"],
-  astonmartin: ["Aston Martin Works", "Heritage Motors London", "Gallery Westend"],
-  jaguar: ["Jaguar Classic Partner", "Heritage Motors London", "Alpine Classic Cars"],
 };
 
 const BUYER_WEIGHTS = { DE: 30, US: 25, GB: 12, CH: 8, JP: 5, NL: 5, AE: 5, FR: 4, IT: 3, BE: 3 };
@@ -186,11 +181,6 @@ const CITIES: Record<string, string[]> = {
 const VIN_PREFIX: Record<string, string> = {
   porsche: "WP0ZZZ",
   ferrari: "ZFFZZZ",
-  lamborghini: "ZA9ZZZ",
-  mercedes: "WDBZZZ",
-  bmw: "WBSZZZ",
-  astonmartin: "SCFZZZ",
-  jaguar: "SAJZZZ",
 };
 const VIN_CHARS = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
 

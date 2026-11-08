@@ -1,6 +1,6 @@
 # MOTRKT – Marktintelligenz für klassische Sportwagen
 
-Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios klassischer Sportwagen (Porsche, Ferrari, Lamborghini, Mercedes-Benz, BMW, Aston Martin, Jaguar).
+Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios klassischer Sportwagen (Porsche und Ferrari).
 
 ## Starten
 

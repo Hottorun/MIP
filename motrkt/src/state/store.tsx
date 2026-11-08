@@ -22,9 +22,9 @@ export const DEFAULT_STATE: Persisted = {
   watchlist: [
     "porsche-911-993-carrera-rs",
     "ferrari-f40-f40",
-    "bmw-m1-e26-m1",
-    "mercedes-190-e-w201-2-5-16-evolution-ii",
-    "lamborghini-countach-25th-anniversary",
+    "ferrari-288-gto-288-gto",
+    "ferrari-testarossa-f512-m",
+    "ferrari-360-360-challenge-stradale",
     "porsche-911-997-gt2-rs",
   ],
   alerts: [
@@ -38,7 +38,7 @@ export const DEFAULT_STATE: Persisted = {
     { id: "h4", variantId: "porsche-930-turbo-3-0", purchasePrice: 145_000, purchaseDate: d(2017, 5, 8), mileage: 72_400, condition: "2", color: "Arenarot", note: "Matching Numbers" },
     { id: "h5", variantId: "porsche-356-356-speedster", purchasePrice: 310_000, purchaseDate: d(2016, 4, 18), mileage: 86_000, condition: "2+", color: "Grand-Prix-Weiß", note: "Restauriert 2014 (Dokumentation)" },
     { id: "h6", variantId: "ferrari-f355-f355-berlinetta", purchasePrice: 98_000, purchaseDate: d(2021, 2, 9), mileage: 36_500, condition: "2", color: "Giallo Modena", note: "Schaltgetriebe, Zahnriemen 2024" },
-    { id: "h7", variantId: "bmw-m3-e30-m3-sport-evolution", purchasePrice: 140_000, purchaseDate: d(2019, 11, 28), mileage: 54_300, condition: "2+", color: "Henna-Rot", note: "" },
+    { id: "h7", variantId: "ferrari-308-308-gtb-vetroresina", purchasePrice: 118_000, purchaseDate: d(2019, 11, 28), mileage: 54_300, condition: "2+", color: "Rosso Corsa", note: "" },
   ],
   savedListings: [],
   readNotifications: [],

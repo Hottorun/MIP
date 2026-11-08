@@ -17,11 +17,6 @@ export const variantById = new Map<string, Variant>();
 const MARKET_BASE: Record<string, Record<string, number>> = {
   porsche: { Deutschland: 32, USA: 24, UK: 12, Japan: 8, "Rest Europa": 18, "Naher Osten": 6 },
   ferrari: { Deutschland: 14, USA: 30, UK: 14, Japan: 9, "Rest Europa": 23, "Naher Osten": 10 },
-  lamborghini: { Deutschland: 12, USA: 32, UK: 10, Japan: 10, "Rest Europa": 20, "Naher Osten": 16 },
-  mercedes: { Deutschland: 38, USA: 26, UK: 8, Japan: 7, "Rest Europa": 16, "Naher Osten": 5 },
-  bmw: { Deutschland: 44, USA: 16, UK: 10, Japan: 8, "Rest Europa": 18, "Naher Osten": 4 },
-  astonmartin: { Deutschland: 8, USA: 24, UK: 44, Japan: 6, "Rest Europa": 14, "Naher Osten": 4 },
-  jaguar: { Deutschland: 7, USA: 38, UK: 36, Japan: 4, "Rest Europa": 13, "Naher Osten": 2 },
 };
 
 function buildMarkets(brandId: string, id: string) {
@@ -58,35 +53,10 @@ const OPTION_POOL: Record<string, [string, number][]> = {
     ["Sonderlackierung (Tailor Made)", 0.06],
     ["Klimaanlage", 0.01],
   ],
-  lamborghini: [
-    ["Werks-Heckspoiler", 0.04],
-    ["Polo Storico Zertifikat", 0.1],
-    ["Sonderlackierung (Ad Personam)", 0.06],
-    ["Klimaanlage", 0.01],
-  ],
-  mercedes: [
-    ["Mercedes-Benz Classic Zertifikat", 0.08],
-    ["Rudge-Zentralverschlussräder", 0.06],
-    ["Sonderlackierung (designo)", 0.04],
-    ["Hardtop (Werk)", 0.03],
-  ],
-  bmw: [
-    ["BMW Classic Zertifikat", 0.07],
-    ["Sonderlackierung (Individual)", 0.05],
-    ["Sportsitze (Recaro)", 0.03],
-    ["Klimaanlage", 0.01],
-  ],
-  british: [
-    ["Heritage Zertifikat", 0.07],
-    ["Speichenräder (Borrani/Dunlop)", 0.03],
-    ["Sonderlackierung", 0.04],
-    ["Werks-Hardtop", 0.02],
-  ],
 };
 
 function optionPool(brandId: string, seed: VariantSeed) {
   if (brandId === "porsche") return seed.years[0] >= 1997 ? OPTION_POOL.modernPorsche : OPTION_POOL.classicPorsche;
-  if (brandId === "astonmartin" || brandId === "jaguar") return OPTION_POOL.british;
   return OPTION_POOL[brandId];
 }
 
@@ -128,23 +98,6 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
     list.push("Classiche-Zertifizierung und Matching Numbers");
     if (seed.gearbox?.Automatik) list.push("F1-Hydraulik (Pumpe, Aktuatoren)");
     else list.push("Kupplung und Getriebesynchronisierung");
-  } else if (brandId === "lamborghini") {
-    list.push("Kupplungsverschleiß und Hitzeschäden im Motorraum");
-    list.push("Elektrik und Kabelbäume");
-    list.push("Originalität (Polo Storico) und Unfallhistorie");
-  } else if (brandId === "mercedes") {
-    if (y < 1970) list.push("Rost am Rohrrahmen, Restaurierungsqualität");
-    else list.push("Rost (Wagenheberaufnahmen, Radläufe)");
-    list.push("Historie und Originalteile (Classic Center)");
-    if (seed.gearbox?.Automatik) list.push("Hydraulik/Getriebe-Service");
-  } else if (brandId === "bmw") {
-    list.push("Rost (Schweller, Federbeindome)");
-    if (generationName === "E46") list.push("Hinterachsträger und Pleuellager (S54)");
-    else list.push("Motor (Ventiltrieb, Steuerkette)");
-    if (seed.gearbox?.Automatik) list.push("SMG-Hydraulikpumpe");
-  } else {
-    list.push("Rost und Restaurierungsqualität");
-    list.push("Matching Numbers und Heritage-Dokumentation");
   }
   if (tags.includes("Leichtbau")) list.push("Rennstreckeneinsatz / Unfallhistorie (Spaltmaße, Lackschichtdicke)");
   if (tags.includes("Turbo")) list.push("Turbolader und Ladeluftkühlung");
@@ -219,7 +172,7 @@ function includesModel(v: Variant, modelName: string) {
   return n.includes(` ${modelName} `);
 }
 
-/** "Porsche 911 (964) Carrera RS", "Ferrari F40", "Mercedes-Benz 300 SL Flügeltürer (W198)" */
+/** "Porsche 911 (964) Carrera RS", "Ferrari F40" */
 export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string {
   const brand = brandById.get(v.brandId)!;
   const model = modelById.get(v.modelId)!;
@@ -232,7 +185,7 @@ export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string
   return parts.join(" ");
 }
 
-/** Compact label for tables and chips: "964 Carrera RS", "M3 (E30)", "F40". */
+/** Compact label for tables and chips: "964 Carrera RS", "Testarossa", "F40". */
 export function variantShortTitle(v: Variant): string {
   const model = modelById.get(v.modelId)!;
   const gen = generationById.get(v.generationId)!;
