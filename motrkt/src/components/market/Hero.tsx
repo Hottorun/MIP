@@ -174,7 +174,7 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
         <button onClick={() => go(1)} className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white/90 hover:bg-black/60" aria-label="Nächstes Bild">
           <ChevronRight className="size-5" />
         </button>
-        <div className="absolute bottom-2 left-3 text-xs text-white/80 drop-shadow">{GALLERY[index].caption} · Illustration (kein freies Foto verfügbar)</div>
+        <div className="absolute bottom-2 left-3 text-xs text-white/80 drop-shadow">{GALLERY[index].caption} · Illustration (kein offizielles Herstellerfoto verfügbar)</div>
         <div className="absolute right-2 bottom-2 flex items-center gap-1.5 rounded-md bg-black/50 px-2 py-0.5 text-xs text-white/90">
           <ImageIcon className="size-3.5" /> {index + 1} / {n}
         </div>
