@@ -61,8 +61,10 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
       const dependants = options.filter((o) => o.requires === name).map((o) => o.name);
       onPick(picked.filter((n) => n !== name && !dependants.includes(n)));
     } else {
-      const req = options.find((o) => o.name === name)?.requires;
-      onPick([...new Set([...picked, name, ...(req ? [req] : [])])]);
+      const opt = options.find((o) => o.name === name);
+      const req = opt?.requires;
+      const rivals = opt?.group ? options.filter((o) => o.group === opt.group && o.name !== name).map((o) => o.name) : [];
+      onPick([...new Set([...picked.filter((n) => !rivals.includes(n)), name, ...(req ? [req] : [])])]);
     }
   };
 
@@ -96,6 +98,7 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
                 <span className="flex-1">
                   {o.name}
                   {o.requires && <span className="block text-[12.5px] text-faint">nur mit {o.requires.replace(/ \(.+\)$/, "")}</span>}
+                  {o.measured && <span className="block text-[12.5px] text-faint">gemessen an {num(o.measured)} Verkäufen</span>}
                 </span>
                 <span className={cn("tabular-nums", o.impact >= 0 ? "text-up" : "text-down")}>{pct(o.impact, { digits: 0 })}</span>
               </label>
@@ -110,7 +113,9 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
           {factor !== 1 && <span className={cn("ml-2 text-[13px]", factor > 1 ? "text-up" : "text-down")}>{pct(factor - 1)}</span>}
         </span>
       </div>
-      <p className="mt-3 text-[12.5px] text-faint">Geschätzter Einfluss gegenüber dem Median; mehrere Optionen werden miteinander multipliziert. Zustand, Historie und Laufleistung sind nicht berücksichtigt.</p>
+      <p className="mt-3 text-[12.5px] text-faint">
+        Einfluss gegenüber dem Median: gemessen, wo genug Auktionsergebnisse vorliegen (Preise zeitbereinigt, mindestens 6 Verkäufe je Ausführung), sonst geschätzt aus Marktberichten. Mehrere Optionen werden multipliziert; Zustand, Historie und Laufleistung sind nicht berücksichtigt.
+      </p>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis }
 import { modelById } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { AS_OF, WEEK, getSeries } from "../../data/generate";
+import { SEGMENT_LABEL, marketBasis } from "../../data/real/model";
 import { getMetrics, modelIndex, type RangeKey } from "../../data/market";
 import { date, eur, num, pct, trendClass } from "../../lib/format";
 import { ChartTooltipBox, Section, Segmented, axisProps } from "../ui";
@@ -85,6 +86,7 @@ export function ValuePanel({ variant }: { variant: Variant }) {
       <p className="mt-3 flex items-center gap-2 text-[13px] text-muted">
         <span className="inline-block w-5 border-t border-dashed border-faint" /> Alle {model.name}-Varianten zum Vergleich, auf denselben Startwert gesetzt
       </p>
+      <BasisNote variant={variant} />
       <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line pt-6 sm:grid-cols-3">
         {stats.map((s) => (
           <div key={s.label}>
@@ -94,5 +96,21 @@ export function ValuePanel({ variant }: { variant: Variant }) {
         ))}
       </dl>
     </Section>
+  );
+}
+
+/** Where the curve comes from: own price path, segment index, or estimate. */
+function BasisNote({ variant }: { variant: Variant }) {
+  const b = marketBasis(variant.id);
+  if (!b) return null;
+  const segment = SEGMENT_LABEL[b.segment] ?? b.segment;
+  return (
+    <p className="mt-2 text-[12.5px] leading-relaxed text-faint">
+      {b.n === 0
+        ? `Keine belegten Verkäufe seit 2015: Niveau geschätzt, Verlauf folgt dem Index „${segment}“.`
+        : b.own
+          ? `Verlauf aus ${num(b.n)} Auktionsergebnissen dieser Variante (geglätteter Median, zeitlich gewichtet), eingebettet in den Index „${segment}“.`
+          : `Niveau aus ${num(b.n)} Auktionsergebnissen dieser Variante; für einen eigenen Verlauf sind es zu wenige, er folgt dem Index „${segment}“.`}
+    </p>
   );
 }

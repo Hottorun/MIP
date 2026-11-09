@@ -6,6 +6,8 @@ import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
 import { cn, date } from "../lib/format";
 import { ImportModal } from "./ImportModal";
+import { AS_OF } from "../data/generate";
+import { MODEL_SALES_TOTAL } from "../data/real/model";
 
 const NAV_LEFT = [
   { to: "/markt", label: "Markt" },
@@ -18,7 +20,7 @@ const NAV_RIGHT = [
   { to: "/ai", label: "Co-Pilot" },
   { to: "/portfolio", label: "Portfolio" },
 ];
-const AS_OF_LABEL = date(Date.UTC(2026, 10, 2));
+const AS_OF_LABEL = date(AS_OF);
 
 export function Layout() {
   const { pathname } = useLocation();
@@ -28,7 +30,11 @@ export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="bg-ink px-4 py-2 text-center text-[12.5px] tracking-[0.02em] text-bg/85">
-        Marktdaten vom {AS_OF_LABEL}.<span className="hidden sm:inline"> Werte ohne Quellenangabe sind Demo-Daten.</span>
+        Marktdaten vom {AS_OF_LABEL}.
+        <span className="hidden sm:inline">
+          {" "}
+          Marktwerte aus {MODEL_SALES_TOTAL.toLocaleString("de-DE")} Auktionsergebnissen seit 2015; Inserate und kommende Auktionen sind Demo-Daten.
+        </span>
       </div>
       <Header />
       <main className="flex-1">
@@ -369,7 +375,11 @@ function Footer() {
           ))}
         </ul>
         <div className="space-y-2 text-[13px] leading-relaxed text-muted">
-          <p>Werte mit Quelle beruhen auf öffentlich berichteten Verkäufen. Alle übrigen Werte, Inserate und kommenden Auktionen sind Demo-Daten. Keine Anlageberatung.</p>
+          <p>
+            Marktwerte, Verläufe und Verkäufe beruhen auf {MODEL_SALES_TOTAL.toLocaleString("de-DE")} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby&apos;s,
+            Gooding, Bonhams, Broad Arrow, Artcurial), umgerechnet zum EZB-Kurs des Verkaufstags. Inserate, kommende Auktionen und Portfolio sind Demo-Daten. Keine
+            Anlageberatung.
+          </p>
           <Link to="/bildnachweise" className="link">
             Bildnachweise und Quellen
           </Link>

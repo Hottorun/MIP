@@ -64,9 +64,9 @@ export function ImportModal({ open, onClose }: { open: boolean; onClose: () => v
     >
       <div className="space-y-4 text-sm">
         <p className="text-muted">
-          Lade Auktionsergebnisse und Verkäufe, die du verwenden darfst (eigene Aufzeichnungen, lizenzierte Datensätze, manuell erfasste Ergebnisse). Für jede
-          Variante mit importierten Verkäufen ersetzt MOTRKT die Demo-Transaktionen und leitet Marktwert und Trend aus den echten Preisen ab (ab 3 Verkäufen in 24
-          Monaten; ab 8 Verkäufen über mindestens 3 Jahre auch die Rendite).
+          Lade Auktionsergebnisse und Verkäufe, die du verwenden darfst (eigene Aufzeichnungen, lizenzierte Datensätze, manuell erfasste Ergebnisse). Varianten
+          mit Auktionsergebnissen im Marktmodell behalten dessen Werte; für Varianten ohne belegte Verkäufe leitet MOTRKT Marktwert und Trend aus deinen
+          importierten Preisen ab (ab 3 Verkäufen in 24 Monaten; ab 8 Verkäufen über mindestens 3 Jahre auch die Rendite).
         </p>
         <div className="rounded-lg border border-line bg-panel-2 p-3 text-xs text-muted">
           <div className="mb-1 font-medium text-ink">Format</div>

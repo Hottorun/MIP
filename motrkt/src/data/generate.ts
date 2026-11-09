@@ -2,14 +2,16 @@ import { brandById, paintsFor, variantById, variants } from "./db";
 import type { AuctionEvent, Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
 import { rng, type Rng } from "../lib/random";
 import { realSalesFor } from "./real/sales";
+import { MODEL_START, marketBasis, modelValueAt } from "./real/model";
 
 /** Synthetic but internally consistent market data, generated deterministically from the catalog. */
 
 export const DAY = 86_400_000;
 export const WEEK = 7 * DAY;
-export const SERIES_START = Date.UTC(2014, 0, 6);
+/** First week of the market model (auction results are collected from January 2015). */
+export const SERIES_START = Date.UTC(2015, 0, 5);
 /** "Today" for the dataset (Monday). All metrics are computed relative to this date. */
-export const AS_OF = Date.UTC(2026, 10, 2);
+export const AS_OF = Date.UTC(2026, 10, 9);
 export const WEEKS = Math.round((AS_OF - SERIES_START) / WEEK) + 1;
 
 const yearFrac = (t: number) => {
@@ -79,7 +81,7 @@ const seriesCache = new Map<string, PricePoint[]>();
 export function realAnchor(variantId: string): { value: number; cagr: number | null; n: number } | null {
   const norm = realSalesFor(variantId)
     .filter((s) => s.price !== null && s.date <= AS_OF)
-    .map((s) => ({ date: s.date, p: s.price! / CONDITION_FACTOR[s.condition] }));
+    .map((s) => ({ date: s.date, p: s.conditionUnknown ? s.price! : s.price! / CONDITION_FACTOR[s.condition] }));
   const med = (xs: number[]) => {
     const a = [...xs].sort((x, y) => x - y);
     return a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2;
@@ -104,11 +106,40 @@ export function realAnchor(variantId: string): { value: number; cagr: number | n
   return { value, cagr, n: recent.length };
 }
 
+/**
+ * Weekly value series from the market model (real auction results): the variant's own price path when it has sales,
+ * otherwise its segment index scaled to the catalog estimate. Volume = recorded sales in that week.
+ */
+function modelSeries(v: Variant): PricePoint[] | null {
+  const basis = marketBasis(v.id);
+  if (!basis || (basis.n === 0 && realAnchor(v.id))) return null;
+  const startIdx = Math.max(0, Math.ceil((Math.max(launchTime(v), MODEL_START) - SERIES_START) / WEEK));
+  const perWeek = new Map<number, number>();
+  for (const s of realSalesFor(v.id)) {
+    if (s.price === null) continue;
+    const k = Math.floor((s.date - SERIES_START) / WEEK);
+    perWeek.set(k, (perWeek.get(k) ?? 0) + 1);
+  }
+  const out: PricePoint[] = [];
+  for (let i = startIdx; i < WEEKS; i++) {
+    const t = SERIES_START + i * WEEK;
+    const value = modelValueAt(v.id, t, v.value);
+    if (value === null) return null;
+    out.push({ t, value, volume: perWeek.get(i) ?? 0 });
+  }
+  return out.length ? out : null;
+}
+
 export function getSeries(variantId: string): PricePoint[] {
   const cached = seriesCache.get(variantId);
   if (cached) return cached;
   const v = variantById.get(variantId);
   if (!v) return [];
+  const modelled = modelSeries(v);
+  if (modelled) {
+    seriesCache.set(variantId, modelled);
+    return modelled;
+  }
   const r = rng(`series:${v.id}`);
   const startIdx = Math.max(0, Math.ceil((launchTime(v) - SERIES_START) / WEEK));
   const n = WEEKS - startIdx;

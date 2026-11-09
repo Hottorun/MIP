@@ -202,12 +202,12 @@
       "note": "Only source is a classified listing claiming this Amethyst metallic car (magenta leather, option 'Geneva Motor Show vehicle') was the first 964 Turbo shown at Geneva March 1990; not confirmed by Porsche. Listing describes it as a 'Turbo S' prototype with 381 PS, so treat with caution."
     },
     "specs": {
-      "production": 5097,
+      "production": 3660,
       "hp": 320,
       "liters": 3.3,
       "years": [
         1990,
-        1994
+        1992
       ],
       "newPrice": {
         "amount": 190250,
@@ -218,7 +218,9 @@
       "sources": [
         "https://de.wikipedia.org/wiki/Porsche_964",
         "https://en.wikipedia.org/wiki/Porsche_964",
-        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html"
+        "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+        "https://www.ultimatecarpage.com/spec/7013/Porsche-911-Turbo-3.3.html",
+        "https://www.stuttcars.com/porsche-911-turbo-3-3-coupe/"
       ]
     },
     "images": [
@@ -256,7 +258,7 @@
         "caption": "Porsche 911 Turbo 3.3 (964) in Sommergelb"
       }
     ],
-    "note": "Production 5,097 = 3,660 Turbo 3.3 + 1,437 Turbo 3.6 (en.wikipedia). 320 PS/3.3 l applies to Turbo 3.3; Turbo 3.6 (1993-94): 360 PS, 204,000 DM. Premiere Geneva March 1990. Our 100,500 EUR does not match any source (190,250 DM = 97,273 EUR). No Amethyst 964 Turbo photo on Commons; hero shows a silver Turbo 3.3."
+    "note": "Production 5,097 = 3,660 Turbo 3.3 + 1,437 Turbo 3.6 (en.wikipedia). 320 PS/3.3 l applies to Turbo 3.3; Turbo 3.6 (1993-94): 360 PS, 204,000 DM. Premiere Geneva March 1990. Our 100,500 EUR does not match any source (190,250 DM = 97,273 EUR). No Amethyst 964 Turbo photo on Commons; hero shows a silver Turbo 3.3. 3,660 Turbo 3.3 (Ultimatecarpage, Stuttcars); the former 5,097 included the later Turbo 3.6. Andreas Gabriel's Turbo book counts 3,863."
   },
   "porsche-911-964-speedster": {
     "launchColor": {

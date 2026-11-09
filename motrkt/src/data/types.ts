@@ -59,6 +59,10 @@ export type VariantOption = {
   impact: number /* value impact, e.g. 0.04 */;
   /** Name of an option this one only came with (picked together, e.g. 991 GT3 Touring → manual gearbox). */
   requires?: string;
+  /** Impact measured from this many auction results (otherwise an estimate). */
+  measured?: number;
+  /** Options of the same group exclude each other (e.g. body styles). */
+  group?: string;
 };
 
 export type Generation = {

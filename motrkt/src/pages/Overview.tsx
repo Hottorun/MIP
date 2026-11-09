@@ -66,7 +66,7 @@ export default function Overview() {
       <Section title="Der Markt" actions={<Segmented options={RANGE_OPTIONS} value={range} onChange={setRange} />}>
         <div className="grid gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
           <div>
-            <div className="text-[13px] text-muted">Gesamtindex, 2014 = 100</div>
+            <div className="text-[13px] text-muted">Gesamtindex, Januar 2015 = 100</div>
             <div className="mt-1 font-serif text-[48px] leading-none">{num(index[index.length - 1].value, 0)}</div>
             <p className="mt-3 text-[14px]">
               <Delta value={indexChange} arrow={false} /> <span className="text-muted">in 12 Monaten</span>

@@ -5,6 +5,7 @@ import { brandById, generationById, modelById, optionFactor, variantById, varian
 import type { Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { getSales, hasRealSales } from "../../data/generate";
+import { marketBasis } from "../../data/real/model";
 import { useStore } from "../../state/store";
 import { cn, eur, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
@@ -97,7 +98,7 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
         </div>
         <p className="mt-2 text-[13px] text-faint">
           {picked.length ? `Median ohne Optionen ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
-          {real ? `Aus ${getSales(variant.id).length} belegten Verkäufen` : "Demo-Daten"}
+          <BasisLine variant={variant} fallback={real ? `Aus ${getSales(variant.id).length} belegten Verkäufen` : "Demo-Daten"} />
           {variant.options.length > 0 && (
             <>
               {" · "}
@@ -386,5 +387,19 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
         </div>
       )}
     </Modal>
+  );
+}
+
+function BasisLine({ variant, fallback }: { variant: Variant; fallback: string }) {
+  const b = marketBasis(variant.id);
+  if (!b) return <>{fallback}</>;
+  if (b.n === 0) return <>Schätzwert, keine belegten Verkäufe seit 2015</>;
+  const since = b.first ? new Date(b.first).getUTCFullYear() : 2015;
+  return (
+    <>
+      Median aus {num(b.n)} {b.n === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} seit {since}
+      {b.n12 > 0 && `, ${num(b.n12)} davon in den letzten 12 Monaten`}
+      {b.lo && b.hi && ` · mittlere Hälfte ${eur(Math.round(b.lo / 1000) * 1000, { compact: true })} bis ${eur(Math.round(b.hi / 1000) * 1000, { compact: true })}`}
+    </>
   );
 }

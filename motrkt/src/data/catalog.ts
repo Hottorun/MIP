@@ -78,7 +78,7 @@ export const CATALOG: BrandDef[] = [
                 tags: ["Leichtbau"],
                 color: "#7a1f3d",
               }),
-              v("Turbo", [1990, 1994], 5097, 236_000, 0.079, 320, 3.3, 100_500, {
+              v("Turbo", [1990, 1992], 3660, 236_000, 0.079, 320, 3.3, 100_500, {
                 tags: ["Turbo"],
                 color: "#b3121b",
               }),

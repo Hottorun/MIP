@@ -4,6 +4,7 @@ import { rng, slug } from "../lib/random";
 import { launchPhotos, officialLinks, realData, type Photo } from "./real";
 import { isBrandEnabled } from "../config";
 import { OPTIONS } from "./options";
+import { marketBasis } from "./real/model";
 
 /** Normalised catalog: brands → models → generations → variants, plus lookup maps. */
 
@@ -33,8 +34,37 @@ function buildMarkets(brandId: string, id: string) {
     .sort((a, b) => b.share - a.share);
 }
 
+const BODY_LABEL: Record<string, string> = { "Coupé": "Karosserie Coupé", Cabriolet: "Karosserie Cabriolet", Targa: "Karosserie Targa", Roadster: "Karosserie Roadster" };
+
+/**
+ * Where the auction data shows it, gearbox and body effects are measured instead of estimated: median of the
+ * time-adjusted prices of that configuration against the variant's median (at least 6 sales each, see model.ts).
+ */
+function withMeasuredEffects(opts: VariantOption[], seed: VariantSeed, id: string): VariantOption[] {
+  const basis = marketBasis(id);
+  if (!basis) return opts;
+  const gb = basis.gearbox;
+  const out = [...opts];
+  if (gb.Manual && gb.Automatik) {
+    const i = out.findIndex((o) => o.name.startsWith("Schaltgetriebe"));
+    const measured = { impact: Math.round(gb.Manual[0] * 100) / 100, measured: gb.Manual[1] };
+    if (i >= 0) out[i] = { ...out[i], ...measured };
+    else out.unshift({ name: "Schaltgetriebe", standard: false, ...measured });
+  }
+  const bodies = Object.keys(seed.body ?? {});
+  for (const [body, [effect, n]] of Object.entries(basis.body)) {
+    if (!BODY_LABEL[body] || !bodies.includes(body) || bodies.length < 2) continue;
+    out.push({ name: BODY_LABEL[body], standard: false, impact: Math.round(effect * 100) / 100, measured: n, group: "Karosserie" });
+  }
+  return out;
+}
+
 /** Curated value-relevant options (src/data/options.ts); fallback: manual gearbox where Tiptronic/PDK existed, special paint. */
 function buildOptions(seed: VariantSeed, id: string): VariantOption[] {
+  return withMeasuredEffects(baseOptions(seed, id), seed, id);
+}
+
+function baseOptions(seed: VariantSeed, id: string): VariantOption[] {
   const curated = OPTIONS[id];
   if (curated) return curated.map(([name, impact, requires]) => ({ name, standard: false, impact, ...(requires ? { requires } : {}) }));
   if (seed.tags?.includes("Rennwagen")) {
@@ -168,8 +198,11 @@ function build() {
           const paint = PAINTS[b.id];
           const real = realData[id];
           const specs = real?.specs;
+          const basis = marketBasis(id);
           const variant: Variant = {
             ...s,
+            // Market value measured from auction results (market model); catalog value only where no sale is recorded.
+            ...(basis?.value ? { value: basis.value } : {}),
             ...(specs?.production ? { production: specs.production } : {}),
             ...(specs?.hp ? { hp: specs.hp } : {}),
             ...(specs?.liters ? { liters: specs.liters } : {}),
