@@ -427,7 +427,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
           ) : (
             <>
               <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="aspect-[5/2] w-full" label={l.title} credit />
-              {v.photos.length > 0 && <p className="px-3 py-1.5 text-[11px] text-faint">Symbolfoto des Modells – das inserierte Fahrzeug ist {l.color}.</p>}
+              {(v.marketPhotos.length > 0 || v.photos.length > 0) && <p className="px-3 py-1.5 text-[11px] text-faint">Symbolfoto des Modells – das inserierte Fahrzeug ist {l.color}.</p>}
             </>
           )}
           {l.url && (

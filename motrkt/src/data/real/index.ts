@@ -33,8 +33,8 @@ export type RealSpecs = {
 export type RealEntry = { launchColor?: LaunchColor; specs?: RealSpecs; images?: Photo[]; note?: string };
 
 /**
- * Market tab only: official manufacturer photos (Porsche Newsroom), keyed by variant id.
- * Loaded from the manufacturers' servers, not stored in the repo. The other tabs keep using `images`.
+ * Official manufacturer photos (Porsche Newsroom), keyed by variant id: market tab gallery and preview cards.
+ * Loaded from the manufacturers' servers, not stored in the repo. `images` (Wikimedia) is the fallback for previews.
  */
 export const launchPhotos = launch as unknown as Record<string, Photo[]>;
 

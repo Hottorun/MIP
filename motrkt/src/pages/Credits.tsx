@@ -35,10 +35,10 @@ export default function Credits() {
       {tab === "Fotos" && (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 2xl:grid-cols-3">
           {withPhotos.flatMap((v) =>
-            v.photos.map((p, i) => (
+            v.photos.map((p) => (
               <div key={p.file} className="panel flex gap-3 p-3">
                 <Link to={`/markt/${v.id}`} className="shrink-0">
-                  <CarImage variant={v} index={i} className="h-20 w-32 rounded-md" />
+                  <CarImage variant={v} photo={p} className="h-20 w-32 rounded-md" />
                 </Link>
                 <div className="min-w-0 text-xs">
                   <Link to={`/markt/${v.id}`} className="block truncate text-sm text-ink hover:text-gold">

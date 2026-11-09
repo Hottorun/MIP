@@ -3,7 +3,10 @@ import type { Photo } from "../data/real";
 import { cn } from "../lib/format";
 import { CarArt, type Scene } from "./CarArt";
 
-/** Real photo (Wikimedia Commons) when available, otherwise the illustrated fallback in the variant's launch color. */
+/**
+ * Preview image: the official manufacturer photo (as in the market tab) first, then a Wikimedia Commons photo,
+ * otherwise the illustrated fallback in the variant's launch color. `photo` shows one specific picture instead.
+ */
 export function CarImage({
   variant,
   index = 0,
@@ -13,6 +16,7 @@ export function CarImage({
   credit = false,
   label,
   eager = false,
+  photo: picked,
 }: {
   variant: Variant;
   index?: number;
@@ -23,8 +27,10 @@ export function CarImage({
   label?: string;
   /** Load immediately (above-the-fold images). */
   eager?: boolean;
+  photo?: Photo;
 }) {
-  const photo = variant.photos[index] ?? variant.photos[0];
+  const photos = variant.marketPhotos.length ? variant.marketPhotos : variant.photos;
+  const photo = picked ?? photos[index] ?? photos[0];
   if (!photo) {
     return <CarArt shape={variant.shape} color={fallbackColor ?? variant.color} scene={scene} className={className} label={label} />;
   }

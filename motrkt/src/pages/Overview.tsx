@@ -27,7 +27,7 @@ export default function Overview() {
   const winners = useMemo(
     () =>
       topMovers(
-        variants.filter((v) => v.photos.length).map((v) => v.id),
+        variants.filter((v) => v.marketPhotos.length || v.photos.length).map((v) => v.id),
         4,
       ).winners,
     [],
