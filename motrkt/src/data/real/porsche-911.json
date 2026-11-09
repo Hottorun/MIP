@@ -1,4 +1,352 @@
 {
+  "porsche-911-f-modell-2-0": {
+    "specs": {
+      "hp": 130,
+      "liters": 2.0,
+      "newPrice": {
+        "amount": 21900,
+        "currency": "DEM",
+        "eur": 11197,
+        "year": 1964
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/1.-Generation-Porsche-911-(Ur-Elfer),-1963-1973.html",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Basis-911 der O-Serie (Serienproduktion ab 14.9.1964 bis Juli 1967), 1991 cm³. Neupreis 21.900 DM laut Porsche Newsroom. Stückzahl im Katalog (8.520) = O-Serie-Coupés aus dem Fahrgestellnummernbereich 300001–308522 (Stuttcars-Produktionstabelle); Targa ab Modelljahr 1967 nicht enthalten, Literaturangaben schwanken."
+  },
+  "porsche-911-f-modell-s-2-0": {
+    "specs": {
+      "production": 6121,
+      "hp": 160,
+      "liters": 2.0,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-s-1966/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahre 1967–1969: 4.582 Coupés + 1.539 Targa (Stuttcars). 160 PS, im Modelljahr 1969 (B-Serie, mechanische Einspritzung) 170 PS (de.wikipedia)."
+  },
+  "porsche-911-f-modell-l-2-0": {
+    "specs": {
+      "production": 1610,
+      "hp": 130,
+      "liters": 2.0,
+      "years": [
+        1967,
+        1968
+      ],
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-l-1968/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Nur Modelljahr 1968 (A-Serie): 911 mit S-Ausstattung und 130-PS-Motor. 1.169 Coupés + 441 Targa (Stuttcars-Datenblatt; im Fließtext dort abweichend 575 Targa)."
+  },
+  "porsche-911-f-modell-t-2-0": {
+    "specs": {
+      "production": 6318,
+      "hp": 110,
+      "liters": 2.0,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-t-2-0-1968-1969/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahr 1968: 2.132, Modelljahr 1969: 4.186 (Stuttcars). Serienmäßig 4-Gang-Getriebe (de.wikipedia)."
+  },
+  "porsche-911-f-modell-e-2-0": {
+    "specs": {
+      "production": 2826,
+      "hp": 140,
+      "liters": 2.0,
+      "years": [
+        1968,
+        1969
+      ],
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-e-1969/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Nur Modelljahr 1969 (B-Serie), mechanische Einspritzung: 1.968 Coupés + 858 Targa (Stuttcars)."
+  },
+  "porsche-911-f-modell-t-2-2": {
+    "specs": {
+      "production": 15082,
+      "hp": 125,
+      "liters": 2.2,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-t-2-2-1970-1971/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahr 1970: 6.544 Coupés + 2.545 Targa; Modelljahr 1971: 2.517 Coupés + 3.476 Targa (Stuttcars). 2195 cm³."
+  },
+  "porsche-911-f-modell-e-2-2": {
+    "specs": {
+      "production": 4927,
+      "hp": 155,
+      "liters": 2.2,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-e-2-2-1970-1971/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahr 1970: 1.971 Coupés + 933 Targa; Modelljahr 1971: 1.088 Coupés + 935 Targa (Stuttcars; die Modelljahr-Zuordnung ist dort uneinheitlich, die Summe nicht offiziell bestätigt)."
+  },
+  "porsche-911-f-modell-s-2-2": {
+    "specs": {
+      "production": 4691,
+      "hp": 180,
+      "liters": 2.2,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-s-2-2-1970-1971/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahr 1970: 1.744 Coupés + 729 Targa (Stuttcars); Modelljahr 1971: 1.430 Coupés + 788 Targa (Stuttcars-Datenblatt, dort unter dem S 2.4 geführt)."
+  },
+  "porsche-911-f-modell-t-2-4": {
+    "specs": {
+      "hp": 130,
+      "liters": 2.4,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-t-2-4-1972-1973/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "2341 cm³ (als 2.4 vermarktet). 130 PS mit Vergasern; US/Japan mit Einspritzung 140 PS. Modelljahr 1972: 4.894 Coupés + 3.344 Targa (Stuttcars); Gesamtstückzahl im Katalog (16.903) inkl. Modelljahr 1973 nicht offiziell bestätigt. Neupreis laut Auto Katalog 1973/74 (zitiert in de.wikipedia, Renault Alpine A310) 23.480 DM; Katalogwert ist eine Schätzung."
+  },
+  "porsche-911-f-modell-e-2-4": {
+    "specs": {
+      "hp": 165,
+      "liters": 2.4,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-e-2-4-1972-1973/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Mechanische Einspritzung. Modelljahr 1972: 1.124 Coupés + 861 Targa (Stuttcars); Gesamtstückzahl im Katalog (4.406) nicht offiziell bestätigt."
+  },
+  "porsche-911-f-modell-s-2-4": {
+    "specs": {
+      "hp": 190,
+      "liters": 2.4,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-s-2-4-1972-1973/",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Mechanische Einspritzung, 190 PS. Gesamtstückzahl im Katalog (5.094) aus Sekundärquellen, nicht offiziell bestätigt."
+  },
+  "porsche-911-f-modell-carrera-rs-2-7": {
+    "specs": {
+      "production": 1525,
+      "hp": 210,
+      "liters": 2.7,
+      "years": [
+        1972,
+        1973
+      ],
+      "newPrice": {
+        "amount": 34000,
+        "currency": "DEM",
+        "eur": 17384,
+        "year": 1972
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2022/history/porsche-50-years-911-carrera-rs-2-7-germanys-fastest-sports-car-28486.html",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Vorgestellt im Oktober 1972 (Pariser Salon), gebaut bis Juli 1973. 1.525 Straßenfahrzeuge = 1.308 RS Touring (M472) + 217 RS Sport (M471) laut de.wikipedia; Porsche nennt 1.580 gebaute Fahrzeuge inkl. der 55 RSR 2.8 (eigener Eintrag unter GT-Rennwagen). Grundpreis 34.000 DM, Sport-Paket +700 DM, Touring-Paket +2.500 DM (Porsche Newsroom)."
+  },
+  "porsche-911-g-modell-2-7": {
+    "specs": {
+      "production": 17017,
+      "hp": 150,
+      "liters": 2.7,
+      "newPrice": {
+        "amount": 26980,
+        "currency": "DEM",
+        "eur": 13795,
+        "year": 1973
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/2.-Generation-911,-(G-Serie),-1973---1989.html",
+        "https://www.porscheclubgb.com/getmedia/c894d2e8-e050-400f-9919-ea5fb2d4268d/1974-1977-Production-Numbers"
+      ]
+    },
+    "images": [],
+    "note": "Basis-911 der Modelljahre 1974–1977, K-Jetronic, 150 PS (ab Modelljahr 1976 165 PS). Neupreis 26.980 DM für das 150-PS-Coupé (Porsche Newsroom). Stückzahl laut Porsche Club GB (Fahrgestellnummern): 7.104 + 2.216 + 3.544 (inkl. 120 Japan) + 4.153."
+  },
+  "porsche-911-g-modell-s-2-7": {
+    "specs": {
+      "production": 17024,
+      "hp": 175,
+      "liters": 2.7,
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/2.-Generation-911,-(G-Serie),-1973---1989.html",
+        "https://www.porscheclubgb.com/getmedia/c894d2e8-e050-400f-9919-ea5fb2d4268d/1974-1977-Production-Numbers"
+      ]
+    },
+    "images": [],
+    "note": "175 PS (Europa Modelljahre 1974–1975). Die Stückzahl (Porsche Club GB) enthält den US-911 S der Modelljahre 1975–1977 mit 165 PS."
+  },
+  "porsche-911-g-modell-carrera-2-7": {
+    "specs": {
+      "production": 2262,
+      "hp": 210,
+      "liters": 2.7,
+      "sources": [
+        "https://www.porscheclubgb.com/getmedia/c894d2e8-e050-400f-9919-ea5fb2d4268d/1974-1977-Production-Numbers",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
+      ]
+    },
+    "images": [],
+    "note": "Mit mechanischer Einspritzung (Motor des RS 2.7), Modelljahre 1974–1976: 1.011 + 423 (1974), 508 + 187 (1975), 113 + 20 (1976) laut Porsche Club GB. Nicht enthalten: 1.303 US-Carrera 2.7 mit K-Jetronic und 175 PS. de.wikipedia nennt 1.534 Coupés + 610 Targa."
+  },
+  "porsche-911-g-modell-carrera-3-0": {
+    "specs": {
+      "production": 3687,
+      "hp": 200,
+      "liters": 3.0,
+      "years": [
+        1975,
+        1977
+      ],
+      "newPrice": {
+        "amount": 44950,
+        "currency": "DEM",
+        "eur": 22983,
+        "year": 1975
+      },
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-carrera-3-0-1976-1977/",
+        "https://en.wikipedia.org/wiki/Porsche_911_(classic)",
+        "https://www.turbosition.com/media/brochures/1976_-_Porsche_911_Carrera_-_911_Turbo_-_Preisliste.pdf"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahre 1976–1977: 2.564 Coupés + 1.123 Targa (en.wikipedia, Stuttcars); Porsche Club GB zählt 3.651. Neupreis Coupé 44.950 DM laut Preisliste gültig ab 1.9.1975."
+  },
+  "porsche-911-g-modell-carrera-rs-3-0": {
+    "specs": {
+      "production": 56,
+      "hp": 230,
+      "liters": 3.0,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-carrera-rs-3-0-1974/",
+        "https://en.wikipedia.org/wiki/Porsche_911_(classic)"
+      ]
+    },
+    "images": [],
+    "note": "Straßenversion des RSR 3.0 (2993 cm³). 56 Straßenfahrzeuge laut Stuttcars; it.wikipedia nennt 109 inkl. RSR (RSR 3.0 eigener Eintrag unter GT-Rennwagen)."
+  },
+  "porsche-911-g-modell-sc": {
+    "specs": {
+      "production": 58914,
+      "hp": 180,
+      "liters": 3.0,
+      "years": [
+        1977,
+        1983
+      ],
+      "newPrice": {
+        "amount": 39900,
+        "currency": "DEM",
+        "eur": 20401,
+        "year": 1977
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_911_(classic)",
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/2.-Generation-911,-(G-Serie),-1973---1989.html",
+        "https://www.turbosition.com/media/brochures/1977-06-01_-_Porsche_911_SC_-_911_Turbo_-_Preisliste.pdf"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahre 1978–1983, 180 PS, ab September 1979 188 PS, ab 1980 204 PS (Porsche Newsroom). Cabriolet ab Modelljahr 1983. Stückzahl laut en.wikipedia; Angaben schwanken (it.wikipedia 57.972, Stuttcars 60.625). Neupreis Coupé 39.900 DM laut Preisliste gültig ab 1.6.1977."
+  },
+  "porsche-911-g-modell-sc-rs": {
+    "specs": {
+      "production": 20,
+      "hp": 250,
+      "liters": 3.0,
+      "sources": [
+        "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-2-g-model-16459.html",
+        "https://www.stuttcars.com/porsche-911-sc-rs-an-oft-overlooked-gem/"
+      ]
+    },
+    "images": [],
+    "note": "Rallye-Homologationsmodell (Typ 954), 250 PS laut Porsche Newsroom (Stuttcars: 255 PS). 20 Fahrzeuge für die Homologation, ein weiteres im Porsche Museum."
+  },
+  "porsche-911-g-modell-carrera-3-2": {
+    "specs": {
+      "production": 76473,
+      "hp": 231,
+      "liters": 3.2,
+      "years": [
+        1983,
+        1989
+      ],
+      "newPrice": {
+        "amount": 68560,
+        "currency": "DEM",
+        "eur": 35054,
+        "year": 1985
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_911_(classic)",
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.turbosition.com/media/brochures/1985_-_Porsche_911_Carrera_-_911_Turbo_-_Preisuebersicht.pdf"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahre 1984–1989, 3164 cm³, 231 PS (mit Katalysator 207 bzw. 217 PS). G50-Getriebe ab Modelljahr 1987. Stückzahl laut en.wikipedia (alle Karosserien). Neupreis Coupé 68.560 DM laut Preisübersicht 1985 (Preis bei Markteinführung 1983 nicht belegt). Werks-Turbolook M491: 3.572 Fahrzeuge (Stuttcars)."
+  },
+  "porsche-911-g-modell-carrera-3-2-clubsport": {
+    "specs": {
+      "production": 340,
+      "hp": 231,
+      "liters": 3.2,
+      "sources": [
+        "https://www.stuttcars.com/porsche-911-carrera-3-2-clubsport-1987-1989/"
+      ]
+    },
+    "images": [],
+    "note": "Modelljahre 1988–1989, gezeigt auf der IAA 1987; rund 70 kg leichter als der Carrera 3.2."
+  },
+  "porsche-911-g-modell-speedster": {
+    "specs": {
+      "production": 2274,
+      "hp": 231,
+      "liters": 3.2,
+      "years": [
+        1989,
+        1989
+      ],
+      "sources": [
+        "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-2-g-model-16459.html",
+        "https://www.stuttcars.com/porsche-911-speedster-1989/"
+      ]
+    },
+    "images": [],
+    "note": "Gebaut von Anfang 1989 bis Juli 1989. Porsche Newsroom: 2.103 mit Turbo-Karosserie und 171 Exportfahrzeuge mit schmaler Karosserie (= 2.274, wie Stuttcars); en.wikipedia nennt 2.104 inkl. der schmalen, de.wikipedia 2.102."
+  },
   "porsche-911-964-carrera-2": {
     "launchColor": {
       "name": "Indischrot (Guards Red)",

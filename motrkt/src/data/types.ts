@@ -51,6 +51,8 @@ export type Variant = Required<Omit<VariantSeed, "vol" | "tags">> & {
   officialLink?: import("./real").OfficialLink;
   /** Sources for verified specs. */
   specSources: string[];
+  /** Year of the list price in newPrice (start of production unless a dated price list says otherwise). */
+  newPriceYear: number;
 };
 
 export type VariantOption = {

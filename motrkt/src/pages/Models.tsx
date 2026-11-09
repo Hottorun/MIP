@@ -572,7 +572,7 @@ function CompareView({ ids }: { ids: string[] }) {
     { label: "Max. Drawdown 5J", get: (v) => <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> },
     { label: "Stückzahl", get: (v) => num(v.production) },
     { label: "Leistung", get: (v) => `${v.hp} PS` },
-    { label: "Neupreis", get: (v) => `${eur(v.newPrice)} (${v.years[0]})` },
+    { label: "Neupreis", get: (v) => `${eur(v.newPrice)} (${v.newPriceYear})` },
     { label: "Einschätzung", get: (v) => <RecPill code={getMetrics(v.id).recommendation.code} label={getMetrics(v.id).recommendation.label} /> },
   ];
   const vs = ids.map((id) => variantById.get(id)!);

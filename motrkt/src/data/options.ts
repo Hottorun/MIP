@@ -27,6 +27,10 @@ const heritage = (impact = 0.08): Opt => ["Heritage Design Paket", impact];
 const rudge = (impact = 0.1): Opt => ["Rudge-Zentralverschlussräder", impact];
 const sunroof356 = (impact = 0.06): Opt => ["Stahlschiebedach ab Werk", impact];
 const radio: Opt = ["Becker-Radio ab Werk", 0.01];
+/** Semi-automatic Sportomatic (1967–1980): most early 911s are manual, so it trades below the median. */
+const sportomatic = (impact = -0.15): Opt => ["Sportomatic (statt Schaltgetriebe)", impact];
+/** Model year 1972 only: oil filler behind the right door ("Ölklappe"). */
+const oilFlap = (impact = 0.04): Opt => ["Ölklappe (nur Modelljahr 1972)", impact];
 
 export const OPTIONS: Record<string, Opt[]> = {
   // 356
@@ -50,8 +54,49 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-959-959-komfort": [paint(0.06), ["Innenausstattung in Sonderleder", 0.02]],
   "porsche-959-959-sport": [paint(0.05)],
 
+  // F-Modell (1964–1973)
+  "porsche-911-f-modell-2-0": [["Fuchs-Schmiederäder (ab 1967)", 0.03], ["Stahlschiebedach", 0.03], radio, paint(0.06)],
+  "porsche-911-f-modell-s-2-0": [sportomatic(), ["Stahlschiebedach", 0.03], radio, paint(0.06)],
+  "porsche-911-f-modell-l-2-0": [sportomatic(), ["Stahlschiebedach", 0.03], radio, paint(0.06)],
+  "porsche-911-f-modell-t-2-0": [sportomatic(), ["5-Gang-Getriebe", 0.04], ["Fuchs-Schmiederäder", 0.04], ["Stahlschiebedach", 0.03], paint(0.06)],
+  "porsche-911-f-modell-e-2-0": [sportomatic(), ["Stahlschiebedach", 0.03], radio, paint(0.06)],
+  "porsche-911-f-modell-t-2-2": [sportomatic(), ["5-Gang-Getriebe", 0.04], ["Fuchs-Schmiederäder", 0.04], ["Stahlschiebedach", 0.03], paint(0.06)],
+  "porsche-911-f-modell-e-2-2": [sportomatic(), ["Stahlschiebedach", 0.03], radio, paint(0.06)],
+  "porsche-911-f-modell-s-2-2": [lsd(), radio, paint(0.08)],
+  "porsche-911-f-modell-t-2-4": [sportomatic(), ["5-Gang-Getriebe", 0.04], ["Fuchs-Schmiederäder", 0.04], oilFlap(), paint(0.06)],
+  "porsche-911-f-modell-e-2-4": [sportomatic(), ["5-Gang-Getriebe", 0.03], oilFlap(), paint(0.06)],
+  "porsche-911-f-modell-s-2-4": [["5-Gang-Getriebe", 0.03], oilFlap(0.05), lsd(), paint(0.08)],
+  "porsche-911-f-modell-carrera-rs-2-7": [["Sport-Ausstattung M471 (Leichtbau, 960 kg)", 0.6], paint(0.05)],
+
+  // G-Modell (1973–1989); 911 Turbo see 930
+  "porsche-911-g-modell-2-7": [sportomatic(), ["5-Gang-Getriebe", 0.03], ["Jubiläumsmodell 25 Jahre (Modelljahr 1975, Silber)", 0.1], ["Stahlschiebedach", 0.02], paint(0.06)],
+  "porsche-911-g-modell-s-2-7": [sportomatic(), ["5-Gang-Getriebe", 0.03], ["Jubiläumsmodell 25 Jahre (Modelljahr 1975, Silber)", 0.1], paint(0.06)],
+  "porsche-911-g-modell-carrera-2-7": [noSunroof(0.04), lsd(), sportSeats(), paint(0.08)],
+  "porsche-911-g-modell-carrera-3-0": [sportomatic(-0.2), ["5-Gang-Getriebe", 0.03], noSunroof(0.04), lsd(), sportSeats(), paint(0.06)],
+  "porsche-911-g-modell-carrera-rs-3-0": [paint(0.05)],
+  "porsche-911-g-modell-sc": [
+    sportomatic(),
+    ["Sport-Paket (Front- und Heckspoiler, Bilstein, 16-Zoll-Fuchs)", 0.05],
+    ["Jubiläumsmodell 50 Jahre Porsche (Modelljahr 1982, Meteormetallic)", 0.06],
+    noSunroof(0.04),
+    lsd(),
+    paint(0.06),
+  ],
+  "porsche-911-g-modell-sc-rs": [],
+  "porsche-911-g-modell-carrera-3-2": [
+    ["5-Gang-Getriebe G50 (ab Modelljahr 1987)", 0.15],
+    ["Werks-Turbolook M491", 0.3],
+    ["Jubiläumsmodell 250.000 Elfer (Modelljahr 1988, Diamantblau)", 0.08],
+    noSunroof(0.05),
+    lsd(),
+    sportSeats(),
+    paint(0.06),
+  ],
+  "porsche-911-g-modell-carrera-3-2-clubsport": [paint(0.05)],
+  "porsche-911-g-modell-speedster": [["Schmale Karosserie (171 Exportfahrzeuge)", 0.6], paint(0.06)],
+
   // 964
-  "porsche-911-964-carrera-2": [manual(0.12), noSunroof(0.04), lsd(), m030, sportSeats(), ["Cup-Räder 17 Zoll", 0.02], paint()],
+  "porsche-911-964-carrera-2":[manual(0.12), noSunroof(0.04), lsd(), m030, sportSeats(), ["Cup-Räder 17 Zoll", 0.02], paint()],
   "porsche-911-964-carrera-4": [noSunroof(0.04), m030, sportSeats(), ["Cup-Räder 17 Zoll", 0.02], paint()],
   "porsche-911-964-turbo": [["Werks-Leistungssteigerung X33 (355 PS)", 0.1], noSunroof(), sportSeats(), paint()],
   "porsche-911-964-turbo-3-6": [["Flachbau (Exclusive X85)", 0.4], noSunroof(), sportSeats(), paint()],

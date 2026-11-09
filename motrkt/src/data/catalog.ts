@@ -58,6 +58,139 @@ export const CATALOG: BrandDef[] = [
         category: "heck",
         featured: true,
         generations: [
+          // Original 911 from the O series (production from September 1964) to the F series (model year 1973).
+          {
+            name: "F-Modell",
+            years: [1964, 1973],
+            shape: "classic911",
+            variants: [
+              v("2.0", [1964, 1967], 8520, 125_000, 0.045, 130, 2.0, 11_200, {
+                body: { Coupé: 0.92, Targa: 0.08 },
+                color: "#cfccc2",
+              }),
+              v("S 2.0", [1966, 1969], 6121, 215_000, 0.05, 160, 2.0, 12_500, {
+                body: { Coupé: 0.75, Targa: 0.25 },
+                gearbox: { Manual: 0.95, Automatik: 0.05 },
+                transmission: "5-Gang Schaltgetriebe / Sportomatic",
+                color: "#b3121b",
+              }),
+              v("L 2.0", [1967, 1968], 1610, 115_000, 0.042, 130, 2.0, 11_000, {
+                body: { Coupé: 0.73, Targa: 0.27 },
+                gearbox: { Manual: 0.85, Automatik: 0.15 },
+                transmission: "5-Gang Schaltgetriebe / Sportomatic",
+                color: "#1f3f8f",
+              }),
+              v("T 2.0", [1967, 1969], 6318, 92_000, 0.04, 110, 2.0, 9_700, {
+                body: { Coupé: 0.87, Targa: 0.13 },
+                gearbox: { Manual: 0.9, Automatik: 0.1 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#efc11a",
+              }),
+              v("E 2.0", [1968, 1969], 2826, 125_000, 0.045, 140, 2.0, 11_700, {
+                body: { Coupé: 0.7, Targa: 0.3 },
+                gearbox: { Manual: 0.85, Automatik: 0.15 },
+                transmission: "5-Gang Schaltgetriebe / Sportomatic",
+                color: "#b7babe",
+              }),
+              v("T 2.2", [1969, 1971], 15082, 95_000, 0.04, 125, 2.2, 10_600, {
+                body: { Coupé: 0.6, Targa: 0.4 },
+                gearbox: { Manual: 0.9, Automatik: 0.1 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#3aa83a",
+              }),
+              v("E 2.2", [1969, 1971], 4927, 130_000, 0.045, 155, 2.2, 12_300, {
+                body: { Coupé: 0.62, Targa: 0.38 },
+                gearbox: { Manual: 0.88, Automatik: 0.12 },
+                transmission: "5-Gang Schaltgetriebe / Sportomatic",
+                color: "#1f6fd0",
+              }),
+              v("S 2.2", [1969, 1971], 4691, 225_000, 0.05, 180, 2.2, 14_000, {
+                body: { Coupé: 0.68, Targa: 0.32 },
+                color: "#741726",
+              }),
+              v("T 2.4", [1971, 1973], 16903, 98_000, 0.04, 130, 2.4, 12_000, {
+                body: { Coupé: 0.6, Targa: 0.4 },
+                gearbox: { Manual: 0.9, Automatik: 0.1 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#e9e8e1",
+              }),
+              v("E 2.4", [1971, 1973], 4406, 140_000, 0.045, 165, 2.4, 13_800, {
+                body: { Coupé: 0.57, Targa: 0.43 },
+                gearbox: { Manual: 0.9, Automatik: 0.1 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#151619",
+              }),
+              v("S 2.4", [1971, 1973], 5094, 230_000, 0.05, 190, 2.4, 15_800, {
+                body: { Coupé: 0.7, Targa: 0.3 },
+                transmission: "4-/5-Gang Schaltgetriebe",
+                color: "#efc11a",
+              }),
+              v("Carrera RS 2.7", [1972, 1973], 1525, 640_000, 0.06, 210, 2.7, 17_400, {
+                tags: ["Leichtbau"],
+                color: "#e9e8e1",
+              }),
+            ],
+          },
+          // Second generation with impact bumpers, model years 1974 (G series) to 1989; the 911 Turbo is its own model (930).
+          {
+            name: "G-Modell",
+            years: [1973, 1989],
+            shape: "classic911",
+            variants: [
+              v("2.7", [1973, 1977], 17017, 55_000, 0.035, 150, 2.7, 13_800, {
+                body: { Coupé: 0.6, Targa: 0.4 },
+                gearbox: { Manual: 0.92, Automatik: 0.08 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#b3121b",
+              }),
+              v("S 2.7", [1973, 1977], 17024, 62_000, 0.035, 175, 2.7, 15_300, {
+                body: { Coupé: 0.65, Targa: 0.35 },
+                gearbox: { Manual: 0.92, Automatik: 0.08 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#b7babe",
+              }),
+              v("Carrera 2.7", [1973, 1976], 2262, 220_000, 0.05, 210, 2.7, 19_000, {
+                body: { Coupé: 0.72, Targa: 0.28 },
+                transmission: "4-/5-Gang Schaltgetriebe",
+                color: "#efc11a",
+              }),
+              v("Carrera 3.0", [1975, 1977], 3687, 115_000, 0.045, 200, 3.0, 23_000, {
+                body: { Coupé: 0.7, Targa: 0.3 },
+                gearbox: { Manual: 0.97, Automatik: 0.03 },
+                transmission: "4-/5-Gang Schaltgetriebe / Sportomatic",
+                color: "#741726",
+              }),
+              v("Carrera RS 3.0", [1974, 1974], 56, 1_600_000, 0.07, 230, 3.0, 33_000, {
+                tags: ["Leichtbau"],
+                color: "#e9e8e1",
+              }),
+              v("SC", [1977, 1983], 58914, 68_000, 0.035, 180, 3.0, 20_400, {
+                body: { Coupé: 0.6, Targa: 0.33, Cabriolet: 0.07 },
+                gearbox: { Manual: 0.97, Automatik: 0.03 },
+                transmission: "5-Gang Schaltgetriebe / Sportomatic",
+                color: "#1f3f8f",
+              }),
+              v("SC RS", [1984, 1984], 20, 2_000_000, 0.08, 250, 3.0, 95_000, {
+                tags: ["Leichtbau"],
+                color: "#e9e8e1",
+              }),
+              v("Carrera 3.2", [1983, 1989], 76473, 78_000, 0.035, 231, 3.2, 31_700, {
+                body: { Coupé: 0.5, Targa: 0.25, Cabriolet: 0.25 },
+                transmission: "5-Gang Schaltgetriebe (Typ 915, ab Modelljahr 1987 G50)",
+                color: "#b3121b",
+              }),
+              v("Carrera 3.2 Clubsport", [1987, 1989], 340, 260_000, 0.06, 231, 3.2, 41_000, {
+                tags: ["Leichtbau"],
+                transmission: "5-Gang Schaltgetriebe (G50)",
+                color: "#e9e8e1",
+              }),
+              v("Speedster", [1989, 1989], 2274, 175_000, 0.04, 231, 3.2, 56_200, {
+                body: { Roadster: 1 },
+                transmission: "5-Gang Schaltgetriebe (G50)",
+                color: "#151619",
+              }),
+            ],
+          },
           {
             name: "964",
             years: [1989, 1994],

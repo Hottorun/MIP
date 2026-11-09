@@ -64,7 +64,7 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
   const facts: [string, React.ReactNode][] = [
     ["Produktion", `${num(variant.production)} Stück`],
     ["Motor", `${num(variant.liters, 1)} l, ${variant.hp} PS`],
-    ["Neupreis", `${eur(variant.newPrice)} (${variant.years[0]})`],
+    ["Neupreis", `${eur(variant.newPrice)} (${variant.newPriceYear})`],
   ];
   if (variant.launchColor) {
     facts.push([

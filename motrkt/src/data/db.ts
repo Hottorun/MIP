@@ -102,6 +102,11 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
     if (y < 1998) list.push("Rost (v. a. Kotflügel, Schweller, Wagenheberaufnahmen)");
     if (y < 1998) list.push("Motor (Ölverlust, Kopfdichtung, Stehbolzen)");
     if (generationName === "964") list.push("Zweimassenschwungrad und Verteilerantrieb");
+    // Early 911: mechanical injection on E, S and Carrera; the others: chain tensioners, oil-fed only from the Carrera 3.2 (1983).
+    if (generationName === "F-Modell" || generationName === "G-Modell") {
+      if (/^(E 2\.[024]|S 2\.[24]|Carrera 2\.7|Carrera RS 2\.7|Carrera RS 3\.0)$/.test(seed.name)) list.push("Mechanische Einspritzpumpe (Bosch): Revision und Einstellung");
+      else if (y < 1983) list.push("Kettenspanner (bis 1983 nicht ölgespeist)");
+    }
     // M96/M97 engines (911 and Boxster/Cayman); the 997.2/987.2 got the new 9A1 engine without intermediate shaft.
     if (["996.1", "996.2", "997.1", "986", "987.1"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
       list.push("IMS-Lager und Zylinderlaufbahnen (M96/M97)");
@@ -130,7 +135,7 @@ export const MODEL_CATEGORIES: { id: ModelCategory; label: string }[] = [
 ];
 const categoryIndex = (c: ModelCategory) => MODEL_CATEGORIES.findIndex((x) => x.id === c);
 
-/** The 911 counts from its 1963 debut, not from the oldest generation in the catalog (964). */
+/** The 911 counts from its 1963 debut (IAA premiere as the 901), not from the F-Modell's first production year (1964). */
 const DEBUT_YEAR: Record<string, number> = { "911": 1963 };
 function firstYear(m: { name: string; generations: { years: [number, number | null] }[] }) {
   return DEBUT_YEAR[m.name] ?? Math.min(...m.generations.map((g) => g.years[0]));
@@ -225,6 +230,7 @@ function build() {
             marketPhotos: marketPhotos(id),
             officialLink: officialLinks[id],
             specSources: specs?.sources ?? [],
+            newPriceYear: (specs?.newPrice?.eur && specs.newPrice.year) || (specs?.years ?? s.years)[0],
             options: buildOptions(s, id),
             shape: s.shape ?? g.shape,
             markets: buildMarkets(b.id, id),

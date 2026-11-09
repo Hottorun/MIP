@@ -106,7 +106,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
       "",
       `## Aktuell geöffnete Variante: ${variantTitle(focus)}`,
       `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${focus.liters.toFixed(1).replace(".", ",")} l, ${focus.drive}, ${focus.transmission}`,
-      `Neupreis ca. ${eur(focus.newPrice)} (${focus.years[0]}), inflationsbereinigt ca. ${eur(focus.newPrice * inflationFactor(focus.years[0]))}`,
+      `Neupreis ca. ${eur(focus.newPrice)} (${focus.newPriceYear}), inflationsbereinigt ca. ${eur(focus.newPrice * inflationFactor(focus.newPriceYear))}`,
       `Marktwert (Median) ${eur(m.value)}; Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`,
       `Rarity Score ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, MOTRKT-Einschätzung: ${m.recommendation.label}`,
       `Letzte 12 Monate: ${m.sales12m} Transaktionen, Ø Verkaufspreis ${eur(m.avgPrice12m)}, Median-Laufleistung ${km(m.medianMileage)}, Ø Zustandsnote ${num(m.avgCondition, 1)}, Auktionsanteil ${pct(m.auctionShare, { signed: false, digits: 0 })}, Verkaufsquote ${pct(m.sellThrough, { signed: false, digits: 0 })}, Ø Zuschlag vs. Schätzung ${pct(m.premiumVsEstimate)}`,

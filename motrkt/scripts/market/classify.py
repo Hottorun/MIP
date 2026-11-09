@@ -101,8 +101,53 @@ def body(s):
     if "targa" in s: return "Targa"
     return "Coupé"
 
-def road(y, s):
-    """Road cars. s = lowercase model text after 'Porsche'."""
+def early(y, s, b, full):
+    """911 F-Modell (model years 1965-1973) and G-Modell (1974-1989) without the 930 Turbo.
+    -> (variant, body), None (rejected) or False (not an early 911: Turbo, 964, later)."""
+    if y > 1989 or "turbo" in s or re.search(r"carrera [24](?![.\d])|\bc[24]\b|\b(964|993)\b", s): return False
+    if has(s, "anniversary", "jubil", "edition", "commemorative", "weissach", "cup", "safari", "dakar", "iroc", "s/t", "911st", " st ",
+           "rsr", "slant", "flat", "m491", "supersport", "wtl", "2.5", "2.8", "3.3", "3.4", "3.6", "901", "911r", "rs america"): return None
+    if b == "Cabriolet" and y < 1983 or b == "Roadster" and not ("speedster" in s and y == 1989): return None
+    def F(v): return (P + "911-f-modell-" + v, b)
+    def G(v): return (P + "911-g-modell-" + v, b)
+    m = re.search(r"\b911\s?([tels])\b", s)  # 911T, 911 E, 911S, 911L (not "911 SC", "911 Targa")
+    L = m.group(1) if m else ""
+    rs = re.search(r"\brs\b", s)
+    if y <= 1973:  # F-Modell
+        if rs: return F("carrera-rs-2-7") if y == 1973 and has(s, "carrera", "2.7") and b == "Coupé" else None
+        if has(s, "carrera", "speedster", " sc "): return None
+        if L == "s": return F("s-2-0") if 1967 <= y <= 1969 else F("s-2-2") if 1970 <= y <= 1971 else F("s-2-4") if y >= 1972 else None
+        if L == "t": return F("t-2-0") if 1968 <= y <= 1969 else F("t-2-2") if 1970 <= y <= 1971 else F("t-2-4") if y >= 1972 else None
+        if L == "e": return F("e-2-0") if y == 1969 else F("e-2-2") if 1970 <= y <= 1971 else F("e-2-4") if y >= 1972 else None
+        if L == "l": return F("l-2-0") if y == 1968 else None
+        # plain 911 of the O series (model years 1965-1967); 1968 is ambiguous (US 911 or 911 L)
+        if re.search(r"\b911\b", s) and 1965 <= y <= 1967 and not re.search(r"\b(r|s|t|e|l)\b", s): return F("2-0")
+        return None
+    if y <= 1977:  # G-Modell 2.7 and Carrera 3.0
+        if rs: return G("carrera-rs-3-0") if y == 1974 and "3.0" in s and b == "Coupé" else None
+        if has(s, " sc ", "speedster"): return None
+        if "carrera" in s:
+            if "3.0" in s or (y >= 1976 and "2.7" not in s): return G("carrera-3-0") if y >= 1976 else None
+            # The US Carrera 2.7 (K-Jetronic, 175 PS) is not the 210 PS MFI car: only clearly European / MFI cars count.
+            if re.search(r"\b(mfi|euro|european|row|rhd)\b|mechanical fuel", full): return G("carrera-2-7") if y <= 1976 else None
+            return None
+        if L == "s": return G("s-2-7")
+        if L: return None
+        # plain 911: model year 1974 only (US cars of 1975-1977 were sold as 911 S)
+        if y == 1974 and re.search(r"\b911\b", s): return G("2-7")
+        return None
+    if y <= 1983:  # 911 SC
+        if re.search(r"\bsc\b|911sc", s) and not rs: return G("sc") if y >= 1978 else None
+        return None
+    if re.search(r"sc[ /-]?rs\b", s): return G("sc-rs") if y == 1984 and b == "Coupé" else None
+    if "speedster" in s: return G("speedster") if y == 1989 else None
+    if has(s, "clubsport", "club sport") or re.search(r"\bcs\b", s): return G("carrera-3-2-clubsport") if y >= 1987 and b == "Coupé" else None
+    if re.search(r"\bsc\b|911sc", s) or rs: return None
+    if "carrera" in s or "3.2" in s: return G("carrera-3-2")
+    return None
+
+def road(y, s, full=""):
+    """Road cars. s = lowercase model text after 'Porsche'; full = whole title (prefix such as "RoW" included)."""
     s = " " + s + " "
     if re.search(r"\b(914|924|928|944|968|cayenne|panamera|macan|taycan|mission)\b", s): return None
     b = body(s)
@@ -138,7 +183,9 @@ def road(y, s):
         if has(s, "s ", "sc", "prototype", "vorserie", "pre-series"): return None
         return (P + "959-959-komfort", "Coupé")
     if not re.search(r"\b911|\b930|\b964|\b993|\b996|\b997|\b991|\b992|carrera|turbo|gt[23]|speedster", s): return mid(y, s, b)
-    if has(s, "rs america", "america roadster", "anniversary", "jubil", "30 jahre", "edition", "exclusive", "club coupe",
+    e = early(y, s, b, full)
+    if e is not False: return e
+    if has(s,"rs america", "america roadster", "anniversary", "jubil", "30 jahre", "edition", "exclusive", "club coupe",
            "sc ", "sc/", "3.2", "carrera 3.0", "2.7", "911t", "911e", "911s", "911l", " l ", " e ", "2.0", "2.2", "2.4",
            "lightweight", "cup", "rsr", "safari", "dakar") and not (("dakar" in s) and y >= 2023) and not re.search(r"50th|50 jahre|50 years", s):
         # Special editions without own variant are not mixed into a base variant
@@ -340,7 +387,7 @@ def classify(title, note=""):
     if any(w in full for w in EXCL) or any(w in full for w in TRACK): return None
     # strip noise tokens
     s2 = re.sub(r"\b(euro|european|rhd|row|us-spec|japanese-market|coupe|w/|with)\b", " ", s)
-    res = road(y, s2.strip())
+    res = road(y, s2.strip(), full)
     if not res: return None
     for tok, g in GEN.items():
         if re.search(r"\b" + tok + r"\b", s) and g not in res[0]: return None

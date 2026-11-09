@@ -7,7 +7,7 @@ import { Section, Money } from "../ui";
 
 export function Details({ variant, picked, onPick }: { variant: Variant; picked: string[]; onPick: (names: string[]) => void }) {
   const gen = generationById.get(variant.generationId)!;
-  const year = variant.years[0];
+  const year = variant.newPriceYear;
   const specs: [string, string][] = [
     ["Bauzeit", yearsLabel(variant.years)],
     ["Generation", `${gen.name}, ${yearsLabel(gen.years)}`],

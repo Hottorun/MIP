@@ -23,7 +23,7 @@ def group(v):
     vid = v
     if "rennsportwagen" in vid or "gt-rennwagen" in vid or "cup-und-clubsport" in vid: return "G"
     if "-356-" in vid or "-912-" in vid: return "A"
-    if "-930-" in vid or "-964-" in vid or "-993-" in vid: return "B"
+    if "-930-" in vid or "-964-" in vid or "-993-" in vid or "-f-modell-" in vid or "-g-modell-" in vid: return "B"
     if "959" in vid or vid.endswith("carrera-gt-carrera-gt") or "918" in vid: return "F"
     gt = any(k in vid for k in ["gt3", "gt2", "-r", "sport-classic", "speedster", "s-t", "dakar", "50-jahre"]) and "-911-" in vid
     if vid.endswith("-r") or gt: return "D"
