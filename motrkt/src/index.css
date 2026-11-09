@@ -138,7 +138,7 @@
     opacity: 1;
   }
 }
-/* Amounts: written out in full, serif lining figures of equal width, a small gold euro sign. */
+/* Amounts: written out in full, serif lining figures of equal width. */
 .money {
   font-family: var(--font-serif);
   font-feature-settings: "lnum" 1, "tnum" 1, "onum" 0, "kern" 1;
@@ -147,12 +147,7 @@
   white-space: nowrap;
 }
 .money-cur {
-  font-size: 0.66em;
-  letter-spacing: 0;
-  color: var(--color-gold);
-  margin-right: 0.22em;
-  position: relative;
-  top: -0.42em;
+  margin-right: 0.25em;
 }
 .animate-fade-in {
   animation: fade-in 0.25s ease-out both;

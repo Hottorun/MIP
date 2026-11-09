@@ -290,7 +290,7 @@ export const axisProps = {
 } as const;
 
 /**
- * A typeset amount: digits written out in full in the serif face with lining figures, the euro sign small and in gold.
+ * A typeset amount: digits written out in full in the serif face with lining figures.
  * `compact` rounds to three significant digits (for estimates), never to "k" or "Mio.".
  */
 export function Money({ value, compact, className }: { value: number | null | undefined; compact?: boolean; className?: string }) {
