@@ -10,7 +10,7 @@ import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
 import { type Scene } from "../components/CarArt";
 import { CarImage } from "../components/CarImage";
-import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline } from "../components/ui";
+import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
 
 type SortKey = "deal" | "priceAsc" | "priceDesc" | "newest" | "mileage";
 type SellerFilter = "" | Listing["sellerType"];
@@ -310,7 +310,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
         <span className="min-w-0 truncate font-serif text-[16.5px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-        <span className="shrink-0 font-serif text-[16.5px] tabular-nums">{eur(l.price)}</span>
+        <Money value={l.price} className="shrink-0 text-[16.5px]" />
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
         <span className="min-w-0 truncate text-muted">
@@ -483,8 +483,8 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 <Row label="Marktwert Variante (Median)" value={eur(e.value)} />
                 <Row label={`Zustandsfaktor (Note ${l.condition})`} value={`× ${num(e.condFactor, 2)}`} />
                 <Row label="Laufleistungsfaktor" value={`× ${num(e.kmFactor, 2)}`} />
-                <Row label="Fairer Wert" value={<span className="font-semibold">{eur(e.fair)}</span>} />
-                <Row label="Angebotspreis" value={<span className="font-semibold">{eur(l.price)}</span>} />
+                <Row label="Fairer Wert" value={<Money value={e.fair} className="text-[16px]" />} />
+                <Row label="Angebotspreis" value={<Money value={l.price} className="text-[16px]" />} />
                 <Row label="Abweichung" value={<Delta value={e.deal} />} />
               </div>
             </div>
@@ -515,7 +515,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                         {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {s.l.city}
                       </div>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-semibold tabular-nums">{eur(s.l.price)}</span>
+                        <Money value={s.l.price} className="text-[15px]" />
                         <Pill tone={sd.tone} className="text-[10px]">
                           {pct(s.deal)}
                         </Pill>

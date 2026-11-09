@@ -8,7 +8,7 @@ import { getMetrics, mean } from "../data/market";
 import type { AuctionEvent, Sale } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
-import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps } from "../components/ui";
+import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
 
 type Source = "Alle" | "Auktion" | "Händler" | "Privat";
 type Period = "3M" | "12M" | "5J";
@@ -194,7 +194,7 @@ export default function Auctions() {
           <Kpi label="Angebotene Lose" value={num(kpis.lots)} />
           <Kpi label="Davon verkauft" value={pct(kpis.sellThrough, { signed: false, digits: 0 })} />
           <Kpi label="Zuschlag gegenüber Schätzung" value={<Delta value={kpis.premium} arrow={false} />} />
-          <Kpi label="Umsatz" value={eur(kpis.revenue, { compact: true })} />
+          <Kpi label="Umsatz" value={<Money value={kpis.revenue} compact />} />
         </dl>
       </div>
 
@@ -288,7 +288,7 @@ export default function Auctions() {
                         {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{s.source}</span>}
                       </td>
                       <td className="text-right tabular-nums">{km(s.mileage)}</td>
-                      <td className="text-right font-serif tabular-nums">{s.price === null ? <span className="font-sans text-[13px] text-faint italic">nicht verkauft</span> : eur(s.price)}</td>
+                      <td className="text-right">{s.price === null ? <span className="font-sans text-[13px] text-faint italic">nicht verkauft</span> : <Money value={s.price} />}</td>
                       <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} arrow={false} />}</td>
                     </tr>
                   );
@@ -492,7 +492,7 @@ function LotTable({ event }: { event: AuctionEvent }) {
                   <td className="text-right tabular-nums">
                     {eur(lot.estimateLow, { compact: true })}–{eur(lot.estimateHigh, { compact: true })}
                   </td>
-                  <td className="text-right tabular-nums">{eur(value)}</td>
+                  <td className="text-right"><Money value={value} /></td>
                   <td className="text-right">
                     <Delta value={mid / value - 1} />
                   </td>
@@ -532,7 +532,7 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
     ["Quelle", `${sale.source} · ${sale.house}`],
     ["Transaktions-ID", <span className="font-mono">{sale.id}</span>],
     ["FIN", <span className="font-mono">{sale.vin}</span>],
-    ["Preis", sale.price === null ? <span className="text-down">nicht verkauft</span> : <span className="font-semibold">{eur(sale.price)}</span>],
+    ["Preis", sale.price === null ? <span className="text-down">nicht verkauft</span> : <Money value={sale.price} className="text-[17px]" />],
     ["Schätzung", sale.estimateLow ? `${eur(sale.estimateLow)} – ${eur(sale.estimateHigh)}` : "–"],
     ["Zuschlag vs. Schätzung", mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
     ["vs. Marktwert (damals)", sale.price === null ? "–" : <Delta value={sale.trend} />],

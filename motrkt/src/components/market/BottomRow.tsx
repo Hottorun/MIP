@@ -3,9 +3,9 @@ import { variantTitle } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getListings } from "../../data/generate";
 import { useLiveListings } from "../../state/liveListings";
-import { eur, km } from "../../lib/format";
+import { km } from "../../lib/format";
 import { CarImage } from "../CarImage";
-import { Section } from "../ui";
+import { Section, Money } from "../ui";
 
 export function Listings({ variant }: { variant: Variant }) {
   const live = useLiveListings();
@@ -43,7 +43,7 @@ export function Listings({ variant }: { variant: Variant }) {
                 <span className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
                   {variantTitle(variant, { brand: false })}
                 </span>
-                <span className="shrink-0 font-serif text-[16px] tabular-nums">{eur(l.price)}</span>
+                <Money value={l.price} className="shrink-0 text-[16px]" />
               </div>
               <div className="mt-0.5 text-[13px] text-muted">
                 {l.year}, {km(l.mileage)}, {l.city}

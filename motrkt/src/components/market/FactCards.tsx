@@ -3,7 +3,7 @@ import { generationById, optionFactor, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics, inflationFactor } from "../../data/market";
 import { cn, eur, hostOf, num, pct } from "../../lib/format";
-import { Section } from "../ui";
+import { Section, Money } from "../ui";
 
 export function Details({ variant, picked, onPick }: { variant: Variant; picked: string[]; onPick: (names: string[]) => void }) {
   const gen = generationById.get(variant.generationId)!;
@@ -109,7 +109,7 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
       <div className="mt-5 flex items-baseline justify-between gap-4">
         <span className="text-[13px] text-muted">{picked.length ? "Schätzwert mit Auswahl" : "Marktwert, Median"}</span>
         <span className="text-right">
-          <span className="font-serif text-[26px] leading-none tabular-nums">{eur(Math.round((base * factor) / 1000) * 1000)}</span>
+          <Money value={Math.round((base * factor) / 1000) * 1000} className="text-[28px] leading-none" />
           {factor !== 1 && <span className={cn("ml-2 text-[13px]", factor > 1 ? "text-up" : "text-down")}>{pct(factor - 1)}</span>}
         </span>
       </div>

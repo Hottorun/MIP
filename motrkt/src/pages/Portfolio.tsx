@@ -8,7 +8,7 @@ import { getMetrics, holdingValue, portfolioSeries, RANGES, sliceRange, type Ran
 import type { Holding } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, km, pct, trendClass } from "../lib/format";
-import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented } from "../components/ui";
+import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money } from "../components/ui";
 import { HoldingForm } from "../components/portfolio/HoldingForm";
 import { WatchlistSection } from "../components/portfolio/Watchlist";
 import { yearTicks } from "../components/insights/palette";
@@ -102,8 +102,8 @@ export default function Portfolio() {
           </div>
         </div>
         <dl className="mt-8 grid grid-cols-1 gap-6 border-y border-line py-6 sm:grid-cols-3">
-          <Kpi label={`Wert von ${rows.length} Fahrzeugen`} value={eur(total)} />
-          <Kpi label={`Gewinn seit Kauf, Einstand ${eur(cost, { compact: true })}`} value={eur(total - cost)} tone={total - cost} />
+          <Kpi label={`Wert von ${rows.length} Fahrzeugen`} value={<Money value={total} />} />
+          <Kpi label={`Gewinn seit Kauf, Einstand ${eur(cost, { compact: true })}`} value={<Money value={total - cost} />} tone={total - cost} />
           <Kpi label="Veränderung in 12 Monaten" value={pct(perf12)} tone={perf12} />
         </dl>
       </div>
@@ -128,7 +128,7 @@ export default function Portfolio() {
                     </linearGradient>
                   </defs>
                   <XAxis dataKey="t" type="number" domain={["dataMin", "dataMax"]} scale="time" ticks={short ? undefined : yearTicks(chartData[0]?.t ?? AS_OF, AS_OF)} tickFormatter={(t) => date(t, short ? "short" : "year")} {...axisProps} minTickGap={short ? 40 : 8} dy={8} />
-                  <YAxis tickFormatter={(v) => eur(v, { compact: true })} width={72} orientation="right" {...axisProps} domain={["auto", "auto"]} />
+                  <YAxis tickFormatter={(v) => eur(v, { compact: true })} width={96} orientation="right" {...axisProps} domain={["auto", "auto"]} />
                   <Tooltip
                     cursor={{ stroke: "var(--color-line-2)" }}
                     content={({ active, payload, label }) =>
@@ -181,7 +181,7 @@ export default function Portfolio() {
                         <td className="text-right tabular-nums">{km(r.h.mileage)}</td>
                         <td className="tabular-nums">{date(r.h.purchaseDate)}</td>
                         <td className="text-right tabular-nums">{eur(r.h.purchasePrice)}</td>
-                        <td className="text-right font-serif tabular-nums">{eur(r.value)}</td>
+                        <td className="text-right"><Money value={r.value} /></td>
                         <td className={cn("text-right tabular-nums", trendClass(r.gain))}>{pct(r.gain)}</td>
                         <td className="text-right">
                           <Delta value={r.m.change12m} arrow={false} />
@@ -241,7 +241,7 @@ export default function Portfolio() {
   );
 }
 
-function Kpi({ label, value, tone }: { label: string; value: string; tone?: number }) {
+function Kpi({ label, value, tone }: { label: string; value: React.ReactNode; tone?: number }) {
   return (
     <div>
       <dt className="kpi-label">{label}</dt>

@@ -1,16 +1,26 @@
 /** German-locale formatting helpers (de-DE): "€ 378.000", "+12,4 %", "14. Sep. 2025". */
 
 const eur0 = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
-const num1 = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
+/** Round to three significant digits (106.432 → 106.000, 2.327.073 → 2.330.000) – for estimates and ranges. */
+export function roundValue(value: number): number {
+  const abs = Math.abs(value);
+  if (abs < 1000) return Math.round(value);
+  const step = 10 ** (Math.floor(Math.log10(abs)) - 2);
+  return Math.round(value / step) * step;
+}
+
+/** Amounts are always written out in full ("€ 2.330.000"), never abbreviated; `compact` rounds to three significant digits. */
 export function eur(value: number | null | undefined, opts: { compact?: boolean } = {}): string {
   if (value === null || value === undefined || !Number.isFinite(value)) return "–";
-  if (opts.compact) {
-    const abs = Math.abs(value);
-    if (abs >= 1_000_000) return `€ ${num1.format(value / 1_000_000)} Mio.`;
-    if (abs >= 10_000) return `€ ${eur0.format(Math.round(value / 1000))}k`;
-  }
-  return `€ ${eur0.format(Math.round(value))}`;
+  const v = opts.compact ? roundValue(value) : Math.round(value);
+  return `${v < 0 ? "−" : ""}€ ${eur0.format(Math.abs(v))}`;
+}
+
+/** Digits of an amount without the currency sign ("2.330.000"), for the typeset <Money> component. */
+export function amount(value: number, opts: { compact?: boolean } = {}): string {
+  const v = opts.compact ? roundValue(value) : Math.round(value);
+  return eur0.format(Math.abs(v));
 }
 
 export function num(value: number, digits = 0): string {

@@ -5,8 +5,8 @@ import { variantShortTitle } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getSales } from "../../data/generate";
 import { getMetrics } from "../../data/market";
-import { date, eur, km } from "../../lib/format";
-import { Section } from "../ui";
+import { date, km } from "../../lib/format";
+import { Section, Money } from "../ui";
 
 export function RecentSales({ variant }: { variant: Variant }) {
   const [expanded, setExpanded] = useState(false);
@@ -44,7 +44,7 @@ export function RecentSales({ variant }: { variant: Variant }) {
                   {s.mileage ? `, ${km(s.mileage)}` : ""}
                 </div>
               </div>
-              <div className="text-right font-serif text-[18px] tabular-nums">{s.price ? eur(s.price) : <span className="text-[14px] text-faint italic">nicht verkauft</span>}</div>
+              <div className="text-right text-[18px]">{s.price ? <Money value={s.price} /> : <span className="text-[14px] text-faint italic">nicht verkauft</span>}</div>
             </li>
           ))}
         </ul>

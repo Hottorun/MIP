@@ -6,7 +6,7 @@ import { getMetrics } from "../../data/market";
 import { useStore } from "../../state/store";
 import { cn, eur } from "../../lib/format";
 import { CarImage } from "../CarImage";
-import { Delta, Empty, Modal, Pill, Section, Segmented } from "../ui";
+import { Delta, Empty, Modal, Pill, Section, Segmented, Money } from "../ui";
 
 export function WatchlistSection() {
   const { watchlist, toggleWatch, alerts, removeAlert, toast } = useStore();
@@ -33,7 +33,7 @@ export function WatchlistSection() {
                     </div>
                     <div className="mt-3 flex items-baseline justify-between gap-3">
                       <span className="min-w-0 truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-                      <span className="shrink-0 font-serif text-[16px] tabular-nums">{eur(m.value, { compact: true })}</span>
+                      <Money value={m.value} compact className="shrink-0 text-[16px]" />
                     </div>
                   </Link>
                   <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">

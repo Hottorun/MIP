@@ -69,7 +69,7 @@ export function ValuePanel({ variant }: { variant: Variant }) {
               </linearGradient>
             </defs>
             <XAxis dataKey="t" type="number" scale="time" domain={["dataMin", "dataMax"]} ticks={ticks} tickFormatter={(t) => date(t, short ? "month" : "year")} {...axisProps} dy={8} />
-            <YAxis {...axisProps} orientation="right" domain={["auto", "auto"]} width={64} tickFormatter={(v) => eur(v, { compact: true })} />
+            <YAxis {...axisProps} orientation="right" domain={["auto", "auto"]} width={92} tickFormatter={(v) => eur(v, { compact: true })} />
             <Tooltip
               cursor={{ stroke: "var(--color-line-2)" }}
               content={({ active, payload }) => {

@@ -9,7 +9,7 @@ import { marketBasis } from "../../data/real/model";
 import { useStore } from "../../state/store";
 import { cn, eur, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
-import { Delta, Modal, Pill } from "../ui";
+import { Delta, Modal, Pill, Money } from "../ui";
 import { PhotoCredit } from "../CarImage";
 
 /** Product-page top: photograph on the left, a calm summary column on the right. */
@@ -85,7 +85,7 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
       <div className="mt-8 border-t border-line pt-6">
         <div className="text-[13px] text-muted">{picked.length ? "Schätzwert mit Ausstattung" : "Marktwert, Median"}</div>
         <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <span className="font-serif text-[36px] leading-none">{eur(Math.round((m.value * factor) / 1000) * 1000)}</span>
+          <Money value={Math.round((m.value * factor) / 1000) * 1000} className="text-[40px] leading-none" />
           {picked.length ? (
             <span className={cn("text-[14px]", factor >= 1 ? "text-up" : "text-down")}>
               {pct(factor - 1)} <span className="text-muted">durch {picked.length === 1 ? "1 Option" : `${picked.length} Optionen`}</span>

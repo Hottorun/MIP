@@ -9,7 +9,7 @@ import type { ModelCategory, Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, num, pct } from "../lib/format";
 import { CarImage } from "../components/CarImage";
-import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps } from "../components/ui";
+import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps, Money } from "../components/ui";
 
 type SortKey = "series" | "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
 const SORTS: { value: SortKey; label: string }[] = [
@@ -386,7 +386,7 @@ export default function Models() {
                     <td className="font-serif font-bold">{variantTitle(v)}</td>
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
-                    <td className="text-right font-serif tabular-nums">{eur(m.value)}</td>
+                    <td className="text-right"><Money value={m.value} /></td>
                     <td className="text-right">
                       <Delta value={m.change12m} />
                     </td>
@@ -521,7 +521,7 @@ function VariantCard({
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
         <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-        <span className="shrink-0 font-serif text-[16px] tabular-nums">{eur(m.value, { compact: true })}</span>
+        <Money value={m.value} compact className="shrink-0 text-[16px]" />
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
         <span>

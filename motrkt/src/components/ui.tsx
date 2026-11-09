@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowUpRight, Minus, X } from "lucide-react";
-import { cn, pct, trendClass } from "../lib/format";
+import { amount, cn, pct, trendClass } from "../lib/format";
 import { brandById } from "../data/db";
 
 export function Card({
@@ -288,3 +288,18 @@ export const axisProps = {
   tickLine: false,
   axisLine: false,
 } as const;
+
+/**
+ * A typeset amount: digits written out in full in the serif face with lining figures, the euro sign small and in gold.
+ * `compact` rounds to three significant digits (for estimates), never to "k" or "Mio.".
+ */
+export function Money({ value, compact, className }: { value: number | null | undefined; compact?: boolean; className?: string }) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return <span className={cn("money", className)}>–</span>;
+  return (
+    <span className={cn("money", className)}>
+      {value < 0 && "−"}
+      <span className="money-cur">€</span>
+      {amount(value, { compact })}
+    </span>
+  );
+}

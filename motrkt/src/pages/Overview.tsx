@@ -5,10 +5,10 @@ import { brands, variantById, variantTitle, variants } from "../data/db";
 import { AS_OF, DAY, getAllSales, getAuctionEvents } from "../data/generate";
 import { changeOver, getMetrics, marketIndex, sliceRange, topMovers } from "../data/market";
 import type { Sale } from "../data/types";
-import { date, eur, num, pct, trendClass } from "../lib/format";
+import { date, num, pct, trendClass } from "../lib/format";
 import { CarImage } from "../components/CarImage";
 import { HeroSlideshow } from "../components/HeroSlideshow";
-import { ChartTooltipBox, Delta, Section, Segmented, axisProps } from "../components/ui";
+import { ChartTooltipBox, Delta, Section, Segmented, axisProps, Money } from "../components/ui";
 import { yearTicks } from "../components/insights/palette";
 
 const RANGE_OPTIONS = [
@@ -127,7 +127,7 @@ export default function Overview() {
                   </div>
                   <div className="mt-3 font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</div>
                   <div className="mt-0.5 flex items-baseline justify-between text-[14px]">
-                    <span className="text-muted">{eur(getMetrics(id).value, { compact: true })}</span>
+                    <Money value={getMetrics(id).value} compact className="text-[16px]" />
                     <span className={trendClass(change)}>{pct(change)}</span>
                   </div>
                 </Link>
@@ -162,7 +162,7 @@ export default function Overview() {
                           {s.house}, {date(s.date)}
                         </div>
                       </div>
-                      <div className="font-serif text-[18px] tabular-nums">{eur(s.price)}</div>
+                      <Money value={s.price} className="text-[18px]" />
                     </Link>
                   </li>
                 );
