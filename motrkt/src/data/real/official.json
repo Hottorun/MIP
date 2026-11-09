@@ -603,5 +603,10 @@
     "kind": "premiere",
     "event": "Los Angeles Auto Show 2021",
     "title": "Weltpremiere 718 Cayman GT4 RS"
+  },
+  "porsche-cayman-981-cayman": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-cayman-black-edition-11453.html",
+    "kind": "model",
+    "title": "Cayman Black Edition (981)"
   }
 }

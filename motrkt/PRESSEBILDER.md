@@ -2,7 +2,7 @@
 
 Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom; Bilder von der Vorstellung tragen das Badge „Vorstellung“. Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
-Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Boxster (986 bis 981), Cayman (987 bis 981) und die 718-Baureihe (Typ 982, Boxster und Cayman ab 2016) sind ebenfalls enthalten; 987 ist wie beim 911 in 987.1 und 987.2 aufgeteilt. Für 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996.2 Carrera, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS, 912 Coupé, Boxster (987.1), Boxster S (987.2), Boxster S Black Edition (987.2), Boxster S (981) sowie Cayman und Cayman S der Generationen 987.1, 987.2 und 981 und den Cayman R (987.2) gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
+Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Boxster (986 bis 981), Cayman (987 bis 981) und die 718-Baureihe (Typ 982, Boxster und Cayman ab 2016) sind ebenfalls enthalten; 987 ist wie beim 911 in 987.1 und 987.2 aufgeteilt. Für 993 Carrera 4, 993 Carrera S, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS, Boxster (987.1), Boxster S Black Edition (987.2), Cayman und Cayman S (987.1 und 987.2), Cayman R (987.2) und Cayman S (981) gibt es im Newsroom kein Bild, das die Kriterien erfüllt (gesucht in den Pressemappen „60 Jahre 911“, „50 Jahre Turbo“, „25 Jahre Boxster“, den Generationen-Artikeln, Christophorus und Porsche Klassik); dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
@@ -90,15 +90,16 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: Amethyst Metallic (Amethyst Metallic) (unsicher)
 - Vorstellung: Genfer Autosalon 1990
 - Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Bilder im Markt-Tab: „3rd generation“; „3rd generation“; „3rd generation“
-- Offizielle Bilder im Markt-Tab: 3
+- Bilder im Markt-Tab: „3rd generation“; „3rd generation“
+- Offizielle Bilder im Markt-Tab: 2
 
 ### Porsche 911 (964) Turbo 3.6
 
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
 - Offizielle Seite: [Pressemappe 50 Jahre Turbo: Die 911-Turbo-Generationen](https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Bilder im Markt-Tab: „911 Turbo 3.6 (964)“; „911 Turbo 3.6 (964)“; „911 Turbo 3.6 (964)“
+- Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 911 (964) Speedster
 
@@ -248,7 +249,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: IAA Frankfurt 2001
 - Offizielle Seite: [25 Jahre 911 Generation 996](https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Bilder im Markt-Tab: „911 Carrera 3.6 Coupé (996.2), 2004“
+- Offizielle Bilder im Markt-Tab: 1
 
 ### Porsche 911 (996.2) Carrera 4S
 
@@ -618,7 +620,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Vorstellung: nicht belegt
 - Offizielle Seite: [Porsche Klassik: Vom 356 zum 912](https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
 - Bilder auf der Seite: „Porsche 356 C, Porsche 912 (r-l), 2023, Porsche AG“; „Photo album, 2023, Porsche AG“; „Porsche 356 C, Porsche 912, 2023, Porsche AG“
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Bilder im Markt-Tab: „912 Karmann Coupé, 1968“; „912 Karmann Coupé, 1968“; „912 Karmann Coupé, 1968“
+- Offizielle Bilder im Markt-Tab: 3
 
 ### Porsche 912 E
 
@@ -714,7 +717,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
 - Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Bilder im Markt-Tab: „Boxster S (987.2)“
+- Offizielle Bilder im Markt-Tab: 1
 
 ### Porsche Boxster S Black Edition (987.2)
 
@@ -744,7 +748,8 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
 - Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Bilder im Markt-Tab: „Boxster S (981), 2012“
+- Offizielle Bilder im Markt-Tab: 1
 
 ### Porsche Boxster GTS (981)
 
@@ -801,8 +806,9 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
-- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
-- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+- Offizielle Seite: [Cayman Black Edition (981)](https://newsroom.porsche.com/en/products/porsche-cayman-black-edition-11453.html) – Sondermodell auf Basis des Cayman
+- Bilder im Markt-Tab: „Cayman Black Edition (981), 2015“
+- Offizielle Bilder im Markt-Tab: 1
 
 ### Porsche Cayman S (981)
 

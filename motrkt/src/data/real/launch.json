@@ -76,13 +76,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281118&w=1438&h=1440&crop=0&public=1&cs=b1c4c863acdebb3d",
-   "caption": "3rd generation",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-964-speedster": [
@@ -1925,6 +1918,88 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true
+  }
+ ],
+ "porsche-911-964-turbo-3-6": [
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281102&w=1440&h=812&crop=1&public=1&cs=a2b1e55ca1e8c6c7",
+   "caption": "911 Turbo 3.6 (964)",
+   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281115&w=1424&h=1440&crop=0&public=1&cs=a31d5899bf08f7f4",
+   "caption": "911 Turbo 3.6 (964)",
+   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281118&w=1438&h=1440&crop=0&public=1&cs=b1c4c863acdebb3d",
+   "caption": "911 Turbo 3.6 (964)",
+   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  }
+ ],
+ "porsche-912-912-coupe": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ES-PLA-local/2023/Deporte-y-Estilo-de-Vida/Javier-Torres-y-su-912-de-1968/Galeria-1/PLA23_0314_fine.jpg/jcr:content/PLA23_0314_fine.jpg",
+   "caption": "912 Karmann Coupé, 1968",
+   "page": "https://newsroom.porsche.com/es/2023/deportes-estilo-de-vida/PLA-Porsche-912-Karmann-Coupe-1968-Javier-Torres-Chile.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ES-PLA-local/2023/Deporte-y-Estilo-de-Vida/Javier-Torres-y-su-912-de-1968/Galeria-1/PLA23_0325_fine.jpg/jcr:content/PLA23_0325_fine.jpg",
+   "caption": "912 Karmann Coupé, 1968",
+   "page": "https://newsroom.porsche.com/es/2023/deportes-estilo-de-vida/PLA-Porsche-912-Karmann-Coupe-1968-Javier-Torres-Chile.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ES-PLA-local/2023/Deporte-y-Estilo-de-Vida/Javier-Torres-y-su-912-de-1968/Galeria-1/PLA23_0309_fine.jpg/jcr:content/PLA23_0309_fine.jpg",
+   "caption": "912 Karmann Coupé, 1968",
+   "page": "https://newsroom.porsche.com/es/2023/deportes-estilo-de-vida/PLA-Porsche-912-Karmann-Coupe-1968-Javier-Torres-Chile.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  }
+ ],
+ "porsche-911-996-2-carrera": [
+  {
+   "file": "https://newsroom.porsche.com/dam/jcr:68ae8f7a-6c59-41ec-801d-c1ded6088cc3/b-HDI-45030.jpg",
+   "caption": "911 Carrera 3.6 Coupé (996.2), 2004",
+   "page": "https://newsroom.porsche.com/en/products/porsche-one-millionth-911-milestone-seven-generations-13735.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  }
+ ],
+ "porsche-boxster-987-2-boxster-s": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/Christophorus-Website/C398/Offenes-Bekenntnis/Galerie-im-Artikel/b-HDI-27045.jpg/jcr:content/b-HDI-27045.jpg",
+   "caption": "Boxster S (987.2)",
+   "page": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  }
+ ],
+ "porsche-boxster-981-boxster-s": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/Christophorus-Website/C398/Offenes-Bekenntnis/Galerie-im-Artikel/b-HDI-65851.jpg/jcr:content/b-HDI%2065851.jpg",
+   "caption": "Boxster S (981), 2012",
+   "page": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  }
+ ],
+ "porsche-cayman-981-cayman": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/Cayman-Black-Edition/P15_0933Nr/jcr:content/P15_0933Nr.jpg",
+   "caption": "Cayman Black Edition (981), 2015",
+   "page": "https://newsroom.porsche.com/en/products/porsche-cayman-black-edition-11453.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
   }
  ]
 }
