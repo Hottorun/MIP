@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowUpRight, Minus, X } from "lucide-react";
 import { amount, cn, pct, trendClass } from "../lib/format";
 import { brandById } from "../data/db";
+import { t } from "../i18n";
 
 export function Card({
   title,
@@ -230,7 +231,7 @@ export function Modal({
       >
         <header className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 className="font-serif text-xl">{title}</h2>
-          <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label="Schließen">
+          <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label={t("Schließen", "Close")}>
             <X className="size-4" />
           </button>
         </header>

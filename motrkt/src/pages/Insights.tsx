@@ -18,26 +18,28 @@ import {
 } from "recharts";
 import { brands, variants, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
-import { brandIndex, changeOver, cycleData, getMetrics, marketIndex, mean, RANGES, rebase, sliceRange, type RangeKey } from "../data/market";
+import { brandIndex, changeOver, cycleData, getMetrics, marketIndex, mean, rangeOptions, rebase, sliceRange, type RangeKey } from "../data/market";
 import type { Variant } from "../data/types";
 import { cn, date, eur, num, pct } from "../lib/format";
 import { axisProps, Card, ChartTooltipBox, Segmented } from "../components/ui";
 import { TrendHeatmap } from "../components/insights/TrendHeatmap";
 import { brandColor, yearTicks } from "../components/insights/palette";
+import { t } from "../i18n";
+import { tr } from "../i18n/terms";
 
-const ERAS: { label: string; test: (v: Variant) => boolean }[] = [
-  { label: "Bis 1969", test: (v) => v.years[0] < 1970 },
+const ERAS: { readonly label: string; test: (v: Variant) => boolean }[] = [
+  { get label() { return t("Bis 1969", "Up to 1969"); }, test: (v) => v.years[0] < 1970 },
   { label: "1970–1989", test: (v) => v.years[0] >= 1970 && v.years[0] < 1990 },
   { label: "1990–1999", test: (v) => v.years[0] >= 1990 && v.years[0] < 2000 },
   { label: "2000–2014", test: (v) => v.years[0] >= 2000 && v.years[0] < 2015 },
-  { label: "ab 2015", test: (v) => v.years[0] >= 2015 },
+  { get label() { return t("ab 2015", "from 2015"); }, test: (v) => v.years[0] >= 2015 },
 ];
-const TAGS: { label: string; test: (v: Variant) => boolean }[] = [
+const TAGS: { readonly label: string; test: (v: Variant) => boolean }[] = [
   { label: "Turbo", test: (v) => v.tags.includes("Turbo") },
-  { label: "Leichtbau", test: (v) => v.tags.includes("Leichtbau") },
-  { label: "Allrad", test: (v) => v.tags.includes("Allrad") },
+  { get label() { return tr("Leichtbau"); }, test: (v) => v.tags.includes("Leichtbau") },
+  { get label() { return tr("Allrad"); }, test: (v) => v.tags.includes("Allrad") },
   { label: "Hybrid", test: (v) => v.tags.includes("Hybrid") },
-  { label: "Ohne", test: (v) => !v.tags.length },
+  { get label() { return t("Ohne", "None"); }, test: (v) => !v.tags.length },
 ];
 
 function segmentRows(defs: typeof ERAS) {
@@ -59,7 +61,9 @@ export default function Insights() {
     <div className="space-y-12">
       <div>
         <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Insights</h1>
-        <p className="mt-1 text-[14px] text-muted">Wie sich der Markt für alle {variants.length} Varianten entwickelt, Stand {date(AS_OF)}.</p>
+        <p className="mt-1 text-[14px] text-muted">
+          {t(`Wie sich der Markt für alle ${variants.length} Varianten entwickelt, Stand ${date(AS_OF)}.`, `How the market for all ${variants.length} variants is moving, as of ${date(AS_OF)}.`)}
+        </p>
       </div>
       <Reports />
       <div className={cn("grid gap-6", brands.length > 1 && "xl:grid-cols-2")}>
@@ -82,7 +86,7 @@ function MarketCycle() {
   const peak = data.reduce((a, b) => (b.value > a.value ? b : a));
   const yoy = changeOver(marketIndex(), 52);
   return (
-    <Card title="Marktzyklus" sub="MOTRKT-Gesamtindex, Jahresmittel">
+    <Card title={t("Marktzyklus", "Market cycle")} sub={t("MOTRKT-Gesamtindex, Jahresmittel", "MOTRKT overall index, annual average")}>
       <div className="h-60">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
@@ -96,7 +100,7 @@ function MarketCycle() {
                     title={String(label)}
                     rows={[
                       { label: "Index", value: num(Number(payload[0].payload.value), 1), color: "var(--color-gold)" },
-                      { label: "Langfristiger Trend", value: num(Number(payload[0].payload.trend), 1), color: "var(--color-muted)" },
+                      { label: t("Langfristiger Trend", "Long-term trend"), value: num(Number(payload[0].payload.trend), 1), color: "var(--color-muted)" },
                     ]}
                   />
                 ) : null
@@ -108,9 +112,22 @@ function MarketCycle() {
         </ResponsiveContainer>
       </div>
       <p className="mt-2 text-sm text-ink/85">
-        Der Gesamtmarkt liegt aktuell <strong className={gap >= 0 ? "text-up" : "text-down"}>{pct(Math.abs(gap), { signed: false })}</strong>{" "}
-        {gap >= 0 ? "über" : "unter"} seinem langfristigen Trend ({pct(yoy)} in 12 Monaten). Das bisherige Hoch im Jahresmittel wurde {peak.year} erreicht
-        {peak.year === lastRow.year ? " – der Zyklus befindet sich in einer Expansionsphase." : `; seitdem ${lastRow.value >= peak.value * 0.97 ? "nähert sich der Markt diesem Niveau wieder an." : "hat sich der Markt konsolidiert."}`}
+        {t(
+          <>
+            Der Gesamtmarkt liegt aktuell <strong className={gap >= 0 ? "text-up" : "text-down"}>{pct(Math.abs(gap), { signed: false })}</strong>{" "}
+            {gap >= 0 ? "über" : "unter"} seinem langfristigen Trend ({pct(yoy)} in 12 Monaten). Das bisherige Hoch im Jahresmittel wurde {peak.year} erreicht
+            {peak.year === lastRow.year
+              ? " – der Zyklus befindet sich in einer Expansionsphase."
+              : `; seitdem ${lastRow.value >= peak.value * 0.97 ? "nähert sich der Markt diesem Niveau wieder an." : "hat sich der Markt konsolidiert."}`}
+          </>,
+          <>
+            The overall market is currently <strong className={gap >= 0 ? "text-up" : "text-down"}>{pct(Math.abs(gap), { signed: false })}</strong>{" "}
+            {gap >= 0 ? "above" : "below"} its long-term trend ({pct(yoy)} in 12 months). The highest annual average so far was reached in {peak.year}
+            {peak.year === lastRow.year
+              ? " – the cycle is in an expansion phase."
+              : `; since then ${lastRow.value >= peak.value * 0.97 ? "the market has been approaching that level again." : "the market has consolidated."}`}
+          </>,
+        )}
       </p>
     </Card>
   );
@@ -142,7 +159,7 @@ function BrandComparison() {
     });
 
   return (
-    <Card title="Markenindizes" sub="indexiert = 100 zu Beginn" actions={<Segmented options={RANGES} value={range} onChange={setRange} />}>
+    <Card title={t("Markenindizes", "Brand indices")} sub={t("indexiert = 100 zu Beginn", "indexed = 100 at the start")} actions={<Segmented options={rangeOptions()} value={range} onChange={setRange} />}>
       <div className="h-60">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
@@ -172,7 +189,7 @@ function BrandComparison() {
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {brands.map((b) => (
-          <button key={b.id} onClick={() => toggle(b.id)} className={cn("chip", hidden.has(b.id) && "opacity-40")} title="Ein-/ausblenden">
+          <button key={b.id} onClick={() => toggle(b.id)} className={cn("chip", hidden.has(b.id) && "opacity-40")} title={t("Ein-/ausblenden", "Show/hide")}>
             <span className="size-2 rounded-full" style={{ background: brandColor(b.id) }} />
             {b.name}
             {lastRow[b.id] !== undefined && <span className="tabular-nums text-faint">{pct(lastRow[b.id] / 100 - 1, { digits: 0 })}</span>}
@@ -188,13 +205,13 @@ function Segments() {
   const data = useMemo(() => segmentRows(by === "era" ? ERAS : TAGS), [by]);
   return (
     <Card
-      title="Segmentanalyse"
-      sub="Durchschnittliche Wertentwicklung je Gruppe"
+      title={t("Segmentanalyse", "Segment analysis")}
+      sub={t("Durchschnittliche Wertentwicklung je Gruppe", "Average value growth per group")}
       actions={
         <Segmented
           options={[
-            { value: "era", label: "Nach Baujahr" },
-            { value: "tag", label: "Nach Merkmal" },
+            { value: "era", label: t("Nach Baujahr", "By build year") },
+            { value: "tag", label: t("Nach Merkmal", "By feature") },
           ]}
           value={by}
           onChange={setBy}
@@ -206,23 +223,23 @@ function Segments() {
           <BarChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }} barGap={4}>
             <CartesianGrid stroke="var(--color-line)" vertical={false} />
             <XAxis dataKey="label" {...axisProps} />
-            <YAxis {...axisProps} width={44} tickFormatter={(v) => `${v} %`} />
+            <YAxis {...axisProps} width={44} tickFormatter={(v) => pct(Number(v) / 100, { signed: false, digits: 0 })} />
             <ReferenceLine y={0} stroke="var(--color-line-2)" />
             <Tooltip
               cursor={{ fill: "var(--color-panel-3)", opacity: 0.5 }}
               content={({ active, payload, label }) =>
                 active && payload?.length ? (
                   <ChartTooltipBox
-                    title={`${label} · ${payload[0].payload.count} Varianten`}
+                    title={`${label} · ${payload[0].payload.count} ${t("Varianten", "variants")}`}
                     rows={[
                       { label: "Ø 12M", value: pct(Number(payload[0].payload.change12m) / 100), color: "var(--color-gold)" },
-                      { label: "Ø CAGR 5J", value: pct(Number(payload[0].payload.cagr5) / 100), color: "var(--color-line-2)" },
+                      { label: t("Ø CAGR 5J", "Ø CAGR 5Y"), value: pct(Number(payload[0].payload.cagr5) / 100), color: "var(--color-line-2)" },
                     ]}
                   />
                 ) : null
               }
             />
-            <Legend wrapperStyle={{ fontSize: 13, color: "var(--color-muted)" }} formatter={(v) => (v === "change12m" ? "Letzte 12 Monate" : "Pro Jahr, letzte 5 Jahre")} />
+            <Legend wrapperStyle={{ fontSize: 13, color: "var(--color-muted)" }} formatter={(v) => (v === "change12m" ? t("Letzte 12 Monate", "Last 12 months") : t("Pro Jahr, letzte 5 Jahre", "Per year, last 5 years"))} />
             <Bar dataKey="change12m" fill="var(--color-gold)" isAnimationActive={false} />
             <Bar dataKey="cagr5" fill="var(--color-line-2)" isAnimationActive={false} />
           </BarChart>
@@ -249,18 +266,19 @@ function RiskScatter({ mode }: { mode: "rarity" | "vol" }) {
       })),
     [mode],
   );
-  const xLabel = mode === "rarity" ? "Rarity Score" : "Volatilität 1J";
+  const xLabel = mode === "rarity" ? "Rarity Score" : t("Volatilität 1J", "Volatility 1Y");
+  const cagr = t("CAGR 5J", "CAGR 5Y");
   return (
     <Card
-      title={mode === "rarity" ? "Seltenheit vs. Rendite" : "Rendite-Risiko-Profil"}
-      sub={mode === "rarity" ? "Rarity Score vs. CAGR 5J, Größe = Marktwert" : "Volatilität vs. CAGR 5J"}
+      title={mode === "rarity" ? t("Seltenheit vs. Rendite", "Rarity vs. return") : t("Rendite-Risiko-Profil", "Return-risk profile")}
+      sub={mode === "rarity" ? t("Rarity Score vs. CAGR 5J, Größe = Marktwert", "Rarity score vs. CAGR 5Y, size = market value") : t("Volatilität vs. CAGR 5J", "Volatility vs. CAGR 5Y")}
     >
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 8, right: 12, left: -8, bottom: 8 }}>
             <CartesianGrid stroke="var(--color-line)" />
-            <XAxis type="number" dataKey="x" name={xLabel} {...axisProps} domain={mode === "rarity" ? [0, 100] : ["auto", "auto"]} tickFormatter={(v) => (mode === "rarity" ? String(v) : `${v} %`)} />
-            <YAxis type="number" dataKey="y" name="CAGR 5J" {...axisProps} width={44} tickFormatter={(v) => `${v} %`} />
+            <XAxis type="number" dataKey="x" name={xLabel} {...axisProps} domain={mode === "rarity" ? [0, 100] : ["auto", "auto"]} tickFormatter={(v) => (mode === "rarity" ? String(v) : pct(Number(v) / 100, { signed: false, digits: 0 }))} />
+            <YAxis type="number" dataKey="y" name={cagr} {...axisProps} width={44} tickFormatter={(v) => pct(Number(v) / 100, { signed: false, digits: 0 })} />
             <ZAxis type="number" dataKey="z" range={mode === "rarity" ? [25, 420] : [40, 40]} />
             <Tooltip
               cursor={{ strokeDasharray: "3 3" }}
@@ -271,8 +289,8 @@ function RiskScatter({ mode }: { mode: "rarity" | "vol" }) {
                     title={p.title}
                     rows={[
                       { label: xLabel, value: mode === "rarity" ? `${p.x} / 100` : pct(p.x / 100, { signed: false }) },
-                      { label: "CAGR 5J", value: pct(p.y / 100) },
-                      { label: "Marktwert", value: eur(p.value) },
+                      { label: cagr, value: pct(p.y / 100) },
+                      { label: t("Marktwert", "Market value"), value: eur(p.value) },
                     ]}
                   />
                 ) : null;
@@ -313,42 +331,65 @@ function Reports() {
     const sharpe = [...all].filter((x) => x.m.vol1y > 0).sort((a, b) => b.m.cagr5 / b.m.vol1y - a.m.cagr5 / a.m.vol1y)[0];
     const momentum = all.filter((x) => x.m.momentum === "Stark").length;
 
+    const first = eras[0];
+    const lastEra = eras[eras.length - 1];
+    const lead = brandRows[0].b.name;
+    const tail = brandRows[brandRows.length - 1];
     return [
       {
-        title: `Stärkstes Segment: ${eras[0].label}`,
-        body: `Fahrzeuge mit Baujahr ${eras[0].label} legten im Schnitt ${pct(eras[0].change12m / 100)} in 12 Monaten zu – schwächstes Segment ist ${eras[eras.length - 1].label} (${pct(eras[eras.length - 1].change12m / 100)}).`,
+        title: t(`Stärkstes Segment: ${first.label}`, `Strongest segment: ${first.label}`),
+        body: t(
+          `Fahrzeuge mit Baujahr ${first.label} legten im Schnitt ${pct(first.change12m / 100)} in 12 Monaten zu – schwächstes Segment ist ${lastEra.label} (${pct(lastEra.change12m / 100)}).`,
+          `Cars in the ${first.label} segment gained ${pct(first.change12m / 100)} on average in 12 months – the weakest segment is ${lastEra.label} (${pct(lastEra.change12m / 100)}).`,
+        ),
         href: "/modelle",
-        cta: "Modelle ansehen",
+        cta: t("Modelle ansehen", "Browse models"),
       },
       {
-        title: `Top-Performer: ${variantTitle(top.v)}`,
-        body: `${pct(top.m.change12m)} in 12 Monaten auf ${eur(top.m.value)}. Momentum ${top.m.momentum.toLowerCase()}, Rarity ${top.m.rarityScore}/100.`,
+        title: `${t("Top-Performer", "Top performer")}: ${variantTitle(top.v)}`,
+        body: t(
+          `${pct(top.m.change12m)} in 12 Monaten auf ${eur(top.m.value)}. Momentum ${top.m.momentum.toLowerCase()}, Rarity ${top.m.rarityScore}/100.`,
+          `${pct(top.m.change12m)} in 12 months to ${eur(top.m.value)}. Momentum ${tr(top.m.momentum).toLowerCase()}, rarity ${top.m.rarityScore}/100.`,
+        ),
         href: `/markt/${top.v.id}`,
-        cta: "Marktdaten",
+        cta: t("Marktdaten", "Market data"),
       },
       {
-        title: `Größter Rücksetzer: ${variantTitle(flop.v)}`,
-        body: `${pct(flop.m.change12m)} in 12 Monaten – Marktwert jetzt ${eur(flop.m.value)}. Mögliche Einstiegschance, wenn die Fundamentaldaten (CAGR 5J ${pct(flop.m.cagr5)}) intakt sind.`,
+        title: `${t("Größter Rücksetzer", "Biggest drop")}: ${variantTitle(flop.v)}`,
+        body: t(
+          `${pct(flop.m.change12m)} in 12 Monaten – Marktwert jetzt ${eur(flop.m.value)}. Mögliche Einstiegschance, wenn die Fundamentaldaten (CAGR 5J ${pct(flop.m.cagr5)}) intakt sind.`,
+          `${pct(flop.m.change12m)} in 12 months – market value now ${eur(flop.m.value)}. A possible entry point if the fundamentals (CAGR 5Y ${pct(flop.m.cagr5)}) are intact.`,
+        ),
         href: `/markt/${flop.v.id}`,
-        cta: "Analyse öffnen",
+        cta: t("Analyse öffnen", "Open analysis"),
       },
       {
-        title: `Höchste Verkaufsquote: ${variantTitle(liquid.v)}`,
-        body: `${pct(liquid.m.sellThrough, { signed: false, digits: 0 })} der Auktionslose wurden verkauft (${liquid.m.sales12m} Transaktionen in 12M), Ø Zuschlag ${pct(liquid.m.premiumVsEstimate)} vs. Schätzung.`,
+        title: `${t("Höchste Verkaufsquote", "Highest sell-through rate")}: ${variantTitle(liquid.v)}`,
+        body: t(
+          `${pct(liquid.m.sellThrough, { signed: false, digits: 0 })} der Auktionslose wurden verkauft (${liquid.m.sales12m} Transaktionen in 12M), Ø Zuschlag ${pct(liquid.m.premiumVsEstimate)} vs. Schätzung.`,
+          `${pct(liquid.m.sellThrough, { signed: false, digits: 0 })} of auction lots sold (${liquid.m.sales12m} transactions in 12M), average hammer price ${pct(liquid.m.premiumVsEstimate)} vs. estimate.`,
+        ),
         href: `/auktionen?q=${encodeURIComponent(variantTitle(liquid.v))}`,
-        cta: "Auktionen",
+        cta: t("Auktionen", "Auctions"),
       },
       {
-        title: `Marke mit Rückenwind: ${brandRows[0].b.name}`,
-        body: `Der ${brandRows[0].b.name}-Index stieg um ${pct(brandRows[0].c)} in 12 Monaten; Schlusslicht ist ${brandRows[brandRows.length - 1].b.name} (${pct(brandRows[brandRows.length - 1].c)}). ${momentum} von ${all.length} Varianten zeigen starkes Momentum.`,
+        brand: true,
+        title: `${t("Marke mit Rückenwind", "Brand with momentum")}: ${lead}`,
+        body: t(
+          `Der ${lead}-Index stieg um ${pct(brandRows[0].c)} in 12 Monaten; Schlusslicht ist ${tail.b.name} (${pct(tail.c)}). ${momentum} von ${all.length} Varianten zeigen starkes Momentum.`,
+          `The ${lead} index rose ${pct(brandRows[0].c)} in 12 months; ${tail.b.name} brings up the rear (${pct(tail.c)}). ${momentum} of ${all.length} variants show strong momentum.`,
+        ),
         href: `/modelle?marke=${brandRows[0].b.id}`,
-        cta: `${brandRows[0].b.name}-Modelle`,
+        cta: t(`${lead}-Modelle`, `${lead} models`),
       },
       {
-        title: `Bestes Rendite-Risiko-Verhältnis: ${variantTitle(sharpe.v)}`,
-        body: `CAGR 5J ${pct(sharpe.m.cagr5)} bei nur ${pct(sharpe.m.vol1y, { signed: false })} Volatilität – Quote ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
+        title: `${t("Bestes Rendite-Risiko-Verhältnis", "Best return-to-risk ratio")}: ${variantTitle(sharpe.v)}`,
+        body: t(
+          `CAGR 5J ${pct(sharpe.m.cagr5)} bei nur ${pct(sharpe.m.vol1y, { signed: false })} Volatilität – Quote ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
+          `CAGR 5Y ${pct(sharpe.m.cagr5)} with only ${pct(sharpe.m.vol1y, { signed: false })} volatility – ratio ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
+        ),
         href: `/markt/${sharpe.v.id}`,
-        cta: "Marktdaten",
+        cta: t("Marktdaten", "Market data"),
       },
     ];
   }, []);
@@ -356,7 +397,7 @@ function Reports() {
   return (
     <section className="grid gap-x-10 gap-y-8 border-y border-line py-8 md:grid-cols-3">
       {reports
-        .filter((r) => brands.length > 1 || !r.title.startsWith("Marke"))
+        .filter((r) => brands.length > 1 || !("brand" in r))
         .slice(0, 3)
         .map((r) => (
           <Link key={r.title} to={r.href} className="group flex flex-col">

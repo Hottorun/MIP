@@ -5,6 +5,7 @@ import { askCopilot, fetchCopilotStatus, suggestions, type CopilotStatus } from 
 import { uid, useStore, type ChatMessage } from "../state/store";
 import { cn } from "../lib/format";
 import { Pill } from "./ui";
+import { t } from "../i18n";
 
 let statusPromise: Promise<CopilotStatus> | null = null;
 function useCopilotStatus() {
@@ -45,16 +46,16 @@ export function RichText({ text }: { text: string }) {
     }
   };
   for (const line of text.split("\n")) {
-    const t = line.trimEnd();
-    if (/^\s*[-•*]\s+/.test(t)) {
-      list.push(t.replace(/^\s*[-•*]\s+/, ""));
+    const row = line.trimEnd();
+    if (/^\s*[-•*]\s+/.test(row)) {
+      list.push(row.replace(/^\s*[-•*]\s+/, ""));
       continue;
     }
     flush();
-    if (!t.trim()) continue;
+    if (!row.trim()) continue;
     blocks.push(
       <p key={blocks.length} className="my-1">
-        {inline(t.replace(/^#+\s*/, ""))}
+        {inline(row.replace(/^#+\s*/, ""))}
       </p>,
     );
   }
@@ -110,12 +111,12 @@ export function Copilot({
           setStreaming(acc);
         },
       });
-      setChat((c) => [...c, { id: uid(), role: "assistant", content: acc || "_Keine Antwort erhalten._", source }]);
+      setChat((c) => [...c, { id: uid(), role: "assistant", content: acc || t("_Keine Antwort erhalten._", "_No answer received._"), source }]);
     } catch (e) {
       if (controller.signal.aborted) {
-        if (acc) setChat((c) => [...c, { id: uid(), role: "assistant", content: `${acc}\n\n_(abgebrochen)_` }]);
+        if (acc) setChat((c) => [...c, { id: uid(), role: "assistant", content: `${acc}\n\n${t("_(abgebrochen)_", "_(stopped)_")}` }]);
       } else {
-        toast(e instanceof Error ? e.message : "Co-Pilot-Fehler", "error");
+        toast(e instanceof Error ? e.message : t("Co-Pilot-Fehler", "Co-Pilot error"), "error");
       }
     } finally {
       setStreaming(null);
@@ -138,15 +139,15 @@ export function Copilot({
     <div className={cn("flex min-h-0 flex-col", full ? "h-full" : "")}>
       <div className="mb-2 flex items-center gap-2 text-xs text-muted">
         <MessageSquare className="size-3.5" />
-        <span className="flex-1">Wie kann ich Ihnen helfen?</span>
+        <span className="flex-1">{t("Wie kann ich Ihnen helfen?", "How can I help you?")}</span>
         {status && (
           <Pill tone={status.ai ? "gold" : "neutral"} className="text-[10px]">
-            {status.ai ? `Claude · ${status.model?.replace("claude-", "").replace(/-/g, " ")}` : "Lokaler Modus"}
+            {status.ai ? `Claude · ${status.model?.replace("claude-", "").replace(/-/g, " ")}` : t("Lokaler Modus", "Local mode")}
           </Pill>
         )}
         {full && chat.length > 0 && (
           <button className="btn btn-ghost px-2 py-1 text-xs" onClick={() => setChat([])} disabled={busy}>
-            <Trash2 className="size-3.5" /> Verlauf löschen
+            <Trash2 className="size-3.5" /> {t("Verlauf löschen", "Clear history")}
           </button>
         )}
       </div>
@@ -184,7 +185,7 @@ export function Copilot({
             </button>
           ))}
           <Link to="/ai" className="chip ml-auto">
-            Verlauf <ArrowUpRight className="size-3" />
+            {t("Verlauf", "History")} <ArrowUpRight className="size-3" />
           </Link>
         </div>
       )}
@@ -200,16 +201,16 @@ export function Copilot({
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Frage an den AI Co-Pilot …"
+          placeholder={t("Frage an den AI Co-Pilot …", "Ask the AI Co-Pilot …")}
           className="min-w-0 flex-1 bg-transparent text-sm placeholder:text-faint focus:outline-none"
-          aria-label="Frage an den AI Co-Pilot"
+          aria-label={t("Frage an den AI Co-Pilot", "Ask the AI Co-Pilot")}
         />
         {busy ? (
-          <button type="button" onClick={() => abort.current?.abort()} className="text-muted hover:text-ink" aria-label="Stopp">
+          <button type="button" onClick={() => abort.current?.abort()} className="text-muted hover:text-ink" aria-label={t("Stopp", "Stop")}>
             <Square className="size-4" />
           </button>
         ) : (
-          <button type="submit" disabled={!input.trim()} className="text-gold disabled:text-faint" aria-label="Senden">
+          <button type="submit" disabled={!input.trim()} className="text-gold disabled:text-faint" aria-label={t("Senden", "Send")}>
             <SendHorizontal className="size-4" />
           </button>
         )}
@@ -229,9 +230,9 @@ function Bubble({ msg, streaming }: { msg: ChatMessage; streaming?: boolean }) {
   return (
     <div className="rounded-xl rounded-bl-sm border border-line bg-panel-2 px-3 py-2">
       {msg.content ? <RichText text={msg.content} /> : null}
-      {streaming && <span className={cn("text-xs text-muted", "caret")}>{msg.content ? "" : "Analysiere Marktdaten "}</span>}
+      {streaming && <span className={cn("text-xs text-muted", "caret")}>{msg.content ? "" : t("Analysiere Marktdaten ", "Analysing market data ")}</span>}
       {msg.source && !streaming && (
-        <div className="mt-1 text-right text-[10px] text-faint">{msg.source === "claude" ? "Claude" : "MOTRKT Lokal-Analyse"}</div>
+        <div className="mt-1 text-right text-[10px] text-faint">{msg.source === "claude" ? "Claude" : t("MOTRKT Lokal-Analyse", "MOTRKT local analysis")}</div>
       )}
     </div>
   );

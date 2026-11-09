@@ -1,6 +1,18 @@
-/** German-locale formatting helpers (de-DE): "€ 378.000", "+12,4 %", "14. Sep. 2025". */
+import { isEn, locale } from "../i18n";
 
-const eur0 = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
+/**
+ * Formatting helpers in the current language: German (de-DE) "€ 378.000", "+12,4 %", "14. Sep. 2025";
+ * English (en-GB) "€378,000", "+12.4%", "14 Sept 2025".
+ */
+
+const fmtCache = new Map<string, Intl.NumberFormat>();
+function nf(digits: number) {
+  const key = `${locale()}:${digits}`;
+  let f = fmtCache.get(key);
+  if (!f) fmtCache.set(key, (f = new Intl.NumberFormat(locale(), { minimumFractionDigits: digits, maximumFractionDigits: digits })));
+  return f;
+}
+const eur0 = { format: (v: number) => nf(0).format(v) };
 
 /** Round to three significant digits (106.432 → 106.000, 2.327.073 → 2.330.000) – for estimates and ranges. */
 export function roundValue(value: number): number {
@@ -14,7 +26,7 @@ export function roundValue(value: number): number {
 export function eur(value: number | null | undefined, opts: { compact?: boolean } = {}): string {
   if (value === null || value === undefined || !Number.isFinite(value)) return "–";
   const v = opts.compact ? roundValue(value) : Math.round(value);
-  return `${v < 0 ? "−" : ""}€ ${eur0.format(Math.abs(v))}`;
+  return `${v < 0 ? "−" : ""}€${isEn() ? "" : " "}${eur0.format(Math.abs(v))}`;
 }
 
 /** Digits of an amount without the currency sign ("2.330.000"), for the typeset <Money> component. */
@@ -24,7 +36,7 @@ export function amount(value: number, opts: { compact?: boolean } = {}): string 
 }
 
 export function num(value: number, digits = 0): string {
-  return new Intl.NumberFormat("de-DE", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
+  return nf(digits).format(value);
 }
 
 export function km(value: number): string {
@@ -32,20 +44,20 @@ export function km(value: number): string {
   return `${eur0.format(Math.round(value))} km`;
 }
 
-/** Signed percentage from a ratio: 0.124 → "+12,4 %" */
+/** Signed percentage from a ratio: 0.124 → "+12,4 %" (de) / "+12.4%" (en) */
 export function pct(ratio: number, opts: { signed?: boolean; digits?: number } = {}): string {
   const { signed = true, digits = 1 } = opts;
   if (!Number.isFinite(ratio)) return "–";
-  const s = new Intl.NumberFormat("de-DE", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(ratio * 100);
-  return `${signed && ratio > 0 ? "+" : ""}${s.replace("-", "−")} %`;
+  const s = nf(digits).format(ratio * 100);
+  return `${signed && ratio > 0 ? "+" : ""}${s.replace("-", "−")}${isEn() ? "" : " "}%`;
 }
 
 export function date(t: number, style: "short" | "medium" | "month" | "year" = "medium"): string {
   const d = new Date(t);
   if (style === "year") return String(d.getUTCFullYear());
-  if (style === "month") return d.toLocaleDateString("de-DE", { month: "short", year: "numeric", timeZone: "UTC" });
-  if (style === "short") return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "2-digit", timeZone: "UTC" });
-  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" });
+  if (style === "month") return d.toLocaleDateString(locale(), { month: "short", year: "numeric", timeZone: "UTC" });
+  if (style === "short") return d.toLocaleDateString(locale(), { day: "2-digit", month: "2-digit", year: "2-digit", timeZone: "UTC" });
+  return d.toLocaleDateString(locale(), { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" });
 }
 
 export function trendClass(ratio: number): string {

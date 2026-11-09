@@ -1,4 +1,6 @@
-import { brands, generationById, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
+import { brands, generationById, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
+import { getLang, t } from "../i18n";
+import { tr } from "../i18n/terms";
 import { AS_OF, getListings, getSales } from "../data/generate";
 import { brandIndex, changeOver, getMetrics, holdingValue, inflationFactor, topMovers } from "../data/market";
 import type { Holding } from "../data/types";
@@ -27,7 +29,7 @@ async function streamFromServer(turns: CopilotTurn[], context: string, onDelta: 
     res = await fetch("/api/copilot", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: turns, context }),
+      body: JSON.stringify({ messages: turns, context, lang: getLang() }),
       signal,
     });
   } catch (e) {
@@ -42,7 +44,7 @@ async function streamFromServer(turns: CopilotTurn[], context: string, onDelta: 
       /* non-JSON error */
     }
     if (fallback) throw new FallbackError(String(res.status));
-    throw new Error(`Co-Pilot nicht erreichbar (${res.status})`);
+    throw new Error(t(`Co-Pilot nicht erreichbar (${res.status})`, `Co-Pilot unavailable (${res.status})`));
   }
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
@@ -105,7 +107,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
     lines.push(
       "",
       `## Aktuell geöffnete Variante: ${variantTitle(focus)}`,
-      `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${focus.liters.toFixed(1).replace(".", ",")} l, ${focus.drive}, ${focus.transmission}`,
+      `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${num(focus.liters, 1)} l, ${focus.drive}, ${focus.transmission}`,
       `Neupreis ca. ${eur(focus.newPrice)} (${focus.newPriceYear}), inflationsbereinigt ca. ${eur(focus.newPrice * inflationFactor(focus.newPriceYear))}`,
       `Marktwert (Median) ${eur(m.value)}; Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`,
       `Rarity Score ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, MOTRKT-Einschätzung: ${m.recommendation.label}`,
@@ -210,10 +212,19 @@ export function localAnswer(question: string, focusVariantId: string | undefined
   const v = variantById.get(focusId)!;
   const m = getMetrics(focusId);
   const name = variantShortTitle(v);
-  const note = "\n\n_Lokaler Analysemodus: Antwort aus MOTRKT-Daten berechnet, ohne Sprachmodell. Keine Anlageberatung._";
+  const momentum = tr(m.momentum);
+  const rec = tr(m.recommendation.label);
+  const note = t(
+    "\n\n_Lokaler Analysemodus: Antwort aus MOTRKT-Daten berechnet, ohne Sprachmodell. Keine Anlageberatung._",
+    "\n\n_Local analysis mode: answer calculated from MOTRKT data, without a language model. Not investment advice._",
+  );
 
-  if (has(" portfolio", " bestand", " sammlung", " meine fahrzeuge")) {
-    if (!portfolio.length) return `Dein Portfolio ist noch leer. Lege im Bereich **Portfolio** Fahrzeuge an, dann kann ich Wertentwicklung, Klumpenrisiken und Rebalancing-Ideen auswerten.${note}`;
+  if (has(" portfolio", " bestand", " sammlung", " meine fahrzeuge", " collection", " my cars")) {
+    if (!portfolio.length)
+      return t(
+        `Dein Portfolio ist noch leer. Lege im Bereich **Portfolio** Fahrzeuge an, dann kann ich Wertentwicklung, Klumpenrisiken und Rebalancing-Ideen auswerten.${note}`,
+        `Your portfolio is still empty. Add cars in the **Portfolio** section and I can analyse value development, concentration risks and rebalancing ideas.${note}`,
+      );
     const rows = portfolio.map((h) => ({ h, v: variantById.get(h.variantId)!, value: holdingValue(h) }));
     const total = rows.reduce((s, r) => s + r.value, 0);
     const cost = rows.reduce((s, r) => s + r.h.purchasePrice, 0);
@@ -223,50 +234,85 @@ export function localAnswer(question: string, focusVariantId: string | undefined
     for (const r of rows) brandsShare.set(r.v.brandId, (brandsShare.get(r.v.brandId) ?? 0) + r.value);
     const topBrand = [...brandsShare.entries()].sort((a, b) => b[1] - a[1])[0];
     const avg12 = rows.reduce((s, r) => s + getMetrics(r.v.id).change12m * r.value, 0) / total;
-    return `**Portfolio-Überblick**
+    const best = rows[0];
+    const worst = rows[rows.length - 1];
+    const brandName = brands.find((b) => b.id === topBrand[0])!.name;
+    const concentrated = topBrand[1] / total > 0.6;
+    return t(
+      `**Portfolio-Überblick**
 - Gesamtwert ${eur(total)} bei ${eur(cost)} Einstand (${pct(total / cost - 1)})
 - Gewichtete Performance 12M: ${pct(avg12)}
-- Bester Wert: ${variantShortTitle(rows[0].v)} (${pct(rows[0].value / rows[0].h.purchasePrice - 1)} seit Kauf)
-- Schwächster Wert: ${variantShortTitle(rows[rows.length - 1].v)} (${pct(rows[rows.length - 1].value / rows[rows.length - 1].h.purchasePrice - 1)})
+- Bester Wert: ${variantShortTitle(best.v)} (${pct(best.value / best.h.purchasePrice - 1)} seit Kauf)
+- Schwächster Wert: ${variantShortTitle(worst.v)} (${pct(worst.value / worst.h.purchasePrice - 1)})
 
 **Risiko**
 - Größte Position: ${variantShortTitle(biggest.v)} mit ${pct(biggest.value / total, { signed: false })} des Werts
-- Markenkonzentration: ${brands.find((b) => b.id === topBrand[0])!.name} ${pct(topBrand[1] / total, { signed: false })}${topBrand[1] / total > 0.6 ? " – deutliches Klumpenrisiko, Beimischung anderer Marken prüfen" : ""}${note}`;
+- Markenkonzentration: ${brandName} ${pct(topBrand[1] / total, { signed: false })}${concentrated ? " – deutliches Klumpenrisiko, Beimischung anderer Marken prüfen" : ""}${note}`,
+      `**Portfolio overview**
+- Total value ${eur(total)} against ${eur(cost)} cost (${pct(total / cost - 1)})
+- Weighted performance 12M: ${pct(avg12)}
+- Best performer: ${variantShortTitle(best.v)} (${pct(best.value / best.h.purchasePrice - 1)} since purchase)
+- Weakest performer: ${variantShortTitle(worst.v)} (${pct(worst.value / worst.h.purchasePrice - 1)})
+
+**Risk**
+- Largest position: ${variantShortTitle(biggest.v)} at ${pct(biggest.value / total, { signed: false })} of the value
+- Brand concentration: ${brandName} ${pct(topBrand[1] / total, { signed: false })}${concentrated ? " – a clear concentration risk, consider adding other brands" : ""}${note}`,
+    );
   }
 
-  if (has(" vergleich", " vs ", " versus", " gegenuber", " oder ")) {
+  if (has(" vergleich", " vs ", " versus", " gegenuber", " oder ", " compar")) {
     const others = mentioned.length >= 2 ? mentioned.slice(0, 3) : [focusId, ...variants.filter((o) => o.generationId === v.generationId && o.id !== focusId).sort((a, b) => getMetrics(b.id).value - getMetrics(a.id).value).slice(0, 1).map((o) => o.id)];
     const lines = others.map((id) => {
       const x = getMetrics(id);
       const vv = variantById.get(id)!;
-      return `**${variantShortTitle(vv)}**\n- Marktwert ${eur(x.value)}, 12M ${pct(x.change12m)}, CAGR 5J ${pct(x.cagr5)}\n- Volatilität ${pct(x.vol1y, { signed: false })}, Rarity ${x.rarityScore}/100, Liquidität ${x.liquidity}/100\n- ${num(vv.production)} Stück, ${vv.hp} PS, Momentum ${x.momentum}, Einschätzung ${x.recommendation.label}`;
+      return t(
+        `**${variantShortTitle(vv)}**\n- Marktwert ${eur(x.value)}, 12M ${pct(x.change12m)}, CAGR 5J ${pct(x.cagr5)}\n- Volatilität ${pct(x.vol1y, { signed: false })}, Rarity ${x.rarityScore}/100, Liquidität ${x.liquidity}/100\n- ${num(vv.production)} Stück, ${vv.hp} PS, Momentum ${x.momentum}, Einschätzung ${x.recommendation.label}`,
+        `**${variantShortTitle(vv)}**\n- Market value ${eur(x.value)}, 12M ${pct(x.change12m)}, CAGR 5Y ${pct(x.cagr5)}\n- Volatility ${pct(x.vol1y, { signed: false })}, rarity ${x.rarityScore}/100, liquidity ${x.liquidity}/100\n- ${num(vv.production)} built, ${vv.hp} PS, momentum ${tr(x.momentum)}, assessment ${tr(x.recommendation.label)}`,
+      );
     });
     const best = [...others].sort((a, b) => getMetrics(b).recommendation.score - getMetrics(a).recommendation.score)[0];
-    return `${lines.join("\n\n")}\n\n**Fazit:** Auf Basis von Rendite, Risiko und Seltenheit liegt aktuell der **${variantShortTitle(variantById.get(best)!)}** vorn.${note}`;
+    const bestName = variantShortTitle(variantById.get(best)!);
+    return t(
+      `${lines.join("\n\n")}\n\n**Fazit:** Auf Basis von Rendite, Risiko und Seltenheit liegt aktuell der **${bestName}** vorn.${note}`,
+      `${lines.join("\n\n")}\n\n**Verdict:** on return, risk and rarity, the **${bestName}** currently comes out ahead.${note}`,
+    );
   }
 
-  if (has(" risiko", " risk", " angebot", " inserat", " schwachstell", " prufen", " worauf")) {
+  if (has(" risiko", " risk", " angebot", " inserat", " schwachstell", " prufen", " worauf", " listing", " offer", " weakness", " inspect")) {
     const listings = getListings(focusId);
     const scored = listings
       .map((l) => ({ l, gap: l.price / m.value - 1 }))
       .sort((a, b) => a.gap - b.gap);
     const cheap = scored[0];
     const dear = scored[scored.length - 1];
-    return `**Kaufrisiko ${name}**
+    const weak = v.weaknesses.map((w) => `- ${tr(w)}`).join("\n");
+    return t(
+      `**Kaufrisiko ${name}**
 - Volatilität ${pct(m.vol1y, { signed: false })} p. a., max. Drawdown (5J) ${pct(m.maxDD5)} – mit Wertschwankungen dieser Größenordnung sollte man rechnen
 - Liquidität ${m.liquidity}/100, Verkaufsquote bei Auktionen ${pct(m.sellThrough, { signed: false, digits: 0 })}${m.liquidity < 40 ? " – Wiederverkauf kann dauern" : ""}
 
 **Typische Schwachstellen**
-${v.weaknesses.map((w) => `- ${w}`).join("\n")}
+${weak}
 
 **Aktuelle Angebote (${listings.length})**${cheap ? `\n- Günstigstes relativ zum Marktwert: ${cheap.l.id}, ${cheap.l.year}, ${km(cheap.l.mileage)}, ${eur(cheap.l.price)} (${pct(cheap.gap)}) – Zustand ${cheap.l.condition}${cheap.l.matchingNumbers ? "" : ", **keine Matching Numbers**"}` : ""}${dear && dear !== cheap ? `\n- Teuerstes: ${dear.l.id}, ${eur(dear.l.price)} (${pct(dear.gap)})` : ""}
-- Vor dem Kauf: unabhängige Begutachtung, Lackschichtdicke, Historie und Werkszertifikat prüfen${note}`;
+- Vor dem Kauf: unabhängige Begutachtung, Lackschichtdicke, Historie und Werkszertifikat prüfen${note}`,
+      `**Purchase risk ${name}**
+- Volatility ${pct(m.vol1y, { signed: false })} p.a., max. drawdown (5Y) ${pct(m.maxDD5)} – expect value swings of this size
+- Liquidity ${m.liquidity}/100, auction sell-through rate ${pct(m.sellThrough, { signed: false, digits: 0 })}${m.liquidity < 40 ? " – reselling may take time" : ""}
+
+**Typical weak spots**
+${weak}
+
+**Current listings (${listings.length})**${cheap ? `\n- Cheapest relative to market value: ${cheap.l.id}, ${cheap.l.year}, ${km(cheap.l.mileage)}, ${eur(cheap.l.price)} (${pct(cheap.gap)}) – condition ${cheap.l.condition}${cheap.l.matchingNumbers ? "" : ", **no matching numbers**"}` : ""}${dear && dear !== cheap ? `\n- Most expensive: ${dear.l.id}, ${eur(dear.l.price)} (${pct(dear.gap)})` : ""}
+- Before buying: independent inspection, paint thickness, history and factory certificate${note}`,
+    );
   }
 
-  if (has(" ausblick", " prognose", " zukunft", " entwickeln", " jahre", " outlook", " wertentwicklung")) {
+  if (has(" ausblick", " prognose", " zukunft", " entwickeln", " jahre", " outlook", " wertentwicklung", " forecast", " future", " years")) {
     const f3 = forecast(focusId, 3);
     const f5 = forecast(focusId, 5);
-    return `**Preis-Ausblick ${name}** (Basis: ${eur(m.value)})
+    return t(
+      `**Preis-Ausblick ${name}** (Basis: ${eur(m.value)})
 - 3 Jahre: ${eur(f3.low, { compact: true })} – ${eur(f3.high, { compact: true })}, Basisszenario ${eur(f3.mid, { compact: true })}
 - 5 Jahre: ${eur(f5.low, { compact: true })} – ${eur(f5.high, { compact: true })}, Basisszenario ${eur(f5.mid, { compact: true })} (${pct(f5.base)} p. a.)
 
@@ -276,26 +322,54 @@ ${v.weaknesses.map((w) => `- ${w}`).join("\n")}
 
 **Risiken**
 - Volatilität ${pct(m.vol1y, { signed: false })}; letzter Rückgang bis ${pct(m.maxDD5)}
-- Zinsumfeld und Nachfrage der Käufergeneration${note}`;
+- Zinsumfeld und Nachfrage der Käufergeneration${note}`,
+      `**Price outlook ${name}** (base: ${eur(m.value)})
+- 3 years: ${eur(f3.low, { compact: true })} – ${eur(f3.high, { compact: true })}, base case ${eur(f3.mid, { compact: true })}
+- 5 years: ${eur(f5.low, { compact: true })} – ${eur(f5.high, { compact: true })}, base case ${eur(f5.mid, { compact: true })} (${pct(f5.base)} p.a.)
+
+**Drivers**
+- Historical return ${pct(m.cagr5)} p.a. (5Y), momentum ${momentum.toLowerCase()} (${pct(m.change3m)} in 3M)
+- Rarity ${m.rarityScore}/100 with ${num(v.production)} built
+
+**Risks**
+- Volatility ${pct(m.vol1y, { signed: false })}; last drawdown down to ${pct(m.maxDD5)}
+- Interest rates and demand from the next generation of buyers${note}`,
+    );
   }
 
-  if (has(" trend", " auktion", " 12 monat", " zusammenfass", " verkauf", " letzte")) {
+  if (has(" trend", " auktion", " 12 monat", " zusammenfass", " verkauf", " letzte", " auction", " 12 month", " summar", " sale", " last")) {
     const sales = getSales(focusId).filter((s) => s.date >= AS_OF - 365 * 86_400_000);
     const sold = sales.filter((s) => s.price !== null);
     const top = [...sold].sort((a, b) => b.price! - a.price!)[0];
-    return `**Auktionstrends ${name} – letzte 12 Monate**
+    const rising = m.change3m >= 0;
+    return t(
+      `**Auktionstrends ${name} – letzte 12 Monate**
 - ${sales.length} Transaktionen, davon ${pct(m.auctionShare, { signed: false, digits: 0 })} über Auktionen
 - Verkaufsquote ${pct(m.sellThrough, { signed: false, digits: 0 })}, Ø Zuschlag vs. Schätzung ${pct(m.premiumVsEstimate)}
 - Ø Verkaufspreis ${eur(m.avgPrice12m)}, Marktwert heute ${eur(m.value)} (${pct(m.change12m)} ggü. Vorjahr)${top ? `\n- Höchster Preis: ${eur(top.price)} bei ${top.house} (${date(top.date)}, Zustand ${top.condition}, ${km(top.mileage)})` : ""}
-- Momentum: ${m.momentum} – ${m.change3m >= 0 ? "Preise ziehen zuletzt an" : "Preise geben zuletzt nach"} (${pct(m.change3m)} in 3M)${note}`;
+- Momentum: ${m.momentum} – ${rising ? "Preise ziehen zuletzt an" : "Preise geben zuletzt nach"} (${pct(m.change3m)} in 3M)${note}`,
+      `**Auction trends ${name} – last 12 months**
+- ${sales.length} transactions, ${pct(m.auctionShare, { signed: false, digits: 0 })} of them at auction
+- Sell-through rate ${pct(m.sellThrough, { signed: false, digits: 0 })}, avg. hammer price vs. estimate ${pct(m.premiumVsEstimate)}
+- Avg. sale price ${eur(m.avgPrice12m)}, market value today ${eur(m.value)} (${pct(m.change12m)} year on year)${top ? `\n- Highest price: ${eur(top.price)} at ${tr(top.house)} (${date(top.date)}, condition ${top.condition}, ${km(top.mileage)})` : ""}
+- Momentum: ${momentum} – ${rising ? "prices have been rising lately" : "prices have been easing lately"} (${pct(m.change3m)} in 3M)${note}`,
+    );
   }
 
-  return `**${variantTitle(v)} – Kurzanalyse**
+  return t(
+    `**${variantTitle(v)} – Kurzanalyse**
 - Marktwert ${eur(m.value)} (${pct(m.change12m)} in 12M), CAGR 5J ${pct(m.cagr5)}
 - Rarity ${m.rarityScore}/100, Liquidität ${m.liquidity}/100, Momentum ${m.momentum}
 - Einschätzung: **${m.recommendation.label}** – ${m.thesis}
 
-Ich kann außerdem einen **Preis-Ausblick**, einen **Variantenvergleich**, eine **Risikoanalyse** konkreter Angebote oder eine **Zusammenfassung der Auktionen** liefern.${note}`;
+Ich kann außerdem einen **Preis-Ausblick**, einen **Variantenvergleich**, eine **Risikoanalyse** konkreter Angebote oder eine **Zusammenfassung der Auktionen** liefern.${note}`,
+    `**${variantTitle(v)} – quick analysis**
+- Market value ${eur(m.value)} (${pct(m.change12m)} in 12M), CAGR 5Y ${pct(m.cagr5)}
+- Rarity ${m.rarityScore}/100, liquidity ${m.liquidity}/100, momentum ${momentum}
+- Assessment: **${rec}** – ${m.thesis}
+
+I can also provide a **price outlook**, a **variant comparison**, a **risk analysis** of specific listings or a **summary of recent auctions**.${note}`,
+  );
 }
 
 export function suggestions(focusVariantId: string | undefined): string[] {
@@ -305,9 +379,11 @@ export function suggestions(focusVariantId: string | undefined): string[] {
     .filter((o) => o.generationId === v.generationId && o.id !== v.id)
     .sort((a, b) => getMetrics(b.id).value - getMetrics(a.id).value)[0];
   return [
-    `Preis-Ausblick für den ${name} (3–5 Jahre)`,
-    sibling ? `Varianten vergleichen (${v.name} vs. ${sibling.name})` : `${name} mit ähnlichen Fahrzeugen vergleichen`,
-    `Kaufrisiko analysieren (konkretes Angebot ${name})`,
-    `Auktionstrends der letzten 12 Monate zusammenfassen`,
+    t(`Preis-Ausblick für den ${name} (3–5 Jahre)`, `Price outlook for the ${name} (3–5 years)`),
+    sibling
+      ? t(`Varianten vergleichen (${variantName(v)} vs. ${variantName(sibling)})`, `Compare variants (${variantName(v)} vs. ${variantName(sibling)})`)
+      : t(`${name} mit ähnlichen Fahrzeugen vergleichen`, `Compare the ${name} with similar cars`),
+    t(`Kaufrisiko analysieren (konkretes Angebot ${name})`, `Analyse purchase risk (specific listing ${name})`),
+    t(`Auktionstrends der letzten 12 Monate zusammenfassen`, `Summarise auction trends of the last 12 months`),
   ];
 }

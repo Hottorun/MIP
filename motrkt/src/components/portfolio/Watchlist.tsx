@@ -7,6 +7,7 @@ import { useStore } from "../../state/store";
 import { cn, eur } from "../../lib/format";
 import { CarImage } from "../CarImage";
 import { Delta, Empty, Modal, Pill, Section, Segmented, Money } from "../ui";
+import { isEn, t } from "../../i18n";
 
 export function WatchlistSection() {
   const { watchlist, toggleWatch, alerts, removeAlert, toast } = useStore();
@@ -18,9 +19,9 @@ export function WatchlistSection() {
 
   return (
     <>
-      <Section title="Beobachtet" sub={watched.length ? `${watched.length} Varianten` : undefined}>
+      <Section title={t("Beobachtet", "Watched")} sub={watched.length ? t(`${watched.length} Varianten`, `${watched.length} variants`) : undefined}>
         {watched.length === 0 ? (
-          <Empty>Noch nichts beobachtet. Auf der Seite eines Fahrzeugs findest du „Beobachten“.</Empty>
+          <Empty>{t("Noch nichts beobachtet. Auf der Seite eines Fahrzeugs findest du „Beobachten“.", "Nothing watched yet. You'll find “Watch” on each car's page.")}</Empty>
         ) : (
           <ul id="watchlist" className="grid scroll-mt-28 grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {watched.map((v) => {
@@ -38,20 +39,20 @@ export function WatchlistSection() {
                   </Link>
                   <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
                     <span>
-                      <Delta value={m.change12m} arrow={false} /> <span className="text-muted">in 12 Monaten</span>
+                      <Delta value={m.change12m} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
                     </span>
                     <span className="flex gap-3">
                       <button className="text-muted hover:text-ink" onClick={() => setAlertFor(v.id)}>
-                        Preisalarm
+                        {t("Preisalarm", "Price alert")}
                       </button>
                       <button
                         className="text-muted hover:text-ink"
                         onClick={() => {
                           toggleWatch(v.id);
-                          toast("Nicht mehr beobachtet", "info");
+                          toast(t("Nicht mehr beobachtet", "No longer watched"), "info");
                         }}
                       >
-                        Entfernen
+                        {t("Entfernen", "Remove")}
                       </button>
                     </span>
                   </div>
@@ -63,7 +64,7 @@ export function WatchlistSection() {
       </Section>
 
       {alerts.length > 0 && (
-        <Section title="Preisalarme">
+        <Section title={t("Preisalarme", "Price alerts")}>
           <ul className="max-w-3xl">
             {alerts.map((a) => {
               const v = variantById.get(a.variantId);
@@ -77,17 +78,20 @@ export function WatchlistSection() {
                       {variantTitle(v, { brand: false })}
                     </Link>
                     <div className="text-[13px] text-muted">
-                      Wenn der Wert {a.direction === "above" ? "über" : "unter"} {eur(a.threshold)} {a.direction === "above" ? "steigt" : "fällt"}. Aktuell {eur(value)}.
+                      {t(
+                        `Wenn der Wert ${a.direction === "above" ? "über" : "unter"} ${eur(a.threshold)} ${a.direction === "above" ? "steigt" : "fällt"}. Aktuell ${eur(value)}.`,
+                        `When the value ${a.direction === "above" ? "rises above" : "falls below"} ${eur(a.threshold)}. Now ${eur(value)}.`,
+                      )}
                     </div>
                   </div>
-                  <Pill tone={hit ? "gold" : "neutral"}>{hit ? "ausgelöst" : "aktiv"}</Pill>
+                  <Pill tone={hit ? "gold" : "neutral"}>{hit ? t("ausgelöst", "triggered") : t("aktiv", "active")}</Pill>
                   <button
                     className="text-muted hover:text-down"
                     onClick={() => {
                       removeAlert(a.id);
-                      toast("Preisalarm gelöscht", "info");
+                      toast(t("Preisalarm gelöscht", "Price alert deleted"), "info");
                     }}
-                    aria-label="Alarm löschen"
+                    aria-label={t("Alarm löschen", "Delete alert")}
                   >
                     <Trash2 className="size-4" strokeWidth={1.5} />
                   </button>
@@ -119,13 +123,13 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
   }
 
   const save = () => {
-    const n = Number(threshold.replace(/\./g, "").replace(",", "."));
+    const n = Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/\./g, "").replace(",", "."));
     if (!v || !Number.isFinite(n) || n <= 0) {
-      setError("Bitte einen gültigen Schwellenwert eingeben.");
+      setError(t("Bitte einen gültigen Schwellenwert eingeben.", "Please enter a valid threshold."));
       return;
     }
     addAlert({ variantId: v.id, direction, threshold: Math.round(n) });
-    toast(`Preisalarm für ${variantTitle(v)} angelegt`);
+    toast(t(`Preisalarm für ${variantTitle(v)} angelegt`, `Price alert for ${variantTitle(v)} created`));
     onClose();
   };
 
@@ -133,14 +137,14 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
     <Modal
       open={!!v}
       onClose={onClose}
-      title="Preisalarm anlegen"
+      title={t("Preisalarm anlegen", "Create price alert")}
       footer={
         <>
           <button className="btn" onClick={onClose}>
-            Abbrechen
+            {t("Abbrechen", "Cancel")}
           </button>
           <button className="btn btn-gold" onClick={save}>
-            Alarm setzen
+            {t("Alarm setzen", "Set alert")}
           </button>
         </>
       }
@@ -149,21 +153,21 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
         <div className="space-y-3">
           <div>
             <div className="font-serif text-[17px]">{variantTitle(v)}</div>
-            <div className="text-[13px] text-muted">Aktueller Marktwert: {eur(value)}</div>
+            <div className="text-[13px] text-muted">{t("Aktueller Marktwert", "Current market value")}: {eur(value)}</div>
           </div>
           <div>
-            <label className="label">Benachrichtigen, wenn der Marktwert</label>
+            <label className="label">{t("Benachrichtigen, wenn der Marktwert", "Notify me when the market value is")}</label>
             <Segmented
               options={[
-                { value: "above", label: "über" },
-                { value: "below", label: "unter" },
+                { value: "above", label: t("über", "above") },
+                { value: "below", label: t("unter", "below") },
               ]}
               value={direction}
               onChange={setDirection}
             />
           </div>
           <div>
-            <label className="label">Schwellenwert (€)</label>
+            <label className="label">{t("Schwellenwert (€)", "Threshold (€)")}</label>
             <input
               className={cn("input", error && "border-down")}
               inputMode="numeric"

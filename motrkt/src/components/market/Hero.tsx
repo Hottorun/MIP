@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
-import { brandById, generationById, modelById, optionFactor, variantById, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
+import { brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { getSales, hasRealSales } from "../../data/generate";
@@ -11,6 +11,8 @@ import { cn, eur, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
 import { PhotoCredit } from "../CarImage";
+import { isEn, t } from "../../i18n";
+import { paintName, tr, photoCaption } from "../../i18n/terms";
 
 /** Product-page top: photograph on the left, a calm summary column on the right. */
 export function Hero({ variant, picked }: { variant: Variant; picked: string[] }) {
@@ -20,18 +22,18 @@ export function Hero({ variant, picked }: { variant: Variant; picked: string[] }
 
   return (
     <div>
-      <nav className="mb-6 flex flex-wrap items-center gap-2 text-[13px] text-muted" aria-label="Brotkrumen">
+      <nav className="mb-6 flex flex-wrap items-center gap-2 text-[13px] text-muted" aria-label={t("Brotkrumen", "Breadcrumb")}>
         <Link to={`/modelle?marke=${brand.id}`} className="hover:text-ink">
           {brand.name}
         </Link>
         <span className="text-faint">/</span>
         <Link to={`/modelle?modell=${model.id}`} className="hover:text-ink">
-          {model.name}
+          {modelName(model)}
         </Link>
         {gen.name !== model.name && (
           <>
             <span className="text-faint">/</span>
-            <span>{gen.name}</span>
+            <span>{genName(gen)}</span>
           </>
         )}
       </nav>
@@ -57,21 +59,21 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
   const watched = watchlist.includes(variant.id);
   const alertCount = alerts.filter((a) => a.variantId === variant.id).length;
   const real = hasRealSales(variant.id);
-  const lineage = gen.name !== model.name ? `${brand.name} ${model.name} (${gen.name})` : `${brand.name} ${model.name}`;
+  const lineage = gen.name !== model.name ? `${brand.name} ${modelName(model)} (${genName(gen)})` : `${brand.name} ${modelName(model)}`;
   const siblings = gen.variantIds.map((id) => variantById.get(id)!);
   const generations = model.generationIds.map((id) => generationById.get(id)!);
 
   const facts: [string, React.ReactNode][] = [
-    ["Produktion", `${num(variant.production)} Stück`],
-    ["Motor", `${num(variant.liters, 1)} l, ${variant.hp} PS`],
-    ["Neupreis", `${eur(variant.newPrice)} (${variant.newPriceYear})`],
+    [t("Produktion", "Production"), t(`${num(variant.production)} Stück`, `${num(variant.production)} units`)],
+    [t("Motor", "Engine"), `${num(variant.liters, 1)} l, ${variant.hp} PS`],
+    [t("Neupreis", "Original list price"), `${eur(variant.newPrice)} (${variant.newPriceYear})`],
   ];
   if (variant.launchColor) {
     facts.push([
-      "Farbe der Präsentation",
+      t("Farbe der Präsentation", "Launch colour"),
       <span key="c" className="inline-flex items-center gap-2">
         <span className="size-3 rounded-full ring-1 ring-ink/15" style={{ background: variant.launchColor.hex }} />
-        {variant.launchColor.name.replace(/ \(.+\)$/, "")}
+        {paintName(variant.launchColor.name)}
       </span>,
     ]);
   }
@@ -79,26 +81,32 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
   return (
     <div className="lg:sticky lg:top-[112px] lg:self-start">
       <p className="text-[14px] text-muted">{lineage}</p>
-      <h1 className="mt-1 font-display text-[44px] leading-[1.05] sm:text-[52px]">{variant.name}</h1>
+      <h1 className="mt-1 font-display text-[44px] leading-[1.05] sm:text-[52px]">{variantName(variant)}</h1>
       <p className="mt-2 font-serif text-[16px] text-muted italic">{yearsLabel(variant.years)}</p>
 
       <div className="mt-8 border-t border-line pt-6">
-        <div className="text-[13px] text-muted">{picked.length ? "Schätzwert mit Ausstattung" : "Marktwert, Median"}</div>
+        <div className="text-[13px] text-muted">{picked.length ? t("Schätzwert mit Ausstattung", "Estimate with options") : t("Marktwert, Median", "Market value, median")}</div>
         <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <Money value={Math.round((m.value * factor) / 1000) * 1000} className="text-[40px] leading-none" />
           {picked.length ? (
             <span className={cn("text-[14px]", factor >= 1 ? "text-up" : "text-down")}>
-              {pct(factor - 1)} <span className="text-muted">durch {picked.length === 1 ? "1 Option" : `${picked.length} Optionen`}</span>
+              {pct(factor - 1)}{" "}
+              <span className="text-muted">
+                {t(`durch ${picked.length === 1 ? "1 Option" : `${picked.length} Optionen`}`, `from ${picked.length === 1 ? "1 option" : `${picked.length} options`}`)}
+              </span>
             </span>
           ) : (
             <span className="text-[14px]">
-              <Delta value={m.change12m} arrow={false} /> <span className="text-muted">in 12 Monaten</span>
+              <Delta value={m.change12m} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
             </span>
           )}
         </div>
         <p className="mt-2 text-[13px] text-faint">
-          {picked.length ? `Median ohne Optionen ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
-          <BasisLine variant={variant} fallback={real ? `Aus ${getSales(variant.id).length} belegten Verkäufen` : "Demo-Daten"} />
+          {picked.length ? `${t("Median ohne Optionen", "Median without options")} ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
+          <BasisLine
+            variant={variant}
+            fallback={real ? t(`Aus ${getSales(variant.id).length} belegten Verkäufen`, `From ${getSales(variant.id).length} recorded sales`) : t("Demo-Daten", "Demo data")}
+          />
           {variant.options.length > 0 && (
             <>
               {" · "}
@@ -106,7 +114,7 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
                 onClick={() => document.getElementById("ausstattung")?.scrollIntoView({ behavior: "smooth" })}
                 className="text-muted underline decoration-line-2 underline-offset-2 hover:text-ink"
               >
-                {picked.length ? "Ausstattung ändern" : "Ausstattung wählen"}
+                {picked.length ? t("Ausstattung ändern", "Change options") : t("Ausstattung wählen", "Choose options")}
               </button>
             </>
           )}
@@ -117,13 +125,13 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
             aria-pressed={watched}
             onClick={() => {
               toggleWatch(variant.id);
-              toast(watched ? "Nicht mehr beobachtet" : "Wird beobachtet");
+              toast(watched ? t("Nicht mehr beobachtet", "No longer watched") : t("Wird beobachtet", "Now watching"));
             }}
           >
-            {watched ? "Wird beobachtet" : "Beobachten"}
+            {watched ? t("Wird beobachtet", "Watching") : t("Beobachten", "Watch")}
           </button>
           <button className="btn" onClick={() => setAlertOpen(true)}>
-            {alertCount ? `Preisalarm (${alertCount})` : "Preisalarm"}
+            {alertCount ? `${t("Preisalarm", "Price alert")} (${alertCount})` : t("Preisalarm", "Price alert")}
           </button>
         </div>
       </div>
@@ -140,19 +148,19 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
       </dl>
 
       {siblings.length > 1 && (
-        <Picker label="Varianten">
+        <Picker label={t("Varianten", "Variants")}>
           {siblings.map((s) => (
             <PickerLink key={s.id} to={`/markt/${s.id}`} active={s.id === variant.id}>
-              {s.name}
+              {variantName(s)}
             </PickerLink>
           ))}
         </Picker>
       )}
       {generations.length > 1 && (
-        <Picker label="Generationen">
+        <Picker label={t("Generationen", "Generations")}>
           {generations.map((g) => (
             <PickerLink key={g.id} to={`/markt/${g.variantIds[0]}`} active={g.id === gen.id}>
-              {g.name}
+              {genName(g)}
             </PickerLink>
           ))}
         </Picker>
@@ -200,8 +208,8 @@ function useArrowKeys(go: (d: number) => void, enabled: boolean) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
       if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
-      const t = e.target instanceof HTMLElement ? e.target : null;
-      if (t && (t.isContentEditable || t.closest("input, textarea, select, [role=slider], [role=tablist], [role=listbox], [role=menu], [role=radiogroup]"))) return;
+      const el = e.target instanceof HTMLElement ? e.target : null;
+      if (el && (el.isContentEditable || el.closest("input, textarea, select, [role=slider], [role=tablist], [role=listbox], [role=menu], [role=radiogroup]"))) return;
       if (document.querySelector('[aria-modal="true"]')) return;
       e.preventDefault();
       goRef.current(e.key === "ArrowLeft" ? -1 : 1);
@@ -248,23 +256,23 @@ function Gallery({ variant }: { variant: Variant }) {
   }, [index, n, photos]);
   const photo = photos[index];
   return (
-    <figure aria-label="Bildergalerie" aria-roledescription="Galerie, mit Pfeiltasten blättern" className="min-w-0">
+    <figure aria-label={t("Bildergalerie", "Image gallery")} aria-roledescription={t("Galerie, mit Pfeiltasten blättern", "Gallery, use the arrow keys to browse")} className="min-w-0">
       <div className={cn("group relative aspect-video touch-pan-y overflow-hidden select-none", photo.contain ? "bg-white" : "bg-panel-3")} {...(n > 1 ? swipe : {})}>
         <img
           key={photo.file}
           src={photo.file}
-          alt={photo.caption ?? variantTitle(variant)}
+          alt={photoCaption(photo.caption) ?? variantTitle(variant)}
           draggable={false}
           style={photo.position ? { objectPosition: photo.position } : undefined}
           className={cn(slideIn(dir), "size-full", photo.contain ? "object-contain" : "object-cover")}
         />
-        {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">Vorstellung</span>}
+        {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
         {n > 1 && (
           <>
-            <button onClick={() => go(-1)} className={cn(arrowBtn, "left-4")} aria-label="Vorheriges Bild">
+            <button onClick={() => go(-1)} className={cn(arrowBtn, "left-4")} aria-label={t("Vorheriges Bild", "Previous image")}>
               <ChevronLeft className="size-5" strokeWidth={1.5} />
             </button>
-            <button onClick={() => go(1)} className={cn(arrowBtn, "right-4")} aria-label="Nächstes Bild">
+            <button onClick={() => go(1)} className={cn(arrowBtn, "right-4")} aria-label={t("Nächstes Bild", "Next image")}>
               <ChevronRight className="size-5" strokeWidth={1.5} />
             </button>
           </>
@@ -272,7 +280,7 @@ function Gallery({ variant }: { variant: Variant }) {
       </div>
       <div className="mt-4 flex items-start justify-between gap-6">
         <figcaption className="min-w-0">
-          <div className="font-serif text-[14.5px] text-ink/85 italic">{photo.caption ?? variantTitle(variant)}</div>
+          <div className="font-serif text-[14.5px] text-ink/85 italic">{photoCaption(photo.caption) ?? variantTitle(variant)}</div>
           <PhotoCredit photo={photo} className="mt-0.5 text-[12px] text-faint" />
         </figcaption>
         {n > 1 && (
@@ -288,7 +296,7 @@ function Gallery({ variant }: { variant: Variant }) {
               key={p.file}
               onClick={() => show(i)}
               className={cn("aspect-video w-24 overflow-hidden border-b-2 pb-1 transition-opacity", i === index ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}
-              aria-label={`Bild ${i + 1}`}
+              aria-label={`${t("Bild", "Image")} ${i + 1}`}
               aria-current={i === index}
             >
               <img
@@ -315,7 +323,7 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
   const swipe = useSwipe(go);
 
   return (
-    <figure aria-label="Bildergalerie" aria-roledescription="Galerie, mit Pfeiltasten blättern" className="min-w-0">
+    <figure aria-label={t("Bildergalerie", "Image gallery")} aria-roledescription={t("Galerie, mit Pfeiltasten blättern", "Gallery, use the arrow keys to browse")} className="min-w-0">
       <div className="group relative aspect-video touch-pan-y overflow-hidden bg-panel-3 select-none" {...swipe}>
         <CarArt
           key={`${variant.id}-${index}`}
@@ -324,17 +332,19 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
           color={variant.color}
           scene={GALLERY[index].scene}
           view={GALLERY[index].view}
-          label={GALLERY[index].view === "badge" ? variant.name : `${variantTitle(variant)} – ${GALLERY[index].caption}`}
+          label={GALLERY[index].view === "badge" ? variantName(variant) : `${variantTitle(variant)} – ${GALLERY[index].caption}`}
         />
-        <button onClick={() => go(-1)} className={cn(arrowBtn, "left-4")} aria-label="Vorheriges Bild">
+        <button onClick={() => go(-1)} className={cn(arrowBtn, "left-4")} aria-label={t("Vorheriges Bild", "Previous image")}>
           <ChevronLeft className="size-5" strokeWidth={1.5} />
         </button>
-        <button onClick={() => go(1)} className={cn(arrowBtn, "right-4")} aria-label="Nächstes Bild">
+        <button onClick={() => go(1)} className={cn(arrowBtn, "right-4")} aria-label={t("Nächstes Bild", "Next image")}>
           <ChevronRight className="size-5" strokeWidth={1.5} />
         </button>
       </div>
       <figcaption className="mt-4 flex justify-between gap-6">
-        <span className="font-serif text-[14.5px] text-ink/85 italic">{GALLERY[index].caption}. Illustration, kein offizielles Herstellerfoto verfügbar.</span>
+        <span className="font-serif text-[14.5px] text-ink/85 italic">
+          {GALLERY[index].caption}. {t("Illustration, kein offizielles Herstellerfoto verfügbar.", "Illustration, no official manufacturer photo available.")}
+        </span>
         <span className="shrink-0 text-[13px] text-faint tabular-nums">
           {index + 1} / {n}
         </span>
@@ -347,16 +357,16 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
 function OfficialLink({ variant }: { variant: Variant }) {
   const l = variant.officialLink!;
   const source = "Porsche Newsroom";
-  const label = l.kind === "premiere" ? "Offizielle Pressebilder der Vorstellung" : "Offizielle Bilder beim Hersteller";
+  const label = l.kind === "premiere" ? t("Offizielle Pressebilder der Vorstellung", "Official press photos of the launch") : t("Offizielle Bilder beim Hersteller", "Official photos from the manufacturer");
   return (
     <p className="mt-6 border-t border-line pt-4 text-[14px]">
-      <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 hover:text-gold" title={l.title}>
+      <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 hover:text-gold" title={tr(l.title)}>
         {label}
         <ArrowUpRight className="size-3.5 self-center text-faint" strokeWidth={1.5} />
       </a>
       <span className="block text-[13px] text-muted">
         {source}
-        {l.event && `, Vorstellung: ${l.event}`}
+        {l.event && `, ${t("Vorstellung", "presented at")}: ${tr(l.event)}`}
       </span>
     </p>
   );
@@ -371,63 +381,70 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
     if (open) setThreshold(String(Math.round((value * 1.05) / 1000) * 1000));
   }, [open, value]);
   const existing = alerts.filter((a) => a.variantId === variant.id);
-  const parsed = Number(threshold.replace(/\./g, "").replace(",", "."));
+  const parsed = Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/[.\s]/g, "").replace(",", "."));
   const valid = Number.isFinite(parsed) && parsed > 0;
 
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title={`Preisalarm für ${variantShortTitle(variant)}`}
+      title={t(`Preisalarm für ${variantShortTitle(variant)}`, `Price alert for ${variantShortTitle(variant)}`)}
       footer={
         <>
           <button className="btn" onClick={onClose}>
-            Schließen
+            {t("Schließen", "Close")}
           </button>
           <button
             className="btn btn-gold"
             disabled={!valid}
             onClick={() => {
               addAlert({ variantId: variant.id, direction, threshold: parsed });
-              toast(`Alarm gesetzt: ${direction === "above" ? "über" : "unter"} ${eur(parsed)}`);
+              toast(t(`Alarm gesetzt: ${direction === "above" ? "über" : "unter"} ${eur(parsed)}`, `Alert set: ${direction === "above" ? "above" : "below"} ${eur(parsed)}`));
               onClose();
             }}
           >
-            Alarm setzen
+            {t("Alarm setzen", "Set alert")}
           </button>
         </>
       }
     >
       <p className="mb-4 text-[14px] text-muted">
-        Der Marktwert liegt aktuell bei <span className="text-ink">{eur(value)}</span>. Sobald er die Schwelle erreicht, erscheint eine Benachrichtigung unter der Glocke.
+        {t(
+          <>
+            Der Marktwert liegt aktuell bei <span className="text-ink">{eur(value)}</span>. Sobald er die Schwelle erreicht, erscheint eine Benachrichtigung unter der Glocke.
+          </>,
+          <>
+            The market value is currently <span className="text-ink">{eur(value)}</span>. Once it reaches the threshold, a notification appears under the bell.
+          </>,
+        )}
       </p>
       <div className="grid grid-cols-[auto_1fr] items-end gap-3">
         <label>
-          <span className="label">Wenn der Wert</span>
+          <span className="label">{t("Wenn der Wert", "When the value")}</span>
           <select className="input" value={direction} onChange={(e) => setDirection(e.target.value as "above" | "below")}>
-            <option value="above">steigt über</option>
-            <option value="below">fällt unter</option>
+            <option value="above">{t("steigt über", "rises above")}</option>
+            <option value="below">{t("fällt unter", "falls below")}</option>
           </select>
         </label>
         <label>
-          <span className="label">Schwelle in €</span>
+          <span className="label">{t("Schwelle in €", "Threshold in €")}</span>
           <input className="input" inputMode="numeric" value={threshold} onChange={(e) => setThreshold(e.target.value)} />
         </label>
       </div>
-      {!valid && threshold && <p className="mt-2 text-[13px] text-down">Bitte einen Betrag in Euro eingeben, zum Beispiel 250000.</p>}
+      {!valid && threshold && <p className="mt-2 text-[13px] text-down">{t("Bitte einen Betrag in Euro eingeben, zum Beispiel 250000.", "Please enter an amount in euros, for example 250000.")}</p>}
       {existing.length > 0 && (
         <div className="mt-6">
-          <div className="label">Aktive Alarme</div>
+          <div className="label">{t("Aktive Alarme", "Active alerts")}</div>
           <ul className="border-t border-line">
             {existing.map((a) => {
               const hit = a.direction === "above" ? value >= a.threshold : value <= a.threshold;
               return (
                 <li key={a.id} className="flex items-center gap-3 border-b border-line py-2 text-[14px]">
                   <span className="flex-1">
-                    {a.direction === "above" ? "über" : "unter"} {eur(a.threshold)}
+                    {a.direction === "above" ? t("über", "above") : t("unter", "below")} {eur(a.threshold)}
                   </span>
-                  <Pill tone={hit ? "gold" : "neutral"}>{hit ? "ausgelöst" : "aktiv"}</Pill>
-                  <button className="text-muted hover:text-down" onClick={() => removeAlert(a.id)} aria-label="Alarm löschen">
+                  <Pill tone={hit ? "gold" : "neutral"}>{hit ? t("ausgelöst", "triggered") : t("aktiv", "active")}</Pill>
+                  <button className="text-muted hover:text-down" onClick={() => removeAlert(a.id)} aria-label={t("Alarm löschen", "Delete alert")}>
                     <Trash2 className="size-4" strokeWidth={1.5} />
                   </button>
                 </li>
@@ -443,13 +460,18 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
 function BasisLine({ variant, fallback }: { variant: Variant; fallback: string }) {
   const b = marketBasis(variant.id);
   if (!b) return <>{fallback}</>;
-  if (b.n === 0) return <>Schätzwert, keine belegten Verkäufe seit 2015</>;
+  if (b.n === 0) return <>{t("Schätzwert, keine belegten Verkäufe seit 2015", "Estimate, no recorded sales since 2015")}</>;
   const since = b.first ? new Date(b.first).getUTCFullYear() : 2015;
   return (
     <>
-      Median aus {num(b.n)} {b.n === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} seit {since}
-      {b.n12 > 0 && `, ${num(b.n12)} davon in den letzten 12 Monaten`}
-      {b.lo && b.hi && ` · mittlere Hälfte ${eur(Math.round(b.lo / 1000) * 1000, { compact: true })} bis ${eur(Math.round(b.hi / 1000) * 1000, { compact: true })}`}
+      {t(
+        `Median aus ${num(b.n)} ${b.n === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} seit ${since}`,
+        `Median of ${num(b.n)} ${b.n === 1 ? "auction result" : "auction results"} since ${since}`,
+      )}
+      {b.n12 > 0 && t(`, ${num(b.n12)} davon in den letzten 12 Monaten`, `, ${num(b.n12)} of them in the last 12 months`)}
+      {b.lo &&
+        b.hi &&
+        ` · ${t("mittlere Hälfte", "middle half")} ${eur(Math.round(b.lo / 1000) * 1000, { compact: true })} ${t("bis", "to")} ${eur(Math.round(b.hi / 1000) * 1000, { compact: true })}`}
     </>
   );
 }

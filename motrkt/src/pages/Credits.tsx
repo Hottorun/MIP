@@ -3,13 +3,27 @@ import { Link } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 import { brands, variants, variantTitle } from "../data/db";
 import { cn, hostOf } from "../lib/format";
+import { t } from "../i18n";
+import { tr, photoCaption } from "../i18n/terms";
 import { CarImage } from "../components/CarImage";
 import { BrandEmblem, Card, Pill, Segmented } from "../components/ui";
 
-const CONF = { high: "belegt", medium: "wahrscheinlich", low: "unsicher" } as const;
+const CONF = {
+  get high() {
+    return t("belegt", "confirmed");
+  },
+  get medium() {
+    return t("wahrscheinlich", "likely");
+  },
+  get low() {
+    return t("unsicher", "uncertain");
+  },
+};
+
+type Tab = "photos" | "colors" | "specs";
 
 export default function Credits() {
-  const [tab, setTab] = useState<"Fotos" | "Präsentationsfarben" | "Spezifikationen">("Fotos");
+  const [tab, setTab] = useState<Tab>("photos");
   const withPhotos = variants.filter((v) => v.photos.length);
   const stats = useMemo(
     () => ({
@@ -23,16 +37,26 @@ export default function Credits() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-serif text-3xl">Bildnachweise & Quellen</h1>
+          <h1 className="font-serif text-3xl">{t("Bildnachweise & Quellen", "Image credits & sources")}</h1>
           <p className="mt-1 text-sm text-muted">
-            {stats.photos} frei lizenzierte Fotos (Wikimedia Commons) · {stats.colors} recherchierte Präsentationsfarben · {stats.specs} Varianten mit belegten
-            Spezifikationen
+            {t(
+              `${stats.photos} frei lizenzierte Fotos (Wikimedia Commons) · ${stats.colors} recherchierte Präsentationsfarben · ${stats.specs} Varianten mit belegten Spezifikationen`,
+              `${stats.photos} freely licensed photos (Wikimedia Commons) · ${stats.colors} researched launch colours · ${stats.specs} variants with sourced specifications`,
+            )}
           </p>
         </div>
-        <Segmented options={["Fotos", "Präsentationsfarben", "Spezifikationen"] as const} value={tab} onChange={setTab} />
+        <Segmented<Tab>
+          options={[
+            { value: "photos", label: t("Fotos", "Photos") },
+            { value: "colors", label: t("Präsentationsfarben", "Launch colours") },
+            { value: "specs", label: t("Spezifikationen", "Specifications") },
+          ]}
+          value={tab}
+          onChange={setTab}
+        />
       </div>
 
-      {tab === "Fotos" && (
+      {tab === "photos" && (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 2xl:grid-cols-3">
           {withPhotos.flatMap((v) =>
             v.photos.map((p) => (
@@ -44,9 +68,9 @@ export default function Credits() {
                   <Link to={`/markt/${v.id}`} className="block truncate text-sm text-ink hover:text-gold">
                     {variantTitle(v)}
                   </Link>
-                  <div className="truncate text-muted">{p.caption}</div>
+                  <div className="truncate text-muted">{photoCaption(p.caption)}</div>
                   <div className="mt-1 text-muted">
-                    Foto: {p.author || "unbekannt"} ·{" "}
+                    {t("Foto", "Photo")}: {p.author || t("unbekannt", "unknown")} ·{" "}
                     {p.licenseUrl ? (
                       <a href={p.licenseUrl} target="_blank" rel="noreferrer" className="text-gold hover:underline">
                         {p.license}
@@ -60,7 +84,7 @@ export default function Credits() {
                       Wikimedia Commons <ExternalLink className="size-3" />
                     </a>
                   )}
-                  {p.exact === false && <Pill className="ml-1 text-[10px]">ähnliches Modell</Pill>}
+                  {p.exact === false && <Pill className="ml-1 text-[10px]">{t("ähnliches Modell", "similar model")}</Pill>}
                 </div>
               </div>
             )),
@@ -68,7 +92,7 @@ export default function Credits() {
         </div>
       )}
 
-      {tab === "Präsentationsfarben" &&
+      {tab === "colors" &&
         brands.map((b) => {
           const list = variants.filter((v) => v.brandId === b.id);
           return (
@@ -76,10 +100,10 @@ export default function Credits() {
               <table className="table-base">
                 <thead>
                   <tr>
-                    <th className="pl-0">Variante</th>
-                    <th>Präsentationsfarbe</th>
-                    <th>Sicherheit</th>
-                    <th>Quelle / Notiz</th>
+                    <th className="pl-0">{t("Variante", "Variant")}</th>
+                    <th>{t("Präsentationsfarbe", "Launch colour")}</th>
+                    <th>{t("Sicherheit", "Confidence")}</th>
+                    <th>{t("Quelle / Notiz", "Source / note")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,7 +117,7 @@ export default function Credits() {
                       <td>
                         <span className="inline-flex items-center gap-2">
                           <span className="size-3.5 rounded-full border border-white/30" style={{ background: v.color }} />
-                          {v.launchColor?.name ?? <span className="text-faint">nicht recherchiert</span>}
+                          {v.launchColor ? tr(v.launchColor.name) : <span className="text-faint">{t("nicht recherchiert", "not researched")}</span>}
                         </span>
                       </td>
                       <td>
@@ -106,7 +130,7 @@ export default function Credits() {
                       <td className="max-w-[420px] truncate whitespace-normal text-xs text-muted">
                         {v.launchColor?.source && (
                           <a href={v.launchColor.source} target="_blank" rel="noreferrer" className={cn("text-gold hover:underline", v.launchColor.note && "mr-2")}>
-                            Quelle
+                            {t("Quelle", "Source")}
                           </a>
                         )}
                         {v.launchColor?.note}
@@ -119,8 +143,8 @@ export default function Credits() {
           );
         })}
 
-      {tab === "Spezifikationen" && (
-        <Card title="Belegte Spezifikationen" sub="(Produktion, Leistung, Hubraum, Bauzeit, Neupreis)">
+      {tab === "specs" && (
+        <Card title={t("Belegte Spezifikationen", "Sourced specifications")} sub={t("(Produktion, Leistung, Hubraum, Bauzeit, Neupreis)", "(production, power, displacement, years built, list price)")}>
           <ul className="space-y-1.5 text-[13px]">
             {variants
               .filter((v) => v.specSources.length)
@@ -140,8 +164,10 @@ export default function Credits() {
         </Card>
       )}
       <p className="text-xs text-faint">
-        Marktwerte, Verkäufe, Auktionen und Inserate sind weiterhin synthetische Demo-Daten. Fotos stammen ausschließlich von Wikimedia Commons unter den jeweils
-        angegebenen freien Lizenzen.
+        {t(
+          "Marktwerte, Verkäufe, Auktionen und Inserate sind weiterhin synthetische Demo-Daten. Fotos stammen ausschließlich von Wikimedia Commons unter den jeweils angegebenen freien Lizenzen.",
+          "Market values, sales, auctions and listings are still synthetic demo data. Photos come exclusively from Wikimedia Commons under the free licences stated.",
+        )}
       </p>
     </div>
   );

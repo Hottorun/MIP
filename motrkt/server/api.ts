@@ -77,7 +77,7 @@ function getClient() {
 }
 
 async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
-  let body: { messages?: unknown; context?: unknown };
+  let body: { messages?: unknown; context?: unknown; lang?: unknown };
   try {
     body = (await readJson(req)) as typeof body;
   } catch {
@@ -86,6 +86,8 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
   const messages = parseMessages(body.messages);
   if (!messages) return sendJson(res, 400, { error: "Ungültiger Gesprächsverlauf" });
   const context = typeof body.context === "string" ? body.context.slice(0, MAX_CONTEXT_CHARS) : "";
+  // The app's UI language; the market data block stays German either way.
+  const english = body.lang === "en";
 
   if (!hasCredentials()) {
     return sendJson(res, 503, { error: "Kein Anthropic-API-Zugang konfiguriert", fallback: true });
@@ -112,6 +114,9 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
       system: [
         { type: "text", text: SYSTEM_PROMPT },
         { type: "text", text: `<motrkt_marktdaten>\n${context}\n</motrkt_marktdaten>` },
+        ...(english
+          ? [{ type: "text" as const, text: "Die Oberfläche ist auf Englisch eingestellt: Antworte auf Englisch (britische Schreibweise, Beträge als €378,000), außer der Nutzer schreibt in einer anderen Sprache. Übersetze deutsche Begriffe aus dem Kontextblock." }]
+          : []),
       ],
       messages,
     });
@@ -128,9 +133,9 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
     const final = await stream.finalMessage();
     start();
     if (final.stop_reason === "refusal") {
-      res.write("\n\n_Diese Anfrage kann der Co-Pilot leider nicht beantworten._");
+      res.write(english ? "\n\n_The Co-Pilot can’t answer this request._" : "\n\n_Diese Anfrage kann der Co-Pilot leider nicht beantworten._");
     } else if (final.stop_reason === "max_tokens") {
-      res.write("\n\n_(Antwort gekürzt)_");
+      res.write(english ? "\n\n_(answer truncated)_" : "\n\n_(Antwort gekürzt)_");
     }
     res.end();
   } catch (error) {
@@ -141,10 +146,14 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
       (!(error instanceof Anthropic.APIError) && !started);
     const message =
       error instanceof Anthropic.RateLimitError
-        ? "Rate-Limit erreicht – bitte gleich erneut versuchen."
+        ? english
+          ? "Rate limit reached – please try again shortly."
+          : "Rate-Limit erreicht – bitte gleich erneut versuchen."
         : error instanceof Anthropic.APIError
-          ? `API-Fehler ${error.status ?? ""}`.trim()
-          : "Verbindung zur Claude API fehlgeschlagen.";
+          ? `${english ? "API error" : "API-Fehler"} ${error.status ?? ""}`.trim()
+          : english
+            ? "Connection to the Claude API failed."
+            : "Verbindung zur Claude API fehlgeschlagen.";
     if (!started) return sendJson(res, fallback ? 503 : 502, { error: message, fallback });
     res.end(`\n\n_[${message}]_`);
   }

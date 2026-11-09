@@ -2,6 +2,8 @@ import type { Variant } from "../data/types";
 import type { Photo } from "../data/real";
 import { cn } from "../lib/format";
 import { CarArt, type Scene } from "./CarArt";
+import { t } from "../i18n";
+import { photoCaption, tr } from "../i18n/terms";
 
 /**
  * Preview image: the official manufacturer photo (as in the market tab) first, then a Wikimedia Commons photo,
@@ -40,7 +42,7 @@ export function CarImage({
     <div className={cn("relative overflow-hidden", photo.contain ? "bg-white" : "bg-panel-3", className)}>
       <img
         src={photo.file}
-        alt={photo.caption ?? label ?? ""}
+        alt={photoCaption(photo.caption) ?? label ?? ""}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         style={photo.position ? { objectPosition: photo.position } : undefined}
@@ -54,7 +56,7 @@ export function CarImage({
 export function PhotoCredit({ photo, className }: { photo: Photo; className?: string }) {
   return (
     <div className={cn("truncate", className)}>
-      Foto:{" "}
+      {t("Foto", "Photo")}:{" "}
       {photo.page ? (
         <a href={photo.page} target="_blank" rel="noreferrer" className="underline-offset-2 hover:underline" onClick={(e) => e.stopPropagation()}>
           {photo.author || "Wikimedia Commons"}
@@ -67,14 +69,14 @@ export function PhotoCredit({ photo, className }: { photo: Photo; className?: st
           {" · "}
           {photo.licenseUrl ? (
             <a href={photo.licenseUrl} target="_blank" rel="noreferrer" className="hover:underline" onClick={(e) => e.stopPropagation()}>
-              {photo.license}
+              {tr(photo.license)}
             </a>
           ) : (
-            photo.license
+            tr(photo.license)
           )}
         </>
       )}
-      {photo.exact === false && " · ähnliches Modell"}
+      {photo.exact === false && t(" · ähnliches Modell", " · similar model")}
     </div>
   );
 }

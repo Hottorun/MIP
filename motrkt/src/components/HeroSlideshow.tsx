@@ -14,6 +14,8 @@ import type { Variant } from "../data/types";
 import { cn, num } from "../lib/format";
 import { Delta, Money } from "./ui";
 import { PhotoCredit } from "./CarImage";
+import { t } from "../i18n";
+import { photoCaption } from "../i18n/terms";
 
 /**
  * Front page stage: one car per era, full width. Photos slowly zoom (alternating direction), follow the pointer a little
@@ -141,8 +143,8 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
 
   return (
     <section
-      aria-roledescription="Diashow"
-      aria-label="Ausgewählte Fahrzeuge"
+      aria-roledescription={t("Diashow", "Slideshow")}
+      aria-label={t("Ausgewählte Fahrzeuge", "Featured cars")}
       className="hero-bleed relative -mt-8 overflow-clip bg-[#1c140d] text-[#f7f2e8] lg:-mt-12"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
@@ -184,7 +186,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                 <img
                   src={s.photo.file}
                   alt={
-                    i === index ? (s.photo.caption ?? variantTitle(s.v)) : ""
+                    i === index ? (photoCaption(s.photo.caption) ?? variantTitle(s.v)) : ""
                   }
                   loading={i < 2 ? "eager" : "lazy"}
                   decoding="async"
@@ -215,7 +217,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
         <div className="relative z-[3] mx-auto -mt-20 flex max-w-[1360px] flex-col px-5 pb-6 sm:mt-0 sm:h-full sm:justify-end sm:px-8 sm:pb-40">
           <div className="max-w-xl">
             <h1 className="font-display text-[40px] leading-[1.04] sm:text-[60px]">
-              Was klassische Sportwagen heute wert sind.
+              {t("Was klassische Sportwagen heute wert sind.", "What classic sports cars are worth today.")}
             </h1>
             {children}
           </div>
@@ -244,13 +246,13 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               <div className="mt-1 text-[13px] text-white/60">
                 {num(current.v.hp)} PS ·{" "}
                 {current.v.production
-                  ? `${num(current.v.production)} gebaut`
-                  : "Stückzahl unbekannt"}
+                  ? t(`${num(current.v.production)} gebaut`, `${num(current.v.production)} built`)
+                  : t("Stückzahl unbekannt", "Production unknown")}
               </div>
             </div>
             <div className="sm:text-right">
               <div className="text-[12px] tracking-[0.18em] text-white/60 uppercase">
-                Marktwert heute
+                {t("Marktwert heute", "Market value today")}
               </div>
               <Money
                 value={value}
@@ -259,7 +261,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               />
               <div className="mt-0.5 text-[13px]">
                 <Delta value={metrics.change12m} className="hero-delta" />{" "}
-                <span className="text-white/60">in 12 Monaten</span>
+                <span className="text-white/60">{t("in 12 Monaten", "in 12 months")}</span>
               </div>
             </div>
           </div>
@@ -282,7 +284,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                         ? "opacity-100"
                         : "opacity-55 hover:opacity-90",
                     )}
-                    aria-label={`${variantTitle(s.v)} zeigen`}
+                    aria-label={t(`${variantTitle(s.v)} zeigen`, `Show ${variantTitle(s.v)}`)}
                     aria-current={i === index}
                   >
                     <span className="relative block h-[2px] overflow-hidden bg-white/25">
@@ -323,7 +325,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               <button
                 onClick={() => setStopped((v) => !v)}
                 className="mb-1 grid size-9 shrink-0 place-items-center rounded-full border border-white/30 text-white/80 transition-colors hover:border-white/70 hover:text-white"
-                aria-label={stopped ? "Diashow fortsetzen" : "Diashow anhalten"}
+                aria-label={stopped ? t("Diashow fortsetzen", "Resume slideshow") : t("Diashow anhalten", "Pause slideshow")}
               >
                 {stopped ? (
                   <Play className="size-3.5" strokeWidth={1.8} />

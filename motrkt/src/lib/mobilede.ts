@@ -1,5 +1,6 @@
 import { generationById, modelById, variants } from "../data/db";
 import type { Gearbox, Listing, Variant } from "../data/types";
+import { t } from "../i18n";
 
 /** mobile.de Search API client: builds queries per catalog generation and maps ads onto MOTRKT variants. */
 
@@ -174,7 +175,7 @@ export async function fetchGeneration(query: GenerationQuery, signal?: AbortSign
     const p = new URLSearchParams({ make: query.make, model: query.model, from: String(query.from), to: String(query.to), page: String(page) });
     const r = await fetch(`/api/mobilede/search?${p}`, { signal });
     const body = await r.json();
-    if (!r.ok) throw new Error(body.error ?? `mobile.de Fehler ${r.status}`);
+    if (!r.ok) throw new Error(body.error ?? t(`mobile.de Fehler ${r.status}`, `mobile.de error ${r.status}`));
     out.push(...mapAds(query, body.ads as MobileAd[]));
     if (page >= (body.maxPages ?? 1)) break;
   }

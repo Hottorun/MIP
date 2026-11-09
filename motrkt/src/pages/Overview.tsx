@@ -30,11 +30,13 @@ import {
   Money,
 } from "../components/ui";
 import { yearTicks } from "../components/insights/palette";
+import { locale, t } from "../i18n";
+import { tr } from "../i18n/terms";
 
 const RANGE_OPTIONS = [
-  { value: "1J" as const, label: "1 Jahr" },
-  { value: "5J" as const, label: "5 Jahre" },
-  { value: "10J" as const, label: "10 Jahre" },
+  { value: "1J" as const, get label() { return t("1 Jahr", "1 year"); } },
+  { value: "5J" as const, get label() { return t("5 Jahre", "5 years"); } },
+  { value: "10J" as const, get label() { return t("10 Jahre", "10 years"); } },
 ];
 
 export default function Overview() {
@@ -93,22 +95,23 @@ export default function Overview() {
       <div>
         <HeroSlideshow>
           <p className="mt-5 max-w-md font-serif text-[16px] leading-relaxed text-white/80 sm:text-[17px]">
-            Marktwerte aus belegten Verkäufen, Auktionsergebnisse und aktuelle
-            Angebote für {variants.length} Varianten von{" "}
-            {brands.map((b) => b.name).join(" und ")}.
+            {t(
+              `Marktwerte aus belegten Verkäufen, Auktionsergebnisse und aktuelle Angebote für ${variants.length} Varianten von ${brands.map((b) => b.name).join(" und ")}.`,
+              `Market values from recorded sales, auction results and current listings for ${variants.length} ${brands.map((b) => b.name).join(" and ")} variants.`,
+            )}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               to="/modelle"
               className="btn border-[#f7f2e8] bg-[#f7f2e8] text-ink hover:border-white hover:bg-white"
             >
-              Modelle ansehen
+              {t("Modelle ansehen", "Browse models")}
             </Link>
             <Link
               to="/kaufen"
               className="btn border-white/40 text-[#f7f2e8] hover:border-white"
             >
-              Angebote durchsuchen
+              {t("Angebote durchsuchen", "Search listings")}
             </Link>
           </div>
         </HeroSlideshow>
@@ -116,7 +119,7 @@ export default function Overview() {
       </div>
 
       <Section
-        title="Der Markt"
+        title={t("Der Markt", "The market")}
         actions={
           <Segmented
             options={RANGE_OPTIONS}
@@ -128,17 +131,17 @@ export default function Overview() {
         <div className="grid gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
           <div>
             <div className="text-[13px] text-muted">
-              Gesamtindex, Januar 2015 = 100
+              {t("Gesamtindex, Januar 2015 = 100", "Overall index, January 2015 = 100")}
             </div>
             <div className="mt-1 font-serif text-[48px] leading-none">
               {num(index[index.length - 1].value, 0)}
             </div>
             <p className="mt-3 text-[14px]">
               <Delta value={indexChange} arrow={false} />{" "}
-              <span className="text-muted">in 12 Monaten</span>
+              <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
             </p>
             <p className="mt-6 text-[14px] leading-relaxed text-muted">
-              Der Index bildet alle erfassten Varianten gleich gewichtet ab.
+              {t("Der Index bildet alle erfassten Varianten gleich gewichtet ab.", "The index weights every tracked variant equally.")}
             </p>
           </div>
           <div className="h-[260px]">
@@ -212,11 +215,11 @@ export default function Overview() {
       </Section>
 
       <Section
-        title="Die größten Wertzuwächse"
-        sub="Veränderung des Marktwerts in den letzten 12 Monaten"
+        title={t("Die größten Wertzuwächse", "Biggest gains")}
+        sub={t("Veränderung des Marktwerts in den letzten 12 Monaten", "Change in market value over the last 12 months")}
         actions={
           <Link to="/modelle" className="link text-[14px]">
-            Alle Modelle
+            {t("Alle Modelle", "All models")}
           </Link>
         }
       >
@@ -253,17 +256,17 @@ export default function Overview() {
 
       <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
         <Section
-          title="Bemerkenswerte Verkäufe"
-          sub="Die höchsten Zuschläge der letzten 30 Tage"
+          title={t("Bemerkenswerte Verkäufe", "Notable sales")}
+          sub={t("Die höchsten Zuschläge der letzten 30 Tage", "The highest hammer prices of the last 30 days")}
           actions={
             <Link to="/auktionen" className="link text-[14px]">
-              Alle Ergebnisse
+              {t("Alle Ergebnisse", "All results")}
             </Link>
           }
         >
           {notable.length === 0 ? (
             <p className="py-8 font-serif text-muted italic">
-              In den letzten 30 Tagen wurden keine Verkäufe erfasst.
+              {t("In den letzten 30 Tagen wurden keine Verkäufe erfasst.", "No sales were recorded in the last 30 days.")}
             </p>
           ) : (
             <ul>
@@ -293,10 +296,10 @@ export default function Overview() {
         </Section>
 
         <Section
-          title="Anstehende Auktionen"
+          title={t("Anstehende Auktionen", "Upcoming auctions")}
           actions={
             <Link to="/auktionen" className="link text-[14px]">
-              Kalender
+              {t("Kalender", "Calendar")}
             </Link>
           }
         >
@@ -312,7 +315,7 @@ export default function Overview() {
                       {new Date(e.date).getUTCDate()}
                     </div>
                     <div className="mt-1 text-[13px] text-muted">
-                      {new Date(e.date).toLocaleDateString("de-DE", {
+                      {new Date(e.date).toLocaleDateString(locale(), {
                         month: "short",
                         timeZone: "UTC",
                       })}
@@ -323,11 +326,11 @@ export default function Overview() {
                       {e.house}
                     </div>
                     <div className="truncate text-[14px] text-ink/80">
-                      {e.title}
+                      {tr(e.title)}
                     </div>
                     <div className="mt-0.5 text-[13px] text-muted">
-                      {e.city}, {e.lots.length}{" "}
-                      {e.lots.length === 1 ? "Los" : "Lose"}
+                      {tr(e.city)}, {e.lots.length}{" "}
+                      {e.lots.length === 1 ? t("Los", "lot") : t("Lose", "lots")}
                     </div>
                   </div>
                 </Link>
@@ -372,11 +375,11 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
   return (
     <div className="hero-bleed flex items-stretch border-b border-line bg-panel">
       <div className="hidden shrink-0 items-center border-r border-line px-5 text-[12px] tracking-[0.16em] text-muted uppercase sm:flex sm:px-8">
-        Zuletzt verkauft
+        {t("Zuletzt verkauft", "Just sold")}
       </div>
       <div
         className="ticker relative min-w-0 flex-1 overflow-hidden py-3.5"
-        aria-label="Zuletzt verkaufte Fahrzeuge"
+        aria-label={t("Zuletzt verkaufte Fahrzeuge", "Recently sold cars")}
       >
         <ul
           className="ticker-track flex w-max"

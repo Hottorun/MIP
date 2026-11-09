@@ -1,11 +1,15 @@
 import { brandById, generationById, generations, modelById, variantById, variants } from "./db";
 import { AS_OF, CONDITION_FACTOR, CONDITION_SCORE, WEEK, WEEKS, SERIES_START, getSales, getSeries } from "./generate";
 import type { Holding, PricePoint, Sale, Variant } from "./types";
+import { t } from "../i18n";
+import { num } from "../lib/format";
 
 /** Derived market metrics, indices and recommendations. */
 
 export type RangeKey = "1M" | "6M" | "1J" | "5J" | "10J" | "Max";
 export const RANGES: RangeKey[] = ["1M", "6M", "1J", "5J", "10J", "Max"];
+/** Range buttons with labels in the current language (J = Jahr → Y = year). */
+export const rangeOptions = (keys: RangeKey[] = RANGES) => keys.map((value) => ({ value, label: t(value, value.replace("J", "Y")) }));
 const RANGE_WEEKS: Record<RangeKey, number> = { "1M": 5, "6M": 26, "1J": 52, "5J": 260, "10J": 520, Max: Infinity };
 
 export function sliceRange<T extends { t: number }>(series: T[], range: RangeKey): T[] {
@@ -232,26 +236,34 @@ export function getMetrics(variantId: string): Metrics {
     premiumVsEstimate: stats.premiumVsEstimate,
     sales12m: sales12.length,
     recommendation,
-    thesis: "",
+    // Built on read, so it follows the interface language.
+    get thesis() {
+      return buildThesis(v, m);
+    },
   };
-  m.thesis = buildThesis(v, m);
   metricsCache.set(variantId, m);
   return m;
 }
 
 function buildThesis(v: Variant, m: Metrics): string {
   const parts: string[] = [];
-  if (m.rarityScore >= 80) parts.push(`Hohe Seltenheit (${v.production.toLocaleString("de-DE")} Stück)`);
-  else if (m.rarityScore >= 55) parts.push(`Begrenzte Stückzahl (${v.production.toLocaleString("de-DE")} Stück)`);
-  else parts.push(`Breite Basis (${v.production.toLocaleString("de-DE")} Stück), gute Vergleichbarkeit`);
-  if (m.momentum === "Stark") parts.push("starke Nachfrage");
-  else if (m.momentum === "Moderat") parts.push("solide Nachfrage");
-  else if (m.momentum === "Schwach") parts.push("aktuell nachlassende Nachfrage");
-  if (m.cagr5 > 0.08) parts.push("überdurchschnittliche Wertentwicklung");
-  else if (m.cagr5 > 0.04) parts.push("stetige Wertentwicklung");
-  if (m.liquidity >= 60) parts.push("liquider Markt");
-  else if (m.liquidity < 35) parts.push("dünner Markt mit längeren Verkaufszeiten");
-  const tail = m.recommendation.code === "BUY" ? "langfristig wertstabil." : m.recommendation.code === "HOLD" ? "Bestand halten, Zukauf nur unter Marktwert." : "Einstieg erst bei klarerem Trend.";
+  const units = num(v.production);
+  if (m.rarityScore >= 80) parts.push(t(`Hohe Seltenheit (${units} Stück)`, `Very rare (${units} built)`));
+  else if (m.rarityScore >= 55) parts.push(t(`Begrenzte Stückzahl (${units} Stück)`, `Limited production (${units} built)`));
+  else parts.push(t(`Breite Basis (${units} Stück), gute Vergleichbarkeit`, `Large production (${units} built), easy to compare`));
+  if (m.momentum === "Stark") parts.push(t("starke Nachfrage", "strong demand"));
+  else if (m.momentum === "Moderat") parts.push(t("solide Nachfrage", "solid demand"));
+  else if (m.momentum === "Schwach") parts.push(t("aktuell nachlassende Nachfrage", "demand currently easing"));
+  if (m.cagr5 > 0.08) parts.push(t("überdurchschnittliche Wertentwicklung", "above-average value growth"));
+  else if (m.cagr5 > 0.04) parts.push(t("stetige Wertentwicklung", "steady value growth"));
+  if (m.liquidity >= 60) parts.push(t("liquider Markt", "liquid market"));
+  else if (m.liquidity < 35) parts.push(t("dünner Markt mit längeren Verkaufszeiten", "thin market with longer selling times"));
+  const tail =
+    m.recommendation.code === "BUY"
+      ? t("langfristig wertstabil.", "holds its value over the long run.")
+      : m.recommendation.code === "HOLD"
+        ? t("Bestand halten, Zukauf nur unter Marktwert.", "hold, only add below market value.")
+        : t("Einstieg erst bei klarerem Trend.", "wait for a clearer trend before buying.");
   return `${parts.join(", ")} – ${tail}`;
 }
 

@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { StoreProvider } from "./state/store";
 import { LiveListingsProvider } from "./state/liveListings";
 import { App } from "./App";
+import { LangProvider } from "./i18n";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -11,7 +12,9 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <StoreProvider>
         <LiveListingsProvider>
-          <App />
+          <LangProvider>
+            <App />
+          </LangProvider>
         </LiveListingsProvider>
       </StoreProvider>
     </BrowserRouter>

@@ -8,6 +8,7 @@ import { ValuePanel } from "../components/market/ValuePanel";
 import { Details } from "../components/market/FactCards";
 import { Assessment, RecentSales } from "../components/market/SalesSection";
 import { Listings } from "../components/market/BottomRow";
+import { appTitle, t } from "../i18n";
 
 export default function Market() {
   const { variantId } = useParams();
@@ -20,17 +21,19 @@ export default function Market() {
       document.title = `${variantTitle(variant)} – MOTRKT`;
     }
     return () => {
-      document.title = "MOTRKT – Marktintelligenz für klassische Sportwagen";
+      document.title = appTitle();
     };
   }, [variant, setLastVariant]);
 
   if (!variant) {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
-        <h1 className="font-display text-3xl">Nicht im Katalog</h1>
-        <p className="mt-3 text-muted">Dieses Fahrzeug führen wir nicht. Im Modellkatalog findest du alle erfassten Varianten.</p>
+        <h1 className="font-display text-3xl">{t("Nicht im Katalog", "Not in the catalogue")}</h1>
+        <p className="mt-3 text-muted">
+          {t("Dieses Fahrzeug führen wir nicht. Im Modellkatalog findest du alle erfassten Varianten.", "We don’t cover this car. The model catalogue lists every variant we track.")}
+        </p>
         <Link to="/modelle" className="btn btn-gold mt-8">
-          Zum Modellkatalog
+          {t("Zum Modellkatalog", "Go to the model catalogue")}
         </Link>
       </div>
     );

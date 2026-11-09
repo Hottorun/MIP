@@ -4,6 +4,8 @@ import { variantById, variantShortTitle } from "../data/db";
 import { AS_OF, DAY, getAuctionEvents, getSales } from "../data/generate";
 import { getMetrics } from "../data/market";
 import { date, eur, pct } from "../lib/format";
+import { t } from "../i18n";
+import { tr } from "../i18n/terms";
 
 export type Notification = {
   id: string;
@@ -28,8 +30,11 @@ export function useNotifications() {
         items.push({
           id: `alert:${a.id}`,
           kind: "alert",
-          title: `Preisalarm: ${variantShortTitle(v)}`,
-          body: `Marktwert ${a.direction === "above" ? "über" : "unter"} ${eur(a.threshold)} – aktuell ${eur(value)}`,
+          title: `${t("Preisalarm", "Price alert")}: ${variantShortTitle(v)}`,
+          body: t(
+            `Marktwert ${a.direction === "above" ? "über" : "unter"} ${eur(a.threshold)} – aktuell ${eur(value)}`,
+            `Market value ${a.direction === "above" ? "above" : "below"} ${eur(a.threshold)} – now ${eur(value)}`,
+          ),
           time: AS_OF,
           href: `/markt/${v.id}`,
         });
@@ -44,8 +49,8 @@ export function useNotifications() {
         items.push({
           id: `sale:${s.id}:${s.variantId}`,
           kind: "sale",
-          title: `${s.trend > 0 ? "Überdurchschnittlicher" : "Schwacher"} Verkauf: ${variantShortTitle(v)}`,
-          body: `${eur(s.price)} bei ${s.house} (${pct(s.trend)} ggü. Marktwert)`,
+          title: `${s.trend > 0 ? t("Überdurchschnittlicher Verkauf", "Strong sale") : t("Schwacher Verkauf", "Weak sale")}: ${variantShortTitle(v)}`,
+          body: t(`${eur(s.price)} bei ${s.house} (${pct(s.trend)} ggü. Marktwert)`, `${eur(s.price)} at ${s.house} (${pct(s.trend)} vs. market value)`),
           time: s.date,
           href: `/markt/${v.id}`,
         });
@@ -59,8 +64,8 @@ export function useNotifications() {
         items.push({
           id: `lot:${e.id}:${lot.lotNo}`,
           kind: "auction",
-          title: `Watchlist-Fahrzeug im Katalog: ${variantShortTitle(v)}`,
-          body: `${e.house} ${e.title}, Los ${lot.lotNo} · ${date(e.date)} · Schätzung ${eur(lot.estimateLow, { compact: true })}–${eur(lot.estimateHigh, { compact: true })}`,
+          title: `${t("Watchlist-Fahrzeug im Katalog", "Watchlist car in a catalogue")}: ${variantShortTitle(v)}`,
+          body: `${e.house} ${tr(e.title)}, ${t("Los", "Lot")} ${lot.lotNo} · ${date(e.date)} · ${t("Schätzung", "Estimate")} ${eur(lot.estimateLow, { compact: true })}–${eur(lot.estimateHigh, { compact: true })}`,
           time: e.date,
           href: `/auktionen?event=${e.id}`,
         });

@@ -5,6 +5,8 @@ import { launchPhotos, officialLinks, realData, type Photo } from "./real";
 import { isBrandEnabled } from "../config";
 import { OPTIONS } from "./options";
 import { marketBasis } from "./real/model";
+import { t } from "../i18n";
+import { tr } from "../i18n/terms";
 
 /** Normalised catalog: brands → models → generations → variants, plus lookup maps. */
 
@@ -127,11 +129,11 @@ function marketPhotos(id: string): Photo[] {
 }
 
 /** Model families in menu order; models sort by family first, then by first build year. */
-export const MODEL_CATEGORIES: { id: ModelCategory; label: string }[] = [
-  { id: "heck", label: "Heckmotor" },
-  { id: "mittel", label: "Mittelmotor" },
-  { id: "super", label: "Supersportwagen" },
-  { id: "motorsport", label: "Motorsport" },
+export const MODEL_CATEGORIES: { id: ModelCategory; readonly label: string }[] = [
+  { id: "heck", get label() { return t("Heckmotor", "Rear-engined"); } },
+  { id: "mittel", get label() { return t("Mittelmotor", "Mid-engined"); } },
+  { id: "super", get label() { return t("Supersportwagen", "Supercars"); } },
+  { id: "motorsport", get label() { return "Motorsport"; } },
 ];
 const categoryIndex = (c: ModelCategory) => MODEL_CATEGORIES.findIndex((x) => x.id === c);
 
@@ -302,6 +304,11 @@ function includesModel(v: Variant, modelName: string) {
   return n.includes(` ${modelName} `);
 }
 
+/** Display names: German words in model, generation and variant names ("F-Modell", "25 Jahre") in the current language. */
+export const modelName = (m: Model) => tr(m.name);
+export const genName = (g: Generation) => tr(g.name);
+export const variantName = (v: Variant) => tr(v.name);
+
 /** "Porsche 911 (964) Carrera RS", "Porsche Boxster Spyder (987.2)", "Porsche 718 Spyder", "Porsche 959 Komfort" */
 export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string {
   const brand = brandById.get(v.brandId)!;
@@ -310,10 +317,10 @@ export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string
   const parts: string[] = [];
   if (opts.brand !== false) parts.push(brand.name);
   // Race cars carry their own names ("Porsche 917 K"); the motorsport groups are only for the menus.
-  if (model.category === "motorsport") return [...parts, v.name].join(" ");
-  const genSuffix = gen.name !== model.name ? ` (${gen.name})` : "";
-  if (includesModel(v, model.name)) parts.push(`${v.name}${genSuffix}`);
-  else parts.push(`${model.name}${genSuffix}`, v.name);
+  if (model.category === "motorsport") return [...parts, variantName(v)].join(" ");
+  const genSuffix = gen.name !== model.name ? ` (${genName(gen)})` : "";
+  if (includesModel(v, model.name)) parts.push(`${variantName(v)}${genSuffix}`);
+  else parts.push(`${modelName(model)}${genSuffix}`, variantName(v));
   return parts.join(" ");
 }
 
@@ -321,10 +328,10 @@ export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string
 export function variantShortTitle(v: Variant): string {
   const model = modelById.get(v.modelId)!;
   const gen = generationById.get(v.generationId)!;
-  if (model.category === "motorsport") return v.name;
+  if (model.category === "motorsport") return variantName(v);
   const multiGen = model.generationIds.length > 1;
-  if (includesModel(v, model.name)) return multiGen ? `${v.name} (${gen.name})` : v.name;
-  return multiGen ? `${gen.name} ${v.name}` : `${model.name} ${v.name}`;
+  if (includesModel(v, model.name)) return multiGen ? `${variantName(v)} (${genName(gen)})` : variantName(v);
+  return multiGen ? `${genName(gen)} ${variantName(v)}` : `${modelName(model)} ${variantName(v)}`;
 }
 
 export function variantsOfModel(modelId: string): Variant[] {
@@ -340,7 +347,7 @@ export function paintsFor(brandId: string) {
 }
 
 export function yearsLabel([a, b]: [number, number | null]): string {
-  if (b === null) return `${a}–heute`;
+  if (b === null) return `${a}–${t("heute", "today")}`;
   return a === b ? `${a}` : `${a}–${b}`;
 }
 

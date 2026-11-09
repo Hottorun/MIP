@@ -1,19 +1,21 @@
 import { useMemo, useState } from "react";
 import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { modelById } from "../../data/db";
+import { modelById, modelName } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { AS_OF, WEEK, getSeries } from "../../data/generate";
 import { SEGMENT_LABEL, marketBasis } from "../../data/real/model";
 import { getMetrics, modelIndex, type RangeKey } from "../../data/market";
 import { date, eur, num, pct, trendClass } from "../../lib/format";
 import { ChartTooltipBox, Section, Segmented, axisProps } from "../ui";
+import { t } from "../../i18n";
+import { tr } from "../../i18n/terms";
 
 const RANGE_WEEKS: Partial<Record<RangeKey, number>> = { "1J": 52, "5J": 260, "10J": 520, Max: 10_000 };
 const RANGE_OPTIONS = [
-  { value: "1J" as const, label: "1 Jahr" },
-  { value: "5J" as const, label: "5 Jahre" },
-  { value: "10J" as const, label: "10 Jahre" },
-  { value: "Max" as const, label: "Gesamt" },
+  { value: "1J" as const, get label() { return t("1 Jahr", "1 year"); } },
+  { value: "5J" as const, get label() { return t("5 Jahre", "5 years"); } },
+  { value: "10J" as const, get label() { return t("10 Jahre", "10 years"); } },
+  { value: "Max" as const, get label() { return t("Gesamt", "All"); } },
 ];
 
 export function ValuePanel({ variant }: { variant: Variant }) {
@@ -52,13 +54,13 @@ export function ValuePanel({ variant }: { variant: Variant }) {
 
   const label = RANGE_OPTIONS.find((o) => o.value === range)!.label;
   const stats = [
-    { label: range === "Max" ? "Seit Beginn der Daten" : `Veränderung über ${label}`, value: <span className={trendClass(change)}>{pct(change)}</span> },
-    { label: "Pro Jahr, letzte 5 Jahre", value: pct(m.cagr5) },
-    { label: "Verkäufe, letzte 12 Monate", value: num(m.sales12m) },
+    { label: range === "Max" ? t("Seit Beginn der Daten", "Since the data begins") : t(`Veränderung über ${label}`, `Change over ${label}`), value: <span className={trendClass(change)}>{pct(change)}</span> },
+    { label: t("Pro Jahr, letzte 5 Jahre", "Per year, last 5 years"), value: pct(m.cagr5) },
+    { label: t("Verkäufe, letzte 12 Monate", "Sales, last 12 months"), value: num(m.sales12m) },
   ];
 
   return (
-    <Section title="Wertentwicklung" actions={<Segmented options={RANGE_OPTIONS} value={range} onChange={setRange} />}>
+    <Section title={t("Wertentwicklung", "Value history")} actions={<Segmented options={RANGE_OPTIONS} value={range} onChange={setRange} />}>
       <div className="h-[300px] sm:h-[340px]">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 10, right: 4, bottom: 0, left: 0 }}>
@@ -75,7 +77,7 @@ export function ValuePanel({ variant }: { variant: Variant }) {
               content={({ active, payload }) => {
                 if (!active || !payload?.length) return null;
                 const p = payload[0].payload as (typeof data)[number];
-                return <ChartTooltipBox title={date(p.t)} rows={[{ label: "Marktwert", value: eur(p.price) }]} />;
+                return <ChartTooltipBox title={date(p.t)} rows={[{ label: t("Marktwert", "Market value"), value: eur(p.price) }]} />;
               }}
             />
             <Line type="monotone" dataKey="model" stroke="var(--color-faint)" strokeDasharray="3 4" strokeWidth={1} dot={false} isAnimationActive={false} />
@@ -84,7 +86,8 @@ export function ValuePanel({ variant }: { variant: Variant }) {
         </ResponsiveContainer>
       </div>
       <p className="mt-3 flex items-center gap-2 text-[13px] text-muted">
-        <span className="inline-block w-5 border-t border-dashed border-faint" /> Alle {model.name}-Varianten zum Vergleich, auf denselben Startwert gesetzt
+        <span className="inline-block w-5 border-t border-dashed border-faint" />{" "}
+        {t(`Alle ${modelName(model)}-Varianten zum Vergleich, auf denselben Startwert gesetzt`, `All ${modelName(model)} variants for comparison, rebased to the same starting value`)}
       </p>
       <BasisNote variant={variant} />
       <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line pt-6 sm:grid-cols-3">
@@ -103,14 +106,20 @@ export function ValuePanel({ variant }: { variant: Variant }) {
 function BasisNote({ variant }: { variant: Variant }) {
   const b = marketBasis(variant.id);
   if (!b) return null;
-  const segment = SEGMENT_LABEL[b.segment] ?? b.segment;
+  const segment = tr(SEGMENT_LABEL[b.segment] ?? b.segment);
   return (
     <p className="mt-2 text-[12.5px] leading-relaxed text-faint">
       {b.n === 0
-        ? `Keine belegten Verkäufe seit 2015: Niveau geschätzt, Verlauf folgt dem Index „${segment}“.`
+        ? t(`Keine belegten Verkäufe seit 2015: Niveau geschätzt, Verlauf folgt dem Index „${segment}“.`, `No recorded sales since 2015: level estimated, the curve follows the “${segment}” index.`)
         : b.own
-          ? `Verlauf aus ${num(b.n)} Auktionsergebnissen dieser Variante (geglätteter Median, zeitlich gewichtet), eingebettet in den Index „${segment}“.`
-          : `Niveau aus ${num(b.n)} Auktionsergebnissen dieser Variante; für einen eigenen Verlauf sind es zu wenige, er folgt dem Index „${segment}“.`}
+          ? t(
+              `Verlauf aus ${num(b.n)} Auktionsergebnissen dieser Variante (geglätteter Median, zeitlich gewichtet), eingebettet in den Index „${segment}“.`,
+              `Curve from ${num(b.n)} auction results for this variant (smoothed median, time-weighted), embedded in the “${segment}” index.`,
+            )
+          : t(
+              `Niveau aus ${num(b.n)} Auktionsergebnissen dieser Variante; für einen eigenen Verlauf sind es zu wenige, er folgt dem Index „${segment}“.`,
+              `Level from ${num(b.n)} auction results for this variant; too few for a curve of its own, so it follows the “${segment}” index.`,
+            )}
     </p>
   );
 }

@@ -4,23 +4,23 @@ import { Bell, CornerDownLeft, Menu, RotateCcw, Search, X, CheckCircle2, AlertCi
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
-import { cn, date } from "../lib/format";
+import { cn, date, num } from "../lib/format";
+import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
 import { MODEL_SALES_TOTAL } from "../data/real/model";
 
 const NAV_LEFT = [
-  { to: "/markt", label: "Markt" },
-  { to: "/modelle", label: "Modelle" },
-  { to: "/auktionen", label: "Auktionen" },
-  { to: "/kaufen", label: "Kaufen" },
+  { to: "/markt", get label() { return t("Markt", "Market"); } },
+  { to: "/modelle", get label() { return t("Modelle", "Models"); } },
+  { to: "/auktionen", get label() { return t("Auktionen", "Auctions"); } },
+  { to: "/kaufen", get label() { return t("Kaufen", "Buy"); } },
 ];
 const NAV_RIGHT = [
   { to: "/insights", label: "Insights" },
   { to: "/ai", label: "Co-Pilot" },
   { to: "/portfolio", label: "Portfolio" },
 ];
-const AS_OF_LABEL = date(AS_OF);
 
 export function Layout() {
   const { pathname } = useLocation();
@@ -30,16 +30,19 @@ export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="bg-ink px-4 py-2 text-center text-[12.5px] tracking-[0.02em] text-bg/85">
-        Marktdaten vom {AS_OF_LABEL}.
+        {t("Marktdaten vom", "Market data as of")} {date(AS_OF)}.
         <span className="hidden sm:inline">
           {" "}
-          Marktwerte aus {MODEL_SALES_TOTAL.toLocaleString("de-DE")} Auktionsergebnissen seit 2015; Inserate und kommende Auktionen sind Demo-Daten.
+          {t(
+            `Marktwerte aus ${num(MODEL_SALES_TOTAL)} Auktionsergebnissen seit 2015; Inserate und kommende Auktionen sind Demo-Daten.`,
+            `Market values from ${num(MODEL_SALES_TOTAL)} auction results since 2015; listings and upcoming auctions are demo data.`,
+          )}
         </span>
       </div>
       <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-[1360px] px-5 py-8 sm:px-8 lg:py-12">
-          <Suspense fallback={<div className="py-24 text-center font-serif text-muted italic">Einen Moment …</div>}>
+          <Suspense fallback={<div className="py-24 text-center font-serif text-muted italic">{t("Einen Moment …", "One moment …")}</div>}>
             <Outlet />
           </Suspense>
         </div>
@@ -52,7 +55,7 @@ export function Layout() {
 
 function Wordmark({ className }: { className?: string }) {
   return (
-    <Link to="/" className={cn("font-display text-[26px] leading-none tracking-[0.18em] text-ink", className)} aria-label="MOTRKT Startseite">
+    <Link to="/" className={cn("font-display text-[26px] leading-none tracking-[0.18em] text-ink", className)} aria-label={t("MOTRKT Startseite", "MOTRKT home")}>
       MOTRKT
     </Link>
   );
@@ -96,28 +99,29 @@ function Header() {
     <header className="sticky top-0 z-30 border-b border-line bg-bg/95 backdrop-blur-sm">
       <div className="mx-auto grid h-[72px] max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-5 sm:px-8">
         <div className="flex items-center gap-7">
-          <button className="-ml-1 p-1 text-ink lg:hidden" onClick={() => setMenuOpen((o) => !o)} aria-label="Menü" aria-expanded={menuOpen}>
+          <button className="-ml-1 p-1 text-ink lg:hidden" onClick={() => setMenuOpen((o) => !o)} aria-label={t("Menü", "Menu")} aria-expanded={menuOpen}>
             {menuOpen ? <X className="size-5" strokeWidth={1.5} /> : <Menu className="size-5" strokeWidth={1.5} />}
           </button>
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Hauptnavigation">
+          <nav className="hidden items-center gap-7 lg:flex" aria-label={t("Hauptnavigation", "Main navigation")}>
             {NAV_LEFT.map((n) => (
-              <NavItem key={n.to} {...n} />
+              <NavItem key={n.to} to={n.to} label={n.label} />
             ))}
           </nav>
         </div>
         <Wordmark />
         <div className="flex items-center justify-end gap-7">
-          <nav className="hidden items-center gap-7 xl:flex" aria-label="Weitere Bereiche">
+          <nav className="hidden items-center gap-7 xl:flex" aria-label={t("Weitere Bereiche", "More sections")}>
             {NAV_RIGHT.map((n) => (
-              <NavItem key={n.to} {...n} />
+              <NavItem key={n.to} to={n.to} label={n.label} />
             ))}
           </nav>
           <div className="flex items-center gap-1">
-            <button className="p-2 text-ink transition-colors hover:text-gold" onClick={() => setSearchOpen(true)} aria-label="Suche öffnen">
+            <button className="p-2 text-ink transition-colors hover:text-gold" onClick={() => setSearchOpen(true)} aria-label={t("Suche öffnen", "Open search")}>
               <Search className="size-[19px]" strokeWidth={1.5} />
             </button>
             <NotificationBell />
             <UserMenu />
+            <LangSwitch className="ml-1 hidden sm:flex" />
           </div>
         </div>
       </div>
@@ -126,17 +130,21 @@ function Header() {
           <ul className="grid grid-cols-2 gap-x-6 gap-y-3 font-serif text-lg sm:grid-cols-4">
             {[...NAV_LEFT, ...NAV_RIGHT].map((n) => (
               <li key={n.to}>
-                <NavItem {...n} />
+                <NavItem to={n.to} label={n.label} />
               </li>
             ))}
           </ul>
+          <div className="mt-4 flex items-center justify-between border-t border-line pt-3 sm:hidden">
+            <span className="text-[13px] text-muted">{t("Sprache", "Language")}</span>
+            <LangSwitch />
+          </div>
         </nav>
       )}
       {!menuOpen && (
-        <nav className="hidden border-t border-line px-5 py-2.5 sm:px-8 lg:block xl:hidden" aria-label="Weitere Bereiche">
+        <nav className="hidden border-t border-line px-5 py-2.5 sm:px-8 lg:block xl:hidden" aria-label={t("Weitere Bereiche", "More sections")}>
           <div className="mx-auto flex max-w-[1360px] justify-end gap-7">
             {NAV_RIGHT.map((n) => (
-              <NavItem key={n.to} {...n} />
+              <NavItem key={n.to} to={n.to} label={n.label} />
             ))}
           </div>
         </nav>
@@ -186,17 +194,17 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                 onClose();
               }
             }}
-            placeholder="Modell, Variante, FIN oder Auktions-ID"
+            placeholder={t("Modell, Variante, FIN oder Auktions-ID", "Model, variant, VIN or auction ID")}
             className="min-w-0 flex-1 bg-transparent font-serif text-[22px] placeholder:text-faint focus:outline-none"
-            aria-label="Suche"
+            aria-label={t("Suche", "Search")}
           />
-          <button onClick={onClose} aria-label="Suche schließen" className="text-muted hover:text-ink">
+          <button onClick={onClose} aria-label={t("Suche schließen", "Close search")} className="text-muted hover:text-ink">
             <X className="size-5" strokeWidth={1.5} />
           </button>
         </div>
         {q.trim().length >= 2 ? (
           hits.length === 0 ? (
-            <p className="py-8 text-center font-serif text-muted italic">Keine Treffer für „{q}“.</p>
+            <p className="py-8 text-center font-serif text-muted italic">{t(`Keine Treffer für „${q}“.`, `No results for “${q}”.`)}</p>
           ) : (
             <ul className="mt-3 max-h-[55vh] overflow-y-auto">
               {hits.map((h, i) => (
@@ -219,7 +227,9 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
             </ul>
           )
         ) : (
-          <p className="mt-3 text-[13px] text-faint">Zum Beispiel „Carrera RS“, „993 Turbo“ oder eine Auktions-ID wie „RMS-25“.</p>
+          <p className="mt-3 text-[13px] text-faint">
+            {t("Zum Beispiel „Carrera RS“, „993 Turbo“ oder eine Auktions-ID wie „RMS-25“.", "For example “Carrera RS”, “993 Turbo” or an auction ID like “RMS-25”.")}
+          </p>
         )}
       </div>
     </div>
@@ -250,20 +260,20 @@ function NotificationBell() {
   const icon = { alert: AlertCircle, sale: TrendingUp, auction: Gavel };
   return (
     <div className="relative" ref={ref}>
-      <button className="relative p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label={`Benachrichtigungen (${unread} ungelesen)`}>
+      <button className="relative p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label={t(`Benachrichtigungen (${unread} ungelesen)`, `Notifications (${unread} unread)`)}>
         <Bell className="size-[19px]" strokeWidth={1.5} />
         {unread > 0 && <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-gold" />}
       </button>
       {open && (
         <div className={cn(dropdown, "w-[min(92vw,380px)] overflow-hidden")}>
           <div className="flex items-baseline justify-between border-b border-line px-5 py-3">
-            <span className="font-serif text-[17px]">Benachrichtigungen</span>
+            <span className="font-serif text-[17px]">{t("Benachrichtigungen", "Notifications")}</span>
             <button className="text-[13px] text-muted hover:text-ink disabled:opacity-40" disabled={!unread} onClick={() => markNotificationsRead(items.map((n) => n.id))}>
-              Alle gelesen
+              {t("Alle gelesen", "Mark all read")}
             </button>
           </div>
           {items.length === 0 ? (
-            <div className="px-5 py-8 text-center text-[14px] text-muted">Noch nichts Neues. Preisalarme legst du auf der Seite eines Fahrzeugs an.</div>
+            <div className="px-5 py-8 text-center text-[14px] text-muted">{t("Noch nichts Neues. Preisalarme legst du auf der Seite eines Fahrzeugs an.", "Nothing new yet. You can set price alerts on a car's page.")}</div>
           ) : (
             <ul className="max-h-[60vh] overflow-y-auto">
               {items.map((n) => {
@@ -305,20 +315,23 @@ function UserMenu() {
   const item = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[14px] hover:bg-panel-2";
   return (
     <div className="relative" ref={ref}>
-      <button className="p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label="Konto">
+      <button className="p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label={t("Konto", "Account")}>
         <User className="size-[19px]" strokeWidth={1.5} />
       </button>
       {open && (
         <div className={cn(dropdown, "w-64 py-2")}>
           <div className="px-3 pt-1 pb-2">
-            <div className="font-serif text-[16px]">Demo-Konto</div>
+            <div className="font-serif text-[16px]">{t("Demo-Konto", "Demo account")}</div>
             <div className="text-[13px] text-muted">
-              {portfolio.length} Fahrzeuge, {watchlist.length} beobachtet, {alerts.length} Alarme
+              {t(
+                `${portfolio.length} Fahrzeuge, ${watchlist.length} beobachtet, ${alerts.length} Alarme`,
+                `${portfolio.length} cars, ${watchlist.length} watched, ${alerts.length} alerts`,
+              )}
             </div>
           </div>
           <div className="my-1 border-t border-line" />
           <Link to="/portfolio" className={item} onClick={() => setOpen(false)}>
-            Mein Portfolio
+            {t("Mein Portfolio", "My portfolio")}
           </Link>
           <button
             className={item}
@@ -327,19 +340,19 @@ function UserMenu() {
               setOpen(false);
             }}
           >
-            <Upload className="size-3.5 text-muted" /> Verkäufe importieren (CSV)
+            <Upload className="size-3.5 text-muted" /> {t("Verkäufe importieren (CSV)", "Import sales (CSV)")}
           </button>
           <button
             className={cn(item, "text-down")}
             onClick={() => {
-              if (confirm("Portfolio, Watchlist, Alarme und Chatverlauf auf die Demo-Daten zurücksetzen?")) {
+              if (confirm(t("Portfolio, Watchlist, Alarme und Chatverlauf auf die Demo-Daten zurücksetzen?", "Reset portfolio, watchlist, alerts and chat history to the demo data?"))) {
                 resetAll();
-                toast("Demo-Daten wiederhergestellt", "info");
+                toast(t("Demo-Daten wiederhergestellt", "Demo data restored"), "info");
                 setOpen(false);
               }
             }}
           >
-            <RotateCcw className="size-3.5" /> Demo-Daten zurücksetzen
+            <RotateCcw className="size-3.5" /> {t("Demo-Daten zurücksetzen", "Reset demo data")}
           </button>
         </div>
       )}
@@ -348,13 +361,39 @@ function UserMenu() {
   );
 }
 
+/** "DE | EN": switches the interface language; the choice is stored in the browser. */
+function LangSwitch({ className }: { className?: string }) {
+  const { lang, setLang } = useLang();
+  const opt = (l: Lang, label: string, name: string) => (
+    <button
+      type="button"
+      onClick={() => setLang(l)}
+      aria-pressed={lang === l}
+      aria-label={name}
+      lang={l}
+      className={cn("px-1 py-1 transition-colors", lang === l ? "text-ink" : "text-faint hover:text-ink")}
+    >
+      {label}
+    </button>
+  );
+  return (
+    <div className={cn("flex items-center text-[12.5px] tracking-[0.08em]", className)} role="group" aria-label={t("Sprache", "Language")}>
+      {opt("de", "DE", "Deutsch")}
+      <span className="text-line-2" aria-hidden>
+        |
+      </span>
+      {opt("en", "EN", "English")}
+    </div>
+  );
+}
+
 function Footer() {
   const { lastVariantId } = useStore();
   const links = [
-    { to: `/markt/${lastVariantId}`, label: "Markt" },
-    { to: "/modelle", label: "Modelle" },
-    { to: "/auktionen", label: "Auktionen" },
-    { to: "/kaufen", label: "Kaufen" },
+    { to: `/markt/${lastVariantId}`, label: t("Markt", "Market") },
+    { to: "/modelle", label: t("Modelle", "Models") },
+    { to: "/auktionen", label: t("Auktionen", "Auctions") },
+    { to: "/kaufen", label: t("Kaufen", "Buy") },
     { to: "/insights", label: "Insights" },
     { to: "/portfolio", label: "Portfolio" },
   ];
@@ -363,7 +402,9 @@ function Footer() {
       <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <div className="font-display text-[22px] tracking-[0.18em]">MOTRKT</div>
-          <p className="mt-3 max-w-xs font-serif text-[15px] leading-relaxed text-muted italic">Marktwerte, Verkäufe und Angebote klassischer Sportwagen.</p>
+          <p className="mt-3 max-w-xs font-serif text-[15px] leading-relaxed text-muted italic">
+            {t("Marktwerte, Verkäufe und Angebote klassischer Sportwagen.", "Market values, sales and listings of classic sports cars.")}
+          </p>
         </div>
         <ul className="grid grid-cols-2 gap-y-2 text-[14px]">
           {links.map((l) => (
@@ -376,12 +417,13 @@ function Footer() {
         </ul>
         <div className="space-y-2 text-[13px] leading-relaxed text-muted">
           <p>
-            Marktwerte, Verläufe und Verkäufe beruhen auf {MODEL_SALES_TOTAL.toLocaleString("de-DE")} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby&apos;s,
-            Gooding, Bonhams, Broad Arrow, Artcurial), umgerechnet zum EZB-Kurs des Verkaufstags. Inserate, kommende Auktionen und Portfolio sind Demo-Daten. Keine
-            Anlageberatung.
+            {t(
+              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(MODEL_SALES_TOTAL)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial), umgerechnet zum EZB-Kurs des Verkaufstags. Inserate, kommende Auktionen und Portfolio sind Demo-Daten. Keine Anlageberatung.`,
+              `Market values, price histories and sales are based on ${num(MODEL_SALES_TOTAL)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial), converted at the ECB rate on the day of sale. Listings, upcoming auctions and the portfolio are demo data. Not investment advice.`,
+            )}
           </p>
           <Link to="/bildnachweise" className="link">
-            Bildnachweise und Quellen
+            {t("Bildnachweise und Quellen", "Image credits and sources")}
           </Link>
         </div>
       </div>
@@ -394,13 +436,13 @@ function Toasts() {
   const icons = { success: CheckCircle2, error: AlertCircle, info: Info };
   return (
     <div className="pointer-events-none fixed right-5 bottom-5 z-[60] flex flex-col gap-2">
-      {toasts.map((t) => {
-        const Icon = icons[t.tone];
+      {toasts.map((item) => {
+        const Icon = icons[item.tone];
         return (
-          <div key={t.id} className="animate-fade-in pointer-events-auto flex items-center gap-3 rounded-[2px] bg-ink px-4 py-3 text-[14px] text-bg shadow-lg">
-            <Icon className={cn("size-4", t.tone === "error" ? "text-[#e7a493]" : "text-bg/70")} strokeWidth={1.5} />
-            {t.message}
-            <button onClick={() => dismissToast(t.id)} className="ml-1 text-bg/60 hover:text-bg" aria-label="Schließen">
+          <div key={item.id} className="animate-fade-in pointer-events-auto flex items-center gap-3 rounded-[2px] bg-ink px-4 py-3 text-[14px] text-bg shadow-lg">
+            <Icon className={cn("size-4", item.tone === "error" ? "text-[#e7a493]" : "text-bg/70")} strokeWidth={1.5} />
+            {item.message}
+            <button onClick={() => dismissToast(item.id)} className="ml-1 text-bg/60 hover:text-bg" aria-label={t("Schließen", "Close")}>
               <X className="size-3.5" />
             </button>
           </div>

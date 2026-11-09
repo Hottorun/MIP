@@ -6,6 +6,8 @@ import { useLiveListings } from "../../state/liveListings";
 import { km } from "../../lib/format";
 import { CarImage } from "../CarImage";
 import { Section, Money } from "../ui";
+import { t } from "../../i18n";
+import { tr } from "../../i18n/terms";
 
 export function Listings({ variant }: { variant: Variant }) {
   const live = useLiveListings();
@@ -14,11 +16,11 @@ export function Listings({ variant }: { variant: Variant }) {
   if (listings.length === 0) return null;
   return (
     <Section
-      title="Aktuell angeboten"
-      sub={liveForVariant.length ? "Live von mobile.de" : undefined}
+      title={t("Aktuell angeboten", "Currently for sale")}
+      sub={liveForVariant.length ? t("Live von mobile.de", "Live from mobile.de") : undefined}
       actions={
         <Link to={`/kaufen?variant=${variant.id}`} className="link text-[14px]">
-          Alle {listings.length} Angebote
+          {t(`Alle ${listings.length} Angebote`, `All ${listings.length} listings`)}
         </Link>
       }
     >
@@ -46,7 +48,7 @@ export function Listings({ variant }: { variant: Variant }) {
                 <Money value={l.price} className="shrink-0 text-[16px]" />
               </div>
               <div className="mt-0.5 text-[13px] text-muted">
-                {l.year}, {km(l.mileage)}, {l.city}
+                {l.year}, {km(l.mileage)}, {tr(l.city)}
               </div>
             </Link>
           </li>

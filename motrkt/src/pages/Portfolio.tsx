@@ -4,7 +4,7 @@ import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis }
 import { Pencil, Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
-import { getMetrics, holdingValue, portfolioSeries, RANGES, sliceRange, type RangeKey } from "../data/market";
+import { getMetrics, holdingValue, portfolioSeries, rangeOptions, sliceRange, type RangeKey } from "../data/market";
 import type { Holding } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, km, pct, trendClass } from "../lib/format";
@@ -12,6 +12,8 @@ import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money } f
 import { HoldingForm } from "../components/portfolio/HoldingForm";
 import { WatchlistSection } from "../components/portfolio/Watchlist";
 import { yearTicks } from "../components/insights/palette";
+import { t } from "../i18n";
+import { tr } from "../i18n/terms";
 
 function csvCell(v: string | number) {
   const s = String(v);
@@ -50,21 +52,24 @@ export default function Portfolio() {
   const short = range === "1M" || range === "6M" || range === "1J";
 
   function exportCsv() {
-    const header = ["Fahrzeug", "Variante-ID", "Zustand", "km", "Farbe", "Kaufdatum", "Kaufpreis EUR", "Marktwert EUR", "Gewinn %", "12M %", "Gewicht %", "Notiz"];
+    const header = t(
+      ["Fahrzeug", "Variante-ID", "Zustand", "km", "Farbe", "Kaufdatum", "Kaufpreis EUR", "Marktwert EUR", "Gewinn %", "12M %", "Gewicht %", "Notiz"],
+      ["Car", "Variant ID", "Condition", "km", "Colour", "Purchase date", "Purchase price EUR", "Market value EUR", "Gain %", "12M %", "Weight %", "Note"],
+    );
     const lines = rows.map((r) =>
       [
         variantTitle(r.v),
         r.v.id,
         r.h.condition,
         r.h.mileage,
-        r.h.color,
+        tr(r.h.color),
         new Date(r.h.purchaseDate).toISOString().slice(0, 10),
         r.h.purchasePrice,
         Math.round(r.value),
         (r.gain * 100).toFixed(1),
         (r.m.change12m * 100).toFixed(1),
         ((r.value / total) * 100).toFixed(1),
-        r.h.note,
+        tr(r.h.note),
       ]
         .map(csvCell)
         .join(";"),
@@ -76,7 +81,7 @@ export default function Portfolio() {
     a.download = `motrkt-portfolio-${new Date(AS_OF).toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
-    toast("Portfolio als CSV exportiert");
+    toast(t("Portfolio als CSV exportiert", "Portfolio exported as CSV"));
   }
 
   const openAdd = () => {
@@ -90,34 +95,38 @@ export default function Portfolio() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
-            <p className="mt-1 text-[14px] text-muted">Deine Sammlung, bewertet zum aktuellen Marktwert nach Zustand.</p>
+            <p className="mt-1 text-[14px] text-muted">{t("Deine Sammlung, bewertet zum aktuellen Marktwert nach Zustand.", "Your collection, valued at today's market value for its condition.")}</p>
           </div>
           <div className="flex gap-2">
             <button className="btn" onClick={exportCsv} disabled={!rows.length}>
-              Als CSV exportieren
+              {t("Als CSV exportieren", "Export as CSV")}
             </button>
             <button className="btn btn-gold" onClick={openAdd}>
-              Fahrzeug hinzufügen
+              {t("Fahrzeug hinzufügen", "Add car")}
             </button>
           </div>
         </div>
         <dl className="mt-8 grid grid-cols-1 gap-6 border-y border-line py-6 sm:grid-cols-3">
-          <Kpi label={`Wert von ${rows.length} Fahrzeugen`} value={<Money value={total} />} />
-          <Kpi label={`Gewinn seit Kauf, Einstand ${eur(cost, { compact: true })}`} value={<Money value={total - cost} />} tone={total - cost} />
-          <Kpi label="Veränderung in 12 Monaten" value={pct(perf12)} tone={perf12} />
+          <Kpi label={t(`Wert von ${rows.length} Fahrzeugen`, `Value of ${rows.length} cars`)} value={<Money value={total} />} />
+          <Kpi label={t(`Gewinn seit Kauf, Einstand ${eur(cost, { compact: true })}`, `Gain since purchase, cost ${eur(cost, { compact: true })}`)} value={<Money value={total - cost} />} tone={total - cost} />
+          <Kpi label={t("Veränderung in 12 Monaten", "Change in 12 months")} value={pct(perf12)} tone={perf12} />
         </dl>
       </div>
 
       {rows.length === 0 ? (
         <Empty className="py-16">
-          Noch keine Fahrzeuge im Portfolio.{" "}
+          {t("Noch keine Fahrzeuge im Portfolio.", "No cars in the portfolio yet.")}{" "}
           <button className="not-italic underline underline-offset-4 hover:text-ink" onClick={openAdd}>
-            Erstes Fahrzeug hinzufügen
+            {t("Erstes Fahrzeug hinzufügen", "Add your first car")}
           </button>
         </Empty>
       ) : (
         <>
-          <Section title="Wertentwicklung" sub="Marktwert gegenüber dem Einstand (gestrichelt)" actions={<Segmented options={RANGES} value={range} onChange={setRange} />}>
+          <Section
+            title={t("Wertentwicklung", "Value history")}
+            sub={t("Marktwert gegenüber dem Einstand (gestrichelt)", "Market value against cost (dashed)")}
+            actions={<Segmented options={rangeOptions()} value={range} onChange={setRange} />}
+          >
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={chartData} margin={{ top: 8, right: 4, left: 0, bottom: 0 }}>
@@ -136,8 +145,8 @@ export default function Portfolio() {
                         <ChartTooltipBox
                           title={date(Number(label))}
                           rows={[
-                            { label: "Marktwert", value: eur(Number(payload[0]?.payload.value)) },
-                            { label: "Einstand", value: eur(Number(payload[0]?.payload.cost)) },
+                            { label: t("Marktwert", "Market value"), value: eur(Number(payload[0]?.payload.value)) },
+                            { label: t("Einstand", "Cost"), value: eur(Number(payload[0]?.payload.cost)) },
                           ]}
                         />
                       ) : null
@@ -150,18 +159,18 @@ export default function Portfolio() {
             </div>
           </Section>
 
-          <Section title="Bestand" sub={`${rows.length} Fahrzeuge`}>
+          <Section title={t("Bestand", "Holdings")} sub={t(`${rows.length} Fahrzeuge`, `${rows.length} cars`)}>
             <div className="overflow-x-auto">
               <table className="table-base">
                 <thead>
                   <tr>
-                    <th>Fahrzeug</th>
-                    <th className="text-right">Laufleistung</th>
-                    <th>Kaufdatum</th>
-                    <th className="text-right">Kaufpreis</th>
-                    <th className="text-right">Marktwert</th>
-                    <th className="text-right">Gewinn</th>
-                    <th className="text-right">12 Monate</th>
+                    <th>{t("Fahrzeug", "Car")}</th>
+                    <th className="text-right">{t("Laufleistung", "Mileage")}</th>
+                    <th>{t("Kaufdatum", "Purchased")}</th>
+                    <th className="text-right">{t("Kaufpreis", "Purchase price")}</th>
+                    <th className="text-right">{t("Marktwert", "Market value")}</th>
+                    <th className="text-right">{t("Gewinn", "Gain")}</th>
+                    <th className="text-right">{t("12 Monate", "12 months")}</th>
                     <th />
                   </tr>
                 </thead>
@@ -174,7 +183,7 @@ export default function Portfolio() {
                           <Link to={`/markt/${r.v.id}`} className="block hover:text-gold-2">
                             <span className="font-serif text-[15.5px]">{variantTitle(r.v, { brand: false })}</span>
                             <span className="block text-[12.5px] text-muted">
-                              {r.h.color}, Note {r.h.condition}
+                              {tr(r.h.color)}, {t("Note", "grade")} {r.h.condition}
                             </span>
                           </Link>
                         </td>
@@ -189,7 +198,7 @@ export default function Portfolio() {
                         <td className="text-right">
                           <button
                             className="btn btn-ghost p-1.5"
-                            aria-label="Bearbeiten"
+                            aria-label={t("Bearbeiten", "Edit")}
                             onClick={() => {
                               setEditing(r.h);
                               setFormOpen(true);
@@ -199,11 +208,11 @@ export default function Portfolio() {
                           </button>
                           <button
                             className="btn btn-ghost p-1.5 text-muted hover:text-down"
-                            aria-label="Löschen"
+                            aria-label={t("Löschen", "Delete")}
                             onClick={() => {
-                              if (confirm(`${variantTitle(r.v)} aus dem Portfolio entfernen?`)) {
+                              if (confirm(t(`${variantTitle(r.v)} aus dem Portfolio entfernen?`, `Remove ${variantTitle(r.v)} from the portfolio?`))) {
                                 removeHolding(r.h.id);
-                                toast("Fahrzeug entfernt", "info");
+                                toast(t("Fahrzeug entfernt", "Car removed"), "info");
                               }
                             }}
                           >
@@ -229,10 +238,10 @@ export default function Portfolio() {
           const v = variantById.get(h.variantId)!;
           if (editing) {
             updateHolding(editing.id, h);
-            toast(`${variantTitle(v)} aktualisiert`);
+            toast(t(`${variantTitle(v)} aktualisiert`, `${variantTitle(v)} updated`));
           } else {
             addHolding(h);
-            toast(`${variantTitle(v)} zum Portfolio hinzugefügt`);
+            toast(t(`${variantTitle(v)} zum Portfolio hinzugefügt`, `${variantTitle(v)} added to the portfolio`));
           }
           setFormOpen(false);
         }}

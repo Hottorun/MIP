@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Listing } from "../data/types";
 import { fetchGeneration, fetchMobileStatus, generationQueries } from "../lib/mobilede";
+import { t } from "../i18n";
 
 /** Live mobile.de listings for the whole (enabled) catalog, loaded once per session when the API is configured. */
 
@@ -48,12 +49,12 @@ export function LiveListingsProvider({ children }: { children: ReactNode }) {
         setError(failures[0]);
       } else {
         setStatus("ready");
-        setError(failures.length ? `${failures.length} von ${queries.length} Abfragen fehlgeschlagen: ${failures[0]}` : null);
+        setError(failures.length ? t(`${failures.length} von ${queries.length} Abfragen fehlgeschlagen: ${failures[0]}`, `${failures.length} of ${queries.length} requests failed: ${failures[0]}`) : null);
       }
     })().catch((e) => {
       if (controller.signal.aborted) return;
       setStatus("error");
-      setError(e instanceof Error ? e.message : "mobile.de nicht erreichbar");
+      setError(e instanceof Error ? e.message : t("mobile.de nicht erreichbar", "mobile.de not reachable"));
     });
     return () => controller.abort();
   }, [nonce]);

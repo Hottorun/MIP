@@ -1,5 +1,6 @@
 import { useId } from "react";
 import type { CarShape } from "../data/types";
+import { t } from "../i18n";
 
 /** Stylised SVG car illustrations — side profiles per body shape, plus detail views for the gallery. */
 
@@ -240,7 +241,7 @@ type Props = {
 export function CarArt({ shape, color, scene = "studio", view = "side", label, className }: Props) {
   const id = useId().replace(/:/g, "");
   return (
-    <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" className={className} role="img" aria-label={label ?? "Fahrzeugillustration"}>
+    <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" className={className} role="img" aria-label={label ?? t("Fahrzeugillustration", "Car illustration")}>
       {view === "side" && (
         <>
           <Backdrop scene={scene} id={id} />
@@ -293,13 +294,13 @@ export function CarArt({ shape, color, scene = "studio", view = "side", label, c
   );
 }
 
-export const GALLERY: { scene: Scene; view: Props["view"]; caption: string }[] = [
-  { scene: "mountain", view: "side", caption: "Seitenansicht · Alpenpass" },
+export const GALLERY: { scene: Scene; view: Props["view"]; readonly caption: string }[] = [
+  { scene: "mountain", view: "side", get caption() { return t("Seitenansicht · Alpenpass", "Side view · Alpine pass"); } },
   { scene: "studio", view: "side", caption: "Studio" },
   { scene: "none", view: "interior", caption: "Cockpit" },
-  { scene: "none", view: "wheel", caption: "Felge" },
-  { scene: "none", view: "badge", caption: "Schriftzug" },
-  { scene: "sunset", view: "side", caption: "Küstenstraße" },
-  { scene: "city", view: "side", caption: "Stadt bei Nacht" },
-  { scene: "track", view: "side", caption: "Rennstrecke" },
+  { scene: "none", view: "wheel", get caption() { return t("Felge", "Wheel"); } },
+  { scene: "none", view: "badge", get caption() { return t("Schriftzug", "Badge"); } },
+  { scene: "sunset", view: "side", get caption() { return t("Küstenstraße", "Coast road"); } },
+  { scene: "city", view: "side", get caption() { return t("Stadt bei Nacht", "City at night"); } },
+  { scene: "track", view: "side", get caption() { return t("Rennstrecke", "Race track"); } },
 ];

@@ -9,6 +9,8 @@ import type { AuctionEvent, Sale } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
 import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
+import { getLang, locale, t } from "../i18n";
+import { tr } from "../i18n/terms";
 
 type Source = "Alle" | "Auktion" | "Händler" | "Privat";
 type Period = "3M" | "12M" | "5J";
@@ -19,8 +21,12 @@ const PERIOD_WEEKS: Record<Period, number> = { "3M": 13, "12M": 52, "5J": 260 };
 const PAGE = 25;
 
 let titleCache: Map<string, string> | null = null;
+let titleLang = getLang();
 function titles() {
-  titleCache ??= new Map(variants.map((v) => [v.id, variantTitle(v)]));
+  if (!titleCache || titleLang !== getLang()) {
+    titleCache = new Map(variants.map((v) => [v.id, variantTitle(v)]));
+    titleLang = getLang();
+  }
   return titleCache;
 }
 
@@ -74,7 +80,7 @@ export default function Auctions() {
 
   // All filters except the period; restricted to the 5-year data window anyway.
   const base = useMemo(() => {
-    const t = text.trim().toLowerCase();
+    const q = text.trim().toLowerCase();
     const tUpper = text.trim().toUpperCase();
     const min = Number(priceMin) || 0;
     const max = Number(priceMax) || Infinity;
@@ -89,8 +95,8 @@ export default function Auctions() {
         const p = s.price ?? s.estimateLow ?? 0;
         if (p < min || p > max) return false;
       }
-      if (t) {
-        if (!(s.id.startsWith(tUpper) || s.vin.startsWith(tUpper) || s.house.toLowerCase().includes(t) || names.get(s.variantId)!.toLowerCase().includes(t))) return false;
+      if (q) {
+        if (!(s.id.startsWith(tUpper) || s.vin.startsWith(tUpper) || s.house.toLowerCase().includes(q) || names.get(s.variantId)!.toLowerCase().includes(q))) return false;
       }
       return true;
     });
@@ -135,7 +141,7 @@ export default function Auctions() {
       const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
       const key = `${d.getUTCFullYear()}-${d.getUTCMonth()}`;
       idx.set(key, rows.length);
-      rows.push({ key, label: d.toLocaleDateString("de-DE", { month: "short", year: "2-digit", timeZone: "UTC" }), lots: 0, sold: 0, rate: null });
+      rows.push({ key, label: d.toLocaleDateString(locale(), { month: "short", year: "2-digit", timeZone: "UTC" }), lots: 0, sold: 0, rate: null });
     }
     for (const s of base) {
       if (s.source !== "Auktion") continue;
@@ -175,45 +181,48 @@ export default function Auctions() {
       <div>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Auktionen</h1>
+            <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Auktionen", "Auctions")}</h1>
             <p className="mt-1 text-[14px] text-muted">
-              {num(getAllSales().length)} erfasste Verkäufe der letzten fünf Jahre und {getAuctionEvents().length} kommende Auktionen
+              {t(
+                `${num(getAllSales().length)} erfasste Verkäufe der letzten fünf Jahre und ${getAuctionEvents().length} kommende Auktionen`,
+                `${num(getAllSales().length)} recorded sales over the last five years and ${getAuctionEvents().length} upcoming auctions`,
+              )}
             </p>
           </div>
           <Segmented
             options={[
-              { value: "3M" as const, label: "3 Monate" },
-              { value: "12M" as const, label: "12 Monate" },
-              { value: "5J" as const, label: "5 Jahre" },
+              { value: "3M" as const, label: t("3 Monate", "3 months") },
+              { value: "12M" as const, label: t("12 Monate", "12 months") },
+              { value: "5J" as const, label: t("5 Jahre", "5 years") },
             ]}
             value={period}
             onChange={setPeriod}
           />
         </div>
         <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-line py-6 lg:grid-cols-4">
-          <Kpi label="Angebotene Lose" value={num(kpis.lots)} />
-          <Kpi label="Davon verkauft" value={pct(kpis.sellThrough, { signed: false, digits: 0 })} />
-          <Kpi label="Zuschlag gegenüber Schätzung" value={<Delta value={kpis.premium} arrow={false} />} />
-          <Kpi label="Umsatz" value={<Money value={kpis.revenue} compact />} />
+          <Kpi label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
+          <Kpi label={t("Davon verkauft", "Of which sold")} value={pct(kpis.sellThrough, { signed: false, digits: 0 })} />
+          <Kpi label={t("Zuschlag gegenüber Schätzung", "Hammer price vs. estimate")} value={<Delta value={kpis.premium} arrow={false} />} />
+          <Kpi label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
         </dl>
       </div>
 
       <UpcomingAuctions />
 
-      <Section title="Ergebnisse" sub={`${num(sorted.length)} Verkäufe`}>
+      <Section title={t("Ergebnisse", "Results")} sub={t(`${num(sorted.length)} Verkäufe`, `${num(sorted.length)} sales`)}>
         <div className="space-y-4">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
           <div className="col-span-2">
-            <label className="label">Suche</label>
+            <label className="label">{t("Suche", "Search")}</label>
             <div className="relative">
               <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-faint" />
-              <input className="input pl-8" value={text} onChange={(e) => setText(e.target.value)} placeholder="ID, FIN, Haus, Fahrzeug …" />
+              <input className="input pl-8" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("ID, FIN, Haus, Fahrzeug …", "ID, VIN, house, car …")} />
             </div>
           </div>
           <div className={cn(brands.length < 2 && "hidden")}>
-            <label className="label">Marke</label>
+            <label className="label">{t("Marke", "Brand")}</label>
             <select className="input" value={brand} onChange={(e) => setBrand(e.target.value)}>
-              <option value="">Alle Marken</option>
+              <option value="">{t("Alle Marken", "All brands")}</option>
               {brands.map((b) => (
                 <option key={b.id} value={b.id}>
                   {b.name}
@@ -222,17 +231,19 @@ export default function Auctions() {
             </select>
           </div>
           <div>
-            <label className="label">Quelle</label>
+            <label className="label">{t("Quelle", "Source")}</label>
             <select className="input" value={source} onChange={(e) => setSource(e.target.value as Source)}>
               {(["Alle", "Auktion", "Händler", "Privat"] as const).map((s) => (
-                <option key={s}>{s}</option>
+                <option key={s} value={s}>
+                  {s === "Alle" ? t("Alle", "All") : tr(s)}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="label">Auktionshaus</label>
+            <label className="label">{t("Auktionshaus", "Auction house")}</label>
             <select className="input" value={house} onChange={(e) => setHouse(e.target.value)}>
-              <option value="">Alle Häuser</option>
+              <option value="">{t("Alle Häuser", "All houses")}</option>
               {houses.map((h) => (
                 <option key={h}>{h}</option>
               ))}
@@ -241,39 +252,39 @@ export default function Auctions() {
           <div>
             <label className="label">Status</label>
             <select className="input" value={status} onChange={(e) => setStatus(e.target.value as Status)}>
-              <option value="alle">Alle</option>
-              <option value="verkauft">Verkauft</option>
-              <option value="nicht">Nicht verkauft</option>
+              <option value="alle">{t("Alle", "All")}</option>
+              <option value="verkauft">{t("Verkauft", "Sold")}</option>
+              <option value="nicht">{t("Nicht verkauft", "Not sold")}</option>
             </select>
           </div>
           <div>
-            <label className="label">Preis min (€)</label>
+            <label className="label">{t("Preis min (€)", "Price min (€)")}</label>
             <input className="input" inputMode="numeric" value={priceMin} onChange={(e) => setPriceMin(e.target.value.replace(/\D/g, ""))} placeholder="0" />
           </div>
           <div>
-            <label className="label">Preis max (€)</label>
+            <label className="label">{t("Preis max (€)", "Price max (€)")}</label>
             <input className="input" inputMode="numeric" value={priceMax} onChange={(e) => setPriceMax(e.target.value.replace(/\D/g, ""))} placeholder="∞" />
           </div>
         </div>
         <div className="flex justify-end">
           <button className="btn btn-ghost px-2 py-1 text-xs text-muted" onClick={resetFilters}>
-            <X className="size-3.5" /> Filter zurücksetzen
+            <X className="size-3.5" /> {t("Filter zurücksetzen", "Reset filters")}
           </button>
         </div>
 
         {rows.length === 0 ? (
-          <Empty>Keine Transaktionen für diese Filter.</Empty>
+          <Empty>{t("Keine Transaktionen für diese Filter.", "No transactions match these filters.")}</Empty>
         ) : (
           <div className="overflow-x-auto">
             <table className="table-base table-hover">
               <thead>
                 <tr>
-                  <Th k="date" sort={sort} onSort={toggleSort}>Datum</Th>
-                  <Th k="vehicle" sort={sort} onSort={toggleSort}>Fahrzeug</Th>
-                  <Th k="house" sort={sort} onSort={toggleSort}>Verkauft über</Th>
-                  <Th k="mileage" sort={sort} onSort={toggleSort} right>Laufleistung</Th>
-                  <Th k="price" sort={sort} onSort={toggleSort} right>Preis</Th>
-                  <Th k="trend" sort={sort} onSort={toggleSort} right>Zum Marktwert</Th>
+                  <Th k="date" sort={sort} onSort={toggleSort}>{t("Datum", "Date")}</Th>
+                  <Th k="vehicle" sort={sort} onSort={toggleSort}>{t("Fahrzeug", "Car")}</Th>
+                  <Th k="house" sort={sort} onSort={toggleSort}>{t("Verkauft über", "Sold via")}</Th>
+                  <Th k="mileage" sort={sort} onSort={toggleSort} right>{t("Laufleistung", "Mileage")}</Th>
+                  <Th k="price" sort={sort} onSort={toggleSort} right>{t("Preis", "Price")}</Th>
+                  <Th k="trend" sort={sort} onSort={toggleSort} right>{t("Zum Marktwert", "Vs. market value")}</Th>
                 </tr>
               </thead>
               <tbody>
@@ -285,10 +296,10 @@ export default function Auctions() {
                       <td className="font-serif">{variantTitle(v, { brand: false })}</td>
                       <td>
                         <span className="text-ink/90">{s.house}</span>
-                        {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{s.source}</span>}
+                        {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{tr(s.source)}</span>}
                       </td>
                       <td className="text-right tabular-nums">{km(s.mileage)}</td>
-                      <td className="text-right">{s.price === null ? <span className="font-sans text-[13px] text-faint italic">nicht verkauft</span> : <Money value={s.price} />}</td>
+                      <td className="text-right">{s.price === null ? <span className="font-sans text-[13px] text-faint italic">{t("nicht verkauft", "not sold")}</span> : <Money value={s.price} />}</td>
                       <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} arrow={false} />}</td>
                     </tr>
                   );
@@ -299,16 +310,16 @@ export default function Auctions() {
         )}
         <div className="flex items-center justify-between text-xs text-muted">
           <span>
-            {num(sorted.length ? page * PAGE + 1 : 0)}–{num(Math.min(sorted.length, (page + 1) * PAGE))} von {num(sorted.length)}
+            {num(sorted.length ? page * PAGE + 1 : 0)}–{num(Math.min(sorted.length, (page + 1) * PAGE))} {t("von", "of")} {num(sorted.length)}
           </span>
           <div className="flex items-center gap-1.5">
-            <button className="btn px-2 py-1" disabled={page === 0} onClick={() => setPage((p) => p - 1)} aria-label="Vorherige Seite">
+            <button className="btn px-2 py-1" disabled={page === 0} onClick={() => setPage((p) => p - 1)} aria-label={t("Vorherige Seite", "Previous page")}>
               <ChevronLeft className="size-4" />
             </button>
             <span className="tabular-nums">
-              Seite {page + 1} / {pages}
+              {t("Seite", "Page")} {page + 1} / {pages}
             </span>
-            <button className="btn px-2 py-1" disabled={page >= pages - 1} onClick={() => setPage((p) => p + 1)} aria-label="Nächste Seite">
+            <button className="btn px-2 py-1" disabled={page >= pages - 1} onClick={() => setPage((p) => p + 1)} aria-label={t("Nächste Seite", "Next page")}>
               <ChevronRight className="size-4" />
             </button>
           </div>
@@ -316,14 +327,14 @@ export default function Auctions() {
         </div>
       </Section>
 
-      <Section title="Volumen und Verkaufsquote" sub="Letzte 24 Monate, mit den gewählten Filtern">
+      <Section title={t("Volumen und Verkaufsquote", "Volume and sell-through rate")} sub={t("Letzte 24 Monate, mit den gewählten Filtern", "Last 24 months, with the selected filters")}>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={monthly} margin={{ top: 8, right: 4, left: -8, bottom: 0 }}>
               <CartesianGrid stroke="var(--color-line)" strokeDasharray="3 3" vertical={false} />
               <XAxis dataKey="label" {...axisProps} interval={2} />
               <YAxis yAxisId="lots" {...axisProps} width={44} allowDecimals={false} />
-              <YAxis yAxisId="rate" orientation="right" {...axisProps} width={44} domain={[0, 1]} tickFormatter={(v: number) => `${Math.round(v * 100)} %`} />
+              <YAxis yAxisId="rate" orientation="right" {...axisProps} width={44} domain={[0, 1]} tickFormatter={(v: number) => pct(v, { signed: false, digits: 0 })} />
               <Tooltip
                 cursor={{ fill: "var(--color-panel-3)", opacity: 0.5 }}
                 content={({ active, payload }) => {
@@ -333,9 +344,9 @@ export default function Auctions() {
                     <ChartTooltipBox
                       title={r.label}
                       rows={[
-                        { label: "Auktionslose", value: num(r.lots), color: "var(--color-gold)" },
-                        { label: "Verkauft", value: num(r.sold) },
-                        { label: "Verkaufsquote", value: r.rate === null ? "–" : pct(r.rate, { signed: false }), color: "var(--color-up)" },
+                        { label: t("Auktionslose", "Auction lots"), value: num(r.lots), color: "var(--color-gold)" },
+                        { label: t("Verkauft", "Sold"), value: num(r.sold) },
+                        { label: t("Verkaufsquote", "Sell-through rate"), value: r.rate === null ? "–" : pct(r.rate, { signed: false }), color: "var(--color-up)" },
                       ]}
                     />
                   );
@@ -385,12 +396,12 @@ function UpcomingAuctions() {
   useEffect(() => {
     if (!eventParam) return;
     setOpen(eventParam);
-    const t = setTimeout(() => refs.current.get(eventParam)?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => refs.current.get(eventParam)?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+    return () => clearTimeout(timer);
   }, [eventParam]);
 
   return (
-    <Section title="Kommende Auktionen" sub="Lose mit unserer Bewertung, zum Öffnen anklicken">
+    <Section title={t("Kommende Auktionen", "Upcoming auctions")} sub={t("Lose mit unserer Bewertung, zum Öffnen anklicken", "Lots with our valuation, click to open")}>
       <div className="space-y-4">
         <div className="grid grid-cols-1 border-t border-l border-line md:grid-cols-2 xl:grid-cols-4">
           {events.map((e) => {
@@ -407,18 +418,18 @@ function UpcomingAuctions() {
               >
                 <div className="flex items-baseline justify-between gap-2 text-[13px] text-muted">
                   <span>{date(e.date)}</span>
-                  <span>in {days} Tagen</span>
+                  <span>{t(`in ${days} Tagen`, `in ${days} days`)}</span>
                 </div>
                 <div className="mt-3 font-serif text-[18px] leading-snug">{e.house}</div>
-                <div className="truncate text-[14px] text-ink/80">{e.title}</div>
+                <div className="truncate text-[14px] text-ink/80">{tr(e.title)}</div>
                 <div className="mt-3 flex items-baseline justify-between gap-2 text-[13px] text-muted">
                   <span>
-                    {e.city}, {e.lots.length} Lose
+                    {tr(e.city)}, {e.lots.length} {t("Lose", "lots")}
                   </span>
                   <ChevronDown className={cn("size-4 self-center transition-transform", active && "rotate-180")} strokeWidth={1.5} />
                 </div>
                 <div className="mt-1 text-[13px] text-muted tabular-nums">
-                  Schätzung {eur(low, { compact: true })} bis {eur(high, { compact: true })}
+                  {t("Schätzung", "Estimate")} {eur(low, { compact: true })} {t("bis", "to")} {eur(high, { compact: true })}
                 </div>
               </button>
             );
@@ -448,21 +459,21 @@ function LotTable({ event }: { event: AuctionEvent }) {
     <>
       <div className="mb-2 flex items-center justify-between">
         <div className="text-sm font-semibold">
-          {event.house} · {event.title} <span className="font-normal text-muted">({event.city}, {date(event.date)})</span>
+          {event.house} · {tr(event.title)} <span className="font-normal text-muted">({tr(event.city)}, {date(event.date)})</span>
         </div>
       </div>
       <div className="overflow-x-auto">
         <table className="table-base">
           <thead>
             <tr>
-              <th>Los</th>
-              <th>Fahrzeug</th>
-              <th>Baujahr</th>
-              <th className="text-right">Laufleistung</th>
-              <th>Farbe</th>
-              <th className="text-right">Schätzung</th>
-              <th className="text-right">MOTRKT-Marktwert</th>
-              <th className="text-right">Schätzung vs. Markt</th>
+              <th>{t("Los", "Lot")}</th>
+              <th>{t("Fahrzeug", "Car")}</th>
+              <th>{t("Baujahr", "Year")}</th>
+              <th className="text-right">{t("Laufleistung", "Mileage")}</th>
+              <th>{t("Farbe", "Colour")}</th>
+              <th className="text-right">{t("Schätzung", "Estimate")}</th>
+              <th className="text-right">{t("MOTRKT-Marktwert", "MOTRKT market value")}</th>
+              <th className="text-right">{t("Schätzung vs. Markt", "Estimate vs. market")}</th>
               <th className="text-center">Watch</th>
             </tr>
           </thead>
@@ -486,7 +497,7 @@ function LotTable({ event }: { event: AuctionEvent }) {
                   <td>
                     <span className="flex items-center gap-1.5 text-xs">
                       <span className="inline-block size-3 rounded-full border border-white/20" style={{ background: lot.colorHex }} />
-                      {lot.color}
+                      {tr(lot.color)}
                     </span>
                   </td>
                   <td className="text-right tabular-nums">
@@ -500,9 +511,14 @@ function LotTable({ event }: { event: AuctionEvent }) {
                     <button
                       onClick={() => {
                         toggleWatch(v.id);
-                        toast(watched ? `${variantShortTitle(v)} von der Watchlist entfernt` : `${variantShortTitle(v)} zur Watchlist hinzugefügt`, watched ? "info" : "success");
+                        toast(
+                          watched
+                            ? t(`${variantShortTitle(v)} von der Watchlist entfernt`, `${variantShortTitle(v)} removed from the watchlist`)
+                            : t(`${variantShortTitle(v)} zur Watchlist hinzugefügt`, `${variantShortTitle(v)} added to the watchlist`),
+                          watched ? "info" : "success",
+                        );
                       }}
-                      aria-label={watched ? "Von Watchlist entfernen" : "Zur Watchlist"}
+                      aria-label={watched ? t("Von Watchlist entfernen", "Remove from watchlist") : t("Zur Watchlist", "Add to watchlist")}
                       className={cn("p-1", watched ? "text-gold" : "text-faint hover:text-ink")}
                     >
                       <Star className="size-4" fill={watched ? "currentColor" : "none"} />
@@ -523,26 +539,26 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
   const v = variantById.get(sale.variantId)!;
   const country = (iso: string) => (
     <span>
-      {flag(iso)} {COUNTRY_NAMES[iso] ?? iso}
+      {flag(iso)} {tr(COUNTRY_NAMES[iso]) ?? iso}
     </span>
   );
   const mid = sale.estimateLow && sale.estimateHigh ? (sale.estimateLow + sale.estimateHigh) / 2 : null;
   const rows: [string, React.ReactNode][] = [
-    ["Datum", date(sale.date)],
-    ["Quelle", `${sale.source} · ${sale.house}`],
-    ["Transaktions-ID", <span className="font-mono">{sale.id}</span>],
-    ["FIN", <span className="font-mono">{sale.vin}</span>],
-    ["Preis", sale.price === null ? <span className="text-down">nicht verkauft</span> : <Money value={sale.price} className="text-[17px]" />],
-    ["Schätzung", sale.estimateLow ? `${eur(sale.estimateLow)} – ${eur(sale.estimateHigh)}` : "–"],
-    ["Zuschlag vs. Schätzung", mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
-    ["vs. Marktwert (damals)", sale.price === null ? "–" : <Delta value={sale.trend} />],
-    ["Zustand", `Note ${sale.condition}`],
-    ["Laufleistung", km(sale.mileage)],
-    ["Farbe", sale.color],
-    ["Karosserie / Getriebe", `${sale.body} · ${sale.gearbox === "Manual" ? "Schaltgetriebe" : "Automatik"}`],
-    ["Käuferland", country(sale.buyerCountry)],
-    ["Herkunft", country(sale.originCountry)],
-    ["Auslieferungsland", country(sale.deliveryCountry)],
+    [t("Datum", "Date"), date(sale.date)],
+    [t("Quelle", "Source"), `${tr(sale.source)} · ${tr(sale.house)}`],
+    [t("Transaktions-ID", "Transaction ID"), <span className="font-mono">{sale.id}</span>],
+    [t("FIN", "VIN"), <span className="font-mono">{sale.vin}</span>],
+    [t("Preis", "Price"), sale.price === null ? <span className="text-down">{t("nicht verkauft", "not sold")}</span> : <Money value={sale.price} className="text-[17px]" />],
+    [t("Schätzung", "Estimate"), sale.estimateLow ? `${eur(sale.estimateLow)} – ${eur(sale.estimateHigh)}` : "–"],
+    [t("Zuschlag vs. Schätzung", "Hammer price vs. estimate"), mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
+    [t("vs. Marktwert (damals)", "Vs. market value (at the time)"), sale.price === null ? "–" : <Delta value={sale.trend} />],
+    [t("Zustand", "Condition"), t(`Note ${sale.condition}`, `Grade ${sale.condition}`)],
+    [t("Laufleistung", "Mileage"), km(sale.mileage)],
+    [t("Farbe", "Colour"), tr(sale.color)],
+    [t("Karosserie / Getriebe", "Body / gearbox"), `${tr(sale.body)} · ${sale.gearbox === "Manual" ? t("Schaltgetriebe", "Manual") : t("Automatik", "Automatic")}`],
+    [t("Käuferland", "Buyer country"), country(sale.buyerCountry)],
+    [t("Herkunft", "Origin"), country(sale.originCountry)],
+    [t("Auslieferungsland", "Country of first delivery"), country(sale.deliveryCountry)],
   ];
   return (
     <Modal
@@ -556,10 +572,10 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
       footer={
         <>
           <button className="btn" onClick={onClose}>
-            Schließen
+            {t("Schließen", "Close")}
           </button>
           <Link to={`/markt/${v.id}`} className="btn btn-gold" onClick={onClose}>
-            Marktdaten öffnen <ExternalLink className="size-3.5" />
+            {t("Marktdaten öffnen", "Open market data")} <ExternalLink className="size-3.5" />
           </Link>
         </>
       }

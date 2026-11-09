@@ -1,4 +1,5 @@
 import { hiddenVariantIds, variantById, variants, variantShortTitle, variantTitle } from "../db";
+import { inLang, t } from "../../i18n";
 import type { Body, Condition, Gearbox, SaleSource } from "../types";
 import bundledCsv from "./sales.csv?raw";
 
@@ -90,7 +91,12 @@ let titleIndex: Map<string, string> | null = null;
 function matchVariant(id: string, title: string): string | null {
   if (id && variantById.has(id.trim())) return id.trim();
   if (!title) return null;
-  titleIndex ??= new Map(variants.flatMap((v) => [[norm(variantTitle(v)), v.id], [norm(variantTitle(v, { brand: false })), v.id], [norm(variantShortTitle(v)), v.id]]));
+  // Titles in both languages ("F-Modell" / "F-Model").
+  titleIndex ??= new Map(
+    (["de", "en"] as const).flatMap((l) =>
+      inLang(l, () => variants.flatMap((v) => [[norm(variantTitle(v)), v.id], [norm(variantTitle(v, { brand: false })), v.id], [norm(variantShortTitle(v)), v.id]] as [string, string][])),
+    ),
+  );
   return titleIndex.get(norm(title)) ?? null;
 }
 
@@ -117,24 +123,24 @@ export function parseSalesCsv(text: string, origin = "CSV"): ParseResult {
   const col: Record<string, number> = {};
   for (const [key, names] of Object.entries(ALIASES)) col[key] = header.findIndex((h) => names.includes(h));
   const errors: string[] = [];
-  if (col.variant < 0 && col.title < 0) errors.push(`${origin}: Spalte „variant_id“ oder „fahrzeug“ fehlt`);
-  if (col.date < 0) errors.push(`${origin}: Spalte „datum“ fehlt`);
+  if (col.variant < 0 && col.title < 0) errors.push(t(`${origin}: Spalte „variant_id“ oder „fahrzeug“ fehlt`, `${origin}: column “variant_id” or “vehicle” missing`));
+  if (col.date < 0) errors.push(t(`${origin}: Spalte „datum“ fehlt`, `${origin}: column “date” missing`));
   if (errors.length) return { rows: [], errors, total: lines.length - 1 };
 
   const rows: RealSale[] = [];
   lines.slice(1).forEach((line, i) => {
     const f = splitLine(line, delim);
     const get = (k: string) => (col[k] >= 0 ? f[col[k]] ?? "" : "");
-    const where = `${origin} Zeile ${i + 2}`;
+    const where = `${origin} ${t("Zeile", "row")} ${i + 2}`;
     if (hiddenVariantIds.has(get("variant").trim())) return; // brand switched off in src/config.ts – keep the row, skip it
     const variantId = matchVariant(get("variant"), get("title"));
-    if (!variantId) return void errors.push(`${where}: Fahrzeug „${get("variant") || get("title")}“ nicht im Katalog`);
+    if (!variantId) return void errors.push(t(`${where}: Fahrzeug „${get("variant") || get("title")}“ nicht im Katalog`, `${where}: vehicle “${get("variant") || get("title")}” not in the catalogue`));
     const date = parseDate(get("date"));
-    if (!date) return void errors.push(`${where}: Datum „${get("date")}“ ungültig (JJJJ-MM-TT oder TT.MM.JJJJ)`);
+    if (!date) return void errors.push(t(`${where}: Datum „${get("date")}“ ungültig (JJJJ-MM-TT oder TT.MM.JJJJ)`, `${where}: invalid date “${get("date")}” (YYYY-MM-DD or DD.MM.YYYY)`));
     const soldRaw = norm(get("sold"));
     const unsold = ["nein", "no", "false", "0", "nicht verkauft", "unsold", "bought in"].includes(soldRaw);
     const price = unsold ? null : parseNumber(get("price"));
-    if (!unsold && !price) return void errors.push(`${where}: Preis fehlt`);
+    if (!unsold && !price) return void errors.push(t(`${where}: Preis fehlt`, `${where}: price missing`));
     const v = variantById.get(variantId)!;
     const srcRaw = norm(get("source"));
     const source: SaleSource = srcRaw.startsWith("h") || srcRaw.startsWith("d") ? "Händler" : srcRaw.startsWith("p") ? "Privat" : "Auktion";

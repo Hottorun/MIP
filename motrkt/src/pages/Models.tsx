@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowDown, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
-import { MODEL_CATEGORIES, brandById, brands, generationById, modelById, models, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
+import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { AS_OF, WEEK, getSeries } from "../data/generate";
 import { getMetrics, rebase } from "../data/market";
 import type { ModelCategory, Variant } from "../data/types";
@@ -10,20 +10,22 @@ import { useStore } from "../state/store";
 import { cn, date, eur, num, pct } from "../lib/format";
 import { CarImage } from "../components/CarImage";
 import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps, Money } from "../components/ui";
+import { t } from "../i18n";
+import { tr } from "../i18n/terms";
 
 type SortKey = "series" | "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
-const SORTS: { value: SortKey; label: string }[] = [
-  { value: "series", label: "Modellreihe" },
-  { value: "value", label: "Marktwert" },
+const SORTS: { value: SortKey; readonly label: string }[] = [
+  { value: "series", get label() { return t("Modellreihe", "Model series"); } },
+  { value: "value", get label() { return t("Marktwert", "Market value"); } },
   { value: "change12m", label: "12M" },
-  { value: "cagr5", label: "CAGR 5J" },
-  { value: "year", label: "Bauzeit" },
+  { value: "cagr5", get label() { return t("CAGR 5J", "CAGR 5Y"); } },
+  { value: "year", get label() { return t("Bauzeit", "Build years"); } },
 ];
 const ERAS = [
-  { id: "pre70", label: "Vor 1970", test: (y: number) => y < 1970 },
+  { id: "pre70", get label() { return t("Vor 1970", "Before 1970"); }, test: (y: number) => y < 1970 },
   { id: "70s80s", label: "1970–1989", test: (y: number) => y >= 1970 && y < 1990 },
   { id: "90s", label: "1990–2004", test: (y: number) => y >= 1990 && y < 2005 },
-  { id: "modern", label: "Ab 2005", test: (y: number) => y >= 2005 },
+  { id: "modern", get label() { return t("Ab 2005", "From 2005"); }, test: (y: number) => y >= 2005 },
 ];
 const TAGS = ["Turbo", "Leichtbau", "Allrad", "Hybrid"];
 const COMPARE_COLORS = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378"];
@@ -34,19 +36,24 @@ type Section = { key: string; title: string; sub: string; category: ModelCategor
 
 /** One line per model family, shown above its first section in the model list. */
 const CATEGORY_INTRO: Record<ModelCategory, string> = {
-  heck: "356, 911 und ihre Ableger: der Motor sitzt hinter der Hinterachse.",
-  mittel: "Boxster, Cayman und 718: der Motor sitzt vor der Hinterachse.",
-  super: "959, Carrera GT und 918 Spyder: Technikträger in Kleinserie.",
-  motorsport: "Rennwagen, die Porsche an Kundenteams und Privatfahrer verkauft hat, vom 550 Spyder bis zum 963.",
+  get heck() { return t("356, 911 und ihre Ableger: der Motor sitzt hinter der Hinterachse.", "356, 911 and their offshoots: the engine sits behind the rear axle."); },
+  get mittel() { return t("Boxster, Cayman und 718: der Motor sitzt vor der Hinterachse.", "Boxster, Cayman and 718: the engine sits ahead of the rear axle."); },
+  get super() { return t("959, Carrera GT und 918 Spyder: Technikträger in Kleinserie.", "959, Carrera GT and 918 Spyder: technology flagships built in small numbers."); },
+  get motorsport() {
+    return t(
+      "Rennwagen, die Porsche an Kundenteams und Privatfahrer verkauft hat, vom 550 Spyder bis zum 963.",
+      "Race cars Porsche sold to customer teams and privateers, from the 550 Spyder to the 963.",
+    );
+  },
 };
 
 function sectionOf(v: Variant) {
   const model = modelById.get(v.modelId)!;
   if (model.generationIds.length > 1) {
     const gen = generationById.get(v.generationId)!;
-    return { key: gen.id, title: `${model.name} (${gen.name})`, sub: yearsLabel(gen.years), order: models.indexOf(model) * 100 + model.generationIds.indexOf(gen.id) };
+    return { key: gen.id, title: `${modelName(model)} (${genName(gen)})`, sub: yearsLabel(gen.years), order: models.indexOf(model) * 100 + model.generationIds.indexOf(gen.id) };
   }
-  return { key: model.id, title: model.name, sub: "", order: models.indexOf(model) * 100 };
+  return { key: model.id, title: modelName(model), sub: "", order: models.indexOf(model) * 100 };
 }
 
 function groupSections(list: Variant[]): Section[] {
@@ -155,7 +162,7 @@ export default function Models() {
     setCompare((c) => {
       if (c.includes(id)) return c.filter((x) => x !== id);
       if (c.length >= MAX_COMPARE) {
-        toast(`Maximal ${MAX_COMPARE} Fahrzeuge vergleichen`, "info");
+        toast(t(`Maximal ${MAX_COMPARE} Fahrzeuge vergleichen`, `Compare up to ${MAX_COMPARE} cars`), "info");
         return c;
       }
       return [...c, id];
@@ -174,15 +181,15 @@ export default function Models() {
     <div className={cn("space-y-8", compare.length > 0 && "pb-24")}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Modelle</h1>
+          <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Modelle", "Models")}</h1>
           <p className="mt-1 text-[14px] text-muted">
-            {filtered.length} von {variants.length} Varianten
+            {t(`${filtered.length} von ${variants.length} Varianten`, `${filtered.length} of ${variants.length} variants`)}
           </p>
         </div>
         <Segmented
           options={[
-            { value: "grid", label: "Galerie" },
-            { value: "table", label: "Liste" },
+            { value: "grid", label: t("Galerie", "Gallery") },
+            { value: "table", label: t("Liste", "List") },
           ]}
           value={view}
           onChange={(v) => setView(v as "grid" | "table")}
@@ -193,7 +200,7 @@ export default function Models() {
         {brands.length > 1 && (
           <div className="flex flex-wrap items-center gap-1.5">
             <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "", generation: "", variante: "" })}>
-              Alle Marken
+              {t("Alle Marken", "All brands")}
             </button>
             {brands.map((b) => (
               <button
@@ -211,7 +218,7 @@ export default function Models() {
             className={cn("chip", !modelId && !category && "chip-active")}
             onClick={() => setFilter({ modell: "", generation: "", variante: "", kategorie: "" })}
           >
-            Alle Modelle
+            {t("Alle Modelle", "All models")}
           </button>
           {/* Models grouped by family; the family label filters the whole family. */}
           {MODEL_CATEGORIES.map((c) => {
@@ -226,7 +233,7 @@ export default function Models() {
                     familyActive ? "font-semibold text-ink" : "text-muted",
                   )}
                   aria-pressed={familyActive}
-                  title={`Alle ${c.label}-Modelle zeigen`}
+                  title={t(`Alle ${c.label}-Modelle zeigen`, `Show all ${c.label.toLowerCase()} models`)}
                   onClick={() => setFilter({ kategorie: familyActive ? "" : c.id, modell: "", generation: "", variante: "" })}
                 >
                   {c.label}
@@ -240,7 +247,7 @@ export default function Models() {
                     }
                   >
                     {effectiveBrand || brands.length === 1 ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
-                    {m.name}
+                    {modelName(m)}
                   </button>
                 ))}
               </div>
@@ -251,24 +258,24 @@ export default function Models() {
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="mr-1 text-[13px] text-muted">Generation</span>
             <button className={cn("chip", !generationId && "chip-active")} onClick={() => setFilter({ generation: "", variante: "" })}>
-              Alle
+              {t("Alle", "All")}
             </button>
             {modelGenerations.map((g) => (
               <button key={g.id} className={cn("chip", generationId === g.id && "chip-active")} onClick={() => setFilter({ generation: generationId === g.id ? "" : g.id, variante: "" })}>
-                {g.name} <span className="text-faint">{yearsLabel(g.years)}</span>
+                {genName(g)} <span className="text-faint">{yearsLabel(g.years)}</span>
               </button>
             ))}
           </div>
         )}
         {subVariants.length > 1 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-[13px] text-muted">Variante</span>
+            <span className="mr-1 text-[13px] text-muted">{t("Variante", "Variant")}</span>
             <button className={cn("chip", !variantId && "chip-active")} onClick={() => setFilter({ variante: "" })}>
-              Alle
+              {t("Alle", "All")}
             </button>
             {subVariants.map((v) => (
               <button key={v.id} className={cn("chip", variantId === v.id && "chip-active")} onClick={() => setFilter({ variante: variantId === v.id ? "" : v.id })}>
-                {v.name}
+                {variantName(v)}
               </button>
             ))}
           </div>
@@ -276,15 +283,15 @@ export default function Models() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[14px]">
           <div className="flex w-60 items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink">
             <Search className="size-4 text-muted" strokeWidth={1.5} />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Variante suchen" className="min-w-0 flex-1 bg-transparent focus:outline-none" />
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={t("Variante suchen", "Search variants")} className="min-w-0 flex-1 bg-transparent focus:outline-none" />
             {query && (
-              <button onClick={() => setQuery("")} aria-label="Suche leeren">
+              <button onClick={() => setQuery("")} aria-label={t("Suche leeren", "Clear search")}>
                 <X className="size-3.5 text-muted" />
               </button>
             )}
           </div>
-          <select className="border-b border-line-2 pb-1 focus:border-ink focus:outline-none" value={era} onChange={(e) => setEra(e.target.value)} aria-label="Epoche">
-            <option value="">Alle Epochen</option>
+          <select className="border-b border-line-2 pb-1 focus:border-ink focus:outline-none" value={era} onChange={(e) => setEra(e.target.value)} aria-label={t("Epoche", "Era")}>
+            <option value="">{t("Alle Epochen", "All eras")}</option>
             {ERAS.map((e) => (
               <option key={e.id} value={e.id}>
                 {e.label}
@@ -292,26 +299,26 @@ export default function Models() {
             ))}
           </select>
           <div className="flex flex-wrap gap-1.5">
-            {TAGS.map((t) => (
-              <button key={t} className={cn("chip", tags.includes(t) && "chip-active")} onClick={() => setTags((ts) => (ts.includes(t) ? ts.filter((x) => x !== t) : [...ts, t]))}>
-                {t}
+            {TAGS.map((tag) => (
+              <button key={tag} className={cn("chip", tags.includes(tag) && "chip-active")} onClick={() => setTags((ts) => (ts.includes(tag) ? ts.filter((x) => x !== tag) : [...ts, tag]))}>
+                {tr(tag)}
               </button>
             ))}
           </div>
           <div className="ml-auto flex items-center gap-2 text-muted">
-            Sortiert nach
+            {t("Sortiert nach", "Sorted by")}
             <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => {
                 const key = e.target.value as SortKey;
                 setSort(key);
                 setDesc(!ASCENDING.includes(key));
-              }} aria-label="Sortierung">
+              }} aria-label={t("Sortierung", "Sort order")}>
               {SORTS.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}
                 </option>
               ))}
             </select>
-            <button className="p-1 text-ink" onClick={() => setDesc((d) => !d)} aria-label={desc ? "Aufsteigend sortieren" : "Absteigend sortieren"}>
+            <button className="p-1 text-ink" onClick={() => setDesc((d) => !d)} aria-label={desc ? t("Aufsteigend sortieren", "Sort ascending") : t("Absteigend sortieren", "Sort descending")}>
               {desc ? <ArrowDown className="size-4" strokeWidth={1.5} /> : <ArrowUp className="size-4" strokeWidth={1.5} />}
             </button>
           </div>
@@ -319,7 +326,7 @@ export default function Models() {
       </div>
 
       {filtered.length === 0 ? (
-        <Empty>Keine Varianten für diese Filter.</Empty>
+        <Empty>{t("Keine Varianten für diese Filter.", "No variants match these filters.")}</Empty>
       ) : view === "grid" ? (
         <div className="space-y-14">
           {sections.map((s, i) => (
@@ -348,14 +355,14 @@ export default function Models() {
             <thead>
               <tr>
                 <th />
-                <SortTh label="Fahrzeug" k="name" sort={sort} desc={desc} onSort={headerSort} />
-                <SortTh label="Bauzeit" k="year" sort={sort} desc={desc} onSort={headerSort} />
-                <th className="text-right">Stückzahl</th>
-                <SortTh label="Marktwert" k="value" sort={sort} desc={desc} onSort={headerSort} right />
+                <SortTh label={t("Fahrzeug", "Car")} k="name" sort={sort} desc={desc} onSort={headerSort} />
+                <SortTh label={t("Bauzeit", "Built")} k="year" sort={sort} desc={desc} onSort={headerSort} />
+                <th className="text-right">{t("Stückzahl", "Units")}</th>
+                <SortTh label={t("Marktwert", "Market value")} k="value" sort={sort} desc={desc} onSort={headerSort} right />
                 <SortTh label="12M" k="change12m" sort={sort} desc={desc} onSort={headerSort} right />
-                <SortTh label="CAGR 5J" k="cagr5" sort={sort} desc={desc} onSort={headerSort} right />
-                <th>Einschätzung</th>
-                <th>Vergl.</th>
+                <SortTh label={t("CAGR 5J", "CAGR 5Y")} k="cagr5" sort={sort} desc={desc} onSort={headerSort} right />
+                <th>{t("Einschätzung", "Assessment")}</th>
+                <th>{t("Vergl.", "Comp.")}</th>
               </tr>
             </thead>
             <tbody>
@@ -395,7 +402,7 @@ export default function Models() {
                       <RecPill code={m.recommendation.code} label={m.recommendation.label} />
                     </td>
                     <td onClick={(e) => e.stopPropagation()}>
-                      <input type="checkbox" className="accent-[var(--color-gold)]" checked={compare.includes(v.id)} onChange={() => toggleCompare(v.id)} aria-label="Vergleichen" />
+                      <input type="checkbox" className="accent-[var(--color-gold)]" checked={compare.includes(v.id)} onChange={() => toggleCompare(v.id)} aria-label={t("Vergleichen", "Compare")} />
                     </td>
                   </tr>
                 );
@@ -411,30 +418,30 @@ export default function Models() {
           <div className="animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 rounded-[3px] border border-line bg-panel px-5 py-3 shadow-[0_20px_50px_-20px_rgba(58,42,29,0.4)]">
             <GitCompare className="size-4 text-muted" strokeWidth={1.5} />
             <span className="text-[14px] text-muted">
-              Vergleich ({compare.length}/{MAX_COMPARE})
+              {t("Vergleich", "Comparison")} ({compare.length}/{MAX_COMPARE})
             </span>
             {compare.map((id, i) => (
               <span key={id} className="chip text-ink">
                 <span className="size-2 rounded-full" style={{ background: COMPARE_COLORS[i] }} />
                 {variantShortTitle(variantById.get(id)!)}
-                <button onClick={() => toggleCompare(id)} aria-label="Entfernen">
+                <button onClick={() => toggleCompare(id)} aria-label={t("Entfernen", "Remove")}>
                   <X className="size-3" />
                 </button>
               </span>
             ))}
             <div className="ml-auto flex gap-2">
               <button className="btn btn-ghost text-xs" onClick={() => setCompare([])}>
-                Leeren
+                {t("Leeren", "Clear")}
               </button>
               <button className="btn btn-gold" disabled={compare.length < 2} onClick={() => setCompareOpen(true)}>
-                Vergleichen
+                {t("Vergleichen", "Compare")}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      <Modal open={compareOpen} onClose={() => setCompareOpen(false)} title="Variantenvergleich" wide>
+      <Modal open={compareOpen} onClose={() => setCompareOpen(false)} title={t("Variantenvergleich", "Variant comparison")} wide>
         <CompareView ids={compare} />
       </Modal>
     </div>
@@ -457,14 +464,14 @@ function SectionHeading({ section }: { section: Section }) {
       <h3 className="font-serif text-[24px] leading-tight font-bold text-ink">{section.title}</h3>
       {section.sub && <span className="text-[13px] text-muted">{section.sub}</span>}
       <span className="ml-auto text-[13px] text-muted">
-        {section.items.length} {section.items.length === 1 ? "Variante" : "Varianten"}
+        {section.items.length} {section.items.length === 1 ? t("Variante", "variant") : t("Varianten", "variants")}
       </span>
     </div>
   );
 }
 
 function RecPill({ code, label }: { code: "BUY" | "HOLD" | "WATCH"; label: string }) {
-  return <Pill tone={code === "BUY" ? "up" : code === "HOLD" ? "gold" : "neutral"}>{label}</Pill>;
+  return <Pill tone={code === "BUY" ? "up" : code === "HOLD" ? "gold" : "neutral"}>{tr(label)}</Pill>;
 }
 
 function SortTh({ label, k, sort, desc, onSort, right }: { label: string; k: SortKey; sort: SortKey; desc: boolean; onSort: (k: SortKey) => void; right?: boolean }) {
@@ -513,7 +520,7 @@ function VariantCard({
             "absolute top-3 right-3 rounded-full bg-bg/85 p-2 transition-opacity focus-visible:opacity-100",
             watched ? "text-ink opacity-100" : "text-ink opacity-0 group-hover:opacity-100",
           )}
-          aria-label={watched ? "Nicht mehr beobachten" : "Beobachten"}
+          aria-label={watched ? t("Nicht mehr beobachten", "Stop watching") : t("Beobachten", "Watch")}
           aria-pressed={watched}
         >
           <Star className={cn("size-4", watched && "fill-current")} strokeWidth={1.5} />
@@ -537,7 +544,7 @@ function VariantCard({
         }}
         aria-pressed={compared}
       >
-        {compared ? "Im Vergleich" : "Vergleichen"}
+        {compared ? t("Im Vergleich", "In comparison") : t("Vergleichen", "Compare")}
       </button>
     </div>
   );
@@ -565,22 +572,22 @@ function CompareView({ ids }: { ids: string[] }) {
   }, [data]);
 
   const metricRows: { label: string; get: (v: Variant) => React.ReactNode }[] = [
-    { label: "Marktwert", get: (v) => eur(getMetrics(v.id).value) },
+    { label: t("Marktwert", "Market value"), get: (v) => eur(getMetrics(v.id).value) },
     { label: "12M", get: (v) => <Delta value={getMetrics(v.id).change12m} /> },
-    { label: "CAGR 5J", get: (v) => pct(getMetrics(v.id).cagr5) },
-    { label: "Volatilität 1J", get: (v) => pct(getMetrics(v.id).vol1y, { signed: false }) },
-    { label: "Max. Drawdown 5J", get: (v) => <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> },
-    { label: "Stückzahl", get: (v) => num(v.production) },
-    { label: "Leistung", get: (v) => `${v.hp} PS` },
-    { label: "Neupreis", get: (v) => `${eur(v.newPrice)} (${v.newPriceYear})` },
-    { label: "Einschätzung", get: (v) => <RecPill code={getMetrics(v.id).recommendation.code} label={getMetrics(v.id).recommendation.label} /> },
+    { label: t("CAGR 5J", "CAGR 5Y"), get: (v) => pct(getMetrics(v.id).cagr5) },
+    { label: t("Volatilität 1J", "Volatility 1Y"), get: (v) => pct(getMetrics(v.id).vol1y, { signed: false }) },
+    { label: t("Max. Drawdown 5J", "Max. drawdown 5Y"), get: (v) => <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> },
+    { label: t("Stückzahl", "Units"), get: (v) => num(v.production) },
+    { label: t("Leistung", "Power"), get: (v) => `${v.hp} PS` },
+    { label: t("Neupreis", "List price"), get: (v) => `${eur(v.newPrice)} (${v.newPriceYear})` },
+    { label: t("Einschätzung", "Assessment"), get: (v) => <RecPill code={getMetrics(v.id).recommendation.code} label={getMetrics(v.id).recommendation.label} /> },
   ];
   const vs = ids.map((id) => variantById.get(id)!);
 
   return (
     <div className="space-y-4">
       <div>
-        <div className="mb-1 text-xs text-muted">Wertentwicklung 5 Jahre (indexiert, Start = 100)</div>
+        <div className="mb-1 text-xs text-muted">{t("Wertentwicklung 5 Jahre (indexiert, Start = 100)", "Value over 5 years (indexed, start = 100)")}</div>
         <div className="h-64">
           <ResponsiveContainer>
             <LineChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
