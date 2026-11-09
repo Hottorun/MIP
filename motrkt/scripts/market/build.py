@@ -1,8 +1,10 @@
 """Build sales rows (EUR) from Bring a Trailer + ultimatecarpage auction results."""
-import json, re, sys, csv, datetime as dt, collections, bisect, html
+import json, os, re, sys, csv, datetime as dt, collections, bisect, html
 sys.path.insert(0, sys.argv[1] + "/tools")
 from classify import classify
 S = sys.argv[1]
+# links to the original lot pages (linkfetch.py); results without one keep the result list they were taken from
+LINKS = json.load(open(S + "/web/links/links.json")) if os.path.exists(S + "/web/links/links.json") else {}
 # --- FX (ECB reference rates, units of currency per 1 EUR)
 fx = {}
 rows = list(csv.reader(open(S + "/web/fx/eurofxref-hist.csv")))
@@ -87,7 +89,8 @@ for x in U:
     eur = round(to_eur(amt, cur, date)) if sold else None
     out.append(dict(variant=vid, title=t + (" (" + x["note"] + ")" if x["note"] else ""), date=date, house=house_of(x["event"]), eur=eur, bid=None, sold=sold,
                     orig=amt, cur=cur, km=None, loc="", body=body, gear=gear, vin=x["chassis"], lot="UCP-%s-%s" % (x["auction"], x["lot"]),
-                    url="https://www.ultimatecarpage.com/auction/%s/" % x["auction"], year=year, src="ucp", event=x["event"]))
+                    url=LINKS.get("UCP-%s-%s" % (x["auction"], x["lot"]), {}).get("url") or "https://www.ultimatecarpage.com/auction/%s/" % x["auction"],
+                    year=year, src="ucp", event=x["event"]))
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
 c = collections.Counter(o["variant"] for o in out if o["sold"])
 print(len(out), sum(c.values()))

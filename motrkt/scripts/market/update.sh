@@ -25,7 +25,8 @@ echo "4/6 Angebote in Europa (Classic Trader)"
 python3 -I "$HERE/ctfetch.py" "$W"
 python3 -I "$HERE/ctparse.py" "$W"
 
-echo "5/6 Zuordnung und Modell"
+echo "5/6 Links zu den Originalseiten der Auktionshäuser, Zuordnung und Modell"
+python3 -I "$HERE/linkfetch.py" "$W"
 python3 -I "$HERE/build.py" "$W"
 python3 -I "$HERE/model.py" "$W" "$APP/market-model.json" "$APP/asks.json"
 

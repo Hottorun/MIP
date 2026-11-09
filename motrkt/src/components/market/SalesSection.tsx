@@ -10,6 +10,21 @@ import { Section, Money } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
+/** Lot number of an auction result imported from an auction list ("UCP-<sale>-<lot>"). */
+const lotOf = (id: string) => /^UCP-\d+-(.+)$/.exec(id)?.[1] ?? null;
+
+/** Where a result link leads: the lot page at the auction house, the sale's results page, or the result list it was taken from. */
+function linkNote(url: string) {
+  if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Link zur Ergebnisliste der Auktion", "link to the sale's results");
+  if (url.includes("ultimatecarpage.com")) return t("Link zur Ergebnisliste bei ultimatecarpage.com", "link to the result list at ultimatecarpage.com");
+  return null;
+}
+function linkTitle(url: string) {
+  if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Ergebnisse der Auktion bei RM Sotheby's öffnen", "Open the sale's results at RM Sotheby's");
+  if (url.includes("ultimatecarpage.com")) return t("Ergebnisliste bei ultimatecarpage.com öffnen", "Open the result list at ultimatecarpage.com");
+  return t("Los beim Auktionshaus öffnen", "Open the lot at the auction house");
+}
+
 export function RecentSales({ variant }: { variant: Variant }) {
   const [expanded, setExpanded] = useState(false);
   const sales = getSales(variant.id);
@@ -33,7 +48,7 @@ export function RecentSales({ variant }: { variant: Variant }) {
               <div className="min-w-0">
                 <div className="flex items-baseline gap-2 font-serif text-[16px]">
                   {s.url ? (
-                    <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 truncate hover:text-gold" title={t("Quelle öffnen", "Open source")}>
+                    <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 truncate hover:text-gold" title={linkTitle(s.url)}>
                       {s.house}
                       <ArrowUpRight className="size-3.5 shrink-0 self-center text-faint" strokeWidth={1.5} />
                     </a>
@@ -43,7 +58,9 @@ export function RecentSales({ variant }: { variant: Variant }) {
                 </div>
                 <div className="mt-0.5 text-[13px] text-muted">
                   {date(s.date)}, {tr(s.source)}
+                  {lotOf(s.id) ? `, ${t("Los", "Lot")} ${lotOf(s.id)}` : ""}
                   {s.mileage ? `, ${km(s.mileage)}` : ""}
+                  {s.url && linkNote(s.url) ? <span className="text-faint"> · {linkNote(s.url)}</span> : null}
                 </div>
               </div>
               <div className="text-right text-[18px]">{s.price ? <Money value={s.price} /> : <span className="text-[14px] text-faint italic">{t("nicht verkauft", "not sold")}</span>}</div>
