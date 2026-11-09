@@ -50,6 +50,7 @@ export function HeroSlideshow() {
             aria-hidden={i !== index}
             loading={i < 2 ? "eager" : "lazy"}
             decoding="async"
+            style={s.photo.position ? { objectPosition: s.photo.position } : undefined}
             className={cn("absolute inset-0 size-full object-cover transition-opacity duration-[1400ms] ease-in-out", i === index ? "opacity-100" : "opacity-0")}
           />
         ))}

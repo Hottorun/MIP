@@ -19,6 +19,8 @@ export type Photo = {
   /** Taken at the car's presentation (world premiere, motor show debut or press launch). */
   premiere?: boolean;
   caption?: string;
+  /** CSS object-position for photos whose subject is not in the centre of the 16:9 frame (e.g. "50% 95%"). */
+  position?: string;
 };
 
 export type RealSpecs = {

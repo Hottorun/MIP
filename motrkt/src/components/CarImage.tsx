@@ -43,6 +43,7 @@ export function CarImage({
         alt={photo.caption ?? label ?? ""}
         loading={eager ? "eager" : "lazy"}
         decoding="async"
+        style={photo.position ? { objectPosition: photo.position } : undefined}
         className={cn("size-full", pressPhoto ? "object-cover" : "object-contain")}
       />
       {credit && <PhotoCredit photo={photo} className="absolute right-1.5 bottom-1 left-1.5 text-[10px] text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]" />}

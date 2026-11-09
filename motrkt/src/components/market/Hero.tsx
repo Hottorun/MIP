@@ -207,7 +207,7 @@ function Gallery({ variant }: { variant: Variant }) {
       className="min-w-0"
     >
       <div className="group relative aspect-video overflow-hidden bg-panel-3">
-        <img key={photo.file} src={photo.file} alt={photo.caption ?? variantTitle(variant)} className="animate-fade-in size-full object-cover" />
+        <img key={photo.file} src={photo.file} alt={photo.caption ?? variantTitle(variant)} style={photo.position ? { objectPosition: photo.position } : undefined} className="animate-fade-in size-full object-cover" />
         {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">Vorstellung</span>}
         {n > 1 && (
           <>
@@ -241,7 +241,7 @@ function Gallery({ variant }: { variant: Variant }) {
               aria-label={`Bild ${i + 1}`}
               aria-current={i === index}
             >
-              <img src={p.file} alt="" loading="lazy" className="size-full object-cover" />
+              <img src={p.file} alt="" loading="lazy" style={p.position ? { objectPosition: p.position } : undefined} className="size-full object-cover" />
             </button>
           ))}
         </div>
