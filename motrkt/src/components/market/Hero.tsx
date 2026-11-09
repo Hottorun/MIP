@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { brandById, generationById, modelById, optionFactor, variantById, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
@@ -186,28 +186,78 @@ function PickerLink({ to, active, children }: { to: string; active: boolean; chi
   );
 }
 
+/**
+ * ← / → page through the gallery from anywhere on the page, not only when it has focus. Keys stay with text fields,
+ * sliders, menus and open dialogs, and with modifier shortcuts.
+ */
+function useArrowKeys(go: (d: number) => void, enabled: boolean) {
+  const goRef = useRef(go);
+  useEffect(() => {
+    goRef.current = go;
+  });
+  useEffect(() => {
+    if (!enabled) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      const t = e.target instanceof HTMLElement ? e.target : null;
+      if (t && (t.isContentEditable || t.closest("input, textarea, select, [role=slider], [role=tablist], [role=listbox], [role=menu], [role=radiogroup]"))) return;
+      if (document.querySelector('[aria-modal="true"]')) return;
+      e.preventDefault();
+      goRef.current(e.key === "ArrowLeft" ? -1 : 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [enabled]);
+}
+
+/** Horizontal swipe (finger or mouse drag) on the picture: left = next, right = previous. */
+function useSwipe(go: (d: number) => void) {
+  const start = useRef<{ x: number; y: number } | null>(null);
+  return {
+    onPointerDown: (e: ReactPointerEvent) => (start.current = { x: e.clientX, y: e.clientY }),
+    onPointerUp: (e: ReactPointerEvent) => {
+      const s = start.current;
+      start.current = null;
+      if (!s) return;
+      const dx = e.clientX - s.x;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.clientY - s.y)) go(dx < 0 ? 1 : -1);
+    },
+  };
+}
+
+/** Slide the new picture in from the side it came from. */
+const slideIn = (dir: number) => (dir > 0 ? "gallery-in-next" : dir < 0 ? "gallery-in-prev" : "animate-fade-in");
+
 const arrowBtn =
   "absolute top-1/2 -translate-y-1/2 rounded-full bg-bg/85 p-2 text-ink opacity-0 shadow-sm transition-opacity group-hover:opacity-100 focus-visible:opacity-100";
 
 function Gallery({ variant }: { variant: Variant }) {
-  const [index, setIndex] = useState(0);
-  useEffect(() => setIndex(0), [variant.id]);
+  const [{ index, dir }, setState] = useState({ index: 0, dir: 0 });
+  useEffect(() => setState({ index: 0, dir: 0 }), [variant.id]);
   const photos = variant.marketPhotos;
   const n = photos.length;
-  const go = (d: number) => setIndex((i) => (i + d + n) % n);
+  const go = (d: number) => setState((s) => ({ index: (s.index + d + n) % n, dir: d }));
+  const show = (i: number) => setState((s) => ({ index: i, dir: Math.sign(i - s.index) }));
+  useArrowKeys(go, n > 1);
+  const swipe = useSwipe(go);
+  // Warm the cache for the neighbours so paging never waits on the network.
+  useEffect(() => {
+    if (n < 2) return;
+    for (const d of [1, -1]) new Image().src = photos[(index + d + n) % n].file;
+  }, [index, n, photos]);
   const photo = photos[index];
   return (
-    <figure
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "ArrowLeft") go(-1);
-        if (e.key === "ArrowRight") go(1);
-      }}
-      aria-label="Bildergalerie"
-      className="min-w-0"
-    >
-      <div className={cn("group relative aspect-video overflow-hidden", photo.contain ? "bg-white" : "bg-panel-3")}>
-        <img key={photo.file} src={photo.file} alt={photo.caption ?? variantTitle(variant)} style={photo.position ? { objectPosition: photo.position } : undefined} className={cn("animate-fade-in size-full", photo.contain ? "object-contain" : "object-cover")} />
+    <figure aria-label="Bildergalerie" aria-roledescription="Galerie, mit Pfeiltasten blättern" className="min-w-0">
+      <div className={cn("group relative aspect-video touch-pan-y overflow-hidden select-none", photo.contain ? "bg-white" : "bg-panel-3")} {...(n > 1 ? swipe : {})}>
+        <img
+          key={photo.file}
+          src={photo.file}
+          alt={photo.caption ?? variantTitle(variant)}
+          draggable={false}
+          style={photo.position ? { objectPosition: photo.position } : undefined}
+          className={cn(slideIn(dir), "size-full", photo.contain ? "object-contain" : "object-cover")}
+        />
         {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">Vorstellung</span>}
         {n > 1 && (
           <>
@@ -236,12 +286,18 @@ function Gallery({ variant }: { variant: Variant }) {
           {photos.map((p, i) => (
             <button
               key={p.file}
-              onClick={() => setIndex(i)}
+              onClick={() => show(i)}
               className={cn("aspect-video w-24 overflow-hidden border-b-2 pb-1 transition-opacity", i === index ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}
               aria-label={`Bild ${i + 1}`}
               aria-current={i === index}
             >
-              <img src={p.file} alt="" loading="lazy" style={p.position ? { objectPosition: p.position } : undefined} className={cn("size-full", p.contain ? "bg-white object-contain" : "object-cover")} />
+              <img
+                src={p.file}
+                alt=""
+                loading="lazy"
+                style={p.position ? { objectPosition: p.position } : undefined}
+                className={cn("size-full", p.contain ? "bg-white object-contain" : "object-cover")}
+              />
             </button>
           ))}
         </div>
@@ -251,25 +307,19 @@ function Gallery({ variant }: { variant: Variant }) {
 }
 
 function IllustratedGallery({ variant }: { variant: Variant }) {
-  const [index, setIndex] = useState(0);
+  const [{ index, dir }, setState] = useState({ index: 0, dir: 0 });
   const n = GALLERY.length;
-  useEffect(() => setIndex(0), [variant.id]);
-  const go = (d: number) => setIndex((i) => (i + d + n) % n);
+  useEffect(() => setState({ index: 0, dir: 0 }), [variant.id]);
+  const go = (d: number) => setState((s) => ({ index: (s.index + d + n) % n, dir: d }));
+  useArrowKeys(go, true);
+  const swipe = useSwipe(go);
 
   return (
-    <figure
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "ArrowLeft") go(-1);
-        if (e.key === "ArrowRight") go(1);
-      }}
-      aria-label="Bildergalerie"
-      className="min-w-0"
-    >
-      <div className="group relative aspect-video overflow-hidden bg-panel-3">
+    <figure aria-label="Bildergalerie" aria-roledescription="Galerie, mit Pfeiltasten blättern" className="min-w-0">
+      <div className="group relative aspect-video touch-pan-y overflow-hidden bg-panel-3 select-none" {...swipe}>
         <CarArt
           key={`${variant.id}-${index}`}
-          className="animate-fade-in size-full"
+          className={cn(slideIn(dir), "size-full")}
           shape={variant.shape}
           color={variant.color}
           scene={GALLERY[index].scene}
