@@ -38,7 +38,7 @@ export default function Credits() {
             v.photos.map((p) => (
               <div key={p.file} className="panel flex gap-3 p-3">
                 <Link to={`/markt/${v.id}`} className="shrink-0">
-                  <CarImage variant={v} photo={p} className="h-20 w-32 rounded-md" />
+                  <CarImage variant={v} photo={p} className="aspect-video w-32 shrink-0 rounded-md" />
                 </Link>
                 <div className="min-w-0 text-xs">
                   <Link to={`/markt/${v.id}`} className="block truncate text-sm text-ink hover:text-gold">

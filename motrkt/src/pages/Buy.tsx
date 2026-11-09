@@ -289,7 +289,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
   const d = dealLabel(e.deal);
   return (
     <article className="group cursor-pointer" onClick={onOpen}>
-      <div className="relative aspect-[4/3] overflow-hidden bg-panel-3">
+      <div className="relative aspect-video overflow-hidden bg-panel-3">
         {l.images?.[0] ? (
           <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
         ) : (
@@ -426,7 +426,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
             </div>
           ) : (
             <>
-              <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="aspect-[5/2] w-full" label={l.title} credit />
+              <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="aspect-video w-full" label={l.title} credit />
               {(v.marketPhotos.length > 0 || v.photos.length > 0) && <p className="px-3 py-1.5 text-[11px] text-faint">Symbolfoto des Modells – das inserierte Fahrzeug ist {l.color}.</p>}
             </>
           )}
@@ -509,7 +509,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 const sd = dealLabel(s.deal);
                 return (
                   <button key={s.l.id} onClick={() => onOpen(s.l.id)} className="flex items-center gap-3 rounded-lg border border-line bg-panel-2 p-2 text-left hover:border-line-2 hover:bg-panel-3">
-                    <CarImage variant={s.v} fallbackColor={s.l.colorHex} scene={s.scene} className="h-12 w-28 shrink-0 rounded" />
+                    <CarImage variant={s.v} fallbackColor={s.l.colorHex} scene={s.scene} className="aspect-video w-28 shrink-0 rounded" />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-xs text-muted">
                         {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {s.l.city}

@@ -63,10 +63,12 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
   return list.slice(0, 5);
 }
 
-/** Market tab gallery: official manufacturer photos only (presentation shots first); empty → illustration. */
+/**
+ * Market tab gallery: official manufacturer photos only; empty → illustration. launch.json is curated so the first
+ * photo (also the preview everywhere) is a front three-quarter view where one exists, followed by side and rear views.
+ */
 function marketPhotos(id: string): Photo[] {
-  const photos = (launchPhotos[id] ?? []).filter((p) => p.file);
-  return [...photos.filter((p) => p.premiere), ...photos.filter((p) => !p.premiere)];
+  return (launchPhotos[id] ?? []).filter((p) => p.file);
 }
 
 /** Model families in menu order; models sort by family first, then by first build year. */

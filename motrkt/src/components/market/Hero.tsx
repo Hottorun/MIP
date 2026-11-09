@@ -205,7 +205,7 @@ function Gallery({ variant }: { variant: Variant }) {
       aria-label="Bildergalerie"
       className="min-w-0"
     >
-      <div className="group relative aspect-[4/3] overflow-hidden bg-panel-3">
+      <div className="group relative aspect-video overflow-hidden bg-panel-3">
         <img key={photo.file} src={photo.file} alt={photo.caption ?? variantTitle(variant)} className="animate-fade-in size-full object-cover" />
         {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">Vorstellung</span>}
         {n > 1 && (
@@ -236,7 +236,7 @@ function Gallery({ variant }: { variant: Variant }) {
             <button
               key={p.file}
               onClick={() => setIndex(i)}
-              className={cn("aspect-[4/3] w-20 overflow-hidden border-b-2 pb-1 transition-opacity", i === index ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}
+              className={cn("aspect-video w-24 overflow-hidden border-b-2 pb-1 transition-opacity", i === index ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}
               aria-label={`Bild ${i + 1}`}
               aria-current={i === index}
             >
@@ -265,7 +265,7 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
       aria-label="Bildergalerie"
       className="min-w-0"
     >
-      <div className="group relative aspect-[4/3] overflow-hidden bg-panel-3">
+      <div className="group relative aspect-video overflow-hidden bg-panel-3">
         <CarArt
           key={`${variant.id}-${index}`}
           className="animate-fade-in size-full"

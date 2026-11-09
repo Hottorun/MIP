@@ -123,7 +123,7 @@ export default function Overview() {
               <li key={id}>
                 <Link to={`/markt/${id}`} className="group block">
                   <div className="overflow-hidden">
-                    <CarImage variant={v} className="aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
+                    <CarImage variant={v} className="aspect-video w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
                   </div>
                   <div className="mt-3 font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</div>
                   <div className="mt-0.5 flex items-baseline justify-between text-[14px]">

@@ -502,7 +502,7 @@ function VariantCard({
       className="group cursor-pointer"
     >
       <div className="relative overflow-hidden">
-        <CarImage variant={v} scene="studio" className="block aspect-[4/3] w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
+        <CarImage variant={v} scene="studio" className="block aspect-video w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
         <button
           onClick={(e) => {
             e.stopPropagation();

@@ -1,19 +1,19 @@
 {
  "porsche-911-964-carrera-2": [
   {
-   "file": "https://newsroom.porsche.com/dam/jcr:d9f3334a-f401-43f3-9f17-9e1f041583b3/b1-P13_0147.jpg",
-   "caption": "911, Type 964",
-   "page": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-3-type-964-16466.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250554&w=1440&h=812&crop=1&public=1&cs=97ea7ef2fa8b6365",
    "caption": "1988, 911 Carrera 2/4 Coupé, Type 964, 3.6 litre, Generations",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "exact": false
+  },
+  {
+   "file": "https://newsroom.porsche.com/dam/jcr:d9f3334a-f401-43f3-9f17-9e1f041583b3/b1-P13_0147.jpg",
+   "caption": "911, Type 964",
+   "page": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-3-type-964-16466.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-964-carrera-4": [
@@ -30,13 +30,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/dam/jcr:c01bc56f-df9e-4dd2-b3d6-a3ba74c13396/b-HDI-45027.jpg",
-   "caption": "911 Carrera 4 3,6 Coupé from 1989",
-   "page": "https://newsroom.porsche.com/en/products/porsche-one-millionth-911-milestone-seven-generations-13735.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-964-carrera-rs": [
@@ -49,13 +42,6 @@
   },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337465&w=1440&h=812&crop=1&public=1&cs=13e19c1bb1bf18d5",
-   "caption": "911 Carrera RS (964), Black Forest, Germany, 2026, Top Gear",
-   "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337424&w=1440&h=812&crop=1&public=1&cs=311ad067fad90cf2",
    "caption": "911 Carrera RS (964), Black Forest, Germany, 2026, Top Gear",
    "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
    "author": "© Porsche AG",
@@ -85,13 +71,6 @@
    "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251312&w=1440&h=812&crop=1&public=1&cs=865c2464bba7a268",
-   "caption": "1993, 911 Carrera Speedster",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-993-carrera": [
@@ -106,13 +85,6 @@
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250540&w=1000&h=558&crop=0&public=1&cs=eedee361158555dc",
    "caption": "1994, 911 Carrera Coupé, Type 993, 3.6 litre, Generations",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Generationen.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/dam/jcr:0770ede9-c736-4c76-90e4-c6d3561e1177/b-HDI-45028.jpg",
-   "caption": "911 Carrera 3,6 Coupé from 1993",
-   "page": "https://newsroom.porsche.com/en/products/porsche-one-millionth-911-milestone-seven-generations-13735.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
@@ -142,14 +114,6 @@
  ],
  "porsche-911-993-carrera-rs": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337455&w=1440&h=812&crop=1&public=1&cs=8a1b424932a766de",
-   "caption": "911 Carrera RS Clubsport (993), Black Forest, Germany, 2026, Top Gear",
-   "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "exact": false
-  },
-  {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337467&w=1440&h=812&crop=1&public=1&cs=ed5de4e961197b41",
    "caption": "911 Carrera RS Clubsport (993), Black Forest, Germany, 2026, Top Gear",
    "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
@@ -158,7 +122,7 @@
    "exact": false
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337443&w=1440&h=812&crop=1&public=1&cs=4cd6885131feb620",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337455&w=1440&h=812&crop=1&public=1&cs=8a1b424932a766de",
    "caption": "911 Carrera RS Clubsport (993), Black Forest, Germany, 2026, Top Gear",
    "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
    "author": "© Porsche AG",
@@ -168,13 +132,6 @@
  ],
  "porsche-911-993-turbo": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281134&w=1440&h=812&crop=1&public=1&cs=1c29937680ca776e",
-   "caption": "4th generation",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281137&w=1440&h=812&crop=1&public=1&cs=594b17a3c5d6b543",
    "caption": "4th generation",
    "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
@@ -183,6 +140,13 @@
   },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281136&w=1440&h=812&crop=1&public=1&cs=1683c7e2a3532838",
+   "caption": "4th generation",
+   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281134&w=1440&h=812&crop=1&public=1&cs=1c29937680ca776e",
    "caption": "4th generation",
    "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
    "author": "© Porsche AG",
@@ -198,14 +162,14 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=256119&w=1440&h=812&crop=1&public=1&cs=4f14ffed9872f291",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=256114&w=1440&h=812&crop=1&public=1&cs=c33e928591071bc6",
    "caption": "Porsche 911 (993) Turbo S",
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Heritage-Experience/Porsche-911-(Typ-993)-Turbo-S.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=256114&w=1440&h=812&crop=1&public=1&cs=c33e928591071bc6",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=256119&w=1440&h=812&crop=1&public=1&cs=4f14ffed9872f291",
    "caption": "Porsche 911 (993) Turbo S",
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Heritage-Experience/Porsche-911-(Typ-993)-Turbo-S.html",
    "author": "© Porsche AG",
@@ -214,16 +178,16 @@
  ],
  "porsche-911-993-gt2": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=308839&w=1440&h=812&crop=1&public=1&cs=66f3ec9a9ccf1cb2",
-   "caption": "911 GT2 (993) Coppa Florio, 2025",
-   "page": "https://newsroom.porsche.com/en/2025/history/porsche-customisation-dreams-39157.html",
+   "file": "https://newsroom.porsche.com/dam/jcr:24d96191-0751-4188-b346-358b9b1fd549/b-993-GT2-822.jpg",
+   "caption": "911 GT2 (993)",
+   "page": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-4-type-993-16486.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251505&w=968&h=1440&crop=0&public=1&cs=9d7a73ffd09cf605",
-   "caption": "1995, Porsche 911 GT2",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation---Design-und-Modellvarianten.html",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=308839&w=1440&h=812&crop=1&public=1&cs=66f3ec9a9ccf1cb2",
+   "caption": "911 GT2 (993) Coppa Florio, 2025",
+   "page": "https://newsroom.porsche.com/en/2025/history/porsche-customisation-dreams-39157.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
@@ -237,21 +201,35 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250544&w=1440&h=812&crop=1&public=1&cs=186184ec88388985",
-   "caption": "1998, 911 Carrera Coupé, Type 996, 3.4 litre, Generations",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250558&w=1440&h=812&crop=1&public=1&cs=974aa611c105be6e",
+   "caption": "2001, 911 Carrera Coupé, Type 996, 3.4 litre, Generations",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250558&w=1440&h=812&crop=1&public=1&cs=974aa611c105be6e",
-   "caption": "2001, 911 Carrera Coupé, Type 996, 3.4 litre, Generations",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250544&w=1440&h=812&crop=1&public=1&cs=186184ec88388985",
+   "caption": "1998, 911 Carrera Coupé, Type 996, 3.4 litre, Generations",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-996-1-turbo": [
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281155&w=1440&h=812&crop=1&public=1&cs=4ed6f210647cc243",
+   "caption": "911 Turbo (996)",
+   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281153&w=1440&h=812&crop=1&public=1&cs=eed5898d02674e27",
+   "caption": "911 Turbo (996)",
+   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281158&w=1440&h=812&crop=1&public=1&cs=41a306d3e9cf4240",
    "caption": "5th generation",
@@ -276,7 +254,7 @@
  ],
  "porsche-911-996-1-gt3": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.1/PCH19_0734_fine.jpeg/jcr:content/PCH19_0734_fine.jpeg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.1/PCH19_0762_fine.jpeg/jcr:content/PCH19_0762_fine.jpeg",
    "caption": "911 GT3 (996.1), 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
@@ -288,16 +266,16 @@
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.1/PCH19_0762_fine.jpeg/jcr:content/PCH19_0762_fine.jpeg",
-   "caption": "911 GT3 (996.1), 2019",
-   "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-996-1-gt2": [
+  {
+   "file": "https://newsroom.porsche.com/dam/jcr:7b5b0398-f98f-4d71-b8d6-3eaf8289443d/b-996-GT2_0782_a4.jpg",
+   "caption": "911 GT2 (996)",
+   "page": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-5-typ-996-16487.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251508&w=1440&h=812&crop=1&public=1&cs=d82b46a012f0f8ac",
    "caption": "2004, Porsche 911 GT2",
@@ -322,13 +300,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281162&w=1440&h=812&crop=1&public=1&cs=7e21521ce0b77206",
-   "caption": "6th generation",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-997-1-gt3": [
@@ -340,14 +311,14 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/997.1/PCH19_0649_fine.jpeg/jcr:content/PCH19_0649_fine.jpeg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/997.1/PCH19_0640_fine.jpeg/jcr:content/PCH19_0640_fine.jpeg",
    "caption": "911 GT3 (997.1), 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/997.1/PCH19_0640_fine.jpeg/jcr:content/PCH19_0640_fine.jpeg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/997.1/PCH19_0649_fine.jpeg/jcr:content/PCH19_0649_fine.jpeg",
    "caption": "911 GT3 (997.1), 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
@@ -363,14 +334,14 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337429&w=1440&h=812&crop=1&public=1&cs=cf11c98d601ac6a6",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337470&w=1440&h=812&crop=1&public=1&cs=c2902f7c61c3ca0e",
    "caption": "911 GT3 RS 4.0 (997.2), Black Forest, Germany, 2026, Top Gear",
    "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337470&w=1440&h=812&crop=1&public=1&cs=c2902f7c61c3ca0e",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=337429&w=1440&h=812&crop=1&public=1&cs=cf11c98d601ac6a6",
    "caption": "911 GT3 RS 4.0 (997.2), Black Forest, Germany, 2026, Top Gear",
    "page": "https://newsroom.porsche.com/en/2026/products/porsche-top-gear-best-911-42893.html",
    "author": "© Porsche AG",
@@ -378,14 +349,6 @@
   }
  ],
  "porsche-911-991-1-carrera-s": [
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250536&w=1440&h=812&crop=1&public=1&cs=7e8cf49000053546",
-   "caption": "2012, 911 Carrera Coupé, Typ 991, 3.4 litre, Generations",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "exact": false
-  },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250535&w=1440&h=812&crop=1&public=1&cs=e92ddc56c74c31bf",
    "caption": "2012, 911 Carrera Coupé, Type 991, 3.4 litre, Generations",
@@ -401,18 +364,19 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "exact": false
+  },
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250536&w=1440&h=812&crop=1&public=1&cs=7e8cf49000053546",
+   "caption": "2012, 911 Carrera Coupé, Typ 991, 3.4 litre, Generations",
+   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "exact": false
   }
  ],
  "porsche-911-991-1-gt3": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/991.1/PCH19_0471_fine.jpeg/jcr:content/PCH19_0471_fine.jpeg",
-   "caption": "911 GT3 (991.1), 2019",
-   "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/991.1/PCH19_0472_fine.jpeg/jcr:content/PCH19_0472_fine.jpeg",
    "caption": "911 GT3 (991.1), 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
@@ -444,7 +408,7 @@
  ],
  "porsche-911-991-1-r": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911R/P16_0169_a4_rgb_NR/jcr:content/P16_0169_a4_rgb_NR.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911R/P16_0173_a4_rgb_NR.jpg/jcr:content/P16_0173_a4_rgb_NR.jpg",
    "caption": "911 R, 2016",
    "page": "https://newsroom.porsche.com/en/products/porsche-911-r-geneva-international-motor-show-12266.html",
    "author": "© Porsche AG",
@@ -458,7 +422,7 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911R/P16_0173_a4_rgb_NR.jpg/jcr:content/P16_0173_a4_rgb_NR.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911R/P16_0169_a4_rgb_NR/jcr:content/P16_0169_a4_rgb_NR.jpg",
    "caption": "911 R, 2016",
    "page": "https://newsroom.porsche.com/en/products/porsche-911-r-geneva-international-motor-show-12266.html",
    "author": "© Porsche AG",
@@ -513,28 +477,14 @@
  ],
  "porsche-911-992-1-carrera-s": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/992/992-Studio/b-CZ20V03ID0006.jpg/jcr:content/b-CZ20V03ID0006.jpg",
-   "caption": "911 Carrera S (992), 2018",
-   "page": "https://newsroom.porsche.com/en/products/porsche-911-new-eigth-generation-992-timeless-machine-design-icon-world-premiere-los-angeles-2018-16522.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/992/992-Studio/b-CZ20V03ID0004.jpg/jcr:content/b-CZ20V03ID0004.jpg",
-   "caption": "911 Carrera S (992), 2018",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/992/992-press-release/b-P18_0830.jpg/jcr:content/b-P18_0830.jpg",
+   "caption": "911 Carrera 4S (992), 2018",
    "page": "https://newsroom.porsche.com/en/products/porsche-911-new-eigth-generation-992-timeless-machine-design-icon-world-premiere-los-angeles-2018-16522.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-992-1-gt3": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2021/Products/New-911-GT3/P21_0095_a3_rgb.jpeg/jcr:content/P21_0095_a3_rgb.jpeg",
-   "caption": "911 GT3, 2021",
-   "page": "https://newsroom.porsche.com/en/2021/products/porsche-911-gt3-world-premiere-livestream-23624.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/New-911-GT3/P21_0097_a3_rgb.jpeg/jcr:content/P21_0097_a3_rgb.jpeg",
    "caption": "911 GT3, 2021",
@@ -571,26 +521,19 @@
    "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/Products/911-GT3-RS-Premiere/Exterieur/_AKOS5087_edit_V02_highres.jpeg/jcr:content/_AKOS5087_edit_V02_highres.jpeg",
-   "caption": "911 GT3 RS, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-992-1-s-t": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/911-S-T/911-S-T-heritage-design-outdoor/S23_1185_fine.jpg/jcr:content/S23_1185_fine.jpg",
-   "caption": "Porsche 911 S/T with Heritage Design Package, 2023",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/911-S-T/911-S-T-studio/S23_1162_fine.jpg/jcr:content/S23_1162_fine.jpg",
+   "caption": "Porsche 911 S/T, 2023",
    "page": "https://newsroom.porsche.com/en/2023/products/porsche-911-s-t-world-premiere-60-years-911-33363.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/911-S-T/911-S-T-studio/S23_1162_fine.jpg/jcr:content/S23_1162_fine.jpg",
-   "caption": "Porsche 911 S/T, 2023",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/911-S-T/911-S-T-heritage-design-outdoor/S23_1185_fine.jpg/jcr:content/S23_1185_fine.jpg",
+   "caption": "Porsche 911 S/T with Heritage Design Package, 2023",
    "page": "https://newsroom.porsche.com/en/2023/products/porsche-911-s-t-world-premiere-60-years-911-33363.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
@@ -628,13 +571,6 @@
  ],
  "porsche-911-992-1-dakar": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/Products/911-Dakar/gallery-studio/22PAG_105_Dakar_009_RR_Seite_highres.jpg/jcr:content/22PAG_105_Dakar_009_RR_Seite_highres.jpg",
-   "caption": "911 Dakar, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2022/Products/911-Dakar/0418_dallas_05_AKOS5309_edit_V02_highres.jpg/jcr:content/0418_dallas_05_AKOS5309_edit_V02_highres.jpg",
    "caption": "911 Dakar, 2022",
    "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
@@ -643,6 +579,13 @@
   },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/Products/911-Dakar/gallery-1/0063_dallas_01_AKOS6200_edit_V01_highres.jpg/jcr:content/0063_dallas_01_AKOS6200_edit_V01_highres.jpg",
+   "caption": "911 Dakar, 2022",
+   "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/Products/911-Dakar/gallery-studio/22PAG_105_Dakar_009_RR_Seite_highres.jpg/jcr:content/22PAG_105_Dakar_009_RR_Seite_highres.jpg",
    "caption": "911 Dakar, 2022",
    "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
    "author": "© Porsche AG",
@@ -656,27 +599,13 @@
    "page": "https://newsroom.porsche.com/en/2025/scene-passion/porsche-356-a-coupe-sonderwunsch-henk-spin-restorer-collector-christophorus-40181.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=322337&w=1620&h=936&crop=1&public=1&cs=bebe0f2c53ab9663",
-   "caption": "356 A Coupé, 2025",
-   "page": "https://newsroom.porsche.com/en/2025/scene-passion/porsche-356-a-coupe-sonderwunsch-henk-spin-restorer-collector-christophorus-40181.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=322339&w=1440&h=812&crop=1&public=1&cs=16cc6c81829a004a",
-   "caption": "356 A Coupé, Hoorn, 2025",
-   "page": "https://newsroom.porsche.com/en/2025/scene-passion/porsche-356-a-coupe-sonderwunsch-henk-spin-restorer-collector-christophorus-40181.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-356-356-speedster": [
   {
-   "file": "https://newsroom.porsche.com/dam/jcr:8cbcd6cb-2036-4dea-b736-fb1bb491d3cc/b-HNE-599_Der-erste-356-Speedster,-1954.jpg",
-   "caption": "356 Speedster, model year 1954",
-   "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
+   "file": "https://newsroom.porsche.com/dam/jcr:838d9299-35f2-42c0-b5eb-303485fffd82/b-356-5685.jpg",
+   "caption": "356 A 1600 S Speedster, Switzerland, 2018",
+   "page": "https://newsroom.porsche.com/en/history/porsche-356-no-1-roadster-super-coupe-speedster-carrera-cabriolet-switzerland-bern-70-years-sports-cars-15858.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
@@ -684,13 +613,6 @@
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/history/The-history-of-the-Speedster-Models/pictures/b-HAV-4456_Porsche-Typ-356-Speedster--Mj.-1955-(erster-Speedster-Schriftzug).jpg/jcr:content/b-HAV-4456_Porsche-Typ-356-Speedster;-Mj.-1955-(erster-Speedster-Schriftzug).jpg",
    "caption": "356 Speedster, model year 1955",
    "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/dam/jcr:838d9299-35f2-42c0-b5eb-303485fffd82/b-356-5685.jpg",
-   "caption": "356 A 1600 S Speedster, Switzerland, 2018",
-   "page": "https://newsroom.porsche.com/en/history/porsche-356-no-1-roadster-super-coupe-speedster-carrera-cabriolet-switzerland-bern-70-years-sports-cars-15858.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
@@ -741,26 +663,12 @@
    "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281079&w=1425&h=1440&crop=0&public=1&cs=46f0def011a8dbd2",
-   "caption": "2nd generation",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-930-turbo-3-3-flachbau": [
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251517&w=1440&h=812&crop=1&public=1&cs=10f670253dd2eb28",
    "caption": "1985, 911 Turbo Coupé, 3.3 litres, Flatnose, Porsche Exclusive",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation---Design-und-Modellvarianten.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251518&w=1000&h=1007&crop=0&public=1&cs=1f56ece52983fb80",
-   "caption": "911 Turbo Coupé, 3.3 litres, Flatnose, Porsche Exclusive",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation---Design-und-Modellvarianten.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
@@ -775,14 +683,14 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=271487&w=1935&h=1089&crop=1&public=1&cs=ddbf1637b82a79b3",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=271488&w=1440&h=812&crop=1&public=1&cs=e32241993c8621f2",
    "caption": "Porsche 918 Spyder",
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-918-Spyder.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=271488&w=1440&h=812&crop=1&public=1&cs=e32241993c8621f2",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=271487&w=1935&h=1089&crop=1&public=1&cs=ddbf1637b82a79b3",
    "caption": "Porsche 918 Spyder",
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-918-Spyder.html",
    "author": "© Porsche AG",
@@ -792,13 +700,6 @@
  "porsche-918-918-spyder-weissach": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/918-Spyder/Benno-Oertig-918-Spyder-Pistenkönig/t_PORSCHE-SPYDER-918-029.jpg/jcr:content/t_PORSCHE%20SPYDER%20918%20029.jpg",
-   "caption": "Benno Oertig, 918 Spyder, 2017",
-   "page": "https://newsroom.porsche.com/en/products/porsche-motorsports-king-of-the-road-benno-oertig-918-spyder-sports-cup-suisse-14572.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/918-Spyder/Benno-Oertig-918-Spyder-Pistenkönig/PORSCHE-SPYDER-918-013.jpg/jcr:content/PORSCHE%20SPYDER%20918%20013.jpg",
    "caption": "Benno Oertig, 918 Spyder, 2017",
    "page": "https://newsroom.porsche.com/en/products/porsche-motorsports-king-of-the-road-benno-oertig-918-spyder-sports-cup-suisse-14572.html",
    "author": "© Porsche AG",
@@ -819,13 +720,6 @@
    "page": "https://newsroom.porsche.com/en/2025/history/porsche-25-years-world-premiere-carrera-gt-40609.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2020/history/Porsche-Klassik-18/Pariser-Pl%C3%A4tze/DSC_8694.jpeg/jcr:content/DSC_8694.jpeg",
-   "caption": "Porsche Carrera GT, Berlin, 2020",
-   "page": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-20-years-carrera-gt-22823.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-959-959-komfort": [
@@ -839,13 +733,6 @@
  ],
  "porsche-959-959-sport": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Nick-Heidfeld-959-S-Porsche-Classic/gallery/220621_Heidfeld-959_56635.jpeg/jcr:content/220621_Heidfeld-959_56635.jpeg",
-   "caption": "959 S, Porsche Classic, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Nick-Heidfeld-959-S-Porsche-Classic/gallery/220621_Heidfeld-959_56642.jpeg/jcr:content/220621_Heidfeld-959_56642.jpeg",
    "caption": "959 S, Porsche Classic, 2022",
    "page": "https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html",
@@ -853,7 +740,7 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Nick-Heidfeld-959-S-Porsche-Classic/gallery/220621_Heidfeld-959_56627.jpeg/jcr:content/220621_Heidfeld-959_56627.jpeg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Nick-Heidfeld-959-S-Porsche-Classic/gallery/220621_Heidfeld-959_56635.jpeg/jcr:content/220621_Heidfeld-959_56635.jpeg",
    "caption": "959 S, Porsche Classic, 2022",
    "page": "https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html",
    "author": "© Porsche AG",
@@ -862,13 +749,6 @@
  ],
  "porsche-356-356-pre-a-coupe": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/history/9-11-Magazin-356-Gmünd/HDI-30033_1_356-GmÅnd-CoupÇ,-ca.-1948.jpeg/jcr:content/HDI%2030033_1_356%20Gm%C3%85nd%20Coup%C3%87,%20ca.%201948.jpeg",
-   "caption": "Porsche 356 Coupé, Porsche factory side Gmünd, Kärnten, 1948",
-   "page": "https://newsroom.porsche.com/en/2019/history/porsche-911-magazine-episode-13-sports-car-dna-356-gmuend-19078.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2019/history/9-11-Magazin-356-Gmünd/Titel-HAV-853_1_1948--Porsche-Typ-356-_-2-GmÅnd-CoupÇ-im-WerksgelÑnde-im-Porsche-Werk-in-GmÅnd_KÑrnten,-Karnerau.-Man-hatt.jpeg/jcr:content/Titel%20HAV%20853_1_1948%20%20Porsche%20Typ%20356%20_%202%20Gm%C3%85nd%20Coup%C3%87%20im%20Werksgel%C3%91nde%20im%20Porsche%20Werk%20in%20Gm%C3%85nd_K%C3%91rnten,%20Karnerau.%20Man%20hatt.jpeg",
    "caption": "Porsche 356/2 Coupé, Porsche factory side Gmünd, Kärnten, 1948",
    "page": "https://newsroom.porsche.com/en/2023/history/porsche-356-wood-framework-christophorus-406-icon-31841.html",
@@ -876,23 +756,23 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/CH-local/2020/Historie/Christophorus-Vertikale-Verkostung/kost3.jpeg/jcr:content/kost3.jpeg",
-   "caption": "Porsche 356, 2018",
-   "page": "https://newsroom.porsche.com/de_CH/szene-historie/stehsatz-christophorus_DE/porsche--356-2-vertikale-verkostung-christophorus-389-22824.html",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/history/9-11-Magazin-356-Gmünd/HDI-30033_1_356-GmÅnd-CoupÇ,-ca.-1948.jpeg/jcr:content/HDI%2030033_1_356%20Gm%C3%85nd%20Coup%C3%87,%20ca.%201948.jpeg",
+   "caption": "Porsche 356 Coupé, Porsche factory side Gmünd, Kärnten, 1948",
+   "page": "https://newsroom.porsche.com/en/2019/history/porsche-911-magazine-episode-13-sports-car-dna-356-gmuend-19078.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-356-356-c-coupe": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2020/history/Porsche-Klassik-16/Blue-wonder/b-190828-Porsche356-183.jpg/jcr:content/b-190828-Porsche356-183.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2020/history/Porsche-Klassik-16/Blue-wonder/b-190828-Porsche356-235.jpg/jcr:content/b-190828-Porsche356-235.jpg",
    "caption": "356 C, 2020",
    "page": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-356c-claus-meirich-19777.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2020/history/Porsche-Klassik-16/Blue-wonder/b-190828-Porsche356-235.jpg/jcr:content/b-190828-Porsche356-235.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2020/history/Porsche-Klassik-16/Blue-wonder/b-190828-Porsche356-183.jpg/jcr:content/b-190828-Porsche356-183.jpg",
    "caption": "356 C, 2020",
    "page": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-356c-claus-meirich-19777.html",
    "author": "© Porsche AG",
@@ -902,20 +782,6 @@
  "porsche-912-912-e": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Yellow-Submarine/gallery-2/ALI05520.jpeg/jcr:content/ALI05520.jpeg",
-   "caption": "912 E, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Yellow-Submarine/ALI05701.jpeg/jcr:content/ALI05701.jpeg",
-   "caption": "912 E, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2022/History/Yellow-Submarine/ALI_7206.jpeg/jcr:content/ALI_7206.jpeg",
    "caption": "912 E, 2022",
    "page": "https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html",
    "author": "© Porsche AG",
@@ -949,21 +815,14 @@
  ],
  "porsche-911-993-targa": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/History-of-the-Porsche-Targa/993/b-HDK-829_1_1997-(Mj.),-911-Targa-3.6.jpg/jcr:content/b-HDK%20829_1_1997%20(Mj.),%20911%20Targa%203.6.jpg",
-   "caption": "911 Targa 3.6 (MY 1997)",
-   "page": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/History-of-the-Porsche-Targa/993/b-HDI-71387_1_Porsche-911-Targa-3,6-(993).jpg/jcr:content/b-HDI%2071387_1_Porsche%20911%20Targa%203,6%20(993).jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/History-of-the-Porsche-Targa/993/b-HDI-71356_1_911-Targa-3,6-,-Porsche-Style-Abteilung,--ca.-1994.jpg/jcr:content/b-HDI%2071356_1_911%20Targa%203,6%20,%20Porsche%20Style%20Abteilung,%20%20ca.%201994.jpg",
    "caption": "911 Targa 3.6 (993)",
    "page": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/History-of-the-Porsche-Targa/993/b-HDK-3412_1_Porsche-Typ-911-Targa-3,6--Mj.-1996.jpg/jcr:content/b-HDK%203412_1_Porsche%20Typ%20911%20Targa%203,6;%20Mj.%201996.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/History-of-the-Porsche-Targa/993/b-HDK-829_1_1997-(Mj.),-911-Targa-3.6.jpg/jcr:content/b-HDK%20829_1_1997%20(Mj.),%20911%20Targa%203.6.jpg",
    "caption": "911 Targa 3.6 (MY 1997)",
    "page": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
    "author": "© Porsche AG",
@@ -995,21 +854,7 @@
  ],
  "porsche-911-996-2-turbo-s": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/25-Jahre-Porsche-911-Generation-996/reference-gallery/996-Turbo-S/996_TurboS20.jpeg/jcr:content/996_TurboS20.jpeg",
-   "caption": "911 Turbo S Coupé (996), 2022",
-   "page": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/25-Jahre-Porsche-911-Generation-996/reference-gallery/996-Turbo-S/996_TurboS16.jpeg/jcr:content/996_TurboS16.jpeg",
-   "caption": "911 Turbo S Coupé (996), 2022",
-   "page": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/25-Jahre-Porsche-911-Generation-996/reference-gallery/996-Turbo-S/996_TurboS24.jpeg/jcr:content/996_TurboS24.jpeg",
    "caption": "911 Turbo S Coupé (996), 2022",
    "page": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
    "author": "© Porsche AG",
@@ -1025,14 +870,14 @@
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252964&w=1440&h=812&crop=1&public=1&cs=0d48bc6a073674e2",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252962&w=1440&h=812&crop=1&public=1&cs=b7a4f78d0f3d4eeb",
    "caption": "Porsche 911 (997) GT2",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252962&w=1440&h=812&crop=1&public=1&cs=b7a4f78d0f3d4eeb",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252964&w=1440&h=812&crop=1&public=1&cs=0d48bc6a073674e2",
    "caption": "Porsche 911 (997) GT2",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
    "author": "© Porsche AG",
@@ -1053,20 +898,6 @@
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/history/The-history-of-the-Speedster-Models/pictures/b-HDI-11616_Porsche-Typ-911-Speedster-Mj.-2011.jpg/jcr:content/b-HDI-11616_Porsche-Typ-911-Speedster-Mj.-2011.jpg",
    "caption": "911 Speedster, model year 2011",
    "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/history/The-history-of-the-Speedster-Models/pictures/b-HDI-62063_911-Speedster-(Mj.-2011).jpg/jcr:content/b-HDI-62063_911-Speedster-(Mj.-2011).jpg",
-   "caption": "911 Speedster, model year 2011",
-   "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/Porsche-Exclusive-Kleinserien-EN/911-Speedster/jcr:content/911-Speedster.jpg",
-   "caption": "911 Speedster, Typ 997, 2010",
-   "page": "https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
@@ -1125,6 +956,13 @@
  ],
  "porsche-911-991-2-speedster": [
   {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/The-new-911-Speedster-goes-into-production/pictures/b-P19_0356_a5_rgb.jpg/jcr:content/b-P19_0356_a5_rgb.jpg",
+   "caption": "911 Speedster, 2019",
+   "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/The-new-911-Speedster-goes-into-production/pictures/b-P19_0358_a5_rgb.jpg/jcr:content/b-P19_0358_a5_rgb.jpg",
    "caption": "911 Speedster, 2019",
    "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
@@ -1133,13 +971,6 @@
   },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/The-new-911-Speedster-goes-into-production/pictures/b-P19_0349_a5_rgb.jpg/jcr:content/b-P19_0349_a5_rgb.jpg",
-   "caption": "911 Speedster, 2019",
-   "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/The-new-911-Speedster-goes-into-production/pictures/b-P19_0356_a5_rgb.jpg/jcr:content/b-P19_0356_a5_rgb.jpg",
    "caption": "911 Speedster, 2019",
    "page": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
    "author": "© Porsche AG",
@@ -1205,20 +1036,6 @@
    "page": "https://newsroom.porsche.com/en/2026/scene-passion/porsche-garage-ivaylo-popivantchev-42826.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/AU_local/2022/History_AU/Motorclassica-2022/DSC03736_lo.jpg/jcr:content/DSC03736_lo.jpg",
-   "caption": "356 B, 2022",
-   "page": "https://newsroom.porsche.com/en_AU/2022/history/porsche-356-B-wins-at-motorclassica-2022-30021.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/AU_local/2022/History_AU/Motorclassica-2022/DSC03737_lo.jpg/jcr:content/DSC03737_lo.jpg",
-   "caption": "356 B, 2022",
-   "page": "https://newsroom.porsche.com/en_AU/2022/history/porsche-356-B-wins-at-motorclassica-2022-30021.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-991-2-gt3": [
@@ -1231,19 +1048,19 @@
    "premiere": true
   },
   {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/991.2/PCH19_0538_fine.jpeg/jcr:content/PCH19_0538_fine.jpeg",
+   "caption": "911 GT3 (991.2), 2019",
+   "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/911-GT3-2017/neu_Galerie-high-res/GT3_1.jpg/jcr:content/GT3_1.jpg",
    "caption": "911 GT3, 2017",
    "page": "https://newsroom.porsche.com/en/products/porsche-911-gt3-world-premiere-geneva-motor-show-gims-2017-13466.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/991.2/PCH19_0538_fine.jpeg/jcr:content/PCH19_0538_fine.jpeg",
-   "caption": "911 GT3 (991.2), 2019",
-   "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-992-2-carrera-s": [
@@ -1305,7 +1122,7 @@
    "premiere": true
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=323855&w=1440&h=812&crop=1&public=1&cs=672247dca97ca5f4",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=323146&w=1440&h=812&crop=1&public=1&cs=45056f46e5985800",
    "caption": "911 Turbo S, 2025",
    "page": "https://newsroom.porsche.com/en/2025/products/porsche-911-turbo-s-top-of-the-range-model-twin-turbo-performance-hybrid-40446.html",
    "author": "© Porsche AG",
@@ -1313,7 +1130,7 @@
    "premiere": true
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=323146&w=1440&h=812&crop=1&public=1&cs=45056f46e5985800",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=323855&w=1440&h=812&crop=1&public=1&cs=672247dca97ca5f4",
    "caption": "911 Turbo S, 2025",
    "page": "https://newsroom.porsche.com/en/2025/products/porsche-911-turbo-s-top-of-the-range-model-twin-turbo-performance-hybrid-40446.html",
    "author": "© Porsche AG",
@@ -1331,7 +1148,7 @@
    "premiere": true
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=298380&w=1440&h=812&crop=1&public=1&cs=e700fdc39eaac2c2",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=298402&w=1440&h=812&crop=1&public=1&cs=30192aa42a16242e",
    "caption": "911 GT3 with Weissach Package",
    "page": "https://newsroom.porsche.com/en_US/2024/products/porsche-the-2025-911-gt3-double-premiere-37598.html",
    "author": "© Porsche AG",
@@ -1339,7 +1156,7 @@
    "premiere": true
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=298402&w=1440&h=812&crop=1&public=1&cs=30192aa42a16242e",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=298380&w=1440&h=812&crop=1&public=1&cs=e700fdc39eaac2c2",
    "caption": "911 GT3 with Weissach Package",
    "page": "https://newsroom.porsche.com/en_US/2024/products/porsche-the-2025-911-gt3-double-premiere-37598.html",
    "author": "© Porsche AG",
@@ -1367,7 +1184,7 @@
  ],
  "porsche-911-991-2-turbo-s": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/Der-neue-911-Turbi-und-911-Turbo-S/P15_1253_a4_rgbNR.jpg/jcr:content/P15_1253_a4_rgbNR.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/Der-neue-911-Turbi-und-911-Turbo-S/P15_1252_a4_rgbNR.jpg/jcr:content/P15_1252_a4_rgbNR.jpg",
    "caption": "911 Turbo S, 2015",
    "page": "https://newsroom.porsche.com/en/products/porsche-911-turbo-911-turbo-s-sportscar-12061.html",
    "author": "© Porsche AG",
@@ -1375,7 +1192,7 @@
    "premiere": true
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/Der-neue-911-Turbi-und-911-Turbo-S/P15_1252_a4_rgbNR.jpg/jcr:content/P15_1252_a4_rgbNR.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/911/Der-neue-911-Turbi-und-911-Turbo-S/P15_1253_a4_rgbNR.jpg/jcr:content/P15_1253_a4_rgbNR.jpg",
    "caption": "911 Turbo S, 2015",
    "page": "https://newsroom.porsche.com/en/products/porsche-911-turbo-911-turbo-s-sportscar-12061.html",
    "author": "© Porsche AG",
@@ -1419,14 +1236,14 @@
  ],
  "porsche-911-996-2-gt3": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.2/PCH19_0661_fine.jpeg/jcr:content/PCH19_0661_fine.jpeg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.2/PCH19_0685_fine.jpeg/jcr:content/PCH19_0685_fine.jpeg",
    "caption": "911 GT3 (996.2), 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.2/PCH19_0685_fine.jpeg/jcr:content/PCH19_0685_fine.jpeg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/996.2/PCH19_0661_fine.jpeg/jcr:content/PCH19_0661_fine.jpeg",
    "caption": "911 GT3 (996.2), 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
@@ -1447,25 +1264,11 @@
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/997.2/PCH19_0589_fine.jpeg/jcr:content/PCH19_0589_fine.jpeg",
-   "caption": "911 GT3 (997.2), 2019",
-   "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/20-years-911-GT3/997.2/PCH19_0585_fine.jpeg/jcr:content/PCH19_0585_fine.jpeg",
-   "caption": "911 GT3 (997.2), 2019",
-   "page": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-911-997-2-gt3-rs": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/Scene-and-Passion/Happy-Birthday-Hebe/gallery-2/b-DSC_4893.jpg/jcr:content/b-DSC_4893.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/Scene-and-Passion/Happy-Birthday-Hebe/gallery-2/b-DSC_5133.jpg/jcr:content/b-DSC_5133.jpg",
    "caption": "997.2 GT3 RS \"Hebe\", 2020",
    "page": "https://newsroom.porsche.com/en/2020/sport-lifestyle/porsche-gb-997-911-gt3-rs-hebe-birthday-zaid-hamid-21925.html",
    "author": "© Porsche AG",
@@ -1473,13 +1276,6 @@
   },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2020/Scene-and-Passion/Happy-Birthday-Hebe/gallery-2/b-DSC_4902.jpg/jcr:content/b-DSC_4902.jpg",
-   "caption": "997.2 GT3 RS \"Hebe\", 2020",
-   "page": "https://newsroom.porsche.com/en/2020/sport-lifestyle/porsche-gb-997-911-gt3-rs-hebe-birthday-zaid-hamid-21925.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/Scene-and-Passion/Happy-Birthday-Hebe/gallery-2/b-DSC_4902.jpg/jcr:content/b-DSC_4902.jpg",
    "caption": "997.2 GT3 RS \"Hebe\", 2020",
    "page": "https://newsroom.porsche.com/en/2020/sport-lifestyle/porsche-gb-997-911-gt3-rs-hebe-birthday-zaid-hamid-21925.html",
    "author": "© Porsche AG",
@@ -1515,6 +1311,13 @@
  ],
  "porsche-boxster-986-boxster-s-50-jahre-550-spyder": [
   {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/Christophorus-Website/C398/Offenes-Bekenntnis/Galerie-im-Artikel/b-HDI-18272.jpg/jcr:content/b-HDI-18272.jpg",
+   "caption": "Boxster S „50 Jahre 550 Spyder“ (986), 2004",
+   "page": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Historic/Boxster_S_986_50-Year_of_the_550_Spyder.jpeg/jcr:content/Boxster_S_986_50%20Year_of_the_550_Spyder.jpeg",
    "caption": "Boxster S Special Edition \"50 years of the 550 Spyder” (986), 2003",
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
@@ -1523,6 +1326,13 @@
   }
  ],
  "porsche-boxster-987-1-boxster-s": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/Christophorus-Website/C398/Offenes-Bekenntnis/Galerie-im-Artikel/b-HDI-23108.jpg/jcr:content/b-HDI-23108.jpg",
+   "caption": "Boxster (987)",
+   "page": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Historic/Boxster_S_987.jpeg/jcr:content/Boxster_S_987.jpeg",
    "caption": "Boxster S (987), 2005",
@@ -1569,14 +1379,6 @@
  ],
  "porsche-boxster-981-boxster-gts": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0409.jpg/jcr:content/PCH14_0409.jpg",
-   "caption": "Boxster GTS, 2014",
-   "page": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0408.jpg/jcr:content/PCH14_0408.jpg",
    "caption": "Boxster GTS, 2014",
    "page": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
@@ -1590,9 +1392,25 @@
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0409.jpg/jcr:content/PCH14_0409.jpg",
+   "caption": "Boxster GTS, 2014",
+   "page": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "premiere": true
   }
  ],
  "porsche-boxster-981-boxster-spyder": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/Boxster-Spyder/Galerie/P15_0209_a4_rgb.jpg/jcr:content/P15_0209_a4_rgb.jpg",
+   "caption": "Boxster Spyder, 2015",
+   "page": "https://newsroom.porsche.com/en/products/porsche-boxster-spyder-roadster-world-premiere-new-york-international-auto-show-2015-10147.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "premiere": true
+  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/Boxster-Spyder/Galerie/P15_0201_a4_rgb.jpg/jcr:content/P15_0201_a4_rgb.jpg",
    "caption": "Boxster Spyder, 2015",
@@ -1607,25 +1425,9 @@
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/Boxster-Spyder/Galerie/P15_0209_a4_rgb.jpg/jcr:content/P15_0209_a4_rgb.jpg",
-   "caption": "Boxster Spyder, 2015",
-   "page": "https://newsroom.porsche.com/en/products/porsche-boxster-spyder-roadster-world-premiere-new-york-international-auto-show-2015-10147.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
   }
  ],
  "porsche-718-718-boxster": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/718-Boxster-und-718-Boxster-S/P16_0074_a4_rgb_b.jpg/jcr:content/P16_0074_a4_rgb_b.jpg",
-   "caption": "718 Boxster, 2016",
-   "page": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/718-Boxster-und-718-Boxster-S/P16_0073_a4_rgb_b.jpg/jcr:content/P16_0073_a4_rgb_b.jpg",
    "caption": "718 Boxster, 2016",
@@ -1640,17 +1442,17 @@
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
-  }
- ],
- "porsche-718-718-boxster-s": [
+  },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/718-Boxster-und-718-Boxster-S/P16_0085_a4_rgb_b.jpg/jcr:content/P16_0085_a4_rgb_b.jpg",
-   "caption": "718 Boxster S, 2016",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/718-Boxster-und-718-Boxster-S/P16_0074_a4_rgb_b.jpg/jcr:content/P16_0074_a4_rgb_b.jpg",
+   "caption": "718 Boxster, 2016",
    "page": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true
-  },
+  }
+ ],
+ "porsche-718-718-boxster-s": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/718-Boxster-und-718-Boxster-S/P16_0079_a4_rgb_b.jpg/jcr:content/P16_0079_a4_rgb_b.jpg",
    "caption": "718 Boxster S, 2016",
@@ -1665,9 +1467,24 @@
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Produkte/Boxster-und-Cayman/718-Boxster-und-718-Boxster-S/P16_0085_a4_rgb_b.jpg/jcr:content/P16_0085_a4_rgb_b.jpg",
+   "caption": "718 Boxster S, 2016",
+   "page": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "premiere": true
   }
  ],
  "porsche-718-718-boxster-gts-4-0": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Historic/Boxster_GTS_40.jpeg/jcr:content/Boxster_GTS_40.jpeg",
+   "caption": "718 Boxster GTS 4.0 (982)",
+   "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom"
+  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2020/products/718-GTS-4.0/Gallery-Boxster/b-P19_0914_a5_rgb.jpg/jcr:content/b-P19_0914_a5_rgb.jpg",
    "caption": "718 Boxster GTS, 2020",
@@ -1683,26 +1500,11 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Historic/Boxster_GTS_40.jpeg/jcr:content/Boxster_GTS_40.jpeg",
-   "caption": "718 Boxster GTS 4.0 (982)",
-   "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
   }
  ],
  "porsche-718-718-boxster-25-jahre": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Static/P20_0595_a3_rgb.jpeg/jcr:content/P20_0595_a3_rgb.jpeg",
-   "caption": "Boxster 25 years, 2021",
-   "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Static/P20_0606_a3_rgb.jpeg/jcr:content/P20_0606_a3_rgb.jpeg",
    "caption": "Boxster 25 years, 2021",
    "page": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
    "author": "© Porsche AG",
@@ -1728,23 +1530,31 @@
    "premiere": true
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/press-kits/19-01-718Spyder-CaymanGT4/Download/Bilder-718-Spyder/P19_0548_a3_rgb.jpg/jcr:content/P19_0548_a3_rgb.jpg",
-   "caption": "718 Spyder, 2019",
-   "page": "https://newsroom.porsche.com/en/press-kits/718-spyder-cayman-gt4.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
    "file": "https://newsroom.porsche.com/dam/jcr:f708c6f7-efe9-4ba0-ab10-b2125653493e/b-P19_0557_a3_rgb.jpg",
    "caption": "718 Spyder, 2019",
    "page": "https://newsroom.porsche.com/en/2019/products/porsche-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true
+  },
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/press-kits/19-01-718Spyder-CaymanGT4/Download/Bilder-718-Spyder/P19_0548_a3_rgb.jpg/jcr:content/P19_0548_a3_rgb.jpg",
+   "caption": "718 Spyder, 2019",
+   "page": "https://newsroom.porsche.com/en/press-kits/718-spyder-cayman-gt4.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "premiere": true
   }
  ],
  "porsche-718-718-spyder-rs": [
+  {
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/The-new-718-Spyder-RS/0110_glasgow_01_AKOS3262_V03.jpg/jcr:content/0110_glasgow_01_AKOS3262_V03.jpg",
+   "caption": "718 Spyder RS, 2023",
+   "page": "https://newsroom.porsche.com/en/2023/products/porsche-718-spyder-rs-world-premiere-32257.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "premiere": true
+  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/The-new-718-Spyder-RS/Galerie-Studio/RG0005_718_Spyder_exterior_seite.jpg/jcr:content/RG0005_718_Spyder_exterior_seite.jpg",
    "caption": "718 Spyder RS, 2023",
@@ -1755,14 +1565,6 @@
   },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/The-new-718-Spyder-RS/Galerie-Studio/RG0002_718_Spyder_exterior__3_4_Heck.jpg/jcr:content/RG0002_718_Spyder_exterior__3_4_Heck.jpg",
-   "caption": "718 Spyder RS, 2023",
-   "page": "https://newsroom.porsche.com/en/2023/products/porsche-718-spyder-rs-world-premiere-32257.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "premiere": true
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2023/Products/The-new-718-Spyder-RS/0110_glasgow_01_AKOS3262_V03.jpg/jcr:content/0110_glasgow_01_AKOS3262_V03.jpg",
    "caption": "718 Spyder RS, 2023",
    "page": "https://newsroom.porsche.com/en/2023/products/porsche-718-spyder-rs-world-premiere-32257.html",
    "author": "© Porsche AG",
@@ -1780,7 +1582,7 @@
    "premiere": true
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0410_fine.jpg/jcr:content/PCH14_0410_fine.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0405.jpg/jcr:content/PCH14_0405.jpg",
    "caption": "Cayman GTS, 2014",
    "page": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
    "author": "© Porsche AG",
@@ -1788,7 +1590,7 @@
    "premiere": true
   },
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0405.jpg/jcr:content/PCH14_0405.jpg",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/ppdb/2014/03/333864/PCH14_0410_fine.jpg/jcr:content/PCH14_0410_fine.jpg",
    "caption": "Cayman GTS, 2014",
    "page": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
    "author": "© Porsche AG",
@@ -1923,20 +1725,6 @@
  "porsche-911-964-turbo-3-6": [
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281102&w=1440&h=812&crop=1&public=1&cs=a2b1e55ca1e8c6c7",
-   "caption": "911 Turbo 3.6 (964)",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281115&w=1424&h=1440&crop=0&public=1&cs=a31d5899bf08f7f4",
-   "caption": "911 Turbo 3.6 (964)",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281118&w=1438&h=1440&crop=0&public=1&cs=b1c4c863acdebb3d",
    "caption": "911 Turbo 3.6 (964)",
    "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
    "author": "© Porsche AG",

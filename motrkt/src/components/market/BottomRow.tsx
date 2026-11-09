@@ -26,7 +26,7 @@ export function Listings({ variant }: { variant: Variant }) {
         {listings.slice(0, 3).map((l, i) => (
           <li key={l.id}>
             <Link to={`/kaufen?inserat=${l.id}`} className="group block">
-              <div className="aspect-[4/3] overflow-hidden bg-panel-3">
+              <div className="aspect-video overflow-hidden bg-panel-3">
                 {l.images?.[0] ? (
                   <img src={l.images[0]} alt="" loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
                 ) : (
