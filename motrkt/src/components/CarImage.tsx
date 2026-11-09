@@ -35,9 +35,9 @@ export function CarImage({
     return <CarArt shape={variant.shape} color={fallbackColor ?? variant.color} scene={scene} className={className} label={label} />;
   }
   // Press photos are 16:9 like the frames; other photos (Wikimedia, other formats) are letterboxed so the car is never cut off.
-  const pressPhoto = variant.marketPhotos.includes(photo);
+  const pressPhoto = variant.marketPhotos.includes(photo) && !photo.contain;
   return (
-    <div className={cn("relative overflow-hidden bg-panel-3", className)}>
+    <div className={cn("relative overflow-hidden", photo.contain ? "bg-white" : "bg-panel-3", className)}>
       <img
         src={photo.file}
         alt={photo.caption ?? label ?? ""}

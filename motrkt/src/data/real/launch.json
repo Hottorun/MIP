@@ -571,13 +571,6 @@
  ],
  "porsche-911-992-1-dakar": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/pnr/2022/Products/911-Dakar/0418_dallas_05_AKOS5309_edit_V02_highres.jpg/jcr:content/0418_dallas_05_AKOS5309_edit_V02_highres.jpg",
-   "caption": "911 Dakar, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/Products/911-Dakar/gallery-1/0063_dallas_01_AKOS6200_edit_V01_highres.jpg/jcr:content/0063_dallas_01_AKOS6200_edit_V01_highres.jpg",
    "caption": "911 Dakar, 2022",
    "page": "https://newsroom.porsche.com/en/2022/products/porsche-911-dakar-world-premiere-auto-show-los-angeles-30421.html",
@@ -603,9 +596,9 @@
  ],
  "porsche-356-356-speedster": [
   {
-   "file": "https://newsroom.porsche.com/dam/jcr:838d9299-35f2-42c0-b5eb-303485fffd82/b-356-5685.jpg",
-   "caption": "356 A 1600 S Speedster, Switzerland, 2018",
-   "page": "https://newsroom.porsche.com/en/history/porsche-356-no-1-roadster-super-coupe-speedster-carrera-cabriolet-switzerland-bern-70-years-sports-cars-15858.html",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2019/products/top-5-american-icons/gallery/QR8A4362.jpeg/jcr:content/QR8A4362.jpeg",
+   "caption": "356 Speedster, Willow Springs, 2019, Porsche AG",
+   "page": "https://newsroom.porsche.com/en/media-search.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
@@ -651,18 +644,19 @@
  ],
  "porsche-930-turbo-3-3": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281095&w=1440&h=812&crop=1&public=1&cs=18526349b22f35bf",
-   "caption": "2nd generation",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2024/Scene-Passion/Luftgekühlt-Copenhagen/Galerie-3/DJR01172.jpg/jcr:content/DJR01172.jpg",
+   "caption": "911 Turbo 3.3 (930), Luftgekühlt, Copenhagen, Denmark, 2024, Porsche AG",
+   "page": "https://newsroom.porsche.com/en/media-search.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=281085&w=1440&h=812&crop=1&public=1&cs=0cb0e5903dbfaa59",
-   "caption": "2nd generation",
-   "page": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251497&w=1440&h=2400&crop=0&public=1&cs=9e8290ecf241ae37",
+   "caption": "1978, 911 Turbo Coupé, 3.3 litre",
+   "page": "https://newsroom.porsche.com/en/media-search.html",
    "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
+   "license": "Pressefoto, Porsche Newsroom",
+   "position": "50% 6%"
   }
  ],
  "porsche-930-turbo-3-3-flachbau": [
@@ -734,13 +728,6 @@
  "porsche-959-959-sport": [
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Nick-Heidfeld-959-S-Porsche-Classic/gallery/220621_Heidfeld-959_56642.jpeg/jcr:content/220621_Heidfeld-959_56642.jpeg",
-   "caption": "959 S, Porsche Classic, 2022",
-   "page": "https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2022/History/Nick-Heidfeld-959-S-Porsche-Classic/gallery/220621_Heidfeld-959_56635.jpeg/jcr:content/220621_Heidfeld-959_56635.jpeg",
    "caption": "959 S, Porsche Classic, 2022",
    "page": "https://newsroom.porsche.com/en/2022/history/porsche-classic-959-s-factory-restoration-nick-heidfeld-28934.html",
    "author": "© Porsche AG",
@@ -1326,13 +1313,6 @@
   }
  ],
  "porsche-boxster-987-1-boxster-s": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1080x624/dam/Christophorus-Website/C398/Offenes-Bekenntnis/Galerie-im-Artikel/b-HDI-23108.jpg/jcr:content/b-HDI-23108.jpg",
-   "caption": "Boxster (987)",
-   "page": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom"
-  },
   {
    "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2021/Products/Boxster-25-Years/Historic/Boxster_S_987.jpeg/jcr:content/Boxster_S_987.jpeg",
    "caption": "Boxster S (987), 2005",
@@ -2026,9 +2006,9 @@
  ],
  "porsche-gt-rennwagen-934-bis-964-rsr-935": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=332197&w=1440&h=812&crop=1&public=1&cs=33744b190f92a972",
-   "caption": "935/77, 2026",
-   "page": "https://newsroom.porsche.com/en/2026/history/porsche-heritage-moments-935-norbert-singer-timo-bernhard-42018.html",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/porsche_newsroom/Motorsport/MagischeMomente_Galerie/Porsche-935/jcr:content/Porsche-935",
+   "caption": "935, 2014, Porsche AG",
+   "page": "https://newsroom.porsche.com/en/media-search.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"
   }
@@ -2246,12 +2226,12 @@
  ],
  "porsche-911-993-carrera-4": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251504&w=1440&h=1600&crop=0&public=1&cs=1928563976d9ecee",
-   "caption": "1995, 911 Carrera 4 Coupé, 911 Carrera Coupé, 911 Carrera Cabriolet",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation---Design-und-Modellvarianten.html",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=237910&w=1600&h=1600&crop=0&public=1&cs=fc672805c3a6ea31",
+   "caption": "Porsche Tennis Grand Prix 1994 – Porsche 911 Carrera 4 Cabriolet, Satin Black Metallic; winner's car",
+   "page": "https://newsroom.porsche.com/en/media-search.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "position": "50% 96%"
+   "contain": true
   }
  ],
  "porsche-911-996-2-carrera-4s": [
@@ -2393,8 +2373,8 @@
  ],
  "porsche-rennsportwagen-904-bis-917-908-02-spyder": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=315095&w=1440&h=812&crop=1&public=1&cs=d42af0cba62e7882",
-   "caption": "Porsche 908/02 Spyder, Gérard Larrousse/Rudi Lins, Targa Florio, Italy, 1970, Porsche AG",
+   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/image_1290x726/dam/pnr/2024/History/Rudi-Lins/gallery/S24_0832_fine.jpg/jcr:content/S24_0832_fine.jpg",
+   "caption": "Porsche 908/02 Spyder LH (No. 27), 24 Hours of Le Mans, 1970, Porsche AG",
    "page": "https://newsroom.porsche.com/en/media-search.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom"

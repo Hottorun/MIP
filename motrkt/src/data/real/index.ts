@@ -21,6 +21,8 @@ export type Photo = {
   caption?: string;
   /** CSS object-position for photos whose subject is not in the centre of the 16:9 frame (e.g. "50% 95%"). */
   position?: string;
+  /** Very wide studio shot on white: shown whole on a white ground instead of cropped to the frame. */
+  contain?: boolean;
 };
 
 export type RealSpecs = {

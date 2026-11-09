@@ -905,17 +905,6 @@
     },
     "images": [
       {
-        "file": "/cars/porsche-911-996-gt3-rs-1.jpg",
-        "title": "File:2004 Porsche 911 GT3 RS LC25.jpg",
-        "page": "https://commons.wikimedia.org/wiki/File:2004_Porsche_911_GT3_RS_LC25.jpg",
-        "author": "MrWalkr",
-        "license": "CC BY-SA 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-        "exact": true,
-        "launchColor": true,
-        "caption": "Porsche 911 GT3 RS (996), Carraraweiß mit roten Schriftzügen"
-      },
-      {
         "file": "/cars/porsche-911-996-gt3-rs-2.jpg",
         "title": "File:2003 Porsche 911 GT3 RS Type 996 IAA Frankfurt.jpg",
         "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_GT3_RS_Type_996_IAA_Frankfurt.jpg",
@@ -925,17 +914,6 @@
         "exact": true,
         "launchColor": true,
         "caption": "Porsche 911 GT3 RS (996) auf der IAA 2003"
-      },
-      {
-        "file": "/cars/porsche-911-996-gt3-rs-3.jpg",
-        "title": "File:2003 Porsche 911 996 GT3 RS (36437571650).jpg",
-        "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_996_GT3_RS_(36437571650).jpg",
-        "author": "The Car Spy",
-        "license": "CC BY 2.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-        "exact": true,
-        "launchColor": false,
-        "caption": "Porsche 911 GT3 RS (996), Carraraweiß mit blauen Schriftzügen"
       }
     ]
   },
@@ -1312,17 +1290,6 @@
     },
     "images": [
       {
-        "file": "/cars/porsche-911-997-gt2-rs-1.jpg",
-        "title": "File:2010-07-04 Silver Porsche 997 GT2 RS 2367x1617.jpg",
-        "page": "https://commons.wikimedia.org/wiki/File:2010-07-04_Silver_Porsche_997_GT2_RS_2367x1617.jpg",
-        "author": "Brian Snelson from Hockley, Essex, England",
-        "license": "CC BY 2.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-        "exact": true,
-        "launchColor": true,
-        "caption": "Porsche 911 GT2 RS (997), GT-Silbermetallic"
-      },
-      {
         "file": "/cars/porsche-911-997-gt2-rs-2.jpg",
         "title": "File:2010 Porsche 911 GT2 RS (1) Mondial de l'automobile Paris.jpg",
         "page": "https://commons.wikimedia.org/wiki/File:2010_Porsche_911_GT2_RS_(1)_Mondial_de_l%27automobile_Paris.jpg",
@@ -1332,17 +1299,6 @@
         "exact": true,
         "launchColor": true,
         "caption": "Porsche 911 GT2 RS (997) auf dem Pariser Autosalon 2010"
-      },
-      {
-        "file": "/cars/porsche-911-997-gt2-rs-3.jpg",
-        "title": "File:2010 Porsche 911 GT2 RS LC23.jpg",
-        "page": "https://commons.wikimedia.org/wiki/File:2010_Porsche_911_GT2_RS_LC23.jpg",
-        "author": "MrWalkr",
-        "license": "CC BY-SA 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-        "exact": true,
-        "launchColor": false,
-        "caption": "Porsche 911 GT2 RS (997) in Schwarz"
       }
     ]
   },
