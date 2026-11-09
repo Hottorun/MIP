@@ -26,6 +26,7 @@ export type VariantSeed = {
   drive?: string;
   transmission?: string;
   color?: string; // signature paint for the illustrations
+  shape?: CarShape; // illustration shape when it differs from the generation (718: Boxster roadster next to Cayman coupé)
 };
 
 export type Variant = Required<Omit<VariantSeed, "vol" | "tags">> & {
@@ -75,7 +76,11 @@ export type Model = {
   name: string; // "911"
   generationIds: string[];
   featured: boolean;
+  category: ModelCategory;
 };
+
+/** Model families for menus and the model list: rear-engined sports cars, mid-engined sports cars, supercars. */
+export type ModelCategory = "heck" | "mittel" | "super";
 
 export type PricePoint = { t: number; /* ms timestamp, weekly */ value: number; volume: number };
 

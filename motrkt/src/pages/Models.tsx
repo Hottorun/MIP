@@ -2,10 +2,10 @@ import { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowDown, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
-import { brandById, brands, generationById, modelById, models, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
+import { MODEL_CATEGORIES, brandById, brands, generationById, modelById, models, variantById, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { AS_OF, WEEK, getSeries } from "../data/generate";
 import { getMetrics, rebase } from "../data/market";
-import type { Variant } from "../data/types";
+import type { ModelCategory, Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, num, pct } from "../lib/format";
 import { CarImage } from "../components/CarImage";
@@ -30,7 +30,14 @@ const COMPARE_COLORS = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378"];
 const MAX_COMPARE = 4;
 
 /** Section of the model list: one per generation for models with several (911: 964 … 992), else one per model. */
-type Section = { key: string; title: string; sub: string; items: Variant[] };
+type Section = { key: string; title: string; sub: string; category: ModelCategory; items: Variant[] };
+
+/** One line per model family, shown above its first section in the model list. */
+const CATEGORY_INTRO: Record<ModelCategory, string> = {
+  heck: "356, 911 und ihre Ableger: der Motor sitzt hinter der Hinterachse.",
+  mittel: "Boxster, Cayman und 718: der Motor sitzt vor der Hinterachse.",
+  super: "959, Carrera GT und 918 Spyder: Technikträger in Kleinserie.",
+};
 
 function sectionOf(v: Variant) {
   const model = modelById.get(v.modelId)!;
@@ -47,7 +54,7 @@ function groupSections(list: Variant[]): Section[] {
     const s = sectionOf(v);
     if (!map.has(s.key)) {
       const brand = brandById.get(v.brandId)!;
-      map.set(s.key, { key: s.key, title: `${brand.name} ${s.title}`, sub: s.sub, order: s.order, items: [] });
+      map.set(s.key, { key: s.key, title: `${brand.name} ${s.title}`, sub: s.sub, category: modelById.get(v.modelId)!.category, order: s.order, items: [] });
     }
     map.get(s.key)!.items.push(v);
   }
@@ -89,6 +96,7 @@ export default function Models() {
   const modelId = params.get("modell") ?? "";
   const generationId = params.get("generation") ?? "";
   const variantId = params.get("variante") ?? "";
+  const category = (params.get("kategorie") ?? "") as ModelCategory | "";
   const effectiveBrand = brandId || (modelId ? modelById.get(modelId)?.brandId ?? "" : "");
 
   const [query, setQuery] = useState("");
@@ -100,7 +108,7 @@ export default function Models() {
   const [compare, setCompare] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
 
-  const setFilter = (next: { marke?: string; modell?: string; generation?: string; variante?: string }) => {
+  const setFilter = (next: { marke?: string; modell?: string; generation?: string; variante?: string; kategorie?: string }) => {
     const p = new URLSearchParams(params);
     for (const [k, v] of Object.entries(next)) {
       if (v) p.set(k, v);
@@ -115,6 +123,7 @@ export default function Models() {
     const list = variants.filter((v) => {
       if (effectiveBrand && v.brandId !== effectiveBrand) return false;
       if (modelId && v.modelId !== modelId) return false;
+      if (category && modelById.get(v.modelId)!.category !== category) return false;
       if (generationId && v.generationId !== generationId) return false;
       if (variantId && v.id !== variantId) return false;
       if (eraDef && !eraDef.test(v.years[0])) return false;
@@ -128,8 +137,11 @@ export default function Models() {
       const c = typeof x === "string" ? x.localeCompare(y as string) : (x as number) - (y as number);
       return desc ? -c : c;
     });
-  }, [effectiveBrand, modelId, generationId, variantId, era, tags, query, sort, desc]);
+  }, [effectiveBrand, modelId, generationId, variantId, category, era, tags, query, sort, desc]);
   const sections = useMemo(() => groupSections(filtered), [filtered]);
+  // Family headings ("Mittelmotor") only when the list spans more than one family.
+  const showCategories = new Set(sections.map((s) => s.category)).size > 1;
+  const categoryHead = (s: Section, i: number) => showCategories && (i === 0 || sections[i - 1].category !== s.category);
   const selectedModel = modelId ? modelById.get(modelId) : undefined;
   const modelGenerations = selectedModel && selectedModel.generationIds.length > 1 ? selectedModel.generationIds.map((id) => generationById.get(id)!) : [];
   // Variants of the chosen generation (or of a single-generation model), in catalog order: e.g. 964 → Carrera 2, Carrera 4, Carrera RS …
@@ -193,20 +205,46 @@ export default function Models() {
             ))}
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-1.5">
-          <button className={cn("chip", !modelId && "chip-active")} onClick={() => setFilter({ modell: "", generation: "", variante: "" })}>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+          <button
+            className={cn("chip", !modelId && !category && "chip-active")}
+            onClick={() => setFilter({ modell: "", generation: "", variante: "", kategorie: "" })}
+          >
             Alle Modelle
           </button>
-          {brandModels.map((m) => (
-            <button
-              key={m.id}
-              className={cn("chip", modelId === m.id && "chip-active")}
-              onClick={() => setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId, generation: "", variante: "" })}
-            >
-              {effectiveBrand || brands.length === 1 ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
-              {m.name}
-            </button>
-          ))}
+          {/* Models grouped by family; the family label filters the whole family. */}
+          {MODEL_CATEGORIES.map((c) => {
+            const familyModels = brandModels.filter((m) => m.category === c.id);
+            if (familyModels.length === 0) return null;
+            const familyActive = category === c.id && !modelId;
+            return (
+              <div key={c.id} role="group" aria-label={c.label} className="flex flex-wrap items-center gap-1.5 border-l border-line pl-4">
+                <button
+                  className={cn(
+                    "mr-1 rounded-full px-1 text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:text-ink",
+                    familyActive ? "font-semibold text-ink" : "text-muted",
+                  )}
+                  aria-pressed={familyActive}
+                  title={`Alle ${c.label}-Modelle zeigen`}
+                  onClick={() => setFilter({ kategorie: familyActive ? "" : c.id, modell: "", generation: "", variante: "" })}
+                >
+                  {c.label}
+                </button>
+                {familyModels.map((m) => (
+                  <button
+                    key={m.id}
+                    className={cn("chip", modelId === m.id && "chip-active")}
+                    onClick={() =>
+                      setFilter({ modell: modelId === m.id ? "" : m.id, marke: modelId === m.id ? effectiveBrand : m.brandId, generation: "", variante: "", kategorie: "" })
+                    }
+                  >
+                    {effectiveBrand || brands.length === 1 ? "" : `${brands.find((b) => b.id === m.brandId)!.name} `}
+                    {m.name}
+                  </button>
+                ))}
+              </div>
+            );
+          })}
         </div>
         {modelGenerations.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
@@ -283,8 +321,9 @@ export default function Models() {
         <Empty>Keine Varianten für diese Filter.</Empty>
       ) : view === "grid" ? (
         <div className="space-y-14">
-          {sections.map((s) => (
+          {sections.map((s, i) => (
             <section key={s.key} aria-label={s.title}>
+              {categoryHead(s, i) && <CategoryHeading category={s.category} first={i === 0} />}
               <SectionHeading section={s} />
               <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {s.items.map((v) => (
@@ -319,7 +358,16 @@ export default function Models() {
               </tr>
             </thead>
             <tbody>
-              {sections.flatMap((s) => [
+              {sections.flatMap((s, i) => [
+                ...(categoryHead(s, i)
+                  ? [
+                      <tr key={`c-${s.category}`} className="pointer-events-none">
+                        <td colSpan={9} className={cn("pb-1 text-[11.5px] tracking-[0.1em] text-muted uppercase", i > 0 ? "pt-12" : "pt-4")}>
+                          {MODEL_CATEGORIES.find((c) => c.id === s.category)!.label}
+                        </td>
+                      </tr>,
+                    ]
+                  : []),
                 <tr key={`h-${s.key}`} className="pointer-events-none">
                   <td colSpan={9} className="pt-6 pb-2 font-serif text-[17px] font-bold text-ink">
                     {s.title} {s.sub && <span className="ml-2 font-sans text-[13px] text-muted">{s.sub}</span>}
@@ -392,10 +440,20 @@ export default function Models() {
   );
 }
 
+function CategoryHeading({ category, first }: { category: ModelCategory; first: boolean }) {
+  const label = MODEL_CATEGORIES.find((c) => c.id === category)!.label;
+  return (
+    <div className={cn("mb-8", !first && "pt-10")}>
+      <h2 className="font-display text-[34px] leading-tight sm:text-[40px]">{label}</h2>
+      <p className="mt-1 text-[14px] text-muted">{CATEGORY_INTRO[category]}</p>
+    </div>
+  );
+}
+
 function SectionHeading({ section }: { section: Section }) {
   return (
     <div className="mb-5 flex items-baseline gap-3 border-b border-line pb-2">
-      <h2 className="font-serif text-[24px] leading-tight font-bold text-ink">{section.title}</h2>
+      <h3 className="font-serif text-[24px] leading-tight font-bold text-ink">{section.title}</h3>
       {section.sub && <span className="text-[13px] text-muted">{section.sub}</span>}
       <span className="ml-auto text-[13px] text-muted">
         {section.items.length} {section.items.length === 1 ? "Variante" : "Varianten"}

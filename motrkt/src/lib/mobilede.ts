@@ -44,6 +44,8 @@ const MODELS: Record<string, string | null> = {
   "porsche-959": "959",
   "porsche-boxster": "Boxster",
   "porsche-cayman": "Cayman",
+  // mobile.de files the 718 under Boxster and Cayman: search by make + years, match "718" in the title.
+  "porsche-718": null,
 };
 
 const norm = (s: string) =>

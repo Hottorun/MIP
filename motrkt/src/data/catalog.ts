@@ -1,7 +1,7 @@
-import type { Brand, CarShape, VariantSeed } from "./types";
+import type { Brand, CarShape, ModelCategory, VariantSeed } from "./types";
 
 type GenerationDef = { name: string; years: [number, number | null]; shape: CarShape; variants: VariantSeed[] };
-type ModelDef = { name: string; featured?: boolean; generations: GenerationDef[] };
+type ModelDef = { name: string; category: ModelCategory; featured?: boolean; generations: GenerationDef[] };
 type BrandDef = Omit<Brand, "id"> & { id: string; models: ModelDef[] };
 
 /** Compact variant helper: name, years, production, median value, 5y CAGR, hp, displacement, list price. */
@@ -51,6 +51,7 @@ export const CATALOG: BrandDef[] = [
     models: [
       {
         name: "911",
+        category: "heck",
         featured: true,
         generations: [
           {
@@ -467,6 +468,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "356",
+        category: "heck",
         featured: true,
         generations: [
           {
@@ -510,6 +512,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "912",
+        category: "heck",
         featured: true,
         generations: [
           {
@@ -532,6 +535,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "930",
+        category: "heck",
         featured: true,
         generations: [
           {
@@ -561,6 +565,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "918",
+        category: "super",
         featured: true,
         generations: [
           {
@@ -588,6 +593,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "Carrera GT",
+        category: "super",
         generations: [
           {
             name: "Carrera GT",
@@ -605,6 +611,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "Boxster",
+        category: "mittel",
         featured: true,
         generations: [
           {
@@ -720,56 +727,11 @@ export const CATALOG: BrandDef[] = [
               }),
             ],
           },
-          {
-            name: "982",
-            years: [2016, 2025],
-            shape: "roadster",
-            variants: [
-              v("718 Boxster", [2016, 2025], 40000, 52_000, 0.03, 300, 2.0, 53_600, {
-                ...MID,
-                tags: ["Turbo"],
-                gearbox: { Manual: 0.35, Automatik: 0.65 },
-                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#efc11a",
-              }),
-              v("718 Boxster S", [2016, 2025], 25000, 60_000, 0.03, 350, 2.5, 66_100, {
-                ...MID,
-                tags: ["Turbo"],
-                gearbox: { Manual: 0.3, Automatik: 0.7 },
-                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#1f3f8f",
-              }),
-              v("718 Boxster GTS 4.0", [2020, 2025], 8000, 98_000, 0.05, 400, 4.0, 91_800, {
-                ...MID,
-                gearbox: { Manual: 0.55, Automatik: 0.45 },
-                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#7d7f7a",
-              }),
-              v("718 Boxster 25 Jahre", [2021, 2021], 1250, 115_000, 0.06, 400, 4.0, 97_600, {
-                ...MID,
-                gearbox: { Manual: 0.55, Automatik: 0.45 },
-                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#b7babe",
-              }),
-              v("718 Spyder", [2019, 2023], 5000, 125_000, 0.06, 420, 4.0, 93_400, {
-                ...MID,
-                tags: ["Leichtbau"],
-                gearbox: { Manual: 0.7, Automatik: 0.3 },
-                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
-                color: "#7d7f7a",
-              }),
-              v("718 Spyder RS", [2023, 2025], 3000, 210_000, 0.05, 500, 4.0, 161_500, {
-                ...MID,
-                tags: ["Leichtbau"],
-                ...PDK,
-                color: "#b3121b",
-              }),
-            ],
-          },
         ],
       },
       {
         name: "Cayman",
+        category: "mittel",
         featured: true,
         generations: [
           {
@@ -839,11 +801,64 @@ export const CATALOG: BrandDef[] = [
               }),
             ],
           },
+        ],
+      },
+      {
+        name: "718",
+        category: "mittel",
+        featured: true,
+        generations: [
           {
-            name: "982",
+            // Type 982: Boxster and Cayman marketed together as the 718 series.
+            name: "718",
             years: [2016, 2025],
             shape: "wedge",
             variants: [
+              v("718 Boxster", [2016, 2025], 40000, 52_000, 0.03, 300, 2.0, 53_600, {
+                ...MID,
+                shape: "roadster",
+                tags: ["Turbo"],
+                gearbox: { Manual: 0.35, Automatik: 0.65 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#efc11a",
+              }),
+              v("718 Boxster S", [2016, 2025], 25000, 60_000, 0.03, 350, 2.5, 66_100, {
+                ...MID,
+                shape: "roadster",
+                tags: ["Turbo"],
+                gearbox: { Manual: 0.3, Automatik: 0.7 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#1f3f8f",
+              }),
+              v("718 Boxster GTS 4.0", [2020, 2025], 8000, 98_000, 0.05, 400, 4.0, 91_800, {
+                ...MID,
+                shape: "roadster",
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("718 Boxster 25 Jahre", [2021, 2021], 1250, 115_000, 0.06, 400, 4.0, 97_600, {
+                ...MID,
+                shape: "roadster",
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("718 Spyder", [2019, 2023], 5000, 125_000, 0.06, 420, 4.0, 93_400, {
+                ...MID,
+                shape: "roadster",
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("718 Spyder RS", [2023, 2025], 3000, 210_000, 0.05, 500, 4.0, 161_500, {
+                ...MID,
+                shape: "roadster",
+                tags: ["Leichtbau"],
+                ...PDK,
+                color: "#b3121b",
+              }),
               v("718 Cayman", [2016, 2025], 35000, 52_000, 0.03, 300, 2.0, 51_600, {
                 tags: ["Turbo"],
                 gearbox: { Manual: 0.35, Automatik: 0.65 },
@@ -878,6 +893,7 @@ export const CATALOG: BrandDef[] = [
       },
       {
         name: "959",
+        category: "super",
         generations: [
           {
             name: "959",

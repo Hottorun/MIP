@@ -1,5 +1,5 @@
 import { CATALOG, PAINTS } from "./catalog";
-import type { Brand, Generation, Model, Variant, VariantOption, VariantSeed } from "./types";
+import type { Brand, Generation, Model, ModelCategory, Variant, VariantOption, VariantSeed } from "./types";
 import { rng, slug } from "../lib/random";
 import { launchPhotos, officialLinks, realData, type Photo } from "./real";
 import { isBrandEnabled } from "../config";
@@ -69,6 +69,14 @@ function marketPhotos(id: string): Photo[] {
   return [...photos.filter((p) => p.premiere), ...photos.filter((p) => !p.premiere)];
 }
 
+/** Model families in menu order; models sort by family first, then by first build year. */
+export const MODEL_CATEGORIES: { id: ModelCategory; label: string }[] = [
+  { id: "heck", label: "Heckmotor" },
+  { id: "mittel", label: "Mittelmotor" },
+  { id: "super", label: "Supersportwagen" },
+];
+const categoryIndex = (c: ModelCategory) => MODEL_CATEGORIES.findIndex((x) => x.id === c);
+
 /** The 911 counts from its 1963 debut, not from the oldest generation in the catalog (964). */
 const DEBUT_YEAR: Record<string, number> = { "911": 1963 };
 function firstYear(m: { name: string; generations: { years: [number, number | null] }[] }) {
@@ -105,8 +113,8 @@ function build() {
     const brand: Brand = { id: b.id, name: b.name, country: b.country, color: b.color, featured: b.featured };
     brands.push(brand);
     brandById.set(brand.id, brand);
-    // Models in order of first build year: 356, 911, 912, 930, 959, Boxster, Carrera GT, Cayman, 918.
-    const byFirstYear = [...b.models].sort((x, y) => firstYear(x) - firstYear(y));
+    // Rear-engined (356, 911, 912, 930), mid-engined (Boxster, Cayman, 718), supercars (959, Carrera GT, 918).
+    const byFirstYear = [...b.models].sort((x, y) => categoryIndex(x.category) - categoryIndex(y.category) || firstYear(x) - firstYear(y));
     for (const m of byFirstYear) {
       const model: Model = {
         id: `${b.id}-${slug(m.name)}`,
@@ -114,6 +122,7 @@ function build() {
         name: m.name,
         generationIds: [],
         featured: m.featured ?? false,
+        category: m.category,
       };
       models.push(model);
       modelById.set(model.id, model);
@@ -158,7 +167,7 @@ function build() {
             officialLink: officialLinks[id],
             specSources: specs?.sources ?? [],
             options: buildOptions(s, id),
-            shape: g.shape,
+            shape: s.shape ?? g.shape,
             markets: buildMarkets(b.id, id),
             weaknesses: buildWeaknesses(b.id, s, g.name),
           };
@@ -223,13 +232,12 @@ export function getVariant(id: string | undefined): Variant | undefined {
   return id ? variantById.get(resolveVariantId(id)) : undefined;
 }
 
-/** The variant name already names the model: "Boxster S", "959 Sport", or a model code of its own ("718 Spyder"). */
 function includesModel(v: Variant, modelName: string) {
   const n = ` ${v.name} `;
-  return n.includes(` ${modelName} `) || /^\d{3} /.test(v.name);
+  return n.includes(` ${modelName} `);
 }
 
-/** "Porsche 911 (964) Carrera RS", "Porsche Boxster Spyder (987.2)", "Porsche 959 Komfort" */
+/** "Porsche 911 (964) Carrera RS", "Porsche Boxster Spyder (987.2)", "Porsche 718 Spyder", "Porsche 959 Komfort" */
 export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string {
   const brand = brandById.get(v.brandId)!;
   const model = modelById.get(v.modelId)!;
