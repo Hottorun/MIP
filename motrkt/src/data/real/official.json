@@ -608,5 +608,153 @@
     "url": "https://newsroom.porsche.com/en/products/porsche-cayman-black-edition-11453.html",
     "kind": "model",
     "title": "Cayman Black Edition (981)"
+  },
+  "porsche-rennsportwagen-550-bis-rs-60-550-spyder": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-550-Spyder.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 550 Spyder"
+  },
+  "porsche-rennsportwagen-550-bis-rs-60-718-rsk": {
+    "url": "https://newsroom.porsche.com/en/company/porsche-718-550-spyder-rsk-mid-mounted-engine-lightweight-construction-design-four-cylinder-12334.html",
+    "kind": "history",
+    "title": "Zeitreise: Der Porsche 718"
+  },
+  "porsche-rennsportwagen-904-bis-917-904-carrera-gts": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-904-Carrera-GTS.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 904 Carrera GTS"
+  },
+  "porsche-rennsportwagen-904-bis-917-908-03-spyder": {
+    "url": "https://newsroom.porsche.com/en/history/porsche-history-1970-908-03-racing-car-targa-florio-nuerburgring-essence-13864.html",
+    "kind": "history",
+    "title": "The essence of Porsche: 908/03"
+  },
+  "porsche-rennsportwagen-904-bis-917-917-k": {
+    "url": "https://newsroom.porsche.com/en/2019/history/porsche-museum-50-years-917-special-exhibition-17184.html",
+    "kind": "history",
+    "event": "Genfer Autosalon 1969",
+    "title": "50 Jahre Porsche 917"
+  },
+  "porsche-rennsportwagen-904-bis-917-917-30": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-917-30-Spyder.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 917/30 Spyder"
+  },
+  "porsche-rennsportwagen-956-bis-911-gt1-956": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-956.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 956"
+  },
+  "porsche-rennsportwagen-956-bis-911-gt1-962": {
+    "url": "https://newsroom.porsche.com/en/2022/history/porsche-956-962-race-car-40-years-group-c-reunion-leipzig-30113.html",
+    "kind": "history",
+    "title": "40 Jahre Gruppe C"
+  },
+  "porsche-rennsportwagen-956-bis-911-gt1-911-gt1": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-GT1-%E2%80%9898.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 911 GT1 ’98"
+  },
+  "porsche-rennsportwagen-rs-spyder-und-963-rs-spyder": {
+    "url": "https://newsroom.porsche.com/en/2026/history/porsche-raceborn-moments-rs-sypder-43612.html",
+    "kind": "history",
+    "title": "Raceborn Moments: RS Spyder"
+  },
+  "porsche-rennsportwagen-rs-spyder-und-963-963": {
+    "url": "https://newsroom.porsche.com/en/2022/motorsports/porsche-penske-motorsport-963-presentation-goodwood-ldmh-reglement-fia-wec-imsa-28825.html",
+    "kind": "premiere",
+    "event": "Goodwood Festival of Speed 2022",
+    "title": "Präsentation des 963 in Goodwood"
+  },
+  "porsche-gt-rennwagen-356-bis-carrera-rsr-911-r": {
+    "url": "https://newsroom.porsche.com/en/history/porsche-911-r-geneva-motorshow-racing-history-12282.html",
+    "kind": "history",
+    "title": "R = Racing: Der Porsche 911 R"
+  },
+  "porsche-gt-rennwagen-356-bis-carrera-rsr-911-carrera-rsr-2-8": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-Carrera-RSR.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 911 Carrera RSR"
+  },
+  "porsche-gt-rennwagen-934-bis-964-rsr-935": {
+    "url": "https://newsroom.porsche.com/en/2026/history/porsche-heritage-moments-935-norbert-singer-timo-bernhard-42018.html",
+    "kind": "history",
+    "title": "Porsche Heritage Moments: 935"
+  },
+  "porsche-gt-rennwagen-996-bis-992-935-2018": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-935-world-premiere-exclusive-new-edition-clubsport-race-car-motorsport-rennsport-reunion-vi-anniversary-70-years-sports-cars-16163.html",
+    "kind": "premiere",
+    "event": "Rennsport Reunion VI, Laguna Seca 2018",
+    "title": "Weltpremiere des neuen 935"
+  },
+  "porsche-gt-rennwagen-996-bis-992-911-gt2-rs-clubsport": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-911-gt2rs-clubsport-world-premiere-los-angeles-technical-description-16520.html",
+    "kind": "premiere",
+    "event": "LA Auto Show 2018",
+    "title": "Weltpremiere 911 GT2 RS Clubsport"
+  },
+  "porsche-gt-rennwagen-996-bis-992-911-gt3-r-991": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-911-gt3-r-new-11013-11014.html",
+    "kind": "premiere",
+    "title": "Der neue 911 GT3 R"
+  },
+  "porsche-gt-rennwagen-996-bis-992-911-gt3-r-992": {
+    "url": "https://newsroom.porsche.com/en/2022/motorsports/porsche-911-gt3-r-generation-992-customer-racing-car-premiere-29201.html",
+    "kind": "premiere",
+    "title": "Debüt des 911 GT3 R (992)"
+  },
+  "porsche-cup-und-clubsport-944-turbo-cup": {
+    "url": "https://newsroom.porsche.com/en_AU/2021/history/70-years-porsche-in-australia-944-turbo-cup-24557.html",
+    "kind": "history",
+    "title": "70 Jahre Porsche in Australien: 944 Turbo Cup"
+  },
+  "porsche-cup-und-clubsport-911-carrera-cup-964": {
+    "url": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-Carrera-2-Cup.html",
+    "kind": "model",
+    "title": "Pressemappe Porsche Museum: 911 Carrera 2 Cup"
+  },
+  "porsche-cup-und-clubsport-911-gt3-cup-991": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-911-gt3-cup-2016-new-edition-racing-car-motorsports-13026.html",
+    "kind": "premiere",
+    "event": "Mondial de l’Automobile Paris 2016",
+    "title": "Neuer 911 GT3 Cup (991.2)"
+  },
+  "porsche-cup-und-clubsport-911-gt3-cup-992": {
+    "url": "https://newsroom.porsche.com/en/2020/motorsports/porsche-911-gt3-cup-new-model-season-2021-premiere-23150.html",
+    "kind": "premiere",
+    "title": "Der neue 911 GT3 Cup (992)"
+  },
+  "porsche-cup-und-clubsport-cayman-gt4-clubsport-981": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-cayman-gt4-clubsport-world-premiere-los-angeles-auto-show-12021.html",
+    "kind": "premiere",
+    "event": "LA Auto Show 2015",
+    "title": "Weltpremiere Cayman GT4 Clubsport"
+  },
+  "porsche-cup-und-clubsport-718-cayman-gt4-clubsport": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-world-premiere-new-718-cayman-gt4-clubsport-16733.html",
+    "kind": "premiere",
+    "event": "Daytona, Januar 2019",
+    "title": "Weltpremiere 718 Cayman GT4 Clubsport"
+  },
+  "porsche-cup-und-clubsport-718-cayman-gt4-rs-clubsport": {
+    "url": "https://newsroom.porsche.com/en/2021/products/porsche-718-cayman-gt4-rs-clubsport-la-auto-show-26461.html",
+    "kind": "premiere",
+    "event": "LA Auto Show 2021",
+    "title": "Weltpremiere 718 Cayman GT4 RS Clubsport"
+  },
+  "porsche-cup-und-clubsport-911-cup-3-8-993": {
+    "url": "https://newsroom.porsche.com/en/2022/company/porsche-museum-30-years-porsche-supercup-911-gt3-cup-29236.html",
+    "kind": "history",
+    "title": "30 Jahre Porsche Supercup"
+  },
+  "porsche-cup-und-clubsport-911-gt3-cup-996": {
+    "url": "https://newsroom.porsche.com/en/2022/company/porsche-museum-30-years-porsche-supercup-911-gt3-cup-29236.html",
+    "kind": "history",
+    "title": "30 Jahre Porsche Supercup"
+  },
+  "porsche-cup-und-clubsport-911-gt3-cup-997": {
+    "url": "https://newsroom.porsche.com/en/2022/company/porsche-museum-30-years-porsche-supercup-911-gt3-cup-29236.html",
+    "kind": "history",
+    "title": "30 Jahre Porsche Supercup"
   }
 }

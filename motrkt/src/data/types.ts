@@ -79,8 +79,8 @@ export type Model = {
   category: ModelCategory;
 };
 
-/** Model families for menus and the model list: rear-engined sports cars, mid-engined sports cars, supercars. */
-export type ModelCategory = "heck" | "mittel" | "super";
+/** Model families for menus and the model list: rear-engined sports cars, mid-engined sports cars, supercars, race cars. */
+export type ModelCategory = "heck" | "mittel" | "super" | "motorsport";
 
 export type PricePoint = { t: number; /* ms timestamp, weekly */ value: number; volume: number };
 

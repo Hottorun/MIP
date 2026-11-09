@@ -23,6 +23,10 @@ const AWD = { drive: "Allrad (AWD)", tags: ["Allrad"] };
 const PDK = { gearbox: { Automatik: 1 }, transmission: "7-Gang PDK" };
 /** Boxster: open mid-engine roadster (the "roadster" shape alone would label it rear-engined). */
 const MID = { drive: "Mittelmotor, Heck (RWD)", body: { Roadster: 1 } };
+/** Race cars: tagged so mileage, options and weak points follow racing use. */
+const race = (...tags: string[]) => ({ tags: ["Rennwagen", ...tags] });
+/** Open mid-engined Spyder of the 1950s. */
+const SPYDER = { ...MID, transmission: "4-Gang Schaltgetriebe" };
 
 export const PAINTS: Record<string, { name: string; hex: string }[]> = {
   porsche: [
@@ -912,6 +916,124 @@ export const CATALOG: BrandDef[] = [
                 transmission: "6-Gang Schaltgetriebe",
                 color: "#b7babe",
               }),
+            ],
+          },
+        ],
+      },
+      // Motorsport: race cars Porsche sold to customer teams and collectors. Factory-only cars and one-offs
+      // (936, 919 Hybrid, 911 RSR works cars) are left out as they have no market.
+      {
+        name: "Rennsportwagen",
+        category: "motorsport",
+        generations: [
+          {
+            name: "550 bis RS 60",
+            years: [1953, 1960],
+            shape: "roadster",
+            variants: [
+              v("550 Spyder", [1953, 1956], 89, 4_200_000, 0.058, 110, 1.5, 12_600, { ...SPYDER, ...race(), color: "#b7babe" }),
+              v("550 A Spyder", [1956, 1957], 40, 4_600_000, 0.06, 135, 1.5, 12_800, { ...SPYDER, ...race(), color: "#b7babe" }),
+              v("718 RSK", [1957, 1959], 34, 4_100_000, 0.055, 148, 1.5, 15_300, { ...SPYDER, ...race(), color: "#b7babe" }),
+              v("718 RS 60", [1960, 1960], 14, 5_200_000, 0.06, 160, 1.6, 16_400, { ...SPYDER, ...race(), color: "#b7babe" }),
+            ],
+          },
+          {
+            name: "904 bis 917",
+            years: [1963, 1973],
+            shape: "hyper",
+            variants: [
+              v("904 Carrera GTS", [1963, 1965], 106, 2_300_000, 0.065, 180, 2.0, 15_200, { ...race(), transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("906 Carrera 6", [1966, 1966], 65, 2_000_000, 0.06, 210, 2.0, 23_000, { ...race(), transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("910", [1967, 1967], 29, 2_600_000, 0.058, 220, 2.0, 25_600, { ...race(), transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("908/02 Spyder", [1969, 1969], 28, 3_400_000, 0.062, 350, 3.0, 61_000, { ...race(), body: { Roadster: 1 }, transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("908/03 Spyder", [1970, 1971], 13, 4_300_000, 0.066, 370, 3.0, 66_000, { ...race(), body: { Roadster: 1 }, transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("917 K", [1969, 1971], 25, 15_000_000, 0.07, 600, 4.9, 71_600, { ...race(), transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("917/10", [1971, 1973], 13, 4_800_000, 0.06, 850, 5.0, 153_000, { ...race("Turbo"), body: { Roadster: 1 }, transmission: "4-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("917/30", [1973, 1973], 6, 9_500_000, 0.065, 1100, 5.4, 205_000, { ...race("Turbo"), body: { Roadster: 1 }, transmission: "4-Gang Schaltgetriebe", color: "#e9e8e1" }),
+            ],
+          },
+          {
+            name: "956 bis 911 GT1",
+            years: [1982, 1998],
+            shape: "hyper",
+            variants: [
+              v("956", [1982, 1984], 28, 9_000_000, 0.072, 620, 2.65, 322_000, { ...race("Turbo"), transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("962", [1984, 1991], 91, 3_800_000, 0.068, 680, 3.0, 409_000, { ...race("Turbo"), transmission: "5-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("911 GT1", [1996, 1998], 10, 7_500_000, 0.074, 600, 3.2, 900_000, { ...race("Turbo"), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+            ],
+          },
+          {
+            name: "RS Spyder und 963",
+            years: [2005, null],
+            shape: "hyper",
+            variants: [
+              v("RS Spyder", [2005, 2010], 16, 3_200_000, 0.055, 503, 3.4, 1_100_000, { ...race(), body: { Roadster: 1 }, transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("963", [2023, null], 21, 2_900_000, -0.02, 680, 4.6, 2_800_000, { ...race("Turbo", "Hybrid"), transmission: "7-Gang sequenziell", color: "#e9e8e1" }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "GT-Rennwagen",
+        category: "motorsport",
+        generations: [
+          {
+            name: "356 bis Carrera RSR",
+            years: [1960, 1974],
+            shape: "classic911",
+            variants: [
+              v("356 B Carrera GTL Abarth", [1960, 1961], 21, 2_300_000, 0.06, 135, 1.6, 12_800, { ...race(), shape: "roadster", transmission: "4-Gang Schaltgetriebe", color: "#b7babe" }),
+              v("911 R", [1967, 1967], 19, 2_500_000, 0.065, 210, 2.0, 23_000, { ...race("Leichtbau"), color: "#e9e8e1" }),
+              v("911 Carrera RSR 2.8", [1973, 1973], 55, 2_600_000, 0.07, 300, 2.8, 25_000, { ...race("Leichtbau"), color: "#e9e8e1" }),
+              v("911 Carrera RSR 3.0", [1974, 1974], 42, 2_200_000, 0.066, 330, 3.0, 33_200, { ...race("Leichtbau"), color: "#e9e8e1" }),
+            ],
+          },
+          {
+            name: "934 bis 964 RSR",
+            years: [1976, 1993],
+            shape: "classic911",
+            variants: [
+              v("934", [1976, 1976], 31, 2_000_000, 0.07, 485, 3.0, 55_200, { ...race("Turbo"), transmission: "4-Gang Schaltgetriebe", color: "#efc11a" }),
+              v("935", [1977, 1979], 37, 3_200_000, 0.072, 590, 2.85, 153_000, { ...race("Turbo"), transmission: "4-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("924 Carrera GTR", [1981, 1981], 17, 650_000, 0.06, 375, 2.0, 56_000, { ...race("Turbo"), shape: "gt", drive: "Frontmotor, Transaxle (RWD)", color: "#e9e8e1" }),
+              v("964 Carrera RSR 3.8", [1993, 1993], 51, 1_400_000, 0.075, 325, 3.8, 138_000, { ...race("Leichtbau"), color: "#efc11a" }),
+            ],
+          },
+          {
+            name: "996 bis 992",
+            years: [2004, null],
+            shape: "modern911",
+            variants: [
+              v("911 GT3 RSR (996)", [2004, 2005], 41, 650_000, 0.05, 445, 3.6, 330_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("911 GT3 RSR (997)", [2007, 2012], 60, 600_000, 0.045, 465, 4.0, 400_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("911 GT3 R (997)", [2010, 2012], 60, 380_000, 0.04, 500, 4.0, 300_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("911 GT3 R (991)", [2016, 2018], 120, 380_000, 0.02, 500, 4.0, 429_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("935 (2018)", [2019, 2019], 77, 1_700_000, 0.08, 700, 3.8, 702_000, { ...race("Turbo"), ...PDK, color: "#e9e8e1" }),
+              v("911 GT2 RS Clubsport", [2019, 2019], 200, 650_000, 0.05, 700, 3.8, 405_000, { ...race("Turbo"), ...PDK, color: "#e9e8e1" }),
+              v("911 GT3 R (992)", [2023, null], 100, 520_000, 0, 565, 4.2, 511_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "Cup und Clubsport",
+        category: "motorsport",
+        generations: [
+          {
+            name: "Cup und Clubsport",
+            years: [1986, null],
+            shape: "modern911",
+            variants: [
+              v("944 Turbo Cup", [1986, 1988], 192, 90_000, 0.06, 220, 2.5, 38_000, { ...race("Turbo"), shape: "gt", drive: "Frontmotor, Transaxle (RWD)", color: "#e9e8e1" }),
+              v("911 Carrera Cup (964)", [1990, 1994], 285, 290_000, 0.08, 260, 3.6, 65_000, { ...race(), shape: "classic911", color: "#e9e8e1" }),
+              v("911 Cup 3.8 (993)", [1994, 1998], 186, 240_000, 0.07, 315, 3.8, 84_000, { ...race(), shape: "classic911", transmission: "6-Gang Schaltgetriebe", color: "#e9e8e1" }),
+              v("911 GT3 Cup (996)", [1998, 2005], 873, 110_000, 0.05, 390, 3.6, 140_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("911 GT3 Cup (997)", [2005, 2013], 1485, 140_000, 0.04, 450, 3.8, 160_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("911 GT3 Cup (991)", [2013, 2019], 1500, 170_000, 0.02, 485, 4.0, 190_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("911 GT3 Cup (992)", [2021, null], 1000, 250_000, 0.01, 510, 4.0, 225_000, { ...race(), transmission: "6-Gang sequenziell", color: "#e9e8e1" }),
+              v("Cayman GT4 Clubsport (981)", [2016, 2016], 421, 120_000, 0.03, 385, 3.8, 158_000, { ...race(), shape: "wedge", drive: "Mittelmotor, Heck (RWD)", transmission: "6-Gang PDK", gearbox: { Automatik: 1 }, color: "#e9e8e1" }),
+              v("718 Cayman GT4 Clubsport", [2019, 2021], 500, 140_000, 0.02, 425, 3.8, 157_000, { ...race(), shape: "wedge", drive: "Mittelmotor, Heck (RWD)", transmission: "6-Gang PDK", gearbox: { Automatik: 1 }, color: "#e9e8e1" }),
+              v("718 Cayman GT4 RS Clubsport", [2022, null], 300, 230_000, 0.01, 500, 4.0, 268_000, { ...race(), shape: "wedge", drive: "Mittelmotor, Heck (RWD)", ...PDK, color: "#e9e8e1" }),
             ],
           },
         ],

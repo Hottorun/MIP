@@ -37,6 +37,7 @@ const CATEGORY_INTRO: Record<ModelCategory, string> = {
   heck: "356, 911 und ihre Ableger: der Motor sitzt hinter der Hinterachse.",
   mittel: "Boxster, Cayman und 718: der Motor sitzt vor der Hinterachse.",
   super: "959, Carrera GT und 918 Spyder: Technikträger in Kleinserie.",
+  motorsport: "Rennwagen, die Porsche an Kundenteams und Privatfahrer verkauft hat, vom 550 Spyder bis zum 963.",
 };
 
 function sectionOf(v: Variant) {

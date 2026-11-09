@@ -2,7 +2,7 @@
 
 Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom; Bilder von der Vorstellung tragen das Badge „Vorstellung“. Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
-Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Boxster (986 bis 981), Cayman (987 bis 981) und die 718-Baureihe (Typ 982, Boxster und Cayman ab 2016) sind ebenfalls enthalten; 987 ist wie beim 911 in 987.1 und 987.2 aufgeteilt. Für 993 Carrera 4, 993 Carrera S, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS, Boxster (987.1), Boxster S Black Edition (987.2), Cayman und Cayman S (987.1 und 987.2), Cayman R (987.2) und Cayman S (981) gibt es im Newsroom kein Bild, das die Kriterien erfüllt (gesucht in den Pressemappen „60 Jahre 911“, „50 Jahre Turbo“, „25 Jahre Boxster“, den Generationen-Artikeln, Christophorus und Porsche Klassik); dort zeigt der Markt-Tab eine Illustration.
+Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Neu ist die Reihe Motorsport (Rennsportwagen, GT-Rennwagen, Cup- und Clubsport-Fahrzeuge) am Ende der Liste. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Boxster (986 bis 981), Cayman (987 bis 981) und die 718-Baureihe (Typ 982, Boxster und Cayman ab 2016) sind ebenfalls enthalten; 987 ist wie beim 911 in 987.1 und 987.2 aufgeteilt. Für 993 Carrera 4, 993 Carrera S, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS, Boxster (987.1), Boxster S Black Edition (987.2), Cayman und Cayman S (987.1 und 987.2), Cayman R (987.2) und Cayman S (981) gibt es im Newsroom kein Bild, das die Kriterien erfüllt (gesucht in den Pressemappen „60 Jahre 911“, „50 Jahre Turbo“, „25 Jahre Boxster“, den Generationen-Artikeln, Christophorus und Porsche Klassik); dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
@@ -493,7 +493,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: Genfer Autosalon 2017
 - Offizielle Seite: [Weltpremiere 911 GT3](https://newsroom.porsche.com/en/products/porsche-911-gt3-world-premiere-geneva-motor-show-gims-2017-13466.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „911 GT3, 2017“; „911 GT3, 2017“; „911 GT3 (991.2), 2019“
+- Bilder im Markt-Tab: „911 GT3, 2017“; „911 GT3 (991.2), 2019“; „911 GT3, 2017“
 - Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
 
 ### Porsche 911 (991.2) GT3 RS
@@ -756,7 +756,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: Auto China Peking 2014
 - Offizielle Seite: [Weltpremiere Boxster GTS und Cayman GTS](https://newsroom.porsche.com/en/products/auto-china-beijing-10707.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „Boxster GTS, 2014“; „Boxster GTS, 2014“; „Boxster GTS (981), 2015“
+- Bilder im Markt-Tab: „Boxster GTS, 2014“; „Boxster GTS (981), 2015“; „Boxster GTS, 2014“
 - Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
 
 ### Porsche Boxster Spyder (981)
@@ -838,7 +838,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: Genfer Autosalon 2016
 - Offizielle Seite: [Weltpremiere 718 Boxster und 911 R](https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „718 Boxster, 2016“; „718 Boxster, 2016“; „718 Boxster (982), 2017“
+- Bilder im Markt-Tab: „718 Boxster, 2016“; „718 Boxster (982), 2017“; „718 Boxster, 2016“
 - Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
 
 ### Porsche 718 Boxster S
@@ -846,7 +846,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: nicht recherchiert
 - Vorstellung: nicht belegt
 - Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
-- Bilder im Markt-Tab: „718 Boxster S, 2016“; „718 Boxster S, 2016“; „718 Boxster S (982), 2017“
+- Bilder im Markt-Tab: „718 Boxster S, 2016“; „718 Boxster S (982), 2017“; „718 Boxster S, 2016“
 - Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
 
 ### Porsche 718 Cayman
@@ -870,7 +870,7 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Präsentationsfarbe: Pythongrün (Python Green) (wahrscheinlich)
 - Vorstellung: Weltpremiere 2020
 - Offizielle Seite: [Die neuen 718 GTS 4.0-Modelle](https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html) – Pressemitteilung zur Vorstellung
-- Bilder im Markt-Tab: „718 Boxster GTS, 2020“; „718 Boxster GTS, 2020“; „718 Boxster GTS 4.0 (982)“
+- Bilder im Markt-Tab: „718 Boxster GTS 4.0 (982)“; „718 Boxster GTS, 2020“; „718 Boxster GTS, 2020“
 - Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
 
 ### Porsche 718 Cayman GTS 4.0
@@ -965,3 +965,241 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „Porsche 918 Spyder“
 - Bilder im Markt-Tab: „Benno Oertig, 918 Spyder, 2017“; „Benno Oertig, 918 Spyder, 2017“
 - Offizielle Bilder im Markt-Tab: 2
+
+## Porsche Motorsport
+
+Rennwagen, die Porsche an Kundenteams und Privatfahrer verkauft hat. Bevorzugt sind Studioaufnahmen aus der Pressemappe des Porsche Museums oder Bilder des stehenden Fahrzeugs; Rennszenen, Ausstellungs- und Personenbilder sind ausgeschlossen.
+
+### Porsche 550 Spyder
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 550 Spyder](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-550-Spyder.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „550 Spyder, Porsche Museum“; „550 Spyder, Porsche Museum“; „550 Spyder, Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 550 A Spyder
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 718 RSK
+
+- Offizielle Seite: [Zeitreise: Der Porsche 718](https://newsroom.porsche.com/en/company/porsche-718-550-spyder-rsk-mid-mounted-engine-lightweight-construction-design-four-cylinder-12334.html) – Historie/Pressemappe
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 718 RS 60
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 904 Carrera GTS
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 904 Carrera GTS](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-904-Carrera-GTS.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „904 Carrera GTS, Porsche Museum“; „904 Carrera GTS, Porsche Museum“; „904 Carrera GTS, Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 906 Carrera 6
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 910
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Bilder im Markt-Tab: „910/8 Bergspyder, 2019“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche 908/02 Spyder
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 908/03 Spyder
+
+- Offizielle Seite: [The essence of Porsche: 908/03](https://newsroom.porsche.com/en/history/porsche-history-1970-908-03-racing-car-targa-florio-nuerburgring-essence-13864.html) – Historie/Pressemappe
+- Bilder im Markt-Tab: „908/03 Spyder“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche 917 K
+
+- Offizielle Seite: [50 Jahre Porsche 917](https://newsroom.porsche.com/en/2019/history/porsche-museum-50-years-917-special-exhibition-17184.html) – Historie/Pressemappe, Vorstellung: Genfer Autosalon 1969
+- Bilder im Markt-Tab: „917-001, Weissach, 2019“; „917 K, Zuffenhausen, 2019“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 917/10
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 917/30
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 917/30 Spyder](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-917-30-Spyder.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „917/30 Spyder, Porsche Museum“; „917/30 Spyder, Porsche Museum“; „917/30 Spyder, Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 956
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 956](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-956.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „956, Porsche Museum“; „956, Porsche Museum“; „956, Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 962
+
+- Offizielle Seite: [40 Jahre Gruppe C](https://newsroom.porsche.com/en/2022/history/porsche-956-962-race-car-40-years-group-c-reunion-leipzig-30113.html) – Historie/Pressemappe
+- Bilder im Markt-Tab: „962 C (962-006), 2022“; „962 C (962-009), 2022“; „962 C (962-006), 2022“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 GT1
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 911 GT1 ’98](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-GT1-%E2%80%9898.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „911 GT1 ’98, Porsche Museum“; „911 GT1 ’98, Porsche Museum“; „911 GT1 ’98, Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche RS Spyder
+
+- Offizielle Seite: [Raceborn Moments: RS Spyder](https://newsroom.porsche.com/en/2026/history/porsche-raceborn-moments-rs-sypder-43612.html) – Historie/Pressemappe
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 963
+
+- Offizielle Seite: [Präsentation des 963 in Goodwood](https://newsroom.porsche.com/en/2022/motorsports/porsche-penske-motorsport-963-presentation-goodwood-ldmh-reglement-fia-wec-imsa-28825.html) – Vorstellungs-Pressemitteilung, Vorstellung: Goodwood Festival of Speed 2022
+- Bilder im Markt-Tab: „963, 2022“; „963, 2022“; „963, 2022“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 356 B Carrera GTL Abarth
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 R
+
+- Offizielle Seite: [R = Racing: Der Porsche 911 R](https://newsroom.porsche.com/en/history/porsche-911-r-geneva-motorshow-racing-history-12282.html) – Historie/Pressemappe
+- Bilder im Markt-Tab: „911 R, Pressevorstellung 1967“; „911 R, Pressevorstellung 1967“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 911 Carrera RSR 2.8
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 911 Carrera RSR](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-Carrera-RSR.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „911 Carrera RSR 2.8, Porsche Museum“; „911 Carrera RSR 2.8, Porsche Museum“; „911 Carrera RSR 2.8, Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 Carrera RSR 3.0
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 934
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 935
+
+- Offizielle Seite: [Porsche Heritage Moments: 935](https://newsroom.porsche.com/en/2026/history/porsche-heritage-moments-935-norbert-singer-timo-bernhard-42018.html) – Historie/Pressemappe
+- Bilder im Markt-Tab: „935/77, 2026“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche 924 Carrera GTR
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 964 Carrera RSR 3.8
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 RSR (996)
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 RSR (997)
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 R (997)
+
+- Offizielle Seite: keine passende Seite im Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 R (991)
+
+- Offizielle Seite: [Der neue 911 GT3 R](https://newsroom.porsche.com/en/products/porsche-911-gt3-r-new-11013-11014.html) – Vorstellungs-Pressemitteilung
+- Bilder im Markt-Tab: „911 GT3 R (991), 2015“; „911 GT3 R (991), 2015“; „911 GT3 R (991), 2015“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 935 (2018)
+
+- Offizielle Seite: [Weltpremiere des neuen 935](https://newsroom.porsche.com/en/products/porsche-935-world-premiere-exclusive-new-edition-clubsport-race-car-motorsport-rennsport-reunion-vi-anniversary-70-years-sports-cars-16163.html) – Vorstellungs-Pressemitteilung, Vorstellung: Rennsport Reunion VI, Laguna Seca 2018
+- Bilder im Markt-Tab: „935, 2018“; „935, 2018“; „935, 2018“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 GT2 RS Clubsport
+
+- Offizielle Seite: [Weltpremiere 911 GT2 RS Clubsport](https://newsroom.porsche.com/en/products/porsche-911-gt2rs-clubsport-world-premiere-los-angeles-technical-description-16520.html) – Vorstellungs-Pressemitteilung, Vorstellung: LA Auto Show 2018
+- Bilder im Markt-Tab: „911 GT2 RS Clubsport, 2018“; „911 GT2 RS Clubsport, 2018“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 911 GT3 R (992)
+
+- Offizielle Seite: [Debüt des 911 GT3 R (992)](https://newsroom.porsche.com/en/2022/motorsports/porsche-911-gt3-r-generation-992-customer-racing-car-premiere-29201.html) – Vorstellungs-Pressemitteilung
+- Bilder im Markt-Tab: „911 GT3 R (992), 2022“; „911 GT3 R (992), 2022“; „911 GT3 R (992), 2022“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 944 Turbo Cup
+
+- Offizielle Seite: [70 Jahre Porsche in Australien: 944 Turbo Cup](https://newsroom.porsche.com/en_AU/2021/history/70-years-porsche-in-australia-944-turbo-cup-24557.html) – Historie/Pressemappe
+- Bilder im Markt-Tab: „944 Turbo Cup“; „944 Turbo Cup“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 911 Carrera Cup (964)
+
+- Offizielle Seite: [Pressemappe Porsche Museum: 911 Carrera 2 Cup](https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-Carrera-2-Cup.html) – Modellseite des Herstellers
+- Bilder im Markt-Tab: „911 Carrera 2 Cup (964), Porsche Museum“; „911 Carrera 2 Cup (964), Porsche Museum“; „911 Carrera 2 Cup (964), Porsche Museum“
+- Offizielle Bilder im Markt-Tab: 3
+
+### Porsche 911 Cup 3.8 (993)
+
+- Offizielle Seite: [30 Jahre Porsche Supercup](https://newsroom.porsche.com/en/2022/company/porsche-museum-30-years-porsche-supercup-911-gt3-cup-29236.html) – Historie/Pressemappe
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 Cup (996)
+
+- Offizielle Seite: [30 Jahre Porsche Supercup](https://newsroom.porsche.com/en/2022/company/porsche-museum-30-years-porsche-supercup-911-gt3-cup-29236.html) – Historie/Pressemappe
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 Cup (997)
+
+- Offizielle Seite: [30 Jahre Porsche Supercup](https://newsroom.porsche.com/en/2022/company/porsche-museum-30-years-porsche-supercup-911-gt3-cup-29236.html) – Historie/Pressemappe
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche 911 GT3 Cup (991)
+
+- Offizielle Seite: [Neuer 911 GT3 Cup (991.2)](https://newsroom.porsche.com/en/products/porsche-911-gt3-cup-2016-new-edition-racing-car-motorsports-13026.html) – Vorstellungs-Pressemitteilung, Vorstellung: Mondial de l’Automobile Paris 2016
+- Bilder im Markt-Tab: „911 GT3 Cup (991), 2016“; „911 GT3 Cup (991), 2016“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 911 GT3 Cup (992)
+
+- Offizielle Seite: [Der neue 911 GT3 Cup (992)](https://newsroom.porsche.com/en/2020/motorsports/porsche-911-gt3-cup-new-model-season-2021-premiere-23150.html) – Vorstellungs-Pressemitteilung
+- Bilder im Markt-Tab: „911 GT3 Cup (992), 2020“; „911 GT3 Cup (992), 2020“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche Cayman GT4 Clubsport (981)
+
+- Offizielle Seite: [Weltpremiere Cayman GT4 Clubsport](https://newsroom.porsche.com/en/products/porsche-cayman-gt4-clubsport-world-premiere-los-angeles-auto-show-12021.html) – Vorstellungs-Pressemitteilung, Vorstellung: LA Auto Show 2015
+- Bilder im Markt-Tab: „Cayman GT4 Clubsport, 2015“; „Cayman GT4 Clubsport, 2015“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 718 Cayman GT4 Clubsport
+
+- Offizielle Seite: [Weltpremiere 718 Cayman GT4 Clubsport](https://newsroom.porsche.com/en/products/porsche-world-premiere-new-718-cayman-gt4-clubsport-16733.html) – Vorstellungs-Pressemitteilung, Vorstellung: Daytona, Januar 2019
+- Bilder im Markt-Tab: „718 Cayman GT4 Clubsport, 2019“; „718 Cayman GT4 Clubsport, 2019“
+- Offizielle Bilder im Markt-Tab: 2
+
+### Porsche 718 Cayman GT4 RS Clubsport
+
+- Offizielle Seite: [Weltpremiere 718 Cayman GT4 RS Clubsport](https://newsroom.porsche.com/en/2021/products/porsche-718-cayman-gt4-rs-clubsport-la-auto-show-26461.html) – Vorstellungs-Pressemitteilung, Vorstellung: LA Auto Show 2021
+- Bilder im Markt-Tab: „718 Cayman GT4 RS Clubsport, 2021“; „718 Cayman GT4 RS Clubsport, 2021“; „718 Cayman GT4 RS Clubsport, 2021“
+- Offizielle Bilder im Markt-Tab: 3

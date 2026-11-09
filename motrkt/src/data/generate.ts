@@ -244,6 +244,7 @@ export function roundPrice(p: number) {
 }
 
 function typicalKmPerYear(v: Variant) {
+  if (v.tags.includes("Rennwagen")) return 300;
   return v.tags.includes("Leichtbau") || v.value > 1_000_000 ? 2200 : v.value > 250_000 ? 3200 : 5000;
 }
 
