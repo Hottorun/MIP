@@ -2,7 +2,7 @@
 
 Stand: 8. November 2026. Der Markt-Tab zeigt jetzt nur noch offizielle Herstellerbilder: Pressefotos aus dem Porsche Newsroom; Bilder von der Vorstellung tragen das Badge „Vorstellung“. Die Bilder werden direkt vom Server des Herstellers geladen und liegen nicht im Repository. Jedes Bild hat einen Hinweis „© Porsche AG“ mit Link zur Quelle. Die Daten stehen in `src/data/real/launch.json`.
 
-Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Für 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996.2 Carrera, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS und 912 Coupé gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
+Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung in der App sollte eine schriftliche Erlaubnis eingeholt werden; dafür ist diese Liste gedacht. Ausgewählt sind nur Bilder, die das jeweilige Modell allein zeigen, möglichst im Studio oder vor ruhigem Hintergrund (keine Messen, Events oder Gruppenbilder). Die 911-Generationen 996 bis 992 sind in Phase 1 und Phase 2 (Facelift, z. B. 991.1 und 991.2) aufgeteilt. Boxster (986 bis 718) und Cayman (987 bis 718) sind ebenfalls enthalten; 987 ist wie beim 911 in 987.1 und 987.2 aufgeteilt. Für 964 Turbo 3.6, 993 Carrera 4, 993 Carrera S, 996.2 Carrera, 996.2 Carrera 4S, 996.2 GT3 RS, 997.1 GT3 RS, 997.2 Carrera S, 997.2 Turbo, 997.2 GT2 RS, 912 Coupé, Boxster (987.1), Boxster S (987.2), Boxster S Black Edition (987.2), Boxster S (981) sowie Cayman und Cayman S der Generationen 987.1, 987.2 und 981 und den Cayman R (987.2) gibt es noch kein passendes offizielles Bild; dort zeigt der Markt-Tab eine Illustration.
 
 ## Ansprechpartner
 
@@ -672,6 +672,162 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder im Markt-Tab: „959 S, Porsche Classic, 2022“; „959 S, Porsche Classic, 2022“; „959 S, Porsche Classic, 2022“
 - Offizielle Bilder im Markt-Tab: 3
 
+### Porsche Boxster (986)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster (986), 1996“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster S (986)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster S (986)“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster S 50 Jahre 550 Spyder (986)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster S Special Edition "50 years of the 550 Spyder” (986), 2003“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster (987.1)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Boxster S (987.1)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster S (987), 2005“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster RS 60 Spyder (987.1)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster S RS 60 Spyder (987), 2008“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster (987), 2008“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster S (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Boxster S Black Edition (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Boxster Spyder (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster Spyder (987), 2010“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Bilder im Markt-Tab: „Boxster (981), 2013“
+- Offizielle Bilder im Markt-Tab: 1
+
+### Porsche Boxster S (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: [25 Jahre Boxster](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Boxster GTS (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Auto China Peking 2014
+- Offizielle Seite: [Weltpremiere Boxster GTS und Cayman GTS](https://newsroom.porsche.com/en/products/auto-china-beijing-10707.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „Boxster GTS, 2014“; „Boxster GTS, 2014“; „Boxster GTS (981), 2015“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
+
+### Porsche Boxster Spyder (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: New York Auto Show 2015
+- Offizielle Seite: [Weltpremiere Boxster Spyder](https://newsroom.porsche.com/en/products/porsche-boxster-spyder-roadster-world-premiere-new-york-international-auto-show-2015-10147.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „Boxster Spyder, 2015“; „Boxster Spyder, 2015“; „Boxster Spyder (981), 2015“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
+
+### Porsche 718 Boxster (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Genfer Autosalon 2016
+- Offizielle Seite: [Weltpremiere 718 Boxster und 911 R](https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Boxster, 2016“; „718 Boxster, 2016“; „718 Boxster (982), 2017“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
+
+### Porsche 718 Boxster S (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Bilder im Markt-Tab: „718 Boxster S, 2016“; „718 Boxster S, 2016“; „718 Boxster S (982), 2017“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
+
+### Porsche 718 Boxster GTS 4.0 (982)
+
+- Präsentationsfarbe: Pythongrün (Python Green) (wahrscheinlich)
+- Vorstellung: Weltpremiere 2020
+- Offizielle Seite: [Die neuen 718 GTS 4.0-Modelle](https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Boxster GTS, 2020“; „718 Boxster GTS, 2020“; „718 Boxster GTS 4.0 (982)“
+- Offizielle Bilder im Markt-Tab: 3 (davon 2 von der Vorstellung)
+
+### Porsche 718 Boxster 25 Jahre (982)
+
+- Präsentationsfarbe: GT-Silber Metallic (GT Silver Metallic) (wahrscheinlich)
+- Vorstellung: Weltpremiere 2021
+- Offizielle Seite: [Sondermodell Boxster 25 Jahre](https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „Boxster 25 years, 2021“; „Boxster 25 years, 2021“; „Boxster 25 years, 2021“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 718 Spyder (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Weltpremiere 2019
+- Offizielle Seite: [Die neuen 718 Spyder und 718 Cayman GT4](https://newsroom.porsche.com/en/2019/products/porsche-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Spyder, 2019“; „718 Spyder, 2019“; „718 Spyder, 2019“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 718 Spyder RS (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Weltpremiere 2023
+- Offizielle Seite: [Weltpremiere 718 Spyder RS](https://newsroom.porsche.com/en/2023/products/porsche-718-spyder-rs-world-premiere-32257.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Spyder RS, 2023“; „718 Spyder RS, 2023“; „718 Spyder RS, 2023“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
 ### Porsche Carrera GT
 
 - Präsentationsfarbe: GT-Silber Metallic (GT Silver Metallic) (wahrscheinlich)
@@ -680,6 +836,111 @@ Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktüber
 - Bilder auf der Seite: „Carrera GT, model year 2004“; „Carrera GT, technical details: Vehicle construction (model year 2004)“; „From prototype to perfection“
 - Bilder im Markt-Tab: „Carrera GT, model year 2004“; „Porsche Carrera GT, Berlin, 2020“
 - Offizielle Bilder im Markt-Tab: 2
+
+### Porsche Cayman (987.1)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman S (987.1)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: IAA Frankfurt 2005
+- Offizielle Seite: [Porsche auf der IAA: zehn Meilensteine seit 1950](https://newsroom.porsche.com/en/2025/history/porsche-iaa-since-1950-ten-milestones-40407.html) – Historie/Pressemappe (keine eigene Vorstellungs-Galerie gefunden)
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman S (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman R (987.2)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman S (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: nicht belegt
+- Offizielle Seite: keine passende Seite im Porsche Newsroom gefunden
+- Offizielle Bilder im Markt-Tab: 0 – kein Bild gefunden, das nur dieses Modell allein zeigt; Markt-Tab zeigt eine Illustration
+
+### Porsche Cayman GTS (981)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Auto China Peking 2014
+- Offizielle Seite: [Weltpremiere Boxster GTS und Cayman GTS](https://newsroom.porsche.com/en/products/auto-china-beijing-10707.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „Cayman GTS, 2014“; „Cayman GTS, 2014“; „Cayman GTS, 2014“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche Cayman GT4 (981)
+
+- Präsentationsfarbe: Racinggelb (Racing Yellow) (wahrscheinlich)
+- Vorstellung: Genfer Autosalon 2015
+- Offizielle Seite: [Weltpremiere Cayman GT4 und 911 GT3 RS](https://newsroom.porsche.com/en/products/geneva-international-motor-show-porsche-cayman-gt4-911-gt3-rs-10052.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „Cayman GT4, 2015“; „Cayman GT4, 2015“; „Cayman GT4, 2015“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 718 Cayman (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Auto China Peking 2016
+- Offizielle Seite: [Der neue 718 Cayman](https://newsroom.porsche.com/en/products/porsche-cayman-model-series-718-sport-coupe-12475.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Cayman, 2016“; „718 Cayman, 2016“
+- Offizielle Bilder im Markt-Tab: 2 (davon 2 von der Vorstellung)
+
+### Porsche 718 Cayman S (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Auto China Peking 2016
+- Offizielle Seite: [Der neue 718 Cayman](https://newsroom.porsche.com/en/products/porsche-cayman-model-series-718-sport-coupe-12475.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Cayman S, 2016“; „718 Cayman S, 2016“
+- Offizielle Bilder im Markt-Tab: 2 (davon 2 von der Vorstellung)
+
+### Porsche 718 Cayman GTS 4.0 (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Weltpremiere 2020
+- Offizielle Seite: [Die neuen 718 GTS 4.0-Modelle](https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Cayman GTS, 2020“
+- Offizielle Bilder im Markt-Tab: 1 (davon 1 von der Vorstellung)
+
+### Porsche 718 Cayman GT4 (982)
+
+- Präsentationsfarbe: Racinggelb (Racing Yellow) (wahrscheinlich)
+- Vorstellung: Weltpremiere 2019
+- Offizielle Seite: [Die neuen 718 Spyder und 718 Cayman GT4](https://newsroom.porsche.com/en/2019/products/porsche-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Cayman GT4, 2019“; „718 Cayman GT4, 2019“; „718 Cayman GT4, 2019“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
+
+### Porsche 718 Cayman GT4 RS (982)
+
+- Präsentationsfarbe: nicht recherchiert
+- Vorstellung: Los Angeles Auto Show 2021
+- Offizielle Seite: [Weltpremiere 718 Cayman GT4 RS](https://newsroom.porsche.com/en/2021/products/porsche-718-cayman-gt4-rs-la-auto-show-26459.html) – Pressemitteilung zur Vorstellung
+- Bilder im Markt-Tab: „718 Cayman GT4 RS, 2021“; „718 Cayman GT4 RS, 2021“; „718 Cayman GT4 RS, 2021“
+- Offizielle Bilder im Markt-Tab: 3 (davon 3 von der Vorstellung)
 
 ### Porsche 918 Spyder
 

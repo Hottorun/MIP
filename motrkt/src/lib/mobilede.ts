@@ -42,6 +42,8 @@ const MODELS: Record<string, string | null> = {
   "porsche-918": "918",
   "porsche-carrera-gt": "Carrera GT",
   "porsche-959": "959",
+  "porsche-boxster": "Boxster",
+  "porsche-cayman": "Cayman",
 };
 
 const norm = (s: string) =>

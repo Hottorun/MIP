@@ -21,6 +21,8 @@ function v(
 
 const AWD = { drive: "Allrad (AWD)", tags: ["Allrad"] };
 const PDK = { gearbox: { Automatik: 1 }, transmission: "7-Gang PDK" };
+/** Boxster: open mid-engine roadster (the "roadster" shape alone would label it rear-engined). */
+const MID = { drive: "Mittelmotor, Heck (RWD)", body: { Roadster: 1 } };
 
 export const PAINTS: Record<string, { name: string; hex: string }[]> = {
   porsche: [
@@ -596,6 +598,279 @@ export const CATALOG: BrandDef[] = [
                 body: { Roadster: 1 },
                 transmission: "6-Gang Schaltgetriebe",
                 color: "#b7babe",
+              }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "Boxster",
+        featured: true,
+        generations: [
+          {
+            name: "986",
+            years: [1996, 2004],
+            shape: "roadster",
+            variants: [
+              v("Boxster", [1996, 2004], 109000, 16_000, 0.03, 204, 2.5, 39_100, {
+                ...MID,
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "5-Gang Schaltgetriebe / 5-Gang Tiptronic",
+                color: "#b7babe",
+              }),
+              v("Boxster S", [2000, 2004], 55000, 20_000, 0.035, 252, 3.2, 45_500, {
+                ...MID,
+                gearbox: { Manual: 0.75, Automatik: 0.25 },
+                transmission: "6-Gang Schaltgetriebe / 5-Gang Tiptronic",
+                color: "#151619",
+              }),
+              v("Boxster S 50 Jahre 550 Spyder", [2004, 2004], 1953, 38_000, 0.07, 266, 3.2, 57_600, {
+                ...MID,
+                gearbox: { Manual: 0.85, Automatik: 0.15 },
+                transmission: "6-Gang Schaltgetriebe / 5-Gang Tiptronic",
+                color: "#b7babe",
+              }),
+            ],
+          },
+          {
+            name: "987.1",
+            years: [2004, 2008],
+            shape: "roadster",
+            variants: [
+              v("Boxster", [2004, 2008], 40000, 19_000, 0.03, 240, 2.7, 42_000, {
+                ...MID,
+                gearbox: { Manual: 0.65, Automatik: 0.35 },
+                transmission: "5-Gang Schaltgetriebe / 5-Gang Tiptronic S",
+                color: "#b7babe",
+              }),
+              v("Boxster S", [2004, 2008], 35000, 24_000, 0.035, 280, 3.2, 51_000, {
+                ...MID,
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 5-Gang Tiptronic S",
+                color: "#1f3f8f",
+              }),
+              v("Boxster RS 60 Spyder", [2008, 2008], 1960, 45_000, 0.07, 303, 3.4, 61_600, {
+                ...MID,
+                gearbox: { Manual: 0.8, Automatik: 0.2 },
+                transmission: "6-Gang Schaltgetriebe / 5-Gang Tiptronic S",
+                color: "#b7babe",
+              }),
+            ],
+          },
+          {
+            name: "987.2",
+            years: [2008, 2012],
+            shape: "roadster",
+            variants: [
+              v("Boxster", [2008, 2012], 20000, 27_000, 0.035, 255, 2.9, 46_900, {
+                ...MID,
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("Boxster S", [2008, 2012], 15000, 34_000, 0.04, 310, 3.4, 57_000, {
+                ...MID,
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#151619",
+              }),
+              v("Boxster S Black Edition", [2011, 2011], 987, 48_000, 0.06, 320, 3.4, 64_000, {
+                ...MID,
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#151619",
+              }),
+              v("Boxster Spyder", [2010, 2012], 2000, 78_000, 0.075, 320, 3.4, 63_400, {
+                ...MID,
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#e9e8e1",
+              }),
+            ],
+          },
+          {
+            name: "981",
+            years: [2012, 2016],
+            shape: "roadster",
+            variants: [
+              v("Boxster", [2012, 2016], 35000, 38_000, 0.035, 265, 2.7, 48_300, {
+                ...MID,
+                gearbox: { Manual: 0.5, Automatik: 0.5 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#cfccc2",
+              }),
+              v("Boxster S", [2012, 2016], 25000, 46_000, 0.04, 315, 3.4, 60_000, {
+                ...MID,
+                gearbox: { Manual: 0.45, Automatik: 0.55 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#1f3f8f",
+              }),
+              v("Boxster GTS", [2014, 2016], 6000, 62_000, 0.05, 330, 3.4, 73_000, {
+                ...MID,
+                gearbox: { Manual: 0.45, Automatik: 0.55 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#151619",
+              }),
+              v("Boxster Spyder", [2015, 2016], 2400, 118_000, 0.065, 375, 3.8, 79_900, {
+                ...MID,
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b3121b",
+              }),
+            ],
+          },
+          {
+            name: "982",
+            years: [2016, 2025],
+            shape: "roadster",
+            variants: [
+              v("718 Boxster", [2016, 2025], 40000, 52_000, 0.03, 300, 2.0, 53_600, {
+                ...MID,
+                tags: ["Turbo"],
+                gearbox: { Manual: 0.35, Automatik: 0.65 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#efc11a",
+              }),
+              v("718 Boxster S", [2016, 2025], 25000, 60_000, 0.03, 350, 2.5, 66_100, {
+                ...MID,
+                tags: ["Turbo"],
+                gearbox: { Manual: 0.3, Automatik: 0.7 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#1f3f8f",
+              }),
+              v("718 Boxster GTS 4.0", [2020, 2025], 8000, 98_000, 0.05, 400, 4.0, 91_800, {
+                ...MID,
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("718 Boxster 25 Jahre", [2021, 2021], 1250, 115_000, 0.06, 400, 4.0, 97_600, {
+                ...MID,
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("718 Spyder", [2019, 2023], 5000, 125_000, 0.06, 420, 4.0, 93_400, {
+                ...MID,
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("718 Spyder RS", [2023, 2025], 3000, 210_000, 0.05, 500, 4.0, 161_500, {
+                ...MID,
+                tags: ["Leichtbau"],
+                ...PDK,
+                color: "#b3121b",
+              }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "Cayman",
+        featured: true,
+        generations: [
+          {
+            name: "987.1",
+            years: [2005, 2008],
+            shape: "wedge",
+            variants: [
+              v("Cayman", [2006, 2008], 25000, 22_000, 0.03, 245, 2.7, 50_000, {
+                gearbox: { Manual: 0.65, Automatik: 0.35 },
+                transmission: "5-Gang Schaltgetriebe / 5-Gang Tiptronic S",
+                color: "#b7babe",
+              }),
+              v("Cayman S", [2005, 2008], 30000, 26_000, 0.035, 295, 3.4, 58_500, {
+                gearbox: { Manual: 0.7, Automatik: 0.3 },
+                transmission: "6-Gang Schaltgetriebe / 5-Gang Tiptronic S",
+                color: "#b7babe",
+              }),
+            ],
+          },
+          {
+            name: "987.2",
+            years: [2009, 2012],
+            shape: "wedge",
+            variants: [
+              v("Cayman", [2009, 2012], 12000, 30_000, 0.035, 265, 2.9, 51_000, {
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#151619",
+              }),
+              v("Cayman S", [2009, 2012], 12000, 38_000, 0.04, 320, 3.4, 62_000, {
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b3121b",
+              }),
+              v("Cayman R", [2011, 2012], 2500, 78_000, 0.07, 330, 3.4, 66_100, {
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.75, Automatik: 0.25 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#3aa83a",
+              }),
+            ],
+          },
+          {
+            name: "981",
+            years: [2013, 2016],
+            shape: "wedge",
+            variants: [
+              v("Cayman", [2013, 2016], 20000, 42_000, 0.035, 275, 2.7, 51_400, {
+                gearbox: { Manual: 0.5, Automatik: 0.5 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b3121b",
+              }),
+              v("Cayman S", [2013, 2016], 15000, 52_000, 0.04, 325, 3.4, 64_100, {
+                gearbox: { Manual: 0.45, Automatik: 0.55 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("Cayman GTS", [2014, 2016], 5000, 70_000, 0.05, 340, 3.4, 77_000, {
+                gearbox: { Manual: 0.45, Automatik: 0.55 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#151619",
+              }),
+              v("Cayman GT4", [2015, 2016], 2500, 112_000, 0.06, 385, 3.8, 85_800, {
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b3121b",
+              }),
+            ],
+          },
+          {
+            name: "982",
+            years: [2016, 2025],
+            shape: "wedge",
+            variants: [
+              v("718 Cayman", [2016, 2025], 35000, 52_000, 0.03, 300, 2.0, 51_600, {
+                tags: ["Turbo"],
+                gearbox: { Manual: 0.35, Automatik: 0.65 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b3121b",
+              }),
+              v("718 Cayman S", [2016, 2025], 20000, 60_000, 0.03, 350, 2.5, 64_100, {
+                tags: ["Turbo"],
+                gearbox: { Manual: 0.3, Automatik: 0.7 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#1f6fd0",
+              }),
+              v("718 Cayman GTS 4.0", [2020, 2025], 8000, 95_000, 0.05, 400, 4.0, 89_000, {
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#7d7f7a",
+              }),
+              v("718 Cayman GT4", [2019, 2023], 8000, 120_000, 0.05, 420, 4.0, 96_200, {
+                tags: ["Leichtbau"],
+                gearbox: { Manual: 0.65, Automatik: 0.35 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("718 Cayman GT4 RS", [2021, 2025], 6000, 215_000, 0.05, 500, 4.0, 141_000, {
+                tags: ["Leichtbau"],
+                ...PDK,
+                color: "#7d7f7a",
               }),
             ],
           },

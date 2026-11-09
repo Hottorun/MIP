@@ -148,6 +148,58 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-992-2-turbo-s": [lift(0.02), buckets(0.02), pts(0.05)],
   "porsche-911-992-2-gt3": [manual(0.06, "Schaltgetriebe (statt PDK)"), ["Touring-Paket (ohne Heckflügel)", 0.06], weissach(0.05), lift(0.03), pccb(0.02), pts(0.06)],
 
+  // Boxster 986 (1996–2004)
+  "porsche-boxster-986-boxster": [manual(0.1, "Schaltgetriebe (statt Tiptronic)"), ["Hardtop ab Werk", 0.03], sportSeats(), ["Litronic-Xenonscheinwerfer", 0.01], paint(0.06)],
+  "porsche-boxster-986-boxster-s": [manual(0.1, "Schaltgetriebe (statt Tiptronic)"), ["Hardtop ab Werk", 0.03], ["Sportfahrwerk (tiefer)", 0.03], sportSeats(), paint(0.06)],
+  "porsche-boxster-986-boxster-s-50-jahre-550-spyder": [manual(0.1, "Schaltgetriebe (statt Tiptronic)"), ["Hardtop ab Werk", 0.03], sportSeats(0.02)],
+
+  // Boxster 987.1 (2004–2008)
+  "porsche-boxster-987-1-boxster": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Hardtop ab Werk", 0.03], ["PASM (adaptives Fahrwerk)", 0.02], chrono(), paint(0.06)],
+  "porsche-boxster-987-1-boxster-s": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Hardtop ab Werk", 0.03], lsd(), chrono(), ["PASM (adaptives Fahrwerk)", 0.02], ["Adaptive Sportsitze", 0.02], paint(0.06)],
+  "porsche-boxster-987-1-boxster-rs-60-spyder": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Hardtop ab Werk", 0.03], lsd(), chrono()],
+
+  // Boxster 987.2 (2008–2012)
+  "porsche-boxster-987-2-boxster": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Hardtop ab Werk", 0.03], chrono(), ["PASM (adaptives Fahrwerk)", 0.02], paint(0.06)],
+  "porsche-boxster-987-2-boxster-s": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Hardtop ab Werk", 0.03], lsd(), chrono(), exhaust(), pccb(0.02), paint(0.06)],
+  "porsche-boxster-987-2-boxster-s-black-edition": [manual(0.08, "Schaltgetriebe (statt PDK)"), lsd(), chrono(), exhaust()],
+  "porsche-boxster-987-2-boxster-spyder": [manual(0.1, "Schaltgetriebe (statt PDK)"), lsd(), buckets(0.04), chrono(), ["Klimaanlage und Radio (beim Spyder Option)", -0.01], paint(0.06)],
+
+  // Boxster 981 (2012–2016)
+  "porsche-boxster-981-boxster": [manual(0.08, "Schaltgetriebe (statt PDK)"), chrono(), ["PASM (adaptives Fahrwerk)", 0.02], exhaust(), paint(0.05)],
+  "porsche-boxster-981-boxster-s": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Porsche Torque Vectoring (PTV)", 0.02], chrono(), exhaust(), pccb(0.02), ["Sportsitze Plus", 0.02], paint(0.05)],
+  "porsche-boxster-981-boxster-gts": [manual(0.1, "Schaltgetriebe (statt PDK)"), ["Porsche Torque Vectoring (PTV)", 0.02], pccb(0.02), buckets(0.04), pts(0.06)],
+  "porsche-boxster-981-boxster-spyder": [buckets(0.05), pccb(0.02), ["Klimaanlage und Radio (beim Spyder Option)", -0.01], pts(0.08)],
+
+  // Boxster 718 / 982 (2016–2025)
+  "porsche-boxster-982-718-boxster": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), ["PASM-Sportfahrwerk (-20 mm)", 0.02], pts(0.05)],
+  "porsche-boxster-982-718-boxster-s": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), ["Porsche Torque Vectoring (PTV)", 0.02], pccb(0.02), pts(0.05)],
+  "porsche-boxster-982-718-boxster-gts-4-0": [manual(0.08, "Schaltgetriebe (statt PDK)"), buckets(0.04), pccb(0.02), lift(0.01), pts(0.06)],
+  "porsche-boxster-982-718-boxster-25-jahre": [manual(0.08, "Schaltgetriebe (statt PDK)"), buckets(0.03), ["Lackierung GT-Silber (statt Schwarz/Carraraweiß)", 0.03]],
+  "porsche-boxster-982-718-spyder": [manual(0.08, "Schaltgetriebe (statt PDK)"), buckets(0.05), pccb(0.02), ["Klimaanlage und Radio (beim Spyder Option)", -0.01], pts(0.08)],
+  "porsche-boxster-982-718-spyder-rs": [weissach(0.06), buckets(0.02), lift(0.02), pts(0.08)],
+
+  // Cayman 987.1 (2005–2008)
+  "porsche-cayman-987-1-cayman": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), chrono(), ["PASM (adaptives Fahrwerk)", 0.02], sportSeats(0.02), paint(0.06)],
+  "porsche-cayman-987-1-cayman-s": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), lsd(), chrono(), ["PASM (adaptives Fahrwerk)", 0.02], ["Adaptive Sportsitze", 0.02], paint(0.06)],
+
+  // Cayman 987.2 (2009–2012)
+  "porsche-cayman-987-2-cayman": [manual(0.08, "Schaltgetriebe (statt PDK)"), chrono(), ["PASM (adaptives Fahrwerk)", 0.02], paint(0.06)],
+  "porsche-cayman-987-2-cayman-s": [manual(0.08, "Schaltgetriebe (statt PDK)"), lsd(), chrono(), exhaust(), pccb(0.02), paint(0.06)],
+  "porsche-cayman-987-2-cayman-r": [manual(0.1, "Schaltgetriebe (statt PDK)"), lsd(), buckets(0.04), ["Klimaanlage und Radio (beim R Option)", -0.01], paint(0.06)],
+
+  // Cayman 981 (2013–2016)
+  "porsche-cayman-981-cayman": [manual(0.08, "Schaltgetriebe (statt PDK)"), chrono(), ["PASM (adaptives Fahrwerk)", 0.02], exhaust(), paint(0.05)],
+  "porsche-cayman-981-cayman-s": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Porsche Torque Vectoring (PTV)", 0.02], chrono(), exhaust(), pccb(0.02), paint(0.05)],
+  "porsche-cayman-981-cayman-gts": [manual(0.1, "Schaltgetriebe (statt PDK)"), ["Porsche Torque Vectoring (PTV)", 0.02], pccb(0.02), buckets(0.04), pts(0.06)],
+  "porsche-cayman-981-cayman-gt4": [clubsport(0.03), buckets(0.04), pccb(0.02), chrono(0.01), pts(0.08)],
+
+  // Cayman 718 / 982 (2016–2025)
+  "porsche-cayman-982-718-cayman": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), ["PASM-Sportfahrwerk (-20 mm)", 0.02], pts(0.05)],
+  "porsche-cayman-982-718-cayman-s": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), ["Porsche Torque Vectoring (PTV)", 0.02], pccb(0.02), pts(0.05)],
+  "porsche-cayman-982-718-cayman-gts-4-0": [manual(0.08, "Schaltgetriebe (statt PDK)"), buckets(0.04), pccb(0.02), lift(0.01), pts(0.06)],
+  "porsche-cayman-982-718-cayman-gt4": [manual(0.08, "Schaltgetriebe (statt PDK)"), clubsport(0.02), buckets(0.04), pccb(0.02), lift(0.02), pts(0.08)],
+  "porsche-cayman-982-718-cayman-gt4-rs": [weissach(0.08), clubsport(0.01), lift(0.02), pts(0.08)],
+
   // Supercars
   "porsche-carrera-gt-carrera-gt": [paint(), ["Leder in Sonderfarbe (z. B. Ascot-Braun, Terrakotta)", 0.03], ["Werks-Gepäckset", 0.02]],
   "porsche-918-918-spyder": [["Lackierung Liquid Metal (Chrome Blue oder Silver)", 0.08], pts(0.06), lift(0.02)],

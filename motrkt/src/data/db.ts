@@ -52,8 +52,8 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
     if (y < 1998) list.push("Rost (v. a. Kotflügel, Schweller, Wagenheberaufnahmen)");
     if (y < 1998) list.push("Motor (Ölverlust, Kopfdichtung, Stehbolzen)");
     if (generationName === "964") list.push("Zweimassenschwungrad und Verteilerantrieb");
-    // M96/M97 engines; the 997.2 got the new 9A1 engine without intermediate shaft.
-    if (["996.1", "996.2", "997.1"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
+    // M96/M97 engines (911 and Boxster/Cayman); the 997.2/987.2 got the new 9A1 engine without intermediate shaft.
+    if (["996.1", "996.2", "997.1", "986", "987.1"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
       list.push("IMS-Lager und Zylinderlaufbahnen (M96/M97)");
     if (y >= 1998) list.push("Wartungsnachweise und Software-/Steuergerätestand");
   }
@@ -81,7 +81,8 @@ function firstYear(m: { name: string; generations: { years: [number, number | nu
  */
 function variantTier(name: string): number {
   if (/\bGT2\b/.test(name)) return 4;
-  if (/\b(GT3|RS|R|Leichtbau|Weissach)\b|^959 Sport$|^356 Carrera/.test(name)) return 3;
+  if (/50 Jahre|25 Jahre|Black Edition|RS 60/.test(name)) return 2;
+  if (/\b(GT3|GT4|RS|R|Spyder|Leichtbau|Weissach)\b|^959 Sport$|^356 Carrera/.test(name)) return 3;
   if (/Speedster|Sport Classic|Dakar|S\/T|50 Jahre|Flachbau/.test(name)) return 2;
   if (/^Turbo\b/.test(name)) return 1;
   return 0;
@@ -104,7 +105,7 @@ function build() {
     const brand: Brand = { id: b.id, name: b.name, country: b.country, color: b.color, featured: b.featured };
     brands.push(brand);
     brandById.set(brand.id, brand);
-    // Models in order of first build year: 356, 911, 912, 930, 959, Carrera GT, 918.
+    // Models in order of first build year: 356, 911, 912, 930, 959, Boxster, Carrera GT, Cayman, 918.
     const byFirstYear = [...b.models].sort((x, y) => firstYear(x) - firstYear(y));
     for (const m of byFirstYear) {
       const model: Model = {
@@ -123,7 +124,10 @@ function build() {
         generations.push(gen);
         generationById.set(genId, gen);
         // Standard models first, special models last; within a tier by first build year.
-        const seeds = [...g.variants].sort((x, y) => variantTier(x.name) - variantTier(y.name) || x.years[0] - y.years[0]);
+        // A base model sorts with its first derivative ("Cayman" before "Cayman S", even though the S came first).
+        const start = (x: VariantSeed) => Math.min(x.years[0], ...g.variants.filter((o) => o.name.startsWith(`${x.name} `)).map((o) => o.years[0]));
+        const prefix = (x: VariantSeed, y: VariantSeed) => (y.name.startsWith(`${x.name} `) ? -1 : x.name.startsWith(`${y.name} `) ? 1 : 0);
+        const seeds = [...g.variants].sort((x, y) => variantTier(x.name) - variantTier(y.name) || start(x) - start(y) || prefix(x, y));
         for (const s of seeds) {
           const id = `${genId}-${slug(s.name)}`;
           const paint = PAINTS[b.id];
@@ -219,12 +223,13 @@ export function getVariant(id: string | undefined): Variant | undefined {
   return id ? variantById.get(resolveVariantId(id)) : undefined;
 }
 
+/** The variant name already names the model: "Boxster S", "959 Sport", or a model code of its own ("718 Spyder"). */
 function includesModel(v: Variant, modelName: string) {
   const n = ` ${v.name} `;
-  return n.includes(` ${modelName} `);
+  return n.includes(` ${modelName} `) || /^\d{3} /.test(v.name);
 }
 
-/** "Porsche 911 (964) Carrera RS", "Porsche 959 Komfort" */
+/** "Porsche 911 (964) Carrera RS", "Porsche Boxster Spyder (987.2)", "Porsche 959 Komfort" */
 export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string {
   const brand = brandById.get(v.brandId)!;
   const model = modelById.get(v.modelId)!;
