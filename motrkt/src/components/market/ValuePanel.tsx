@@ -19,6 +19,22 @@ const RANGE_OPTIONS = [
 ];
 
 export function ValuePanel({ variant }: { variant: Variant }) {
+  if (!variant.measured) {
+    return (
+      <Section title={t("Wertentwicklung", "Value history")}>
+        <p className="max-w-2xl text-[15px] text-muted">
+          {t(
+            "Für diese Variante gibt es zu wenige belegte Verkäufe und Angebote, um einen Wertverlauf zu berechnen. Wir zeigen hier bewusst keine Schätzung.",
+            "There are too few recorded sales and listings of this variant to compute a value history. We deliberately show no estimate here.",
+          )}
+        </p>
+      </Section>
+    );
+  }
+  return <ValueChart variant={variant} />;
+}
+
+function ValueChart({ variant }: { variant: Variant }) {
   const m = getMetrics(variant.id);
   const [range, setRange] = useState<"1J" | "5J" | "10J" | "Max">("5J");
   const model = modelById.get(variant.modelId)!;
@@ -102,24 +118,22 @@ export function ValuePanel({ variant }: { variant: Variant }) {
   );
 }
 
-/** Where the curve comes from: own price path, segment index, or estimate. */
+/** Where the curve comes from: own price path or segment index. */
 function BasisNote({ variant }: { variant: Variant }) {
   const b = marketBasis(variant.id);
   if (!b) return null;
   const segment = tr(SEGMENT_LABEL[b.segment] ?? b.segment);
   return (
     <p className="mt-2 text-[12.5px] leading-relaxed text-faint">
-      {b.n === 0
-        ? t(`Keine belegten Verkäufe seit 2015: Niveau geschätzt, Verlauf folgt dem Index „${segment}“.`, `No recorded sales since 2015: level estimated, the curve follows the “${segment}” index.`)
-        : b.own
-          ? t(
-              `Verlauf aus ${num(b.n)} Auktionsergebnissen dieser Variante (geglätteter Median, zeitlich gewichtet), eingebettet in den Index „${segment}“.`,
-              `Curve from ${num(b.n)} auction results for this variant (smoothed median, time-weighted), embedded in the “${segment}” index.`,
-            )
-          : t(
-              `Niveau aus ${num(b.n)} Auktionsergebnissen dieser Variante; für einen eigenen Verlauf sind es zu wenige, er folgt dem Index „${segment}“.`,
-              `Level from ${num(b.n)} auction results for this variant; too few for a curve of its own, so it follows the “${segment}” index.`,
-            )}
+      {b.own
+        ? t(
+            `Verlauf aus ${num(b.n)} Belegen dieser Variante (geglätteter Median, zeitlich gewichtet), eingebettet in den Index „${segment}“.`,
+            `Curve from ${num(b.n)} records of this variant (smoothed median, time-weighted), embedded in the “${segment}” index.`,
+          )
+        : t(
+            `Niveau aus ${num(b.n)} Belegen dieser Variante; für einen eigenen Verlauf sind es zu wenige, er folgt dem Index „${segment}“.`,
+            `Level from ${num(b.n)} records of this variant; too few for a curve of its own, so it follows the “${segment}” index.`,
+          )}
     </p>
   );
 }

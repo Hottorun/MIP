@@ -8,6 +8,7 @@ import { ValuePanel } from "../components/market/ValuePanel";
 import { Details } from "../components/market/FactCards";
 import { Assessment, RecentSales } from "../components/market/SalesSection";
 import { Listings } from "../components/market/BottomRow";
+import { Evidence } from "../components/market/Evidence";
 import { appTitle, t } from "../i18n";
 
 export default function Market() {
@@ -56,6 +57,7 @@ function MarketPage({ variant }: { variant: Variant }) {
         <RecentSales variant={variant} />
         <Assessment variant={variant} />
       </div>
+      <Evidence variant={variant} />
       <Details variant={variant} picked={picked} onPick={setPicked} />
       <Listings variant={variant} />
     </div>

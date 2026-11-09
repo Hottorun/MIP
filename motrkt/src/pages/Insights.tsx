@@ -45,7 +45,7 @@ const TAGS: { readonly label: string; test: (v: Variant) => boolean }[] = [
 function segmentRows(defs: typeof ERAS) {
   return defs
     .map((d) => {
-      const vs = variants.filter(d.test);
+      const vs = variants.filter((v) => v.measured && d.test(v));
       return {
         label: d.label,
         count: vs.length,
@@ -258,7 +258,7 @@ function RiskScatter({ mode }: { mode: "rarity" | "vol" }) {
       brands.map((b) => ({
         brand: b,
         points: variants
-          .filter((v) => v.brandId === b.id)
+          .filter((v) => v.measured && v.brandId === b.id)
           .map((v): Point => {
             const m = getMetrics(v.id);
             return { id: v.id, title: variantTitle(v), x: mode === "rarity" ? m.rarityScore : m.vol1y * 100, y: m.cagr5 * 100, z: Math.sqrt(m.value), value: m.value };
@@ -321,7 +321,7 @@ function RiskScatter({ mode }: { mode: "rarity" | "vol" }) {
 
 function Reports() {
   const reports = useMemo(() => {
-    const all = variants.map((v) => ({ v, m: getMetrics(v.id) }));
+    const all = variants.filter((v) => v.measured).map((v) => ({ v, m: getMetrics(v.id) }));
     const eras = segmentRows(ERAS).sort((a, b) => b.change12m - a.change12m);
     const byChange = [...all].sort((a, b) => b.m.change12m - a.m.change12m);
     const top = byChange[0];

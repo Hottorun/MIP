@@ -59,7 +59,7 @@ export default function Overview() {
     () =>
       topMovers(
         variants
-          .filter((v) => v.marketPhotos.length || v.photos.length)
+          .filter((v) => v.measured && (v.marketPhotos.length || v.photos.length))
           .map((v) => v.id),
         4,
       ).winners,
@@ -232,7 +232,7 @@ export default function Overview() {
                   <div className="overflow-hidden">
                     <CarImage
                       variant={v}
-                      className="aspect-video w-full transition-transform duration-500 group-hover:scale-[1.02]"
+                      className="aspect-video w-full"
                       label={variantTitle(v)}
                     />
                   </div>

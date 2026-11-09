@@ -1,3 +1,4 @@
+import { asksFor } from "../data/real/asks";
 import { brands, generationById, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { getLang, t } from "../i18n";
 import { tr } from "../i18n/terms";
@@ -109,18 +110,20 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
       `## Aktuell geöffnete Variante: ${variantTitle(focus)}`,
       `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${num(focus.liters, 1)} l, ${focus.drive}, ${focus.transmission}`,
       `Neupreis ca. ${eur(focus.newPrice)} (${focus.newPriceYear}), inflationsbereinigt ca. ${eur(focus.newPrice * inflationFactor(focus.newPriceYear))}`,
-      `Marktwert (Median) ${eur(m.value)}; Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`,
+      focus.measured
+        ? `Marktwert Deutschland ${eur(m.value)} (aus europäischen Auktionsergebnissen, europäischen Angebotspreisen und bereinigten US-Auktionen); Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`
+        : `Marktwert: keine belastbare Datenbasis (zu wenige belegte Verkäufe und Angebote). Keinen Wert schätzen oder erfinden.`,
       `Rarity Score ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, MOTRKT-Einschätzung: ${m.recommendation.label}`,
       `Letzte 12 Monate: ${m.sales12m} Transaktionen, Ø Verkaufspreis ${eur(m.avgPrice12m)}, Median-Laufleistung ${km(m.medianMileage)}, Ø Zustandsnote ${num(m.avgCondition, 1)}, Auktionsanteil ${pct(m.auctionShare, { signed: false, digits: 0 })}, Verkaufsquote ${pct(m.sellThrough, { signed: false, digits: 0 })}, Ø Zuschlag vs. Schätzung ${pct(m.premiumVsEstimate)}`,
-      `Optionen/Wertfaktoren: ${focus.options.map((o) => `${o.name}${o.standard ? "" : ` (${pct(o.impact)})`}`).join("; ")}`,
+      `Optionen/Wertfaktoren: ${focus.options.map((o) => `${o.name}${o.standard ? "" : o.measured ? ` (${pct(o.impact)}, gemessen an ${o.measured} Belegen)` : " (Einfluss nicht gemessen)"}`).join("; ")}`,
       `Typische Schwachstellen: ${focus.weaknesses.join("; ")}`,
-      `Erstauslieferung: ${focus.markets.map((x) => `${x.country} ${num(x.share, 1)} %`).join(", ")}`,
       `Letzte Transaktionen:`,
       ...sales.slice(0, 10).map(
         (s) =>
           `  - ${date(s.date)} ${s.source} ${s.house} (${s.id}): ${s.price ? eur(s.price) : "nicht verkauft"}${s.estimateLow ? ` [Schätzung ${eur(s.estimateLow)}–${eur(s.estimateHigh)}]` : ""}, Zustand ${s.condition}, ${km(s.mileage)}, ${s.color}, ${s.body}/${s.gearbox}, Käufer ${s.buyerCountry}, vs. Marktwert ${pct(s.trend)}`,
       ),
-      `Aktive Inserate: ${listings.length}${asks.length ? `, Angebotspreise ${eur(asks[0])} bis ${eur(asks[asks.length - 1])}, Median ${eur(asks[Math.floor(asks.length / 2)])}` : ""}`,
+      `Angebote in Europa (echte Inserate): ${asksFor(focus.id).length}${asksFor(focus.id).length ? `, ${asksFor(focus.id).slice(0, 8).map((a) => `${a.title} ${a.year}, ${a.km ? km(a.km) : "km unbekannt"}, ${eur(a.eur)}, ${a.seller}, ${a.country}`).join(" | ")}` : ""}`,
+      `Demo-Inserate (erfunden, nur zur Ansicht, nicht als Marktbeleg verwenden): ${listings.length}${asks.length ? `, Angebotspreise ${eur(asks[0])} bis ${eur(asks[asks.length - 1])}, Median ${eur(asks[Math.floor(asks.length / 2)])}` : ""}`,
       ...listings.slice(0, 8).map((l) => `  - ${l.id}: ${l.year}, ${km(l.mileage)}, Zustand ${l.condition}, ${l.color}, ${eur(l.price)}, ${l.sellerType} ${l.seller} (${l.city}), Matching Numbers: ${l.matchingNumbers ? "ja" : "nein"}, Historie: ${l.serviceHistory ? "lückenlos" : "unvollständig"}`),
       "",
       `## Weitere Varianten desselben Modells`,
@@ -140,7 +143,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
   if (watchlist.length) {
     lines.push("", "## Watchlist", ...watchlist.filter((id) => variantById.has(id)).map(variantLine));
   }
-  const { winners, losers } = topMovers(variants.map((v) => v.id), 5);
+  const { winners, losers } = topMovers(variants.filter((v) => v.measured).map((v) => v.id), 5);
   lines.push(
     "",
     "## Gesamtmarkt",

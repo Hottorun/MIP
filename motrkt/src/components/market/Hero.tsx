@@ -4,8 +4,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
-import { getSales, hasRealSales } from "../../data/generate";
-import { marketBasis } from "../../data/real/model";
+import { marketBasis, MIN_RECORDS } from "../../data/real/model";
 import { useStore } from "../../state/store";
 import { cn, eur, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
@@ -58,7 +57,6 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
   const factor = optionFactor(variant, picked);
   const watched = watchlist.includes(variant.id);
   const alertCount = alerts.filter((a) => a.variantId === variant.id).length;
-  const real = hasRealSales(variant.id);
   const lineage = gen.name !== model.name ? `${brand.name} ${modelName(model)} (${genName(gen)})` : `${brand.name} ${modelName(model)}`;
   const siblings = gen.variantIds.map((id) => variantById.get(id)!);
   const generations = model.generationIds.map((id) => generationById.get(id)!);
@@ -84,8 +82,11 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
       <h1 className="mt-1 font-display text-[44px] leading-[1.05] sm:text-[52px]">{variantName(variant)}</h1>
       <p className="mt-2 font-serif text-[16px] text-muted italic">{yearsLabel(variant.years)}</p>
 
+      {!variant.measured ? (
+        <NoValue variant={variant} />
+      ) : (
       <div className="mt-8 border-t border-line pt-6">
-        <div className="text-[13px] text-muted">{picked.length ? t("Schätzwert mit Ausstattung", "Estimate with options") : t("Marktwert, Median", "Market value, median")}</div>
+        <div className="text-[13px] text-muted">{picked.length ? t("Schätzwert mit Ausstattung", "Estimate with options") : t("Marktwert Deutschland", "Market value, Germany")}</div>
         <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <Money value={Math.round((m.value * factor) / 1000) * 1000} className="text-[40px] leading-none" />
           {picked.length ? (
@@ -103,10 +104,13 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
         </div>
         <p className="mt-2 text-[13px] text-faint">
           {picked.length ? `${t("Median ohne Optionen", "Median without options")} ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
-          <BasisLine
-            variant={variant}
-            fallback={real ? t(`Aus ${getSales(variant.id).length} belegten Verkäufen`, `From ${getSales(variant.id).length} recorded sales`) : t("Demo-Daten", "Demo data")}
-          />
+          <BasisLine variant={variant} />{" · "}
+          <button
+            onClick={() => document.getElementById("belege")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-muted underline decoration-line-2 underline-offset-2 hover:text-ink"
+          >
+            {t("Belege ansehen", "See the evidence")}
+          </button>
           {variant.options.length > 0 && (
             <>
               {" · "}
@@ -135,6 +139,7 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
           </button>
         </div>
       </div>
+      )}
 
       <p className="mt-8 font-serif text-[16px] leading-[1.7] text-ink/90">{m.thesis}</p>
 
@@ -457,21 +462,44 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
   );
 }
 
-function BasisLine({ variant, fallback }: { variant: Variant; fallback: string }) {
+function BasisLine({ variant }: { variant: Variant }) {
   const b = marketBasis(variant.id);
-  if (!b) return <>{fallback}</>;
-  if (b.n === 0) return <>{t("Schätzwert, keine belegten Verkäufe seit 2015", "Estimate, no recorded sales since 2015")}</>;
-  const since = b.first ? new Date(b.first).getUTCFullYear() : 2015;
+  if (!b) return null;
+  const c = b.channels;
+  const parts = [
+    c.EU_AUC && t(`${num(c.EU_AUC)} ${c.EU_AUC === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} in Europa`, `${num(c.EU_AUC)} European auction ${c.EU_AUC === 1 ? "result" : "results"}`),
+    c.EU_ASK && t(`${num(c.EU_ASK)} ${c.EU_ASK === 1 ? "Angebot" : "Angeboten"} in Europa`, `${num(c.EU_ASK)} ${c.EU_ASK === 1 ? "listing" : "listings"} in Europe`),
+    c.US_AUC && t(`${num(c.US_AUC)} US-${c.US_AUC === 1 ? "Auktion" : "Auktionen"} (bereinigt)`, `${num(c.US_AUC)} US ${c.US_AUC === 1 ? "auction" : "auctions"} (adjusted)`),
+  ].filter(Boolean) as string[];
+  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${t("und", "and")} ${parts.at(-1)}` : parts[0];
   return (
     <>
-      {t(
-        `Median aus ${num(b.n)} ${b.n === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} seit ${since}`,
-        `Median of ${num(b.n)} ${b.n === 1 ? "auction result" : "auction results"} since ${since}`,
-      )}
-      {b.n12 > 0 && t(`, ${num(b.n12)} davon in den letzten 12 Monaten`, `, ${num(b.n12)} of them in the last 12 months`)}
+      {t(`Aus ${list}`, `From ${list}`)}
       {b.lo &&
         b.hi &&
         ` · ${t("mittlere Hälfte", "middle half")} ${eur(Math.round(b.lo / 1000) * 1000, { compact: true })} ${t("bis", "to")} ${eur(Math.round(b.hi / 1000) * 1000, { compact: true })}`}
     </>
+  );
+}
+
+/** Too few records for a market value: say so and point to the individual records instead of showing a number. */
+function NoValue({ variant }: { variant: Variant }) {
+  const n = marketBasis(variant.id)?.n ?? 0;
+  return (
+    <div className="mt-8 border-t border-line pt-6">
+      <div className="text-[13px] text-muted">{t("Marktwert Deutschland", "Market value, Germany")}</div>
+      <div className="mt-1 font-serif text-[28px] leading-tight">{t("Keine belastbare Datenbasis", "Not enough data")}</div>
+      <p className="mt-2 text-[13px] text-faint">
+        {n === 0
+          ? t(
+              `${variant.years[0] >= 2015 ? "Bisher" : "Seit 2015"} ist kein Verkauf und kein Angebot dieser Variante mit Preis belegt.`,
+              `No priced sale or listing of this variant is on record${variant.years[0] >= 2015 ? " yet" : " since 2015"}.`,
+            )
+          : t(
+              `Nur ${num(n)} ${n === 1 ? "Beleg" : "Belege"}${variant.years[0] >= 2015 ? "" : " seit 2015"}, für einen Marktwert braucht es mindestens ${MIN_RECORDS}. Die Einzelbelege stehen unten.`,
+              `Only ${num(n)} ${n === 1 ? "record" : "records"}${variant.years[0] >= 2015 ? "" : " since 2015"}; a market value needs at least ${MIN_RECORDS}. The individual records are listed below.`,
+            )}
+      </p>
+    </div>
   );
 }

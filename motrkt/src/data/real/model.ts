@@ -1,10 +1,14 @@
 import data from "./market-model.json";
 
 /**
- * Market model built from real auction results (scripts/market: Bring a Trailer, RM Sotheby's, Gooding, Bonhams,
- * Broad Arrow, Artcurial). Per segment a robust time index (kernel-weighted medians of log prices), per variant a price
- * level relative to it and, with 12+ sales, a variant-specific drift (shrunk towards the index where sales are thin). Prices are converted to EUR at the ECB rate of
- * the sale day. See METHOD below for the wording shown in the app.
+ * Market model (scripts/market/model.py): German/European market value per variant from three kinds of evidence,
+ * each converted to EUR at the ECB rate of its day:
+ *  - EU_AUC  auction results in Europe (the reference scale: what buyers in Europe actually paid)
+ *  - EU_ASK  asking prices of cars for sale in Europe (Classic Trader; hand-recorded listings)
+ *  - US_AUC  auction results in North America (Bring a Trailer, RM Sotheby's, Gooding …)
+ * The gap of asking prices and US results to European auction results is measured from variants that have both, and
+ * removed; how much a channel can move a variant's value is capped by how much that gap varies between variants.
+ * A value is published only with at least `minN` records; otherwise the variant shows its individual records only.
  */
 
 type RawEntry = {
@@ -21,15 +25,34 @@ type RawEntry = {
   houses?: Record<string, number>;
   gearbox?: Record<string, [number, number]>;
   body?: Record<string, [number, number]>;
-  series?: number[];
+  series?: number[] | null;
+  family?: string;
+  ch?: Record<Channel, number>;
+  share?: Partial<Record<Channel, number>>;
+  chLevel?: Partial<Record<Channel, number>>;
 };
 
-type Raw = { asOf: string; grid: number[]; index: Record<string, number[]>; variants: Record<string, RawEntry>; total: number; sources: Record<string, number> };
+export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC";
+
+type Raw = {
+  asOf: string;
+  grid: number[];
+  index: Record<string, number[]>;
+  variants: Record<string, RawEntry>;
+  total: number;
+  sources: Record<string, number>;
+  channels: Record<Channel, number>;
+  offsets: Record<string, Record<Channel, number>>;
+  scatter: Record<Channel, number>;
+  bias: Record<Channel, number>;
+  offsetPairs: Record<string, { pairs: Record<string, [number, number]>; own: boolean }>;
+  minN: number;
+};
 
 const raw = data as unknown as Raw;
 
 export type MarketBasis = {
-  /** Median market value today (EUR), null when no sale is recorded. */
+  /** Market value today on the European transaction scale (EUR); null with fewer than MIN_RECORDS records. */
   value: number | null;
   /** Sales the value rests on (all years since 2015) and those of the last 12 / 24 months. */
   n: number;
@@ -47,6 +70,13 @@ export type MarketBasis = {
   /** Measured price effect against the median: [effect, number of sales]. */
   gearbox: Record<string, [number, number]>;
   body: Record<string, [number, number]>;
+  /** Records per kind of evidence, their share of the value (precision weights) and their own level today. */
+  channels: Record<Channel, number>;
+  share: Partial<Record<Channel, number>>;
+  level: Partial<Record<Channel, number>>;
+  /** Measured offset of asking prices and US results against European auction results (log scale) for this family. */
+  offsets: Record<Channel, number>;
+  family: string;
 };
 
 export const SEGMENT_LABEL: Record<string, string> = {
@@ -66,6 +96,13 @@ export const SEGMENT_LABEL: Record<string, string> = {
 export const MODEL_AS_OF = Date.parse(`${raw.asOf}T00:00:00Z`);
 export const MODEL_SALES_TOTAL = raw.total;
 export const MODEL_SOURCES = raw.sources;
+export const MODEL_CHANNELS = raw.channels;
+export const MODEL_OFFSETS = raw.offsets;
+export const MODEL_BIAS = raw.bias;
+/** Per family: the pairwise channel gaps behind the offsets, as [log gap, number of variants compared]. */
+export const MODEL_OFFSET_PAIRS = raw.offsetPairs;
+/** Records a variant needs before a market value is published. */
+export const MIN_RECORDS = raw.minN;
 
 export function marketBasis(variantId: string): MarketBasis | undefined {
   const e = raw.variants[variantId];
@@ -84,6 +121,11 @@ export function marketBasis(variantId: string): MarketBasis | undefined {
     houses: e.houses ?? {},
     gearbox: e.gearbox ?? {},
     body: e.body ?? {},
+    channels: e.ch ?? { EU_AUC: 0, EU_ASK: 0, US_AUC: 0 },
+    share: e.share ?? {},
+    level: e.chLevel ?? {},
+    offsets: raw.offsets[e.family ?? "COLLECT"] ?? { EU_AUC: 0, EU_ASK: 0, US_AUC: 0 },
+    family: e.family ?? "COLLECT",
   };
 }
 
@@ -105,15 +147,9 @@ function interp(values: number[], t: number): number {
 
 export const MODEL_START = raw.grid[0];
 
-/**
- * Model value at time t. Variants without own sales follow their segment index, scaled to `fallbackValue`
- * (the catalog estimate) – their level is an estimate, the shape is measured.
- */
-export function modelValueAt(variantId: string, t: number, fallbackValue: number): number | null {
+/** Model value at time t; null for variants without a published value (too few records). */
+export function modelValueAt(variantId: string, t: number): number | null {
   const e = raw.variants[variantId];
-  if (!e) return null;
-  if (e.series && e.value) return interp(e.series, t);
-  const idx = raw.index[e.index];
-  if (!idx) return null;
-  return fallbackValue * interp(idx.map((x) => Math.exp(x)), t);
+  if (!e?.series || !e.value) return null;
+  return interp(e.series, t);
 }

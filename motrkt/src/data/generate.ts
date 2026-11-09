@@ -107,8 +107,9 @@ export function realAnchor(variantId: string): { value: number; cagr: number | n
 }
 
 /**
- * Weekly value series from the market model (real auction results): the variant's own price path when it has sales,
- * otherwise its segment index scaled to the catalog estimate. Volume = recorded sales in that week.
+ * Weekly value series from the market model (auction results and asking prices). Volume = recorded sales in that week.
+ * Variants without a published value (too few records) get no model series; the internal placeholder curve below only
+ * feeds the demo listings and auctions and is never shown as a market value (`Variant.measured`).
  */
 function modelSeries(v: Variant): PricePoint[] | null {
   const basis = marketBasis(v.id);
@@ -123,7 +124,7 @@ function modelSeries(v: Variant): PricePoint[] | null {
   const out: PricePoint[] = [];
   for (let i = startIdx; i < WEEKS; i++) {
     const t = SERIES_START + i * WEEK;
-    const value = modelValueAt(v.id, t, v.value);
+    const value = modelValueAt(v.id, t);
     if (value === null) return null;
     out.push({ t, value, volume: perWeek.get(i) ?? 0 });
   }
@@ -308,9 +309,11 @@ function paintFor(r: Rng, v: Variant) {
 }
 
 const salesCache = new Map<string, Sale[]>();
+/** Invented transactions for variants without recorded sales: off. Only real, linked records are shown as sales. */
+const SYNTHETIC_SALES = false;
 export const SALES_WINDOW_START = AS_OF - 5 * 52 * WEEK;
 
-/** All recorded transactions (auction results, dealer and private sales) of the last 5 years, newest first. */
+/** All recorded transactions (auction results), newest first; empty when nothing is recorded. */
 export function getSales(variantId: string): Sale[] {
   const cached = salesCache.get(variantId);
   if (cached) return cached;
@@ -318,7 +321,7 @@ export function getSales(variantId: string): Sale[] {
   if (!v) return [];
   const series = getSeries(variantId);
   const real = realSalesFor(variantId);
-  if (real.length) {
+  if (real.length || !SYNTHETIC_SALES) {
     const out: Sale[] = real.map((s) => ({ ...s, trend: s.price === null ? 0 : s.price / valueAt(series, s.date) - 1 }));
     salesCache.set(variantId, out);
     return out;

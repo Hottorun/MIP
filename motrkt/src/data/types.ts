@@ -14,7 +14,7 @@ export type VariantSeed = {
   name: string;
   years: [number, number | null];
   production: number;
-  value: number; // current median market value (EUR)
+  value: number; // catalog estimate (EUR); replaced by the measured market value where the market model has one
   cagr: number; // 5y CAGR, e.g. 0.108
   vol?: number; // annualised volatility; derived from rarity/price when omitted
   hp: number;
@@ -30,6 +30,8 @@ export type VariantSeed = {
 };
 
 export type Variant = Required<Omit<VariantSeed, "vol" | "tags">> & {
+  /** true: `value` is measured from at least MIN_RECORDS auction results / asking prices; false: too few records, no value is shown. */
+  measured: boolean;
   id: string;
   brandId: string;
   modelId: string;

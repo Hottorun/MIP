@@ -11,7 +11,7 @@ import { AS_OF } from "../data/generate";
 import { MODEL_SALES_TOTAL } from "../data/real/model";
 
 const NAV_LEFT = [
-  { to: "/markt", get label() { return t("Markt", "Market"); } },
+  { to: "/", get label() { return t("Start", "Home"); } },
   { to: "/modelle", get label() { return t("Modelle", "Models"); } },
   { to: "/auktionen", get label() { return t("Auktionen", "Auctions"); } },
   { to: "/kaufen", get label() { return t("Kaufen", "Buy"); } },
@@ -62,13 +62,11 @@ function Wordmark({ className }: { className?: string }) {
 }
 
 function NavItem({ to, label }: { to: string; label: string }) {
-  const { lastVariantId } = useStore();
   const { pathname } = useLocation();
-  const href = to === "/markt" ? `/markt/${lastVariantId}` : to;
-  const active = pathname.startsWith(to);
+  const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
   return (
     <NavLink
-      to={href}
+      to={to}
       className={cn("border-b py-1 text-[14.5px] transition-colors", active ? "border-ink text-ink" : "border-transparent text-muted hover:text-ink")}
     >
       {label}
@@ -388,9 +386,8 @@ function LangSwitch({ className }: { className?: string }) {
 }
 
 function Footer() {
-  const { lastVariantId } = useStore();
   const links = [
-    { to: `/markt/${lastVariantId}`, label: t("Markt", "Market") },
+    { to: "/", label: t("Start", "Home") },
     { to: "/modelle", label: t("Modelle", "Models") },
     { to: "/auktionen", label: t("Auktionen", "Auctions") },
     { to: "/kaufen", label: t("Kaufen", "Buy") },

@@ -1,5 +1,10 @@
 import json, sys, time, urllib.request, os
 out = sys.argv[1]; cutoff = 1420070400  # 2015-01-01
+# --until-known: incremental update, stop at the first page whose results are all in the file already
+known = set()
+if "--until-known" in sys.argv and os.path.exists(out):
+    known = {json.loads(l)["id"] for l in open(out)}
+sys.argv = [a for a in sys.argv if a != "--until-known"]
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 base = "https://bringatrailer.com/wp-json/bringatrailer/1.0/data/listings-filter?page={}&per_page=60&get_items=1&get_stats=0&sort=td&base_filter%5Bkeyword_s%5D=Porsche&base_filter%5Bitems_type%5D=make"
 keep = ["id","title","url","current_bid","currency","sold_text","timestamp_end","country_code","noreserve","excerpt"]
@@ -25,4 +30,5 @@ with open(out, "a") as f:
             continue
         empty = 0
         if oldest < cutoff or page >= d["pages_total"]: break
+        if known and all(it["id"] in known for it in items): break
         page += 1; time.sleep(1.0)

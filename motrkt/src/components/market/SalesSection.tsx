@@ -80,8 +80,16 @@ export function Assessment({ variant }: { variant: Variant }) {
         );
   return (
     <Section title={t("Einschätzung", "Assessment")}>
-      <p className="font-display text-[26px] leading-snug">{VERDICT_COPY[m.recommendation.code]}</p>
-      <p className="mt-4 text-[15px] leading-relaxed text-muted">{buyingPath}</p>
+      {variant.measured ? (
+        <>
+          <p className="font-display text-[26px] leading-snug">{VERDICT_COPY[m.recommendation.code]}</p>
+          <p className="mt-4 text-[15px] leading-relaxed text-muted">{buyingPath}</p>
+        </>
+      ) : (
+        <p className="text-[15px] leading-relaxed text-muted">
+          {t("Ohne belastbare Datenbasis geben wir keine Kaufempfehlung.", "Without a solid data basis we give no buying recommendation.")}
+        </p>
+      )}
       {variant.weaknesses.length > 0 && (
         <div className="mt-8">
           <h3 className="text-[17px]">{t("Worauf beim Kauf zu achten ist", "What to check before buying")}</h3>

@@ -76,6 +76,8 @@ const ASCENDING: SortKey[] = ["series", "name", "year"];
 
 function sortValue(v: Variant, key: SortKey): number | string {
   const m = getMetrics(v.id);
+  // Without a measured value there is nothing to rank: such variants go to the end.
+  if (!v.measured && (key === "value" || key === "change12m" || key === "cagr5" || key === "liquidity")) return -Infinity;
   switch (key) {
     case "value":
       return m.value;
@@ -393,14 +395,12 @@ export default function Models() {
                     <td className="font-serif font-bold">{variantTitle(v)}</td>
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
-                    <td className="text-right"><Money value={m.value} /></td>
                     <td className="text-right">
-                      <Delta value={m.change12m} />
+                      {v.measured ? <Money value={m.value} /> : <span className="text-[13px] text-faint" title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>}
                     </td>
-                    <td className="text-right tabular-nums">{pct(m.cagr5)}</td>
-                    <td>
-                      <RecPill code={m.recommendation.code} label={m.recommendation.label} />
-                    </td>
+                    <td className="text-right">{v.measured ? <Delta value={m.change12m} /> : <span className="text-faint">–</span>}</td>
+                    <td className="text-right tabular-nums">{v.measured ? pct(m.cagr5) : <span className="text-faint">–</span>}</td>
+                    <td>{v.measured ? <RecPill code={m.recommendation.code} label={m.recommendation.label} /> : null}</td>
                     <td onClick={(e) => e.stopPropagation()}>
                       <input type="checkbox" className="accent-[var(--color-gold)]" checked={compare.includes(v.id)} onChange={() => toggleCompare(v.id)} aria-label={t("Vergleichen", "Compare")} />
                     </td>
@@ -510,7 +510,7 @@ function VariantCard({
       className="group cursor-pointer"
     >
       <div className="relative overflow-hidden">
-        <CarImage variant={v} scene="studio" className="block aspect-video w-full transition-transform duration-500 group-hover:scale-[1.02]" label={variantTitle(v)} />
+        <CarImage variant={v} scene="studio" className="block aspect-video w-full" label={variantTitle(v)} />
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -528,13 +528,13 @@ function VariantCard({
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
         <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-        <Money value={m.value} compact className="shrink-0 text-[16px]" />
+        {v.measured ? <Money value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
         <span>
           {yearsLabel(v.years)}, {v.hp} PS
         </span>
-        <Delta value={m.change12m} arrow={false} />
+        {v.measured && <Delta value={m.change12m} arrow={false} />}
       </div>
       <button
         className={cn("mt-2 text-[13px] transition-colors", compared ? "text-ink underline underline-offset-4" : "text-faint hover:text-ink")}
@@ -555,6 +555,7 @@ function CompareView({ ids }: { ids: string[] }) {
   const data = useMemo(() => {
     const rows = new Map<number, Record<string, number>>();
     ids.forEach((id) => {
+      if (!variantById.get(id)?.measured) return;
       for (const p of rebase(getSeries(id), from)) {
         const row = rows.get(p.t) ?? { t: p.t };
         row[id] = p.value;
@@ -572,11 +573,11 @@ function CompareView({ ids }: { ids: string[] }) {
   }, [data]);
 
   const metricRows: { label: string; get: (v: Variant) => React.ReactNode }[] = [
-    { label: t("Marktwert", "Market value"), get: (v) => eur(getMetrics(v.id).value) },
-    { label: "12M", get: (v) => <Delta value={getMetrics(v.id).change12m} /> },
-    { label: t("CAGR 5J", "CAGR 5Y"), get: (v) => pct(getMetrics(v.id).cagr5) },
-    { label: t("Volatilität 1J", "Volatility 1Y"), get: (v) => pct(getMetrics(v.id).vol1y, { signed: false }) },
-    { label: t("Max. Drawdown 5J", "Max. drawdown 5Y"), get: (v) => <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> },
+    { label: t("Marktwert", "Market value"), get: (v) => (v.measured ? eur(getMetrics(v.id).value) : t("keine Daten", "no data")) },
+    { label: "12M", get: (v) => (v.measured ? <Delta value={getMetrics(v.id).change12m} /> : "–") },
+    { label: t("CAGR 5J", "CAGR 5Y"), get: (v) => (v.measured ? pct(getMetrics(v.id).cagr5) : "–") },
+    { label: t("Volatilität 1J", "Volatility 1Y"), get: (v) => (v.measured ? pct(getMetrics(v.id).vol1y, { signed: false }) : "–") },
+    { label: t("Max. Drawdown 5J", "Max. drawdown 5Y"), get: (v) => (v.measured ? <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> : "–") },
     { label: t("Stückzahl", "Units"), get: (v) => num(v.production) },
     { label: t("Leistung", "Power"), get: (v) => `${v.hp} PS` },
     { label: t("Neupreis", "List price"), get: (v) => `${eur(v.newPrice)} (${v.newPriceYear})` },

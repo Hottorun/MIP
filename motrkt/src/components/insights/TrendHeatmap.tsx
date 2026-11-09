@@ -19,7 +19,7 @@ export function TrendHeatmap() {
   const months = useMemo(() => Array.from({ length: 12 }, (_, k) => date(AS_OF - (11 - k) * 30.44 * DAY - 14 * DAY, "month")), []);
 
   const rows = useMemo(() => {
-    let list = variants.map((v) => ({ v, m: getMetrics(v.id), cells: monthlyChanges(getSeries(v.id), 12) }));
+    let list = variants.filter((v) => v.measured).map((v) => ({ v, m: getMetrics(v.id), cells: monthlyChanges(getSeries(v.id), 12) }));
     if (scope === "top") list = [...list].sort((a, b) => b.m.liquidity - a.m.liquidity).slice(0, 12);
     if (sort === "name") list.sort((a, b) => variantTitle(a.v).localeCompare(variantTitle(b.v), locale()));
     else list.sort((a, b) => (sort === "desc" ? b.m.change12m - a.m.change12m : a.m.change12m - b.m.change12m));

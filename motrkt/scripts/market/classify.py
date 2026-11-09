@@ -185,14 +185,14 @@ def road(y, s, full=""):
     if not re.search(r"\b911|\b930|\b964|\b993|\b996|\b997|\b991|\b992|carrera|turbo|gt[23]|speedster", s): return mid(y, s, b)
     e = early(y, s, b, full)
     if e is not False: return e
-    if has(s,"rs america", "america roadster", "anniversary", "jubil", "30 jahre", "edition", "exclusive", "club coupe",
+    if has(s,"rs america", "america rs", "america roadster", "anniversary", "jubil", "30 jahre", "edition", "exclusive", "club coupe",
            "sc ", "sc/", "3.2", "carrera 3.0", "2.7", "911t", "911e", "911s", "911l", " l ", " e ", "2.0", "2.2", "2.4",
            "lightweight", "cup", "rsr", "safari", "dakar") and not (("dakar" in s) and y >= 2023) and not re.search(r"50th|50 jahre|50 years", s):
         # Special editions without own variant are not mixed into a base variant
         if not (re.search(r"50th|50 jahre|50 years", s) and 2013 <= y <= 2014):
             if not (("dakar" in s) and y >= 2023): return None
-    # 930 (1975-1989)
-    if 1975 <= y <= 1989:
+    # 930 (1975-1989); the 964 Carrera 4 started in model year 1989
+    if 1975 <= y <= 1989 and not (y == 1989 and re.search(r"carrera 4|\bc4\b", s) and "turbo" not in s):
         if "turbo" not in s or ("carrera" in s and not (y <= 1977 and "turbo carrera" in s)): return None
         if y <= 1977: return r("930-turbo-3-0") if b == "Coupé" else None
         if has(s, "slant", "flat", "flachbau", "m505", "m506"):

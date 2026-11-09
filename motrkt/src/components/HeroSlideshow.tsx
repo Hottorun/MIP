@@ -3,7 +3,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Pause, Play } from "lucide-react";
@@ -18,8 +17,8 @@ import { t } from "../i18n";
 import { photoCaption } from "../i18n/terms";
 
 /**
- * Front page stage: one car per era, full width. Photos slowly zoom (alternating direction), follow the pointer a little
- * and change on their own; the era bar below shows progress and jumps to a car on click. Arrow keys and swipes work too.
+ * Front page stage: one car per era, full width. Photos slowly zoom (alternating direction) and
+ * change on their own, also while the pointer is over them; the era bar below shows progress and jumps to a car on click. Arrow keys and swipes work too.
  * `photo` is the index into the variant's press photos, `year` the label on the era bar.
  */
 const SLIDES = [
@@ -99,9 +98,8 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
   const [index, setIndex] = useState(0);
   // The outgoing photo keeps its zoom while it fades out.
   const [prev, setPrev] = useState(-1);
-  const [hovered, setHovered] = useState(false);
   const [stopped, setStopped] = useState(false);
-  const paused = hovered || stopped || reduced;
+  const paused = stopped || reduced;
   const stage = useRef<HTMLDivElement>(null);
   const swipe = useRef<{ x: number; y: number } | null>(null);
 
@@ -121,24 +119,6 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
     if (next) new Image().src = next.photo.file;
   }, [index, n, slides]);
 
-  // Pointer parallax: written straight to CSS variables, no re-render per frame.
-  const onPointerMove = (e: ReactPointerEvent) => {
-    if (reduced || e.pointerType !== "mouse" || !stage.current) return;
-    const r = stage.current.getBoundingClientRect();
-    stage.current.style.setProperty(
-      "--px",
-      (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3),
-    );
-    stage.current.style.setProperty(
-      "--py",
-      (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3),
-    );
-  };
-  const resetParallax = () => {
-    stage.current?.style.setProperty("--px", "0");
-    stage.current?.style.setProperty("--py", "0");
-  };
-
   if (!current || !metrics) return null;
 
   return (
@@ -146,11 +126,6 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
       aria-roledescription={t("Diashow", "Slideshow")}
       aria-label={t("Ausgewählte Fahrzeuge", "Featured cars")}
       className="hero-bleed relative -mt-8 overflow-clip bg-[#1c140d] text-[#f7f2e8] lg:-mt-12"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => {
-        setHovered(false);
-        resetParallax();
-      }}
       onKeyDown={(e) => {
         if (e.key === "ArrowRight") go(index + 1);
         else if (e.key === "ArrowLeft") go(index - 1);
@@ -161,7 +136,6 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
       <div
         ref={stage}
         className="relative sm:h-[min(86vh,820px)] sm:min-h-[560px]"
-        onPointerMove={onPointerMove}
         onPointerDown={(e) => (swipe.current = { x: e.clientX, y: e.clientY })}
         onPointerUp={(e) => {
           const s = swipe.current;
@@ -182,7 +156,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                 i === index ? "z-[1] opacity-100" : "z-0 opacity-0",
               )}
             >
-              <div className="hero-parallax absolute -inset-6">
+              <div className="absolute inset-0">
                 <img
                   src={s.photo.file}
                   alt={

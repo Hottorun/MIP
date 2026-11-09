@@ -1,0 +1,2 @@
+datum;quelle;art;url;fahrzeug;baujahr;preis;waehrung;km;anbieter;land;variant_id
+2026-11-09;Elferspot;Angebot;https://www.elferspot.com/de/...;911 Carrera RS;1992;265000;EUR;48000;Händler;DE;

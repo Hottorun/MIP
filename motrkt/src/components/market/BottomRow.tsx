@@ -30,10 +30,10 @@ export function Listings({ variant }: { variant: Variant }) {
             <Link to={`/kaufen?inserat=${l.id}`} className="group block">
               <div className="aspect-video overflow-hidden bg-panel-3">
                 {l.images?.[0] ? (
-                  <img src={l.images[0]} alt="" loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+                  <img src={l.images[0]} alt="" loading="lazy" className="size-full object-cover" />
                 ) : (
                   <CarImage
-                    className="size-full transition-transform duration-500 group-hover:scale-[1.02]"
+                    className="size-full"
                     variant={variant}
                     index={i}
                     fallbackColor={l.colorHex}

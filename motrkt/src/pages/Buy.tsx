@@ -299,9 +299,9 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
     <article className="group cursor-pointer" onClick={onOpen}>
       <div className="relative aspect-video overflow-hidden bg-panel-3">
         {l.images?.[0] ? (
-          <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+          <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover" />
         ) : (
-          <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full transition-transform duration-500 group-hover:scale-[1.02]" label={l.title} />
+          <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full" label={l.title} />
         )}
         {l.source === "mobile.de" && <span className="absolute bottom-3 left-3 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] text-ink">mobile.de</span>}
         <button

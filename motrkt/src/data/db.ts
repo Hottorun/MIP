@@ -208,8 +208,10 @@ function build() {
           const basis = marketBasis(id);
           const variant: Variant = {
             ...s,
-            // Market value measured from auction results (market model); catalog value only where no sale is recorded.
+            // Market value from the market model; variants with too few records keep the catalog figure internally
+            // (demo listings and auctions only) and show no value (`measured: false`).
             ...(basis?.value ? { value: basis.value } : {}),
+            measured: !!basis?.value,
             ...(specs?.production ? { production: specs.production } : {}),
             ...(specs?.hp ? { hp: specs.hp } : {}),
             ...(specs?.liters ? { liters: specs.liters } : {}),
@@ -351,7 +353,10 @@ export function yearsLabel([a, b]: [number, number | null]): string {
   return a === b ? `${a}` : `${a}–${b}`;
 }
 
-/** Value factor for the picked options (effects multiply), e.g. 1.12 = +12 %. */
+/** Value factor for the picked options (effects multiply), e.g. 1.12 = +12 %. Only measured effects count. */
 export function optionFactor(v: Variant, picked: string[]): number {
-  return v.options.filter((o) => !o.standard && picked.includes(o.name)).reduce((f, o) => f * (1 + o.impact), 1);
+  return v.options.filter((o) => !o.standard && o.measured && picked.includes(o.name)).reduce((f, o) => f * (1 + o.impact), 1);
 }
+
+/** Variants with a measured market value (for rankings, indices and comparisons). */
+export const measuredVariants = () => variants.filter((v) => v.measured);

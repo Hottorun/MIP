@@ -53,7 +53,11 @@ export function Details({ variant, picked, onPick }: { variant: Variant; picked:
             </p>
           )}
         </div>
-        {options.length > 0 && <OptionPicker variant={variant} picked={picked} onPick={onPick} />}
+        {options.some((o) => o.measured) && variant.measured ? (
+          <OptionPicker variant={variant} picked={picked} onPick={onPick} />
+        ) : (
+          options.length > 0 && <OptionList variant={variant} />
+        )}
       </div>
     </Section>
   );
@@ -61,7 +65,8 @@ export function Details({ variant, picked, onPick }: { variant: Variant; picked:
 
 /** Value-relevant options as checkboxes; the estimate below (and in the summary at the top) follows the selection. */
 function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: string[]; onPick: (names: string[]) => void }) {
-  const options = variant.options.filter((o) => !o.standard);
+  const options = variant.options.filter((o) => !o.standard && o.measured);
+  const unmeasured = variant.options.filter((o) => !o.standard && !o.measured);
   const base = getMetrics(variant.id).value;
   const factor = optionFactor(variant, picked);
   const toggle = (name: string) => {
@@ -123,10 +128,42 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
       </div>
       <p className="mt-3 text-[12.5px] text-faint">
         {t(
-          "Einfluss gegenüber dem Median: gemessen, wo genug Auktionsergebnisse vorliegen (Preise zeitbereinigt, mindestens 6 Verkäufe je Ausführung), sonst geschätzt aus Marktberichten. Mehrere Optionen werden multipliziert; Zustand, Historie und Laufleistung sind nicht berücksichtigt.",
-          "Effect against the median: measured where there are enough auction results (time-adjusted prices, at least 6 sales per configuration), otherwise estimated from market reports. Several options multiply; condition, history and mileage are not taken into account.",
+          "Einfluss gegenüber dem Marktwert, gemessen an den Belegen dieser Variante (Preise zeitbereinigt, mindestens 6 Belege je Ausführung). Mehrere Optionen werden multipliziert; Zustand, Historie und Laufleistung sind nicht berücksichtigt.",
+          "Effect against the market value, measured from this variant's records (time-adjusted prices, at least 6 records per configuration). Several options multiply; condition, history and mileage are not taken into account.",
         )}
       </p>
+      {unmeasured.length > 0 && <Unmeasured options={unmeasured} />}
+    </div>
+  );
+}
+
+/** Options whose effect is not measured: named, but without a number and without effect on the value. */
+function OptionList({ variant }: { variant: Variant }) {
+  return (
+    <div>
+      <h3 className="text-[17px]">{t("Wertrelevante Ausstattung", "Options that affect value")}</h3>
+      <Unmeasured options={variant.options.filter((o) => !o.standard && !o.measured)} />
+    </div>
+  );
+}
+
+function Unmeasured({ options }: { options: Variant["options"] }) {
+  return (
+    <div className="mt-5">
+      <p className="text-[13.5px] text-muted">
+        {t(
+          "Diese Ausstattung beeinflusst den Wert, ihr Einfluss lässt sich aus den vorhandenen Belegen aber nicht messen. Wir nennen deshalb keine Zahl.",
+          "These options affect the value, but the available records are too few to measure by how much, so we give no figure.",
+        )}
+      </p>
+      <ul className="mt-3 border-t border-line text-[14.5px]">
+        {options.map((o) => (
+          <li key={o.name} className="border-b border-line py-3">
+            {tr(o.name)}
+            {o.requires && <span className="block text-[12.5px] text-faint">{t("nur mit", "only with")} {tr(o.requires).replace(/ \(.+\)$/, "")}</span>}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

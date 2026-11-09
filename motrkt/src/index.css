@@ -181,10 +181,6 @@ body {
   width: 100vw;
   margin-left: calc(50% - 50vw);
 }
-.hero-parallax {
-  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
 @keyframes hero-kenburns {
   from {
     transform: scale(1);

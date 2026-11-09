@@ -70,7 +70,8 @@ const indexCache = new Map<string, PricePoint[]>();
 export function buildIndex(key: string, variantIds: string[]): PricePoint[] {
   const cached = indexCache.get(key);
   if (cached) return cached;
-  const all = variantIds.map((id) => getSeries(id)).filter((s) => s.length);
+  // Only variants with a measured value: placeholder curves never enter an index.
+  const all = variantIds.filter((id) => variantById.get(id)?.measured).map((id) => getSeries(id)).filter((s) => s.length);
   const byT = all.map((s) => new Map(s.map((p) => [p.t, p])));
   const out: PricePoint[] = [];
   let level = 100;
