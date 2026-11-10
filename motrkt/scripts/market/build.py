@@ -66,6 +66,13 @@ def house_of(ev):
     for k, v in [("RM Sotheby", "RM Sotheby's"), ("Gooding", "Gooding & Company"), ("Bonhams", "Bonhams"), ("Broad Arrow", "Broad Arrow"), ("Artcurial", "Artcurial"), ("Mecum", "Mecum"), ("Barrett", "Barrett-Jackson"), ("Collecting Cars", "Collecting Cars"), ("Dorotheum", "Dorotheum"), ("Aguttes", "Aguttes"), ("Osenat", "Osenat"), ("Silverstone", "Silverstone Auctions"), ("H&H", "H&H"), ("Iconic", "Iconic Auctioneers")]:
         if k in ev: return v
     return ev.split(" ")[0]
+def house_search(house, title):
+    """Search page for this car at houses whose lot pages we could not match; better than the ultimatecarpage list."""
+    import urllib.parse
+    e = urllib.parse.quote(re.sub(r"\s*\([^)]*\)", "", title).strip())
+    if house == "Broad Arrow": return "https://www.broadarrowauctions.com/vehicles/results?ftx=" + e
+    if house == "RM Sotheby's": return "https://rmsothebys.com/search/?SearchTerm=%s#?SortBy=Availability&SearchTerm=%s&page=1&pageSize=40" % (e, e)
+    return None
 for x in U:
     b = x["b"]
     if not any("Porsche" in s for s in b): continue
@@ -89,7 +96,7 @@ for x in U:
     eur = round(to_eur(amt, cur, date)) if sold else None
     out.append(dict(variant=vid, title=t + (" (" + x["note"] + ")" if x["note"] else ""), date=date, house=house_of(x["event"]), eur=eur, bid=None, sold=sold,
                     orig=amt, cur=cur, km=None, loc="", body=body, gear=gear, vin=x["chassis"], lot="UCP-%s-%s" % (x["auction"], x["lot"]),
-                    url=LINKS.get("UCP-%s-%s" % (x["auction"], x["lot"]), {}).get("url") or "https://www.ultimatecarpage.com/auction/%s/" % x["auction"],
+                    url=LINKS.get("UCP-%s-%s" % (x["auction"], x["lot"]), {}).get("url") or house_search(house_of(x["event"]), t) or "https://www.ultimatecarpage.com/auction/%s/" % x["auction"],
                     year=year, src="ucp", event=x["event"]))
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
 c = collections.Counter(o["variant"] for o in out if o["sold"])

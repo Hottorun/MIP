@@ -15,7 +15,9 @@ import { tr } from "../../i18n/terms";
 const lotOf = (id: string) => /^UCP-\d+-(.+)$/.exec(id)?.[1] ?? null;
 
 /** Where a result link leads: the lot page at the auction house, the sale's results page, or the result list it was taken from. */
+const isHouseSearch = (url: string) => url.includes("rmsothebys.com/search/") || url.includes("broadarrowauctions.com/vehicles/results");
 function linkNote(url: string) {
+  if (isHouseSearch(url)) return t("Link zur Suche beim Auktionshaus", "link to the search at the auction house");
   if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Link zur Ergebnisliste der Auktion", "link to the sale's results");
   if (url.includes("ultimatecarpage.com")) return t("Link zur Ergebnisliste bei ultimatecarpage.com", "link to the result list at ultimatecarpage.com");
   return null;
@@ -31,6 +33,7 @@ function houseSearchLinks(v: Variant) {
 }
 
 function linkTitle(url: string) {
+  if (isHouseSearch(url)) return t("Dieses Fahrzeug in der Suche des Auktionshauses öffnen", "Open this car in the auction house's search");
   if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Ergebnisse der Auktion bei RM Sotheby's öffnen", "Open the sale's results at RM Sotheby's");
   if (url.includes("ultimatecarpage.com")) return t("Ergebnisliste bei ultimatecarpage.com öffnen", "Open the result list at ultimatecarpage.com");
   return t("Los beim Auktionshaus öffnen", "Open the lot at the auction house");
