@@ -72,7 +72,9 @@ def house_search(house, title):
     e = urllib.parse.quote(re.sub(r"\s*\([^)]*\)", "", title).strip())
     if house == "Broad Arrow": return "https://www.broadarrowauctions.com/vehicles/results?ftx=" + e
     if house == "RM Sotheby's": return "https://rmsothebys.com/search/?SearchTerm=%s#?SortBy=Availability&SearchTerm=%s&page=1&pageSize=40" % (e, e)
-    return None
+    # no linkable search: the house's page with past auction results
+    return {"Bonhams": "https://cars.bonhams.com/auctions/results/", "Gooding & Company": "https://www.goodingco.com/results",
+            "Artcurial": "https://www.artcurial.com/en/results-auctions-sales", "Keno": "https://www.kenoauctions.com/"}.get(house)
 for x in U:
     b = x["b"]
     if not any("Porsche" in s for s in b): continue
