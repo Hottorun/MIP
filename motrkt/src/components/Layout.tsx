@@ -8,6 +8,7 @@ import { cn, date, num } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
+import { LogoMark } from "./LogoMark";
 import { MODEL_SALES_TOTAL } from "../data/real/model";
 
 const NAV_LEFT = [
@@ -42,7 +43,14 @@ export function Layout() {
       <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-[1360px] px-5 py-8 sm:px-8 lg:py-12">
-          <Suspense fallback={<div className="py-24 text-center font-serif text-muted italic">{t("Einen Moment …", "One moment …")}</div>}>
+          <Suspense
+            fallback={
+              <div className="flex flex-col items-center gap-4 py-24 font-serif text-muted italic">
+                <LogoMark size={44} className="animate-pulse" />
+                {t("Einen Moment …", "One moment …")}
+              </div>
+            }
+          >
             <Outlet />
           </Suspense>
         </div>
@@ -55,7 +63,8 @@ export function Layout() {
 
 function Wordmark({ className }: { className?: string }) {
   return (
-    <Link to="/" className={cn("font-display text-[26px] leading-none tracking-[0.18em] text-ink", className)} aria-label={t("MIP Startseite", "MIP home")}>
+    <Link to="/" className={cn("flex items-center gap-2.5 font-display text-[26px] leading-none tracking-[0.18em] text-ink", className)} aria-label={t("MIP Startseite", "MIP home")}>
+      <LogoMark size={34} />
       MIP
     </Link>
   );
@@ -427,7 +436,7 @@ function Footer() {
     <footer className="mt-16 border-t border-line bg-panel-2">
       <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <div className="font-display text-[22px] tracking-[0.18em]">MIP</div>
+          <LogoMark size={48} />
           <p className="mt-3 max-w-xs font-serif text-[15px] leading-relaxed text-muted italic">
             {t("Marktwerte, Verkäufe und Angebote klassischer Sportwagen.", "Market values, sales and listings of classic sports cars.")}
           </p>
