@@ -2,7 +2,7 @@ import { brandById, paintsFor, variantById, variants } from "./db";
 import type { AuctionEvent, Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
 import { rng, type Rng } from "../lib/random";
 import { realSalesFor } from "./real/sales";
-import { MODEL_START, marketBasis, modelValueAt } from "./real/model";
+import { MODEL_AS_OF, MODEL_START, marketBasis, modelValueAt } from "./real/model";
 
 /** Synthetic but internally consistent market data, generated deterministically from the catalog. */
 
@@ -10,8 +10,8 @@ export const DAY = 86_400_000;
 export const WEEK = 7 * DAY;
 /** First week of the market model (auction results are collected from January 2015). */
 export const SERIES_START = Date.UTC(2015, 0, 5);
-/** "Today" for the dataset (Monday). All metrics are computed relative to this date. */
-export const AS_OF = Date.UTC(2026, 10, 9);
+/** "Today" for the dataset: the day the market model was last computed (scripts/market/update.sh runs daily). */
+export const AS_OF = MODEL_AS_OF;
 export const WEEKS = Math.round((AS_OF - SERIES_START) / WEEK) + 1;
 
 const yearFrac = (t: number) => {

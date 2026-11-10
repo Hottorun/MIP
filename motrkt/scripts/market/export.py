@@ -1,10 +1,10 @@
 """Write src/data/real/sales.csv: scraped auction results + earlier hand-collected rows from other houses (re-checked)."""
-import json, sys, csv, re, collections
+import json, sys, csv, re, collections, os, datetime
 S, OUT = sys.argv[1], sys.argv[2]
 sys.path.insert(0, S + "/tools")
 from classify import classify
 rows = json.load(open(S + "/web/sales_all.json"))
-AS_OF = "2026-11-09"
+AS_OF = os.environ.get("MIP_AS_OF") or datetime.date.today().isoformat()  # cut-off day: today unless set
 rows = [r for r in rows if "2015-01-01" <= r["date"] <= AS_OF]
 # earlier curated rows from sources other than ultimatecarpage (Mecum, Barrett-Jackson, Iconic, press releases)
 old = list(csv.reader(open(S + "/web/sales_old.csv"), delimiter=";"))

@@ -4,6 +4,12 @@ Erzeugt `src/data/real/market-model.json` (Marktwert und Verlauf je Variante), `
 Angebote, die in den Wert eingehen) und `src/data/real/sales.csv` (Auktionsergebnisse). `WORK` ist ein beliebiges
 Arbeitsverzeichnis mit den Rohdaten (nicht im Repo). Alles in einem Schritt: `sh update.sh WORK`.
 
+Täglich: `sh daily.sh` holt neue Daten, rechnet mit **heute** als Stichtag (abweichend: `MIP_AS_OF=JJJJ-MM-TT`), prüft
+die App und committet die Datendateien lokal (ohne Push). Die App liest den Stichtag aus `market-model.json`, das Datum
+„Marktdaten vom …“ stimmt also immer mit den Daten überein. Läuft als geplante Aufgabe „MIP: Marktdaten täglich
+aktualisieren“ jeden Morgen um 6 Uhr in der Claude-App. Händlerbestände in `manual/haendler.csv` werden dabei nicht
+automatisch erneuert.
+
 ## Was der Marktwert bedeutet
 
 Der Preis, zu dem ein Fahrzeug der Variante heute in Deutschland bzw. Europa tatsächlich den Besitzer wechselt –

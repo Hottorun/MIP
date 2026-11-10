@@ -32,4 +32,4 @@ python3 -I "$HERE/model.py" "$W" "$APP/market-model.json" "$APP/asks.json"
 
 echo "6/6 Verkaufsliste für die App"
 python3 -I "$HERE/export.py" "$W" "$APP/sales.csv"
-echo "Fertig. Stichtag in model.py (AS_OF) und src/data/generate.ts (AS_OF) bei Bedarf anpassen."
+echo "Fertig. Stichtag ist heute (oder MIP_AS_OF=JJJJ-MM-TT); die App übernimmt ihn aus market-model.json."
