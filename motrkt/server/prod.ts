@@ -3,6 +3,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { handleApi } from "./api.ts";
+import { authGate, enableDemoAccount } from "./auth.ts";
 
 const DIST = fileURLToPath(new URL("../dist", import.meta.url));
 const PORT = Number(process.env.PORT ?? 4173);
@@ -22,7 +23,17 @@ if (!existsSync(DIST)) {
   process.exit(1);
 }
 
-createServer((req, res) => {
+// the demo account's password is public (README): only on request in production
+if (process.env.MOTRKT_DEMO_ACCOUNT === "1") enableDemoAccount();
+
+createServer(async (req, res) => {
+  try {
+    if (await authGate(req, res)) return; // sign-in page, auth API, or no session
+  } catch (err) {
+    console.error(err);
+    res.statusCode = 500;
+    return res.end();
+  }
   if (req.url?.startsWith("/api/")) {
     handleApi(req, res).catch((err) => {
       console.error(err);

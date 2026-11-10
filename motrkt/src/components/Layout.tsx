@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, RotateCcw, Search, X, CheckCircle2, AlertCircle, Info, Gavel, TrendingUp, Upload, User } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, RotateCcw, Search, X, CheckCircle2, AlertCircle, Info, Gavel, TrendingUp, Upload, User, LogOut } from "lucide-react";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
@@ -305,11 +305,36 @@ function NotificationBell() {
   );
 }
 
+/** The signed-in user's name (the server lets nobody into the app without a session). */
+function useUsername() {
+  const [name, setName] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch("/api/auth/me", { credentials: "same-origin" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => live && setName(j?.username ?? null))
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, []);
+  return name;
+}
+
+async function signOut() {
+  try {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
+  } finally {
+    window.location.replace("/anmelden");
+  }
+}
+
 function UserMenu() {
   const [open, setOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const { resetAll, toast, portfolio, watchlist, alerts } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
+  const username = useUsername();
   const item = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[14px] hover:bg-panel-2";
   return (
     <div className="relative" ref={ref}>
@@ -319,7 +344,7 @@ function UserMenu() {
       {open && (
         <div className={cn(dropdown, "w-64 py-2")}>
           <div className="px-3 pt-1 pb-2">
-            <div className="font-serif text-[16px]">{t("Demo-Konto", "Demo account")}</div>
+            <div className="truncate font-serif text-[16px]">{username ?? t("Konto", "Account")}</div>
             <div className="text-[13px] text-muted">
               {t(
                 `${portfolio.length} Fahrzeuge, ${watchlist.length} beobachtet, ${alerts.length} Alarme`,
@@ -351,6 +376,10 @@ function UserMenu() {
             }}
           >
             <RotateCcw className="size-3.5" /> {t("Demo-Daten zurücksetzen", "Reset demo data")}
+          </button>
+          <div className="my-1 border-t border-line" />
+          <button className={item} onClick={signOut}>
+            <LogOut className="size-3.5 text-muted" /> {t("Abmelden", "Sign out")}
           </button>
         </div>
       )}

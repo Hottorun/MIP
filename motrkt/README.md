@@ -16,6 +16,20 @@ npm run build
 npm start            # http://localhost:4173 (PORT überschreibbar)
 ```
 
+## Anmeldung
+
+Ohne Anmeldung liefert der Server nur die Anmeldeseite (`/anmelden`): App, Marktdaten und API bleiben gesperrt. Dort
+lässt sich auch ein eigenes Konto mit Benutzername und Passwort anlegen; eine Anmeldung gilt 30 Tage.
+
+**Demo-Konto zum Testen:** Benutzername `demo`, Passwort `turbo-carrera-8987`
+
+Das Demo-Konto ist bei `npm run dev` immer aktiv (abschalten mit `MOTRKT_DEMO_ACCOUNT=0`). Weil dieses Repository
+öffentlich ist, ist es im Produktionsserver aus und wird dort nur mit `MOTRKT_DEMO_ACCOUNT=1` eingeschaltet.
+
+Konten und Sitzungen liegen in `.data/` (nicht im Repository; anderer Ort über `MOTRKT_DATA_DIR`). Gespeichert werden
+nur ein scrypt-Hash je Passwort und SHA-256-Werte der Sitzungs-Tokens. Nach 8 Fehlversuchen in 15 Minuten wird die
+Anmeldung für Name bzw. Adresse kurz gesperrt.
+
 ## Konfiguration (`.env`)
 
 `.env.example` nach `.env` kopieren und ausfüllen, danach `npm run dev` neu starten:
