@@ -10,14 +10,15 @@ import { fileURLToPath } from "node:url";
  * (/anmelden) and /api/auth/*: the app, its data and the other APIs stay closed.
  *
  * Storage: MOTRKT_DATA_DIR (default motrkt/.data, not in git) – users.json (scrypt hash + salt per user, never the
- * password) and sessions.json (only the SHA-256 of each session token). Sessions last 30 days.
+ * password) and sessions.json (only the SHA-256 of each session token). Sessions last a year and are renewed on
+ * every visit, so a user stays signed in until they sign out.
  */
 
 const DIR = process.env.MOTRKT_DATA_DIR ?? fileURLToPath(new URL("../.data", import.meta.url));
 const USERS = join(DIR, "users.json");
 const SESSIONS = join(DIR, "sessions.json");
 const COOKIE = "motrkt_sid";
-const SESSION_DAYS = 30;
+const SESSION_DAYS = 365;
 const USERNAME = /^[A-Za-z0-9._-]{3,30}$/;
 const PW_MIN = 8;
 const PW_MAX = 200;
@@ -81,6 +82,19 @@ function startSession(req: IncomingMessage, res: ServerResponse, userId: string)
   const now = Date.now();
   for (const [k, s] of Object.entries(all)) if (s.expires < now) delete all[k];
   all[sha(token)] = { userId, expires: now + SESSION_DAYS * 86_400_000 };
+  save(SESSIONS, all);
+  setCookie(req, res, token, SESSION_DAYS * 86_400);
+}
+
+/** Pushes a used session (and its cookie) out to a full year again; at most once a day per session. */
+function renewSession(req: IncomingMessage, res: ServerResponse) {
+  const token = readCookie(req, COOKIE);
+  if (!token) return;
+  const all = load<Record<string, Session>>(SESSIONS, {});
+  const s = all[sha(token)];
+  const full = Date.now() + SESSION_DAYS * 86_400_000;
+  if (!s || full - s.expires < 86_400_000) return;
+  s.expires = full;
   save(SESSIONS, all);
   setCookie(req, res, token, SESSION_DAYS * 86_400);
 }
@@ -217,7 +231,11 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     res.end(LOGIN_PAGE);
     return true;
   }
-  if (OPEN.has(url.pathname) || currentUser(req)) return false;
+  if (OPEN.has(url.pathname)) return false;
+  if (currentUser(req)) {
+    if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) renewSession(req, res);
+    return false;
+  }
   if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) {
     return redirect(res, "/anmelden" + (url.pathname !== "/" ? "?next=" + encodeURIComponent(url.pathname + url.search) : ""));
   }

@@ -19,7 +19,8 @@ npm start            # http://localhost:4173 (PORT überschreibbar)
 ## Anmeldung
 
 Ohne Anmeldung liefert der Server nur die Anmeldeseite (`/anmelden`): App, Marktdaten und API bleiben gesperrt. Dort
-lässt sich auch ein eigenes Konto mit Benutzername und Passwort anlegen; eine Anmeldung gilt 30 Tage.
+lässt sich auch ein eigenes Konto mit Benutzername und Passwort anlegen; man bleibt dauerhaft angemeldet (die Sitzung
+läuft ein Jahr und verlängert sich bei jedem Besuch), bis man sich abmeldet.
 
 **Demo-Konto zum Testen:** Benutzername `demo`, Passwort `turbo-carrera-8987`
 
