@@ -27,9 +27,9 @@ Belegte Verkäufe (`art` = `Verkauf`) zählen wie Auktionsergebnisse in Europa �
 
 ## Händlerbestände (`haendler.csv`)
 
-Bestand mit Preis von early911s, Janzen Klassik, Karero und Oliver Neumann Sportclassics, Stand 09./10.11.2026.
-Alle vier Seiten erlauben das Lesen laut robots.txt. Gelesen wurde nur die öffentliche Fahrzeugliste bzw. die
+Bestand mit Preis von early911s, Janzen Klassik, Karero, Oliver Neumann Sportclassics, Fiegenschuh, DAVID Finest
+Sports Cars und Motorlegenden, Stand 10.11.2026. Alle sieben Seiten erlauben das Lesen laut robots.txt. Gelesen wurde nur die öffentliche Fahrzeugliste bzw. die
 Detailseiten, mit Pausen zwischen den Abrufen. Fahrzeuge mit „Preis auf Anfrage“, Unikate (Prototypen, Presse-
 oder Rennfahrzeuge ohne passende Variante), Rechtslenker und Projekte sind nicht eingetragen; die Variante ist
-von Hand zugeordnet. Kilometerstände unter 1.100 km (meist „nach Restaurierung“) stehen als unbekannt drin.
+von Hand zugeordnet. Bei Netto-Preisen ist die MwSt. (19 %) aufgeschlagen. Kilometerstände unter 1.100 km (meist „nach Restaurierung“) stehen als unbekannt drin.
 Zum Aktualisieren die Bestände erneut abrufen und die Datei ersetzen; verkaufte Fahrzeuge fallen dabei heraus.
