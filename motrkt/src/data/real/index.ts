@@ -19,10 +19,10 @@ export type Photo = {
   /** Taken at the car's presentation (world premiere, motor show debut or press launch). */
   premiere?: boolean;
   caption?: string;
-  /** CSS object-position for photos whose subject is not in the centre of the 16:9 frame (e.g. "50% 95%"). */
+  /** CSS object-position for the full-width front page stage, which crops (e.g. "50% 95%"). */
   position?: string;
-  /** Very wide studio shot on white: shown whole on a white ground instead of cropped to the frame. */
-  contain?: boolean;
+  /** Width / height of the image as served (uncropped). All photos of one variant share one format: 16:9 or 3:2. */
+  ratio?: number;
 };
 
 export type RealSpecs = {

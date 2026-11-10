@@ -9,7 +9,7 @@ import { useStore } from "../../state/store";
 import { cn, eur, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
-import { PhotoCredit } from "../CarImage";
+import { PhotoCredit, frameRatio } from "../CarImage";
 import { isEn, t } from "../../i18n";
 import { paintName, tr, photoCaption } from "../../i18n/terms";
 
@@ -283,16 +283,17 @@ function Gallery({ variant }: { variant: Variant }) {
     for (const d of [1, -1]) new Image().src = photos[(index + d + n) % n].file;
   }, [index, n, photos]);
   const photo = photos[index];
+  const ratio = frameRatio(photos);
   return (
     <figure aria-label={t("Bildergalerie", "Image gallery")} aria-roledescription={t("Galerie, mit Pfeiltasten blättern", "Gallery, use the arrow keys to browse")} className="min-w-0">
-      <div className={cn("group relative aspect-video touch-pan-y overflow-hidden select-none", photo.contain ? "bg-white" : "bg-panel-3")} {...(n > 1 ? swipe : {})}>
+      {/* Frame in the photos' own format (16:9 or 3:2): every picture is shown whole, never cropped. */}
+      <div className="group relative touch-pan-y overflow-hidden bg-panel-3 select-none" style={{ aspectRatio: ratio }} {...(n > 1 ? swipe : {})}>
         <img
           key={photo.file}
           src={photo.file}
           alt={photoCaption(photo.caption) ?? variantTitle(variant)}
           draggable={false}
-          style={photo.position ? { objectPosition: photo.position } : undefined}
-          className={cn(slideIn(dir), "size-full", photo.contain ? "object-contain" : "object-cover")}
+          className={cn(slideIn(dir), "size-full object-contain")}
         />
         {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
         {n > 1 && (
@@ -323,17 +324,12 @@ function Gallery({ variant }: { variant: Variant }) {
             <button
               key={p.file}
               onClick={() => show(i)}
-              className={cn("aspect-video w-24 overflow-hidden border-b-2 pb-1 transition-opacity", i === index ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}
+              style={{ aspectRatio: ratio }}
+              className={cn("w-24 overflow-hidden border-b-2 pb-1 transition-opacity", i === index ? "border-ink" : "border-transparent opacity-60 hover:opacity-100")}
               aria-label={`${t("Bild", "Image")} ${i + 1}`}
               aria-current={i === index}
             >
-              <img
-                src={p.file}
-                alt=""
-                loading="lazy"
-                style={p.position ? { objectPosition: p.position } : undefined}
-                className={cn("size-full", p.contain ? "bg-white object-contain" : "object-cover")}
-              />
+              <img src={p.file} alt="" loading="lazy" className="size-full object-contain" />
             </button>
           ))}
         </div>

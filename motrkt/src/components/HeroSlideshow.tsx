@@ -26,10 +26,10 @@ const SLIDES = [
   { variantId: "porsche-912-912-coupe", photo: 1, year: 1965 },
   {
     variantId: "porsche-rennsportwagen-904-bis-917-917-k",
-    photo: 1,
+    photo: 0,
     year: 1969,
   },
-  { variantId: "porsche-930-turbo-3-0", photo: 2, year: 1975 },
+  { variantId: "porsche-930-turbo-3-0", photo: 1, year: 1975 },
   { variantId: "porsche-911-964-carrera-rs", photo: 1, year: 1991 },
   { variantId: "porsche-911-993-turbo-s", photo: 2, year: 1997 },
   { variantId: "porsche-carrera-gt-carrera-gt", photo: 0, year: 2004 },
