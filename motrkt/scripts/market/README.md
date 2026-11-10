@@ -10,6 +10,17 @@ die App und committet die Datendateien lokal (ohne Push). Die App liest den Stic
 aktualisieren“ jeden Morgen um 6 Uhr in der Claude-App. Händlerbestände in `manual/haendler.csv` werden dabei nicht
 automatisch erneuert.
 
+## Inserate verfolgen (`track.py`)
+
+Läuft mit jedem Update und schreibt `src/data/real/listing-history.json`: für jedes Inserat erster und letzter Tag,
+Preisänderungen (ab 1 %) und ob es nicht mehr online ist (verkauft oder zurückgezogen; ein Inserat, das plötzlich
+keinen Preis mehr zeigt, zählt auch so). Classic Trader wird täglich abgerufen. Für die Zeilen in `manual/*.csv` wird
+bei jedem Lauf ein Schnappschuss gespeichert (`WORK/web/track/manual/`): einen Preis in der CSV ändern ist eine
+Preisänderung an diesem Tag, eine Zeile löschen heißt „nicht mehr online“, eine neue Zeile beginnt am `datum`.
+Schlüssel ist die URL, sie sollte sich also nicht ändern. Nach einigen Wochen misst das, wie weit der letzte
+Angebotspreis vor dem Verschwinden über den Auktionsergebnissen liegt; dann kann `model.py` diesen Abschlag statt
+des allgemeinen Angebotsaufschlags verwenden.
+
 ## Was der Marktwert bedeutet
 
 Der Preis, zu dem ein Fahrzeug der Variante heute in Deutschland bzw. Europa tatsächlich den Besitzer wechselt –

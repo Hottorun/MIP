@@ -15,7 +15,7 @@ sh "$HERE/update.sh" "$W" > "$LOG" 2>&1
 (cd "$APP" && npx tsc --noEmit -p .) >> "$LOG" 2>&1
 
 cd "$ROOT"
-git add motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv
+git add motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json
 if git diff --cached --quiet; then
   echo "Keine neuen Daten."
 else

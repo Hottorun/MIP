@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Variant } from "../../data/types";
 import { marketBasis, MODEL_OFFSET_PAIRS, type Channel } from "../../data/real/model";
 import { asksFor, type Ask } from "../../data/real/asks";
+import { daysBetween, historyOf, TRACKING } from "../../data/real/listingHistory";
 import { date, km, num, pct } from "../../lib/format";
 import { Money, Section } from "../ui";
 import { isEn, t } from "../../i18n";
@@ -143,6 +144,10 @@ export function Evidence({ variant }: { variant: Variant }) {
       )}
       <p className="mt-6 max-w-3xl text-[12.5px] leading-relaxed text-faint">
         {t(
+          `Inserate werden täglich verfolgt: ${num(TRACKING.tracked)} erfasst, ${num(TRACKING.gone)} nicht mehr online, ${num(TRACKING.priceCuts)} Preissenkungen${TRACKING.medianCut !== null ? ` (Median ${pct(TRACKING.medianCut)})` : ""}. Daraus lässt sich nach einigen Wochen messen, wie weit Angebotspreise über den tatsächlichen Verkaufspreisen liegen.`,
+          `Listings are followed daily: ${num(TRACKING.tracked)} tracked, ${num(TRACKING.gone)} gone offline, ${num(TRACKING.priceCuts)} price cuts${TRACKING.medianCut !== null ? ` (median ${pct(TRACKING.medianCut)})` : ""}. After a few weeks this measures how far asking prices sit above actual sale prices.`,
+        )}{" "}
+        {t(
           "Angebote: Classic Trader, automatisch erfasst. mobile.de, Elferspot, AutoScout24 und Kleinanzeigen sperren automatische Abrufe; Inserate von dort lassen sich von Hand erfassen und fließen dann genauso ein. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company und Bring a Trailer. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
           "Listings: Classic Trader, collected automatically. mobile.de, Elferspot, AutoScout24 and Kleinanzeigen block automated access; listings from there can be recorded by hand and then count the same way. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company and Bring a Trailer. Converted at the ECB rate of the day.",
         )}
@@ -169,6 +174,35 @@ export function reasonText(r: string): string {
   return map[r] ?? r;
 }
 
+/** Time online, price changes and whether the listing has gone offline, from the daily tracking. */
+function HistoryLine({ a }: { a: Ask }) {
+  const h = historyOf(a.url);
+  if (!h) return null;
+  const end = h.status === "gone" && h.goneOn ? h.goneOn : TRACKING.asOf;
+  const d = daysBetween(h.first, end);
+  const online = d < 1 ? t("seit heute erfasst", "tracked since today") : d === 1 ? t("seit 1 Tag erfasst", "tracked for 1 day") : t(`seit ${d} Tagen erfasst`, `tracked for ${d} days`);
+  const p0 = h.prices[0][1];
+  const p1 = h.prices[h.prices.length - 1][1];
+  const change = h.prices.length > 1 ? p1 / p0 - 1 : 0;
+  return (
+    <div className="mt-0.5 text-[13px] text-muted">
+      {h.status === "gone" ? (
+        <span className="text-ink/80">
+          {t("Nicht mehr online seit", "Offline since")} {date(Date.parse(h.goneOn!))} ({t("verkauft oder zurückgezogen", "sold or withdrawn")})
+        </span>
+      ) : (
+        online
+      )}
+      {change !== 0 && (
+        <span className={change < 0 ? "text-ink/80" : ""}>
+          {" · "}
+          {change < 0 ? t("Preis gesenkt", "Price cut") : t("Preis erhöht", "Price raised")} {t("von", "from")} {num(p0)} {h.cur} ({pct(change)})
+        </span>
+      )}
+    </div>
+  );
+}
+
 function AskRow({ a }: { a: Ask }) {
   return (
     <li className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-3.5">
@@ -181,6 +215,7 @@ function AskRow({ a }: { a: Ask }) {
           {t("Baujahr", "Built")} {a.year} · {a.source}, {t("gesehen", "seen")} {date(Date.parse(a.date))} · {region(a.country)} · {a.seller === "Händler" ? t("Händler", "Dealer") : t("Privat", "Private")}
           {a.km ? ` · ${km(a.km)}` : ""}
         </div>
+        <HistoryLine a={a} />
         {a.excluded && (
           <div className="mt-1 text-[13px] text-ink/80">
             {t("Nicht berücksichtigt", "Left out")}: {reasonText(a.excluded)}

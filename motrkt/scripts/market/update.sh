@@ -32,4 +32,5 @@ python3 -I "$HERE/model.py" "$W" "$APP/market-model.json" "$APP/asks.json"
 
 echo "6/6 Verkaufsliste für die App"
 python3 -I "$HERE/export.py" "$W" "$APP/sales.csv"
+python3 -I "$HERE/track.py" "$W" "$APP/listing-history.json"
 echo "Fertig. Stichtag ist heute (oder MIP_AS_OF=JJJJ-MM-TT); die App übernimmt ihn aus market-model.json."
