@@ -1,4 +1,4 @@
-# MOTRKT – Marktintelligenz für klassische Sportwagen
+# MIP – Marktintelligenz für klassische Sportwagen
 
 Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios klassischer Sportwagen (Porsche).
 
@@ -24,10 +24,10 @@ läuft ein Jahr und verlängert sich bei jedem Besuch), bis man sich abmeldet.
 
 **Demo-Konto zum Testen:** Benutzername `demo`, Passwort `turbo-carrera-8987`
 
-Das Demo-Konto ist bei `npm run dev` immer aktiv (abschalten mit `MOTRKT_DEMO_ACCOUNT=0`). Weil dieses Repository
-öffentlich ist, ist es im Produktionsserver aus und wird dort nur mit `MOTRKT_DEMO_ACCOUNT=1` eingeschaltet.
+Das Demo-Konto ist bei `npm run dev` immer aktiv (abschalten mit `MIP_DEMO_ACCOUNT=0`). Weil dieses Repository
+öffentlich ist, ist es im Produktionsserver aus und wird dort nur mit `MIP_DEMO_ACCOUNT=1` eingeschaltet.
 
-Konten und Sitzungen liegen in `.data/` (nicht im Repository; anderer Ort über `MOTRKT_DATA_DIR`). Gespeichert werden
+Konten und Sitzungen liegen in `.data/` (nicht im Repository; anderer Ort über `MIP_DATA_DIR`). Gespeichert werden
 nur ein scrypt-Hash je Passwort und SHA-256-Werte der Sitzungs-Tokens. Nach 8 Fehlversuchen in 15 Minuten wird die
 Anmeldung für Name bzw. Adresse kurz gesperrt.
 

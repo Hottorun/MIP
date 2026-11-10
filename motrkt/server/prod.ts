@@ -24,7 +24,7 @@ if (!existsSync(DIST)) {
 }
 
 // the demo account's password is public (README): only on request in production
-if (process.env.MOTRKT_DEMO_ACCOUNT === "1") enableDemoAccount();
+if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) === "1") enableDemoAccount();
 
 createServer(async (req, res) => {
   try {
@@ -51,5 +51,5 @@ createServer(async (req, res) => {
   if (file.includes(`${DIST}/assets/`)) res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
   createReadStream(file).pipe(res);
 }).listen(PORT, () => {
-  console.log(`MOTRKT läuft auf http://localhost:${PORT}`);
+  console.log(`MIP läuft auf http://localhost:${PORT}`);
 });

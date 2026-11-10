@@ -78,7 +78,7 @@ export default function Portfolio() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `motrkt-portfolio-${new Date(AS_OF).toISOString().slice(0, 10)}.csv`;
+    a.download = `mip-portfolio-${new Date(AS_OF).toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     toast(t("Portfolio als CSV exportiert", "Portfolio exported as CSV"));

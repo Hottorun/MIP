@@ -15,7 +15,7 @@ type Persisted = {
   chat: ChatMessage[];
 };
 
-const STORAGE_KEY = "motrkt:v1";
+const STORAGE_KEY = "mip:v1";
 const d = (y: number, m: number, day = 1) => Date.UTC(y, m - 1, day);
 
 export const DEFAULT_STATE: Persisted = {

@@ -10,7 +10,7 @@ Pressebilder sind für die redaktionelle Nutzung freigegeben. Für die Nutzung i
 
 ## Was wir anfragen
 
-Nutzung der unten genannten Pressebilder in der Web-App „motrkt“ (Marktübersicht, je Modell 1–3 Bilder, mit Quellenangabe „© Porsche AG“). Das Repository ist öffentlich auf GitHub. Bitte auch klären, ob die Bilder dort abgelegt werden dürfen oder nur verlinkt/eingebettet.
+Nutzung der unten genannten Pressebilder in der Web-App „MIP“ (Marktübersicht, je Modell 1–3 Bilder, mit Quellenangabe „© Porsche AG“). Das Repository ist öffentlich auf GitHub. Bitte auch klären, ob die Bilder dort abgelegt werden dürfen oder nur verlinkt/eingebettet.
 
 „Bilder auf der Seite“ sind die Bildtitel, wie sie im Porsche Newsroom stehen.
 

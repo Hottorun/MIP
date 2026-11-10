@@ -232,7 +232,7 @@ function Bubble({ msg, streaming }: { msg: ChatMessage; streaming?: boolean }) {
       {msg.content ? <RichText text={msg.content} /> : null}
       {streaming && <span className={cn("text-xs text-muted", "caret")}>{msg.content ? "" : t("Analysiere Marktdaten ", "Analysing market data ")}</span>}
       {msg.source && !streaming && (
-        <div className="mt-1 text-right text-[10px] text-faint">{msg.source === "claude" ? "Claude" : t("MOTRKT Lokal-Analyse", "MOTRKT local analysis")}</div>
+        <div className="mt-1 text-right text-[10px] text-faint">{msg.source === "claude" ? "Claude" : t("MIP Lokal-Analyse", "MIP local analysis")}</div>
       )}
     </div>
   );

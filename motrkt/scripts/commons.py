@@ -11,7 +11,7 @@ Be polite: one request per second, descriptive User-Agent, thumbnails only (max 
 import argparse, html, json, re, sys, time, urllib.parse, urllib.request
 
 API = "https://commons.wikimedia.org/w/api.php"
-UA = "MOTRKT-demo/0.1 (local research tool; Wikimedia Commons attribution-respecting)"
+UA = "MIP-demo/0.1 (local research tool; Wikimedia Commons attribution-respecting)"
 FREE = re.compile(r"^(cc0|cc[- ]by(-sa)?([- ]\d(\.\d)?)?|public domain|pd|attribution|fal|gfdl)", re.I)
 
 

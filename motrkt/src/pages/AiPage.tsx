@@ -99,10 +99,10 @@ export default function AiPage() {
                 <Pill tone="gold" className="mr-1">Claude</Pill>
                 {t(
                   <>
-                    Antworten kommen von <span className="text-ink">{status.model}</span> über den MOTRKT-Server; die Marktdaten werden als Kontext mitgeschickt. Ist die API nicht erreichbar, springt automatisch der lokale Modus ein.
+                    Antworten kommen von <span className="text-ink">{status.model}</span> über den MIP-Server; die Marktdaten werden als Kontext mitgeschickt. Ist die API nicht erreichbar, springt automatisch der lokale Modus ein.
                   </>,
                   <>
-                    Answers come from <span className="text-ink">{status.model}</span> via the MOTRKT server; the market data is sent along as context. If the API can’t be reached, local mode takes over automatically.
+                    Answers come from <span className="text-ink">{status.model}</span> via the MIP server; the market data is sent along as context. If the API can’t be reached, local mode takes over automatically.
                   </>,
                 )}
               </p>

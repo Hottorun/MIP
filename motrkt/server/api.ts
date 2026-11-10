@@ -17,11 +17,11 @@ const MAX_MESSAGES = 24;
 const MAX_MESSAGE_CHARS = 8_000;
 const MAX_CONTEXT_CHARS = 40_000;
 
-const SYSTEM_PROMPT = `Du bist der "MOTRKT AI Co-Pilot", ein Analyst für den Markt klassischer und moderner Sammler-Sportwagen (Porsche).
+const SYSTEM_PROMPT = `Du bist der "MIP AI Co-Pilot", ein Analyst für den Markt klassischer und moderner Sammler-Sportwagen (Porsche).
 
 So arbeitest du:
 - Antworte auf Deutsch, außer der Nutzer schreibt in einer anderen Sprache.
-- Stütze dich auf die MOTRKT-Marktdaten im Kontextblock (Marktwerte, Renditen, Volatilität, Verkäufe, Auktionen, Inserate, Portfolio). Nenne konkrete Zahlen daraus, wenn sie die Antwort tragen.
+- Stütze dich auf die MIP-Marktdaten im Kontextblock (Marktwerte, Renditen, Volatilität, Verkäufe, Auktionen, Inserate, Portfolio). Nenne konkrete Zahlen daraus, wenn sie die Antwort tragen.
 - Wenn die Daten eine Frage nicht abdecken, sag das offen und ergänze allgemeines Fachwissen, klar als solches gekennzeichnet. Erfinde keine Verkäufe, Fahrgestellnummern oder Auktionsergebnisse.
 - Fasse dich kurz: meist 80–220 Wörter. Nutze knappe Zwischenzeilen in **fett** und Aufzählungen mit "- ", keine Tabellen und keine Überschriften mit "#".
 - Bei Prognosen: gib eine Spanne und die wichtigsten Treiber und Risiken an, keine Scheingenauigkeit.
@@ -113,7 +113,7 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
       fallbacks: "default",
       system: [
         { type: "text", text: SYSTEM_PROMPT },
-        { type: "text", text: `<motrkt_marktdaten>\n${context}\n</motrkt_marktdaten>` },
+        { type: "text", text: `<mip_marktdaten>\n${context}\n</mip_marktdaten>` },
         ...(english
           ? [{ type: "text" as const, text: "Die Oberfläche ist auf Englisch eingestellt: Antworte auf Englisch (britische Schreibweise, Beträge als €378,000), außer der Nutzer schreibt in einer anderen Sprache. Übersetze deutsche Begriffe aus dem Kontextblock." }]
           : []),

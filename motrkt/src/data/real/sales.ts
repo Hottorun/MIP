@@ -8,7 +8,7 @@ import bundledCsv from "./sales.csv?raw";
  * When a variant has real records, they replace its synthetic sales and anchor its market value and trend.
  */
 
-export const IMPORT_STORAGE_KEY = "motrkt:sales-import";
+export const IMPORT_STORAGE_KEY = "mip:sales-import";
 
 export type RealSale = {
   id: string;

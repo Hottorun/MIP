@@ -9,9 +9,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     {
-      name: "motrkt-api",
+      name: "mip-api",
       configureServer(server) {
-        if (process.env.MOTRKT_DEMO_ACCOUNT !== "0") enableDemoAccount();
+        if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) !== "0") enableDemoAccount();
         // sign-in first: without a session nothing of the app is served
         server.middlewares.use((req, res, next) => {
           authGate(req, res)

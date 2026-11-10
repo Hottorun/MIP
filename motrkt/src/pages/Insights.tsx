@@ -86,7 +86,7 @@ function MarketCycle() {
   const peak = data.reduce((a, b) => (b.value > a.value ? b : a));
   const yoy = changeOver(marketIndex(), 52);
   return (
-    <Card title={t("Marktzyklus", "Market cycle")} sub={t("MOTRKT-Gesamtindex, Jahresmittel", "MOTRKT overall index, annual average")}>
+    <Card title={t("Marktzyklus", "Market cycle")} sub={t("MIP-Gesamtindex, Jahresmittel", "MIP overall index, annual average")}>
       <div className="h-60">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>

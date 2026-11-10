@@ -472,7 +472,7 @@ function LotTable({ event }: { event: AuctionEvent }) {
               <th className="text-right">{t("Laufleistung", "Mileage")}</th>
               <th>{t("Farbe", "Colour")}</th>
               <th className="text-right">{t("Schätzung", "Estimate")}</th>
-              <th className="text-right">{t("MOTRKT-Marktwert", "MOTRKT market value")}</th>
+              <th className="text-right">{t("MIP-Marktwert", "MIP market value")}</th>
               <th className="text-right">{t("Schätzung vs. Markt", "Estimate vs. market")}</th>
               <th className="text-center">Watch</th>
             </tr>

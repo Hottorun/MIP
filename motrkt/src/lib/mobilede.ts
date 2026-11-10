@@ -2,7 +2,7 @@ import { generationById, modelById, variants } from "../data/db";
 import type { Gearbox, Listing, Variant } from "../data/types";
 import { t } from "../i18n";
 
-/** mobile.de Search API client: builds queries per catalog generation and maps ads onto MOTRKT variants. */
+/** mobile.de Search API client: builds queries per catalog generation and maps ads onto MIP variants. */
 
 export type MobileAd = {
   id: string;

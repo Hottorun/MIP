@@ -7,7 +7,7 @@ import { createContext, Fragment, useCallback, useContext, useLayoutEffect, useS
  */
 export type Lang = "de" | "en";
 
-const STORAGE_KEY = "motrkt-lang";
+const STORAGE_KEY = "mip-lang";
 
 function detect(): Lang {
   try {
@@ -43,7 +43,7 @@ export function inLang<T>(l: Lang, fn: () => T): T {
   }
 }
 
-export const appTitle = () => t("MOTRKT – Marktintelligenz für klassische Sportwagen", "MOTRKT – Market intelligence for classic sports cars");
+export const appTitle = () => t("MIP – Marktintelligenz für klassische Sportwagen", "MIP – Market intelligence for classic sports cars");
 
 // Before the first render, so the static German <title> from index.html never shows in English.
 if (typeof document !== "undefined") {

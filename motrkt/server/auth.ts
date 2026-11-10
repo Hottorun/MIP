@@ -9,15 +9,16 @@ import { fileURLToPath } from "node:url";
  * Accounts with username and password. Without a valid session the server hands out nothing but the sign-in page
  * (/anmelden) and /api/auth/*: the app, its data and the other APIs stay closed.
  *
- * Storage: MOTRKT_DATA_DIR (default motrkt/.data, not in git) – users.json (scrypt hash + salt per user, never the
+ * Storage: MIP_DATA_DIR (default motrkt/.data, not in git) – users.json (scrypt hash + salt per user, never the
  * password) and sessions.json (only the SHA-256 of each session token). Sessions last a year and are renewed on
  * every visit, so a user stays signed in until they sign out.
  */
 
-const DIR = process.env.MOTRKT_DATA_DIR ?? fileURLToPath(new URL("../.data", import.meta.url));
+const DIR = process.env.MIP_DATA_DIR ?? process.env.MOTRKT_DATA_DIR ?? fileURLToPath(new URL("../.data", import.meta.url));
 const USERS = join(DIR, "users.json");
 const SESSIONS = join(DIR, "sessions.json");
-const COOKIE = "motrkt_sid";
+const COOKIE = "mip_sid";
+const OLD_COOKIE = "motrkt_sid"; // name before the rename to MIP; still accepted and swapped for the new one
 const SESSION_DAYS = 365;
 const USERNAME = /^[A-Za-z0-9._-]{3,30}$/;
 const PW_MIN = 8;
@@ -41,7 +42,7 @@ function save(file: string, data: unknown) {
 }
 
 // Shared demo account (server/demo-account.json, password in README). The repository is public, so it is on in
-// development only; the production server enables it with MOTRKT_DEMO_ACCOUNT=1.
+// development only; the production server enables it with MIP_DEMO_ACCOUNT=1.
 let demo: User | null = null;
 export function enableDemoAccount() {
   demo = JSON.parse(readFileSync(fileURLToPath(new URL("./demo-account.json", import.meta.url)), "utf8")) as User;
@@ -70,11 +71,13 @@ function readCookie(req: IncomingMessage, name: string) {
 const isHttps = (req: IncomingMessage) => req.socket instanceof TLSSocket || req.headers["x-forwarded-proto"] === "https";
 
 function setCookie(req: IncomingMessage, res: ServerResponse, value: string, maxAge: number) {
-  res.setHeader(
-    "Set-Cookie",
-    `${COOKIE}=${encodeURIComponent(value)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${isHttps(req) ? "; Secure" : ""}`,
-  );
+  const attrs = `; Path=/; HttpOnly; SameSite=Lax${isHttps(req) ? "; Secure" : ""}`;
+  const cookies = [`${COOKIE}=${encodeURIComponent(value)}${attrs}; Max-Age=${maxAge}`];
+  if (readCookie(req, OLD_COOKIE)) cookies.push(`${OLD_COOKIE}=${attrs}; Max-Age=0`);
+  res.setHeader("Set-Cookie", cookies);
 }
+
+const sessionToken = (req: IncomingMessage) => readCookie(req, COOKIE) ?? readCookie(req, OLD_COOKIE);
 
 function startSession(req: IncomingMessage, res: ServerResponse, userId: string) {
   const token = randomBytes(32).toString("base64url");
@@ -88,19 +91,19 @@ function startSession(req: IncomingMessage, res: ServerResponse, userId: string)
 
 /** Pushes a used session (and its cookie) out to a full year again; at most once a day per session. */
 function renewSession(req: IncomingMessage, res: ServerResponse) {
-  const token = readCookie(req, COOKIE);
+  const token = sessionToken(req);
   if (!token) return;
   const all = load<Record<string, Session>>(SESSIONS, {});
   const s = all[sha(token)];
   const full = Date.now() + SESSION_DAYS * 86_400_000;
-  if (!s || full - s.expires < 86_400_000) return;
+  if (!s || (full - s.expires < 86_400_000 && readCookie(req, COOKIE))) return;
   s.expires = full;
   save(SESSIONS, all);
   setCookie(req, res, token, SESSION_DAYS * 86_400);
 }
 
 export function currentUser(req: IncomingMessage): { id: string; username: string } | null {
-  const token = readCookie(req, COOKIE);
+  const token = sessionToken(req);
   if (!token) return null;
   const s = load<Record<string, Session>>(SESSIONS, {})[sha(token)];
   if (!s || s.expires < Date.now()) return null;
@@ -157,7 +160,7 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });
 
   if (path === "/api/auth/logout") {
-    const token = readCookie(req, COOKIE);
+    const token = sessionToken(req);
     if (token) {
       const all = load<Record<string, Session>>(SESSIONS, {});
       delete all[sha(token)];
@@ -265,7 +268,7 @@ const LOGIN_PAGE = `<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300..600&family=Libre+Caslon+Display&family=Libre+Caslon+Text&display=swap" rel="stylesheet" />
 <meta name="theme-color" content="#efe7d7" />
-<title>Anmelden – MOTRKT</title>
+<title>Anmelden – MIP</title>
 <style>
   :root { --bg:#efe7d7; --panel:#f7f2e8; --line:#dccfb8; --line2:#c6b699; --ink:#3a2a1d; --muted:#78624d; --faint:#a38f77; --gold:#8b6232; --down:#9a3b2c; }
   * { box-sizing: border-box; }
@@ -294,7 +297,7 @@ const LOGIN_PAGE = `<!doctype html>
 </head>
 <body>
 <main>
-  <h1 class="logo">MOTRKT</h1>
+  <h1 class="logo">MIP</h1>
   <p class="tag" data-de="Marktintelligenz für klassische Sportwagen" data-en="Market intelligence for classic sports cars"></p>
   <div class="card">
     <div class="tabs" role="tablist">
@@ -322,7 +325,7 @@ const LOGIN_PAGE = `<!doctype html>
 <script>
 (function () {
   var lang = "de";
-  try { lang = localStorage.getItem("motrkt-lang") === "en" ? "en" : "de"; } catch (e) {}
+  try { lang = (localStorage.getItem("mip-lang") || localStorage.getItem("motrkt-lang")) === "en" ? "en" : "de"; } catch (e) {}
   var mode = "login";
   var T = {
     de: { login: "Anmelden", register: "Konto anlegen", uhint: "3–30 Zeichen: Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich", phint: "Mindestens 8 Zeichen",
@@ -341,7 +344,7 @@ const LOGIN_PAGE = `<!doctype html>
   var $ = function (id) { return document.getElementById(id); };
   function render() {
     document.documentElement.lang = lang;
-    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – MOTRKT";
+    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – MIP";
     document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = el.getAttribute("data-" + lang); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     var reg = mode === "register";
@@ -357,7 +360,7 @@ const LOGIN_PAGE = `<!doctype html>
   $("tab-login").onclick = function () { mode = "login"; render(); };
   $("tab-register").onclick = function () { mode = "register"; render(); };
   document.querySelectorAll("[data-lang]").forEach(function (b) {
-    b.onclick = function () { lang = b.getAttribute("data-lang"); try { localStorage.setItem("motrkt-lang", lang); } catch (e) {} render(); };
+    b.onclick = function () { lang = b.getAttribute("data-lang"); try { localStorage.setItem("mip-lang", lang); } catch (e) {} render(); };
   });
   $("form").onsubmit = function (e) {
     e.preventDefault();

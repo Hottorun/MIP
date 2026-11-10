@@ -19,7 +19,7 @@ export default function Market() {
   useEffect(() => {
     if (variant) {
       setLastVariant(variant.id);
-      document.title = `${variantTitle(variant)} – MOTRKT`;
+      document.title = `${variantTitle(variant)} – MIP`;
     }
     return () => {
       document.title = appTitle();

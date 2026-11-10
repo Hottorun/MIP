@@ -1,6 +1,6 @@
 # Research brief: real photos, launch colors and verified specs
 
-Project: MOTRKT, a classic-sports-car market app at /Users/dimik/Coding/Apps/MIP/motrkt (Vite + React).
+Project: MIP, a classic-sports-car market app at /Users/dimik/Coding/Apps/MIP/motrkt (Vite + React).
 Your group's variants are listed in scripts/groups/<group>.txt (one per line: id | title | years | production | PS | litres | newPrice EUR | current color).
 
 For EVERY variant in your file, produce one entry in src/data/real/<group>.json (create it; pretty-printed JSON object keyed by variant id). Write the file incrementally (e.g. after every few variants) so progress is never lost.

@@ -55,8 +55,8 @@ export function Layout() {
 
 function Wordmark({ className }: { className?: string }) {
   return (
-    <Link to="/" className={cn("font-display text-[26px] leading-none tracking-[0.18em] text-ink", className)} aria-label={t("MOTRKT Startseite", "MOTRKT home")}>
-      MOTRKT
+    <Link to="/" className={cn("font-display text-[26px] leading-none tracking-[0.18em] text-ink", className)} aria-label={t("MIP Startseite", "MIP home")}>
+      MIP
     </Link>
   );
 }
@@ -427,7 +427,7 @@ function Footer() {
     <footer className="mt-16 border-t border-line bg-panel-2">
       <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <div className="font-display text-[22px] tracking-[0.18em]">MOTRKT</div>
+          <div className="font-display text-[22px] tracking-[0.18em]">MIP</div>
           <p className="mt-3 max-w-xs font-serif text-[15px] leading-relaxed text-muted italic">
             {t("Marktwerte, Verkäufe und Angebote klassischer Sportwagen.", "Market values, sales and listings of classic sports cars.")}
           </p>
