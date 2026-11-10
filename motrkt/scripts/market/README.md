@@ -19,10 +19,12 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 | `EU_ASK` / `EU_AUC` | von Hand: mobile.de, Elferspot, Kleinanzeigen, Händlerauskünfte | `manual/*.csv`, siehe `manual/README.md` |
 | `US_AUC` Auktionen USA | Bring a Trailer, RM Sotheby's, Gooding, Broad Arrow … (Verkäufe in USD) | `batfetch.py`, `ucpfetch.sh` |
 
-Nicht automatisch abrufbar (geprüft im November 2026): mobile.de (Such- und Inseratsseiten per robots.txt gesperrt;
-für die offizielle Search API braucht es Zugangsdaten vom mobile.de-Kundenservice, der Client liegt schon in
-`server/mobilede.ts`), Elferspot und Classic Driver (Bot-Schutz), AutoScout24, Dorotheum und Collecting Cars (sperren
-KI-Crawler ausdrücklich). Diese Sperren werden nicht umgangen.
+Nicht automatisch abrufbar (geprüft am 10. November 2026): mobile.de (Such- und Inseratsseiten per robots.txt gesperrt;
+für die offizielle Search API braucht es Zugangsdaten von mobile.de, der Client liegt schon in `server/mobilede.ts`),
+Kleinanzeigen (Nutzungsbedingungen verbieten Crawler ohne schriftliche Zustimmung), Elferspot, Classic Driver, Dyler,
+Cars & Bids (Bot-Schutz), Catawiki, Car & Classic, Coys (sperren Abrufe), AutoScout24, Collecting Cars, PCARMARKET,
+Dorotheum, Aguttes, H&H, Mecum, Hemmings (sperren KI-Crawler ausdrücklich), Barrett-Jackson (nur Google erlaubt).
+Diese Sperren werden nicht umgangen.
 
 Jeder Titel wird per `classify.py` genau einer Variante zugeordnet oder verworfen (Umbauten, Replikas, Teile, nicht
 eindeutige Modelle). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
