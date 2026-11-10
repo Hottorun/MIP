@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
-import { variantShortTitle } from "../../data/db";
+import { variantShortTitle, variantTitle } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getSales } from "../../data/generate";
 import { getMetrics } from "../../data/market";
@@ -20,6 +20,16 @@ function linkNote(url: string) {
   if (url.includes("ultimatecarpage.com")) return t("Link zur Ergebnisliste bei ultimatecarpage.com", "link to the result list at ultimatecarpage.com");
   return null;
 }
+/** Search pages at auction houses whose results we may not import; links only, so these sales are not in the market value. */
+function houseSearchLinks(v: Variant) {
+  const q = variantTitle(v).replace(/\s*\([^)]*\)/g, "").trim();
+  const e = encodeURIComponent(q);
+  return [
+    { house: "RM Sotheby's", url: `https://rmsothebys.com/search/?SearchTerm=${e}#?SortBy=Availability&SearchTerm=${e}&page=1&pageSize=40` },
+    { house: "Broad Arrow", url: `https://www.broadarrowauctions.com/vehicles/results?ftx=${e}` },
+  ];
+}
+
 function linkTitle(url: string) {
   if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Ergebnisse der Auktion bei RM Sotheby's öffnen", "Open the sale's results at RM Sotheby's");
   if (url.includes("ultimatecarpage.com")) return t("Ergebnisliste bei ultimatecarpage.com öffnen", "Open the result list at ultimatecarpage.com");
@@ -84,6 +94,19 @@ export function RecentSales({ variant }: { variant: Variant }) {
           {expanded ? t("Weniger anzeigen", "Show less") : t(`${Math.min(15, sales.length) - 6} weitere anzeigen`, `Show ${Math.min(15, sales.length) - 6} more`)}
         </button>
       )}
+      <div className="mt-6 text-[13px] text-muted">
+        {t("Weitere Ergebnisse direkt beim Auktionshaus", "More results directly at the auction house")}:{" "}
+        {houseSearchLinks(variant).map((l, i) => (
+          <span key={l.house}>
+            {i > 0 && " · "}
+            <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-0.5 text-ink hover:text-gold">
+              {l.house}
+              <ArrowUpRight className="size-3 shrink-0 self-center text-faint" strokeWidth={1.5} />
+            </a>
+          </span>
+        ))}
+        <div className="mt-0.5 text-faint">{t("Nicht im Marktwert enthalten.", "Not included in the market value.")}</div>
+      </div>
     </Section>
   );
 }
