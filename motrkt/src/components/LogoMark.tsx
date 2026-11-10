@@ -2,7 +2,7 @@
 const GOLD = "#C3A46B";
 const TICKS = [180, 210, 240, 270, 300, 330, 360];
 
-export function LogoMark({ size = 34, withText = false, className }: { size?: number; withText?: boolean; className?: string }) {
+export function LogoMark({ size = 34, withText = true, className }: { size?: number; withText?: boolean; className?: string }) {
   const cy = withText ? 70 : 82;
   const rad = (a: number) => (a * Math.PI) / 180;
   return (
@@ -20,10 +20,20 @@ export function LogoMark({ size = 34, withText = false, className }: { size?: nu
         <circle r="1.8" fill="#111317" stroke="none" />
       </g>
       {withText && (
-        <text x="70" y="104" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" letterSpacing="5" fill={GOLD}>
+        <text x="70" y="102" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" letterSpacing="5" fill={GOLD}>
           MIP
         </text>
       )}
     </svg>
+  );
+}
+
+// Full logo: medallion with the tagline underneath, for places with enough room.
+export function LogoFull({ size = 72, className }: { size?: number; className?: string }) {
+  return (
+    <div className={"flex flex-col items-center gap-3 " + (className ?? "")}>
+      <LogoMark size={size} />
+      <span className="text-[10.5px] tracking-[0.3em] text-muted uppercase">Market Intelligence Platform</span>
+    </div>
   );
 }
