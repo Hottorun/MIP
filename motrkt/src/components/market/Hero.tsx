@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
-import { brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel } from "../../data/db";
+import { brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { marketBasis, MIN_RECORDS } from "../../data/real/model";
@@ -62,7 +62,7 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
   const generations = model.generationIds.map((id) => generationById.get(id)!);
 
   const facts: [string, React.ReactNode][] = [
-    [t("Produktion", "Production"), t(`${num(variant.production)} Stück`, `${num(variant.production)} units`)],
+    [t("Produktion", "Production"), productionLabel(variant)],
     [t("Motor", "Engine"), `${num(variant.liters, 1)} l, ${variant.hp} PS`],
     [t("Neupreis", "Original list price"), `${eur(variant.newPrice)} (${variant.newPriceYear})`],
   ];

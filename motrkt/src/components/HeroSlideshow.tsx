@@ -6,7 +6,7 @@ import {
 } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Pause, Play } from "lucide-react";
-import { variantById, variantTitle, yearsLabel } from "../data/db";
+import { productionLabel, variantById, variantTitle, yearsLabel } from "../data/db";
 import { getMetrics } from "../data/market";
 import type { Photo } from "../data/real";
 import type { Variant } from "../data/types";
@@ -220,7 +220,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               <div className="mt-1 text-[13px] text-white/60">
                 {num(current.v.hp)} PS ·{" "}
                 {current.v.production
-                  ? t(`${num(current.v.production)} gebaut`, `${num(current.v.production)} built`)
+                  ? productionLabel(current.v, "gebaut", "built")
                   : t("Stückzahl unbekannt", "Production unknown")}
               </div>
             </div>

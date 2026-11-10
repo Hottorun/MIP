@@ -7,6 +7,7 @@ import { OPTIONS } from "./options";
 import { marketBasis } from "./real/model";
 import { t } from "../i18n";
 import { tr } from "../i18n/terms";
+import { num } from "../lib/format";
 
 /** Normalised catalog: brands → models → generations → variants, plus lookup maps. */
 
@@ -234,6 +235,7 @@ function build() {
             marketPhotos: marketPhotos(id),
             officialLink: officialLinks[id],
             specSources: specs?.sources ?? [],
+            productionNote: specs?.productionNote,
             newPriceYear: (specs?.newPrice?.eur && specs.newPrice.year) || (specs?.years ?? s.years)[0],
             options: buildOptions(s, id),
             shape: s.shape ?? g.shape,
@@ -302,8 +304,8 @@ export function getVariant(id: string | undefined): Variant | undefined {
 }
 
 function includesModel(v: Variant, modelName: string) {
-  const n = ` ${v.name} `;
-  return n.includes(` ${modelName} `);
+  // "914/6" names the model too
+  return ` ${v.name} `.includes(` ${modelName} `) || v.name.startsWith(`${modelName}/`);
 }
 
 /** Display names: German words in model, generation and variant names ("F-Modell", "25 Jahre") in the current language. */
@@ -360,3 +362,9 @@ export function optionFactor(v: Variant, picked: string[]): number {
 
 /** Variants with a measured market value (for rankings, indices and comparisons). */
 export const measuredVariants = () => variants.filter((v) => v.measured);
+
+/** "3.338 Stück", or "115.631 Stück (alle Vierzylinder)" when only a shared figure is published. */
+export function productionLabel(v: Variant, unitDe = "Stück", unitEn = "units") {
+  const note = v.productionNote ? ` (${tr(v.productionNote)})` : "";
+  return t(`${num(v.production)} ${unitDe}${note}`, `${num(v.production)} ${unitEn}${note}`);
+}

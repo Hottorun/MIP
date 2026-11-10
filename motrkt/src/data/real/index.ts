@@ -31,6 +31,8 @@ export type RealSpecs = {
   liters?: number;
   years?: [number, number | null];
   newPrice?: { amount?: number; currency?: string; eur?: number; year?: number };
+  /** What the production figure covers when it is not this variant alone ("alle Vierzylinder"). */
+  productionNote?: string;
   sources?: string[];
 };
 

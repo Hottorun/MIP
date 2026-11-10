@@ -728,5 +728,108 @@
         "caption": "Porsche 959 S in Silber"
       }
     ]
+  },
+  "porsche-914-914-1-7": {
+    "specs": {
+      "production": 115631,
+      "productionNote": "alle Vierzylinder",
+      "hp": 80,
+      "liters": 1.7,
+      "years": [
+        1969,
+        1973
+      ],
+      "newPrice": {
+        "amount": 12250,
+        "currency": "DEM",
+        "eur": 6263,
+        "year": 1970
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2019/history/porsche-museum-jubilee-50-years-914-typically-porsche-day-special-show.html",
+        "https://newsroom.porsche.com/en/2019/products/porsche-914-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html",
+        "https://de.wikipedia.org/wiki/Porsche_914",
+        "https://www.porsche.com/swiss/de/accessoriesandservice/classic/models/914/914/"
+      ]
+    },
+    "note": "VW-Porsche 914 mit 1,7-l-Vierzylinder von VW (D-Jetronic), 80 PS, Modelljahre 1970–1973. Neupreis 12.250 DM (1970, ohne Extras; de.wikipedia). 115.631 = alle Vierzylinder-914 zusammen (1.7, 2.0 und 1.8; Karmann Osnabrück, 1969–1976, Porsche Newsroom). Eine Aufteilung nach Motor veröffentlicht Porsche nicht.",
+    "images": []
+  },
+  "porsche-914-914-2-0": {
+    "specs": {
+      "production": 115631,
+      "productionNote": "alle Vierzylinder",
+      "hp": 100,
+      "liters": 2.0,
+      "years": [
+        1972,
+        1976
+      ],
+      "newPrice": {
+        "amount": 14990,
+        "currency": "DEM",
+        "eur": 7664,
+        "year": 1974
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2019/history/porsche-museum-jubilee-50-years-914-typically-porsche-day-special-show.html",
+        "https://de.wikipedia.org/wiki/Porsche_914",
+        "https://www.porsche.com/swiss/de/accessoriesandservice/classic/models/914/914/",
+        "https://members.rennlist.com/914_collectibles/MagVWPads.htm"
+      ]
+    },
+    "note": "914 2.0 mit 2,0-l-Vierzylinder, 100 PS (USA 88–95 PS), ab Modelljahr 1973 (Produktion ab August 1972) als Nachfolger des 914/6. Neupreis laut deutscher Preisliste für das Modelljahr 1974: 14.990 DM; für 1973 ist kein DM-Preis belegt. 115.631 = alle Vierzylinder-914 zusammen (1.7, 2.0 und 1.8; Karmann Osnabrück, 1969–1976, Porsche Newsroom). Eine Aufteilung nach Motor veröffentlicht Porsche nicht.",
+    "images": []
+  },
+  "porsche-914-914-1-8": {
+    "specs": {
+      "production": 115631,
+      "productionNote": "alle Vierzylinder",
+      "hp": 85,
+      "liters": 1.8,
+      "years": [
+        1973,
+        1976
+      ],
+      "newPrice": {
+        "amount": 13990,
+        "currency": "DEM",
+        "eur": 7153,
+        "year": 1974
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2019/history/porsche-museum-jubilee-50-years-914-typically-porsche-day-special-show.html",
+        "https://de.wikipedia.org/wiki/Porsche_914",
+        "https://www.porsche.com/swiss/de/accessoriesandservice/classic/models/914/914/",
+        "https://members.rennlist.com/914_collectibles/MagVWPads.htm"
+      ]
+    },
+    "note": "914 1.8 ab August 1973 (Modelljahr 1974), in Europa 85 PS mit zwei Solex-Vergasern, in den USA 76 PS mit L-Jetronic. Neupreis laut deutscher Preisliste 1974: 13.990 DM. 115.631 = alle Vierzylinder-914 zusammen (1.7, 2.0 und 1.8; Karmann Osnabrück, 1969–1976, Porsche Newsroom). Eine Aufteilung nach Motor veröffentlicht Porsche nicht.",
+    "images": []
+  },
+  "porsche-914-914-6": {
+    "specs": {
+      "production": 3338,
+      "hp": 110,
+      "liters": 2.0,
+      "years": [
+        1969,
+        1972
+      ],
+      "newPrice": {
+        "amount": 19980,
+        "currency": "DEM",
+        "eur": 10216,
+        "year": 1970
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/2019/history/porsche-museum-jubilee-50-years-914-typically-porsche-day-special-show.html",
+        "https://newsroom.porsche.com/en/2019/products/porsche-914-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html",
+        "https://de.wikipedia.org/wiki/Porsche_914",
+        "https://www.porsche.com/swiss/de/accessoriesandservice/classic/models/914/914/"
+      ]
+    },
+    "note": "914/6 mit dem 2,0-l-Sechszylinder des 911 T, 110 PS, gebaut 1969–1972 überwiegend in Zuffenhausen. Porsche nennt genau 3.338 Exemplare (andere Quellen 3.332 bis 3.353). Neupreis 19.980 DM (1970), kaum weniger als ein 911 T.",
+    "images": []
   }
 }

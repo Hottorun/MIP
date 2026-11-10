@@ -61,7 +61,7 @@ def median(xs): return wmedian(xs, [1.0] * len(xs))
 
 def group(vid):
     if "rennsportwagen" in vid or "gt-rennwagen" in vid or "cup-und-clubsport" in vid: return "G"
-    if "-356-" in vid or "-912-" in vid: return "A"
+    if "-356-" in vid or "-912-" in vid or "-914-" in vid: return "A"
     if any(k in vid for k in ("-930-", "-964-", "-993-", "-f-modell-", "-g-modell-")): return "B"
     if "959" in vid or vid.endswith("carrera-gt-carrera-gt") or "918" in vid: return "F"
     gt = any(k in vid for k in ["gt3", "gt2", "-r", "sport-classic", "speedster", "s-t", "dakar", "50-jahre"]) and "-911-" in vid

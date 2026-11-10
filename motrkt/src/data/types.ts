@@ -55,6 +55,8 @@ export type Variant = Required<Omit<VariantSeed, "vol" | "tags">> & {
   specSources: string[];
   /** Year of the list price in newPrice (start of production unless a dated price list says otherwise). */
   newPriceYear: number;
+  /** What the production figure covers when it is not this variant alone (e.g. "alle Vierzylinder"). */
+  productionNote?: string;
 };
 
 export type VariantOption = {

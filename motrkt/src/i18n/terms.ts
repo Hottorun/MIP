@@ -295,6 +295,8 @@ const EN: Record<string, string> = {
   "70 Jahre Porsche Sportwagen: 356 in der Schweiz": "70 years of Porsche sports cars: the 356 in Switzerland",
   "70 Jahre Porsche in Australien: 944 Turbo Cup": "70 years of Porsche in Australia: 944 Turbo Cup",
   "75 Jahre Produktion in Zuffenhausen": "75 years of production in Zuffenhausen",
+  "alle Vierzylinder": "all four-cylinder cars",
+  "50 Jahre Porsche 914": "50 years of the Porsche 914",
   "911 Carrera RS 3.8 in „Transformers: Rise of the Beasts“": "911 Carrera RS 3.8 in “Transformers: Rise of the Beasts”",
   "911 Sondermodell „50 Jahre 911“": "911 special model “50 Years of the 911”",
   "959 auf der IAA 1985": "The 959 at the 1985 IAA",

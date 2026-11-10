@@ -146,10 +146,28 @@ def early(y, s, b, full):
     if "carrera" in s or "3.2" in s: return G("carrera-3-2")
     return None
 
+def p914(y, s):
+    """VW-Porsche 914 (model years 1970-1976). The engine decides the variant: /6 (1970-1972) or the four-cylinder
+    1.7 (1970-1973), 2.0 (1973-1976), 1.8 (1974-1976). Titles without the engine are only clear for 1970-1972."""
+    s = s.replace("914/4", "914 ").replace("914-4", "914 ")
+    if has(s, "916", "914/8", "914-8", "v8", " gt", "-gt", "/gt", "lemans", "le mans", "racing", "sportomatic"): return None
+    six = re.search(r"914[ /-]?6\b|914/6|six|6-cyl|flat-6|flat six", s)
+    if six:
+        return (P + "914-914-6", "Targa") if 1970 <= y <= 1972 and not re.search(r"\b[123]\.\d\b", s.replace("2.0", "")) else None
+    disp = re.findall(r"\b(1\.7|1\.8|2\.0)\b", s)
+    if len(set(disp)) > 1: return None
+    d = disp[0] if disp else None
+    if d == "1.7" and 1970 <= y <= 1973: return (P + "914-914-1-7", "Targa")
+    if d == "2.0" and 1973 <= y <= 1976: return (P + "914-914-2-0", "Targa")
+    if d == "1.8" and 1974 <= y <= 1976: return (P + "914-914-1-8", "Targa")
+    if d is None and 1970 <= y <= 1972 and not re.search(r"\b\d\.\d\b", s): return (P + "914-914-1-7", "Targa")
+    return None
+
 def road(y, s, full=""):
     """Road cars. s = lowercase model text after 'Porsche'; full = whole title (prefix such as "RoW" included)."""
     s = " " + s + " "
-    if re.search(r"\b(914|924|928|944|968|cayenne|panamera|macan|taycan|mission)\b", s): return None
+    if re.search(r"\b914\b", s): return p914(y, s)
+    if re.search(r"\b(924|928|944|968|cayenne|panamera|macan|taycan|mission)\b", s): return None
     b = body(s)
     four = re.search(r"carrera 4|\b4s\b|targa 4|carrera4|\bc4\b|c4s", s)
     def r(v): return (P + v, b)

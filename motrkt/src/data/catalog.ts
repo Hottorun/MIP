@@ -701,6 +701,45 @@ export const CATALOG: BrandDef[] = [
         ],
       },
       {
+        name: "914",
+        category: "mittel",
+        featured: true,
+        generations: [
+          {
+            // VW-Porsche 914: mid-engined targa built with Volkswagen (Karmann, Osnabrück), IAA Frankfurt 1969 to 1976.
+            name: "914",
+            years: [1969, 1976],
+            shape: "roadster",
+            variants: [
+              v("914 1.7", [1969, 1973], 115631, 25_000, 0.04, 80, 1.7, 6_263, {
+                ...MID,
+                body: { Targa: 1 },
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#efc11a",
+              }),
+              v("914 2.0", [1972, 1976], 115631, 30_000, 0.045, 100, 2.0, 7_664, {
+                ...MID,
+                body: { Targa: 1 },
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#b3121b",
+              }),
+              v("914 1.8", [1973, 1976], 115631, 24_000, 0.04, 85, 1.8, 7_153, {
+                ...MID,
+                body: { Targa: 1 },
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#cfccc2",
+              }),
+              v("914/6", [1969, 1972], 3338, 95_000, 0.06, 110, 2.0, 10_216, {
+                ...MID,
+                body: { Targa: 1 },
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+            ],
+          },
+        ],
+      },
+      {
         name: "918",
         category: "super",
         featured: true,
