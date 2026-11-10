@@ -122,7 +122,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
         (s) =>
           `  - ${date(s.date)} ${s.source} ${s.house} (${s.id}): ${s.price ? eur(s.price) : "nicht verkauft"}${s.estimateLow ? ` [Schätzung ${eur(s.estimateLow)}–${eur(s.estimateHigh)}]` : ""}, Zustand ${s.condition}, ${km(s.mileage)}, ${s.color}, ${s.body}/${s.gearbox}, Käufer ${s.buyerCountry}, vs. Marktwert ${pct(s.trend)}`,
       ),
-      `Angebote in Europa (echte Inserate): ${asksFor(focus.id).length}${asksFor(focus.id).length ? `, ${asksFor(focus.id).slice(0, 8).map((a) => `${a.title} ${a.year}, ${a.km ? km(a.km) : "km unbekannt"}, ${eur(a.eur)}, ${a.seller}, ${a.country}`).join(" | ")}` : ""}`,
+      `Angebote in Europa (echte Inserate, ohne Nachbauten, Umbauten, Unfall- und Projektfahrzeuge und unplausible Preise): ${asksFor(focus.id).filter((a) => !a.excluded).length}${asksFor(focus.id).filter((a) => !a.excluded).length ? `, ${asksFor(focus.id).filter((a) => !a.excluded).slice(0, 8).map((a) => `${a.title} ${a.year}, ${a.km ? km(a.km) : "km unbekannt"}, ${eur(a.eur)}, ${a.seller}, ${a.country}`).join(" | ")}` : ""}`,
       `Demo-Inserate (erfunden, nur zur Ansicht, nicht als Marktbeleg verwenden): ${listings.length}${asks.length ? `, Angebotspreise ${eur(asks[0])} bis ${eur(asks[asks.length - 1])}, Median ${eur(asks[Math.floor(asks.length / 2)])}` : ""}`,
       ...listings.slice(0, 8).map((l) => `  - ${l.id}: ${l.year}, ${km(l.mileage)}, Zustand ${l.condition}, ${l.color}, ${eur(l.price)}, ${l.sellerType} ${l.seller} (${l.city}), Matching Numbers: ${l.matchingNumbers ? "ja" : "nein"}, Historie: ${l.serviceHistory ? "lückenlos" : "unvollständig"}`),
       "",

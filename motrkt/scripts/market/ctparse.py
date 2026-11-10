@@ -20,6 +20,39 @@ def prop(h, key):
     return json.loads(m.group(1)) if m else None
 
 
+# Signs in a listing that the price does not belong to a genuine, complete car of the variant: (pattern, reason shown in
+# the app). The seller's title is checked with the broad list, the long description only with unambiguous phrases (a
+# description may say "a tribute to precision", "conversion to EU specification" or "Fuchsfelgen (Nachbau)").
+# Negated mentions ("kein Nachbau", "no accident damage") do not count.
+TITLE_SUSPECT = [
+    (r"replik|\breplica\b|nachbau|\brecreation\b|\btribute\b|hommage|homage|evocation|\bclone\b", "laut Inserat Nachbau"),
+    (r"back-?dat|\brs[- ]?look\b|look[- ]alike|restomod|outlaw|singer[- ]style|\bumbau\b|umgebaut", "laut Inserat Umbau"),
+    (r"projekt|project|scheunenfund|barn ?find|restaurierungsobjekt|teileträger|rohkarosse|bodyshell", "laut Inserat Projekt- oder Teilefahrzeug"),
+    (r"unfall(?!frei)|accident(?![- ]?free)|damaged|hagelschaden|brandschaden", "laut Inserat Unfall- oder Schadenfahrzeug"),
+]
+DESC_SUSPECT = [
+    (r"\brs[- ]?(?:2[.,]7[- ])?nachbau|\bist ein nachbau|\bals nachbau|\bnachbau (?:eines|des|von)\b|\breplika\b|\breplica\b(?! parts)|\brecreation of\b|\bre-creation\b|\btribute (?:car|build|to the (?:rs|carrera rs|2\.7))", "laut Inserat Nachbau"),
+    (r"back-?dat(?:e|ed|ing)\b|restomod|\boutlaw\b|singer[- ]style|\brs[- ]look\b|\bin rs[- ]optik\b", "laut Inserat Umbau"),
+    (r"restaurierungsobjekt|restaurationsobjekt|restoration project|\bproject car\b|projektfahrzeug|scheunenfund|\bbarn ?find\b|teileträger|teilespender|rolling chassis", "laut Inserat Projekt- oder Teilefahrzeug"),
+    (r"unfallschaden|unfallwagen|unfallfahrzeug|accident damage|crash damage|hagelschaden|brandschaden|wasserschaden|flood damage", "laut Inserat Unfall- oder Schadenfahrzeug"),
+    (r"motorschaden|engine damage|ohne motor\b|without (?:an )?engine|nicht fahrbereit|not running|non-running|non runner", "laut Inserat ohne Motor oder nicht fahrbereit"),
+]
+NEG = re.compile(r"(kein|keine|keinen|nicht|no|not|never|nie|niemals|free of|frei von|without)\W+(\w+\W+){0,4}$")
+NEG_AFTER = re.compile(r"^\W*(\w+\W+){0,2}(liegt nicht vor|nicht vorhanden|ausgeschlossen|none\b|keine\b)")
+# history, not today's state: "bought as a restoration project", "2017 fand der Targa als Restaurationsobjekt …"
+HIST = re.compile(r"(bought|purchased|acquired|erworben|gekauft|damals|then|was found|wurde .{0,20}gefunden|\b(19|20)\d\d\b[^.]{0,40})\W+(\w+\W+){0,6}$")
+
+
+def suspect(text, rules):
+    t = (text or "").lower()
+    for pat, why in rules:
+        for m in re.finditer(pat, t):
+            before, after = t[max(0, m.start() - 60):m.start()], t[m.end():m.end() + 40]
+            if not NEG.search(before[-40:]) and not NEG_AFTER.search(after) and not (why.startswith("laut Inserat Projekt") and HIST.search(before)):
+                return why, t[max(0, m.start() - 50):m.end() + 50].strip()
+    return None
+
+
 def parse(path, day):
     raw = gzip.open(path).read().decode("utf-8", "replace")
     car = None
@@ -45,6 +78,21 @@ def parse(path, day):
     except ValueError:
         year = 0
     km = (car.get("mileageFromOdometer") or {}).get("value")
+    # the seller's own title and description (longest description prop on the page)
+    descs = [json.loads(m) for m in re.findall(r'"description":\[0,("(?:[^"\\]|\\.)*")\]', h)]
+    desc = max(descs, key=len) if descs else ""
+    desc = re.sub(r"<style.*?</style>|\{[^{}]*\}", " ", desc, flags=re.S)   # embedded CSS
+    desc = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", desc)))
+    title_seller = prop(h, "titleBySeller") or ""
+    flag = None
+    if prop(h, "isReplica") is True:
+        flag = ("laut Inserat Nachbau (als Recreation gekennzeichnet)", title_seller)
+    elif prop(h, "isConverted") is True:
+        flag = ("laut Inserat Umbau (als Umbau/Special gekennzeichnet)", title_seller)
+    elif prop(h, "isRacingCar") is True:
+        flag = ("laut Inserat Rennwagen", title_seller)   # dropped again for race-car variants, see main()
+    else:
+        flag = suspect(title_seller, TITLE_SUSPECT) or suspect(desc, DESC_SUSPECT)
     return {
         "id": "CT-" + lid,
         "day": day,
@@ -62,6 +110,11 @@ def parse(path, day):
         "rhd": "RightHand" in (car.get("steeringPosition") or ""),
         "auction": bool(re.search(r'"priceIsAuctionSale":\[0,true\]', h)) or "Auktion" in (off.get("name") or ""),
         "available": "InStock" in (off.get("availability") or ""),
+        "titleSeller": title_seller,
+        "accidentFree": prop(h, "isAccidentFree"),
+        "matching": prop(h, "matchingNumbers"),
+        "flag": flag[0] if flag else None,
+        "flagText": flag[1][:160] if flag else None,
     }
 
 
@@ -126,6 +179,8 @@ def main():
             else:
                 r["variant"], cb, r["gearClass"], _ = c
                 r["body"] = r["body"] or cb
+                if r["flag"] == "laut Inserat Rennwagen" and re.search(r"cup|rennsport|rennwagen|clubsport|rsr|gt3-r", r["variant"]):
+                    r["flag"] = r["flagText"] = None
             rows.append(r)
     json.dump(rows, open(os.path.join(work, "web", "asks.json"), "w"), ensure_ascii=False)
     ok = [r for r in rows if r["variant"]]

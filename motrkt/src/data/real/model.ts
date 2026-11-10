@@ -30,6 +30,8 @@ type RawEntry = {
   ch?: Record<Channel, number>;
   share?: Partial<Record<Channel, number>>;
   chLevel?: Partial<Record<Channel, number>>;
+  /** Records left out as implausible: deviation from the variant's level (0.65 = 65 % above). */
+  out?: { id: string; eur: number; dev: number; ch: Channel }[];
 };
 
 export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC";
@@ -127,6 +129,14 @@ export function marketBasis(variantId: string): MarketBasis | undefined {
     offsets: raw.offsets[e.family ?? "COLLECT"] ?? { EU_AUC: 0, EU_ASK: 0, US_AUC: 0 },
     family: e.family ?? "COLLECT",
   };
+}
+
+/**
+ * Auction results of a variant left out of the value because their price is implausibly far from comparable cars
+ * (too high or too low; see OUT_K in model.py), by record id with the deviation (0.65 = 65 % above).
+ */
+export function outliersOf(variantId: string): Map<string, number> {
+  return new Map((raw.variants[variantId]?.out ?? []).map((x) => [x.id, x.dev]));
 }
 
 /** Log-linear interpolation on the monthly grid. */

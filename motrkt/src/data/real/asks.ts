@@ -20,6 +20,10 @@ export type Ask = {
   country: string;
   url: string;
   source: string;
+  /** Why the listing does not enter the value (replica, conversion, accident car, implausible price); null if it does. */
+  excluded: string | null;
+  /** The passage of the listing the reason rests on. */
+  note: string | null;
 };
 
 const ALL = data as Ask[];
@@ -32,7 +36,7 @@ for (const a of ALL) {
 
 export const ASKS_TOTAL = ALL.length;
 
-/** Listings of a variant, highest price first. */
+/** Listings of a variant, highest price first (including those left out, see `excluded`). */
 export function asksFor(variantId: string): Ask[] {
   return byVariant.get(variantId) ?? [];
 }

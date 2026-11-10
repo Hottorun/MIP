@@ -5,6 +5,7 @@ import { variantShortTitle } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getSales } from "../../data/generate";
 import { getMetrics } from "../../data/market";
+import { outliersOf } from "../../data/real/model";
 import { date, km } from "../../lib/format";
 import { Section, Money } from "../ui";
 import { t } from "../../i18n";
@@ -28,6 +29,7 @@ function linkTitle(url: string) {
 export function RecentSales({ variant }: { variant: Variant }) {
   const [expanded, setExpanded] = useState(false);
   const sales = getSales(variant.id);
+  const outliers = outliersOf(variant.id);
   const shown = sales.slice(0, expanded ? 15 : 6);
 
   return (
@@ -62,8 +64,17 @@ export function RecentSales({ variant }: { variant: Variant }) {
                   {s.mileage ? `, ${km(s.mileage)}` : ""}
                   {s.url && linkNote(s.url) ? <span className="text-faint"> · {linkNote(s.url)}</span> : null}
                 </div>
+                {outliers.has(s.id) && (
+                  <div className="mt-0.5 text-[13px] text-ink/80">
+                    {t("Nicht im Marktwert", "Not in the market value")}:{" "}
+                    {t(
+                      `Preis ${Math.round(Math.abs(outliers.get(s.id)!) * 100)} % ${outliers.get(s.id)! > 0 ? "über" : "unter"} vergleichbaren Fahrzeugen (Sonderausführung, Zustand oder Einzelfall)`,
+                      `price ${Math.round(Math.abs(outliers.get(s.id)!) * 100)} % ${outliers.get(s.id)! > 0 ? "above" : "below"} comparable cars (special version, condition or one-off)`,
+                    )}
+                  </div>
+                )}
               </div>
-              <div className="text-right text-[18px]">{s.price ? <Money value={s.price} /> : <span className="text-[14px] text-faint italic">{t("nicht verkauft", "not sold")}</span>}</div>
+              <div className={"text-right text-[18px]" + (outliers.has(s.id) ? " text-muted line-through decoration-1" : "")}>{s.price ? <Money value={s.price} /> : <span className="text-[14px] text-faint italic">{t("nicht verkauft", "not sold")}</span>}</div>
             </li>
           ))}
         </ul>

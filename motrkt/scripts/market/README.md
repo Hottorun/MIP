@@ -44,7 +44,12 @@ eindeutige Modelle). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
    einer Variante nicht weiter verschieben, als es der gemessene Unterschied zwischen den Märkten erlaubt.
 4. **Aktualität**: Innerhalb eines Kanals zählen jüngere Preise mehr (Gewicht `exp(−Alter/2 Jahre)`).
 5. **Eigener Verlauf** ab 12 Belegen (zum Segmentindex hin geschrumpft), sonst folgt die Kurve dem Segment.
-6. **Mindestens 3 Belege** für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
+6. **Unplausible Preise raus**: Classic-Trader-Inserate, die laut Inserat Nachbau, Umbau, Rennwagen, Projekt-,
+   Teile- oder Unfallfahrzeug sind (Merkmale `isReplica`/`isConverted`/`isRacingCar` und Titel/Beschreibung des
+   Verkäufers, `ctparse.py`), gehen nicht ein. Danach fällt jeder Preis heraus, der weiter als 2 × die gemessene
+   Streuung seiner Quelle vom Niveau der Variante entfernt liegt, höchstens Faktor 2 in beide Richtungen
+   (`OUT_K`, `OUT_MAX`). Die App zeigt alle ausgeschlossenen Belege mit Grund.
+7. **Mindestens 3 Belege** für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
    Empfehlung, sondern nur die Einzelbelege.
 
 Alle Zwischenergebnisse (Abstände, Streuungen, Gewichte, Kanalanteile je Variante) stehen in `market-model.json` und

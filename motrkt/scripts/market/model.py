@@ -28,6 +28,9 @@ AS_OF = dt.date(2026, 11, 9)
 MIN_N = 3          # observations needed for a published value
 OWN_MIN = 12       # observations needed for an own price path
 RECENCY = 2.0      # e-folding time (years) of the recency weight in the level estimate
+OUT_K = 2.0        # a price farther than OUT_K x the scatter of its source from the variant's level is left out ...
+OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way
+OUT_MIN_N = 5      # below this many records only the factor-2 limit applies
 EUROPE = {"DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "PT", "GB", "IE", "DK", "SE", "NO", "FI", "PL", "CZ", "SK", "HU", "SI", "HR", "MC", "LI", "GR", "EE", "LV", "LT", "RO", "BG"}
 EU_CUR = {"EUR", "GBP", "CHF", "SEK", "DKK", "NOK"}
 CHANNELS = ["EU_AUC", "US_AUC", "EU_ASK"]
@@ -110,7 +113,7 @@ for a in latest.values():
     if not eur: continue
     asks.append(dict(id=a["id"], variant=a["variant"], date=a["day"], eur=round(eur), price=a["price"], cur=a["cur"], km=a.get("km"), year=a["year"],
                      title="Porsche %s" % a["model"], seller=a["seller"], sellerName=a.get("sellerName"), country=a["country"], body=a.get("body"),
-                     url=a["url"], source="Classic Trader"))
+                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText")))
 
 # hand-recorded listings and sales (mobile.de, Elferspot, Kleinanzeigen, dealers): scripts/market/manual/*.csv
 for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
@@ -126,7 +129,7 @@ for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
         row = dict(id="M-%s-%d" % (os.path.basename(fn).split(".")[0], i), variant=vid, date=r["datum"], eur=round(eur), price=float(r["preis"]),
                    cur=r.get("waehrung") or "EUR", km=int(r["km"]) if (r.get("km") or "").isdigit() else None, year=int(r["baujahr"]),
                    title="Porsche %s" % r["fahrzeug"], seller=r.get("anbieter") or "", sellerName=None, country=(r.get("land") or "DE").upper(),
-                   body=None, url=r.get("url") or "", source=r.get("quelle") or "manuell")
+                   body=None, url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None)
         if (r.get("art") or "Angebot").lower().startswith("verkauf"):
             obs.append(dict(variant=vid, date=r["datum"], eur=row["eur"], ch="EU_AUC", house=row["source"], lot=row["id"], body=None, src="manual"))
         else:
@@ -143,7 +146,10 @@ for a in sorted(asks, key=lambda a: (a["date"], str(a["id"]).zfill(12)), reverse
 print("asks", len(asks), "after removing duplicate cars", len(uniq))
 asks = uniq
 
+# listings that are no genuine complete car of the variant (replica, conversion, project, accident damage; see
+# ctparse.py) are shown in the app but do not enter the value
 for a in asks:
+    if a.get("excluded"): continue
     obs.append(dict(variant=a["variant"], date=a["date"], eur=a["eur"], ch="EU_ASK", house=a["source"], lot=a["id"], body=a.get("body"), src="ask"))
 
 # de-duplicate auction results reported twice (same variant, price within 0.5 %, within 10 days)
@@ -349,11 +355,22 @@ result = {"asOf": AS_OF.isoformat(), "grid": [ms(d) for d in GRID_DATES], "varia
           "sources": dict(collections.Counter(s["house"] for s in obs).most_common()),
           "offsets": {k: {c: round(v, 4) for c, v in d.items()} for k, d in delta.items()}, "offsetPairs": dinfo,
           "scatter": {c: round(x, 4) for c, x in SD.items()}, "bias": {c: round(math.sqrt(x), 4) for c, x in TAU2.items()}, "biasPairs": tauinfo, "minN": MIN_N}
+excluded_all = []
 for v, l in byv.items():
     g = l[0]["g"]; gi = g if g in idx else PARENT[g]; f = idx[gi]; k = l[0]["k"]
     base = [s["y"] - interp(GRID, f, s["t"]) - delta[k][s["ch"]] for s in l]
-    a = median(base)
-    keep = [(s, b) for s, b in zip(l, base) if abs(b - a) < 1.0]
+    # Implausible prices, too high or too low: farther from the variant's level (time-adjusted, channel gap removed)
+    # than OUT_K times the measured scatter of their source. Two passes, so that one extreme price does not move the
+    # level the others are judged by. With few records only the hard limit applies (factor 2 either way).
+    keep = list(zip(l, base))
+    for _ in range(2):
+        a = median([b for _, b in keep])
+        lim = lambda s: min(OUT_K * SD[s["ch"]], OUT_MAX) if len(keep) >= OUT_MIN_N else OUT_MAX
+        keep = [(s, b) for s, b in zip(l, base) if abs(b - a) <= lim(s)]
+        if not keep: keep = list(zip(l, base)); break
+    kept_ids = {id(s) for s, _ in keep}
+    out_v = [{"id": s["lot"], "eur": s["eur"], "dev": round(math.exp(b - a) - 1, 3), "ch": s["ch"]} for s, b in zip(l, base) if id(s) not in kept_ids]
+    excluded_all.extend(dict(x, variant=v) for x in out_v)
     n = len(keep)
     # level per channel (recency-weighted only for large samples), then combined by precision
     mc, prec = {}, {}
@@ -399,6 +416,7 @@ for v, l in byv.items():
         "own": n >= OWN_MIN, "houses": dict(collections.Counter(s["house"] for s, _ in keep).most_common()),
         "gearbox": {}, "body": eff("body") if ok else {},
         "series": [round(x) for x in series] if ok else None,
+        "out": out_v,
     }
 for v, _ in json.load(open(os.path.join(HERE, "variant_ids.json"))):
     if v not in result["variants"]:
@@ -408,7 +426,13 @@ json.dump(result, open(OUT, "w"), ensure_ascii=False, separators=(",", ":"))
 
 # asks used, for the evidence list in the app (newest first)
 known = {v for v, _ in json.load(open(os.path.join(HERE, "variant_ids.json")))}
+price_out = {x["id"]: x for x in excluded_all if x["ch"] == "EU_ASK"}
+for a in asks:
+    if not a.get("excluded") and a["id"] in price_out:
+        d = price_out[a["id"]]["dev"]
+        a["excluded"] = "Preis %d %% %s dem Niveau vergleichbarer Fahrzeuge" % (round(abs(d) * 100), "über" if d > 0 else "unter")
 asks = sorted((a for a in asks if a["variant"] in known), key=lambda a: (a["variant"], -a["eur"]))
-json.dump([{k: a[k] for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "seller", "sellerName", "country", "url", "source")} for a in asks],
+json.dump([{k: a.get(k) for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "seller", "sellerName", "country", "url", "source", "excluded", "note")} for a in asks],
           open(OUT_ASKS, "w"), ensure_ascii=False, separators=(",", ":"))
+print("price outliers left out:", collections.Counter(x["ch"] for x in excluded_all), "listings flagged by text:", sum(1 for a in asks if a.get("excluded") and not a["id"] in price_out))
 print(sum(1 for x in result["variants"].values() if x["value"]), "variants with a value;", len(obs), "observations;", result["channels"])

@@ -16,7 +16,7 @@ against the car (build year and make in the house's own lot title).
 - Artcurial: robots.txt excludes the motorcar pages, no link is built.
 Results are cached in WORK/web/links/, so a rerun only looks up new sales. One request per second.
 """
-import gzip, json, os, re, sys, time, urllib.error, urllib.request
+import gzip, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 DELAY = 1.0
@@ -41,7 +41,10 @@ def get(url, follow=True):
                 if r.headers.get("Content-Encoding") == "gzip": body = gzip.decompress(body)
                 return r.status, body, r.geturl()
         except urllib.error.HTTPError as e:
-            if e.code in (301, 302, 303, 307, 308): return e.code, b"", e.headers.get("Location") or ""
+            if e.code in (301, 302, 303, 307, 308):
+                loc = urllib.parse.urljoin(url, e.headers.get("Location") or "")
+                # urllib does not follow 308 (Bonhams uses it): follow by hand
+                return get(loc, follow) if follow and loc and loc != url else (e.code, b"", loc)
             if e.code in (404, 410): return e.code, b"", ""
             time.sleep(5 * (k + 1))
         except Exception as e:
@@ -68,7 +71,7 @@ events = {}
 for r in sales:
     aid = r["lot"].split("-")[1]
     events.setdefault(aid, {"event": r["event"], "date": r["date"], "house": r["house"], "rows": []})["rows"].append(r)
-links, links_p = cache("links.json", {})
+links, links_p = {}, os.path.join(CACHE, "links.json")  # rebuilt each run from the caches
 
 
 def ok_title(text, year):
@@ -126,7 +129,8 @@ def broad_arrow():
 def gooding():
     st, body, _ = get("https://www.goodingco.com/sitemap.xml")
     if st != 200: print("Gooding sitemap", st); return
-    slugs = sorted(set(re.findall(r"goodingco\.com/lot/([^<]*porsche[^<]*)</loc>", body.decode("utf-8", "replace"))))
+    years = {str(r["year"]) for ev in events.values() if ev["house"].startswith("Gooding") for r in ev["rows"]}
+    slugs = sorted(x for x in set(re.findall(r"goodingco\.com/lot/([^<]*porsche[^<]*)</loc>", body.decode("utf-8", "replace"))) if x[:4] in years)
     lots, p = cache("gooding.json", {})
     for i, s in enumerate(slugs):
         if s in lots: continue
@@ -143,18 +147,25 @@ def gooding():
         lots[s] = lot
         if i % 50 == 0: save(lots, p); print("Gooding", i, "/", len(slugs), flush=True)
     save(lots, p)
-    idx = {}
+    by_sale = {}
     for s, d in lots.items():
-        if not d or not d.get("lot"): continue
-        m = re.search(r"(20\d\d)$", d["sale"])
-        if m: idx.setdefault((m.group(1), int(d["lot"])), []).append((s, d))
+        if d and d.get("lot") and d.get("sale"):
+            by_sale.setdefault(d["sale"], {})[int(d["lot"])] = (s, d)
     n = 0
     for aid, ev in events.items():
         if not ev["house"].startswith("Gooding"): continue
+        # Gooding holds several sales a year: take the sale of that year whose lot numbers match most of the event's cars
+        best = None
+        for sale, lots_s in by_sale.items():
+            if not sale.endswith(ev["date"][:4]): continue
+            hits = sum(1 for r in ev["rows"] if (lambda x: x and ok_title(x[1]["title"], r["year"]))(lots_s.get(lotnum(r["lot"].split("-", 2)[2]))))
+            if hits and (not best or hits > best[0]): best = (hits, sale)
+        if not best or best[0] < max(2, len(ev["rows"]) // 3): continue
+        lots_s = by_sale[best[1]]
         for r in ev["rows"]:
-            cand = [s for s, d in idx.get((ev["date"][:4], lotnum(r["lot"].split("-", 2)[2])), []) if ok_title(d["title"], r["year"])]
-            if len(cand) == 1:
-                links[r["lot"]] = {"url": "https://www.goodingco.com/lot/%s" % cand[0], "level": "lot"}; n += 1
+            x = lots_s.get(lotnum(r["lot"].split("-", 2)[2]))
+            if x and ok_title(x[1]["title"], r["year"]):
+                links[r["lot"]] = {"url": "https://www.goodingco.com/lot/%s" % x[0], "level": "lot"}; n += 1
     print("Gooding:", n, "lot links", flush=True)
 
 
@@ -172,6 +183,7 @@ def bonhams():
         if k not in dates:
             st, b, _ = get("https://www.bonhams.com/auction/%d/" % ids[i])
             m = re.search(rb'"datetime":"(\d{4}-\d\d-\d\d)', b)
+            if st is None: return None   # network error: not cached, tried again next run
             dates[k] = m.group(1).decode() if m else None
             save(dates, pd)
         return dates[k]
@@ -180,10 +192,37 @@ def bonhams():
         k = "%s/%s" % (sid, lot)
         if k not in lotc:
             st, _, loc = get("https://www.bonhams.com/auction/%s/lot/%s/" % (sid, lot), follow=False)
+            if st is None: return ""   # network error: not cached
             lotc[k] = loc if st in (301, 302, 303, 307, 308) else ""
             save(lotc, pl)
         return lotc[k].replace("-", " ")
 
+    def days(d): return int(d[:4]) * 372 + int(d[5:7]) * 31 + int(d[8:10])
+
+    # Bonhams' public list of its car sales (cars.bonhams.com/auctions/results/, back to spring 2019): id and date
+    car_sales = []
+    st, b, _ = get("https://cars.bonhams.com/auctions/results/?page=10")
+    m = re.search(rb'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', b, re.S)
+    if st == 200 and m:
+        try:
+            for page in json.loads(m.group(1))["props"]["pageProps"]["pagesOfAuctions"]:
+                for a in page:
+                    car_sales.append((a["id"], a["dates"]["start"]["datetime"][:10], a["dates"]["end"]["datetime"][:10]))
+        except (KeyError, TypeError, ValueError):
+            pass
+    print("Bonhams car sales listed:", len(car_sales), flush=True)
+    for aid, ev in events.items():
+        if ev["house"] != "Bonhams" or sale_of.get(aid): continue
+        probes = ev["rows"][:3]
+        for sid, start, end in car_sales:
+            if days(start) - 3 <= days(ev["date"]) <= days(end) + 3 and any(
+                    ok_title(lot_title(sid, lotnum(r["lot"].split("-", 2)[2])), r["year"]) for r in probes):
+                sale_of[aid] = sid
+                save(sale_of, ps)
+                print("Bonhams", ev["event"], "->", sid, "(list)", flush=True)
+                break
+
+    # older sales: search the sale numbers by date (they grow with time, roughly)
     for aid, ev in events.items():
         if ev["house"] != "Bonhams" or aid in sale_of: continue
         probe = ev["rows"][0]
@@ -225,10 +264,14 @@ def bonhams():
 # ------------------------------------------------------------------------------------------------ RM Sotheby's
 RM_CODES = [("amelia", ["am"]), ("arizona", ["az"]), ("monterey", ["mo"]), ("paris", ["pa"]), ("london", ["lf", "ld", "lo"]),
             ("monaco", ["mc"]), ("villa erba", ["ve"]), ("hershey", ["hf", "he"]), ("fort lauderdale", ["fl"]), ("essen", ["es"]),
-            ("lake como", ["lc"]), ("villa d'este", ["lc"]), ("milan", ["mi"]), ("abu dhabi", ["ad"]), ("dubai", ["du"]),
-            ("le mans", ["lm"]), ("hilton head", ["hh"]), ("santa monica", ["sm"]), ("las vegas", ["lv"]), ("shanghai", ["sh"]),
-            ("toronto", ["tr", "to"]), ("auburn", ["au"]), ("dallas", ["dl"]), ("st. moritz", ["st"]), ("battersea", ["lf"]),
-            ("munich", ["mu"]), ("riyadh", ["ry"]), ("cernobbio", ["lc"])]
+            ("lake como", ["lc"]), ("villa d'este", ["lc"]), ("miami", ["mi"]), ("milan", ["ml", "mn", "mi"]),
+            ("abu dhabi", ["ad", "ab", "ah", "ud"]), ("dubai", ["du", "db", "dx", "dc"]), ("le mans", ["lm", "le"]),
+            ("hilton head", ["hh"]), ("santa monica", ["sm"]), ("las vegas", ["lv"]), ("shanghai", ["sh"]),
+            ("toronto", ["tr", "to"]), ("auburn", ["au"]), ("dallas", ["dl"]), ("st. moritz", ["st", "sm", "mz"]),
+            ("battersea", ["lf"]), ("munich", ["mu", "mn", "mc", "de"]), ("riyadh", ["ry"]), ("cernobbio", ["lc"]),
+            ("tegernsee", ["tc", "te", "tg"]), ("zurich", ["zu", "zh", "zr", "zc"]), ("new york", ["ny"]),
+            ("palm beach", ["pb", "pl"]), ("cliveden", ["cv", "cl", "ch"]), ("woodcote", ["wc", "wp", "wo"]),
+            ("petersen", ["pe", "ps", "la"]), ("duemila ruote", ["mi", "dr"]), ("european sale", ["eu", "es"])]
 
 
 def rm():
@@ -236,7 +279,7 @@ def rm():
     n = 0
     for aid, ev in events.items():
         if not ev["house"].startswith("RM"): continue
-        if aid not in codes:
+        if not codes.get(aid):
             name = ev["event"].lower()
             yy = ev["date"][2:4]
             found = None
@@ -246,7 +289,10 @@ def rm():
                         st, b, url = get("https://rmsothebys.com/auctions/%s%s/" % (c, yy))
                         t = re.search(rb"<title>([^<]*)", b)
                         t = t.group(1).decode("utf-8", "replace").lower() if t else ""
-                        if st == 200 and ev["date"][:4] in t and any(w in t for w in kw.split()):
+                        # the year is in the code; titles without a year ("The Tegernsee Auction") are fine, a title
+                        # naming another year is not
+                        years = re.findall(r"\b(?:19|20)\d\d\b", t)
+                        if st == 200 and all(w in t for w in kw.split()) and (not years or ev["date"][:4] in years):
                             found = c + yy; break
                 if found: break
             codes[aid] = found

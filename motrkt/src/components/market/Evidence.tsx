@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { Variant } from "../../data/types";
 import { marketBasis, MODEL_OFFSET_PAIRS, type Channel } from "../../data/real/model";
-import { asksFor } from "../../data/real/asks";
+import { asksFor, type Ask } from "../../data/real/asks";
 import { date, km, num, pct } from "../../lib/format";
 import { Money, Section } from "../ui";
 import { isEn, t } from "../../i18n";
@@ -32,7 +32,9 @@ export function Evidence({ variant }: { variant: Variant }) {
   if (!b) return null;
   const channels = (["EU_AUC", "EU_ASK", "US_AUC"] as Channel[]).filter((c) => b.channels[c] > 0);
   const off = b.offsets;
-  const shown = all ? asks : asks.slice(0, 8);
+  const used = asks.filter((a) => !a.excluded);
+  const out = asks.filter((a) => a.excluded);
+  const shown = all ? used : used.slice(0, 8);
   const pairs = MODEL_OFFSET_PAIRS[b.family]?.pairs ?? {};
   const nVariants = (k: string) => pairs[k]?.[1];
 
@@ -102,38 +104,42 @@ export function Evidence({ variant }: { variant: Variant }) {
       )}
 
       <h3 className="mt-10 text-[17px]">
-        {t("Angebote in Europa", "Listings in Europe")} <span className="text-muted">({num(asks.length)})</span>
+        {t("Angebote in Europa", "Listings in Europe")} <span className="text-muted">({num(used.length)})</span>
       </h3>
-      {asks.length === 0 ? (
+      {used.length === 0 ? (
         <p className="mt-3 text-[14.5px] text-muted">
           {t("Derzeit ist kein Angebot dieser Variante mit Preis erfasst.", "No priced listing of this variant is on record at the moment.")}
         </p>
       ) : (
         <ul className="mt-3 border-t border-line">
           {shown.map((a) => (
-            <li key={a.id} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-3.5">
-              <div className="min-w-0">
-                <a href={a.url} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-baseline gap-1 font-serif text-[16px] hover:text-gold" title={t("Inserat öffnen", "Open listing")}>
-                  <span className="truncate">{a.title}</span>
-                  <ArrowUpRight className="size-3.5 shrink-0 self-center text-faint" strokeWidth={1.5} />
-                </a>
-                <div className="mt-0.5 text-[13px] text-muted">
-                  {t("Baujahr", "Built")} {a.year} · {a.source}, {t("gesehen", "seen")} {date(Date.parse(a.date))} · {region(a.country)} · {a.seller === "Händler" ? t("Händler", "Dealer") : t("Privat", "Private")}
-                  {a.km ? ` · ${km(a.km)}` : ""}
-                </div>
-              </div>
-              <div className="text-right text-[17px]">
-                <Money value={a.eur} />
-                {a.cur !== "EUR" && <span className="block text-[12px] text-faint">{`${num(a.price)} ${a.cur}`}</span>}
-              </div>
-            </li>
+            <AskRow key={a.id} a={a} />
           ))}
         </ul>
       )}
-      {asks.length > 8 && (
+      {used.length > 8 && (
         <button className="mt-4 text-[14px] text-muted hover:text-ink" onClick={() => setAll((x) => !x)}>
-          {all ? t("Weniger anzeigen", "Show less") : t(`Alle ${asks.length} anzeigen`, `Show all ${asks.length}`)}
+          {all ? t("Weniger anzeigen", "Show less") : t(`Alle ${used.length} anzeigen`, `Show all ${used.length}`)}
         </button>
+      )}
+
+      {out.length > 0 && (
+        <details className="mt-8">
+          <summary className="cursor-pointer text-[15px] text-muted hover:text-ink">
+            {t(`Nicht berücksichtigte Angebote (${out.length})`, `Listings left out (${out.length})`)}
+          </summary>
+          <p className="mt-2 max-w-3xl text-[13px] text-faint">
+            {t(
+              "Nachbauten, Umbauten, Projekt- und Unfallfahrzeuge sowie Preise, die weit über oder unter vergleichbaren Fahrzeugen liegen, gehen nicht in den Marktwert ein. Grundlage sind die Angaben im Inserat und der Preisvergleich.",
+              "Replicas, conversions, project and accident cars, and prices far above or below comparable cars do not enter the market value. This rests on what the listing states and on the price comparison.",
+            )}
+          </p>
+          <ul className="mt-3 border-t border-line">
+            {out.map((a) => (
+              <AskRow key={a.id} a={a} />
+            ))}
+          </ul>
+        </details>
       )}
       <p className="mt-6 max-w-3xl text-[12.5px] leading-relaxed text-faint">
         {t(
@@ -142,5 +148,50 @@ export function Evidence({ variant }: { variant: Variant }) {
         )}
       </p>
     </Section>
+  );
+}
+
+/** Reasons from scripts/market (German) in the current language. */
+export function reasonText(r: string): string {
+  if (!isEn()) return r;
+  const price = /^Preis (\d+) % (über|unter) dem Niveau vergleichbarer Fahrzeuge$/.exec(r);
+  if (price) return `price ${price[1]} % ${price[2] === "über" ? "above" : "below"} comparable cars`;
+  const map: Record<string, string> = {
+    "laut Inserat Nachbau (als Recreation gekennzeichnet)": "replica according to the listing (marked as recreation)",
+    "laut Inserat Umbau (als Umbau/Special gekennzeichnet)": "conversion according to the listing (marked as special)",
+    "laut Inserat Rennwagen": "race car according to the listing",
+    "laut Inserat Nachbau": "replica according to the listing",
+    "laut Inserat Umbau": "conversion according to the listing",
+    "laut Inserat Projekt- oder Teilefahrzeug": "project or parts car according to the listing",
+    "laut Inserat Unfall- oder Schadenfahrzeug": "accident or damaged car according to the listing",
+    "laut Inserat ohne Motor oder nicht fahrbereit": "without engine or not running according to the listing",
+  };
+  return map[r] ?? r;
+}
+
+function AskRow({ a }: { a: Ask }) {
+  return (
+    <li className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-3.5">
+      <div className="min-w-0">
+        <a href={a.url} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-baseline gap-1 font-serif text-[16px] hover:text-gold" title={t("Inserat öffnen", "Open listing")}>
+          <span className="truncate">{a.title}</span>
+          <ArrowUpRight className="size-3.5 shrink-0 self-center text-faint" strokeWidth={1.5} />
+        </a>
+        <div className="mt-0.5 text-[13px] text-muted">
+          {t("Baujahr", "Built")} {a.year} · {a.source}, {t("gesehen", "seen")} {date(Date.parse(a.date))} · {region(a.country)} · {a.seller === "Händler" ? t("Händler", "Dealer") : t("Privat", "Private")}
+          {a.km ? ` · ${km(a.km)}` : ""}
+        </div>
+        {a.excluded && (
+          <div className="mt-1 text-[13px] text-ink/80">
+            {t("Nicht berücksichtigt", "Left out")}: {reasonText(a.excluded)}
+            {a.note && <span className="block truncate text-[12.5px] text-faint italic">„{a.note}“</span>}
+          </div>
+        )}
+      </div>
+      <div className={"text-right text-[17px]" + (a.excluded ? " text-muted line-through decoration-1" : "")}>
+        <Money value={a.eur} />
+        {a.cur !== "EUR" && <span className="block text-[12px] text-faint no-underline">{`${num(a.price)} ${a.cur}`}</span>}
+      </div>
+    </li>
   );
 }
