@@ -1,5 +1,5 @@
 import { CATALOG, PAINTS } from "./catalog";
-import type { Brand, Generation, Model, ModelCategory, Variant, VariantOption, VariantSeed } from "./types";
+import type { Body, Brand, Generation, Model, ModelCategory, Variant, VariantOption, VariantSeed } from "./types";
 import { rng, slug } from "../lib/random";
 import { launchPhotos, officialLinks, realData, type Photo } from "./real";
 import { isBrandEnabled } from "../config";
@@ -367,4 +367,20 @@ export const measuredVariants = () => variants.filter((v) => v.measured);
 export function productionLabel(v: Variant, unitDe = "Stück", unitEn = "units") {
   const note = v.productionNote ? ` (${tr(v.productionNote)})` : "";
   return t(`${num(v.production)} ${unitDe}${note}`, `${num(v.production)} ${unitEn}${note}`);
+}
+
+/** Body styles a variant was built in, when there is more than one (the body switcher on the variant page). */
+export function bodyChoices(v: Variant): Body[] {
+  const bodies = (Object.keys(v.body) as Body[]).filter((b) => (v.body[b] ?? 0) > 0);
+  return bodies.length >= 2 ? bodies : [];
+}
+
+/**
+ * Measured price effect of a body style against the variant's market value (median of the time-adjusted prices of
+ * that body against all, at least 6 records), or null when there are too few records of it.
+ */
+export function bodyEffect(v: Variant, body: Body | null): { factor: number; n: number } | null {
+  if (!body || !v.measured) return null;
+  const e = marketBasis(v.id)?.body[body];
+  return e ? { factor: 1 + e[0], n: e[1] } : null;
 }

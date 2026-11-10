@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import type { Variant } from "../../data/types";
+import type { Body, Variant } from "../../data/types";
 import { marketBasis, MODEL_OFFSET_PAIRS, type Channel } from "../../data/real/model";
 import { asksFor, type Ask } from "../../data/real/asks";
 import { daysBetween, historyOf, TRACKING } from "../../data/real/listingHistory";
 import { date, km, num, pct } from "../../lib/format";
 import { Money, Section } from "../ui";
 import { isEn, t } from "../../i18n";
+import { tr } from "../../i18n/terms";
 
 const region = (iso: string) => {
   try {
@@ -26,9 +27,9 @@ const CHANNEL_LABEL: Record<Channel, () => string> = {
  * Where the market value comes from: records per kind of evidence, their level today, their weight, and the
  * individual listings with links. Auction results are listed under "Recent sales".
  */
-export function Evidence({ variant }: { variant: Variant }) {
+export function Evidence({ variant, body = null }: { variant: Variant; body?: Body | null }) {
   const b = marketBasis(variant.id);
-  const asks = asksFor(variant.id);
+  const asks = asksFor(variant.id).filter((a) => !body || a.body === body);
   const [all, setAll] = useState(false);
   if (!b) return null;
   const channels = (["EU_AUC", "EU_ASK", "US_AUC"] as Channel[]).filter((c) => b.channels[c] > 0);
@@ -105,7 +106,8 @@ export function Evidence({ variant }: { variant: Variant }) {
       )}
 
       <h3 className="mt-10 text-[17px]">
-        {t("Angebote in Europa", "Listings in Europe")} <span className="text-muted">({num(used.length)})</span>
+        {t("Angebote in Europa", "Listings in Europe")}
+        {body ? ` · ${tr(body)}` : ""} <span className="text-muted">({num(used.length)})</span>
       </h3>
       {used.length === 0 ? (
         <p className="mt-3 text-[14.5px] text-muted">

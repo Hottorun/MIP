@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
-import { brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
-import type { Variant } from "../../data/types";
+import { bodyChoices, bodyEffect, brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
+import type { Body, Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { marketBasis, MIN_RECORDS } from "../../data/real/model";
 import { useStore } from "../../state/store";
@@ -14,7 +14,9 @@ import { isEn, t } from "../../i18n";
 import { paintName, tr, photoCaption } from "../../i18n/terms";
 
 /** Product-page top: photograph on the left, a calm summary column on the right. */
-export function Hero({ variant, picked }: { variant: Variant; picked: string[] }) {
+type BodyProps = { body: Body | null; onBody: (b: Body | null) => void };
+
+export function Hero({ variant, picked, body, onBody }: { variant: Variant; picked: string[] } & BodyProps) {
   const brand = brandById.get(variant.brandId)!;
   const model = modelById.get(variant.modelId)!;
   const gen = generationById.get(variant.generationId)!;
@@ -41,20 +43,21 @@ export function Hero({ variant, picked }: { variant: Variant; picked: string[] }
           {variant.marketPhotos.length ? <Gallery variant={variant} /> : <IllustratedGallery variant={variant} />}
           {variant.officialLink && <OfficialLink variant={variant} />}
         </div>
-        <Summary variant={variant} picked={picked} />
+        <Summary variant={variant} picked={picked} body={body} onBody={onBody} />
       </div>
     </div>
   );
 }
 
-function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
+function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: string[] } & BodyProps) {
   const { watchlist, toggleWatch, alerts, toast } = useStore();
   const [alertOpen, setAlertOpen] = useState(false);
   const brand = brandById.get(variant.brandId)!;
   const model = modelById.get(variant.modelId)!;
   const gen = generationById.get(variant.generationId)!;
   const m = getMetrics(variant.id);
-  const factor = optionFactor(variant, picked);
+  const eff = bodyEffect(variant, body);
+  const factor = optionFactor(variant, picked) * (eff?.factor ?? 1);
   const watched = watchlist.includes(variant.id);
   const alertCount = alerts.filter((a) => a.variantId === variant.id).length;
   const lineage = gen.name !== model.name ? `${brand.name} ${modelName(model)} (${genName(gen)})` : `${brand.name} ${modelName(model)}`;
@@ -81,12 +84,19 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
       <p className="text-[14px] text-muted">{lineage}</p>
       <h1 className="mt-1 font-display text-[44px] leading-[1.05] sm:text-[52px]">{variantName(variant)}</h1>
       <p className="mt-2 font-serif text-[16px] text-muted italic">{yearsLabel(variant.years)}</p>
+      <BodySwitch variant={variant} body={body} onBody={onBody} />
 
       {!variant.measured ? (
         <NoValue variant={variant} />
       ) : (
       <div className="mt-8 border-t border-line pt-6">
-        <div className="text-[13px] text-muted">{picked.length ? t("Schätzwert mit Ausstattung", "Estimate with options") : t("Marktwert Deutschland", "Market value, Germany")}</div>
+        <div className="text-[13px] text-muted">
+          {picked.length
+            ? t("Schätzwert mit Ausstattung", "Estimate with options")
+            : body && eff
+              ? t(`Marktwert ${tr(body)}`, `Market value, ${tr(body)}`)
+              : t("Marktwert Deutschland", "Market value, Germany")}
+        </div>
         <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <Money value={Math.round((m.value * factor) / 1000) * 1000} className="text-[40px] leading-none" />
           {picked.length ? (
@@ -102,6 +112,19 @@ function Summary({ variant, picked }: { variant: Variant; picked: string[] }) {
             </span>
           )}
         </div>
+        {body && (
+          <p className="mt-2 text-[13px] text-muted">
+            {eff
+              ? t(
+                  `${pct(eff.factor - 1)} gegenüber allen Karosserien dieser Variante, gemessen an ${num(eff.n)} Belegen.`,
+                  `${pct(eff.factor - 1)} against all body styles of this variant, measured from ${num(eff.n)} records.`,
+                )
+              : t(
+                  `Zu wenige Belege für einen eigenen Wert als ${tr(body)}; gezeigt ist der Wert über alle Karosserien.`,
+                  `Too few records for a value of the ${tr(body)} alone; shown is the value across all body styles.`,
+                )}
+          </p>
+        )}
         <p className="mt-2 text-[13px] text-faint">
           {picked.length ? `${t("Median ohne Optionen", "Median without options")} ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
           <BasisLine variant={variant} />{" · "}
@@ -500,6 +523,26 @@ function NoValue({ variant }: { variant: Variant }) {
               `Only ${num(n)} ${n === 1 ? "record" : "records"}${variant.years[0] >= 2015 ? "" : " since 2015"}; a market value needs at least ${MIN_RECORDS}. The individual records are listed below.`,
             )}
       </p>
+    </div>
+  );
+}
+
+/** Coupé · Cabriolet · Targa …: switches value, chart, sales and listings to one body style. */
+function BodySwitch({ variant, body, onBody }: { variant: Variant } & BodyProps) {
+  const choices = bodyChoices(variant);
+  if (choices.length === 0) return null;
+  return (
+    <div className="mt-5 inline-flex flex-wrap rounded-full border border-line p-0.5 text-[13.5px]" role="group" aria-label={t("Karosserie", "Body style")}>
+      {[null, ...choices].map((b) => (
+        <button
+          key={b ?? "all"}
+          aria-pressed={body === b}
+          onClick={() => onBody(b)}
+          className={cn("rounded-full px-3.5 py-1.5 transition-colors", body === b ? "bg-ink text-bg" : "text-muted hover:text-ink")}
+        >
+          {b ? tr(b) : t("Alle", "All")}
+        </button>
+      ))}
     </div>
   );
 }

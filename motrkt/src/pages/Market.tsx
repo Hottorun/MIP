@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { getVariant, variantTitle } from "../data/db";
-import type { Variant } from "../data/types";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
+import { bodyChoices, getVariant, variantTitle } from "../data/db";
+import type { Body, Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { Hero } from "../components/market/Hero";
 import { ValuePanel } from "../components/market/ValuePanel";
@@ -49,17 +49,30 @@ export default function Market() {
 /** Keyed by variant, so the option selection starts empty for every car. */
 function MarketPage({ variant }: { variant: Variant }) {
   const [picked, setPicked] = useState<string[]>([]);
+  // Body switcher (Coupé, Cabriolet, Targa …): kept in the URL (?karosserie=cabriolet) so a view can be shared.
+  const [params, setParams] = useSearchParams();
+  const choices = bodyChoices(variant);
+  const body = choices.find((b) => b.toLowerCase().replace("é", "e") === params.get("karosserie")) ?? null;
+  const setBody = (b: Body | null) =>
+    setParams(
+      (p) => {
+        if (b) p.set("karosserie", b.toLowerCase().replace("é", "e"));
+        else p.delete("karosserie");
+        return p;
+      },
+      { replace: true, preventScrollReset: true },
+    );
   return (
     <div className="space-y-24">
-      <Hero variant={variant} picked={picked} />
-      <ValuePanel variant={variant} />
+      <Hero variant={variant} picked={picked} body={body} onBody={setBody} />
+      <ValuePanel variant={variant} body={body} />
       <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-2">
-        <RecentSales variant={variant} />
+        <RecentSales variant={variant} body={body} />
         <Assessment variant={variant} />
       </div>
-      <Evidence variant={variant} />
+      <Evidence variant={variant} body={body} />
       <Details variant={variant} picked={picked} onPick={setPicked} />
-      <Listings variant={variant} />
+      <Listings variant={variant} body={body} />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { variantShortTitle, variantTitle } from "../../data/db";
-import type { Variant } from "../../data/types";
+import type { Body, Variant } from "../../data/types";
 import { getSales } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import { outliersOf } from "../../data/real/model";
@@ -43,9 +43,9 @@ function linkTitle(url: string) {
   return t("Los beim Auktionshaus öffnen", "Open the lot at the auction house");
 }
 
-export function RecentSales({ variant }: { variant: Variant }) {
+export function RecentSales({ variant, body = null }: { variant: Variant; body?: Body | null }) {
   const [expanded, setExpanded] = useState(false);
-  const sales = getSales(variant.id);
+  const sales = getSales(variant.id).filter((s) => !body || s.body === body);
   const outliers = outliersOf(variant.id);
   const shown = sales.slice(0, expanded ? 15 : 6);
 
@@ -77,6 +77,7 @@ export function RecentSales({ variant }: { variant: Variant }) {
                 </div>
                 <div className="mt-0.5 text-[13px] text-muted">
                   {date(s.date)}, {tr(s.source)}
+                  {!body && Object.keys(variant.body).length > 1 ? `, ${tr(s.body)}` : ""}
                   {lotOf(s.id) ? `, ${t("Los", "Lot")} ${lotOf(s.id)}` : ""}
                   {s.mileage ? `, ${km(s.mileage)}` : ""}
                   {s.url && linkNote(s.url) ? <span className="text-faint"> · {linkNote(s.url)}</span> : null}

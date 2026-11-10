@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { variantTitle } from "../../data/db";
-import type { Variant } from "../../data/types";
+import type { Body, Variant } from "../../data/types";
 import { getListings } from "../../data/generate";
 import { useLiveListings } from "../../state/liveListings";
 import { km } from "../../lib/format";
@@ -9,10 +9,10 @@ import { Section, Money } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
-export function Listings({ variant }: { variant: Variant }) {
+export function Listings({ variant, body = null }: { variant: Variant; body?: Body | null }) {
   const live = useLiveListings();
   const liveForVariant = live.listings.filter((l) => l.variantId === variant.id);
-  const listings = liveForVariant.length ? liveForVariant : getListings(variant.id);
+  const listings = (liveForVariant.length ? liveForVariant : getListings(variant.id)).filter((l) => !body || l.body === body);
   if (listings.length === 0) return null;
   return (
     <Section

@@ -15,6 +15,8 @@ export type Ask = {
   km: number | null;
   year: number;
   title: string;
+  /** Coupé, Cabriolet, Targa or Roadster, when the listing states it. */
+  body: string | null;
   seller: string;
   sellerName: string | null;
   country: string;

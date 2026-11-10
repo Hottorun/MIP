@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { modelById, modelName } from "../../data/db";
-import type { Variant } from "../../data/types";
+import { bodyEffect, modelById, modelName } from "../../data/db";
+import type { Body, Variant } from "../../data/types";
 import { AS_OF, WEEK, getSeries } from "../../data/generate";
 import { SEGMENT_LABEL, marketBasis } from "../../data/real/model";
 import { getMetrics, modelIndex, type RangeKey } from "../../data/market";
@@ -18,7 +18,7 @@ const RANGE_OPTIONS = [
   { value: "Max" as const, get label() { return t("Gesamt", "All"); } },
 ];
 
-export function ValuePanel({ variant }: { variant: Variant }) {
+export function ValuePanel({ variant, body = null }: { variant: Variant; body?: Body | null }) {
   if (!variant.measured) {
     return (
       <Section title={t("Wertentwicklung", "Value history")}>
@@ -31,10 +31,13 @@ export function ValuePanel({ variant }: { variant: Variant }) {
       </Section>
     );
   }
-  return <ValueChart variant={variant} />;
+  return <ValueChart variant={variant} body={body} />;
 }
 
-function ValueChart({ variant }: { variant: Variant }) {
+function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) {
+  // Body switcher: the variant's curve moved to the measured level of that body style.
+  const eff = bodyEffect(variant, body);
+  const bf = eff?.factor ?? 1;
   const m = getMetrics(variant.id);
   const [range, setRange] = useState<"1J" | "5J" | "10J" | "Max">("5J");
   const model = modelById.get(variant.modelId)!;
@@ -48,10 +51,10 @@ function ValueChart({ variant }: { variant: Variant }) {
     // Model index rebased onto the variant's starting price so both lines share one euro axis.
     return pts.map((p) => ({
       t: p.t,
-      price: p.value,
-      model: m0 && md.has(p.t) ? (md.get(p.t)! / m0) * pts[0].value : null,
+      price: p.value * bf,
+      model: m0 && md.has(p.t) ? (md.get(p.t)! / m0) * pts[0].value * bf : null,
     }));
-  }, [variant.id, model.id, range]);
+  }, [variant.id, model.id, range, bf]);
 
   const change = data.length > 1 ? data[data.length - 1].price / data[0].price - 1 : 0;
   const short = range === "1J";
@@ -106,6 +109,14 @@ function ValueChart({ variant }: { variant: Variant }) {
         {t(`Alle ${modelName(model)}-Varianten zum Vergleich, auf denselben Startwert gesetzt`, `All ${modelName(model)} variants for comparison, rebased to the same starting value`)}
       </p>
       <BasisNote variant={variant} />
+      {body && eff && (
+        <p className="mt-1 text-[12.5px] leading-relaxed text-faint">
+          {t(
+            `Ansicht ${tr(body)}: der Verlauf der Variante, auf das gemessene Niveau der ${tr(body)}s umgerechnet (${pct(eff.factor - 1)}, ${num(eff.n)} Belege).`,
+            `${tr(body)} view: the variant's curve moved to the measured level of ${tr(body)}s (${pct(eff.factor - 1)}, ${num(eff.n)} records).`,
+          )}
+        </p>
+      )}
       <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line pt-6 sm:grid-cols-3">
         {stats.map((s) => (
           <div key={s.label}>

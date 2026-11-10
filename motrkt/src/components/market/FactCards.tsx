@@ -26,7 +26,7 @@ export function Details({ variant, picked, onPick }: { variant: Variant; picked:
       ),
     ],
   ];
-  const options = variant.options.filter((o) => !o.standard);
+  const options = variant.options.filter((o) => o.group !== "Karosserie" && !o.standard);
 
   return (
     <Section title={t("Daten und Ausstattung", "Specifications and options")}>
@@ -65,8 +65,8 @@ export function Details({ variant, picked, onPick }: { variant: Variant; picked:
 
 /** Value-relevant options as checkboxes; the estimate below (and in the summary at the top) follows the selection. */
 function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: string[]; onPick: (names: string[]) => void }) {
-  const options = variant.options.filter((o) => !o.standard && o.measured);
-  const unmeasured = variant.options.filter((o) => !o.standard && !o.measured);
+  const options = variant.options.filter((o) => o.group !== "Karosserie" && !o.standard && o.measured);
+  const unmeasured = variant.options.filter((o) => o.group !== "Karosserie" && !o.standard && !o.measured);
   const base = getMetrics(variant.id).value;
   const factor = optionFactor(variant, picked);
   const toggle = (name: string) => {
@@ -142,7 +142,7 @@ function OptionList({ variant }: { variant: Variant }) {
   return (
     <div>
       <h3 className="text-[17px]">{t("Wertrelevante Ausstattung", "Options that affect value")}</h3>
-      <Unmeasured options={variant.options.filter((o) => !o.standard && !o.measured)} />
+      <Unmeasured options={variant.options.filter((o) => o.group !== "Karosserie" && !o.standard && !o.measured)} />
     </div>
   );
 }

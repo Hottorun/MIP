@@ -23,6 +23,7 @@ S, OUT, OUT_ASKS = sys.argv[1], sys.argv[2], sys.argv[3]
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from classify import classify  # noqa: E402
+from classify import body as body_of  # noqa: E402
 
 AS_OF = dt.date.fromisoformat(os.environ.get("MIP_AS_OF") or dt.date.today().isoformat())  # cut-off day: today unless set
 MIN_N = 3          # observations needed for a published value
@@ -101,6 +102,14 @@ for s in json.load(open(S + "/web/sales_all.json")):
     ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer") else "US_AUC"
     obs.append(dict(variant=s["variant"], date=s["date"], eur=s["eur"], ch=ch, house=s["house"], lot=s["lot"], body=s.get("body"), src="auction"))
 
+def norm_body(b):
+    """Classic Trader body labels ("Cabriolet (Targa)", "Coupé (Rennwagen)") -> Coupé, Cabriolet, Targa or Roadster."""
+    if not b: return None
+    if "Targa" in b: return "Targa"
+    if "Roadster" in b or "Speedster" in b: return "Roadster"
+    return "Cabriolet" if b.startswith("Cabrio") else "Coupé" if b.startswith("Coup") else b
+
+
 # asking prices: keep each listing once (its latest snapshot), dated the last day it was seen
 asks_raw = json.load(open(S + "/web/asks.json")) if os.path.exists(S + "/web/asks.json") else []
 latest = {}
@@ -112,7 +121,7 @@ for a in latest.values():
     eur = to_eur(a["price"], a["cur"] or "EUR", a["day"])
     if not eur: continue
     asks.append(dict(id=a["id"], variant=a["variant"], date=a["day"], eur=round(eur), price=a["price"], cur=a["cur"], km=a.get("km"), year=a["year"],
-                     title="Porsche %s" % a["model"], seller=a["seller"], sellerName=a.get("sellerName"), country=a["country"], body=a.get("body"),
+                     title="Porsche %s" % a["model"], seller=a["seller"], sellerName=a.get("sellerName"), country=a["country"], body=norm_body(a.get("body")),
                      url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText")))
 
 # hand-recorded listings and sales (mobile.de, Elferspot, Kleinanzeigen, dealers): scripts/market/manual/*.csv
@@ -129,7 +138,7 @@ for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
         row = dict(id="M-%s-%d" % (os.path.basename(fn).split(".")[0], i), variant=vid, date=r["datum"], eur=round(eur), price=float(r["preis"]),
                    cur=r.get("waehrung") or "EUR", km=int(r["km"]) if (r.get("km") or "").isdigit() else None, year=int(r["baujahr"]),
                    title="Porsche %s" % r["fahrzeug"], seller=r.get("anbieter") or "", sellerName=None, country=(r.get("land") or "DE").upper(),
-                   body=None, url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None)
+                   body=body_of(("%s %s" % (r["fahrzeug"], r.get("url") or "")).lower()), url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None)
         if (r.get("art") or "Angebot").lower().startswith("verkauf"):
             obs.append(dict(variant=vid, date=r["datum"], eur=row["eur"], ch="EU_AUC", house=row["source"], lot=row["id"], body=None, src="manual"))
         else:
@@ -432,7 +441,7 @@ for a in asks:
         d = price_out[a["id"]]["dev"]
         a["excluded"] = "Preis %d %% %s dem Niveau vergleichbarer Fahrzeuge" % (round(abs(d) * 100), "über" if d > 0 else "unter")
 asks = sorted((a for a in asks if a["variant"] in known), key=lambda a: (a["variant"], -a["eur"]))
-json.dump([{k: a.get(k) for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "seller", "sellerName", "country", "url", "source", "excluded", "note")} for a in asks],
+json.dump([{k: a.get(k) for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "body", "seller", "sellerName", "country", "url", "source", "excluded", "note")} for a in asks],
           open(OUT_ASKS, "w"), ensure_ascii=False, separators=(",", ":"))
 print("price outliers left out:", collections.Counter(x["ch"] for x in excluded_all), "listings flagged by text:", sum(1 for a in asks if a.get("excluded") and not a["id"] in price_out))
 print(sum(1 for x in result["variants"].values() if x["value"]), "variants with a value;", len(obs), "observations;", result["channels"])
