@@ -24,3 +24,12 @@ Eine Datei pro Quelle oder Monat, z. B. `2026-11-elferspot.csv`, Trennzeichen `;
 
 Nur Fahrzeuge mit Linkslenkung und Standort in Europa eintragen; Umbauten, Replikas und Projekte weglassen.
 Belegte Verkäufe (`art` = `Verkauf`) zählen wie Auktionsergebnisse in Europa – nur mit Nachweis eintragen.
+
+## Händlerbestände (`haendler.csv`)
+
+Bestand mit Preis von early911s, Janzen Klassik, Karero und Oliver Neumann Sportclassics, Stand 09./10.11.2026.
+Alle vier Seiten erlauben das Lesen laut robots.txt. Gelesen wurde nur die öffentliche Fahrzeugliste bzw. die
+Detailseiten, mit Pausen zwischen den Abrufen. Fahrzeuge mit „Preis auf Anfrage“, Unikate (Prototypen, Presse-
+oder Rennfahrzeuge ohne passende Variante), Rechtslenker und Projekte sind nicht eingetragen; die Variante ist
+von Hand zugeordnet. Kilometerstände unter 1.100 km (meist „nach Restaurierung“) stehen als unbekannt drin.
+Zum Aktualisieren die Bestände erneut abrufen und die Datei ersetzen; verkaufte Fahrzeuge fallen dabei heraus.
