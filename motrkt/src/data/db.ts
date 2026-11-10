@@ -145,16 +145,12 @@ function firstYear(m: { name: string; generations: { years: [number, number | nu
 }
 
 /**
- * Tie-break for variants of one generation that start in the same year: 0 standard (Carrera, Targa, Coupé), 1 Turbo, 2 special editions,
- * 3 GT / RS / lightweight, 4 GT2 (most extreme, always last).
+ * Exclusivity of a variant for ordering variants built from the same year: dearer and rarer = more exclusive.
+ * Price alone puts the 993 Carrera RS before the Carrera 4S, production alone the 911 S 2.7 before the 2.7;
+ * together they give T < E < S, Carrera < Turbo < RS < GT2, Boxster < Boxster S.
  */
-function variantTier(name: string): number {
-  if (/\bGT2\b/.test(name)) return 4;
-  if (/50 Jahre|25 Jahre|Black Edition|RS 60/.test(name)) return 2;
-  if (/\b(GT3|GT4|RS|R|Spyder|Leichtbau|Weissach)\b|^959 Sport$|^356 Carrera/.test(name)) return 3;
-  if (/Speedster|Sport Classic|Dakar|S\/T|50 Jahre|Flachbau/.test(name)) return 2;
-  if (/^Turbo\b/.test(name)) return 1;
-  return 0;
+function exclusivity(newPrice: number, production: number): number {
+  return Math.log(Math.max(newPrice, 1)) - 0.5 * Math.log(Math.max(production, 1));
 }
 
 let built = false;
@@ -195,18 +191,11 @@ function build() {
         model.generationIds.push(genId);
         generations.push(gen);
         generationById.set(genId, gen);
-        // Oldest first, by first build year (sourced years where known). Same year: standard before Turbo, special
-        // models and GT/RS (variantTier), a base model before its derivatives ("Cayman" before "Cayman S"), then the
-        // one built for a shorter time.
-        const yearsOf = (x: VariantSeed) => realData[`${genId}-${slug(x.name)}`]?.specs?.years ?? x.years;
-        const prefix = (x: VariantSeed, y: VariantSeed) => (y.name.startsWith(`${x.name} `) ? -1 : x.name.startsWith(`${y.name} `) ? 1 : 0);
-        const seeds = [...g.variants].sort(
-          (x, y) =>
-            yearsOf(x)[0] - yearsOf(y)[0] ||
-            variantTier(x.name) - variantTier(y.name) ||
-            prefix(x, y) ||
-            (yearsOf(x)[1] ?? 9999) - (yearsOf(y)[1] ?? 9999),
-        );
+        // Oldest first, by first build year (sourced years where known); same year: the more exclusive one later.
+        const real = (x: VariantSeed) => realData[`${genId}-${slug(x.name)}`]?.specs;
+        const yearsOf = (x: VariantSeed) => real(x)?.years ?? x.years;
+        const excl = (x: VariantSeed) => exclusivity(real(x)?.newPrice?.eur ?? x.newPrice, real(x)?.production ?? x.production);
+        const seeds = [...g.variants].sort((x, y) => yearsOf(x)[0] - yearsOf(y)[0] || excl(x) - excl(y));
         for (const s of seeds) {
           const id = `${genId}-${slug(s.name)}`;
           const paint = PAINTS[b.id];
