@@ -33,3 +33,10 @@ Detailseiten, mit Pausen zwischen den Abrufen. Fahrzeuge mit „Preis auf Anfrag
 oder Rennfahrzeuge ohne passende Variante), Rechtslenker und Projekte sind nicht eingetragen; die Variante ist
 von Hand zugeordnet. Bei Netto-Preisen ist die MwSt. (19 %) aufgeschlagen. Kilometerstände unter 1.100 km (meist „nach Restaurierung“) stehen als unbekannt drin.
 Zum Aktualisieren die Bestände erneut abrufen und die Datei ersetzen; verkaufte Fahrzeuge fallen dabei heraus.
+
+## Auktionsergebnisse korrigieren (`auktionen-korrekturen.csv`)
+
+Für einzelne Ergebnisse, die von Hand auf der Ergebnisseite des Auktionshauses geprüft wurden: `los_id` (wie in
+`sales.csv`, z. B. `UCP-468-147`), Zuschlag mit Aufgeld (`preis`, `waehrung`) und der direkte Link zum Los. Preis
+und Link des Hauses ersetzen dann die Angaben von ultimatecarpage. Leerer Preis: nur den Link ersetzen (z. B. nicht
+verkauft). Gilt für den nächsten Lauf von `build.py` bzw. `update.sh`.

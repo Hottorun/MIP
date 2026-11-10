@@ -5,6 +5,12 @@ from classify import classify
 S = sys.argv[1]
 # links to the original lot pages (linkfetch.py); results without one keep the result list they were taken from
 LINKS = json.load(open(S + "/web/links/links.json")) if os.path.exists(S + "/web/links/links.json") else {}
+# results checked by hand against the auction house's own results page (manual/auktionen-korrekturen.csv): the house's
+# price and lot link win over the aggregator
+KORR = {}
+_kf = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual", "auktionen-korrekturen.csv")
+if os.path.exists(_kf):
+    for r in csv.DictReader(open(_kf, encoding="utf-8"), delimiter=";"): KORR[r["los_id"].strip()] = r
 # --- FX (ECB reference rates, units of currency per 1 EUR)
 fx = {}
 rows = list(csv.reader(open(S + "/web/fx/eurofxref-hist.csv")))
@@ -100,6 +106,13 @@ for x in U:
                     orig=amt, cur=cur, km=None, loc="", body=body, gear=gear, vin=x["chassis"], lot="UCP-%s-%s" % (x["auction"], x["lot"]),
                     url=LINKS.get("UCP-%s-%s" % (x["auction"], x["lot"]), {}).get("url") or house_search(house_of(x["event"]), t) or "https://www.ultimatecarpage.com/auction/%s/" % x["auction"],
                     year=year, src="ucp", event=x["event"]))
+for o in out:
+    k = KORR.get(o["lot"])
+    if not k: continue
+    if k.get("url"): o["url"] = k["url"].strip()
+    if k.get("preis"):
+        o["orig"], o["cur"] = int(float(k["preis"])), (k.get("waehrung") or o["cur"]).strip()
+        o["eur"] = round(to_eur(o["orig"], o["cur"], o["date"])); o["sold"] = True
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
 c = collections.Counter(o["variant"] for o in out if o["sold"])
 print(len(out), sum(c.values()))
