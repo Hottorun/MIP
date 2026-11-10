@@ -129,7 +129,7 @@ function marketPhotos(id: string): Photo[] {
   return (launchPhotos[id] ?? []).filter((p) => p.file);
 }
 
-/** Model families in menu order; models sort by family first, then by first build year. */
+/** Model families in menu order; models sort by family first, then by first build year (oldest first). */
 export const MODEL_CATEGORIES: { id: ModelCategory; readonly label: string }[] = [
   { id: "heck", get label() { return t("Heckmotor", "Rear-engined"); } },
   { id: "mittel", get label() { return t("Mittelmotor", "Mid-engined"); } },
@@ -145,7 +145,7 @@ function firstYear(m: { name: string; generations: { years: [number, number | nu
 }
 
 /**
- * Order within a generation: 0 standard (Carrera, Targa, Coupé), 1 Turbo, 2 special editions,
+ * Tie-break for variants of one generation that start in the same year: 0 standard (Carrera, Targa, Coupé), 1 Turbo, 2 special editions,
  * 3 GT / RS / lightweight, 4 GT2 (most extreme, always last).
  */
 function variantTier(name: string): number {
@@ -187,19 +187,25 @@ function build() {
       };
       models.push(model);
       modelById.set(model.id, model);
-      for (const g of m.generations) {
+      // Generations oldest first.
+      const gensByYear = [...m.generations].sort((x, y) => x.years[0] - y.years[0]);
+      for (const g of gensByYear) {
         const genId = g.name === m.name ? model.id : `${model.id}-${slug(g.name)}`;
         const gen: Generation = { id: genId, modelId: model.id, name: g.name, years: g.years, shape: g.shape, variantIds: [] };
         model.generationIds.push(genId);
         generations.push(gen);
         generationById.set(genId, gen);
-        // Standard models first, special models last; within a tier by first build year.
-        // A base model sorts with its first derivative ("Cayman" before "Cayman S", even though the S came first).
-        const start = (x: VariantSeed) => Math.min(x.years[0], ...g.variants.filter((o) => o.name.startsWith(`${x.name} `)).map((o) => o.years[0]));
+        // Oldest first, by first build year (sourced years where known). Same year: standard before Turbo, special
+        // models and GT/RS (variantTier), a base model before its derivatives ("Cayman" before "Cayman S"), then the
+        // one built for a shorter time.
+        const yearsOf = (x: VariantSeed) => realData[`${genId}-${slug(x.name)}`]?.specs?.years ?? x.years;
         const prefix = (x: VariantSeed, y: VariantSeed) => (y.name.startsWith(`${x.name} `) ? -1 : x.name.startsWith(`${y.name} `) ? 1 : 0);
-        // Race cars simply follow their racing years.
-        const seeds = [...g.variants].sort((x, y) =>
-          m.category === "motorsport" ? x.years[0] - y.years[0] : variantTier(x.name) - variantTier(y.name) || start(x) - start(y) || prefix(x, y),
+        const seeds = [...g.variants].sort(
+          (x, y) =>
+            yearsOf(x)[0] - yearsOf(y)[0] ||
+            variantTier(x.name) - variantTier(y.name) ||
+            prefix(x, y) ||
+            (yearsOf(x)[1] ?? 9999) - (yearsOf(y)[1] ?? 9999),
         );
         for (const s of seeds) {
           const id = `${genId}-${slug(s.name)}`;
