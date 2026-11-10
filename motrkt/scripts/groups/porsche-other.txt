@@ -1,6 +1,7 @@
 porsche-356-356-a-coupe | Porsche 356 A Coupé | 1955–1959 | production 21045 | 60 PS | 1.6 l | newPrice EUR 9500 | current color #b7babe
 porsche-356-356-speedster | Porsche 356 Speedster | 1954–1958 | production 4145 | 75 PS | 1.6 l | newPrice EUR 9000 | current color #e9e8e1
 porsche-356-356-carrera-2 | Porsche 356 Carrera 2 | 1962–1964 | production 436 | 130 PS | 2 l | newPrice EUR 15000 | current color #b3121b
+porsche-356-356-b-carrera-1600-gs-gt-coupe | Porsche 356 B Carrera 1600 GS/GT Coupé | 1960–1961 | production 40 | 115 PS | 1.6 l | newPrice EUR 11000 | current color #b5b8ba
 porsche-912-912-coupe | Porsche 912 Coupé | 1965–1969 | production 30300 | 90 PS | 1.6 l | newPrice EUR 8500 | current color #cfccc2
 porsche-930-turbo-3-0 | Porsche 930 Turbo 3.0 | 1975–1977 | production 2850 | 260 PS | 3 l | newPrice EUR 33000 | current color #741726
 porsche-930-turbo-3-3 | Porsche 930 Turbo 3.3 | 1978–1989 | production 17300 | 300 PS | 3.3 l | newPrice EUR 47000 | current color #151619

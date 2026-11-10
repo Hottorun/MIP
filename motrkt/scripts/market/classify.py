@@ -188,6 +188,10 @@ def road(y, s, full=""):
     def r(v): return (P + v, b)
     # --- 356
     if re.search(r"\b356", s):
+        # 356 B Carrera 1600 GS/GT (T5, 1960-61); auction titles sometimes say "356 A" for these
+        if (has(s, "carrera") and "carrera 2" not in s and re.search(r"\bgt\b", s) and 1960 <= y <= 1961
+                and not has(s, "abarth", "gtl", "zagato", "speedster", "spyder", "cabrio", "roadster")):
+            return (P + "356-356-b-carrera-1600-gs-gt-coupe", "Coupé")
         if has(s, "carrera") and not "carrera 2" in s: return None  # 1500/1600 GS Carrera
         if "carrera 2" in s:
             return r("356-356-carrera-2") if 1961 <= y <= 1965 and b in ("Coupé", "Cabriolet") else None

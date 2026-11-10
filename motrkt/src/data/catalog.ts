@@ -633,6 +633,12 @@ export const CATALOG: BrandDef[] = [
                 transmission: "4-Gang Schaltgetriebe",
                 color: "#b3121b",
               }),
+              v("356 B Carrera 1600 GS/GT Coupé", [1960, 1961], 40, 400_000, 0.06, 115, 1.6, 11_000, {
+                body: { Coupé: 1 },
+                tags: ["Leichtbau"],
+                transmission: "4-Gang Schaltgetriebe",
+                color: "#b5b8ba",
+              }),
               v("356 B Coupé", [1960, 1963], 30900, 98_000, 0.043, 60, 1.6, 9_000, {
                 body: { Coupé: 0.72, Cabriolet: 0.2, Roadster: 0.08 },
                 transmission: "4-Gang Schaltgetriebe",

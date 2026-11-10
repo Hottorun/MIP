@@ -40,6 +40,7 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-356-356-c-coupe": [["Motor SC (95 PS)", 0.12], sunroof356(), radio, paint(0.06)],
   "porsche-356-356-speedster": [["Motor 1600 Super (75 PS)", 0.12], rudge(0.12), ["Werks-Hardtop", 0.04], paint(0.06)],
   "porsche-356-356-carrera-2": [rudge(0.08), ["Werks-Hardtop", 0.03], paint(0.06)],
+  "porsche-356-356-b-carrera-1600-gs-gt-coupe": [["Original-Motor 692/3 (Matching Numbers)", 0.15], rudge(0.05), paint(0.06)],
 
   // 912
   "porsche-912-912-coupe": [["5-Gang-Getriebe (Typ 902/1)", 0.06], ["Armaturenbrett mit fünf Rundinstrumenten", 0.05], ["Stahlschiebedach", 0.03], paint(0.06)],

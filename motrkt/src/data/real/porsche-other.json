@@ -183,6 +183,50 @@
       }
     ]
   },
+  "porsche-356-356-b-carrera-1600-gs-gt-coupe": {
+    "launchColor": {
+      "name": "Silbermetallic (Annahme)",
+      "hex": "#b5b8ba",
+      "source": "https://commons.wikimedia.org/wiki/File:1961_Porsche_356_Carrera_GT.jpg",
+      "confidence": "low",
+      "note": "Keine Quelle zur Farbe eines Präsentationswagens gefunden; Silber wie beim abgebildeten Werks-GT."
+    },
+    "specs": {
+      "production": 40,
+      "hp": 115,
+      "liters": 1.6,
+      "years": [
+        1960,
+        1961
+      ],
+      "newPrice": {
+        "amount": 21500,
+        "currency": "DEM",
+        "eur": 10993,
+        "year": 1960
+      },
+      "sources": [
+        "https://stuttcars.com/porsche-356b1600gs-carrera-gt-coupe/",
+        "https://www.supercars.net/blog/?p=216027",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/356/b-modell/283375/",
+        "https://www.elferspot.com/en/car/porsche-356-b-1600-gs-carrera-gt-1960-6012318/"
+      ]
+    },
+    "note": "Leichtbau-Coupé (T5-Karosserie, Türen und Hauben aus Aluminium, Plexiglasscheiben) mit Vierwellen-Motor 692/3 aus dem 550 Spyder, 115 PS. Stückzahl je nach Quelle 29 bis 49; 40 ist der Mittelwert der Angaben. Neupreis: ADAC nennt 10.993 € (= 21.500 DM) für das Carrera-GT-Coupé 1600 GS, Jan.–Jun. 1960.",
+    "images": [
+      {
+        "file": "/cars/porsche-356-356-b-carrera-1600-gs-gt-coupe-1.jpg",
+        "title": "File:1961 Porsche 356 Carrera GT.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:1961_Porsche_356_Carrera_GT.jpg",
+        "author": "MrWalkr",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "exact": true,
+        "launchColor": false,
+        "caption": "Porsche 356 B Carrera GT (1961) in Silber, Hampton Court Concours 2023"
+      }
+    ]
+  },
   "porsche-912-912-coupe": {
     "launchColor": {
       "name": "Elfenbein (Ivory) (Annahme)",
