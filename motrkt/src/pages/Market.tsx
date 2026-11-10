@@ -9,6 +9,7 @@ import { Details } from "../components/market/FactCards";
 import { Assessment, RecentSales } from "../components/market/SalesSection";
 import { Listings } from "../components/market/BottomRow";
 import { Evidence } from "../components/market/Evidence";
+import { MarketStats } from "../components/market/MarketStats";
 import { appTitle, t } from "../i18n";
 
 export default function Market() {
@@ -66,6 +67,7 @@ function MarketPage({ variant }: { variant: Variant }) {
     <div className="space-y-24">
       <Hero variant={variant} picked={picked} body={body} onBody={setBody} />
       <ValuePanel variant={variant} body={body} />
+      <MarketStats variant={variant} body={body} />
       <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-2">
         <RecentSales variant={variant} body={body} />
         <Assessment variant={variant} />

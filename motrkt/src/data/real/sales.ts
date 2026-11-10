@@ -30,6 +30,12 @@ export type RealSale = {
   vin: string;
   url?: string;
   conditionUnknown?: boolean;
+  /** False when the record does not state the gearbox (then `gearbox` is only the variant's default). */
+  gearboxKnown?: boolean;
+  /** ISO country of the sale (auction venue or car location), "" when unknown. */
+  location?: string;
+  /** Currency the price was given in (USD, EUR, GBP …), "" when unknown. */
+  currency?: string;
 };
 
 export type ParseResult = { rows: RealSale[]; errors: string[]; total: number };
@@ -55,6 +61,8 @@ const ALIASES: Record<string, string[]> = {
   vin: ["fin", "vin", "fahrgestellnummer", "chassis"],
   lot: ["los_id", "lot_id", "lot", "id"],
   url: ["url", "link", "quelle_url"],
+  location: ["standort", "location", "verkaufsland"],
+  currency: ["waehrung", "währung", "currency"],
 };
 
 function splitLine(line: string, delim: string): string[] {
@@ -167,6 +175,9 @@ export function parseSalesCsv(text: string, origin = "CSV"): ParseResult {
       color: get("color") || "–",
       vin: get("vin") || "–",
       url: get("url") || undefined,
+      gearboxKnown: !!gearRaw,
+      location: get("location").toUpperCase().slice(0, 2),
+      currency: get("currency").toUpperCase().slice(0, 3),
     });
   });
   return { rows, errors, total: lines.length - 1 };
