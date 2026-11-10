@@ -101,6 +101,15 @@ def body(s):
     if "targa" in s: return "Targa"
     return "Coupé"
 
+def early_f(y, L, rs, s, b, F):
+    """F-Modell variant from the model year and the letter (T, E, S, L), for titles that also name the displacement."""
+    if rs or has(s, "carrera", "speedster", " sc "): return None
+    if L == "s": return F("s-2-0") if 1967 <= y <= 1969 else F("s-2-2") if 1970 <= y <= 1971 else F("s-2-4") if y >= 1972 else None
+    if L == "t": return F("t-2-0") if 1968 <= y <= 1969 else F("t-2-2") if 1970 <= y <= 1971 else F("t-2-4") if y >= 1972 else None
+    if L == "e": return F("e-2-0") if y == 1969 else F("e-2-2") if 1970 <= y <= 1971 else F("e-2-4") if y >= 1972 else None
+    if L == "l": return F("l-2-0") if y == 1968 else None
+    return None
+
 def early(y, s, b, full):
     """911 F-Modell (model years 1965-1973) and G-Modell (1974-1989) without the 930 Turbo.
     -> (variant, body), None (rejected) or False (not an early 911: Turbo, 964, later)."""
@@ -110,9 +119,15 @@ def early(y, s, b, full):
     if b == "Cabriolet" and y < 1983 or b == "Roadster" and not ("speedster" in s and y == 1989): return None
     def F(v): return (P + "911-f-modell-" + v, b)
     def G(v): return (P + "911-g-modell-" + v, b)
-    m = re.search(r"\b911\s?([tels])\b", s)  # 911T, 911 E, 911S, 911L (not "911 SC", "911 Targa")
-    L = m.group(1) if m else ""
+    # 911T, 911 E, 911S, 911L (not "911 SC", "911 Targa"); also with the displacement first: "911 2.4 S", "911 2.2 T"
+    m = re.search(r"\b911\s?(?:(2\.[024])\s)?([tels])\b", s)
+    L = m.group(2) if m else ""
+    disp = m.group(1) if m else None
     rs = re.search(r"\brs\b", s)
+    if disp and y <= 1973:
+        # displacement named in the title: the variant picked from the model year must have it (else the title is unclear)
+        r0 = early_f(y, L, rs, s, b, F)
+        return r0 if r0 and r0[0].endswith(disp.replace(".", "-")) else None
     if y <= 1973:  # F-Modell
         if rs: return F("carrera-rs-2-7") if y == 1973 and has(s, "carrera", "2.7") and b == "Coupé" else None
         if has(s, "carrera", "speedster", " sc "): return None

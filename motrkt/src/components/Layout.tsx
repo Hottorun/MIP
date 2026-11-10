@@ -9,7 +9,11 @@ import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
 import { LogoFull, LogoMark } from "./LogoMark";
-import { MODEL_SALES_TOTAL } from "../data/real/model";
+import { MODEL_CHANNELS } from "../data/real/model";
+
+// What the market values rest on: auction results (Europe and US) and asking prices.
+const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC;
+const N_ASKS = MODEL_CHANNELS.EU_ASK;
 
 const NAV_LEFT = [
   { to: "/", get label() { return t("Start", "Home"); } },
@@ -35,8 +39,8 @@ export function Layout() {
         <span className="hidden sm:inline">
           {" "}
           {t(
-            `Marktwerte aus ${num(MODEL_SALES_TOTAL)} Auktionsergebnissen seit 2015; Inserate und kommende Auktionen sind Demo-Daten.`,
-            `Market values from ${num(MODEL_SALES_TOTAL)} auction results since 2015; listings and upcoming auctions are demo data.`,
+            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015 und ${num(N_ASKS)} Angeboten; Inserate unter „Kaufen“ und kommende Auktionen sind Demo-Daten.`,
+            `Market values from ${num(N_AUCTIONS)} auction results since 2015 and ${num(N_ASKS)} listings; listings under “Buy” and upcoming auctions are demo data.`,
           )}
         </span>
       </div>
@@ -452,8 +456,8 @@ function Footer() {
         <div className="space-y-2 text-[13px] leading-relaxed text-muted">
           <p>
             {t(
-              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(MODEL_SALES_TOTAL)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial), umgerechnet zum EZB-Kurs des Verkaufstags. Inserate, kommende Auktionen und Portfolio sind Demo-Daten. Keine Anlageberatung.`,
-              `Market values, price histories and sales are based on ${num(MODEL_SALES_TOTAL)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial), converted at the ECB rate on the day of sale. Listings, upcoming auctions and the portfolio are demo data. Not investment advice.`,
+              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) und ${num(N_ASKS)} Angeboten von Classic Trader und Händlern, umgerechnet zum EZB-Kurs des Verkaufstags. Inserate, kommende Auktionen und Portfolio sind Demo-Daten. Keine Anlageberatung.`,
+              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Listings, upcoming auctions and the portfolio are demo data. Not investment advice.`,
             )}
           </p>
           <Link to="/bildnachweise" className="link">
