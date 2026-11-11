@@ -63,6 +63,7 @@ def median(xs): return wmedian(xs, [1.0] * len(xs))
 def group(vid):
     if "rennsportwagen" in vid or "gt-rennwagen" in vid or "cup-und-clubsport" in vid: return "G"
     if "-356-" in vid or "-912-" in vid or "-914-" in vid: return "A"
+    if any(k in vid for k in ("-924-", "-944-", "-968-", "-928-")): return "T"
     if any(k in vid for k in ("-930-", "-964-", "-993-", "-f-modell-", "-g-modell-")): return "B"
     if "959" in vid or vid.endswith("carrera-gt-carrera-gt") or "918" in vid: return "F"
     gt = any(k in vid for k in ["gt3", "gt2", "-r", "sport-classic", "speedster", "s-t", "dakar", "50-jahre"]) and "-911-" in vid
@@ -72,7 +73,7 @@ def group(vid):
     return "E2" if midgt else "E"
 
 
-PARENT = {"H": "COLLECT", "A": "COLLECT", "B": "COLLECT", "F": "COLLECT", "G": "COLLECT", "C": "MODERN", "D": "MODERN", "E": "MODERN", "E2": "MODERN"}
+PARENT = {"H": "COLLECT", "A": "COLLECT", "T": "COLLECT", "B": "COLLECT", "F": "COLLECT", "G": "COLLECT", "C": "MODERN", "D": "MODERN", "E": "MODERN", "E2": "MODERN"}
 
 
 # ---------------------------------------------------------------------------------------------------- FX
@@ -239,7 +240,7 @@ def fit_all(delta):
     adj = lambda s: delta[s["k"]][s["ch"]]
     auc = [s for s in obs if s["ch"] != "EU_ASK"]
     idx = {}
-    for name, members in [("COLLECT", {"A", "B", "H", "F", "G"}), ("MODERN", {"C", "D", "E", "E2"})] + [(g, {g}) for g in ["A", "B", "H", "C", "D", "E", "E2", "F", "G"]]:
+    for name, members in [("COLLECT", {"A", "T", "B", "H", "F", "G"}), ("MODERN", {"C", "D", "E", "E2"})] + [(g, {g}) for g in ["A", "T", "B", "H", "C", "D", "E", "E2", "F", "G"]]:
         ss = [s for s in auc if s["g"] in members]
         if len(ss) >= MIN_IDX.get(name, 400) or name in ("COLLECT", "MODERN"):
             idx[name] = fit_index(ss, adj, h=BW.get(name, 0.25))

@@ -25,6 +25,8 @@ const PDK = { gearbox: { Automatik: 1 }, transmission: "7-Gang PDK" };
 const MID = { drive: "Mittelmotor, Heck (RWD)", body: { Roadster: 1 } };
 /** Race cars: tagged so mileage, options and weak points follow racing use. */
 const race = (...tags: string[]) => ({ tags: ["Rennwagen", ...tags] });
+/** Transaxle cars (924, 944, 968, 928): water-cooled front engine, gearbox at the rear axle. */
+const FRONT = { drive: "Frontmotor, Transaxle (RWD)", transmission: "5-Gang Schaltgetriebe" };
 /** Open mid-engined Spyder of the 1950s. */
 const SPYDER = { ...MID, transmission: "4-Gang Schaltgetriebe" };
 
@@ -740,6 +742,164 @@ export const CATALOG: BrandDef[] = [
                 body: { Targa: 1 },
                 transmission: "5-Gang Schaltgetriebe",
                 color: "#e9e8e1",
+              }),
+            ],
+          },
+        ],
+      },
+      // Transaxle era: water-cooled front engine, gearbox at the rear axle (924 from 1976 to the 928 GTS of 1995).
+      {
+        name: "924",
+        category: "front",
+        featured: true,
+        generations: [
+          {
+            name: "924",
+            years: [1976, 1988],
+            shape: "gt",
+            variants: [
+              v("924", [1976, 1985], 150684, 12_000, 0.05, 125, 2.0, 11_882, {
+                ...FRONT,
+                gearbox: { Manual: 0.85, Automatik: 0.15 },
+                transmission: "4-/5-Gang Schaltgetriebe, 3-Gang Automatik",
+                color: "#e9e8e1",
+              }),
+              v("924 Turbo", [1979, 1984], 150684, 24_000, 0.06, 170, 2.0, 20_452, {
+                ...FRONT,
+                tags: ["Turbo"],
+                color: "#e9e8e1",
+              }),
+              v("924 Carrera GT", [1980, 1981], 406, 110_000, 0.08, 210, 2.0, 30_678, {
+                ...FRONT,
+                tags: ["Turbo"],
+                color: "#e9e8e1",
+              }),
+              v("924 Carrera GTS", [1981, 1981], 59, 380_000, 0.08, 245, 2.0, 56_242, {
+                ...FRONT,
+                tags: ["Turbo", "Leichtbau"],
+                color: "#b5121b",
+              }),
+              v("924 S", [1986, 1988], 150684, 15_000, 0.05, 150, 2.5, 21_449, {
+                ...FRONT,
+                gearbox: { Manual: 0.85, Automatik: 0.15 },
+                transmission: "5-Gang Schaltgetriebe, 3-Gang Automatik",
+                color: "#151619",
+              }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "944",
+        category: "front",
+        featured: true,
+        generations: [
+          {
+            name: "944",
+            years: [1981, 1991],
+            shape: "gt",
+            variants: [
+              v("944", [1981, 1989], 113070, 14_000, 0.05, 163, 2.5, 19_889, {
+                ...FRONT,
+                gearbox: { Manual: 0.85, Automatik: 0.15 },
+                transmission: "5-Gang Schaltgetriebe, 3-Gang Automatik",
+                color: "#b3121b",
+              }),
+              v("944 Turbo", [1985, 1991], 25245, 32_000, 0.06, 220, 2.5, 36_813, {
+                ...FRONT,
+                tags: ["Turbo"],
+                body: { Coupé: 0.98, Cabriolet: 0.02 },
+                color: "#b7babe",
+              }),
+              v("944 S", [1986, 1988], 12936, 18_000, 0.05, 190, 2.5, 28_000, {
+                ...FRONT,
+                color: "#b3121b",
+              }),
+              v("944 Turbo S", [1988, 1988], 1635, 55_000, 0.07, 250, 2.5, 51_028, {
+                ...FRONT,
+                tags: ["Turbo"],
+                color: "#c7aeb0",
+              }),
+              v("944 S2", [1988, 1991], 19727, 24_000, 0.05, 211, 3.0, 41_000, {
+                ...FRONT,
+                body: { Coupé: 0.71, Cabriolet: 0.29 },
+                color: "#1f3f8f",
+              }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "968",
+        category: "front",
+        featured: true,
+        generations: [
+          {
+            name: "968",
+            years: [1991, 1995],
+            shape: "gt",
+            variants: [
+              v("968", [1991, 1995], 9690, 32_000, 0.05, 240, 3.0, 45_964, {
+                ...FRONT,
+                body: { Coupé: 0.59, Cabriolet: 0.41 },
+                gearbox: { Manual: 0.8, Automatik: 0.2 },
+                transmission: "6-Gang Schaltgetriebe, 4-Stufen Tiptronic",
+                color: "#b3121b",
+              }),
+              v("968 CS", [1992, 1995], 1538, 60_000, 0.07, 240, 3.0, 39_625, {
+                ...FRONT,
+                tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#efc11a",
+              }),
+              v("968 Turbo S", [1993, 1994], 14, 650_000, 0.08, 305, 3.0, 89_476, {
+                ...FRONT,
+                tags: ["Turbo", "Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#efc11a",
+              }),
+            ],
+          },
+        ],
+      },
+      {
+        name: "928",
+        category: "front",
+        featured: true,
+        generations: [
+          {
+            name: "928",
+            years: [1977, 1995],
+            shape: "gt",
+            variants: [
+              v("928", [1977, 1982], 17669, 22_000, 0.05, 240, 4.5, 28_121, {
+                ...FRONT,
+                gearbox: { Manual: 0.4, Automatik: 0.6 },
+                transmission: "5-Gang Schaltgetriebe, 3-Gang Automatik",
+                color: "#b5121b",
+              }),
+              v("928 S", [1979, 1986], 22662, 24_000, 0.05, 300, 4.7, 37_000, {
+                ...FRONT,
+                gearbox: { Manual: 0.3, Automatik: 0.7 },
+                transmission: "5-Gang Schaltgetriebe, 3-/4-Gang Automatik",
+                color: "#151619",
+              }),
+              v("928 S4", [1986, 1991], 15682, 30_000, 0.05, 320, 5.0, 55_000, {
+                ...FRONT,
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "5-Gang Schaltgetriebe, 4-Gang Automatik",
+                color: "#151619",
+              }),
+              v("928 GT", [1989, 1991], 2078, 48_000, 0.06, 330, 5.0, 62_000, {
+                ...FRONT,
+                transmission: "5-Gang Schaltgetriebe",
+                color: "#b3121b",
+              }),
+              v("928 GTS", [1991, 1995], 2904, 75_000, 0.07, 350, 5.4, 79_787, {
+                ...FRONT,
+                gearbox: { Manual: 0.3, Automatik: 0.7 },
+                transmission: "5-Gang Schaltgetriebe, 4-Gang Automatik",
+                color: "#151619",
               }),
             ],
           },

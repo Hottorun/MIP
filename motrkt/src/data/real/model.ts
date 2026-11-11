@@ -82,7 +82,8 @@ export type MarketBasis = {
 };
 
 export const SEGMENT_LABEL: Record<string, string> = {
-  A: "356 und 912",
+  A: "356, 912 und 914",
+  T: "Transaxle: 924, 944, 968 und 928",
   B: "Luftgekühlte 911 (930, 964, 993)",
   C: "Wassergekühlte 911",
   D: "911 GT- und Sondermodelle",

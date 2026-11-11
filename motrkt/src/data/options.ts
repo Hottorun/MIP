@@ -27,6 +27,8 @@ const heritage = (impact = 0.08): Opt => ["Heritage Design Paket", impact];
 const rudge = (impact = 0.1): Opt => ["Rudge-Zentralverschlussräder", impact];
 const sunroof356 = (impact = 0.06): Opt => ["Stahlschiebedach ab Werk", impact];
 const radio: Opt = ["Becker-Radio ab Werk", 0.01];
+/** Automatic gearbox where most cars are manuals: trades below the median. */
+const automatic = (impact: number, label = "Automatik (statt Schaltgetriebe)"): Opt => [label, impact];
 /** Semi-automatic Sportomatic (1967–1980): most early 911s are manual, so it trades below the median. */
 const sportomatic = (impact = -0.15): Opt => ["Sportomatic (statt Schaltgetriebe)", impact];
 /** Model year 1972 only: oil filler behind the right door ("Ölklappe"). */
@@ -54,6 +56,26 @@ export const OPTIONS: Record<string, Opt[]> = {
   // 959
   "porsche-959-959-komfort": [paint(0.06), ["Innenausstattung in Sonderleder", 0.02]],
   "porsche-959-959-sport": [paint(0.05)],
+
+  // Transaxle (924, 944, 968, 928): automatics trade well below manuals, except on the 928 where most were automatics.
+  "porsche-924-924": [["5-Gang-Getriebe", 0.04], ["Herausnehmbares Dachteil (Targadach)", 0.02], automatic(-0.12), paint(0.04)],
+  "porsche-924-924-turbo": [["Serie 2 (177 PS, ab Modelljahr 1981)", 0.05], ["Zweifarbenlackierung ab Werk", 0.06], lsd(), sportSeats(), paint(0.05)],
+  "porsche-924-924-carrera-gt": [lsd(), sportSeats(), paint(0.05)],
+  "porsche-924-924-carrera-gts": [["Clubsport-Ausführung (270 PS)", 0.15]],
+  "porsche-924-924-s": [["Modelljahr 1988 (160 PS)", 0.04], sportSeats(), automatic(-0.1), paint(0.04)],
+  "porsche-944-944": [m030, ["Modelljahr 1989 (2,7 l, 165 PS)", 0.04], sportSeats(), automatic(-0.12), paint(0.05)],
+  "porsche-944-944-turbo": [["Modelljahr 1989–1991 (250 PS)", 0.08], ["Sportfahrwerk M030", 0.06], lsd(0.04), sportSeats(), paint(0.05)],
+  "porsche-944-944-s": [m030, lsd(), sportSeats(), paint(0.05)],
+  "porsche-944-944-turbo-s": [lsd(0.03), paint(0.04)],
+  "porsche-944-944-s2": [m030, lsd(), sportSeats(), automatic(-0.1), paint(0.05)],
+  "porsche-968-968": [["Sportfahrwerk M030", 0.08], lsd(0.04), sportSeats(), automatic(-0.12, "Tiptronic (statt Schaltgetriebe)"), paint(0.05)],
+  "porsche-968-968-cs": [["Sportfahrwerk M030", 0.08], lsd(0.04), paint(0.05)],
+  "porsche-968-968-turbo-s": [],
+  "porsche-928-928": [manual(0.12, "Schaltgetriebe (statt Automatik)"), sportSeats(0.02), paint(0.05)],
+  "porsche-928-928-s": [manual(0.12, "Schaltgetriebe (statt Automatik)"), ["Sportfahrwerk", 0.03], paint(0.05)],
+  "porsche-928-928-s4": [manual(0.15, "Schaltgetriebe (statt Automatik)"), lsd(), sportSeats(), paint(0.05)],
+  "porsche-928-928-gt": [sportSeats(), paint(0.05)],
+  "porsche-928-928-gts": [manual(0.2, "Schaltgetriebe (statt Automatik)"), sportSeats(), paint(0.05)],
 
   // F-Modell (1964–1973)
   "porsche-911-f-modell-2-0": [["Fuchs-Schmiederäder (ab 1967)", 0.03], ["Stahlschiebedach", 0.03], radio, paint(0.06)],

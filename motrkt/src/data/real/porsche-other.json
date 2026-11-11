@@ -875,5 +875,437 @@
     },
     "note": "914/6 mit dem 2,0-l-Sechszylinder des 911 T, 110 PS, gebaut 1969–1972 überwiegend in Zuffenhausen. Porsche nennt genau 3.338 Exemplare (andere Quellen 3.332 bis 3.353). Neupreis 19.980 DM (1970), kaum weniger als ein 911 T.",
     "images": []
+  },
+  "porsche-924-924": {
+    "specs": {
+      "production": 150684,
+      "productionNote": "alle 924 zusammen (2.0, Turbo, Carrera GT/GTS und S, 1976–1988)",
+      "hp": 125,
+      "liters": 2.0,
+      "years": [
+        1976,
+        1985
+      ],
+      "newPrice": {
+        "amount": 23240,
+        "currency": "DEM",
+        "eur": 11882,
+        "year": 1976
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-924.html",
+        "https://de.wikipedia.org/wiki/Porsche_924",
+        "https://en.wikipedia.org/wiki/Porsche_924"
+      ]
+    },
+    "note": "Vorgestellt im November 1975 bei einer Pressefahrveranstaltung in La Grande-Motte (Südfrankreich), gebaut bei Audi in Neckarsulm. Grundpreis 23.240 DM (Porsche Newsroom). 150.684 = alle 924 bis zum Produktionsende 1988 einschließlich Turbo und 924 S (Porsche); den 2.0 allein beziffert de.wikipedia mit „mehr als 130.000“. Präsentationsfarbe: keine Quelle gefunden, die die Farbe der Vorstellungsfahrzeuge nennt.",
+    "images": []
+  },
+  "porsche-924-924-turbo": {
+    "launchColor": {
+      "name": "Dolomitgrau-Metallic (Dolomite Grey Metallic)",
+      "hex": "#7d7f7d",
+      "source": "https://www.stuttcars.com/the-porsche-924-story/",
+      "confidence": "low",
+      "note": "Belegt nur für den US-Marktstart (Modelljahr 1980): die ersten 600 US-Fahrzeuge waren alle Dolomitgrau-Metallic. Die Farbe des europäischen Präsentationsfahrzeugs 1978/79 ist nicht belegt."
+    },
+    "specs": {
+      "production": 150684,
+      "productionNote": "alle 924 zusammen (2.0, Turbo, Carrera GT/GTS und S, 1976–1988)",
+      "hp": 170,
+      "liters": 2.0,
+      "years": [
+        1979,
+        1984
+      ],
+      "newPrice": {
+        "amount": 40000,
+        "currency": "DEM",
+        "eur": 20452,
+        "year": 1979
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_924",
+        "https://en.wikipedia.org/wiki/Porsche_924",
+        "https://www.porsche.com/uk/accessoriesandservice/classic/models/924/924-turbo/"
+      ]
+    },
+    "note": "Typ 931, Bauzeit Januar 1979 bis 1982 (Italien bis 1984, Porsche Classic). 170 PS, ab Modelljahr 1981 177 PS. Neupreis laut de.wikipedia „rund 40.000 DM“; eine genaue Preisliste liegt nicht vor. Eine eigene Stückzahl veröffentlicht Porsche nicht.",
+    "images": []
+  },
+  "porsche-924-924-carrera-gt": {
+    "specs": {
+      "production": 406,
+      "productionNote": "400 Straßenfahrzeuge und 6 Prototypen; 75 Rechtslenker für Großbritannien",
+      "hp": 210,
+      "liters": 2.0,
+      "years": [
+        1980,
+        1981
+      ],
+      "newPrice": {
+        "amount": 60000,
+        "currency": "DEM",
+        "eur": 30678,
+        "year": 1980
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_924",
+        "https://en.wikipedia.org/wiki/Porsche_924",
+        "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-924-Carrera-GT.html"
+      ]
+    },
+    "note": "Typ 937, Homologationsmodell für die Gruppe 4; als Prototyp auf der IAA 1979 gezeigt. Neupreis laut de.wikipedia „ca. 60.000 DM“. Serienfarben laut Stuttcars Rot, Silber und Schwarz; die Farbe des IAA-Prototyps ist nicht belegt.",
+    "images": []
+  },
+  "porsche-924-924-carrera-gts": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#b5121b",
+      "source": "https://de.wikipedia.org/wiki/Porsche_924",
+      "confidence": "high",
+      "note": "Alle 59 Carrera GTS (44 Straßenversion, 15 Clubsport) wurden in Indischrot ausgeliefert (de.wikipedia)."
+    },
+    "specs": {
+      "production": 59,
+      "productionNote": "44 Straßenversion, 15 Clubsport (270 PS)",
+      "hp": 245,
+      "liters": 2.0,
+      "years": [
+        1981,
+        1981
+      ],
+      "newPrice": {
+        "amount": 110000,
+        "currency": "DEM",
+        "eur": 56242,
+        "year": 1981
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_924",
+        "https://en.wikipedia.org/wiki/Porsche_924"
+      ]
+    },
+    "note": "Typ 937, Clubsport-Version 122.091 DM. Alle Linkslenker.",
+    "images": []
+  },
+  "porsche-924-924-s": {
+    "specs": {
+      "production": 150684,
+      "productionNote": "alle 924 zusammen (2.0, Turbo, Carrera GT/GTS und S, 1976–1988)",
+      "hp": 150,
+      "liters": 2.5,
+      "years": [
+        1986,
+        1988
+      ],
+      "newPrice": {
+        "amount": 41950,
+        "currency": "DEM",
+        "eur": 21449,
+        "year": 1986
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_924",
+        "https://en.wikipedia.org/wiki/Porsche_924",
+        "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-924.html"
+      ]
+    },
+    "note": "2,5-l-Vierzylinder aus dem 944, 150 PS, ab Modelljahr 1988 160 PS. Neupreis 1986: 41.950 DM (de.wikipedia). Eine eigene Stückzahl nennt Porsche nicht. Präsentationsfarbe nicht belegt.",
+    "images": []
+  },
+  "porsche-944-944": {
+    "specs": {
+      "production": 113070,
+      "productionNote": "944 2.5 und 2.7, Modelljahre 1982–1989",
+      "hp": 163,
+      "liters": 2.5,
+      "years": [
+        1981,
+        1989
+      ],
+      "newPrice": {
+        "amount": 38900,
+        "currency": "DEM",
+        "eur": 19889,
+        "year": 1981
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-944.html",
+        "https://de.wikipedia.org/wiki/Porsche_944",
+        "https://en.wikipedia.org/wiki/Porsche_944"
+      ]
+    },
+    "note": "Weltpremiere auf der IAA im September 1981, Grundpreis 38.900 DM (Porsche Newsroom). Ab 1985 auch mit Katalysator (150 PS), 1988 auf 2,7 l und 165 PS vergrößert. Die ganze 944-Familie kam auf 163.302 Fahrzeuge (Porsche). Präsentationsfarbe nicht belegt.",
+    "images": []
+  },
+  "porsche-944-944-turbo": {
+    "specs": {
+      "production": 25245,
+      "productionNote": "Turbo Coupé und Turbo Cabriolet 1985–1991 (en.wikipedia)",
+      "hp": 220,
+      "liters": 2.5,
+      "years": [
+        1985,
+        1991
+      ],
+      "newPrice": {
+        "amount": 72000,
+        "currency": "DEM",
+        "eur": 36813,
+        "year": 1985
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_944",
+        "https://en.wikipedia.org/wiki/Porsche_944"
+      ]
+    },
+    "note": "Typ 951, 220 PS, ab Modelljahr 1989 250 PS. Grundpreis 72.000 DM (de.wikipedia). Turbo Cabriolet 1991 als Sonderserie (528 laut Porsche, 625 laut en.wikipedia). Präsentationsfarbe nicht belegt.",
+    "images": []
+  },
+  "porsche-944-944-s": {
+    "specs": {
+      "production": 12936,
+      "hp": 190,
+      "liters": 2.5,
+      "years": [
+        1986,
+        1988
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_944",
+        "https://en.wikipedia.org/wiki/Porsche_944"
+      ]
+    },
+    "note": "Vierventil-Motor (16V), vorgestellt im August 1986 für das Modelljahr 1987. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
+    "images": []
+  },
+  "porsche-944-944-turbo-s": {
+    "launchColor": {
+      "name": "Silberrosé-Metallic (Silver Rose Metallic)",
+      "hex": "#c9b2b4",
+      "source": "https://de.wikipedia.org/wiki/Porsche_944",
+      "confidence": "high",
+      "note": "Laut de.wikipedia war Silberrosé-Metallic zunächst die einzige Farbe des Turbo S."
+    },
+    "specs": {
+      "production": 1635,
+      "hp": 250,
+      "liters": 2.5,
+      "years": [
+        1988,
+        1988
+      ],
+      "newPrice": {
+        "amount": 99800,
+        "currency": "DEM",
+        "eur": 51027,
+        "year": 1988
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_944",
+        "https://en.wikipedia.org/wiki/Porsche_944"
+      ]
+    },
+    "note": "Limitiert auf 1.635 Fahrzeuge, Neupreis 99.800 DM (1988). Porsche nennt in der Chronik 1.000 Exemplare.",
+    "images": []
+  },
+  "porsche-944-944-s2": {
+    "specs": {
+      "production": 19727,
+      "productionNote": "14.071 Coupés und 5.656 Cabriolets (en.wikipedia; de.wikipedia nennt 6.980 Cabriolets)",
+      "hp": 211,
+      "liters": 3.0,
+      "years": [
+        1988,
+        1991
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_944",
+        "https://en.wikipedia.org/wiki/Porsche_944",
+        "https://www.zwischengas.com/en/articles/cars/Porsche-944-S2-Cabriolet-1989-vier-grosse-Toepfe-fuer-Sonnenanbeter.html"
+      ]
+    },
+    "note": "3,0-l-Vierzylinder mit 211 PS, Coupé und Cabriolet. Das Cabriolet kostete 1989 89.900 DM (Zwischengas); für das Coupé ist kein DM-Preis belegt, der Wert im Katalog ist geschätzt.",
+    "images": []
+  },
+  "porsche-968-968": {
+    "specs": {
+      "production": 9690,
+      "productionNote": "5.731 Coupés und 3.959 Cabriolets; mit CS und Turbo S 11.245 (Porsche)",
+      "hp": 240,
+      "liters": 3.0,
+      "years": [
+        1991,
+        1995
+      ],
+      "newPrice": {
+        "amount": 89900,
+        "currency": "DEM",
+        "eur": 45965,
+        "year": 1991
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-968.html",
+        "https://de.wikipedia.org/wiki/Porsche_968"
+      ]
+    },
+    "note": "Gebaut in Zuffenhausen, IAA-Pressetag 12. September 1991. Grundpreis 89.900 DM (Porsche Newsroom; de.wikipedia: 89.800 DM), Cabriolet rund 10.000 DM teurer. Präsentationsfarbe nicht belegt.",
+    "images": []
+  },
+  "porsche-968-968-cs": {
+    "specs": {
+      "production": 1538,
+      "hp": 240,
+      "liters": 3.0,
+      "years": [
+        1992,
+        1995
+      ],
+      "newPrice": {
+        "amount": 77500,
+        "currency": "DEM",
+        "eur": 39625,
+        "year": 1993
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_968",
+        "https://newsroom.porsche.com/en/2026/history/porsche-transaxle-models-history-42008.html"
+      ]
+    },
+    "note": "Club Sport: rund 50 kg leichter, ohne Rücksitze, Airbags und elektrische Komfortausstattung; billiger als das Serien-Coupé. Präsentationsfarbe nicht belegt.",
+    "images": []
+  },
+  "porsche-968-968-turbo-s": {
+    "specs": {
+      "production": 14,
+      "productionNote": "14 laut de.wikipedia (Produktionstabelle: 10; Stuttcars: 13 straßenzugelassene)",
+      "hp": 305,
+      "liters": 3.0,
+      "years": [
+        1993,
+        1994
+      ],
+      "newPrice": {
+        "amount": 175000,
+        "currency": "DEM",
+        "eur": 89476,
+        "year": 1993
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_968",
+        "https://www.stuttcars.com/the-porsche-968-story/"
+      ]
+    },
+    "note": "Turbo-Vierzylinder mit 305 PS; Neupreis laut de.wikipedia „etwa 175.000 DM“. Präsentationsfarbe nicht belegt.",
+    "images": []
+  },
+  "porsche-928-928": {
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#b5121b",
+      "source": "https://rennlist.com/forums/928-forum/592183-77-geneva-show-car-pic-intensive-3.html",
+      "confidence": "low",
+      "note": "Weltpremiere Genfer Autosalon März 1977. Nach Brian Longs 928-Buch (zitiert im Rennlist-Forum) stand dort ein indischroter Wagen, auf dessen Haube Ferry Porsche posierte; Zwischengas spricht von einer Präsentation „in Rot und Weiß“. Keine Werksquelle."
+    },
+    "specs": {
+      "production": 17669,
+      "hp": 240,
+      "liters": 4.5,
+      "years": [
+        1977,
+        1982
+      ],
+      "newPrice": {
+        "amount": 55000,
+        "currency": "DEM",
+        "eur": 28121,
+        "year": 1977
+      },
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-928.html",
+        "https://en.wikipedia.org/wiki/Porsche_928",
+        "https://www.autobild.de/artikel/porsche-928-1220467.html"
+      ]
+    },
+    "note": "„Der große neue Sportwagen von Porsche“, Auto des Jahres 1978. Neupreis 1977: 55.000 DM (Auto Bild). Die Baureihe kam bis 1995 auf 61.056 Fahrzeuge (Porsche).",
+    "images": []
+  },
+  "porsche-928-928-s": {
+    "specs": {
+      "production": 22662,
+      "productionNote": "928 S 1980–1983 (8.315) und S/S2 1984–1986 (14.347), en.wikipedia",
+      "hp": 300,
+      "liters": 4.7,
+      "years": [
+        1979,
+        1986
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_928",
+        "https://de.wikipedia.org/wiki/Porsche_928"
+      ]
+    },
+    "note": "4,7-l-V8 mit 300 PS, ab 1984 310 PS. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
+    "images": []
+  },
+  "porsche-928-928-s4": {
+    "specs": {
+      "production": 15682,
+      "hp": 320,
+      "liters": 5.0,
+      "years": [
+        1986,
+        1991
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_928",
+        "https://de.wikipedia.org/wiki/Porsche_928"
+      ]
+    },
+    "note": "5,0-l-V8 mit Vierventilköpfen, 320 PS. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
+    "images": []
+  },
+  "porsche-928-928-gt": {
+    "specs": {
+      "production": 2078,
+      "hp": 330,
+      "liters": 5.0,
+      "years": [
+        1989,
+        1991
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_928",
+        "https://de.wikipedia.org/wiki/Porsche_928"
+      ]
+    },
+    "note": "Nur mit Schaltgetriebe. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
+    "images": []
+  },
+  "porsche-928-928-gts": {
+    "specs": {
+      "production": 2904,
+      "productionNote": "2.904 laut en.wikipedia, 2.831 laut Auto Bild",
+      "hp": 350,
+      "liters": 5.4,
+      "years": [
+        1991,
+        1995
+      ],
+      "newPrice": {
+        "amount": 156050,
+        "currency": "DEM",
+        "eur": 79787,
+        "year": 1992
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Porsche_928",
+        "https://de.wikipedia.org/wiki/Porsche_928",
+        "https://www.autobild.de/artikel/porsche-928-1220467.html"
+      ]
+    },
+    "note": "5,4-l-V8 mit 350 PS, ersetzte S4 und GT; Neupreis 1992: 156.050 DM (Auto Bild).",
+    "images": []
   }
 }

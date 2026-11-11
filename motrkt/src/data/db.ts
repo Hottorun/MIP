@@ -134,6 +134,7 @@ function marketPhotos(id: string): Photo[] {
 export const MODEL_CATEGORIES: { id: ModelCategory; readonly label: string }[] = [
   { id: "heck", get label() { return t("Heckmotor", "Rear-engined"); } },
   { id: "mittel", get label() { return t("Mittelmotor", "Mid-engined"); } },
+  { id: "front", get label() { return t("Frontmotor", "Front-engined"); } },
   { id: "super", get label() { return t("Supersportwagen", "Supercars"); } },
   { id: "motorsport", get label() { return "Motorsport"; } },
 ];

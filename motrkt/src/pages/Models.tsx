@@ -38,6 +38,7 @@ type Section = { key: string; title: string; sub: string; category: ModelCategor
 const CATEGORY_INTRO: Record<ModelCategory, string> = {
   get heck() { return t("356, 911 und ihre Ableger: der Motor sitzt hinter der Hinterachse.", "356, 911 and their offshoots: the engine sits behind the rear axle."); },
   get mittel() { return t("Boxster, Cayman und 718: der Motor sitzt vor der Hinterachse.", "Boxster, Cayman and 718: the engine sits ahead of the rear axle."); },
+  get front() { return t("924, 944, 968 und 928: Frontmotor, Getriebe an der Hinterachse (Transaxle).", "924, 944, 968 and 928: front engine, gearbox at the rear axle (transaxle)."); },
   get super() { return t("959, Carrera GT und 918 Spyder: Technikträger in Kleinserie.", "959, Carrera GT and 918 Spyder: technology flagships built in small numbers."); },
   get motorsport() {
     return t(

@@ -23,7 +23,7 @@ def norm(s):
 
 def split(title):
     t = norm(title)
-    m = re.search(r"\b(19[4-9]\d|20[0-2]\d)\s+Porsche\s+(.*)$", t)
+    m = re.search(r"\b(19[4-9]\d|20[0-2]\d)(?:\.5)?\s+Porsche\s+(.*)$", t)  # "1985.5": US mid-year models
     if not m: return None
     return t[: m.start()].strip(), int(m.group(1)), m.group(2).strip()
 
@@ -178,11 +178,54 @@ def p914(y, s):
     if d is None and 1970 <= y <= 1972 and not re.search(r"\b\d\.\d\b", s): return (P + "914-914-1-7", "Targa")
     return None
 
+TRANSAXLE = r"\b(924|928|944|968|931|951)(s|s2|s4|cs)?\b"
+
+def transaxle(y, s):
+    """Front-engined transaxle cars: 924 (1976-1988), 944 (1982-1991), 968 (1992-1995), 928 (1978-1995).
+    Titles use US model years; type numbers 931 (924 Turbo) and 951 (944 Turbo) also occur."""
+    s = s.replace("924s", "924 s").replace("928s", "928 s").replace("944s", "944 s").replace("968cs", "968 cs")
+    s = s.replace("club sport", "clubsport").replace("931", "924 turbo").replace("951", "944 turbo")
+    if has(s, "edition", "celebration", "le mans", "martini", "weissach", "sebring", "anniversary", "jubil", "cup", "gtp", "gtr", "rallye",
+           "targa", "speedster", "roadster", "shooting", "four-door", "4-door", "studie", "prototype", "police"):
+        return None
+    cab = "Cabriolet" if has(s, "cabrio", "convertible") else "Coupé"
+    def r(v, body="Coupé"): return (P + v, body)
+    # several series named at once ("924/944") is not one car
+    if len(set(re.findall(r"\b(924|928|944|968)\b", s))) != 1: return None
+    if re.search(r"\b924\b", s):
+        if "carrera gts" in s: return r("924-924-carrera-gts") if y == 1981 else None
+        if "carrera gt" in s: return r("924-924-carrera-gt") if 1980 <= y <= 1981 else None
+        if "carrera" in s: return None
+        if "turbo" in s: return r("924-924-turbo") if 1978 <= y <= 1984 else None
+        if re.search(r"924 s\b", s): return r("924-924-s") if 1986 <= y <= 1988 else None
+        return r("924-924") if 1976 <= y <= 1985 else None
+    if re.search(r"\b944\b", s):
+        if "turbo s" in s: return r("944-944-turbo-s") if 1988 <= y <= 1989 else None
+        if "turbo" in s: return r("944-944-turbo", "Cabriolet" if cab == "Cabriolet" and y == 1991 else "Coupé") if 1985 <= y <= 1991 and (cab == "Coupé" or y == 1991) else None
+        if re.search(r"944 s2\b", s): return r("944-944-s2", cab) if 1989 <= y <= 1991 else None
+        if re.search(r"944 s\b", s): return r("944-944-s") if 1987 <= y <= 1988 and cab == "Coupé" else None
+        if cab == "Cabriolet": return None
+        return r("944-944") if 1982 <= y <= 1989 else None
+    if re.search(r"\b968\b", s):
+        if "turbo" in s: return r("968-968-turbo-s") if "turbo s" in s and 1993 <= y <= 1994 else None
+        if has(s, "968 cs", "clubsport"): return r("968-968-cs") if 1993 <= y <= 1995 and cab == "Coupé" else None
+        return r("968-968", cab) if 1992 <= y <= 1995 else None
+    if re.search(r"\b928\b", s):
+        if has(s, "clubsport", "928 cs", "928 se", "s4 se"): return None
+        if "gts" in s: return r("928-928-gts") if 1992 <= y <= 1995 else None
+        if re.search(r"928 gt\b", s): return r("928-928-gt") if 1989 <= y <= 1991 else None
+        if re.search(r"928 s4\b", s): return r("928-928-s4") if 1987 <= y <= 1991 else None
+        if re.search(r"928 s\b", s): return r("928-928-s") if 1980 <= y <= 1986 else None
+        if re.search(r"928 (s\d|gt)", s): return None
+        return r("928-928") if 1978 <= y <= 1982 else None
+    return None
+
 def road(y, s, full=""):
     """Road cars. s = lowercase model text after 'Porsche'; full = whole title (prefix such as "RoW" included)."""
     s = " " + s + " "
     if re.search(r"\b914\b", s): return p914(y, s)
-    if re.search(r"\b(924|928|944|968|cayenne|panamera|macan|taycan|mission)\b", s): return None
+    if re.search(TRANSAXLE, s): return transaxle(y, s)
+    if re.search(r"\b(cayenne|panamera|macan|taycan|mission)\b", s): return None
     b = body(s)
     four = re.search(r"carrera 4|\b4s\b|targa 4|carrera4|\bc4\b|c4s", s)
     def r(v): return (P + v, b)

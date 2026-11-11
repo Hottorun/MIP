@@ -11,3 +11,21 @@ porsche-918-918-spyder-weissach | Porsche 918 Spyder Weissach | 2013–2015 | pr
 porsche-carrera-gt-carrera-gt | Porsche Carrera GT | 2003–2007 | production 1270 | 612 PS | 5.7 l | newPrice EUR 452000 | current color #b7babe
 porsche-959-959-komfort | Porsche 959 Komfort | 1986–1988 | production 263 | 450 PS | 2.85 l | newPrice EUR 210000 | current color #e9e8e1
 porsche-959-959-sport | Porsche 959 Sport | 1987–1988 | production 29 | 515 PS | 2.85 l | newPrice EUR 225000 | current color #b7babe
+porsche-924-924 | Porsche 924 | 1976–1985 | production 150684 | 125 PS | 2 l | newPrice EUR 11882 | current color -
+porsche-924-924-turbo | Porsche 924 Turbo | 1979–1984 | production 150684 | 170 PS | 2 l | newPrice EUR 20452 | current color #7d7f7d
+porsche-924-924-carrera-gt | Porsche 924 Carrera GT | 1980–1981 | production 406 | 210 PS | 2 l | newPrice EUR 30678 | current color -
+porsche-924-924-carrera-gts | Porsche 924 Carrera GTS | 1981–1981 | production 59 | 245 PS | 2 l | newPrice EUR 56242 | current color #b5121b
+porsche-924-924-s | Porsche 924 S | 1986–1988 | production 150684 | 150 PS | 2.5 l | newPrice EUR 21449 | current color -
+porsche-944-944 | Porsche 944 | 1981–1989 | production 113070 | 163 PS | 2.5 l | newPrice EUR 19889 | current color -
+porsche-944-944-turbo | Porsche 944 Turbo | 1985–1991 | production 25245 | 220 PS | 2.5 l | newPrice EUR 36813 | current color -
+porsche-944-944-s | Porsche 944 S | 1986–1988 | production 12936 | 190 PS | 2.5 l | newPrice EUR ? | current color -
+porsche-944-944-turbo-s | Porsche 944 Turbo S | 1988–1988 | production 1635 | 250 PS | 2.5 l | newPrice EUR 51027 | current color #c9b2b4
+porsche-944-944-s2 | Porsche 944 S2 | 1988–1991 | production 19727 | 211 PS | 3 l | newPrice EUR ? | current color -
+porsche-968-968 | Porsche 968 | 1991–1995 | production 9690 | 240 PS | 3 l | newPrice EUR 45965 | current color -
+porsche-968-968-cs | Porsche 968 CS | 1992–1995 | production 1538 | 240 PS | 3 l | newPrice EUR 39625 | current color -
+porsche-968-968-turbo-s | Porsche 968 Turbo S | 1993–1994 | production 14 | 305 PS | 3 l | newPrice EUR 89476 | current color -
+porsche-928-928 | Porsche 928 | 1977–1982 | production 17669 | 240 PS | 4.5 l | newPrice EUR 28121 | current color #b5121b
+porsche-928-928-s | Porsche 928 S | 1979–1986 | production 22662 | 300 PS | 4.7 l | newPrice EUR ? | current color -
+porsche-928-928-s4 | Porsche 928 S4 | 1986–1991 | production 15682 | 320 PS | 5 l | newPrice EUR ? | current color -
+porsche-928-928-gt | Porsche 928 GT | 1989–1991 | production 2078 | 330 PS | 5 l | newPrice EUR ? | current color -
+porsche-928-928-gts | Porsche 928 GTS | 1991–1995 | production 2904 | 350 PS | 5.4 l | newPrice EUR 79787 | current color -
