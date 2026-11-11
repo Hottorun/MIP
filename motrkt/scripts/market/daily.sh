@@ -13,6 +13,10 @@ export PATH="$HOME/.local/node/bin:$PATH"
 echo "Log: $LOG"
 sh "$HERE/update.sh" "$W" > "$LOG" 2>&1
 (cd "$APP" && npx tsc --noEmit -p .) >> "$LOG" 2>&1
+# load the new data into Postgres when a database is configured (DATABASE_URL in the environment or .env)
+if [ -n "$DATABASE_URL" ] || grep -q '^DATABASE_URL=.' "$APP/.env" 2>/dev/null; then
+  (cd "$APP" && npm run -s db:migrate && npm run -s db:import) >> "$LOG" 2>&1
+fi
 
 cd "$ROOT"
 git add motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json

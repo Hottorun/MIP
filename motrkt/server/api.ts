@@ -4,6 +4,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { handleMobileDe } from "./mobilede.ts";
+import { readText } from "./body.ts";
 
 // Load secrets from .env (ANTHROPIC_API_KEY, MOBILEDE_USERNAME, MOBILEDE_PASSWORD) without overriding the shell environment.
 try {
@@ -36,14 +37,7 @@ function sendJson(res: ServerResponse, status: number, body: unknown) {
 }
 
 async function readJson(req: IncomingMessage): Promise<unknown> {
-  const chunks: Buffer[] = [];
-  let size = 0;
-  for await (const chunk of req) {
-    size += chunk.length;
-    if (size > 1_000_000) throw new Error("Request zu groß");
-    chunks.push(chunk as Buffer);
-  }
-  return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
+  return JSON.parse((await readText(req, 1_000_000)) || "{}");
 }
 
 function parseMessages(raw: unknown): ChatMessage[] | null {

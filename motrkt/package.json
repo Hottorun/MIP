@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "start": "tsx server/prod.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "tsx scripts/db/migrate.ts",
+    "db:import": "tsx scripts/db/import.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",
     "lucide-react": "^1.69.0",
+    "postgres": "^4.1.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5",
@@ -27,5 +30,8 @@
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.6"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

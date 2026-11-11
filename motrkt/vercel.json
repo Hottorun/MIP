@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
+  "regions": ["fra1"],
+  "functions": {
+    "api/server.ts": {
+      "includeFiles": "dist/{index.html,assets/**}",
+      "excludeFiles": "{dist/cars/**,public/**}"
+    }
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/server" }]
+}

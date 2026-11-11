@@ -1,22 +1,19 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createHash, randomBytes, randomUUID, scrypt, timingSafeEqual } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
 import { TLSSocket } from "node:tls";
-import { fileURLToPath } from "node:url";
+import demoAccount from "./demo-account.json" with { type: "json" };
+import { readText } from "./body.ts";
+import { db } from "./db.ts";
 
 /**
  * Accounts with username and password. Without a valid session the server hands out nothing but the sign-in page
  * (/anmelden) and /api/auth/*: the app, its data and the other APIs stay closed.
  *
- * Storage: MIP_DATA_DIR (default motrkt/.data, not in git) – users.json (scrypt hash + salt per user, never the
- * password) and sessions.json (only the SHA-256 of each session token). Sessions last a year and are renewed on
- * every visit, so a user stays signed in until they sign out.
+ * Storage: Postgres (db/migrations/002_accounts.sql) – a scrypt hash + salt per user (never the password) and only the
+ * SHA-256 of each session token. Sessions last a year and are renewed on every visit, so a user stays signed in until
+ * they sign out.
  */
 
-const DIR = process.env.MIP_DATA_DIR ?? process.env.MOTRKT_DATA_DIR ?? fileURLToPath(new URL("../.data", import.meta.url));
-const USERS = join(DIR, "users.json");
-const SESSIONS = join(DIR, "sessions.json");
 const COOKIE = "mip_sid";
 const OLD_COOKIE = "motrkt_sid"; // name before the rename to MIP; still accepted and swapped for the new one
 const SESSION_DAYS = 365;
@@ -24,33 +21,25 @@ const USERNAME = /^[A-Za-z0-9._-]{3,30}$/;
 const PW_MIN = 8;
 const PW_MAX = 200;
 
-type User = { id: string; username: string; salt: string; hash: string; created: string };
-type Session = { userId: string; expires: number };
-
-function load<T>(file: string, empty: T): T {
-  try {
-    return existsSync(file) ? (JSON.parse(readFileSync(file, "utf8")) as T) : empty;
-  } catch {
-    return empty;
-  }
-}
-function save(file: string, data: unknown) {
-  mkdirSync(DIR, { recursive: true, mode: 0o700 });
-  const tmp = `${file}.${process.pid}.tmp`;
-  writeFileSync(tmp, JSON.stringify(data, null, 1), { mode: 0o600 });
-  renameSync(tmp, file); // atomic: a crash never leaves half a file
-}
+type User = { id: string; username: string; salt: string; hash: string };
 
 // Shared demo account (server/demo-account.json, password in README). The repository is public, so it is on in
-// development only; the production server enables it with MIP_DEMO_ACCOUNT=1.
+// development only; the production server enables it with MIP_DEMO_ACCOUNT=1. It is never written to the database.
 let demo: User | null = null;
 export function enableDemoAccount() {
-  demo = JSON.parse(readFileSync(fileURLToPath(new URL("./demo-account.json", import.meta.url)), "utf8")) as User;
+  demo = demoAccount as User;
 }
-const users = () => {
-  const stored = load<User[]>(USERS, []);
-  return demo ? [demo, ...stored] : stored;
-};
+
+async function userByName(username: string): Promise<User | null> {
+  if (demo && demo.username.toLowerCase() === username.toLowerCase()) return demo;
+  const [u] = await db()<User[]>`select id, username, salt, hash from users where lower(username) = lower(${username})`;
+  return u ?? null;
+}
+async function userById(id: string): Promise<User | null> {
+  if (demo && demo.id === id) return demo;
+  const [u] = await db()<User[]>`select id, username, salt, hash from users where id = ${id}`;
+  return u ?? null;
+}
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 
 function hashPassword(password: string, salt: string): Promise<Buffer> {
@@ -79,50 +68,50 @@ function setCookie(req: IncomingMessage, res: ServerResponse, value: string, max
 
 const sessionToken = (req: IncomingMessage) => readCookie(req, COOKIE) ?? readCookie(req, OLD_COOKIE);
 
-function startSession(req: IncomingMessage, res: ServerResponse, userId: string) {
+async function startSession(req: IncomingMessage, res: ServerResponse, userId: string) {
   const token = randomBytes(32).toString("base64url");
-  const all = load<Record<string, Session>>(SESSIONS, {});
-  const now = Date.now();
-  for (const [k, s] of Object.entries(all)) if (s.expires < now) delete all[k];
-  all[sha(token)] = { userId, expires: now + SESSION_DAYS * 86_400_000 };
-  save(SESSIONS, all);
+  await db()`delete from sessions where expires_at < now()`;
+  await db()`insert into sessions (token_hash, user_id, expires_at) values (${sha(token)}, ${userId}, now() + make_interval(days => ${SESSION_DAYS}))`;
   setCookie(req, res, token, SESSION_DAYS * 86_400);
 }
 
 /** Pushes a used session (and its cookie) out to a full year again; at most once a day per session. */
-function renewSession(req: IncomingMessage, res: ServerResponse) {
+async function renewSession(req: IncomingMessage, res: ServerResponse) {
   const token = sessionToken(req);
   if (!token) return;
-  const all = load<Record<string, Session>>(SESSIONS, {});
-  const s = all[sha(token)];
-  const full = Date.now() + SESSION_DAYS * 86_400_000;
-  if (!s || (full - s.expires < 86_400_000 && readCookie(req, COOKIE))) return;
-  s.expires = full;
-  save(SESSIONS, all);
-  setCookie(req, res, token, SESSION_DAYS * 86_400);
+  // the old cookie name is always swapped for the new one
+  const due = readCookie(req, COOKIE) ? db()`expires_at < now() + make_interval(days => ${SESSION_DAYS - 1})` : db()`true`;
+  const renewed = await db()`
+    update sessions set expires_at = now() + make_interval(days => ${SESSION_DAYS})
+    where token_hash = ${sha(token)} and expires_at > now() and ${due}`;
+  if (renewed.count) setCookie(req, res, token, SESSION_DAYS * 86_400);
 }
 
-export function currentUser(req: IncomingMessage): { id: string; username: string } | null {
+export async function currentUser(req: IncomingMessage): Promise<{ id: string; username: string } | null> {
   const token = sessionToken(req);
   if (!token) return null;
-  const s = load<Record<string, Session>>(SESSIONS, {})[sha(token)];
-  if (!s || s.expires < Date.now()) return null;
-  const u = users().find((x) => x.id === s.userId);
+  const [s] = await db()<{ user_id: string }[]>`select user_id from sessions where token_hash = ${sha(token)} and expires_at > now()`;
+  const u = s ? await userById(s.user_id) : null;
   return u ? { id: u.id, username: u.username } : null;
 }
 
 // ------------------------------------------------------------------------------------------------ brute-force brake
-const failures = new Map<string, number[]>();
-const WINDOW = 15 * 60_000;
+// In the database, not in memory: on Vercel many function instances answer requests side by side.
 const MAX_FAILS = 8;
-function blocked(key: string) {
-  const now = Date.now();
-  const list = (failures.get(key) ?? []).filter((t) => now - t < WINDOW);
-  failures.set(key, list);
-  return list.length >= MAX_FAILS;
+async function blocked(key: string) {
+  const [{ n }] = await db()<{ n: number }[]>`select count(*)::int as n from auth_failures where key = ${key} and at > now() - interval '15 minutes'`;
+  return n >= MAX_FAILS;
 }
-const fail = (key: string) => failures.set(key, [...(failures.get(key) ?? []), Date.now()]);
-const clientIp = (req: IncomingMessage) => req.socket.remoteAddress ?? "?";
+async function fail(key: string) {
+  await db()`delete from auth_failures where at < now() - interval '1 day'`;
+  await db()`insert into auth_failures (key) values (${key})`;
+}
+const clearFailures = (key: string) => db()`delete from auth_failures where key = ${key}`;
+/** Client address; behind Vercel's proxy from the header Vercel sets (not spoofable there), else the socket. */
+function clientIp(req: IncomingMessage) {
+  const fwd = process.env.VERCEL ? req.headers["x-vercel-forwarded-for"] ?? req.headers["x-forwarded-for"] : undefined;
+  return (Array.isArray(fwd) ? fwd[0] : fwd)?.split(",")[0].trim() || req.socket.remoteAddress || "?";
+}
 
 // ------------------------------------------------------------------------------------------------ API
 function sendJson(res: ServerResponse, status: number, body: unknown) {
@@ -134,14 +123,7 @@ function sendJson(res: ServerResponse, status: number, body: unknown) {
 
 async function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
   if (!(req.headers["content-type"] ?? "").includes("application/json")) throw new Error("json");
-  const chunks: Buffer[] = [];
-  let size = 0;
-  for await (const c of req) {
-    size += (c as Buffer).length;
-    if (size > 10_000) throw new Error("size");
-    chunks.push(c as Buffer);
-  }
-  const v = JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
+  const v = JSON.parse((await readText(req, 10_000)) || "{}");
   return v && typeof v === "object" ? v : {};
 }
 
@@ -154,18 +136,14 @@ function sameOrigin(req: IncomingMessage) {
 export async function handleAuth(req: IncomingMessage, res: ServerResponse, url: URL) {
   const path = url.pathname;
   if (path === "/api/auth/me" && req.method === "GET") {
-    const u = currentUser(req);
+    const u = await currentUser(req);
     return u ? sendJson(res, 200, { username: u.username }) : sendJson(res, 401, { error: "not signed in" });
   }
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });
 
   if (path === "/api/auth/logout") {
     const token = sessionToken(req);
-    if (token) {
-      const all = load<Record<string, Session>>(SESSIONS, {});
-      delete all[sha(token)];
-      save(SESSIONS, all);
-    }
+    if (token) await db()`delete from sessions where token_hash = ${sha(token)}`;
     setCookie(req, res, "", 0);
     return sendJson(res, 200, { ok: true });
   }
@@ -181,35 +159,36 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   const ip = clientIp(req);
 
   if (path === "/api/auth/register") {
-    if (blocked("reg:" + ip)) return sendJson(res, 429, { error: "too_many" });
+    if (await blocked("reg:" + ip)) return sendJson(res, 429, { error: "too_many" });
     if (!USERNAME.test(username)) return sendJson(res, 400, { error: "username_invalid" });
     if (password.length < PW_MIN || password.length > PW_MAX) return sendJson(res, 400, { error: "password_length" });
     if (password.toLowerCase() === username.toLowerCase()) return sendJson(res, 400, { error: "password_is_username" });
-    const all = users();
-    if (all.some((u) => u.username.toLowerCase() === username.toLowerCase())) return sendJson(res, 409, { error: "username_taken" });
+    if (await userByName(username)) return sendJson(res, 409, { error: "username_taken" });
     const salt = randomBytes(16).toString("hex");
     const hash = (await hashPassword(password, salt)).toString("hex");
-    const user: User = { id: randomUUID(), username, salt, hash, created: new Date().toISOString() };
-    save(USERS, [...load<User[]>(USERS, []), user]); // the demo account is never written to the store
-    fail("reg:" + ip); // counts sign-ups too: at most a few new accounts per address and quarter hour
-    startSession(req, res, user.id);
+    const user: User = { id: randomUUID(), username, salt, hash };
+    // the unique index on lower(username) settles two sign-ups racing for the same name
+    const added = await db()`insert into users (id, username, salt, hash) values (${user.id}, ${username}, ${salt}, ${hash}) on conflict do nothing`;
+    if (!added.count) return sendJson(res, 409, { error: "username_taken" });
+    await fail("reg:" + ip); // counts sign-ups too: at most a few new accounts per address and quarter hour
+    await startSession(req, res, user.id);
     return sendJson(res, 201, { username });
   }
 
   if (path === "/api/auth/login") {
     const key = "login:" + username.toLowerCase();
-    if (blocked(key) || blocked("ip:" + ip)) return sendJson(res, 429, { error: "too_many" });
-    const user = users().find((u) => u.username.toLowerCase() === username.toLowerCase());
+    if ((await blocked(key)) || (await blocked("ip:" + ip))) return sendJson(res, 429, { error: "too_many" });
+    const user = await userByName(username);
     // hash even for unknown names, so the answer time does not reveal which names exist
     const salt = user?.salt ?? "0000000000000000";
     const got = await hashPassword(password.slice(0, PW_MAX), salt);
     if (!user || !timingSafeEqual(got, Buffer.from(user.hash, "hex"))) {
-      fail(key);
-      fail("ip:" + ip);
+      await fail(key);
+      await fail("ip:" + ip);
       return sendJson(res, 401, { error: "wrong_credentials" });
     }
-    failures.delete(key);
-    startSession(req, res, user.id);
+    await clearFailures(key);
+    await startSession(req, res, user.id);
     return sendJson(res, 200, { username: user.username });
   }
   return sendJson(res, 404, { error: "Not found" });
@@ -226,7 +205,7 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     return true;
   }
   if (url.pathname === "/anmelden") {
-    if (currentUser(req)) return redirect(res, safeNext(url.searchParams.get("next")));
+    if (await currentUser(req)) return redirect(res, safeNext(url.searchParams.get("next")));
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "no-store");
@@ -235,8 +214,8 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     return true;
   }
   if (OPEN.has(url.pathname)) return false;
-  if (currentUser(req)) {
-    if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) renewSession(req, res);
+  if (await currentUser(req)) {
+    if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) await renewSession(req, res);
     return false;
   }
   if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) {
