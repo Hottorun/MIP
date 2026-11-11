@@ -32,6 +32,7 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 | Kanal | Quelle | Abruf |
 | --- | --- | --- |
 | `EU_AUC` Auktionen Europa | RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding … (Verkäufe in EUR, GBP, CHF) | `ucpfetch.sh` + `ucpparse.py` (ultimatecarpage.com) |
+| `EU_AUC` / `US_AUC` | Auktionshäuser direkt: RM Sotheby's, Gooding & Company, Broad Arrow, Artcurial (nur verkaufte Lose; unverkaufte veröffentlicht Artcurial nicht) – mit Lotseite, Fahrgestellnummer und Laufleistung (falls genannt); ersetzen dieselben Lose von ultimatecarpage (gleiche Fahrgestellnummer ±7 Tage, sonst Variante, Datum und Preis). Bonhams: `bonhamsfetch.py` ist fertig, läuft aber nicht mit, solange Bonhams' Such-API mit einer Bot-Abfrage antwortet | `rmfetch.py`, `goodingfetch.py`, `broadarrowfetch.py`, `artcurialfetch.py` |
 | `EU_ASK` Angebote Europa | Classic Trader (Händler und privat, Linkslenker, Standort Europa) | `ctfetch.py` + `ctparse.py` |
 | `EU_ASK` / `EU_AUC` | von Hand: mobile.de, Elferspot, Kleinanzeigen, Händlerauskünfte | `manual/*.csv`, siehe `manual/README.md` |
 | `US_AUC` Auktionen USA | Bring a Trailer, RM Sotheby's, Gooding, Broad Arrow … (Verkäufe in USD) | `batfetch.py`, `ucpfetch.sh` |

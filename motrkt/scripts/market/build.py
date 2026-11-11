@@ -1,4 +1,4 @@
-"""Build sales rows (EUR) from Bring a Trailer + ultimatecarpage auction results."""
+"""Build sales rows (EUR) from Bring a Trailer, ultimatecarpage and the auction houses' own results."""
 import json, os, re, sys, csv, datetime as dt, collections, bisect, html
 sys.path.insert(0, sys.argv[1] + "/tools")
 from classify import classify
@@ -113,6 +113,41 @@ for o in out:
     if k.get("preis"):
         o["orig"], o["cur"] = int(float(k["preis"])), (k.get("waehrung") or o["cur"]).strip()
         o["eur"] = round(to_eur(o["orig"], o["cur"], o["date"])); o["sold"] = True
+# --- Results straight from the auction houses (rmfetch.py, bonhamsfetch.py, goodingfetch.py, broadarrowfetch.py,
+# artcurialfetch.py; each writes WORK/web/<key>/<key>.json): direct lot links, chassis numbers and stated mileage. These
+# rows replace the same lots taken from ultimatecarpage: same chassis number within 7 days, or without one the same
+# variant within 7 days at a price within 2 %. ultimatecarpage rows a house's own data does not cover are kept.
+HOUSES = [("rm", "RM Sotheby's", "RM"), ("bonhams", "Bonhams", "BON"), ("gooding", "Gooding & Company", "GOO"),
+          ("broadarrow", "Broad Arrow", "BA"), ("artcurial", "Artcurial", "ART")]
+# VINs and chassis numbers never use the letter O; some catalogues print "WPO…" for "WP0…"
+def chassis_key(c): return re.sub(r"[^A-Z0-9]", "", (c or "").upper()).replace("O", "0")
+def day(d): return dt.date.fromisoformat(d).toordinal()
+for key, house, prefix in HOUSES:
+    path = "%s/web/%s/%s.json" % (S, key, key)
+    if not os.path.exists(path): continue
+    own, ids = [], set()
+    for x in json.load(open(path)):
+        c = classify(x["title"])
+        if not c or (x["sold"] and (not x["amt"] or (x["cur"] != "EUR" and x["cur"] not in fx))): continue
+        vid, body, gear, year = c
+        lot = "%s-%s-%s" % (prefix, str(x["code"]).upper(), x["lot"])
+        if lot in ids: continue
+        ids.add(lot)
+        own.append(dict(variant=vid, title=x["title"], date=x["date"], house=house, eur=round(to_eur(x["amt"], x["cur"], x["date"])) if x["sold"] else None,
+                        bid=None, sold=x["sold"], orig=x["amt"] if x["sold"] else None, cur=x["cur"] if x["sold"] else None, km=x["km"], loc=x["country"],
+                        body=body, gear=gear, vin=x["chassis"], lot=lot, url=x["url"], year=year, src=key, event=x["sale"]))
+    by_chassis = collections.defaultdict(list)
+    for r in own:
+        if len(chassis_key(r["vin"])) >= 5: by_chassis[chassis_key(r["vin"])].append(r)
+    def covered(u):
+        k = chassis_key(u["vin"])
+        if len(k) >= 5 and any(abs(day(r["date"]) - day(u["date"])) <= 7 for r in by_chassis.get(k, [])): return True
+        return any(r["variant"] == u["variant"] and abs(day(r["date"]) - day(u["date"])) <= 7 and r["sold"] == u["sold"]
+                   and (not u["sold"] or abs(r["eur"] / u["eur"] - 1) < 0.02) for r in own)
+    before = len(out)
+    out = [u for u in out if not (u["src"] == "ucp" and u["house"] == house and covered(u))]
+    print("%s: %d results from the house, %d ultimatecarpage rows replaced" % (house, len(own), before - len(out)))
+    out += own
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
 c = collections.Counter(o["variant"] for o in out if o["sold"])
 print(len(out), sum(c.values()))

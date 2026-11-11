@@ -20,6 +20,11 @@ echo "3/6 Auktionshäuser (RM Sotheby's, Bonhams, Broad Arrow, Artcurial … üb
 LAST=$(ls "$W/web/ucp" | sed 's/.html//' | sort -n | tail -1)
 sh "$HERE/ucpfetch.sh" "$W" $((LAST > 10 ? LAST - 10 : 1)) $((LAST + 40))
 python3 -I "$HERE/ucpparse.py" "$W/web/ucp" "$W/web/ucp.json"
+echo "   Auktionshäuser direkt (Ergebnisse mit Lotseite, Fahrgestellnummer und Laufleistung)"
+# Bonhams (bonhamsfetch.py) fehlt hier: Bonhams' Such-API antwortet mit einer Bot-Abfrage, bis Bonhams den Zugang freigibt
+for f in rmfetch goodingfetch broadarrowfetch artcurialfetch; do
+  python3 -I "$HERE/$f.py" "$W" || echo "   $f fehlgeschlagen, weiter mit ultimatecarpage"
+done
 
 echo "4/6 Angebote in Europa (Classic Trader)"
 python3 -I "$HERE/ctfetch.py" "$W"

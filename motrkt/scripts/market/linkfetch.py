@@ -11,8 +11,9 @@ against the car (build year and make in the house's own lot title).
 - Gooding & Company: lot URLs from the public sitemap, checked via the lot's public page data (lot number, sale, year).
 - Bonhams: /auction/<sale>/lot/<lot>/; the sale number is found by date and confirmed by the lot redirecting to a
   Porsche of the right year.
-- RM Sotheby's: lot pages are only reachable through RM's internal search, which is not used. Links go to the sale's
-  results page (/auctions/<code>/lots/), the code confirmed by the sale page title.
+- RM Sotheby's: links go to the sale's results page (/auctions/<code>/lots/), the code confirmed by the sale page title.
+Results the houses publish themselves (rmfetch.py, goodingfetch.py, broadarrowfetch.py, artcurialfetch.py) replace the
+ultimatecarpage rows in build.py and carry their own lot links; the links here only serve the rows that remain.
 - Artcurial: robots.txt excludes the motorcar pages, no link is built.
 Results are cached in WORK/web/links/, so a rerun only looks up new sales. One request per second.
 """
