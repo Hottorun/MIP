@@ -1,0 +1,24 @@
+# Porsche Classic, "Lackfarben - Porsche 993 Carrera (ab 1993)", 993-overview-paint-colours.pdf; MY1998 from 993-1998 colour information
+908 grandprixweiß U1 = 94,95,96
+741 schwarz U2 = 94,95,96,97
+80K indischrot U1 = 94,95,96,97
+12G speedgelb U1 = 94,95,96
+39E rivierablau U1 = 94,95
+39D amarantviolett U1 = 94,95
+746 schwarz-perlcolor P2 = 94,95,96,97
+37W nachtblau-perlcolor P2 = 94,95,96
+92E polarsilber-met. M2 = 94,95,96
+22D schiefer-met. M2 = 94,95
+39N irisblau-perlcolor P2 = 94,95,96
+39R aventuragrün-perlcolor P2 = 94,95,96
+84R arenarot-perlcolor P2 = 95,96,97
+25C türkis-perlcolor P2 = 96
+3AR blautürkis U2 = 96,97
+3AT firnweiß U2 = 97
+12L pastellgelb U2 = 97
+3AY oceanblau-met. M2 = 97
+92T arktissilber-met. M2 = 97
+3AW zenitblau-met. M2 = 97
+25H libelltürkis-met. M2 = 97
+40W vesuvio-perlcolor P2 = 97
+554 paladio-perlcolor P2 = 97

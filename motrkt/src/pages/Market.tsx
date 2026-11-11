@@ -10,6 +10,7 @@ import { Assessment, RecentSales } from "../components/market/SalesSection";
 import { Listings } from "../components/market/BottomRow";
 import { Evidence } from "../components/market/Evidence";
 import { MarketStats } from "../components/market/MarketStats";
+import { PaintChart } from "../components/market/PaintChart";
 import { appTitle, t } from "../i18n";
 
 export default function Market() {
@@ -74,6 +75,7 @@ function MarketPage({ variant }: { variant: Variant }) {
       </div>
       <Evidence variant={variant} body={body} />
       <Details variant={variant} picked={picked} onPick={setPicked} />
+      <PaintChart variant={variant} />
       <Listings variant={variant} body={body} />
     </div>
   );

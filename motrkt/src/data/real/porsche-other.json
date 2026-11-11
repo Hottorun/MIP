@@ -62,8 +62,8 @@
       "name": "Rot (vermutlich Signalrot)",
       "hex": "#b5121b",
       "source": "https://www.sportscarmarket.com/profile/1955-porsche-356-speedster",
-      "confidence": "medium",
-      "note": "US importer Max Hoffman first showed the red prototype #80002 at the Watkins Glen races, 17-18 Sept 1954; the name \"Speedster\" appeared in a Porsche press release the following week. Exact paint name not documented; early cars were offered in Speedster Blue, red and white."
+      "confidence": "low",
+      "note": "US importer Max Hoffman first showed the red prototype #80002 at the Watkins Glen races, 17-18 Sept 1954; the name \"Speedster\" appeared in a Porsche press release the following week. Exact paint name not documented; early cars were offered in Speedster Blue, red and white. The factory colour charts of 1954 and 1955–59 list no Signalrot (it appears only from 1960); their reds are Türkischrot (5402) and Rubinrot (5702)."
     },
     "specs": {
       "production": 4854,
@@ -229,11 +229,11 @@
   },
   "porsche-912-912-coupe": {
     "launchColor": {
-      "name": "Elfenbein (Ivory) (Annahme)",
-      "hex": "#e6dfc8",
+      "name": "Hell-Elfenbein (Light Ivory) (Annahme)",
+      "hex": "#ede6cf",
       "source": "https://newsroom.porsche.com/en/2023/history/porsche-klassik-912-356-a-sensitive-transition-33488.html",
       "confidence": "low",
-      "note": "Production started 5 April 1965 (no dedicated show debut). No source found naming the colour of the first press cars; best guess."
+      "note": "Production started 5 April 1965 (no dedicated show debut). No source found naming the colour of the first press cars; best guess. Light Ivory (6604) is on the factory chart for model years 1965–1967."
     },
     "specs": {
       "production": 30745,
@@ -654,11 +654,11 @@
   },
   "porsche-959-959-komfort": {
     "launchColor": {
-      "name": "Grand-Prix-Weiß (Grand Prix White)",
-      "hex": "#f1f1ec",
+      "name": "Perlglanzweiß-Metallic (Pearl White Metallic)",
+      "hex": "#e6e3da",
       "source": "https://www.stuttcars.com/the-porsche-959-story/",
       "confidence": "medium",
-      "note": "The 1983 IAA \"Gruppe B\" study was pearl white; the production 959 debuted at the IAA Frankfurt in September 1985 (also shown as a cutaway). White is the 959's communication colour in period material; exact paint of the 1985 show car not documented."
+      "note": "The 1983 IAA \"Gruppe B\" study was pearl white; the production 959 debuted at the IAA Frankfurt in September 1985. White is the 959's communication colour in period material. The factory colour chart for the 959 (model year 1988) lists four colours, all metallic: Rubinrot, Graphit, Silber and Perlglanzweiß (code 947); the white is therefore Perlglanzweiß-Metallic, not Grand Prix White. Exact paint of the 1985 show car not documented."
     },
     "specs": {
       "production": 263,

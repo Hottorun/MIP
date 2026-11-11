@@ -1,4 +1,4 @@
-import { brandById, paintsFor, variantById, variants } from "./db";
+import { brandById, paintsForVariant, variantById, variants } from "./db";
 import type { Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
 import { rng, type Rng } from "../lib/random";
 import { realSalesFor } from "./real/sales";
@@ -292,7 +292,7 @@ function buildYearFor(r: Rng, v: Variant) {
 }
 
 function paintFor(r: Rng, v: Variant) {
-  const paints = paintsFor(v.brandId);
+  const paints = paintsForVariant(v);
   if (r.chance(0.32)) return paints.find((p) => p.hex === v.color) ?? { name: "Sonderfarbe", hex: v.color };
   return r.pick(paints);
 }

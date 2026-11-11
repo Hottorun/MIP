@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { brands, generationById, modelName, models, paintsFor, variantById, variantTitle, yearsLabel } from "../../data/db";
+import { brands, generationById, modelName, models, paintsFor, paintsForVariant, variantById, variantTitle, yearsLabel } from "../../data/db";
 import { AS_OF, CONDITIONS, launchTime } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import type { Condition, Holding } from "../../data/types";
@@ -38,7 +38,7 @@ function draftFrom(h?: Holding): Draft {
     purchaseDate: toInput(h?.purchaseDate ?? AS_OF),
     mileage: h ? String(h.mileage) : "",
     condition: h?.condition ?? "2+",
-    color: h?.color ?? paintsFor(v.brandId)[0].name,
+    color: h?.color ?? paintsForVariant(v)[0].name,
     note: h?.note ?? "",
   };
 }
@@ -70,7 +70,11 @@ export function HoldingForm({
     return (m?.generationIds ?? []).flatMap((gid) => generationById.get(gid)!.variantIds.map((id) => variantById.get(id)!));
   }, [d.modelId]);
   const variant = variantById.get(d.variantId);
-  const paints = paintsFor(d.brandId);
+  // Period colours of the chosen variant; a colour already on the holding stays selectable.
+  const paints = useMemo(() => {
+    const list = variant ? paintsForVariant(variant) : paintsFor(d.brandId);
+    return d.color && !list.some((p) => p.name === d.color) ? [...list, { name: d.color, hex: "#9c8f7f" }] : list;
+  }, [variant, d.brandId, d.color]);
 
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setD((x) => ({ ...x, [k]: v }));
 
@@ -195,7 +199,7 @@ export function HoldingForm({
         </div>
         <div className="col-span-2">
           <label className="label">{t("Farbe", "Colour")}</label>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex max-h-44 flex-wrap gap-1.5 overflow-y-auto">
             {paints.map((p) => (
               <button
                 type="button"

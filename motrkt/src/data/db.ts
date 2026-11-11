@@ -1,4 +1,5 @@
 import { CATALOG, PAINTS } from "./catalog";
+import { paintsOfVariant } from "./real/paints";
 import type { Body, Brand, Generation, Model, ModelCategory, Variant, VariantOption, VariantSeed } from "./types";
 import { rng, slug } from "../lib/random";
 import { launchPhotos, officialLinks, realData, type Photo } from "./real";
@@ -343,6 +344,12 @@ export function variantsOfBrand(brandId: string): Variant[] {
 
 export function paintsFor(brandId: string) {
   return PAINTS[brandId];
+}
+
+/** Paints the factory offered for this variant (its colour charts), else the brand's generic list. */
+export function paintsForVariant(v: Variant): { name: string; hex: string }[] {
+  const chart = paintsOfVariant(v);
+  return chart.length ? chart.map((c) => ({ name: c.name, hex: c.hex })) : PAINTS[v.brandId];
 }
 
 export function yearsLabel([a, b]: [number, number | null]): string {

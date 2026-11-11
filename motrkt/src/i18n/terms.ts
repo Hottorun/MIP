@@ -113,18 +113,18 @@ const EN: Record<string, string> = {
   Elfenbein: "Ivory",
 
   // Launch colours (German name with the English one in brackets)
-  "Amethyst Metallic (Amethyst Metallic)": "Amethyst Metallic",
+  "Amethyst-Perlcolor (Amethyst Pearl)": "Amethyst Pearl",
   "Arenarot Metallic (Arena Red Metallic)": "Arena Red Metallic",
   "Arktissilber Metallic (Arctic Silver Metallic)": "Arctic Silver Metallic",
   "Carraraweiß (Carrara White)": "Carrara White",
   "Carraraweiß mit roten Schriftzügen (Carrara White with red decals)": "Carrara White with red decals",
-  "Elfenbein (Ivory) (Annahme)": "Ivory (assumed)",
+  "Hell-Elfenbein (Light Ivory) (Annahme)": "Light Ivory (assumed)",
   "GT-Silber Metallic (GT Silver Metallic)": "GT Silver Metallic",
   "GT-Silbermetallic (GT Silver Metallic)": "GT Silver Metallic",
   "Grand-Prix-Weiß (Grand Prix White)": "Grand Prix White",
   "Haifischblau (Shark Blue)": "Shark Blue",
   "Indischrot (Guards Red)": "Guards Red",
-  "Kobaltblaumetallic (Cobalt Blue Metallic)": "Cobalt Blue Metallic",
+  "Cobaltblaumetallic (Cobalt Blue Metallic)": "Cobalt Blue Metallic",
   "Lavaorange (Lava Orange)": "Lava Orange",
   "Liquid Metal Silber (Liquid Metal Silver)": "Liquid Metal Silver",
   "Martini Racing Design (Weiß mit Martini-Streifen)": "Martini Racing Design (white with Martini stripes)",
@@ -134,7 +134,7 @@ const EN: Record<string, string> = {
   "Racinggelb (Racing Yellow)": "Racing Yellow",
   "Rhodiumsilbermetallic (Rhodium Silver Metallic)": "Rhodium Silver Metallic",
   "Rot (vermutlich Signalrot)": "Red (probably Signal Red)",
-  "Rubinsternrot (Rubystone Red)": "Rubystone Red",
+  "Sternrubin (Rubystone Red)": "Rubystone Red",
   "Schwarz (Black)": "Black",
   "Sealgraumetallic (Seal Grey Metallic)": "Seal Grey Metallic",
   "Shorebluemetallic (Shore Blue Metallic)": "Shore Blue Metallic",
@@ -146,7 +146,8 @@ const EN: Record<string, string> = {
   "Weiß (White) mit roten Streifen (with red stripes)": "White with red stripes",
   "Weiß/Enzianblaumetallic, Rallye Design Paket (White/Gentian Blue Metallic, Rallye Design Package)":
     "White/Gentian Blue Metallic, Rallye Design Package",
-  "Zenithblau Metallic (Zenith Blue Metallic)": "Zenith Blue Metallic",
+  "Zenitblau Metallic (Zenith Blue Metallic)": "Zenith Blue Metallic",
+  "Perlglanzweiß-Metallic (Pearl White Metallic)": "Pearl White Metallic",
 
   // Factory options
   "5-Gang-Getriebe": "5-speed gearbox",

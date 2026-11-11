@@ -479,11 +479,11 @@
   },
   "porsche-911-964-carrera-rs": {
     "launchColor": {
-      "name": "Rubinsternrot (Rubystone Red)",
+      "name": "Sternrubin (Rubystone Red)",
       "hex": "#C8326B",
       "source": "https://newsroom.porsche.com/en/history/porsche-history-911-chameleon-944-928-colourful-tradition-13262.html",
       "confidence": "low",
-      "note": "Porsche Newsroom heritage pieces repeatedly feature a Rubystone (Star Ruby/Rubystar) 964 Carrera RS (also https://newsroom.porsche.com/en/2019/history/porsche-klassik-911-eight-generations-dna-18914.html), and Rubystone was new for MY1992 (RS launch year). The colour of the Geneva March 1991 show car itself was not found."
+      "note": "Porsche Newsroom heritage pieces repeatedly feature a Rubystone (Star Ruby/Rubystar) 964 Carrera RS (also https://newsroom.porsche.com/en/2019/history/porsche-klassik-911-eight-generations-dna-18914.html), and Rubystone was new for MY1992 (RS launch year). The colour of the Geneva March 1991 show car itself was not found. Factory name on the colour chart is Sternrubin (code 82N, model years 1991–1992)."
     },
     "specs": {
       "production": 2282,
@@ -543,11 +543,11 @@
   },
   "porsche-911-964-turbo": {
     "launchColor": {
-      "name": "Amethyst Metallic (Amethyst Metallic)",
+      "name": "Amethyst-Perlcolor (Amethyst Pearl)",
       "hex": "#5B3A6B",
       "source": "https://www.classicdriver.com/en/car/porsche/911-964-turbo/1990/1004879",
       "confidence": "low",
-      "note": "Only source is a classified listing claiming this Amethyst metallic car (magenta leather, option 'Geneva Motor Show vehicle') was the first 964 Turbo shown at Geneva March 1990; not confirmed by Porsche. Listing describes it as a 'Turbo S' prototype with 381 PS, so treat with caution."
+      "note": "Only source is a classified listing claiming this Amethyst metallic car (magenta leather, option 'Geneva Motor Show vehicle') was the first 964 Turbo shown at Geneva March 1990; not confirmed by Porsche. Listing describes it as a 'Turbo S' prototype with 381 PS, so treat with caution. Factory chart: Amethyst-Perlcolor, code 38A, model years 1991–1993."
     },
     "specs": {
       "production": 3660,
@@ -1044,7 +1044,7 @@
   },
   "porsche-911-996-1-carrera": {
     "launchColor": {
-      "name": "Zenithblau Metallic (Zenith Blue Metallic)",
+      "name": "Zenitblau Metallic (Zenith Blue Metallic)",
       "hex": "#2C4A8E",
       "source": "https://rennlist.com/forums/996-forum/240204-anyone-else-on-this-forum-have-a-zenith-blue-996-a.html",
       "confidence": "medium",
@@ -1386,7 +1386,7 @@
   },
   "porsche-911-997-1-turbo": {
     "launchColor": {
-      "name": "Kobaltblaumetallic (Cobalt Blue Metallic)",
+      "name": "Cobaltblaumetallic (Cobalt Blue Metallic)",
       "hex": "#2B4FA0",
       "source": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-6-type-997-16489.html",
       "confidence": "medium",

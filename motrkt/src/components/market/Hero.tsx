@@ -12,6 +12,7 @@ import { Delta, Modal, Pill, Money } from "../ui";
 import { PhotoCredit, frameRatio } from "../CarImage";
 import { isEn, t } from "../../i18n";
 import { paintName, tr, photoCaption } from "../../i18n/terms";
+import { findPaint } from "../../data/real/paints";
 
 /** Product-page top: photograph on the left, a calm summary column on the right. */
 type BodyProps = { body: Body | null; onBody: (b: Body | null) => void };
@@ -70,11 +71,13 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
     [t("Neupreis", "Original list price"), `${eur(variant.newPrice)} (${variant.newPriceYear})`],
   ];
   if (variant.launchColor) {
+    const onChart = findPaint(variant, variant.launchColor.name);
     facts.push([
       t("Farbe der Präsentation", "Launch colour"),
-      <span key="c" className="inline-flex items-center gap-2">
+      <span key="c" className="inline-flex flex-wrap items-center gap-x-2">
         <span className="size-3 rounded-full ring-1 ring-ink/15" style={{ background: variant.launchColor.hex }} />
         {paintName(variant.launchColor.name)}
+        {onChart?.code && <span className="text-faint">({t("Werkscode", "factory code")} {onChart.code})</span>}
       </span>,
     ]);
   }
