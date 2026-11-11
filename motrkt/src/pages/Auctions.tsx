@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowDown, ArrowUp, ChevronDown, ChevronLeft, ChevronRight, ExternalLink, Search, Star, X } from "lucide-react";
-import { brands, variantById, variantShortTitle, variantTitle, variants } from "../data/db";
-import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, DAY, WEEK, getAllSales, getAuctionEvents } from "../data/generate";
-import { getMetrics, mean } from "../data/market";
-import type { AuctionEvent, Sale } from "../data/types";
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, ExternalLink, Search, X } from "lucide-react";
+import { brands, variantById, variantTitle, variants } from "../data/db";
+import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, WEEK, getAllSales } from "../data/generate";
+import { mean } from "../data/market";
+import type { Sale } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
-import { useStore } from "../state/store";
 import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
@@ -184,8 +183,8 @@ export default function Auctions() {
             <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Auktionen", "Auctions")}</h1>
             <p className="mt-1 text-[14px] text-muted">
               {t(
-                `${num(getAllSales().length)} erfasste Verkäufe der letzten fünf Jahre und ${getAuctionEvents().length} kommende Auktionen`,
-                `${num(getAllSales().length)} recorded sales over the last five years and ${getAuctionEvents().length} upcoming auctions`,
+                `${num(getAllSales().length)} erfasste Verkäufe der letzten fünf Jahre`,
+                `${num(getAllSales().length)} recorded sales over the last five years`,
               )}
             </p>
           </div>
@@ -206,8 +205,6 @@ export default function Auctions() {
           <Kpi label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
         </dl>
       </div>
-
-      <UpcomingAuctions />
 
       <Section title={t("Ergebnisse", "Results")} sub={t(`${num(sorted.length)} Verkäufe`, `${num(sorted.length)} sales`)}>
         <div className="space-y-4">
@@ -383,154 +380,6 @@ function Th({ k, sort, onSort, children, right }: { k: SortKey; sort: { key: Sor
         {active && <Icon className="size-3" />}
       </button>
     </th>
-  );
-}
-
-function UpcomingAuctions() {
-  const [params] = useSearchParams();
-  const eventParam = params.get("event");
-  const events = getAuctionEvents();
-  const [open, setOpen] = useState<string | null>(eventParam);
-  const refs = useRef(new Map<string, HTMLDivElement>());
-
-  useEffect(() => {
-    if (!eventParam) return;
-    setOpen(eventParam);
-    const timer = setTimeout(() => refs.current.get(eventParam)?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
-    return () => clearTimeout(timer);
-  }, [eventParam]);
-
-  return (
-    <Section title={t("Kommende Auktionen", "Upcoming auctions")} sub={t("Lose mit unserer Bewertung, zum Öffnen anklicken", "Lots with our valuation, click to open")}>
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 border-t border-l border-line md:grid-cols-2 xl:grid-cols-4">
-          {events.map((e) => {
-            const days = Math.round((e.date - AS_OF) / DAY);
-            const low = e.lots.reduce((s, l) => s + l.estimateLow, 0);
-            const high = e.lots.reduce((s, l) => s + l.estimateHigh, 0);
-            const active = open === e.id;
-            return (
-              <button
-                key={e.id}
-                onClick={() => setOpen(active ? null : e.id)}
-                aria-expanded={active}
-                className={cn("border-r border-b border-line p-5 text-left transition-colors", active ? "bg-panel" : "hover:bg-panel-2")}
-              >
-                <div className="flex items-baseline justify-between gap-2 text-[13px] text-muted">
-                  <span>{date(e.date)}</span>
-                  <span>{t(`in ${days} Tagen`, `in ${days} days`)}</span>
-                </div>
-                <div className="mt-3 font-serif text-[18px] leading-snug">{e.house}</div>
-                <div className="truncate text-[14px] text-ink/80">{tr(e.title)}</div>
-                <div className="mt-3 flex items-baseline justify-between gap-2 text-[13px] text-muted">
-                  <span>
-                    {tr(e.city)}, {e.lots.length} {t("Lose", "lots")}
-                  </span>
-                  <ChevronDown className={cn("size-4 self-center transition-transform", active && "rotate-180")} strokeWidth={1.5} />
-                </div>
-                <div className="mt-1 text-[13px] text-muted tabular-nums">
-                  {t("Schätzung", "Estimate")} {eur(low, { compact: true })} {t("bis", "to")} {eur(high, { compact: true })}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-        {events.map((e) =>
-          open === e.id ? (
-            <div
-              key={e.id}
-              ref={(el) => {
-                if (el) refs.current.set(e.id, el);
-              }}
-              className="animate-fade-in scroll-mt-28 border border-line bg-panel p-5"
-            >
-              <LotTable event={e} />
-            </div>
-          ) : null,
-        )}
-      </div>
-    </Section>
-  );
-}
-
-function LotTable({ event }: { event: AuctionEvent }) {
-  const { watchlist, toggleWatch, toast } = useStore();
-  return (
-    <>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="text-sm font-semibold">
-          {event.house} · {tr(event.title)} <span className="font-normal text-muted">({tr(event.city)}, {date(event.date)})</span>
-        </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="table-base">
-          <thead>
-            <tr>
-              <th>{t("Los", "Lot")}</th>
-              <th>{t("Fahrzeug", "Car")}</th>
-              <th>{t("Baujahr", "Year")}</th>
-              <th className="text-right">{t("Laufleistung", "Mileage")}</th>
-              <th>{t("Farbe", "Colour")}</th>
-              <th className="text-right">{t("Schätzung", "Estimate")}</th>
-              <th className="text-right">{t("MIP-Marktwert", "MIP market value")}</th>
-              <th className="text-right">{t("Schätzung vs. Markt", "Estimate vs. market")}</th>
-              <th className="text-center">Watch</th>
-            </tr>
-          </thead>
-          <tbody>
-            {event.lots.map((lot) => {
-              const v = variantById.get(lot.variantId)!;
-              const value = getMetrics(v.id).value;
-              const mid = (lot.estimateLow + lot.estimateHigh) / 2;
-              const watched = watchlist.includes(v.id);
-              return (
-                <tr key={lot.lotNo}>
-                  <td className="font-mono text-xs text-muted">{lot.lotNo}</td>
-                  <td>
-                    <Link to={`/markt/${v.id}`} className="flex items-center gap-2 hover:text-gold-2">
-                      <BrandEmblem brandId={v.brandId} size={16} />
-                      {variantTitle(v)}
-                    </Link>
-                  </td>
-                  <td>{lot.year}</td>
-                  <td className="text-right tabular-nums">{km(lot.mileage)}</td>
-                  <td>
-                    <span className="flex items-center gap-1.5 text-xs">
-                      <span className="inline-block size-3 rounded-full border border-white/20" style={{ background: lot.colorHex }} />
-                      {tr(lot.color)}
-                    </span>
-                  </td>
-                  <td className="text-right tabular-nums">
-                    {eur(lot.estimateLow, { compact: true })}–{eur(lot.estimateHigh, { compact: true })}
-                  </td>
-                  <td className="text-right"><Money value={value} /></td>
-                  <td className="text-right">
-                    <Delta value={mid / value - 1} />
-                  </td>
-                  <td className="text-center">
-                    <button
-                      onClick={() => {
-                        toggleWatch(v.id);
-                        toast(
-                          watched
-                            ? t(`${variantShortTitle(v)} von der Watchlist entfernt`, `${variantShortTitle(v)} removed from the watchlist`)
-                            : t(`${variantShortTitle(v)} zur Watchlist hinzugefügt`, `${variantShortTitle(v)} added to the watchlist`),
-                          watched ? "info" : "success",
-                        );
-                      }}
-                      aria-label={watched ? t("Von Watchlist entfernen", "Remove from watchlist") : t("Zur Watchlist", "Add to watchlist")}
-                      className={cn("p-1", watched ? "text-gold" : "text-faint hover:text-ink")}
-                    >
-                      <Star className="size-4" fill={watched ? "currentColor" : "none"} />
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </>
   );
 }
 

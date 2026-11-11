@@ -205,7 +205,7 @@ function build() {
           const variant: Variant = {
             ...s,
             // Market value from the market model; variants with too few records keep the catalog figure internally
-            // (demo listings and auctions only) and show no value (`measured: false`).
+            // and show no value (`measured: false`).
             ...(basis?.value ? { value: basis.value } : {}),
             measured: !!basis?.value,
             ...(specs?.production ? { production: specs.production } : {}),

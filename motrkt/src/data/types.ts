@@ -125,40 +125,32 @@ export type Listing = {
   variantId: string;
   title: string;
   year: number;
-  mileage: number;
+  /** null where the listing does not state it */
+  mileage: number | null;
   price: number;
   country: string;
   city: string;
   seller: string;
-  sellerType: "Händler" | "Privat" | "Auktion";
+  sellerType: "Händler" | "Privat";
   condition: Condition;
   color: string;
   colorHex: string;
   body: Body;
-  gearbox: Gearbox;
+  gearbox: Gearbox | null;
   vin: string;
+  /** First day the listing was seen online. */
   listedAt: number;
-  matchingNumbers: boolean;
-  serviceHistory: boolean;
+  matchingNumbers: boolean | null;
+  serviceHistory: boolean | null;
   description: string;
-  /** Set for live mobile.de ads; demo listings leave these undefined. */
-  source?: "mobile.de";
+  /** Where the listing is published: "mobile.de" (live API), "Classic Trader" or a dealer's own site. */
+  source: string;
   url?: string;
   images?: string[];
   conditionUnknown?: boolean;
   powerPs?: number;
   accidentDamaged?: boolean | null;
   previousOwners?: number | null;
-};
-
-export type AuctionEvent = {
-  id: string;
-  house: string;
-  title: string;
-  city: string;
-  country: string;
-  date: number;
-  lots: { lotNo: number; variantId: string; estimateLow: number; estimateHigh: number; year: number; mileage: number; colorHex: string; color: string }[];
 };
 
 export type Holding = {

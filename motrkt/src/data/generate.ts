@@ -1,7 +1,9 @@
 import { brandById, paintsFor, variantById, variants } from "./db";
-import type { AuctionEvent, Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
+import type { Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
 import { rng, type Rng } from "../lib/random";
 import { realSalesFor } from "./real/sales";
+import { asksFor, type Ask } from "./real/asks";
+import { historyOf } from "./real/listingHistory";
 import { MODEL_AS_OF, MODEL_START, marketBasis, modelValueAt } from "./real/model";
 
 /** Synthetic but internally consistent market data, generated deterministically from the catalog. */
@@ -109,7 +111,7 @@ export function realAnchor(variantId: string): { value: number; cagr: number | n
 /**
  * Weekly value series from the market model (auction results and asking prices). Volume = recorded sales in that week.
  * Variants without a published value (too few records) get no model series; the internal placeholder curve below only
- * feeds the demo listings and auctions and is never shown as a market value (`Variant.measured`).
+ * is used internally only and never shown as a market value (`Variant.measured`).
  */
 function modelSeries(v: Variant): PricePoint[] | null {
   const basis = marketBasis(v.id);
@@ -228,23 +230,10 @@ export const COUNTRY_NAMES: Record<string, string> = {
   SE: "Schweden",
   SA: "Saudi-Arabien",
   QA: "Katar",
-};
-
-const CITIES: Record<string, string[]> = {
-  DE: ["München", "Hamburg", "Stuttgart", "Düsseldorf", "Berlin", "Frankfurt"],
-  US: ["Los Angeles", "Miami", "New York", "Scottsdale", "Chicago"],
-  GB: ["London", "Surrey", "Manchester"],
-  CH: ["Zürich", "Genf", "Basel"],
-  JP: ["Tokio", "Osaka"],
-  NL: ["Amsterdam", "Utrecht"],
-  AE: ["Dubai", "Abu Dhabi"],
-  FR: ["Paris", "Lyon", "Monaco"],
-  IT: ["Mailand", "Modena", "Rom"],
-  BE: ["Brüssel", "Antwerpen"],
-  AT: ["Wien", "Salzburg"],
-  SE: ["Stockholm"],
-  SA: ["Riad"],
-  QA: ["Doha"],
+  PT: "Portugal",
+  DK: "Dänemark",
+  ES: "Spanien",
+  HR: "Kroatien",
 };
 
 const VIN_PREFIX: Record<string, string> = {
@@ -409,67 +398,55 @@ export function getAllSales(): Sale[] {
 // Listings (Inserate)
 
 const listingsCache = new Map<string, Listing[]>();
-const PRIVATE_NOTES = [
-  "Aus Sammlungsauflösung, trockene Garagenlagerung.",
-  "Zweite Hand, lückenlose Historie, alle Rechnungen vorhanden.",
-  "Kürzlich großer Service, TÜV/H-Kennzeichen neu.",
-  "Unfallfrei laut Vorbesitzer, Lackschichtdicke dokumentiert.",
-];
-const DEALER_NOTES = [
-  "Fahrzeug aus deutscher Auslieferung, Scheckheft gepflegt, Gutachten Note {c}.",
-  "Matching Numbers, umfangreiche Dokumentation inkl. Werkszertifikat.",
-  "Frisch durchgesehen in unserer Werkstatt, Garantie optional.",
-  "Seltene Farbkombination, Originallack weitgehend erhalten.",
-];
 
+/** The variant's most common gearbox when it was only ever built with one, otherwise unknown. */
+function onlyGearbox(v: Variant): Gearbox | null {
+  const kinds = Object.keys(v.gearbox) as Gearbox[];
+  return kinds.length === 1 ? kinds[0] : null;
+}
+
+function askToListing(a: Ask, v: Variant): Listing {
+  const seen = historyOf(a.url);
+  return {
+    id: a.id,
+    variantId: v.id,
+    title: a.title,
+    year: a.year,
+    mileage: a.km,
+    price: a.eur,
+    country: a.country,
+    city: "–",
+    seller: a.sellerName ?? a.source,
+    sellerType: a.seller === "Privat" ? "Privat" : "Händler",
+    condition: "2",
+    conditionUnknown: true,
+    color: "–",
+    colorHex: v.color,
+    body: (a.body ?? Object.keys(v.body)[0]) as Body,
+    gearbox: onlyGearbox(v),
+    vin: "–",
+    listedAt: Date.parse(seen?.first ?? a.date),
+    matchingNumbers: null,
+    serviceHistory: null,
+    description: "",
+    source: a.source,
+    url: a.url,
+  };
+}
+
+/**
+ * Cars for sale: the real asking prices (Classic Trader and dealer sites, src/data/real/asks.ts) that were still online
+ * on the last tracking day, without replicas, conversions, accident cars and implausible prices. Newest first.
+ */
 export function getListings(variantId: string): Listing[] {
   const cached = listingsCache.get(variantId);
   if (cached) return cached;
   const v = variantById.get(variantId);
   if (!v) return [];
-  const r = rng(`listings:${v.id}`);
-  const series = getSeries(variantId);
-  const value = series[series.length - 1].value;
-  const count = Math.max(1, Math.min(36, Math.round(baseWeeklyVolume(v) * 6 + r.range(0, 3))));
-  const brand = brandById.get(v.brandId)!;
-  const out: Listing[] = [];
-  const nowYear = new Date(AS_OF).getUTCFullYear();
-  for (let i = 0; i < count; i++) {
-    const year = buildYearFor(r, v);
-    const condition = r.weighted(CONDITION_WEIGHTS);
-    const mileage = mileageFor(r, v, year, nowYear);
-    const sellerType = r.weighted({ Händler: 0.68, Privat: 0.24, Auktion: 0.08 });
-    const premium = sellerType === "Händler" ? r.range(0.95, 1.12) : sellerType === "Privat" ? r.range(0.92, 1.08) : r.range(0.9, 1.04);
-    const price = roundPrice(value * CONDITION_FACTOR[condition] * mileageFactor(v, mileage, year, nowYear) * premium * Math.exp(r.normal(0, 0.04)));
-    const country = deliveryCountry(r, v);
-    const paint = paintFor(r, v);
-    const seller =
-      sellerType === "Händler" ? r.pick(DEALERS[v.brandId]) : sellerType === "Auktion" ? r.pick(AUCTION_HOUSES).name : "Privatanbieter";
-    const notes = sellerType === "Privat" ? PRIVATE_NOTES : DEALER_NOTES;
-    out.push({
-      id: `INS-${v.id.slice(0, 3).toUpperCase()}${String(r.int(10000, 99999))}`,
-      variantId: v.id,
-      title: `${brand.name} ${v.name}`,
-      year,
-      mileage,
-      price,
-      country,
-      city: r.pick(CITIES[country] ?? ["–"]),
-      seller,
-      sellerType,
-      condition,
-      color: paint.name,
-      colorHex: paint.hex,
-      body: r.weighted(v.body as Record<Body, number>),
-      gearbox: r.weighted(v.gearbox as Record<Gearbox, number>),
-      vin: makeVin(r, v, year),
-      listedAt: AS_OF - r.int(1, 150) * DAY,
-      matchingNumbers: r.chance(0.8),
-      serviceHistory: r.chance(0.75),
-      description: r.pick(notes).replace("{c}", condition),
-    });
-  }
-  out.sort((a, b) => b.listedAt - a.listedAt);
+  const out = asksFor(variantId)
+    .filter((a) => !a.excluded && historyOf(a.url)?.status !== "gone")
+    .map((a) => askToListing(a, v))
+    .sort((a, b) => b.listedAt - a.listedAt);
   listingsCache.set(variantId, out);
   return out;
 }
@@ -478,52 +455,4 @@ let allListingsCache: Listing[] | null = null;
 export function getAllListings(): Listing[] {
   allListingsCache ??= variants.flatMap((v) => getListings(v.id)).sort((a, b) => b.listedAt - a.listedAt);
   return allListingsCache;
-}
-
-// ---------------------------------------------------------------------------------------------
-// Upcoming auctions
-
-const EVENTS: Omit<AuctionEvent, "lots">[] = [
-  { id: "bon-bond-street-26", house: "Bonhams", title: "The Bond Street Sale", city: "London", country: "GB", date: Date.UTC(2026, 11, 5) },
-  { id: "rms-arizona-27", house: "RM Sotheby's", title: "Arizona", city: "Phoenix", country: "US", date: Date.UTC(2027, 0, 21) },
-  { id: "goo-scottsdale-27", house: "Gooding & Co.", title: "Scottsdale Auctions", city: "Scottsdale", country: "US", date: Date.UTC(2027, 0, 22) },
-  { id: "rms-paris-27", house: "RM Sotheby's", title: "Paris", city: "Paris", country: "FR", date: Date.UTC(2027, 1, 3) },
-  { id: "art-retromobile-27", house: "Artcurial", title: "Rétromobile", city: "Paris", country: "FR", date: Date.UTC(2027, 1, 5) },
-  { id: "bra-amelia-27", house: "Broad Arrow", title: "The Amelia Auction", city: "Amelia Island", country: "US", date: Date.UTC(2027, 2, 5) },
-  { id: "dor-salzburg-27", house: "Dorotheum", title: "Klassische Fahrzeuge", city: "Salzburg", country: "AT", date: Date.UTC(2027, 2, 13) },
-  { id: "bon-goodwood-27", house: "Bonhams", title: "Goodwood Members' Meeting", city: "Chichester", country: "GB", date: Date.UTC(2027, 3, 10) },
-];
-
-let eventsCache: AuctionEvent[] | null = null;
-export function getAuctionEvents(): AuctionEvent[] {
-  if (eventsCache) return eventsCache;
-  eventsCache = EVENTS.map((e) => {
-    const r = rng(`event:${e.id}`);
-    const premium = AUCTION_HOUSES.find((h) => h.name === e.house)?.premium ?? false;
-    const pool = variants.filter((v) => (premium ? v.value > 120_000 : v.value < 600_000) && v.years[0] < 2020);
-    const n = r.int(10, 18);
-    const used = new Set<string>();
-    const lots: AuctionEvent["lots"] = [];
-    for (let i = 0; i < n * 3 && lots.length < n; i++) {
-      const v = r.pick(pool);
-      if (used.has(v.id) && r.chance(0.7)) continue;
-      used.add(v.id);
-      const value = getSeries(v.id).at(-1)!.value * r.range(0.9, 1.12);
-      const paint = paintFor(r, v);
-      const year = buildYearFor(r, v);
-      lots.push({
-        lotNo: 101 + lots.length * 3 + r.int(0, 2),
-        variantId: v.id,
-        estimateLow: roundPrice(value * 0.9),
-        estimateHigh: roundPrice(value * 1.1),
-        year,
-        mileage: mileageFor(r, v, year, 2026),
-        color: paint.name,
-        colorHex: paint.hex,
-      });
-    }
-    lots.sort((a, b) => a.lotNo - b.lotNo);
-    return { ...e, lots };
-  });
-  return eventsCache;
 }

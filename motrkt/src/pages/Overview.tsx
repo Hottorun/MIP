@@ -9,7 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { brands, variantById, variantTitle, variants } from "../data/db";
-import { AS_OF, DAY, getAllSales, getAuctionEvents } from "../data/generate";
+import { AS_OF, DAY, getAllSales } from "../data/generate";
 import {
   changeOver,
   getMetrics,
@@ -30,8 +30,7 @@ import {
   Money,
 } from "../components/ui";
 import { yearTicks } from "../components/insights/palette";
-import { locale, t } from "../i18n";
-import { tr } from "../i18n/terms";
+import { t } from "../i18n";
 
 const RANGE_OPTIONS = [
   { value: "1J" as const, get label() { return t("1 Jahr", "1 year"); } },
@@ -82,13 +81,6 @@ export default function Overview() {
     }
     return out;
   }, []);
-  const events = useMemo(
-    () =>
-      getAuctionEvents()
-        .filter((e) => e.date >= AS_OF)
-        .slice(0, 4),
-    [],
-  );
 
   return (
     <div className="space-y-24">
@@ -254,91 +246,45 @@ export default function Overview() {
         </ul>
       </Section>
 
-      <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-        <Section
-          title={t("Bemerkenswerte Verkäufe", "Notable sales")}
-          sub={t("Die höchsten Zuschläge der letzten 30 Tage", "The highest hammer prices of the last 30 days")}
-          actions={
-            <Link to="/auktionen" className="link text-[14px]">
-              {t("Alle Ergebnisse", "All results")}
-            </Link>
-          }
-        >
-          {notable.length === 0 ? (
-            <p className="py-8 font-serif text-muted italic">
-              {t("In den letzten 30 Tagen wurden keine Verkäufe erfasst.", "No sales were recorded in the last 30 days.")}
-            </p>
-          ) : (
-            <ul>
-              {notable.map((s) => {
-                const v = variantById.get(s.variantId)!;
-                return (
-                  <li key={s.id + s.variantId}>
-                    <Link
-                      to={`/markt/${v.id}`}
-                      className="group grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-4"
-                    >
-                      <div className="min-w-0">
-                        <div className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
-                          {variantTitle(v, { brand: false })}
-                        </div>
-                        <div className="mt-0.5 text-[13px] text-muted">
-                          {s.house}, {date(s.date)}
-                        </div>
-                      </div>
-                      <Money value={s.price} className="text-[18px]" />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </Section>
-
-        <Section
-          title={t("Anstehende Auktionen", "Upcoming auctions")}
-          actions={
-            <Link to="/auktionen" className="link text-[14px]">
-              {t("Kalender", "Calendar")}
-            </Link>
-          }
-        >
+      <Section
+        title={t("Bemerkenswerte Verkäufe", "Notable sales")}
+        sub={t("Die höchsten Zuschläge der letzten 30 Tage", "The highest hammer prices of the last 30 days")}
+        actions={
+          <Link to="/auktionen" className="link text-[14px]">
+            {t("Alle Ergebnisse", "All results")}
+          </Link>
+        }
+      >
+        {notable.length === 0 ? (
+          <p className="py-8 font-serif text-muted italic">
+            {t("In den letzten 30 Tagen wurden keine Verkäufe erfasst.", "No sales were recorded in the last 30 days.")}
+          </p>
+        ) : (
           <ul>
-            {events.map((e) => (
-              <li key={e.id}>
-                <Link
-                  to={`/auktionen?event=${e.id}`}
-                  className="group grid grid-cols-[64px_minmax(0,1fr)] gap-5 border-b border-line py-4"
-                >
-                  <div className="text-center">
-                    <div className="font-serif text-[28px] leading-none">
-                      {new Date(e.date).getUTCDate()}
+            {notable.map((s) => {
+              const v = variantById.get(s.variantId)!;
+              return (
+                <li key={s.id + s.variantId}>
+                  <Link
+                    to={`/markt/${v.id}`}
+                    className="group grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-4"
+                  >
+                    <div className="min-w-0">
+                      <div className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
+                        {variantTitle(v, { brand: false })}
+                      </div>
+                      <div className="mt-0.5 text-[13px] text-muted">
+                        {s.house}, {date(s.date)}
+                      </div>
                     </div>
-                    <div className="mt-1 text-[13px] text-muted">
-                      {new Date(e.date).toLocaleDateString(locale(), {
-                        month: "short",
-                        timeZone: "UTC",
-                      })}
-                    </div>
-                  </div>
-                  <div className="min-w-0">
-                    <div className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
-                      {e.house}
-                    </div>
-                    <div className="truncate text-[14px] text-ink/80">
-                      {tr(e.title)}
-                    </div>
-                    <div className="mt-0.5 text-[13px] text-muted">
-                      {tr(e.city)}, {e.lots.length}{" "}
-                      {e.lots.length === 1 ? t("Los", "lot") : t("Lose", "lots")}
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
+                    <Money value={s.price} className="text-[18px]" />
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-        </Section>
-      </div>
+        )}
+      </Section>
     </div>
   );
 }

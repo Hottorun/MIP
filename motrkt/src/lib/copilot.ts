@@ -103,8 +103,6 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
   if (focus) {
     const m = getMetrics(focus.id);
     const sales = getSales(focus.id);
-    const listings = getListings(focus.id);
-    const asks = listings.map((l) => l.price).sort((a, b) => a - b);
     lines.push(
       "",
       `## Aktuell geöffnete Variante: ${variantTitle(focus)}`,
@@ -123,8 +121,6 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
           `  - ${date(s.date)} ${s.source} ${s.house} (${s.id}): ${s.price ? eur(s.price) : "nicht verkauft"}${s.estimateLow ? ` [Schätzung ${eur(s.estimateLow)}–${eur(s.estimateHigh)}]` : ""}, Zustand ${s.condition}, ${km(s.mileage)}, ${s.color}, ${s.body}/${s.gearbox}, Käufer ${s.buyerCountry}, vs. Marktwert ${pct(s.trend)}`,
       ),
       `Angebote in Europa (echte Inserate, ohne Nachbauten, Umbauten, Unfall- und Projektfahrzeuge und unplausible Preise): ${asksFor(focus.id).filter((a) => !a.excluded).length}${asksFor(focus.id).filter((a) => !a.excluded).length ? `, ${asksFor(focus.id).filter((a) => !a.excluded).slice(0, 8).map((a) => `${a.title} ${a.year}, ${a.km ? km(a.km) : "km unbekannt"}, ${eur(a.eur)}, ${a.seller}, ${a.country}`).join(" | ")}` : ""}`,
-      `Demo-Inserate (erfunden, nur zur Ansicht, nicht als Marktbeleg verwenden): ${listings.length}${asks.length ? `, Angebotspreise ${eur(asks[0])} bis ${eur(asks[asks.length - 1])}, Median ${eur(asks[Math.floor(asks.length / 2)])}` : ""}`,
-      ...listings.slice(0, 8).map((l) => `  - ${l.id}: ${l.year}, ${km(l.mileage)}, Zustand ${l.condition}, ${l.color}, ${eur(l.price)}, ${l.sellerType} ${l.seller} (${l.city}), Matching Numbers: ${l.matchingNumbers ? "ja" : "nein"}, Historie: ${l.serviceHistory ? "lückenlos" : "unvollständig"}`),
       "",
       `## Weitere Varianten desselben Modells`,
       ...variants.filter((o) => o.modelId === focus.modelId && o.id !== focus.id).map((o) => variantLine(o.id)),
@@ -297,7 +293,7 @@ export function localAnswer(question: string, focusVariantId: string | undefined
 **Typische Schwachstellen**
 ${weak}
 
-**Aktuelle Angebote (${listings.length})**${cheap ? `\n- Günstigstes relativ zum Marktwert: ${cheap.l.id}, ${cheap.l.year}, ${km(cheap.l.mileage)}, ${eur(cheap.l.price)} (${pct(cheap.gap)}) – Zustand ${cheap.l.condition}${cheap.l.matchingNumbers ? "" : ", **keine Matching Numbers**"}` : ""}${dear && dear !== cheap ? `\n- Teuerstes: ${dear.l.id}, ${eur(dear.l.price)} (${pct(dear.gap)})` : ""}
+**Aktuelle Angebote (${listings.length})**${cheap ? `\n- Günstigstes relativ zum Marktwert: ${cheap.l.id}, ${cheap.l.year}, ${km(cheap.l.mileage)}, ${eur(cheap.l.price)} (${pct(cheap.gap)}), ${cheap.l.seller}` : ""}${dear && dear !== cheap ? `\n- Teuerstes: ${dear.l.id}, ${eur(dear.l.price)} (${pct(dear.gap)})` : ""}
 - Vor dem Kauf: unabhängige Begutachtung, Lackschichtdicke, Historie und Werkszertifikat prüfen${note}`,
       `**Purchase risk ${name}**
 - Volatility ${pct(m.vol1y, { signed: false })} p.a., max. drawdown (5Y) ${pct(m.maxDD5)} – expect value swings of this size
@@ -306,7 +302,7 @@ ${weak}
 **Typical weak spots**
 ${weak}
 
-**Current listings (${listings.length})**${cheap ? `\n- Cheapest relative to market value: ${cheap.l.id}, ${cheap.l.year}, ${km(cheap.l.mileage)}, ${eur(cheap.l.price)} (${pct(cheap.gap)}) – condition ${cheap.l.condition}${cheap.l.matchingNumbers ? "" : ", **no matching numbers**"}` : ""}${dear && dear !== cheap ? `\n- Most expensive: ${dear.l.id}, ${eur(dear.l.price)} (${pct(dear.gap)})` : ""}
+**Current listings (${listings.length})**${cheap ? `\n- Cheapest relative to market value: ${cheap.l.id}, ${cheap.l.year}, ${km(cheap.l.mileage)}, ${eur(cheap.l.price)} (${pct(cheap.gap)}), ${tr(cheap.l.seller)}` : ""}${dear && dear !== cheap ? `\n- Most expensive: ${dear.l.id}, ${eur(dear.l.price)} (${pct(dear.gap)})` : ""}
 - Before buying: independent inspection, paint thickness, history and factory certificate${note}`,
     );
   }

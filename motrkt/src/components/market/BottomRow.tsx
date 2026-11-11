@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { variantTitle } from "../../data/db";
 import type { Body, Variant } from "../../data/types";
-import { getListings } from "../../data/generate";
+import { COUNTRY_NAMES, getListings } from "../../data/generate";
 import { useLiveListings } from "../../state/liveListings";
 import { km } from "../../lib/format";
 import { CarImage } from "../CarImage";
@@ -17,7 +17,7 @@ export function Listings({ variant, body = null }: { variant: Variant; body?: Bo
   return (
     <Section
       title={t("Aktuell angeboten", "Currently for sale")}
-      sub={liveForVariant.length ? t("Live von mobile.de", "Live from mobile.de") : undefined}
+      sub={liveForVariant.length ? t("Live von mobile.de", "Live from mobile.de") : t("Classic Trader und Händlerseiten", "Classic Trader and dealer sites")}
       actions={
         <Link to={`/kaufen?variant=${variant.id}`} className="link text-[14px]">
           {t(`Alle ${listings.length} Angebote`, `All ${listings.length} listings`)}
@@ -48,7 +48,7 @@ export function Listings({ variant, body = null }: { variant: Variant; body?: Bo
                 <Money value={l.price} className="shrink-0 text-[16px]" />
               </div>
               <div className="mt-0.5 text-[13px] text-muted">
-                {l.year}, {km(l.mileage)}, {tr(l.city)}
+                {l.year}, {km(l.mileage)}, {l.city === "–" ? tr(COUNTRY_NAMES[l.country] ?? l.country) : tr(l.city)}
               </div>
             </Link>
           </li>

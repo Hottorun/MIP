@@ -2,10 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Briefcase, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
 import { brandById, brands, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
-import { AS_OF, CONDITION_FACTOR, CONDITION_SCORE, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
+import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
 import { getMetrics } from "../data/market";
-import type { Condition, Listing, Variant } from "../data/types";
+import type { Listing, Variant } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
 import { type Scene } from "../components/CarArt";
@@ -18,14 +18,14 @@ type SortKey = "deal" | "priceAsc" | "priceDesc" | "newest" | "mileage";
 type SellerFilter = "" | Listing["sellerType"];
 
 const SCENES: Scene[] = ["mountain", "studio", "sunset", "city", "track"];
-const CONDITIONS: Condition[] = ["1", "1-", "2+", "2", "2-", "3"];
 const PAGE = 24;
 const filterSelect = "border-b border-line-2 pb-1 focus:border-ink focus:outline-none";
 const filterInput = "border-b border-line-2 bg-transparent pb-1 placeholder:text-faint focus:border-ink focus:outline-none";
 
-type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number; scene: Scene };
+type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number | null; scene: Scene };
 
 function mileageAdjustment(v: Variant, l: Listing) {
+  if (l.mileage === null) return 1;
   const age = Math.max(1, new Date(AS_OF).getUTCFullYear() - l.year);
   const perYear = v.tags.includes("Leichtbau") || v.value > 1_000_000 ? 2500 : v.value > 250_000 ? 3500 : 6500;
   const typical = age * perYear;
@@ -39,11 +39,19 @@ function enrich(list: Listing[]): Enriched[] {
     const condFactor = CONDITION_FACTOR[l.condition];
     const kmFactor = mileageAdjustment(v, l);
     const fair = value * condFactor * kmFactor;
-    return { l, v, value, condFactor, kmFactor, fair, deal: l.price / fair - 1, scene: SCENES[i % SCENES.length] };
+    // Variants with too few records have no market value to compare against.
+    return { l, v, value, condFactor, kmFactor, fair, deal: v.measured ? l.price / fair - 1 : null, scene: SCENES[i % SCENES.length] };
   });
 }
 
-function dealLabel(deal: number): { label: string; tone: "up" | "neutral" | "down" } {
+/** Sort key for "best price": listings without an assessment go last. */
+const dealRank = (e: Enriched) => e.deal ?? Number.MAX_VALUE;
+
+/** City where the listing names one, otherwise the country. */
+const place = (l: Listing) => (l.city === "–" ? tr(COUNTRY_NAMES[l.country] ?? l.country) : tr(l.city));
+
+function dealLabel(deal: number | null): { label: string; tone: "up" | "neutral" | "down" } {
+  if (deal === null) return { label: t("Kein Marktwert", "No market value"), tone: "neutral" };
   if (deal < -0.07) return { label: t("Unter Marktwert", "Below market value"), tone: "up" };
   if (deal > 0.07) return { label: t("Über Marktwert", "Above market value"), tone: "down" };
   return { label: t("Fairer Preis", "Fair price"), tone: "neutral" };
@@ -64,8 +72,6 @@ export default function Buy() {
   const [yearTo, setYearTo] = useState("");
   const [maxKm, setMaxKm] = useState("");
   const [seller, setSeller] = useState<SellerFilter>("");
-  const [minCondition, setMinCondition] = useState<Condition | "">("");
-  const [matchingOnly, setMatchingOnly] = useState(false);
   const [savedOnly, setSavedOnly] = useState(false);
   const [text, setText] = useState("");
   const [sort, setSort] = useState<SortKey>("deal");
@@ -94,10 +100,8 @@ export default function Buy() {
       if (model && v.modelId !== model) return false;
       if (l.price < pMin || l.price > pMax) return false;
       if (l.year < yFrom || l.year > yTo) return false;
-      if (l.mileage > kMax) return false;
+      if (kMax < Infinity && (l.mileage === null || l.mileage > kMax)) return false;
       if (seller && l.sellerType !== seller) return false;
-      if (minCondition && CONDITION_SCORE[l.condition] > CONDITION_SCORE[minCondition]) return false;
-      if (matchingOnly && !l.matchingNumbers) return false;
       if (savedOnly && !saved.has(l.id)) return false;
       if (q) {
         const hay = `${variantTitle(v)} ${l.id} ${l.vin} ${l.city} ${tr(l.city)} ${l.seller} ${l.color} ${tr(l.color)}`.toLowerCase();
@@ -106,16 +110,16 @@ export default function Buy() {
       return true;
     });
     const cmp: Record<SortKey, (a: Enriched, b: Enriched) => number> = {
-      deal: (a, b) => a.deal - b.deal,
+      deal: (a, b) => dealRank(a) - dealRank(b),
       priceAsc: (a, b) => a.l.price - b.l.price,
       priceDesc: (a, b) => b.l.price - a.l.price,
       newest: (a, b) => b.l.listedAt - a.l.listedAt,
-      mileage: (a, b) => a.l.mileage - b.l.mileage,
+      mileage: (a, b) => (a.l.mileage ?? Number.MAX_SAFE_INTEGER) - (b.l.mileage ?? Number.MAX_SAFE_INTEGER),
     };
     return out.sort(cmp[sort]);
-  }, [all, variantFilter, brand, model, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, minCondition, matchingOnly, savedOnly, savedListings, text, sort]);
+  }, [all, variantFilter, brand, model, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, savedListings, text, sort]);
 
-  useEffect(() => setVisible(PAGE), [variantParam, brand, model, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, minCondition, matchingOnly, savedOnly, text, sort]);
+  useEffect(() => setVisible(PAGE), [variantParam, brand, model, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, text, sort]);
 
   const selected = selectedId ? all.find((e) => e.l.id === selectedId) : undefined;
   const openListing = (id: string | null) => {
@@ -138,14 +142,12 @@ export default function Buy() {
     setYearTo("");
     setMaxKm("");
     setSeller("");
-    setMinCondition("");
-    setMatchingOnly(false);
     setSavedOnly(false);
     setText("");
     if (variantParam) clearVariant();
   };
 
-  const topDeals = filtered.filter((e) => e.deal < -0.07).length;
+  const topDeals = filtered.filter((e) => e.deal !== null && e.deal < -0.07).length;
   const digits = (s: string) => s.replace(/\D/g, "");
 
   return (
@@ -155,8 +157,8 @@ export default function Buy() {
           <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Kaufen", "Buy")}</h1>
           <p className="mt-1 max-w-2xl text-[14px] text-muted">
             {t(
-              `${num(all.length)} ${showingLive ? "Inserate live von mobile.de" : "Demo-Inserate"}, jeweils verglichen mit dem fairen Marktwert für Zustand und Laufleistung.`,
-              `${num(all.length)} ${showingLive ? "live listings from mobile.de" : "demo listings"}, each compared with the fair market value for its condition and mileage.`,
+              `${num(all.length)} ${showingLive ? "Inserate live von mobile.de" : "Inserate von Classic Trader und Händlerseiten"}, jeweils verglichen mit dem fairen Marktwert für Zustand und Laufleistung.`,
+              `${num(all.length)} ${showingLive ? "live listings from mobile.de" : "listings from Classic Trader and dealer sites"}, each compared with the fair market value for its condition and mileage.`,
             )}
           </p>
           <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} />
@@ -226,19 +228,7 @@ export default function Buy() {
               <option value="">{t("Alle Verkäufer", "All sellers")}</option>
               <option value="Händler">{tr("Händler")}</option>
               <option value="Privat">{tr("Privat")}</option>
-              <option value="Auktion">{tr("Auktion")}</option>
             </select>
-            <select className={filterSelect} value={minCondition} onChange={(e) => setMinCondition(e.target.value as Condition | "")} aria-label={t("Mindestzustand", "Minimum condition")}>
-              <option value="">{t("Jeder Zustand", "Any condition")}</option>
-              {CONDITIONS.map((c) => (
-                <option key={c} value={c}>
-                  {t(`mindestens Note ${c}`, `grade ${c} or better`)}
-                </option>
-              ))}
-            </select>
-            <button className={cn("chip", matchingOnly && "chip-active")} onClick={() => setMatchingOnly((m) => !m)}>
-              {t("Nur Matching Numbers", "Matching numbers only")}
-            </button>
           </div>
         )}
         <div className="flex flex-wrap items-center gap-2">
@@ -303,7 +293,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
         ) : (
           <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full" label={l.title} />
         )}
-        {l.source === "mobile.de" && <span className="absolute bottom-3 left-3 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] text-ink">mobile.de</span>}
+        <span className="absolute bottom-3 left-3 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] text-ink">{l.source}</span>
         <button
           onClick={(ev) => {
             ev.stopPropagation();
@@ -322,7 +312,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
         <span className="min-w-0 truncate text-muted">
-          {l.year}, {km(l.mileage)}, {tr(l.city)}
+          {l.year}, {km(l.mileage)}, {place(l)}
         </span>
         <span className={cn("shrink-0", d.tone === "up" ? "text-up" : d.tone === "down" ? "text-down" : "text-muted")}>{d.label}</span>
       </div>
@@ -347,7 +337,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
   const spark = getSeries(v.id).slice(-52).map((p) => p.value);
   const similar = all
     .filter((o) => o.v.id === v.id && o.l.id !== l.id)
-    .sort((a, b) => a.deal - b.deal)
+    .sort((a, b) => dealRank(a) - dealRank(b))
     .slice(0, 4);
 
   useEffect(() => {
@@ -370,10 +360,11 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
   const na = t("k. A.", "n/a");
   const yes = t("Ja", "Yes");
   const no = t("Nein", "No");
-  const days = Math.max(1, Math.round((AS_OF - l.listedAt) / DAY));
+  const days = Math.max(0, Math.round((AS_OF - l.listedAt) / DAY));
+  const yesNo = (b: boolean | null) => (b === null ? na : b ? yes : <span className="text-warn">{no}</span>);
   const specs: [string, React.ReactNode][] = [
     [t("Inserat-ID", "Listing ID"), <span className="font-mono">{l.id}</span>],
-    [t("FIN", "VIN"), <span className="font-mono">{l.vin}</span>],
+    [t("FIN", "VIN"), l.vin === "–" ? na : <span className="font-mono">{l.vin}</span>],
     ...(l.source === "mobile.de"
       ? ([
           [t("Vorbesitzer", "Previous owners"), l.previousOwners ?? na],
@@ -383,15 +374,15 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
     [t("Baujahr", "Year"), t(`${l.year} (Bauzeit ${yearsLabel(v.years)})`, `${l.year} (built ${yearsLabel(v.years)})`)],
     [t("Laufleistung", "Mileage"), km(l.mileage)],
     [t("Zustand", "Condition"), l.conditionUnknown ? t("k. A. (Bewertung nimmt Note 2 an)", "n/a (valuation assumes grade 2)") : t(`Note ${l.condition}`, `Grade ${l.condition}`)],
-    [t("Farbe", "Colour"), <span className="inline-flex items-center gap-1.5"><span className="inline-block size-3 rounded-full border border-white/20" style={{ background: l.colorHex }} />{tr(l.color)}</span>],
+    [t("Farbe", "Colour"), l.color === "–" ? na : <span className="inline-flex items-center gap-1.5"><span className="inline-block size-3 rounded-full border border-white/20" style={{ background: l.colorHex }} />{tr(l.color)}</span>],
     [t("Karosserie", "Body"), tr(l.body)],
-    [t("Getriebe", "Gearbox"), l.gearbox === "Manual" ? t("Schaltgetriebe", "Manual") : t("Automatik", "Automatic")],
+    [t("Getriebe", "Gearbox"), l.gearbox === null ? na : l.gearbox === "Manual" ? t("Schaltgetriebe", "Manual") : t("Automatik", "Automatic")],
     [t("Leistung", "Power"), `${l.powerPs ?? v.hp} PS · ${num(v.liters, 1)} l`],
-    ["Matching Numbers", l.source === "mobile.de" ? na : l.matchingNumbers ? yes : <span className="text-warn">{no}</span>],
-    [t("Servicehistorie", "Service history"), l.serviceHistory ? t("Lückenlos", "Complete") : <span className="text-warn">{t("Unvollständig", "Incomplete")}</span>],
-    [t("Standort", "Location"), `${flag(l.country)} ${tr(l.city)}, ${tr(COUNTRY_NAMES[l.country]) ?? l.country}`],
+    ["Matching Numbers", yesNo(l.matchingNumbers)],
+    [t("Servicehistorie", "Service history"), l.serviceHistory === null ? na : l.serviceHistory ? t("Lückenlos", "Complete") : <span className="text-warn">{t("Unvollständig", "Incomplete")}</span>],
+    [t("Standort", "Location"), `${flag(l.country)} ${l.city === "–" ? "" : `${tr(l.city)}, `}${tr(COUNTRY_NAMES[l.country] ?? l.country)}`],
     [t("Anbieter", "Seller"), `${tr(l.seller)} (${tr(l.sellerType)})`],
-    [t("Inseriert", "Listed"), t(`${date(l.listedAt)} · seit ${days} Tagen`, `${date(l.listedAt)} · ${days} days ago`)],
+    [t("Online seit", "Online since"), t(`${date(l.listedAt)} · ${days === 1 ? "1 Tag" : `${days} Tagen`}`, `${date(l.listedAt)} · ${days === 1 ? "1 day" : `${days} days`}`)],
   ];
 
   return (
@@ -424,7 +415,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
             className="btn"
             disabled={added}
             onClick={() => {
-              addHolding({ variantId: v.id, purchasePrice: l.price, purchaseDate: AS_OF, mileage: l.mileage, condition: l.condition, color: l.color, note: t(`Gekauft über Inserat ${l.id} (${l.seller})`, `Bought via listing ${l.id} (${tr(l.seller)})`) });
+              addHolding({ variantId: v.id, purchasePrice: l.price, purchaseDate: AS_OF, mileage: l.mileage ?? 0, condition: l.condition, color: l.color, note: t(`Gekauft über Inserat ${l.id} (${l.seller})`, `Bought via listing ${l.id} (${tr(l.seller)})`) });
               setAdded(true);
               toast(t(`${variantShortTitle(v)} ins Portfolio übernommen`, `${variantShortTitle(v)} added to the portfolio`));
             }}
@@ -449,13 +440,15 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
             <>
               <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="aspect-video w-full" label={l.title} credit />
               {(v.marketPhotos.length > 0 || v.photos.length > 0) && <p className="px-3 py-1.5 text-[11px] text-faint">
-                  {t(`Symbolfoto des Modells – das inserierte Fahrzeug ist ${l.color}.`, `Representative photo of the model – the listed car is ${tr(l.color)}.`)}
+                  {l.color === "–"
+                    ? t("Symbolfoto des Modells, nicht das inserierte Fahrzeug.", "Representative photo of the model, not the listed car.")
+                    : t(`Symbolfoto des Modells – das inserierte Fahrzeug ist ${l.color}.`, `Representative photo of the model – the listed car is ${tr(l.color)}.`)}
                 </p>}
             </>
           )}
           {l.url && (
             <a href={l.url} target="_blank" rel="noreferrer" className="flex items-center justify-between border-t border-line px-3 py-2 text-sm text-gold hover:bg-panel-3">
-              {t("Inserat bei mobile.de ansehen und Anbieter kontaktieren", "View the listing on mobile.de and contact the seller")} <ExternalLink className="size-4" />
+              {t(`Inserat bei ${l.source} ansehen und Anbieter kontaktieren`, `View the listing on ${l.source} and contact the seller`)} <ExternalLink className="size-4" />
             </a>
           )}
         </div>
@@ -494,7 +487,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 <dd className="text-right">{val}</dd>
               </div>
             ))}
-            <p className="pt-1 text-xs text-muted italic">{t(`„${l.description}“`, `“${tr(l.description)}”`)}</p>
+            {l.description && <p className="pt-1 text-xs text-muted italic">{t(`„${l.description}“`, `“${tr(l.description)}”`)}</p>}
           </dl>
           <div className="space-y-3 md:col-span-2">
             <div className="rounded-lg border border-line bg-panel-2 p-3">
@@ -502,21 +495,37 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 <span className="text-sm font-semibold">{t("Preisbewertung", "Price assessment")}</span>
                 <Pill tone={d.tone}>{d.label}</Pill>
               </div>
-              <div className="space-y-1 text-xs">
-                <Row label={t("Marktwert Variante (Median)", "Variant market value (median)")} value={eur(e.value)} />
-                <Row label={t(`Zustandsfaktor (Note ${l.condition})`, `Condition factor (grade ${l.condition})`)} value={`× ${num(e.condFactor, 2)}`} />
-                <Row label={t("Laufleistungsfaktor", "Mileage factor")} value={`× ${num(e.kmFactor, 2)}`} />
-                <Row label={t("Fairer Wert", "Fair value")} value={<Money value={e.fair} className="text-[16px]" />} />
-                <Row label={t("Angebotspreis", "Asking price")} value={<Money value={l.price} className="text-[16px]" />} />
-                <Row label={t("Abweichung", "Difference")} value={<Delta value={e.deal} />} />
-              </div>
+              {e.deal === null ? (
+                <p className="text-xs text-muted">
+                  {t(
+                    "Für diese Variante gibt es zu wenige belegte Verkäufe und Angebote für einen Marktwert.",
+                    "There are too few recorded sales and listings for this variant to give a market value.",
+                  )}
+                </p>
+              ) : (
+                <div className="space-y-1 text-xs">
+                  <Row label={t("Marktwert Variante (Median)", "Variant market value (median)")} value={eur(e.value)} />
+                  <Row
+                    label={l.conditionUnknown ? t("Zustandsfaktor (Note 2 angenommen)", "Condition factor (grade 2 assumed)") : t(`Zustandsfaktor (Note ${l.condition})`, `Condition factor (grade ${l.condition})`)}
+                    value={`× ${num(e.condFactor, 2)}`}
+                  />
+                  <Row label={t("Laufleistungsfaktor", "Mileage factor")} value={`× ${num(e.kmFactor, 2)}`} />
+                  <Row label={t("Fairer Wert", "Fair value")} value={<Money value={e.fair} className="text-[16px]" />} />
+                  <Row label={t("Angebotspreis", "Asking price")} value={<Money value={l.price} className="text-[16px]" />} />
+                  <Row label={t("Abweichung", "Difference")} value={<Delta value={e.deal} />} />
+                </div>
+              )}
             </div>
             <div className="rounded-lg border border-line bg-panel-2 p-3">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-muted">{t("Marktwert 12 Monate", "Market value 12 months")}</span>
-                <Delta value={m.change12m} />
-              </div>
-              <Sparkline values={spark} width={260} height={48} className="mt-1 w-full" />
+              {v.measured && (
+                <>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted">{t("Marktwert 12 Monate", "Market value 12 months")}</span>
+                    <Delta value={m.change12m} />
+                  </div>
+                  <Sparkline values={spark} width={260} height={48} className="mt-1 w-full" />
+                </>
+              )}
               <Link to={`/markt/${v.id}`} onClick={onClose} className="mt-1 inline-flex items-center gap-1 text-xs text-gold hover:underline">
                 {t("Marktdaten öffnen", "Open market data")} <ExternalLink className="size-3" />
               </Link>
@@ -535,12 +544,12 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                     <CarImage variant={s.v} fallbackColor={s.l.colorHex} scene={s.scene} className="aspect-video w-28 shrink-0 rounded" />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-xs text-muted">
-                        {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {tr(s.l.city)}
+                        {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {place(s.l)}
                       </div>
                       <div className="flex items-center justify-between gap-2">
                         <Money value={s.l.price} className="text-[15px]" />
                         <Pill tone={sd.tone} className="text-[10px]">
-                          {pct(s.deal)}
+                          {s.deal === null ? "–" : pct(s.deal)}
                         </Pill>
                       </div>
                     </div>
@@ -579,10 +588,10 @@ function SourceBar({
       <p className="mt-1 text-xs text-faint">
         {t(
           <>
-            Demo-Inserate. Für echte Angebote mobile.de-API-Zugang in <code>.env</code> eintragen (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) und neu starten.
+            Täglich aktualisiert. Für mobile.de-Inserate den API-Zugang in <code>.env</code> eintragen (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) und neu starten.
           </>,
           <>
-            Demo listings. For real listings, add mobile.de API access to <code>.env</code> (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) and restart.
+            Updated daily. For mobile.de listings, add the API access to <code>.env</code> (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) and restart.
           </>,
         )}
       </p>
@@ -595,7 +604,7 @@ function SourceBar({
           mobile.de live
         </button>
         <button className={cn("rounded px-2 py-0.5", !preferLive ? "bg-gold/20 text-gold-2" : "text-muted")} onClick={() => setPreferLive(false)}>
-          Demo
+          {t("Classic Trader und Händler", "Classic Trader and dealers")}
         </button>
       </span>
       {live.status === "loading" && (

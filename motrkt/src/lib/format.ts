@@ -39,7 +39,7 @@ export function num(value: number, digits = 0): string {
   return nf(digits).format(value);
 }
 
-export function km(value: number): string {
+export function km(value: number | null): string {
   if (!value) return "–";
   return `${eur0.format(Math.round(value))} km`;
 }

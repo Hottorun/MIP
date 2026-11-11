@@ -165,8 +165,8 @@ export default function Credits() {
       )}
       <p className="text-xs text-faint">
         {t(
-          "Marktwerte, Verkäufe, Auktionen und Inserate sind weiterhin synthetische Demo-Daten. Fotos stammen ausschließlich von Wikimedia Commons unter den jeweils angegebenen freien Lizenzen.",
-          "Market values, sales, auctions and listings are still synthetic demo data. Photos come exclusively from Wikimedia Commons under the free licences stated.",
+          "Fotos stammen ausschließlich von Wikimedia Commons unter den jeweils angegebenen freien Lizenzen.",
+          "Photos come exclusively from Wikimedia Commons under the free licences stated.",
         )}
       </p>
     </div>

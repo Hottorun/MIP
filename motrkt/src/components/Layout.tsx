@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, RotateCcw, Search, X, CheckCircle2, AlertCircle, Info, Gavel, TrendingUp, Upload, User, LogOut } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut } from "lucide-react";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
@@ -39,8 +39,8 @@ export function Layout() {
         <span className="hidden sm:inline">
           {" "}
           {t(
-            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015 und ${num(N_ASKS)} Angeboten; Inserate unter „Kaufen“ und kommende Auktionen sind Demo-Daten.`,
-            `Market values from ${num(N_AUCTIONS)} auction results since 2015 and ${num(N_ASKS)} listings; listings under “Buy” and upcoming auctions are demo data.`,
+            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015 und ${num(N_ASKS)} Angeboten.`,
+            `Market values from ${num(N_AUCTIONS)} auction results since 2015 and ${num(N_ASKS)} listings.`,
           )}
         </span>
       </div>
@@ -267,7 +267,7 @@ function NotificationBell() {
   const { markNotificationsRead } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
   const navigate = useNavigate();
-  const icon = { alert: AlertCircle, sale: TrendingUp, auction: Gavel };
+  const icon = { alert: AlertCircle, sale: TrendingUp };
   return (
     <div className="relative" ref={ref}>
       <button className="relative p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label={t(`Benachrichtigungen (${unread} ungelesen)`, `Notifications (${unread} unread)`)}>
@@ -344,7 +344,7 @@ async function signOut() {
 function UserMenu() {
   const [open, setOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
-  const { resetAll, toast, portfolio, watchlist, alerts } = useStore();
+  const { portfolio, watchlist, alerts } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
   const username = useUsername();
   const item = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[14px] hover:bg-panel-2";
@@ -376,18 +376,6 @@ function UserMenu() {
             }}
           >
             <Upload className="size-3.5 text-muted" /> {t("Verkäufe importieren (CSV)", "Import sales (CSV)")}
-          </button>
-          <button
-            className={cn(item, "text-down")}
-            onClick={() => {
-              if (confirm(t("Portfolio, Watchlist, Alarme und Chatverlauf auf die Demo-Daten zurücksetzen?", "Reset portfolio, watchlist, alerts and chat history to the demo data?"))) {
-                resetAll();
-                toast(t("Demo-Daten wiederhergestellt", "Demo data restored"), "info");
-                setOpen(false);
-              }
-            }}
-          >
-            <RotateCcw className="size-3.5" /> {t("Demo-Daten zurücksetzen", "Reset demo data")}
           </button>
           <div className="my-1 border-t border-line" />
           <button className={item} onClick={signOut}>
@@ -456,8 +444,8 @@ function Footer() {
         <div className="space-y-2 text-[13px] leading-relaxed text-muted">
           <p>
             {t(
-              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) und ${num(N_ASKS)} Angeboten von Classic Trader und Händlern, umgerechnet zum EZB-Kurs des Verkaufstags. Inserate, kommende Auktionen und Portfolio sind Demo-Daten. Keine Anlageberatung.`,
-              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Listings, upcoming auctions and the portfolio are demo data. Not investment advice.`,
+              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) und ${num(N_ASKS)} Angeboten von Classic Trader und Händlern, umgerechnet zum EZB-Kurs des Verkaufstags. Keine Anlageberatung.`,
+              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Not investment advice.`,
             )}
           </p>
           <Link to="/bildnachweise" className="link">

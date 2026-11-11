@@ -1,7 +1,7 @@
 import { isEn } from "./index";
 
 /**
- * English for the German terms stored in the data (catalog, options, weak points, paints, countries, demo data).
+ * English for the German terms stored in the data (catalog, options, weak points, paints, countries).
  * The data keeps German as its key; tr() translates at display time and passes unknown text (e.g. user notes) through.
  */
 const EN: Record<string, string> = {
@@ -82,6 +82,9 @@ const EN: Record<string, string> = {
   Schweden: "Sweden",
   "Saudi-Arabien": "Saudi Arabia",
   Katar: "Qatar",
+  "Dänemark": "Denmark",
+  Spanien: "Spain",
+  Kroatien: "Croatia",
   "München": "Munich",
   "Zürich": "Zurich",
   Genf: "Geneva",
@@ -92,7 +95,6 @@ const EN: Record<string, string> = {
   Antwerpen: "Antwerp",
   Wien: "Vienna",
   Riad: "Riyadh",
-  "Klassische Fahrzeuge": "Classic Vehicles",
 
   // Paints
   Rubinstern: "Ruby Star",
@@ -264,22 +266,7 @@ const EN: Record<string, string> = {
   "Turbolader und Ladeluftkühlung": "Turbochargers and intercooling",
   "Originalität (Interieur, Felgen, Werkzeug)": "Originality (interior, wheels, tool kit)",
 
-  // Demo listings
-  "Aus Sammlungsauflösung, trockene Garagenlagerung.": "From a collection being dispersed, stored in a dry garage.",
-  "Zweite Hand, lückenlose Historie, alle Rechnungen vorhanden.": "Second owner, complete history, all invoices on file.",
-  "Kürzlich großer Service, TÜV/H-Kennzeichen neu.": "Major service recently, fresh German MOT and historic plates.",
-  "Unfallfrei laut Vorbesitzer, Lackschichtdicke dokumentiert.": "Accident-free according to the previous owner, paint thickness documented.",
-  "Matching Numbers, umfangreiche Dokumentation inkl. Werkszertifikat.": "Matching numbers, extensive documentation incl. factory certificate.",
-  "Frisch durchgesehen in unserer Werkstatt, Garantie optional.": "Freshly inspected in our workshop, warranty available.",
-  "Seltene Farbkombination, Originallack weitgehend erhalten.": "Rare colour combination, largely original paint.",
-
-  // Demo portfolio notes
-  "Deutsche Auslieferung, 2. Hand": "German-delivered, second owner",
-  "Werksgarantie-Historie, Porsche-Zertifikat": "Factory warranty history, Porsche certificate",
-  "Clubsport, keine Rennstrecke": "Clubsport, never tracked",
   "Matching Numbers": "Matching numbers",
-  "Restauriert 2014 (Dokumentation)": "Restored 2014 (documented)",
-  "Deutsche Auslieferung, Inspektion 2024": "German-delivered, serviced 2024",
 
   // Official press pages (Porsche Newsroom)
   "20 Jahre 911 GT3: sechs Generationen": "20 years of the 911 GT3: six generations",

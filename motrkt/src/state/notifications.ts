@@ -1,15 +1,14 @@
 import { useMemo } from "react";
 import { useStore } from "./store";
 import { variantById, variantShortTitle } from "../data/db";
-import { AS_OF, DAY, getAuctionEvents, getSales } from "../data/generate";
+import { AS_OF, DAY, getSales } from "../data/generate";
 import { getMetrics } from "../data/market";
-import { date, eur, pct } from "../lib/format";
+import { eur, pct } from "../lib/format";
 import { t } from "../i18n";
-import { tr } from "../i18n/terms";
 
 export type Notification = {
   id: string;
-  kind: "alert" | "sale" | "auction";
+  kind: "alert" | "sale";
   title: string;
   body: string;
   time: number;
@@ -53,21 +52,6 @@ export function useNotifications() {
           body: t(`${eur(s.price)} bei ${s.house} (${pct(s.trend)} ggü. Marktwert)`, `${eur(s.price)} at ${s.house} (${pct(s.trend)} vs. market value)`),
           time: s.date,
           href: `/markt/${v.id}`,
-        });
-      }
-    }
-    const watched = new Set(watchlist);
-    for (const e of getAuctionEvents()) {
-      for (const lot of e.lots) {
-        if (!watched.has(lot.variantId)) continue;
-        const v = variantById.get(lot.variantId)!;
-        items.push({
-          id: `lot:${e.id}:${lot.lotNo}`,
-          kind: "auction",
-          title: `${t("Watchlist-Fahrzeug im Katalog", "Watchlist car in a catalogue")}: ${variantShortTitle(v)}`,
-          body: `${e.house} ${tr(e.title)}, ${t("Los", "Lot")} ${lot.lotNo} · ${date(e.date)} · ${t("Schätzung", "Estimate")} ${eur(lot.estimateLow, { compact: true })}–${eur(lot.estimateHigh, { compact: true })}`,
-          time: e.date,
-          href: `/auktionen?event=${e.id}`,
         });
       }
     }
