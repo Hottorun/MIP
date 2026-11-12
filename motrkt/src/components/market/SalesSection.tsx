@@ -7,6 +7,7 @@ import { getSales } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import { outliersOf } from "../../data/real/model";
 import { date, km } from "../../lib/format";
+import { unsoldPrice } from "../../lib/unsold";
 import { Section, Money } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -92,7 +93,14 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
                   </div>
                 )}
               </div>
-              <div className={"text-right text-[18px]" + (outliers.has(s.id) ? " text-muted line-through decoration-1" : "")}>{s.price ? <Money value={s.price} /> : <span className="text-[14px] text-faint italic">{t("nicht verkauft", "not sold")}</span>}</div>
+              <div className={"text-right text-[18px]" + (outliers.has(s.id) ? " text-muted line-through decoration-1" : "")}>{s.price ? (
+                  <Money value={s.price} />
+                ) : (
+                  <>
+                    <span className="text-[14px] text-faint italic">{t("nicht verkauft", "not sold")}</span>
+                    {unsoldPrice(s) && <span className="block text-[12px] text-faint">{unsoldPrice(s)}</span>}
+                  </>
+                )}</div>
             </li>
           ))}
         </ul>

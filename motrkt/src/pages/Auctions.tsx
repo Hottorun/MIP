@@ -10,6 +10,7 @@ import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
+import { unsoldPrice } from "../lib/unsold";
 
 type Source = "Alle" | "Auktion" | "Händler" | "Privat";
 type Period = "3M" | "12M" | "5J";
@@ -296,7 +297,16 @@ export default function Auctions() {
                         {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{tr(s.source)}</span>}
                       </td>
                       <td className="text-right tabular-nums">{km(s.mileage)}</td>
-                      <td className="text-right">{s.price === null ? <span className="font-sans text-[13px] text-faint italic">{t("nicht verkauft", "not sold")}</span> : <Money value={s.price} />}</td>
+                      <td className="text-right">
+                        {s.price === null ? (
+                          <>
+                            <span className="font-sans text-[13px] text-faint italic">{t("nicht verkauft", "not sold")}</span>
+                            {unsoldPrice(s) && <span className="block font-sans text-[12px] text-faint">{unsoldPrice(s)}</span>}
+                          </>
+                        ) : (
+                          <Money value={s.price} />
+                        )}
+                      </td>
                       <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} arrow={false} />}</td>
                     </tr>
                   );
@@ -399,6 +409,7 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
     [t("FIN", "VIN"), <span className="font-mono">{sale.vin}</span>],
     [t("Preis", "Price"), sale.price === null ? <span className="text-down">{t("nicht verkauft", "not sold")}</span> : <Money value={sale.price} className="text-[17px]" />],
     [t("Schätzung", "Estimate"), sale.estimateLow ? `${eur(sale.estimateLow)} – ${eur(sale.estimateHigh)}` : "–"],
+    ...(sale.price === null && sale.highBid ? [[t("Höchstgebot (kein Verkauf)", "High bid (not sold)"), eur(sale.highBid)] as [string, React.ReactNode]] : []),
     [t("Zuschlag vs. Schätzung", "Hammer price vs. estimate"), mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
     [t("vs. Marktwert (damals)", "Vs. market value (at the time)"), sale.price === null ? "–" : <Delta value={sale.trend} />],
     [t("Zustand", "Condition"), t(`Note ${sale.condition}`, `Grade ${sale.condition}`)],

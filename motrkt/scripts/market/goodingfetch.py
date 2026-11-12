@@ -7,7 +7,7 @@ usage: python3 -I goodingfetch.py WORK [--lot-pages N]
    of up to 1000. Each lot carries slug, lot number, title, sale name and type (live, online, private sale), currency
    and the price including buyer's premium (what Gooding shows as "Sold"; empty if not sold). The whole list is
    fetched on every run (one or two requests).
-2. Chassis number, sale days, sale country and mileage: from the lot's Gatsby page data
+2. Chassis number, sale days, sale country, mileage and the estimate: from the lot's Gatsby page data
    (https://www.goodingco.com/page-data/lot/<slug>/page-data.json), once per lot and only for auctioned lots since 2015
    that classify.py assigns to a variant (cached in WORK/web/gooding/lots/). Live sales are dated by their first day
    (Gooding does not say on which day a lot crossed the block), online sales by their closing day. Mileage only from a highlight that states
@@ -196,6 +196,7 @@ for v, title, amt in cands:
                     sold=bool(amt), amt=amt or None, cur=v.get("currency") or a.get("currency") or None,
                     country=((a.get("location") or {}).get("address") or {}).get("addressCountry") or "",
                     chassis=re.sub(r"\s*\(see text\)\s*$", "", re.sub(r"\s+", " ", item.get("chassis") or "").strip(), flags=re.I), km=km_of(item.get("highlights")),
-                    url="%s/lot/%s" % (SITE, v["slug"]), sale=sale))
+                    url="%s/lot/%s" % (SITE, v["slug"]), sale=sale,
+                    est=[lot["lowEstimate"], lot["highEstimate"], v.get("currency") or a.get("currency")] if lot.get("lowEstimate") and lot.get("highEstimate") else None))
 json.dump(out, open(os.path.join(DIR, "gooding.json"), "w"), ensure_ascii=False)
 print(len(out), "Gooding & Company results since 2015;", new_pages, "new lot pages", flush=True)

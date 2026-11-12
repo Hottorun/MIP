@@ -136,6 +136,10 @@ for key, house, prefix in HOUSES:
         own.append(dict(variant=vid, title=x["title"], date=x["date"], house=house, eur=round(to_eur(x["amt"], x["cur"], x["date"])) if x["sold"] else None,
                         bid=None, sold=x["sold"], orig=x["amt"] if x["sold"] else None, cur=x["cur"] if x["sold"] else None, km=x["km"], loc=x["country"],
                         body=body, gear=gear, vin=x["chassis"], lot=lot, url=x["url"], year=year, src=key, event=x["sale"]))
+        # the house's estimate, for unsold lots only: shown in the app, never part of the market value
+        e = x.get("est")
+        if not x["sold"] and e and (e[2] == "EUR" or e[2] in fx):
+            own[-1].update(estLow=round(to_eur(e[0], e[2], x["date"])), estHigh=round(to_eur(e[1], e[2], x["date"])))
     by_chassis = collections.defaultdict(list)
     for r in own:
         if len(chassis_key(r["vin"])) >= 5: by_chassis[chassis_key(r["vin"])].append(r)

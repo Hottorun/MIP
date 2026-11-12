@@ -118,6 +118,7 @@ export type Sale = {
   trend: number; // price vs. market value at that date, e.g. 0.059
   url?: string; // source link for imported real records
   conditionUnknown?: boolean; // imported record without a stated condition (normalised as "2")
+  highBid?: number | null; // highest bid of an unsold auction lot (Bring a Trailer), EUR; display only
 };
 
 export type Listing = {

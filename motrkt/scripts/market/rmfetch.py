@@ -5,7 +5,7 @@ usage: python3 -I rmfetch.py WORK [--lot-pages N]
 1. Lot list: RM's search (POST /api/search/SearchLots, {"Make": "Porsche"}), 200 lots per request. Page N starts at
    lot (N-1)*200; page 0 is the same as page 1. The whole list is fetched on every run (about 15 requests).
 2. Sale date: from the sale's page /auctions/<code>/, once per sale (cached in WORK/web/rm/sales.json).
-3. Chassis number and mileage: from the lot page, once per lot and only for auctioned lots that classify.py assigns
+3. Chassis number, mileage and the estimate: from the lot page, once per lot and only for auctioned lots that classify.py assigns
    to a variant (cached in WORK/web/rm/lots/). --lot-pages N stops after N new lot pages (for a first test run).
 Writes WORK/web/rm/rm.json, which build.py reads. RM's terms of use permit this access (confirmed by the project
 owner on 11 November 2026). One request every 1.5 seconds.
@@ -142,6 +142,20 @@ def lot_details(h):
     return chassis, km
 
 
+CUR_SIGN = {"$": "USD", "US$": "USD", "€": "EUR", "£": "GBP"}
+
+
+def estimate_of(h):
+    """RM's estimate in the sale's currency, printed next to the result ("CHF550,000 - CHF600,000 | Not Sold",
+    "$800,000 - $1,000,000 USD | Not Sold"): [low, high, currency], or None. Shown in the app for unsold lots only."""
+    m = re.search(r"(CHF|US\$|\$|€|£|EUR|GBP|USD|SEK|DKK)\s?([\d,.' ]{3,}?)\s*-\s*(?:CHF|US\$|\$|€|£|EUR|GBP|USD|SEK|DKK)?\s?([\d,.']{3,})"
+                  r"\s*(USD|EUR|GBP|CHF|SEK|DKK)?\s*\|\s*(?:Not Sold|Sold|Withdrawn)", text(h))
+    if not m: return None
+    lo, hi = (int(re.sub(r"\D", "", x)) for x in (m.group(2), m.group(3)))
+    cur = m.group(4) or CUR_SIGN.get(m.group(1), m.group(1))
+    return [lo, hi, cur] if 0 < lo <= hi else None
+
+
 out, new_pages = [], 0
 for it, (vid, body, gear, year), code, amt, cur in cands:
     date = sales.get(code)
@@ -152,9 +166,10 @@ for it, (vid, body, gear, year), code, amt, cur in cands:
         h = get(it["link"])
         if h is None: continue
         open(p, "w").write(h); new_pages += 1
-    chassis, km = lot_details(open(p, errors="ignore").read())
+    page = open(p, errors="ignore").read()
+    chassis, km = lot_details(page)
     out.append(dict(id=it["id"], code=code, lot=it["lot"], ref=it["referenceId"], title=text(it["publicName"]), date=date,
                     sold=it["valueType"] == "Sold", amt=amt if it["valueType"] == "Sold" else None, cur=cur,
-                    country=it.get("countryCode") or "", chassis=chassis, km=km, url=it["link"], sale=it["header"]))
+                    country=it.get("countryCode") or "", chassis=chassis, km=km, url=it["link"], sale=it["header"], est=estimate_of(page)))
 json.dump(out, open(os.path.join(DIR, "rm.json"), "w"), ensure_ascii=False)
 print(len(out), "RM Sotheby's results since 2015;", new_pages, "new lot pages", flush=True)

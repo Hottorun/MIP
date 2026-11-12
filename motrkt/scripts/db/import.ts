@@ -43,6 +43,7 @@ const sales = lines.map((line) => {
     price_original: int(r.preis_original),
     currency: str(r.waehrung),
     location: str(r.standort),
+    high_bid_eur: int(r.hoechstgebot_eur ?? ""),
   };
 });
 

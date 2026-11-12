@@ -19,6 +19,8 @@ export type RealSale = {
   price: number | null;
   estimateLow: number | null;
   estimateHigh: number | null;
+  /** Highest bid of an unsold lot (Bring a Trailer), EUR. Display only, never part of the market value. */
+  highBid?: number | null;
   condition: Condition;
   mileage: number;
   buyerCountry: string;
@@ -63,6 +65,7 @@ const ALIASES: Record<string, string[]> = {
   url: ["url", "link", "quelle_url"],
   location: ["standort", "location", "verkaufsland"],
   currency: ["waehrung", "währung", "currency"],
+  highBid: ["hoechstgebot_eur", "höchstgebot_eur", "high_bid", "high_bid_eur"],
 };
 
 function splitLine(line: string, delim: string): string[] {
@@ -164,6 +167,7 @@ export function parseSalesCsv(text: string, origin = "CSV"): ParseResult {
       price,
       estimateLow: parseNumber(get("estLow")),
       estimateHigh: parseNumber(get("estHigh")),
+      highBid: unsold ? parseNumber(get("highBid")) : null,
       condition: (CONDITIONS.includes(cond) ? cond : "2") as Condition,
       conditionUnknown: !CONDITIONS.includes(cond),
       mileage: parseNumber(get("mileage")) ?? 0,

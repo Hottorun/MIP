@@ -23,12 +23,17 @@ for r in old[1:]:
     kept.append(d)
 json.dump({"kept": kept, "dropped": dropped}, open(S + "/web/old_review.json", "w"), ensure_ascii=False, indent=1)
 H = ["variant_id", "fahrzeug", "datum", "quelle", "haus", "preis_eur", "schaetzung_von", "schaetzung_bis", "verkauft", "zustand", "km", "kaeuferland", "herkunft",
-     "auslieferung", "farbe", "karosserie", "getriebe", "fin", "los_id", "url", "preis_original", "waehrung", "standort"]
+     "auslieferung", "farbe", "karosserie", "getriebe", "fin", "los_id", "url", "preis_original", "waehrung", "standort", "hoechstgebot_eur"]
 out = []
 for r in rows:
     gear = r["gear"] or ("Automatik" if r["year"] >= 1999 and r["src"] == "bat" and not re.search(r"\d-speed", r["title"].lower()) and False else "")
-    out.append([r["variant"], r["title"].replace(";", ","), r["date"], "Auktion", r["house"], r["eur"] or "", "", "", "ja" if r["sold"] else "nein", "",
-                r["km"] or "", "", "", "", "", r["body"], r["gear"], r["vin"].replace(";", ","), r["lot"], r["url"], r["orig"] or "", r["cur"] or "", r["loc"]])
+    # unsold lots: the house's estimate (schaetzung_von/_bis) or the highest bid (Bring a Trailer), both in EUR; shown in
+    # the app only, the model reads sold prices alone
+    unsold = not r["sold"]
+    out.append([r["variant"], r["title"].replace(";", ","), r["date"], "Auktion", r["house"], r["eur"] or "",
+                (unsold and r.get("estLow")) or "", (unsold and r.get("estHigh")) or "", "ja" if r["sold"] else "nein", "",
+                r["km"] or "", "", "", "", "", r["body"], r["gear"], r["vin"].replace(";", ","), r["lot"], r["url"], r["orig"] or "", r["cur"] or "", r["loc"],
+                (unsold and r.get("bid")) or ""])
 # Earlier hand-collected rows are not carried over: the scrape covers those auctions, the rest (press reports) cannot be re-checked.
 out.sort(key=lambda x: (x[0], x[2]), reverse=False)
 with open(OUT, "w", newline="") as f:
