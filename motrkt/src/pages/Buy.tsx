@@ -8,8 +8,7 @@ import { getMetrics } from "../data/market";
 import type { Listing, Variant } from "../data/types";
 import { cn, date, eur, flag, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
-import { type Scene } from "../components/CarArt";
-import { CarImage } from "../components/CarImage";
+import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
 import { locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
@@ -17,12 +16,11 @@ import { tr } from "../i18n/terms";
 type SortKey = "deal" | "priceAsc" | "priceDesc" | "newest" | "mileage";
 type SellerFilter = "" | Listing["sellerType"];
 
-const SCENES: Scene[] = ["mountain", "studio", "sunset", "city", "track"];
 const PAGE = 24;
 const filterSelect = "border-b border-line-2 pb-1 focus:border-ink focus:outline-none";
 const filterInput = "border-b border-line-2 bg-transparent pb-1 placeholder:text-faint focus:border-ink focus:outline-none";
 
-type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number | null; scene: Scene };
+type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number | null };
 
 function mileageAdjustment(v: Variant, l: Listing) {
   if (l.mileage === null) return 1;
@@ -33,14 +31,14 @@ function mileageAdjustment(v: Variant, l: Listing) {
 }
 
 function enrich(list: Listing[]): Enriched[] {
-  return list.map((l, i) => {
+  return list.map((l) => {
     const v = variantById.get(l.variantId)!;
     const value = getMetrics(v.id).value;
     const condFactor = CONDITION_FACTOR[l.condition];
     const kmFactor = mileageAdjustment(v, l);
     const fair = value * condFactor * kmFactor;
     // Variants with too few records have no market value to compare against.
-    return { l, v, value, condFactor, kmFactor, fair, deal: v.measured ? l.price / fair - 1 : null, scene: SCENES[i % SCENES.length] };
+    return { l, v, value, condFactor, kmFactor, fair, deal: v.measured ? l.price / fair - 1 : null };
   });
 }
 
@@ -288,11 +286,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
   return (
     <article className="group cursor-pointer" onClick={onOpen}>
       <div className="relative aspect-video overflow-hidden bg-panel-3">
-        {l.images?.[0] ? (
-          <img src={l.images[0]} alt={l.title} loading="lazy" className="size-full object-cover" />
-        ) : (
-          <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full" label={l.title} />
-        )}
+        <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full" />
         <span className="absolute bottom-3 left-3 rounded-[2px] bg-bg/90 px-1.5 py-0.5 text-[11px] text-ink">{l.source}</span>
         <button
           onClick={(ev) => {
@@ -431,20 +425,16 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
       <div className="space-y-4">
         <div className="overflow-hidden rounded-lg border border-line">
           {l.images?.length ? (
-            <div className="flex snap-x gap-1 overflow-x-auto">
-              {l.images.map((src) => (
-                <img key={src} src={src} alt={l.title} className="aspect-[4/3] h-56 shrink-0 snap-start object-cover" />
-              ))}
-            </div>
-          ) : (
             <>
-              <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="aspect-video w-full" label={l.title} credit />
-              {(v.marketPhotos.length > 0 || v.photos.length > 0) && <p className="px-3 py-1.5 text-[11px] text-faint">
-                  {l.color === "–"
-                    ? t("Symbolfoto des Modells, nicht das inserierte Fahrzeug.", "Representative photo of the model, not the listed car.")
-                    : t(`Symbolfoto des Modells – das inserierte Fahrzeug ist ${l.color}.`, `Representative photo of the model – the listed car is ${tr(l.color)}.`)}
-                </p>}
+              <div className="flex snap-x gap-1 overflow-x-auto">
+                {l.images.map((src, k) => (
+                  <ListingPhoto key={src} src={src} alt={`${l.title}, ${t("Foto", "photo")} ${k + 1}`} className="aspect-[4/3] h-56 shrink-0 snap-start" />
+                ))}
+              </div>
+              <p className="px-3 py-1.5 text-[11px] text-faint">{t(`Fotos des inserierten Fahrzeugs, von ${l.source}.`, `Photos of the listed car, from ${l.source}.`)}</p>
             </>
+          ) : (
+            <NoPhoto className="aspect-video w-full" />
           )}
           {l.url && (
             <a href={l.url} target="_blank" rel="noreferrer" className="flex items-center justify-between border-t border-line px-3 py-2 text-sm text-gold hover:bg-panel-3">
@@ -541,7 +531,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 const sd = dealLabel(s.deal);
                 return (
                   <button key={s.l.id} onClick={() => onOpen(s.l.id)} className="flex items-center gap-3 rounded-lg border border-line bg-panel-2 p-2 text-left hover:border-line-2 hover:bg-panel-3">
-                    <CarImage variant={s.v} fallbackColor={s.l.colorHex} scene={s.scene} className="aspect-video w-28 shrink-0 rounded" />
+                    <ListingPhoto src={s.l.images?.[0]} alt={s.l.title} className="aspect-video w-28 shrink-0 rounded" small />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-xs text-muted">
                         {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {place(s.l)}

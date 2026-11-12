@@ -3,7 +3,7 @@
 usage: python3 -I ctparse.py WORK
 
 Reads every stored day under WORK/web/ct/pages/ and writes WORK/web/asks.json: one row per listing and day it was
-seen (price, mileage, year, seller type, country). Listings without a price ("Preis auf Anfrage"), auction lots and
+seen (price, mileage, year, seller type, country, the ids of the listing's photos). Listings without a price ("Preis auf Anfrage"), auction lots and
 non-EUR prices without an ECB rate are skipped. The variant is assigned with classify.py, like the auction results.
 """
 import glob, gzip, html, json, os, re, sys
@@ -41,6 +41,23 @@ NEG = re.compile(r"(kein|keine|keinen|nicht|no|not|never|nie|niemals|free of|fre
 NEG_AFTER = re.compile(r"^\W*(\w+\W+){0,2}(liegt nicht vor|nicht vorhanden|ausgeschlossen|none\b|keine\b)")
 # history, not today's state: "bought as a restoration project", "2017 fand der Targa als Restaurationsobjekt …"
 HIST = re.compile(r"(bought|purchased|acquired|erworben|gekauft|damals|then|was found|wurde .{0,20}gefunden|\b(19|20)\d\d\b[^.]{0,40})\W+(\w+\W+){0,6}$")
+
+
+def photos(h, limit=8):
+    """The listing's own photos, as Classic Trader image ids, in the seller's order (first = main photo)."""
+    i = h.find('"images":[1,[')
+    if i < 0:
+        return []
+    j, depth = i + len('"images":'), 0
+    for k in range(j, len(h)):
+        depth += {"[": 1, "]": -1}.get(h[k], 0)
+        if depth == 0:
+            break
+    out = []
+    for m in re.findall(r'"originalImageUrl":\[0,"[^"]*vehicle_ad_standard_image_([0-9a-f]{32})\.', h[j:k + 1]):
+        if m not in out:
+            out.append(m)
+    return out[:limit]
 
 
 def suspect(text, rules):
@@ -115,6 +132,7 @@ def parse(path, day):
         "matching": prop(h, "matchingNumbers"),
         "flag": flag[0] if flag else None,
         "flagText": flag[1][:160] if flag else None,
+        "img": photos(h),
     }
 
 

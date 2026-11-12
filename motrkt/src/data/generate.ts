@@ -2,7 +2,7 @@ import { brandById, paintsForVariant, variantById, variants } from "./db";
 import type { Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, Variant } from "./types";
 import { rng, type Rng } from "../lib/random";
 import { realSalesFor } from "./real/sales";
-import { asksFor, type Ask } from "./real/asks";
+import { askPhotos, asksFor, type Ask } from "./real/asks";
 import { historyOf } from "./real/listingHistory";
 import { MODEL_AS_OF, MODEL_START, marketBasis, modelValueAt } from "./real/model";
 
@@ -431,6 +431,7 @@ function askToListing(a: Ask, v: Variant): Listing {
     description: "",
     source: a.source,
     url: a.url,
+    images: askPhotos(a),
   };
 }
 

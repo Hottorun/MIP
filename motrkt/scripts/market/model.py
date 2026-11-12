@@ -155,7 +155,7 @@ for a in latest.values():
     if not eur: continue
     asks.append(dict(id=a["id"], variant=a["variant"], date=a["day"], eur=round(eur), price=a["price"], cur=a["cur"], km=a.get("km"), year=a["year"],
                      title="Porsche %s" % a["model"], seller=a["seller"], sellerName=a.get("sellerName"), country=a["country"], body=norm_body(a.get("body")),
-                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText"), ch="EU_ASK"))
+                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText"), img=a.get("img") or None, ch="EU_ASK"))
 
 # hand-recorded listings, sales and auction results (mobile.de, Elferspot, Kleinanzeigen, dealers and auction houses in
 # Europe and North America): scripts/market/manual/*.csv. Routed by country (land) and kind (art):
@@ -163,6 +163,8 @@ for a in latest.values():
 #   USA / Canada:  Verkauf / Auktion -> US_AUC (US_ONL for Bring a Trailer, Cars & Bids, PCARMARKET),   Angebot -> US_ASK
 # Other countries are listed in the console and not used (no reference for their price level yet).
 other_land = collections.Counter()
+# the dealers' own photos of these cars (dealerphotos.py): {listing url: [image url, ...]}
+dealer_photos = json.load(open(S + "/web/dealerphotos.json")) if os.path.exists(S + "/web/dealerphotos.json") else {}
 for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
     for i, r in enumerate(csv.DictReader(open(fn, encoding="utf-8"), delimiter=";")):
         if not r.get("datum") or not r.get("preis"): continue
@@ -177,7 +179,8 @@ for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
         row = dict(id="M-%s-%d" % (os.path.basename(fn).split(".")[0], i), variant=vid, date=r["datum"], eur=round(eur), price=float(r["preis"]),
                    cur=r.get("waehrung") or "EUR", km=int(r["km"]) if (r.get("km") or "").isdigit() else None, year=int(r["baujahr"]),
                    title="Porsche %s" % r["fahrzeug"], seller=r.get("anbieter") or "", sellerName=None, country=(r.get("land") or "DE").upper(),
-                   body=body_of(("%s %s" % (r["fahrzeug"], r.get("url") or "")).lower()), url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None)
+                   body=body_of(("%s %s" % (r["fahrzeug"], r.get("url") or "")).lower()), url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None,
+                   img=dealer_photos.get((r.get("url") or "").strip()) or None)
         land = row["country"]
         if land not in EUROPE and land not in NORTH_AMERICA:
             other_land[land] += 1; continue
@@ -519,7 +522,7 @@ for a in asks:
         d = price_out[a["id"]]["dev"]
         a["excluded"] = "Preis %d %% %s dem Niveau vergleichbarer Fahrzeuge" % (round(abs(d) * 100), "über" if d > 0 else "unter")
 asks = sorted((a for a in asks if a["variant"] in known), key=lambda a: (a["variant"], -a["eur"]))
-json.dump([{k: a.get(k) for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "body", "seller", "sellerName", "country", "url", "source", "excluded", "note")} for a in asks],
+json.dump([{k: a.get(k) for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "body", "seller", "sellerName", "country", "url", "source", "excluded", "note", "img")} for a in asks],
           open(OUT_ASKS, "w"), ensure_ascii=False, separators=(",", ":"))
 print("price outliers left out:", collections.Counter(x["ch"] for x in excluded_all), "listings flagged by text:", sum(1 for a in asks if a.get("excluded") and not a["id"] in price_out))
 print(sum(1 for x in result["variants"].values() if x["value"]), "variants with a value;", len(obs), "observations;", result["channels"])

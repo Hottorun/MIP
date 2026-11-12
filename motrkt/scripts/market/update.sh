@@ -29,6 +29,8 @@ done
 echo "4/6 Angebote in Europa (Classic Trader)"
 python3 -I "$HERE/ctfetch.py" "$W"
 python3 -I "$HERE/ctparse.py" "$W"
+echo "   Fotos der Händlerfahrzeuge (manual/haendler.csv)"
+python3 -I "$HERE/dealerphotos.py" "$W" || echo "   Händlerfotos fehlgeschlagen, weiter ohne neue Fotos"
 
 echo "5/6 Links zu den Originalseiten der Auktionshäuser, Zuordnung und Modell"
 python3 -I "$HERE/linkfetch.py" "$W"

@@ -26,7 +26,16 @@ export type Ask = {
   excluded: string | null;
   /** The passage of the listing the reason rests on. */
   note: string | null;
+  /** The seller's own photos of the car: Classic Trader image ids or full image URLs (dealer sites), main photo first. */
+  img?: string[] | null;
 };
+
+/** URLs of the listing's own photos (Classic Trader ids expanded to their image server), main photo first. */
+export function askPhotos(a: Ask): string[] {
+  return (a.img ?? []).map((x) =>
+    x.startsWith("http") ? x : `https://cdn.classic-trader.com/I/images/960_720/vehicle_ad_standard_image_${x}.jpg`,
+  );
+}
 
 const ALL = data as Ask[];
 const byVariant = new Map<string, Ask[]>();

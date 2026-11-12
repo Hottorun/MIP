@@ -4,7 +4,7 @@ import type { Body, Variant } from "../../data/types";
 import { COUNTRY_NAMES, getListings } from "../../data/generate";
 import { useLiveListings } from "../../state/liveListings";
 import { km } from "../../lib/format";
-import { CarImage } from "../CarImage";
+import { ListingPhoto } from "../ListingPhoto";
 import { Section, Money } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -25,21 +25,11 @@ export function Listings({ variant, body = null }: { variant: Variant; body?: Bo
       }
     >
       <ul className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3">
-        {listings.slice(0, 3).map((l, i) => (
+        {listings.slice(0, 3).map((l) => (
           <li key={l.id}>
             <Link to={`/kaufen?inserat=${l.id}`} className="group block">
               <div className="aspect-video overflow-hidden bg-panel-3">
-                {l.images?.[0] ? (
-                  <img src={l.images[0]} alt="" loading="lazy" className="size-full object-cover" />
-                ) : (
-                  <CarImage
-                    className="size-full"
-                    variant={variant}
-                    index={i}
-                    fallbackColor={l.colorHex}
-                    scene={(["studio", "mountain", "city"] as const)[i % 3]}
-                  />
-                )}
+                <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full" />
               </div>
               <div className="mt-3 flex items-baseline justify-between gap-4">
                 <span className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
