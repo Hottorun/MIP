@@ -491,9 +491,14 @@ function BasisLine({ variant }: { variant: Variant }) {
   const parts = [
     c.EU_AUC && t(`${num(c.EU_AUC)} ${c.EU_AUC === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} in Europa`, `${num(c.EU_AUC)} European auction ${c.EU_AUC === 1 ? "result" : "results"}`),
     c.EU_ASK && t(`${num(c.EU_ASK)} ${c.EU_ASK === 1 ? "Angebot" : "Angeboten"} in Europa`, `${num(c.EU_ASK)} ${c.EU_ASK === 1 ? "listing" : "listings"} in Europe`),
-    c.US_AUC && t(`${num(c.US_AUC)} US-${c.US_AUC === 1 ? "Auktion" : "Auktionen"} (bereinigt)`, `${num(c.US_AUC)} US ${c.US_AUC === 1 ? "auction" : "auctions"} (adjusted)`),
+    c.US_AUC && t(`${num(c.US_AUC)} US-${c.US_AUC === 1 ? "Auktion" : "Auktionen"}`, `${num(c.US_AUC)} US ${c.US_AUC === 1 ? "auction" : "auctions"}`),
+    c.US_ONL && t(`${num(c.US_ONL)} US-Online-${c.US_ONL === 1 ? "Auktion" : "Auktionen"}`, `${num(c.US_ONL)} US online ${c.US_ONL === 1 ? "auction" : "auctions"}`),
+    c.US_ASK && t(`${num(c.US_ASK)} US-${c.US_ASK === 1 ? "Angebot" : "Angeboten"}`, `${num(c.US_ASK)} US ${c.US_ASK === 1 ? "listing" : "listings"}`),
   ].filter(Boolean) as string[];
-  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${t("und", "and")} ${parts.at(-1)}` : parts[0];
+  const us = c.US_AUC + c.US_ONL + c.US_ASK > 0;
+  const list =
+    (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${t("und", "and")} ${parts.at(-1)}` : parts[0]) +
+    (us ? t(" (US-Preise bereinigt)", " (US prices adjusted)") : "");
   return (
     <>
       {t(`Aus ${list}`, `From ${list}`)}

@@ -12,8 +12,8 @@ import { LogoFull, LogoMark } from "./LogoMark";
 import { MODEL_CHANNELS } from "../data/real/model";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
-const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC;
-const N_ASKS = MODEL_CHANNELS.EU_ASK;
+const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL;
+const N_ASKS = MODEL_CHANNELS.EU_ASK + MODEL_CHANNELS.US_ASK;
 
 const NAV_LEFT = [
   { to: "/", get label() { return t("Start", "Home"); } },

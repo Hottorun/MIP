@@ -34,8 +34,10 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 | `EU_AUC` Auktionen Europa | RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding … (Verkäufe in EUR, GBP, CHF) | `ucpfetch.sh` + `ucpparse.py` (ultimatecarpage.com) |
 | `EU_AUC` / `US_AUC` | Auktionshäuser direkt: RM Sotheby's, Gooding & Company, Broad Arrow, Artcurial (nur verkaufte Lose; unverkaufte veröffentlicht Artcurial nicht) – mit Lotseite, Fahrgestellnummer und Laufleistung (falls genannt); ersetzen dieselben Lose von ultimatecarpage (gleiche Fahrgestellnummer ±7 Tage, sonst Variante, Datum und Preis). Bonhams: `bonhamsfetch.py` ist fertig, läuft aber nicht mit, solange Bonhams' Such-API mit einer Bot-Abfrage antwortet | `rmfetch.py`, `goodingfetch.py`, `broadarrowfetch.py`, `artcurialfetch.py` |
 | `EU_ASK` Angebote Europa | Classic Trader (Händler und privat, Linkslenker, Standort Europa) | `ctfetch.py` + `ctparse.py` |
-| `EU_ASK` / `EU_AUC` | von Hand: mobile.de, Elferspot, Kleinanzeigen, Händlerauskünfte | `manual/*.csv`, siehe `manual/README.md` |
-| `US_AUC` Auktionen USA | Bring a Trailer, RM Sotheby's, Gooding, Broad Arrow … (Verkäufe in USD) | `batfetch.py`, `ucpfetch.sh` |
+| `EU_ASK` / `EU_AUC` | von Hand: mobile.de, Elferspot, Kleinanzeigen, Händler und Auktionshäuser in Europa | `manual/*.csv`, siehe `manual/README.md` |
+| `US_AUC` Auktionen USA | RM Sotheby's, Gooding, Broad Arrow … (Saalauktionen, Verkäufe in USD); von Hand: Verkäufe und Auktionsergebnisse von US-/kanadischen Händlern und Häusern | `rmfetch.py`, `goodingfetch.py`, `ucpfetch.sh`, `manual/*.csv` |
+| `US_ONL` Online-Auktionen USA | Bring a Trailer (von Hand auch Cars & Bids, PCARMARKET): eigene Quelle mit eigenem Abstand, damit die größte Plattform den Abstand der Saalauktionen nicht verwischt | `batfetch.py` |
+| `US_ASK` Angebote USA | von Hand: Angebote von US-/kanadischen Händlern | `manual/*.csv` |
 
 Nicht automatisch abrufbar (geprüft am 10. November 2026): mobile.de (Such- und Inseratsseiten per robots.txt gesperrt;
 für die offizielle Search API braucht es Zugangsdaten von mobile.de, der Client liegt schon in `server/mobilede.ts`),
@@ -56,12 +58,16 @@ eindeutige Modelle). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
 2. **Kanalabstand** `δ`: Für jede Variante mit Preisen in zwei Kanälen wird die Differenz der Mediane gebildet und über
    alle solchen Varianten gepoolt (gewichteter Median). Daraus folgt per gewichteter kleinster Quadrate, um wie viel
    Angebotspreise und US-Ergebnisse im Mittel über bzw. unter den europäischen Auktionsergebnissen liegen. Der
-   US-Abstand wird getrennt für Klassiker und moderne Fahrzeuge geschätzt, der Angebotsaufschlag gemeinsam für alle
-   (er hängt am Verkaufsweg, nicht an der Baureihe). Dieser Abstand wird abgezogen.
+   Abstand der Auktionskanäle (`US_AUC`, `US_ONL`) wird getrennt für Klassiker und moderne Fahrzeuge geschätzt, der
+   Angebotsaufschlag (`EU_ASK`, `US_ASK`) gemeinsam für alle (er hängt am Verkaufsweg, nicht an der Baureihe). Dieser
+   Abstand wird abgezogen. Ein Kanal ohne Vergleichsvarianten bekommt den Abstand 0 und das Standardgewicht.
 3. **Gewicht je Kanal**: Der Kanalmedian einer Variante zählt mit der Präzision `1 / (π/2 · s_c² / n + τ_c²)`. `s_c`
    ist die gemessene Streuung der Einzelpreise des Kanals, `τ_c` die gemessene Streuung des Kanalabstands zwischen den
    Varianten. Für indirekte Belege (US, Angebote) begrenzt `τ_c` das Gewicht – auch tausend US-Verkäufe können den Wert
-   einer Variante nicht weiter verschieben, als es der gemessene Unterschied zwischen den Märkten erlaubt.
+   einer Variante nicht weiter verschieben, als es der gemessene Unterschied zwischen den Märkten erlaubt. Die drei
+   US-Kanäle teilen sich einen gemeinsamen Anteil `US_TAU` = 12 % (Mindestwert, auch wenn weniger gemessen wird):
+   Zusammen zählen alle US-Belege einer Variante höchstens mit `1 / US_TAU²`, egal wie viele es sind. Je mehr
+   europäische Belege dazukommen, desto kleiner wird damit der US-Anteil, ohne dass US-Daten gelöscht werden.
 4. **Aktualität**: Innerhalb eines Kanals zählen jüngere Preise mehr (Gewicht `exp(−Alter/2 Jahre)`).
 5. **Eigener Verlauf** ab 12 Belegen (zum Segmentindex hin geschrumpft), sonst folgt die Kurve dem Segment.
 6. **Unplausible Preise raus**: Classic-Trader-Inserate, die laut Inserat Nachbau, Umbau, Rennwagen, Projekt-,

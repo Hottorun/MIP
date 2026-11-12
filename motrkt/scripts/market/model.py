@@ -3,18 +3,27 @@
 usage: python3 -I model.py WORK OUT_MODEL_JSON OUT_ASKS_JSON
 
 Evidence, each price converted to EUR at the ECB rate of its day:
-  EU_AUC  auction results in Europe (RM Sotheby's, Bonhams, Broad Arrow, Artcurial, … sold in EUR, GBP or CHF)
-  US_AUC  auction results in North America (Bring a Trailer, RM Sotheby's, Gooding, … sold in USD)
-  EU_ASK  asking prices in Europe (Classic Trader; hand-recorded listings from mobile.de, Elferspot, Kleinanzeigen
-          in scripts/market/manual/), left-hand drive only
+  EU_AUC  auction results and documented sales in Europe (RM Sotheby's, Bonhams, Broad Arrow, Artcurial, … sold in
+          EUR, GBP or CHF; hand-recorded sales and auction results of European dealers and houses)
+  US_AUC  live auction results in North America (RM Sotheby's, Gooding, Broad Arrow, Mecum, … sold in USD; hand-recorded
+          sales and auction results from the USA and Canada)
+  US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids, PCARMARKET): one platform with most of the
+          records, so it is kept apart and gets its own measured offset
+  EU_ASK  asking prices in Europe (Classic Trader; hand-recorded listings from mobile.de, Elferspot, Kleinanzeigen and
+          dealers in scripts/market/manual/), left-hand drive only
+  US_ASK  hand-recorded asking prices of dealers in the USA and Canada
 
 Model (robust: weighted medians, the variant level a weighted interquartile mean):
   log p_i = a_v + f_g(t_i) + δ_c,k + λ_v(t) d_v(t_i) + e_i
   f_g     time index of the market segment g (kernel-weighted medians, as before)
   δ_c,k   offset of channel c against European auction results, measured per family k (classics / modern cars)
-          from variants that have prices in both channels: δ(EU_AUC) = 0 by definition
+          from variants that have prices in both channels: δ(EU_AUC) = 0 by definition; asking-price offsets are
+          shared by the families
   a_v     level of variant v on the European auction scale = "Marktwert Deutschland/Europa"
 Each channel's observations are weighted with the inverse of its measured scatter, so noisier evidence counts less.
+Indirect evidence (US prices, asking prices) is further capped by its measured bias; the US channels share one bias
+term of at least US_TAU (the US market as a whole may sit apart from Europe for a given variant), so however many US
+records there are, together they cannot outweigh the European evidence beyond that limit.
 A value is published only with at least MIN_N observations; otherwise the variant shows its individual records only.
 """
 import collections, csv, datetime as dt, glob, json, math, os, re, sys
@@ -35,7 +44,17 @@ OUT_WIDE = 1.099   # ... or a factor 3 (log 3) for variants whose own prices sca
 OUT_MIN_N = 5      # below this many records only the factor-2 limit applies
 EUROPE = {"DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "PT", "GB", "IE", "DK", "SE", "NO", "FI", "PL", "CZ", "SK", "HU", "SI", "HR", "MC", "LI", "GR", "EE", "LV", "LT", "RO", "BG"}
 EU_CUR = {"EUR", "GBP", "CHF", "SEK", "DKK", "NOK"}
-CHANNELS = ["EU_AUC", "US_AUC", "EU_ASK"]
+NORTH_AMERICA = {"US", "CA"}
+US_ONLINE = {"bring a trailer", "cars & bids", "cars and bids", "pcarmarket"}
+CHANNELS = ["EU_AUC", "US_AUC", "US_ONL", "EU_ASK", "US_ASK"]
+ASK = {"EU_ASK", "US_ASK"}                 # asking prices: offset shared by the families, not used for the time index
+US = {"US_AUC", "US_ONL", "US_ASK"}        # North American channels: one shared bias term
+US_TAU = 0.12      # at least 12 % (SD, log scale) between a variant's US and European level, whatever the data suggest
+TAU_DEFAULT = 0.04 # bias variance (0.2 SD) of a channel with too few comparisons to measure it
+
+
+def us_channel(house):
+    return "US_ONL" if (house or "").strip().lower() in US_ONLINE else "US_AUC"
 
 
 def tf(d):
@@ -113,7 +132,7 @@ obs = []
 # auction results (sold only)
 for s in json.load(open(S + "/web/sales_all.json")):
     if not (s["sold"] and s["eur"] and s["eur"] > 500 and "2015-01-01" <= s["date"] <= AS_OF.isoformat()): continue
-    ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer") else "US_AUC"
+    ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer") else us_channel(s["house"])
     obs.append(dict(variant=s["variant"], date=s["date"], eur=s["eur"], ch=ch, house=s["house"], lot=s["lot"], body=s.get("body"), src="auction"))
 
 def norm_body(b):
@@ -136,9 +155,14 @@ for a in latest.values():
     if not eur: continue
     asks.append(dict(id=a["id"], variant=a["variant"], date=a["day"], eur=round(eur), price=a["price"], cur=a["cur"], km=a.get("km"), year=a["year"],
                      title="Porsche %s" % a["model"], seller=a["seller"], sellerName=a.get("sellerName"), country=a["country"], body=norm_body(a.get("body")),
-                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText")))
+                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText"), ch="EU_ASK"))
 
-# hand-recorded listings and sales (mobile.de, Elferspot, Kleinanzeigen, dealers): scripts/market/manual/*.csv
+# hand-recorded listings, sales and auction results (mobile.de, Elferspot, Kleinanzeigen, dealers and auction houses in
+# Europe and North America): scripts/market/manual/*.csv. Routed by country (land) and kind (art):
+#   Europe:        Verkauf / Auktion -> EU_AUC,   Angebot -> EU_ASK
+#   USA / Canada:  Verkauf / Auktion -> US_AUC (US_ONL for Bring a Trailer, Cars & Bids, PCARMARKET),   Angebot -> US_ASK
+# Other countries are listed in the console and not used (no reference for their price level yet).
+other_land = collections.Counter()
 for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
     for i, r in enumerate(csv.DictReader(open(fn, encoding="utf-8"), delimiter=";")):
         if not r.get("datum") or not r.get("preis"): continue
@@ -148,15 +172,22 @@ for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
             if not c: continue
             vid = c[0]
         eur = to_eur(float(r["preis"]), (r.get("waehrung") or "EUR").strip(), r["datum"])
-        if not eur: continue
+        if not eur:
+            other_land["Währung " + (r.get("waehrung") or "").strip()] += 1; continue
         row = dict(id="M-%s-%d" % (os.path.basename(fn).split(".")[0], i), variant=vid, date=r["datum"], eur=round(eur), price=float(r["preis"]),
                    cur=r.get("waehrung") or "EUR", km=int(r["km"]) if (r.get("km") or "").isdigit() else None, year=int(r["baujahr"]),
                    title="Porsche %s" % r["fahrzeug"], seller=r.get("anbieter") or "", sellerName=None, country=(r.get("land") or "DE").upper(),
                    body=body_of(("%s %s" % (r["fahrzeug"], r.get("url") or "")).lower()), url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None)
-        if (r.get("art") or "Angebot").lower().startswith("verkauf"):
-            obs.append(dict(variant=vid, date=r["datum"], eur=row["eur"], ch="EU_AUC", house=row["source"], lot=row["id"], body=None, src="manual"))
+        land = row["country"]
+        if land not in EUROPE and land not in NORTH_AMERICA:
+            other_land[land] += 1; continue
+        art = (r.get("art") or "Angebot").strip().lower()
+        if art.startswith("verkauf") or art.startswith("auktion"):
+            ch = "EU_AUC" if land in EUROPE else us_channel(row["source"])
+            obs.append(dict(variant=vid, date=r["datum"], eur=row["eur"], ch=ch, house=row["source"], lot=row["id"], body=None, src="manual"))
         else:
-            asks.append(row)
+            asks.append(dict(row, ch="EU_ASK" if land in EUROPE else "US_ASK"))
+if other_land: print("manual rows not used (outside Europe and North America, or currency without ECB rate):", dict(other_land))
 
 # one car listed twice (re-listed after a price cut, or by two dealers): same variant, build year, country and
 # mileage. Keep the newest listing (highest id within a source = listed last), i.e. the current asking price.
@@ -173,7 +204,7 @@ asks = uniq
 # ctparse.py) are shown in the app but do not enter the value
 for a in asks:
     if a.get("excluded"): continue
-    obs.append(dict(variant=a["variant"], date=a["date"], eur=a["eur"], ch="EU_ASK", house=a["source"], lot=a["id"], body=a.get("body"), src="ask"))
+    obs.append(dict(variant=a["variant"], date=a["date"], eur=a["eur"], ch=a["ch"], house=a["source"], lot=a["id"], body=a.get("body"), src="ask"))
 
 # de-duplicate auction results reported twice (same variant, price within 0.5 %, within 10 days)
 obs.sort(key=lambda s: (s["variant"], s["date"]))
@@ -189,7 +220,7 @@ for s in obs:
 # High-priced 356 / air-cooled 911 variants move like the top of the market: own index "H"
 _m = collections.defaultdict(list)
 for s in obs:
-    if s["ch"] != "US_AUC": _m[s["variant"]].append(s["eur"])
+    if s["ch"] not in US: _m[s["variant"]].append(s["eur"])
 for s in obs:
     if s["variant"] not in _m: _m[s["variant"]].append(s["eur"])
 HIGH = {v for v, x in _m.items() if group(v) in ("A", "B") and median(x) > 250000}
@@ -251,7 +282,7 @@ MIN_IDX = {"F": 150, "G": 150, "H": 300}; BW = {"F": 0.5, "G": 1.0, "H": 0.5}
 
 def fit_all(delta):
     adj = lambda s: delta[s["k"]][s["ch"]]
-    auc = [s for s in obs if s["ch"] != "EU_ASK"]
+    auc = [s for s in obs if s["ch"] not in ASK]
     idx = {}
     for name, members in [("COLLECT", {"A", "T", "B", "H", "F", "G"}), ("MODERN", {"C", "D", "E", "E2"})] + [(g, {g}) for g in ["A", "T", "B", "H", "C", "D", "E", "E2", "F", "G"]]:
         ss = [s for s in auc if s["g"] in members]
@@ -278,9 +309,13 @@ def channel_offsets(idx, delta):
             xs = [r for cc, r in res if cc == c]
             if len(xs) >= 2: stats[v][c] = (median(xs), len(xs))
 
+    PAIRS = [(c1, c2) for i, c2 in enumerate(CHANNELS) for c1 in CHANNELS[i + 1:]]
+    FREE = [c for c in CHANNELS if c != "EU_AUC"]
+    PER_FAMILY = [c for c in FREE if c not in ASK]   # auction offsets per family, asking-price offsets shared
+
     def pairs(k):
         out = {}
-        for c1, c2 in [("US_AUC", "EU_AUC"), ("EU_ASK", "EU_AUC"), ("EU_ASK", "US_AUC")]:
+        for c1, c2 in PAIRS:
             ds, ws = [], []
             for v, st in stats.items():
                 if (k and family(v) != k) or c1 not in st or c2 not in st: continue
@@ -290,22 +325,28 @@ def channel_offsets(idx, delta):
         return out
 
     def solve(fam_pairs):
-        """Joint weighted least squares over the families: δ(US_AUC) per family (the US market runs hotter for modern
-        collector cars than for classics), δ(EU_ASK) shared (the gap between asking and achieved price belongs to the
-        way of selling, not to the model line). Equations per family k: u_k ≈ P(US-EU), e ≈ P(ASK-EU), e - u_k ≈ P(ASK-US)."""
+        """Joint weighted least squares over the families: auction offsets per family (the US market runs hotter for
+        modern collector cars than for classics), asking-price offsets shared (the gap between asking and achieved
+        price belongs to the way of selling, not to the model line). One equation per measured pair and family:
+        δ(c1) - δ(c2) ≈ P(c1 - c2), with δ(EU_AUC) = 0."""
         ks = list(fam_pairs)
-        nu = len(ks) + 1                       # unknowns: u_k for each family, then e
+        col = {}
+        for k in ks:
+            for c in PER_FAMILY: col[(k, c)] = len(col)
+        for c in FREE:
+            if c in ASK: col[c] = len(col)
+        nu = len(col)
+        def ix(k, c): return None if c == "EU_AUC" else col[c] if c in ASK else col[(k, c)]
         A = [[0.0] * nu for _ in range(nu)]; b = [0.0] * nu
-        for i, k in enumerate(ks):
-            for key, (d, w, _) in fam_pairs[k].items():
+        for k in ks:
+            for (c1, c2), (d, w, _) in fam_pairs[k].items():
                 x = [0.0] * nu
-                if key == ("US_AUC", "EU_AUC"): x[i] = 1
-                elif key == ("EU_ASK", "EU_AUC"): x[-1] = 1
-                else: x[i], x[-1] = -1, 1
+                if ix(k, c1) is not None: x[ix(k, c1)] += 1
+                if ix(k, c2) is not None: x[ix(k, c2)] -= 1
                 for r in range(nu):
                     b[r] += w * x[r] * d
                     for c in range(nu): A[r][c] += w * x[r] * x[c]
-        for r in range(nu):                    # tiny ridge: a family without US pairs gets u = 0 instead of a singular system
+        for r in range(nu):                    # tiny ridge: a channel without comparisons gets δ = 0 instead of a singular system
             A[r][r] += 1e-6
         # Gaussian elimination
         M = [row[:] + [b[r]] for r, row in enumerate(A)]
@@ -317,14 +358,19 @@ def channel_offsets(idx, delta):
                     f = M[r][c] / M[c][c]
                     M[r] = [a - f * bb for a, bb in zip(M[r], M[c])]
         sol = [M[r][-1] / M[r][r] for r in range(nu)]
-        return {k: {"EU_AUC": 0.0, "US_AUC": sol[i], "EU_ASK": sol[-1]} for i, k in enumerate(ks)}
+        return {k: {c: 0.0 if c == "EU_AUC" else sol[ix(k, c)] for c in CHANNELS} for k in ks}
 
     fam = {}
+    pooled = pairs(None)
     for k in ("COLLECT", "MODERN"):
         p = pairs(k)
-        fam[k] = p if ("US_AUC", "EU_AUC") in p or ("EU_ASK", "US_AUC") in p else pairs(None)
+        # a family-specific channel without any comparison in this family borrows the comparisons of all variants
+        for c in PER_FAMILY:
+            if not any(c in key for key in p):
+                p.update({key: x for key, x in pooled.items() if c in key and key not in p})
+        fam[k] = p
     out = solve(fam)
-    info = {k: {"pairs": {"%s-%s" % key: [round(d, 4), n] for key, (d, _, n) in fam[k].items()}, "own": fam[k] is not None} for k in fam}
+    info = {k: {"pairs": {"%s-%s" % key: [round(d, 4), n] for key, (d, _, n) in fam[k].items()}, "own": True} for k in fam}
     return out, info, stats
 
 
@@ -333,20 +379,29 @@ def channel_bias(stats, delta, sd):
     sit from its European auction level beyond sampling noise. Measured from the pairwise differences; this caps how
     much indirect evidence can move a variant's value, however many such prices there are."""
     pv = {}
-    for c1, c2 in [("US_AUC", "EU_AUC"), ("EU_ASK", "EU_AUC"), ("EU_ASK", "US_AUC")]:
-        dev, noise = [], []
-        for v, st in stats.items():
-            if c1 not in st or c2 not in st or st[c1][1] < 3 or st[c2][1] < 3: continue
-            k = family(v)
-            dev.append(st[c1][0] - st[c2][0] - (delta[k][c1] - delta[k][c2]))
-            noise.append(math.pi / 2 * (sd[c1] ** 2 / st[c1][1] + sd[c2] ** 2 / st[c2][1]))
-        if len(dev) >= 6:
-            mad = 1.4826 * median([abs(x - median(dev)) for x in dev])
-            pv[(c1, c2)] = (max(0.0, mad ** 2 - sum(noise) / len(noise)), len(dev))
+    for i, c2 in enumerate(CHANNELS):
+        for c1 in CHANNELS[i + 1:]:
+            dev, noise = [], []
+            for v, st in stats.items():
+                if c1 not in st or c2 not in st or st[c1][1] < 3 or st[c2][1] < 3: continue
+                k = family(v)
+                dev.append(st[c1][0] - st[c2][0] - (delta[k][c1] - delta[k][c2]))
+                noise.append(math.pi / 2 * (sd[c1] ** 2 / st[c1][1] + sd[c2] ** 2 / st[c2][1]))
+            if len(dev) >= 6:
+                mad = 1.4826 * median([abs(x - median(dev)) for x in dev])
+                pv[(c1, c2)] = (max(0.0, mad ** 2 - sum(noise) / len(noise)), len(dev))
+    # each channel's bias against European auction results: measured directly where possible, otherwise through a
+    # channel whose bias is already known (the pair variance is the sum of both), otherwise TAU_DEFAULT
     tau = {"EU_AUC": 0.0}
-    us = pv.get(("US_AUC", "EU_AUC")); ask = pv.get(("EU_ASK", "EU_AUC")); both = pv.get(("EU_ASK", "US_AUC"))
-    tau["US_AUC"] = us[0] if us else (both[0] / 2 if both else 0.04)
-    tau["EU_ASK"] = ask[0] if ask else (max(0.0, both[0] - tau["US_AUC"]) if both else 0.04)
+    tau.update({c1: x for (c1, c2), (x, _) in pv.items() if c2 == "EU_AUC"})
+    for _ in range(len(CHANNELS)):
+        for c in CHANNELS:
+            if c in tau: continue
+            via = [(max(0.0, pv[key][0] - tau[o]), pv[key][1]) for o in tau for key in ((c, o), (o, c)) if key in pv]
+            if via: tau[c] = max(via, key=lambda x: x[1])[0]
+    for c in CHANNELS:
+        tau.setdefault(c, TAU_DEFAULT)
+        if c in US: tau[c] = max(tau[c], US_TAU ** 2)
     return tau, {"%s-%s" % k: [round(v, 4), n] for k, (v, n) in pv.items()}
 
 
@@ -406,7 +461,12 @@ for v, l in byv.items():
         if not xs: continue
         # recent prices count most (weight halves about every 1.4 years); older ones still help via the time index
         mc[c] = wiqm([b for _, b in xs], [math.exp(-(T - s["t"]) / RECENCY) for s, _ in xs])
-        prec[c] = 1 / (math.pi / 2 * SD[c] ** 2 / len(xs) + TAU2[c])
+        prec[c] = 1 / (math.pi / 2 * SD[c] ** 2 / len(xs) + TAU2[c] - (US_TAU ** 2 if c in US else 0.0))
+    # the US channels share one bias term (US_TAU^2): their combined precision is S / (1 + US_TAU^2 S), so all US
+    # evidence together never counts more than 1 / US_TAU^2, however many US records there are
+    S_us = sum(p for c, p in prec.items() if c in US)
+    for c in prec:
+        if c in US: prec[c] /= 1 + US_TAU ** 2 * S_us
     a = sum(mc[c] * prec[c] for c in mc) / sum(prec.values())
     share = {c: round(prec[c] / sum(prec.values()), 3) for c in mc}
     keep = [(s, b - mc[s["ch"]] + a) for s, b in keep]   # each channel centred on the combined level
@@ -453,7 +513,7 @@ json.dump(result, open(OUT, "w"), ensure_ascii=False, separators=(",", ":"))
 
 # asks used, for the evidence list in the app (newest first)
 known = {v for v, _ in json.load(open(os.path.join(HERE, "variant_ids.json")))}
-price_out = {x["id"]: x for x in excluded_all if x["ch"] == "EU_ASK"}
+price_out = {x["id"]: x for x in excluded_all if x["ch"] in ASK}
 for a in asks:
     if not a.get("excluded") and a["id"] in price_out:
         d = price_out[a["id"]]["dev"]

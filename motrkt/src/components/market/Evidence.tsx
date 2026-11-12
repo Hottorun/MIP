@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { Body, Variant } from "../../data/types";
-import { marketBasis, MODEL_OFFSET_PAIRS, type Channel } from "../../data/real/model";
+import { CHANNEL_ORDER, marketBasis, MODEL_OFFSET_PAIRS, type Channel } from "../../data/real/model";
 import { asksFor, type Ask } from "../../data/real/asks";
 import { daysBetween, historyOf, TRACKING } from "../../data/real/listingHistory";
 import { date, km, num, pct } from "../../lib/format";
@@ -21,7 +21,11 @@ const CHANNEL_LABEL: Record<Channel, () => string> = {
   EU_AUC: () => t("Auktionsergebnisse in Europa", "Auction results in Europe"),
   EU_ASK: () => t("Angebotspreise in Europa", "Asking prices in Europe"),
   US_AUC: () => t("Auktionsergebnisse in den USA", "Auction results in the USA"),
+  US_ONL: () => t("Online-Auktionen in den USA (Bring a Trailer u. a.)", "Online auctions in the USA (Bring a Trailer etc.)"),
+  US_ASK: () => t("Angebotspreise in den USA", "Asking prices in the USA"),
 };
+
+const NORTH_AMERICA = new Set(["US", "CA"]);
 
 /**
  * Where the market value comes from: records per kind of evidence, their level today, their weight, and the
@@ -32,7 +36,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
   const asks = asksFor(variant.id).filter((a) => !body || a.body === body);
   const [all, setAll] = useState(false);
   if (!b) return null;
-  const channels = (["EU_AUC", "EU_ASK", "US_AUC"] as Channel[]).filter((c) => b.channels[c] > 0);
+  const channels = CHANNEL_ORDER.filter((c) => b.channels[c] > 0);
+  const usAsks = asks.some((a) => NORTH_AMERICA.has(a.country));
   const off = b.offsets;
   const used = asks.filter((a) => !a.excluded);
   const out = asks.filter((a) => a.excluded);
@@ -45,8 +50,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
       <div id="belege" className="scroll-mt-32" />
       <p className="max-w-3xl text-[15px] leading-relaxed text-muted">
         {t(
-          "Der Marktwert gibt an, was ein Fahrzeug dieser Variante heute in Deutschland und Europa tatsächlich kostet: gemessen an Auktionsergebnissen in Europa. Angebotspreise und US-Ergebnisse fließen nur bereinigt ein. Um wie viel sie im Mittel abweichen, messen wir an allen Varianten, für die es beides gibt.",
-          "The market value is what a car of this variant actually costs in Germany and Europe today, measured on European auction results. Asking prices and US results enter only after adjustment; by how much they differ on average is measured across all variants that have both.",
+          "Der Marktwert gibt an, was ein Fahrzeug dieser Variante heute in Deutschland und Europa tatsächlich kostet: gemessen an Auktionsergebnissen in Europa. Angebotspreise und US-Ergebnisse fließen nur bereinigt ein. Um wie viel sie im Mittel abweichen, messen wir für jede Quelle an allen Varianten, für die es beides gibt. Alle US-Belege zusammen haben ein begrenztes Gewicht, auch wenn es viele sind.",
+          "The market value is what a car of this variant actually costs in Germany and Europe today, measured on European auction results. Asking prices and US results enter only after adjustment; by how much they differ on average is measured for each source across all variants that have both. All US records together carry a capped weight, however many there are.",
         )}
       </p>
 
@@ -69,6 +74,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
                     const gap = pct(Math.abs(Math.exp(d) - 1), { digits: 0, signed: false });
                     const above = d >= 0;
                     const n = nVariants(`${c}-EU_AUC`);
+                    if (!n && d === 0)
+                      return t("Abstand zu Europa noch nicht messbar; Gewicht begrenzt", "Gap to Europe not measurable yet; weight capped");
                     return c === "EU_ASK"
                       ? t(
                           `liegen im Mittel ${gap} ${above ? "über" : "unter"} Auktionsergebnissen in Europa${n ? ` (gemessen an ${n} Varianten)` : ""}; herausgerechnet`,
@@ -106,7 +113,7 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
       )}
 
       <h3 className="mt-10 text-[17px]">
-        {t("Angebote in Europa", "Listings in Europe")}
+        {usAsks ? t("Angebote in Europa und Nordamerika", "Listings in Europe and North America") : t("Angebote in Europa", "Listings in Europe")}
         {body ? ` · ${tr(body)}` : ""} <span className="text-muted">({num(used.length)})</span>
       </h3>
       {used.length === 0 ? (
@@ -150,8 +157,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
           `Listings are followed daily: ${num(TRACKING.tracked)} tracked, ${num(TRACKING.gone)} gone offline, ${num(TRACKING.priceCuts)} price cuts${TRACKING.medianCut !== null ? ` (median ${pct(TRACKING.medianCut)})` : ""}. After a few weeks this measures how far asking prices sit above actual sale prices.`,
         )}{" "}
         {t(
-          "Angebote: Classic Trader, automatisch erfasst. mobile.de, Elferspot, AutoScout24 und Kleinanzeigen sperren automatische Abrufe; Inserate von dort lassen sich von Hand erfassen und fließen dann genauso ein. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company und Bring a Trailer. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
-          "Listings: Classic Trader, collected automatically. mobile.de, Elferspot, AutoScout24 and Kleinanzeigen block automated access; listings from there can be recorded by hand and then count the same way. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company and Bring a Trailer. Converted at the ECB rate of the day.",
+          "Angebote: Classic Trader, automatisch erfasst. mobile.de, Elferspot, AutoScout24 und Kleinanzeigen sperren automatische Abrufe; Inserate von dort und Angebote, Verkäufe und Auktionsergebnisse weiterer Händler und Auktionshäuser in Europa und den USA lassen sich von Hand erfassen und fließen dann genauso ein. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company und Bring a Trailer. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
+          "Listings: Classic Trader, collected automatically. mobile.de, Elferspot, AutoScout24 and Kleinanzeigen block automated access; listings from there, and listings, sales and auction results of further dealers and auction houses in Europe and the USA, can be recorded by hand and then count the same way. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company and Bring a Trailer. Converted at the ECB rate of the day.",
         )}
       </p>
     </Section>

@@ -1,8 +1,9 @@
-# Von Hand erfasste Inserate und Verkäufe
+# Von Hand erfasste Inserate, Verkäufe und Auktionsergebnisse
 
 mobile.de, Elferspot, AutoScout24 und Kleinanzeigen sperren automatische Abrufe (robots.txt bzw. Bot-Schutz). Inserate
 von dort lassen sich hier von Hand eintragen und fließen beim nächsten `update.sh` genauso in den Marktwert ein wie die
-automatisch erfassten Angebote von Classic Trader.
+automatisch erfassten Angebote von Classic Trader. Dasselbe gilt für Bestände, Verkäufe und Auktionsergebnisse von
+Händlern und Auktionshäusern in Europa, den USA und Kanada.
 
 Eine Datei pro Quelle oder Monat, z. B. `2026-11-elferspot.csv`, Trennzeichen `;`, UTF-8, Spalten wie in
 `VORLAGE.csv.txt`:
@@ -10,20 +11,30 @@ Eine Datei pro Quelle oder Monat, z. B. `2026-11-elferspot.csv`, Trennzeichen `;
 | Spalte | Inhalt |
 | --- | --- |
 | datum | Tag, an dem das Inserat gesehen wurde (JJJJ-MM-TT) |
-| quelle | z. B. `mobile.de`, `Elferspot`, `Kleinanzeigen`, Händlername |
-| art | `Angebot` (Angebotspreis) oder `Verkauf` (belegter Verkaufspreis, z. B. Händlerauskunft mit Rechnung) |
+| quelle | z. B. `mobile.de`, `Elferspot`, `Kleinanzeigen`, Händler- oder Auktionshausname. `Bring a Trailer`, `Cars & Bids` und `PCARMARKET` zählen als US-Online-Auktionen |
+| art | `Angebot` (Angebotspreis), `Verkauf` (belegter Verkaufspreis, z. B. Händlerauskunft mit Rechnung) oder `Auktion` (Zuschlag inkl. Aufgeld eines verkauften Loses; unverkaufte Lose nicht eintragen) |
 | url | Link auf das Inserat (wird in der App als Beleg verlinkt) |
 | fahrzeug | Modellbezeichnung wie im Inserat, z. B. `911 Carrera RS`, `911 Carrera 3.2 Targa` |
 | baujahr | Baujahr bzw. Modelljahr |
 | preis | Preis als Zahl ohne Punkte |
-| waehrung | `EUR`, `CHF`, `GBP` … (Umrechnung zum EZB-Kurs des Tages) |
+| waehrung | `EUR`, `CHF`, `GBP`, `USD`, `CAD` … (Umrechnung zum EZB-Kurs des Tages) |
 | km | Kilometerstand (leer, wenn unbekannt) |
 | anbieter | `Händler` oder `Privat` |
-| land | ISO-Ländercode des Standorts, z. B. `DE` |
+| land | ISO-Ländercode des Standorts, z. B. `DE`, `NL`, `GB`, `US`, `CA` (bestimmt, wie der Preis zählt, siehe unten) |
 | variant_id | leer lassen (wird aus `fahrzeug` + `baujahr` zugeordnet) oder eine ID aus `variant_ids.json` erzwingen |
 
-Nur Fahrzeuge mit Linkslenkung und Standort in Europa eintragen; Umbauten, Replikas und Projekte weglassen.
-Belegte Verkäufe (`art` = `Verkauf`) zählen wie Auktionsergebnisse in Europa – nur mit Nachweis eintragen.
+Nur Fahrzeuge mit Linkslenkung eintragen; Umbauten, Replikas und Projekte weglassen. Verkäufe nur mit Nachweis.
+
+Wie ein Eintrag zählt, ergibt sich aus `land` und `art`:
+
+| land | `Verkauf` / `Auktion` | `Angebot` |
+| --- | --- | --- |
+| Europa (`DE`, `AT`, `CH`, `NL`, `GB`, `FR`, `IT` …) | wie Auktionsergebnisse in Europa (`EU_AUC`, Bezugsgröße) | Angebote Europa (`EU_ASK`) |
+| `US`, `CA` | Auktionen USA (`US_AUC`); Bring a Trailer, Cars & Bids, PCARMARKET: Online-Auktionen USA (`US_ONL`) | Angebote USA (`US_ASK`) |
+| andere Länder | werden noch nicht verwendet (beim Lauf von `model.py` gemeldet) | ebenso |
+
+Jeder Kanal bekommt seinen eigenen, gemessenen Abstand zu den Auktionsergebnissen in Europa; alle US-Kanäle zusammen
+haben ein begrenztes Gewicht. Je mehr europäische Belege dazukommen, desto weniger hängt ein Wert an US-Daten.
 
 ## Händlerbestände (`haendler.csv`)
 

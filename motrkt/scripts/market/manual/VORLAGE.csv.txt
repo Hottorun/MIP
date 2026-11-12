@@ -1,2 +1,4 @@
 datum;quelle;art;url;fahrzeug;baujahr;preis;waehrung;km;anbieter;land;variant_id
 2026-11-09;Elferspot;Angebot;https://www.elferspot.com/de/...;911 Carrera RS;1992;265000;EUR;48000;Händler;DE;
+2026-11-08;Beispiel Auktionshaus;Auktion;https://...;911 Turbo 3.3 Coupé;1987;132000;EUR;61000;Händler;DE;
+2026-11-07;Beispiel Dealer;Angebot;https://...;911 Carrera 3.2 Coupe;1988;89500;USD;;Händler;US;

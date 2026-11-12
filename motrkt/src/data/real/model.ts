@@ -1,13 +1,16 @@
 import data from "./market-model.json";
 
 /**
- * Market model (scripts/market/model.py): German/European market value per variant from three kinds of evidence,
+ * Market model (scripts/market/model.py): German/European market value per variant from five kinds of evidence,
  * each converted to EUR at the ECB rate of its day:
- *  - EU_AUC  auction results in Europe (the reference scale: what buyers in Europe actually paid)
+ *  - EU_AUC  auction results and documented sales in Europe (the reference scale: what buyers in Europe actually paid)
  *  - EU_ASK  asking prices of cars for sale in Europe (Classic Trader; hand-recorded listings)
- *  - US_AUC  auction results in North America (Bring a Trailer, RM Sotheby's, Gooding …)
- * The gap of asking prices and US results to European auction results is measured from variants that have both, and
- * removed; how much a channel can move a variant's value is capped by how much that gap varies between variants.
+ *  - US_AUC  live auction results in North America (RM Sotheby's, Gooding, Broad Arrow …; hand-recorded US sales)
+ *  - US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids, PCARMARKET)
+ *  - US_ASK  asking prices of dealers in the USA and Canada (hand-recorded)
+ * The gap of each channel to European auction results is measured from variants that have both, and removed; how much
+ * a channel can move a variant's value is capped by how much that gap varies between variants. The US channels share
+ * one such cap, so all US evidence together cannot outweigh the European evidence beyond it.
  * A value is published only with at least `minN` records; otherwise the variant shows its individual records only.
  */
 
@@ -27,14 +30,18 @@ type RawEntry = {
   body?: Record<string, [number, number]>;
   series?: number[] | null;
   family?: string;
-  ch?: Record<Channel, number>;
+  ch?: Partial<Record<Channel, number>>;
   share?: Partial<Record<Channel, number>>;
   chLevel?: Partial<Record<Channel, number>>;
   /** Records left out as implausible: deviation from the variant's level (0.65 = 65 % above). */
   out?: { id: string; eur: number; dev: number; ch: Channel }[];
 };
 
-export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC";
+export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC" | "US_ONL" | "US_ASK";
+
+/** Display order of the channels: European evidence first. */
+export const CHANNEL_ORDER: Channel[] = ["EU_AUC", "EU_ASK", "US_AUC", "US_ONL", "US_ASK"];
+const NO_CHANNELS: Record<Channel, number> = { EU_AUC: 0, EU_ASK: 0, US_AUC: 0, US_ONL: 0, US_ASK: 0 };
 
 type Raw = {
   asOf: string;
@@ -43,8 +50,8 @@ type Raw = {
   variants: Record<string, RawEntry>;
   total: number;
   sources: Record<string, number>;
-  channels: Record<Channel, number>;
-  offsets: Record<string, Record<Channel, number>>;
+  channels: Partial<Record<Channel, number>>;
+  offsets: Record<string, Partial<Record<Channel, number>>>;
   scatter: Record<Channel, number>;
   bias: Record<Channel, number>;
   offsetPairs: Record<string, { pairs: Record<string, [number, number]>; own: boolean }>;
@@ -99,7 +106,7 @@ export const SEGMENT_LABEL: Record<string, string> = {
 export const MODEL_AS_OF = Date.parse(`${raw.asOf}T00:00:00Z`);
 export const MODEL_SALES_TOTAL = raw.total;
 export const MODEL_SOURCES = raw.sources;
-export const MODEL_CHANNELS = raw.channels;
+export const MODEL_CHANNELS: Record<Channel, number> = { ...NO_CHANNELS, ...raw.channels };
 export const MODEL_OFFSETS = raw.offsets;
 export const MODEL_BIAS = raw.bias;
 /** Per family: the pairwise channel gaps behind the offsets, as [log gap, number of variants compared]. */
@@ -124,10 +131,10 @@ export function marketBasis(variantId: string): MarketBasis | undefined {
     houses: e.houses ?? {},
     gearbox: e.gearbox ?? {},
     body: e.body ?? {},
-    channels: e.ch ?? { EU_AUC: 0, EU_ASK: 0, US_AUC: 0 },
+    channels: { ...NO_CHANNELS, ...e.ch },
     share: e.share ?? {},
     level: e.chLevel ?? {},
-    offsets: raw.offsets[e.family ?? "COLLECT"] ?? { EU_AUC: 0, EU_ASK: 0, US_AUC: 0 },
+    offsets: { ...NO_CHANNELS, ...raw.offsets[e.family ?? "COLLECT"] },
     family: e.family ?? "COLLECT",
   };
 }
