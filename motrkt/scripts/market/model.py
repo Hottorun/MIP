@@ -8,7 +8,7 @@ Evidence, each price converted to EUR at the ECB rate of its day:
   EU_ASK  asking prices in Europe (Classic Trader; hand-recorded listings from mobile.de, Elferspot, Kleinanzeigen
           in scripts/market/manual/), left-hand drive only
 
-Model (robust, all steps are weighted medians):
+Model (robust: weighted medians, the variant level a weighted interquartile mean):
   log p_i = a_v + f_g(t_i) + δ_c,k + λ_v(t) d_v(t_i) + e_i
   f_g     time index of the market segment g (kernel-weighted medians, as before)
   δ_c,k   offset of channel c against European auction results, measured per family k (classics / modern cars)
@@ -30,7 +30,8 @@ MIN_N = 3          # observations needed for a published value
 OWN_MIN = 12       # observations needed for an own price path
 RECENCY = 2.0      # e-folding time (years) of the recency weight in the level estimate
 OUT_K = 2.0        # a price farther than OUT_K x the scatter of its source from the variant's level is left out ...
-OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way
+OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way,
+OUT_WIDE = 1.099   # ... or a factor 3 (log 3) for variants whose own prices scatter widely (cheap and good cars, e.g. 944)
 OUT_MIN_N = 5      # below this many records only the factor-2 limit applies
 EUROPE = {"DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "PT", "GB", "IE", "DK", "SE", "NO", "FI", "PL", "CZ", "SK", "HU", "SI", "HR", "MC", "LI", "GR", "EE", "LV", "LT", "RO", "BG"}
 EU_CUR = {"EUR", "GBP", "CHF", "SEK", "DKK", "NOK"}
@@ -58,6 +59,18 @@ def wmedian(xs, ws):
 
 
 def median(xs): return wmedian(xs, [1.0] * len(xs))
+
+
+def wiqm(xs, ws, p=0.25):
+    """Weighted mean of the middle half (interquartile mean): as robust as the median against single extreme prices,
+    but it does not jump to the edge of one cluster when a variant's prices split into cheap and good cars."""
+    pts = sorted(zip(xs, ws)); tot = sum(ws)
+    if tot <= 0 or not pts: return None
+    lo, hi, acc, num, den = p * tot, (1 - p) * tot, 0.0, 0.0, 0.0
+    for x, w in pts:
+        part = max(0.0, min(acc + w, hi) - max(acc, lo))
+        num += part * x; den += part; acc += w
+    return num / den if den > 0 else wmedian(xs, ws)
 
 
 def group(vid):
@@ -370,12 +383,16 @@ for v, l in byv.items():
     g = l[0]["g"]; gi = g if g in idx else PARENT[g]; f = idx[gi]; k = l[0]["k"]
     base = [s["y"] - interp(GRID, f, s["t"]) - delta[k][s["ch"]] for s in l]
     # Implausible prices, too high or too low: farther from the variant's level (time-adjusted, channel gap removed)
-    # than OUT_K times the measured scatter of their source. Two passes, so that one extreme price does not move the
-    # level the others are judged by. With few records only the hard limit applies (factor 2 either way).
+    # than OUT_K times the measured scatter of their source, or of the variant itself when its prices scatter more
+    # (a market of cheap and good cars: judged by the source alone, the good cars would be cut and the level pulled
+    # down). Two passes, so that one extreme price does not move the level the others are judged by. With few
+    # records only the hard limit applies (factor 2 either way).
     keep = list(zip(l, base))
+    c0 = median(base)
+    sdv = 1.4826 * median([abs(b - c0) for b in base]) if len(l) >= OWN_MIN else 0.0
     for _ in range(2):
         a = median([b for _, b in keep])
-        lim = lambda s: min(OUT_K * SD[s["ch"]], OUT_MAX) if len(keep) >= OUT_MIN_N else OUT_MAX
+        lim = lambda s: min(OUT_K * max(SD[s["ch"]], sdv), max(OUT_MAX, min(OUT_WIDE, OUT_K * sdv))) if len(keep) >= OUT_MIN_N else OUT_MAX
         keep = [(s, b) for s, b in zip(l, base) if abs(b - a) <= lim(s)]
         if not keep: keep = list(zip(l, base)); break
     kept_ids = {id(s) for s, _ in keep}
@@ -388,7 +405,7 @@ for v, l in byv.items():
         xs = [(s, b) for s, b in keep if s["ch"] == c]
         if not xs: continue
         # recent prices count most (weight halves about every 1.4 years); older ones still help via the time index
-        mc[c] = wmedian([b for _, b in xs], [math.exp(-(T - s["t"]) / RECENCY) for s, _ in xs])
+        mc[c] = wiqm([b for _, b in xs], [math.exp(-(T - s["t"]) / RECENCY) for s, _ in xs])
         prec[c] = 1 / (math.pi / 2 * SD[c] ** 2 / len(xs) + TAU2[c])
     a = sum(mc[c] * prec[c] for c in mc) / sum(prec.values())
     share = {c: round(prec[c] / sum(prec.values()), 3) for c in mc}
