@@ -293,7 +293,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
         ) : (
           <CarImage variant={v} fallbackColor={l.colorHex} scene={e.scene} className="h-full w-full" label={l.title} />
         )}
-        <span className="absolute bottom-3 left-3 rounded-full bg-bg/90 px-2 py-0.5 text-[11px] text-ink">{l.source}</span>
+        <span className="absolute bottom-3 left-3 rounded-[2px] bg-bg/90 px-1.5 py-0.5 text-[11px] text-ink">{l.source}</span>
         <button
           onClick={(ev) => {
             ev.stopPropagation();

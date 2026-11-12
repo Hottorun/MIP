@@ -95,13 +95,13 @@ export default function Overview() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               to="/modelle"
-              className="btn border-[#f7f2e8] bg-[#f7f2e8] text-ink hover:border-white hover:bg-white"
+              className="btn border-white bg-white text-ink hover:border-white/85 hover:bg-white/85"
             >
               {t("Modelle ansehen", "Browse models")}
             </Link>
             <Link
               to="/kaufen"
-              className="btn border-white/40 text-[#f7f2e8] hover:border-white"
+              className="btn border-white/40 text-white hover:border-white"
             >
               {t("Angebote durchsuchen", "Search listings")}
             </Link>
@@ -147,7 +147,7 @@ export default function Overview() {
                     <stop
                       offset="0"
                       stopColor="var(--color-gold)"
-                      stopOpacity={0.16}
+                      stopOpacity={0.22}
                     />
                     <stop
                       offset="1"
@@ -195,7 +195,7 @@ export default function Overview() {
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="var(--color-gold)"
+                  stroke="var(--color-ink)"
                   strokeWidth={1.75}
                   fill="url(#ov-fill)"
                   isAnimationActive={false}
@@ -304,7 +304,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
           <Link
             to={`/markt/${v.id}`}
             tabIndex={copy > 0 ? -1 : undefined}
-            className="font-serif text-[15px] italic hover:underline hover:underline-offset-4"
+            className="font-serif text-[15px] font-semibold hover:underline hover:underline-offset-4"
           >
             {variantTitle(v, { brand: false })}
           </Link>
@@ -320,7 +320,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
     });
   return (
     <div className="hero-bleed flex items-stretch border-b border-line bg-panel">
-      <div className="hidden shrink-0 items-center border-r border-line px-5 text-[12px] tracking-[0.16em] text-muted uppercase sm:flex sm:px-8">
+      <div className="hidden shrink-0 items-center border-r border-line px-5 text-[13px] font-medium text-muted sm:flex sm:px-8">
         {t("Zuletzt verkauft", "Just sold")}
       </div>
       <div

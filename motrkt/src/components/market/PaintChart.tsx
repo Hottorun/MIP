@@ -105,7 +105,7 @@ function ChartPart({ part, variant, launch }: { part: PaintChartPart; variant: V
       <div className="space-y-6">
         {groups.map(([kind, cs]) => (
           <div key={kind}>
-            <div className="mb-2.5 text-[12px] tracking-[0.12em] text-muted uppercase">{KIND_LABEL[kind]()}</div>
+            <div className="mb-2.5 text-[13px] font-semibold text-ink">{KIND_LABEL[kind]()}</div>
             <ul className="grid grid-cols-1 gap-x-6 gap-y-3 min-[480px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
               {cs.map((c) => (
                 <Chip key={c.name + c.code} c={c} years={showYears && c.years ? yearRanges(c.years) : undefined} launch={c === launch} />

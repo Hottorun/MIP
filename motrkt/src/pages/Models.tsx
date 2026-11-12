@@ -28,7 +28,7 @@ const ERAS = [
   { id: "modern", get label() { return t("Ab 2005", "From 2005"); }, test: (y: number) => y >= 2005 },
 ];
 const TAGS = ["Turbo", "Leichtbau", "Allrad", "Hybrid"];
-const COMPARE_COLORS = ["#8b6232", "#3f5e4a", "#9a3b2c", "#4d6378"];
+const COMPARE_COLORS = ["#1f1d1a", "#8f6d33", "#8b847a", "#c4a76a"];
 const MAX_COMPARE = 4;
 
 /** Section of the model list: one per generation for models with several (911: 964 … 992), else one per model. */
@@ -232,7 +232,7 @@ export default function Models() {
               <div key={c.id} role="group" aria-label={c.label} className="flex flex-wrap items-center gap-1.5 border-l border-line pl-4">
                 <button
                   className={cn(
-                    "mr-1 rounded-full px-1 text-[11.5px] tracking-[0.1em] uppercase transition-colors hover:text-ink",
+                    "mr-1 rounded-[2px] px-1 text-[13px] font-medium transition-colors hover:text-ink",
                     familyActive ? "font-semibold text-ink" : "text-muted",
                   )}
                   aria-pressed={familyActive}
@@ -373,7 +373,7 @@ export default function Models() {
                 ...(categoryHead(s, i)
                   ? [
                       <tr key={`c-${s.category}`} className="pointer-events-none">
-                        <td colSpan={9} className={cn("pb-1 text-[11.5px] tracking-[0.1em] text-muted uppercase", i > 0 ? "pt-12" : "pt-4")}>
+                        <td colSpan={9} className={cn("pb-1 text-[13px] font-semibold text-ink", i > 0 ? "pt-12" : "pt-4")}>
                           {MODEL_CATEGORIES.find((c) => c.id === s.category)!.label}
                         </td>
                       </tr>,
@@ -416,7 +416,7 @@ export default function Models() {
 
       {compare.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-5">
-          <div className="animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 rounded-[3px] border border-line bg-panel px-5 py-3 shadow-[0_20px_50px_-20px_rgba(58,42,29,0.4)]">
+          <div className="animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 rounded-[3px] border border-line bg-panel px-5 py-3 shadow-[0_20px_50px_-20px_rgba(20,20,20,0.3)]">
             <GitCompare className="size-4 text-muted" strokeWidth={1.5} />
             <span className="text-[14px] text-muted">
               {t("Vergleich", "Comparison")} ({compare.length}/{MAX_COMPARE})

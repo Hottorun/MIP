@@ -80,12 +80,20 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
 
   return (
     <Section title={t("Wertentwicklung", "Value history")} actions={<Segmented options={RANGE_OPTIONS} value={range} onChange={setRange} />}>
+      <dl className="mb-8 grid grid-cols-1 gap-px overflow-hidden rounded-[3px] border border-line bg-line sm:grid-cols-3">
+        {stats.map((s) => (
+          <div key={s.label} className="flex items-baseline justify-between gap-4 bg-panel px-4 py-3 sm:block sm:px-5 sm:py-4">
+            <dt className="text-[13px] text-muted">{s.label}</dt>
+            <dd className="font-serif text-[21px] leading-tight sm:mt-1 sm:text-[26px]">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
       <div className="h-[300px] sm:h-[340px]">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 10, right: 4, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="valueFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="var(--color-gold)" stopOpacity={0.16} />
+                <stop offset="0" stopColor="var(--color-gold)" stopOpacity={0.22} />
                 <stop offset="1" stopColor="var(--color-gold)" stopOpacity={0} />
               </linearGradient>
             </defs>
@@ -100,7 +108,7 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
               }}
             />
             <Line type="monotone" dataKey="model" stroke="var(--color-faint)" strokeDasharray="3 4" strokeWidth={1} dot={false} isAnimationActive={false} />
-            <Area type="monotone" dataKey="price" stroke="var(--color-gold)" strokeWidth={1.75} fill="url(#valueFill)" isAnimationActive={false} />
+            <Area type="monotone" dataKey="price" stroke="var(--color-ink)" strokeWidth={1.75} fill="url(#valueFill)" isAnimationActive={false} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
@@ -117,14 +125,6 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
           )}
         </p>
       )}
-      <dl className="mt-8 grid grid-cols-1 gap-6 border-t border-line pt-6 sm:grid-cols-3">
-        {stats.map((s) => (
-          <div key={s.label}>
-            <dt className="text-[13px] text-muted">{s.label}</dt>
-            <dd className="mt-1 font-serif text-[26px] leading-tight">{s.value}</dd>
-          </div>
-        ))}
-      </dl>
     </Section>
   );
 }

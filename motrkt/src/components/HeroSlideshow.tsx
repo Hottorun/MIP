@@ -52,32 +52,6 @@ function useReducedMotion() {
   return reduced;
 }
 
-/** Counts from the previous value to `target` (ease-out), so the market value rolls over when the car changes. */
-function useCountUp(target: number, reduced: boolean, ms = 1100) {
-  const [shown, setShown] = useState(target);
-  const from = useRef(target);
-  useEffect(() => {
-    if (reduced) {
-      from.current = target;
-      setShown(target);
-      return;
-    }
-    const start = performance.now();
-    const a = from.current;
-    let raf = 0;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / ms);
-      const v = a + (target - a) * (1 - (1 - p) ** 3);
-      from.current = v;
-      setShown(v);
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, reduced, ms]);
-  return shown;
-}
-
 export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
   const slides = useMemo<Slide[]>(
     () =>
@@ -96,8 +70,6 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
   const n = slides.length;
   const reduced = useReducedMotion();
   const [index, setIndex] = useState(0);
-  // The outgoing photo keeps its zoom while it fades out.
-  const [prev, setPrev] = useState(-1);
   const [stopped, setStopped] = useState(false);
   const paused = stopped || reduced;
   const stage = useRef<HTMLDivElement>(null);
@@ -106,12 +78,11 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
   const go = (i: number) => {
     const next = ((i % n) + n) % n;
     if (next === index) return;
-    setPrev(index);
     setIndex(next);
   };
   const current = slides[index];
   const metrics = current ? getMetrics(current.v.id) : null;
-  const value = useCountUp(metrics?.value ?? 0, reduced);
+  const value = metrics?.value ?? 0;
 
   // Preload the next photo so the crossfade never shows an empty frame.
   useEffect(() => {
@@ -125,7 +96,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
     <section
       aria-roledescription={t("Diashow", "Slideshow")}
       aria-label={t("Ausgewählte Fahrzeuge", "Featured cars")}
-      className="hero-bleed relative -mt-8 overflow-clip bg-[#1c140d] text-[#f7f2e8] lg:-mt-12"
+      className="hero-bleed relative -mt-8 overflow-clip bg-[#141414] text-[#f7f6f2] lg:-mt-12"
       onKeyDown={(e) => {
         if (e.key === "ArrowRight") go(index + 1);
         else if (e.key === "ArrowLeft") go(index - 1);
@@ -152,7 +123,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               key={s.photo.file}
               aria-hidden={i !== index}
               className={cn(
-                "absolute inset-0 transition-opacity duration-[1600ms] ease-in-out",
+                "absolute inset-0 transition-opacity duration-[900ms] ease-in-out",
                 i === index ? "z-[1] opacity-100" : "z-0 opacity-0",
               )}
             >
@@ -169,19 +140,15 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                       ? { objectPosition: s.photo.position }
                       : undefined
                   }
-                  className={cn(
-                    "size-full object-cover",
-                    (i === index || i === prev) && "hero-kenburns",
-                    i % 2 ? "origin-[30%_60%]" : "origin-[70%_40%]",
-                  )}
+                  className="size-full object-cover"
                 />
               </div>
             </div>
           ))}
 
           {/* Legibility: dark from the left and from the bottom, photo stays clear on the right. */}
-          <div className="pointer-events-none absolute inset-0 z-[2] hidden bg-[linear-gradient(90deg,rgba(20,13,8,0.82)_0%,rgba(20,13,8,0.55)_38%,rgba(20,13,8,0)_70%)] sm:block" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-2/3 bg-[linear-gradient(0deg,#1c140d_0%,rgba(28,20,13,0.35)_45%,rgba(28,20,13,0)_100%)] sm:bg-[linear-gradient(0deg,rgba(20,13,8,0.9)_0%,rgba(20,13,8,0.35)_45%,rgba(20,13,8,0)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 z-[2] hidden bg-[linear-gradient(90deg,rgba(16,16,16,0.78)_0%,rgba(16,16,16,0.5)_38%,rgba(16,16,16,0)_70%)] sm:block" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-2/3 bg-[linear-gradient(0deg,#141414_0%,rgba(20,20,20,0.35)_45%,rgba(20,20,20,0)_100%)] sm:bg-[linear-gradient(0deg,rgba(16,16,16,0.88)_0%,rgba(16,16,16,0.32)_45%,rgba(16,16,16,0)_100%)]" />
           <PhotoCredit
             photo={current.photo}
             className="absolute top-3 right-4 z-[3] max-w-[70%] text-right text-[10.5px] text-white/55 sm:top-auto sm:right-8 sm:bottom-[118px] sm:max-w-[50%]"
@@ -198,16 +165,16 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
 
           <div
             key={current.v.id}
-            className="hero-rise mt-10 grid max-w-xl gap-x-10 gap-y-4 border-t border-white/20 pt-5 sm:grid-cols-[minmax(0,1fr)_auto]"
+            className="mt-10 grid max-w-xl gap-x-10 gap-y-4 border-t border-white/20 pt-5 sm:grid-cols-[minmax(0,1fr)_auto]"
             aria-live="polite"
           >
             <div className="min-w-0">
-              <div className="text-[12px] tracking-[0.18em] text-white/60 uppercase">
+              <div className="text-[13px] text-white/65">
                 {yearsLabel(current.v.years)}
               </div>
               <Link
                 to={`/markt/${current.v.id}`}
-                className="group mt-1 inline-flex items-center gap-2 font-serif text-[22px] italic sm:text-[26px]"
+                className="group mt-0.5 inline-flex items-center gap-2 font-serif text-[22px] font-semibold tracking-[-0.01em] sm:text-[26px]"
               >
                 <span className="truncate underline-offset-4 group-hover:underline">
                   {variantTitle(current.v)}
@@ -225,7 +192,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               </div>
             </div>
             <div className="sm:text-right">
-              <div className="text-[12px] tracking-[0.18em] text-white/60 uppercase">
+              <div className="text-[13px] text-white/65">
                 {t("Marktwert heute", "Market value today")}
               </div>
               <Money
@@ -269,7 +236,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                         <span
                           key={`p-${index}`}
                           className={cn(
-                            "absolute inset-0 origin-left bg-[#f7f2e8]",
+                            "absolute inset-0 origin-left bg-white",
                             reduced ? "" : "hero-progress",
                           )}
                           style={{

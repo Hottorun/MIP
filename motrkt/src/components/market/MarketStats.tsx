@@ -24,10 +24,10 @@ const KM_BUCKETS = [
   { to: Infinity, de: "über 150.000", en: "over 150,000" },
 ];
 // Earthy chart colours of the app (insights/palette.ts), lightest last.
-const C_NA = "#8b6232";
-const C_EU = "#3f5e4a";
-const C_ASK = "#b08a3e";
-const BODY_COLORS = ["#8b6232", "#3f5e4a", "#4d6378", "#b08a3e"];
+const C_NA = "#1f1d1a";
+const C_EU = "#8f6d33";
+const C_ASK = "#d6c49d";
+const BODY_COLORS = ["#1f1d1a", "#8f6d33", "#d6c49d", "#8b847a"];
 
 function median(xs: number[]): number {
   const s = [...xs].sort((a, b) => a - b);
@@ -82,9 +82,6 @@ function useStats(variant: Variant, body: Body | null) {
     // Body styles among all records (auctions state it in the title, listings in the ad).
     const allBodies = [...realSalesFor(variant.id).filter((s) => s.source === "Auktion").map((s) => s.body as string), ...asksFor(variant.id).filter((a) => !a.excluded && a.body).map((a) => a.body!)];
     const bodies = Object.entries(allBodies.reduce<Record<string, number>>((m, b) => ((m[b] = (m[b] ?? 0) + 1), m), {})).sort((a, b) => b[1] - a[1]);
-    const houses = Object.entries(sales.reduce<Record<string, number>>((m, s) => ((m[s.house] = (m[s.house] ?? 0) + 1), m), {}))
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 4);
 
     return {
       km: kms.length ? { median: median(kms), n: kms.length, fromAsks: kmFromAsks, buckets, perYear: perYear.length >= 5 ? median(perYear) : null } : null,
@@ -94,7 +91,6 @@ function useStats(variant: Variant, body: Body | null) {
       where,
       countries,
       bodies: bodies.length >= 2 && allBodies.length >= 10 ? { rows: bodies, total: allBodies.length } : null,
-      houses: houses.length >= 2 ? { rows: houses, total: sales.length } : null,
       empty: !kms.length && offered === 0 && asks.length === 0,
     };
   }, [variant.id, body]);
@@ -141,8 +137,8 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
             <dt className="text-[13px] text-muted">{x.label}</dt>
             <dd className="mt-1 font-serif text-[28px] leading-none whitespace-nowrap tabular-nums sm:text-[34px] lg:text-[40px]">{x.value}</dd>
             {x.bar != null && (
-              <div className="mt-3 h-1 overflow-hidden rounded-full bg-panel-3" aria-hidden="true">
-                <div className="h-full rounded-full bg-gold" style={{ width: `${x.bar * 100}%` }} />
+              <div className="mt-3 h-1 overflow-hidden bg-panel-3" aria-hidden="true">
+                <div className="h-full bg-gold" style={{ width: `${x.bar * 100}%` }} />
               </div>
             )}
             <dd className="mt-2 text-[12.5px] leading-snug text-faint">{x.note}</dd>
@@ -194,22 +190,13 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
           </Card>
         )}
 
-        {s.bodies ? (
+        {s.bodies && (
           <Card title={t("Karosserien im Handel", "Body styles on the market")}>
             <ShareRows rows={s.bodies.rows.map(([b, n], i) => ({ label: tr(b), n, color: BODY_COLORS[i % BODY_COLORS.length] }))} total={s.bodies.total} />
             <p className="mt-4 text-[13px] leading-relaxed text-muted">
               {t(`Anteil an ${num(s.bodies.total)} Auktionen und Angeboten.`, `Share of ${num(s.bodies.total)} auctions and listings.`)}
             </p>
           </Card>
-        ) : (
-          s.houses && (
-            <Card title={t("Wo versteigert wird", "Where it is auctioned")}>
-              <ShareRows rows={s.houses.rows.map(([h, n], i) => ({ label: h, n, color: BODY_COLORS[i % BODY_COLORS.length] }))} total={s.houses.total} />
-              <p className="mt-4 text-[13px] leading-relaxed text-muted">
-                {t(`Anteil an ${num(s.houses.total)} Auktionen seit 2015.`, `Share of ${num(s.houses.total)} auctions since 2015.`)}
-              </p>
-            </Card>
-          )
         )}
       </div>
     </Section>
@@ -259,7 +246,7 @@ function Stacked({ parts }: { parts: { key: string; label: string; n: number; co
   const total = shown.reduce((s, p) => s + p.n, 0);
   return (
     <div>
-      <div className="flex h-3 gap-0.5 overflow-hidden rounded-full" aria-hidden="true">
+      <div className="flex h-3 gap-0.5 overflow-hidden" aria-hidden="true">
         {shown.map((p) => (
           <div key={p.key} style={{ width: `${(p.n / total) * 100}%`, background: p.color }} />
         ))}
@@ -287,8 +274,8 @@ function ShareRows({ rows, total }: { rows: { label: string; n: number; color: s
             <span className="text-muted">{r.label}</span>
             <span className="font-medium tabular-nums">{pct(r.n / total, { signed: false, digits: 0 })}</span>
           </div>
-          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-panel-3">
-            <div className="h-full rounded-full" style={{ width: `${(r.n / total) * 100}%`, background: r.color }} />
+          <div className="mt-1.5 h-1.5 overflow-hidden bg-panel-3">
+            <div className="h-full" style={{ width: `${(r.n / total) * 100}%`, background: r.color }} />
           </div>
         </li>
       ))}

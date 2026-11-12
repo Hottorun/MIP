@@ -132,7 +132,7 @@ export default function Portfolio() {
                 <ComposedChart data={chartData} margin={{ top: 8, right: 4, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="pf-fill" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stopColor="var(--color-gold)" stopOpacity={0.16} />
+                      <stop offset="0" stopColor="var(--color-gold)" stopOpacity={0.22} />
                       <stop offset="1" stopColor="var(--color-gold)" stopOpacity={0} />
                     </linearGradient>
                   </defs>
@@ -152,7 +152,7 @@ export default function Portfolio() {
                       ) : null
                     }
                   />
-                  <Area type="monotone" dataKey="value" stroke="var(--color-gold)" strokeWidth={1.75} fill="url(#pf-fill)" isAnimationActive={false} />
+                  <Area type="monotone" dataKey="value" stroke="var(--color-ink)" strokeWidth={1.75} fill="url(#pf-fill)" isAnimationActive={false} />
                   <Line type="stepAfter" dataKey="cost" stroke="var(--color-faint)" strokeDasharray="3 4" dot={false} strokeWidth={1} isAnimationActive={false} />
                 </ComposedChart>
               </ResponsiveContainer>

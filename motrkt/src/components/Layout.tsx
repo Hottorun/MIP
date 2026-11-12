@@ -180,7 +180,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div ref={ref} className="animate-fade-in absolute inset-x-0 top-full border-b border-line bg-bg shadow-[0_30px_60px_-30px_rgba(58,42,29,0.35)]">
+    <div ref={ref} className="animate-fade-in absolute inset-x-0 top-full border-b border-line bg-bg shadow-[0_30px_60px_-30px_rgba(20,20,20,0.22)]">
       <div className="mx-auto max-w-[760px] px-5 pt-6 pb-8">
         <div className="flex items-center gap-3 border-b border-ink pb-2">
           <Search className="size-5 shrink-0 text-muted" strokeWidth={1.5} />
@@ -259,7 +259,7 @@ function useClickOutside(open: boolean, close: () => void) {
   return ref;
 }
 
-const dropdown = "animate-fade-in absolute right-0 z-40 mt-2 rounded-[3px] border border-line bg-panel shadow-[0_24px_50px_-20px_rgba(58,42,29,0.35)]";
+const dropdown = "animate-fade-in absolute right-0 z-40 mt-2 rounded-[3px] border border-line bg-panel shadow-[0_24px_50px_-20px_rgba(20,20,20,0.22)]";
 
 function NotificationBell() {
   const [open, setOpen] = useState(false);

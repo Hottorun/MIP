@@ -82,7 +82,7 @@ export function Pill({ children, tone = "neutral", className }: { children: Reac
     warn: "text-warn border-warn/40",
     neutral: "text-muted border-line-2",
   };
-  return <span className={cn("inline-flex items-center gap-1 rounded-full border bg-panel/70 px-2 py-0.5 text-xs whitespace-nowrap", tones[tone], className)}>{children}</span>;
+  return <span className={cn("inline-flex items-center gap-1 rounded-[2px] border bg-panel/70 px-1.5 py-0.5 text-xs whitespace-nowrap", tones[tone], className)}>{children}</span>;
 }
 
 export function Sparkline({
@@ -90,7 +90,7 @@ export function Sparkline({
   width = 120,
   height = 32,
   color,
-  fill = true,
+  fill = false,
   className,
 }: {
   values: number[];
@@ -161,8 +161,8 @@ export function Donut({
 
 export function ScoreBar({ value, max = 100, color = "var(--color-gold)", className }: { value: number; max?: number; color?: string; className?: string }) {
   return (
-    <div className={cn("h-1 w-full overflow-hidden rounded-full bg-panel-3", className)}>
-      <div className="h-full rounded-full" style={{ width: `${Math.max(0, Math.min(100, (value / max) * 100))}%`, background: color }} />
+    <div className={cn("h-1 w-full overflow-hidden bg-panel-3", className)}>
+      <div className="h-full" style={{ width: `${Math.max(0, Math.min(100, (value / max) * 100))}%`, background: color }} />
     </div>
   );
 }
@@ -226,7 +226,7 @@ export function Modal({
       <div
         role="dialog"
         aria-modal="true"
-        className={cn("animate-fade-in w-full rounded-[3px] border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(58,42,29,0.35)]", wide ? "max-w-3xl" : "max-w-lg")}
+        className={cn("animate-fade-in w-full rounded-[3px] border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(20,20,20,0.22)]", wide ? "max-w-3xl" : "max-w-lg")}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <header className="flex items-center justify-between border-b border-line px-6 py-4">
@@ -268,7 +268,7 @@ export function Empty({ children, className }: { children: ReactNode; className?
 /** Shared tooltip body for Recharts charts. */
 export function ChartTooltipBox({ title, rows }: { title: ReactNode; rows: { label: ReactNode; value: ReactNode; color?: string }[] }) {
   return (
-    <div className="rounded-[2px] border border-line-2 bg-panel px-3 py-2 text-[13px] shadow-[0_10px_30px_-12px_rgba(58,42,29,0.3)]">
+    <div className="rounded-[2px] border border-line-2 bg-panel px-3 py-2 text-[13px] shadow-[0_10px_30px_-12px_rgba(20,20,20,0.2)]">
       <div className="mb-1 font-serif text-ink">{title}</div>
       {rows.map((r, i) => (
         <div key={i} className="flex items-center justify-between gap-4">

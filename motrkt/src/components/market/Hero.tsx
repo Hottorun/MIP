@@ -86,7 +86,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
     <div className="lg:sticky lg:top-[112px] lg:self-start">
       <p className="text-[14px] text-muted">{lineage}</p>
       <h1 className="mt-1 font-display text-[44px] leading-[1.05] sm:text-[52px]">{variantName(variant)}</h1>
-      <p className="mt-2 font-serif text-[16px] text-muted italic">{yearsLabel(variant.years)}</p>
+      <p className="mt-2 text-[16px] text-muted">{yearsLabel(variant.years)}</p>
       <BodySwitch variant={variant} body={body} onBody={onBody} />
 
       {!variant.measured ? (
@@ -298,7 +298,7 @@ function Gallery({ variant }: { variant: Variant }) {
           draggable={false}
           className={cn(slideIn(dir), "size-full object-contain")}
         />
-        {photo.premiere && <span className="absolute top-4 left-4 rounded-full bg-bg/90 px-3 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
+        {photo.premiere && <span className="absolute top-4 left-4 rounded-[2px] bg-bg/90 px-2.5 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
         {n > 1 && (
           <>
             <button onClick={() => go(-1)} className={cn(arrowBtn, "left-4")} aria-label={t("Vorheriges Bild", "Previous image")}>
@@ -536,13 +536,13 @@ function BodySwitch({ variant, body, onBody }: { variant: Variant } & BodyProps)
   const choices = bodyChoices(variant);
   if (choices.length === 0) return null;
   return (
-    <div className="mt-5 inline-flex flex-wrap rounded-full border border-line p-0.5 text-[13.5px]" role="group" aria-label={t("Karosserie", "Body style")}>
+    <div className="mt-5 inline-flex flex-wrap rounded-[3px] border border-line p-0.5 text-[13.5px]" role="group" aria-label={t("Karosserie", "Body style")}>
       {[null, ...choices].map((b) => (
         <button
           key={b ?? "all"}
           aria-pressed={body === b}
           onClick={() => onBody(b)}
-          className={cn("rounded-full px-3.5 py-1.5 transition-colors", body === b ? "bg-ink text-bg" : "text-muted hover:text-ink")}
+          className={cn("rounded-[2px] px-3.5 py-1.5 transition-colors", body === b ? "bg-ink text-bg" : "text-muted hover:text-ink")}
         >
           {b ? tr(b) : t("Alle", "All")}
         </button>

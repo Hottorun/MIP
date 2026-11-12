@@ -100,6 +100,11 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
               <div className="tabular-nums sm:text-right">
                 <span className="block text-[12px] text-faint sm:hidden">{t("Anteil am Wert", "Share of value")}</span>
                 {b.share[c] !== undefined ? pct(b.share[c]!, { digits: 0, signed: false }) : "–"}
+                {b.share[c] !== undefined && (
+                  <span className="mt-1.5 block h-1.5 w-full bg-panel-3 sm:ml-auto sm:w-20" aria-hidden="true">
+                    <span className="block h-full bg-gold" style={{ width: `${Math.max(2, b.share[c]! * 100)}%` }} />
+                  </span>
+                )}
               </div>
             </div>
           ))}

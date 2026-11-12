@@ -1,29 +1,30 @@
 @import "tailwindcss";
 
 /*
- * Cream paper, espresso ink, a single cognac accent.
- * Token names are kept from the original dark theme (panel, ink, gold …) so every page picks up the palette.
+ * Printed-magazine look: off-white paper, near-black ink, antique gold as the one accent, beige for quiet fills.
+ * Token names are kept from the original theme (panel, ink, gold …) so every page picks up the palette.
  */
 @theme {
-  --color-bg: #efe7d7;
-  --color-panel: #f7f2e8;
-  --color-panel-2: #f2ebde;
-  --color-panel-3: #e8dfcd;
-  --color-line: #dccfb8;
-  --color-line-2: #c6b699;
-  --color-ink: #3a2a1d;
-  --color-muted: #78624d;
-  --color-faint: #a38f77;
-  --color-gold: #8b6232;
-  --color-gold-2: #6d4a22;
-  --color-up: #4f6b3a;
-  --color-down: #9a3b2c;
-  --color-warn: #9c7224;
+  --color-bg: #f6f4ef;
+  --color-panel: #fcfbf8;
+  --color-panel-2: #f1eee8;
+  --color-panel-3: #e7e3db;
+  --color-line: #e0dbd2;
+  --color-line-2: #c6bfb3;
+  --color-ink: #1f1d1a;
+  --color-muted: #5e5952;
+  --color-faint: #8b847a;
+  --color-gold: #8f6d33;
+  --color-gold-2: #6e5326;
+  --color-beige: #d6c49d;
+  --color-up: #3d6b40;
+  --color-down: #a33a2b;
+  --color-warn: #946616;
   --color-rose: #8e3b4a;
 
-  --font-sans: "Jost", "Futura", "Century Gothic", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Libre Caslon Text", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --font-display: "Libre Caslon Display", "Libre Caslon Text", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --font-display: "Source Serif 4", "Iowan Old Style", Georgia, serif;
 }
 
 @layer base {
@@ -35,13 +36,18 @@
   body {
     @apply bg-bg font-sans text-ink antialiased;
     font-size: 15px;
-    font-feature-settings: "tnum" 1;
+    /* proportional figures in running text; columns of numbers use tabular-nums or .money */
   }
   h1,
   h2,
   h3 {
     @apply font-serif font-normal;
-    font-feature-settings: "tnum" 0, "onum" 1;
+    font-feature-settings: "tnum" 0, "lnum" 1;
+  }
+  h1,
+  h2 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
   ::selection {
     background: color-mix(in srgb, var(--color-gold) 25%, transparent);
@@ -76,7 +82,7 @@
     @apply font-sans text-[13px] text-muted;
   }
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
+    @apply inline-flex items-center gap-1.5 rounded-[3px] border border-line px-2.5 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
   }
   .chip-active {
     @apply border-ink bg-ink text-bg hover:border-ink hover:text-bg;
@@ -143,7 +149,6 @@
   font-family: var(--font-serif);
   font-feature-settings: "lnum" 1, "tnum" 1, "onum" 0, "kern" 1;
   font-variant-numeric: lining-nums tabular-nums;
-  letter-spacing: 0.015em;
   white-space: nowrap;
 }
 .money-cur {
@@ -181,17 +186,6 @@ body {
   width: 100vw;
   margin-left: calc(50% - 50vw);
 }
-@keyframes hero-kenburns {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.09);
-  }
-}
-.hero-kenburns {
-  animation: hero-kenburns 9s cubic-bezier(0.25, 0.1, 0.35, 1) both;
-}
 @keyframes hero-progress {
   from {
     transform: scaleX(0);
@@ -205,27 +199,11 @@ body {
   animation-timing-function: linear;
   animation-fill-mode: both;
 }
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.hero-rise > * {
-  animation: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.hero-rise > :nth-child(2) {
-  animation-delay: 0.12s;
-}
 .hero-delta.text-up {
-  color: #b5cf98;
+  color: #b9d3a8;
 }
 .hero-delta.text-down {
-  color: #f0a48f;
+  color: #f2a99a;
 }
 .hero-delta.text-muted {
   color: rgb(255 255 255 / 0.6);

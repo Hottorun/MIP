@@ -11,7 +11,29 @@ import { Listings } from "../components/market/BottomRow";
 import { Evidence } from "../components/market/Evidence";
 import { MarketStats } from "../components/market/MarketStats";
 import { PaintChart } from "../components/market/PaintChart";
+import { SectionNav, type NavItem } from "../components/market/SectionNav";
 import { appTitle, t } from "../i18n";
+
+const NAV: NavItem[] = [
+  { id: "wert", label: () => t("Wertentwicklung", "Value history") },
+  { id: "zahlen", label: () => t("Markt in Zahlen", "Market in figures") },
+  { id: "verkaeufe", label: () => t("Verkäufe", "Sales") },
+  { id: "einschaetzung", label: () => t("Einschätzung", "Assessment") },
+  { id: "nachweis", label: () => t("Belege", "Evidence") },
+  { id: "daten", label: () => t("Daten und Ausstattung", "Data and equipment") },
+  { id: "farben", label: () => t("Werksfarben", "Factory colours") },
+  { id: "angebote", label: () => t("Angebote", "Listings") },
+];
+
+/** Full-width tinted band: every other block of the page sits on it, so the long page reads in clear parts. */
+function Band({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <div id={id} className="hero-bleed border-y border-line bg-panel has-[>div:empty]:hidden">
+      <div className="mx-auto max-w-[1360px] px-5 py-14 empty:hidden sm:px-8 sm:py-16">{children}</div>
+    </div>
+  );
+}
+
 
 export default function Market() {
   const { variantId } = useParams();
@@ -65,18 +87,35 @@ function MarketPage({ variant }: { variant: Variant }) {
       { replace: true, preventScrollReset: true },
     );
   return (
-    <div className="space-y-24">
+    <div className="space-y-20">
       <Hero variant={variant} picked={picked} body={body} onBody={setBody} />
-      <ValuePanel variant={variant} body={body} />
-      <MarketStats variant={variant} body={body} />
-      <div className="grid grid-cols-1 gap-x-16 gap-y-24 lg:grid-cols-2">
-        <RecentSales variant={variant} body={body} />
-        <Assessment variant={variant} />
+      <SectionNav items={NAV} deps={`${variant.id}-${body}`} />
+      <div id="wert">
+        <ValuePanel variant={variant} body={body} />
       </div>
-      <Evidence variant={variant} body={body} />
-      <Details variant={variant} picked={picked} onPick={setPicked} />
-      <PaintChart variant={variant} />
-      <Listings variant={variant} body={body} />
+      <Band id="zahlen">
+        <MarketStats variant={variant} body={body} />
+      </Band>
+      <div className="grid grid-cols-1 gap-x-16 gap-y-20 lg:grid-cols-2">
+        <div id="verkaeufe" className="min-w-0">
+          <RecentSales variant={variant} body={body} />
+        </div>
+        <div id="einschaetzung" className="min-w-0">
+          <Assessment variant={variant} />
+        </div>
+      </div>
+      <Band id="nachweis">
+        <Evidence variant={variant} body={body} />
+      </Band>
+      <div id="daten">
+        <Details variant={variant} picked={picked} onPick={setPicked} />
+      </div>
+      <Band id="farben">
+        <PaintChart variant={variant} />
+      </Band>
+      <div id="angebote" className="empty:hidden">
+        <Listings variant={variant} body={body} />
+      </div>
     </div>
   );
 }

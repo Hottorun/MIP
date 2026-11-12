@@ -73,7 +73,7 @@ export function HoldingForm({
   // Period colours of the chosen variant; a colour already on the holding stays selectable.
   const paints = useMemo(() => {
     const list = variant ? paintsForVariant(variant) : paintsFor(d.brandId);
-    return d.color && !list.some((p) => p.name === d.color) ? [...list, { name: d.color, hex: "#9c8f7f" }] : list;
+    return d.color && !list.some((p) => p.name === d.color) ? [...list, { name: d.color, hex: "#8b847a" }] : list;
   }, [variant, d.brandId, d.color]);
 
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setD((x) => ({ ...x, [k]: v }));
