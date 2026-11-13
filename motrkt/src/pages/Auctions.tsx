@@ -6,7 +6,7 @@ import { brands, variantById, variantTitle, variants } from "../data/db";
 import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, WEEK, getAllSales } from "../data/generate";
 import { mean } from "../data/market";
 import type { Sale } from "../data/types";
-import { cn, date, eur, flag, km, num, pct } from "../lib/format";
+import { cn, date, eur, flag, fromDisplay, km, num, pct, saleAmount } from "../lib/format";
 import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
@@ -82,8 +82,8 @@ export default function Auctions() {
   const base = useMemo(() => {
     const q = text.trim().toLowerCase();
     const tUpper = text.trim().toUpperCase();
-    const min = Number(priceMin) || 0;
-    const max = Number(priceMax) || Infinity;
+    const min = fromDisplay(Number(priceMin) || 0);
+    const max = fromDisplay(Number(priceMax) || Infinity);
     const names = titles();
     return getAllSales().filter((s) => {
       if (brand && variantById.get(s.variantId)!.brandId !== brand) return false;
@@ -256,11 +256,11 @@ export default function Auctions() {
             </select>
           </div>
           <div>
-            <label className="label">{t("Preis min (€)", "Price min (€)")}</label>
+            <label className="label">{t("Preis min (€)", "Price min ($)")}</label>
             <input className="input" inputMode="numeric" value={priceMin} onChange={(e) => setPriceMin(e.target.value.replace(/\D/g, ""))} placeholder="0" />
           </div>
           <div>
-            <label className="label">{t("Preis max (€)", "Price max (€)")}</label>
+            <label className="label">{t("Preis max (€)", "Price max ($)")}</label>
             <input className="input" inputMode="numeric" value={priceMax} onChange={(e) => setPriceMax(e.target.value.replace(/\D/g, ""))} placeholder="∞" />
           </div>
         </div>
@@ -304,7 +304,7 @@ export default function Auctions() {
                             {unsoldPrice(s) && <span className="block font-sans text-[12px] text-faint">{unsoldPrice(s)}</span>}
                           </>
                         ) : (
-                          <Money value={s.price} />
+                          <Money value={s.price} sale={s} />
                         )}
                       </td>
                       <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} arrow={false} />}</td>
@@ -407,9 +407,9 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
     [t("Quelle", "Source"), `${tr(sale.source)} · ${tr(sale.house)}`],
     [t("Transaktions-ID", "Transaction ID"), <span className="font-mono">{sale.id}</span>],
     [t("FIN", "VIN"), <span className="font-mono">{sale.vin}</span>],
-    [t("Preis", "Price"), sale.price === null ? <span className="text-down">{t("nicht verkauft", "not sold")}</span> : <Money value={sale.price} className="text-[17px]" />],
+    [t("Preis", "Price"), sale.price === null ? <span className="text-down">{t("nicht verkauft", "not sold")}</span> : <Money value={sale.price} sale={sale} className="text-[17px]" />],
     [t("Schätzung", "Estimate"), sale.estimateLow ? `${eur(sale.estimateLow)} – ${eur(sale.estimateHigh)}` : "–"],
-    ...(sale.price === null && sale.highBid ? [[t("Höchstgebot (kein Verkauf)", "High bid (not sold)"), eur(sale.highBid)] as [string, React.ReactNode]] : []),
+    ...(sale.price === null && sale.highBid ? [[t("Höchstgebot (kein Verkauf)", "High bid (not sold)"), saleAmount(sale.highBid, sale)] as [string, React.ReactNode]] : []),
     [t("Zuschlag vs. Schätzung", "Hammer price vs. estimate"), mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
     [t("vs. Marktwert (damals)", "Vs. market value (at the time)"), sale.price === null ? "–" : <Delta value={sale.trend} />],
     [t("Zustand", "Condition"), t(`Note ${sale.condition}`, `Grade ${sale.condition}`)],

@@ -4,9 +4,9 @@ import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { bodyChoices, bodyEffect, brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
 import type { Body, Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
-import { marketBasis, MIN_RECORDS } from "../../data/real/model";
+import { marketBasis, MIN_RECORDS, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
 import { useStore } from "../../state/store";
-import { cn, eur, num, pct } from "../../lib/format";
+import { cn, eur, fromDisplay, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
 import { PhotoCredit, frameRatio } from "../CarImage";
@@ -59,6 +59,8 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
   const m = getMetrics(variant.id);
   const eff = bodyEffect(variant, body);
   const factor = optionFactor(variant, picked) * (eff?.factor ?? 1);
+  const spread = variant.measured ? valueSpread(variant, m.value * (eff?.factor ?? 1)) : null;
+  const range = variant.measured ? valueRange(variant, m.value * (eff?.factor ?? 1)) : null;
   const watched = watchlist.includes(variant.id);
   const alertCount = alerts.filter((a) => a.variantId === variant.id).length;
   const lineage = gen.name !== model.name ? `${brand.name} ${modelName(model)} (${genName(gen)})` : `${brand.name} ${modelName(model)}`;
@@ -91,6 +93,16 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
 
       {!variant.measured ? (
         <NoValue variant={variant} />
+      ) : spread && !picked.length ? (
+        <SpreadValue variant={variant} spread={spread} value={m.value * (eff?.factor ?? 1)} change={m.change12m} label={body && eff ? t(`Marktwert ${tr(body)}`, `Market value, ${tr(body)}`) : t("Marktwert Deutschland", "Market value, Germany")}>
+          <BasisLine variant={variant} range={false} />{" · "}
+          <button
+            onClick={() => document.getElementById("belege")?.scrollIntoView({ behavior: "smooth" })}
+            className="text-muted underline decoration-line-2 underline-offset-2 hover:text-ink"
+          >
+            {t("Belege ansehen", "See the evidence")}
+          </button>
+        </SpreadValue>
       ) : (
       <div className="mt-8 border-t border-line pt-6">
         <div className="text-[13px] text-muted">
@@ -115,6 +127,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
             </span>
           )}
         </div>
+        {range && !picked.length && <RangeBar lo={Math.round(range.lo / 1000) * 1000} hi={Math.round(range.hi / 1000) * 1000} median={Math.round((m.value * factor) / 1000) * 1000} />}
         {body && (
           <p className="mt-2 text-[13px] text-muted">
             {eff
@@ -130,7 +143,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
         )}
         <p className="mt-2 text-[13px] text-faint">
           {picked.length ? `${t("Median ohne Optionen", "Median without options")} ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
-          <BasisLine variant={variant} />{" · "}
+          <BasisLine variant={variant} range={!range || picked.length > 0} />{" · "}
           <button
             onClick={() => document.getElementById("belege")?.scrollIntoView({ behavior: "smooth" })}
             className="text-muted underline decoration-line-2 underline-offset-2 hover:text-ink"
@@ -408,7 +421,7 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
     if (open) setThreshold(String(Math.round((value * 1.05) / 1000) * 1000));
   }, [open, value]);
   const existing = alerts.filter((a) => a.variantId === variant.id);
-  const parsed = Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/[.\s]/g, "").replace(",", "."));
+  const parsed = fromDisplay(Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/[.\s]/g, "").replace(",", ".")));
   const valid = Number.isFinite(parsed) && parsed > 0;
 
   return (
@@ -454,11 +467,11 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
           </select>
         </label>
         <label>
-          <span className="label">{t("Schwelle in €", "Threshold in €")}</span>
+          <span className="label">{t("Schwelle in €", "Threshold in $")}</span>
           <input className="input" inputMode="numeric" value={threshold} onChange={(e) => setThreshold(e.target.value)} />
         </label>
       </div>
-      {!valid && threshold && <p className="mt-2 text-[13px] text-down">{t("Bitte einen Betrag in Euro eingeben, zum Beispiel 250000.", "Please enter an amount in euros, for example 250000.")}</p>}
+      {!valid && threshold && <p className="mt-2 text-[13px] text-down">{t("Bitte einen Betrag in Euro eingeben, zum Beispiel 250000.", "Please enter an amount in dollars, for example 250000.")}</p>}
       {existing.length > 0 && (
         <div className="mt-6">
           <div className="label">{t("Aktive Alarme", "Active alerts")}</div>
@@ -484,7 +497,63 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
   );
 }
 
-function BasisLine({ variant }: { variant: Variant }) {
+/**
+ * Value of an uncertain variant (early classics, widely scattered records): the median as usual, then a bar with the
+ * typical range (middle half of the records) and where the median sits in it, with a word on why the range matters here.
+ */
+function SpreadValue({ variant, spread, value, change, label, children }: { variant: Variant; spread: { lo: number; hi: number }; value: number; change: number; label: string; children: React.ReactNode }) {
+  const round = (v: number) => Math.round(v / 1000) * 1000;
+  const early = variant.years[0] < EARLY_CLASSIC_BEFORE;
+  return (
+    <div className="mt-8 border-t border-line pt-6">
+      <div className="text-[13px] text-muted">{label}</div>
+      <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+        <Money value={round(value)} className="text-[40px] leading-none" />
+        <span className="text-[14px]">
+          <Delta value={change} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
+        </span>
+      </div>
+      <RangeBar lo={round(spread.lo)} hi={round(spread.hi)} median={round(value)} />
+      <p className="mt-3 max-w-md text-[13px] leading-relaxed text-muted">
+        {early
+          ? t(
+              "Bei frühen Klassikern bestimmen Zustand, Originalität und Historie den Preis stärker als bei jüngeren Autos. Die Spanne zeigt die mittlere Hälfte der belegten Preise; ein gutes Exemplar kann darüber, ein Projekt deutlich darunter liegen.",
+              "With early classics, condition, originality and history move the price far more than on younger cars. The range shows the middle half of the recorded prices; a fine example can sit above it, a project well below.",
+            )
+          : t(
+              "Die belegten Preise dieser Variante streuen deutlich, oder es gibt noch wenige Belege. Die Spanne zeigt die mittlere Hälfte der Preise; Ausstattung, Laufleistung und Zustand entscheiden, wo ein Auto darin liegt.",
+              "The recorded prices of this variant scatter noticeably, or there are few records so far. The range shows the middle half of the prices; specification, mileage and condition decide where a car sits in it.",
+            )}
+      </p>
+      <p className="mt-2 text-[13px] text-faint">{children}</p>
+    </div>
+  );
+}
+
+/**
+ * The typical range as a bar: the band is the middle half of the recorded prices, the tick the median.
+ * The track runs a little past both ends, so the band reads as a part of the market, not all of it.
+ */
+function RangeBar({ lo, hi, median }: { lo: number; hi: number; median: number }) {
+  const pad = (hi - lo) * 0.35;
+  const min = lo - pad, max = hi + pad;
+  const at = (v: number) => `${((v - min) / (max - min)) * 100}%`;
+  return (
+    <div className="mt-6 max-w-md" aria-label={t(`Typische Spanne ${eur(lo)} bis ${eur(hi)}`, `Typical range ${eur(lo)} to ${eur(hi)}`)}>
+      <div className="mb-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-muted">{t("Typische Spanne", "Typical range")}</div>
+      <div className="relative h-1.5 rounded-full bg-line">
+        <div className="absolute inset-y-0 rounded-full bg-gold/45" style={{ left: at(lo), right: `calc(100% - ${at(hi)})` }} />
+        <div className="absolute -top-1.5 h-[18px] w-0.5 -translate-x-1/2 rounded-full bg-ink" style={{ left: at(median) }} />
+      </div>
+      <div className="relative mt-2 h-5 text-[13px]">
+        <span className="money absolute -translate-x-1/2 whitespace-nowrap text-muted" style={{ left: at(lo) }}>{eur(lo)}</span>
+        <span className="money absolute -translate-x-1/2 whitespace-nowrap text-muted" style={{ left: at(hi) }}>{eur(hi)}</span>
+      </div>
+    </div>
+  );
+}
+
+function BasisLine({ variant, range = true }: { variant: Variant; range?: boolean }) {
   const b = marketBasis(variant.id);
   if (!b) return null;
   const c = b.channels;
@@ -502,7 +571,8 @@ function BasisLine({ variant }: { variant: Variant }) {
   return (
     <>
       {t(`Aus ${list}`, `From ${list}`)}
-      {b.lo &&
+      {range &&
+        b.lo &&
         b.hi &&
         ` · ${t("mittlere Hälfte", "middle half")} ${eur(Math.round(b.lo / 1000) * 1000, { compact: true })} ${t("bis", "to")} ${eur(Math.round(b.hi / 1000) * 1000, { compact: true })}`}
     </>

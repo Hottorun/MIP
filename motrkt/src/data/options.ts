@@ -147,10 +147,12 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-996-1-carrera": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), aerokit(), lsd(), sportSeats(), ["Hardtop (Cabriolet)", 0.02], paint(0.06)],
   "porsche-911-996-1-turbo": [manual(0.15, "Schaltgetriebe (statt Tiptronic S)"), ["Werks-Leistungssteigerung X50 (450 PS)", 0.08], aerokit(0.05), pccb(0.02), paint(0.06)],
   "porsche-911-996-1-gt3": [clubsport(0.08), ["Schalensitze", 0.04], paint(0.06)],
+  "porsche-911-996-1-carrera-4": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), sportSeats(), paint(0.06)],
   "porsche-911-996-1-gt2": [clubsport(0.04), ["Schalensitze", 0.03], paint(0.05)],
 
   // 996.2 (2001–2005)
   "porsche-911-996-2-carrera": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Werks-Leistungssteigerung X51 (345 PS)", 0.06], aerokit(), lsd(), sportSeats(), paint(0.06)],
+  "porsche-911-996-2-carrera-4": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Werks-Leistungssteigerung X51 (345 PS)", 0.06], sportSeats(), paint(0.06)],
   "porsche-911-996-2-carrera-4s": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Werks-Leistungssteigerung X51 (345 PS)", 0.06], sportSeats(), paint(0.06)],
   "porsche-911-996-2-targa": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), sportSeats(), paint(0.06)],
   "porsche-911-996-2-turbo-s": [manual(0.15, "Schaltgetriebe (statt Tiptronic S)"), sportSeats(), paint(0.06)],
@@ -158,14 +160,20 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-996-2-gt3-rs": [pccb(), ["Schalensitze (Carbon)", 0.03]],
 
   // 997.1 (2004–2008)
+  "porsche-911-997-1-carrera": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), lsd(), chrono(), aerokit(0.05), sportSeats(0.02), paint(0.06)],
   "porsche-911-997-1-carrera-s": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Werks-Leistungssteigerung X51 (381 PS)", 0.1], lsd(0.04), chrono(), aerokit(0.05), ["Adaptive Sportsitze", 0.02], paint(0.06)],
+  "porsche-911-997-1-carrera-4": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), chrono(), aerokit(0.05), sportSeats(0.02), paint(0.06)],
+  "porsche-911-997-1-carrera-4s": [manual(0.1, "Schaltgetriebe (statt Tiptronic S)"), ["Werks-Leistungssteigerung X51 (381 PS)", 0.1], chrono(), aerokit(0.05), ["Adaptive Sportsitze", 0.02], paint(0.06)],
   "porsche-911-997-1-turbo": [manual(0.18, "Schaltgetriebe (statt Tiptronic S)"), chrono(), pccb(0.02), aerokit(0.03), paint(0.06)],
   "porsche-911-997-1-gt3": [clubsport(0.04), pccb(0.04), buckets(), paint()],
   "porsche-911-997-1-gt3-rs": [["Farbe Orange oder Grün (statt Silber/Schwarz)", 0.06], pccb(0.04)],
   "porsche-911-997-1-gt2": [clubsport(), paint(0.05)],
 
   // 997.2 (2008–2012)
+  "porsche-911-997-2-carrera": [manual(0.12, "Schaltgetriebe (statt PDK)"), lsd(), chrono(), sportSeats(0.02), paint(0.06)],
   "porsche-911-997-2-carrera-s": [manual(0.12, "Schaltgetriebe (statt PDK)"), ["Werks-Leistungssteigerung Powerkit (408 PS)", 0.08], lsd(), chrono(), pccb(0.02), paint(0.06)],
+  "porsche-911-997-2-carrera-4": [manual(0.12, "Schaltgetriebe (statt PDK)"), lsd(), chrono(), sportSeats(0.02), paint(0.06)],
+  "porsche-911-997-2-carrera-4s": [manual(0.12, "Schaltgetriebe (statt PDK)"), ["Werks-Leistungssteigerung Powerkit (408 PS)", 0.08], lsd(), chrono(), pccb(0.02), paint(0.06)],
   "porsche-911-997-2-turbo": [manual(0.2, "Schaltgetriebe (statt PDK)"), chrono(), pccb(0.02), paint(0.06)],
   "porsche-911-997-2-turbo-s": [exhaust(), buckets(0.04), paint(0.06)],
   "porsche-911-997-2-sport-classic": [pccb(), chrono()],
@@ -176,7 +184,10 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-997-2-gt2-rs": [clubsport(0.02)],
 
   // 991.1 (2011–2015)
+  "porsche-911-991-1-carrera": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), buckets(0.03), aerokit(0.03), pts(0.06)],
   "porsche-911-991-1-carrera-s": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), pccb(0.02), buckets(0.04), aerokit(0.03), pts(0.06)],
+  "porsche-911-991-1-carrera-4": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), buckets(0.03), pts(0.06)],
+  "porsche-911-991-1-carrera-4s": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), pccb(0.02), buckets(0.04), pts(0.06)],
   "porsche-911-991-1-turbo-s": [lift(), exhaust(), buckets(0.03), pts(0.06)],
   "porsche-911-991-1-50-jahre-edition": [manual(0.12, "Schaltgetriebe (statt PDK)"), chrono(), pccb(0.02)],
   "porsche-911-991-1-gt3": [clubsport(0.02), pccb(), lift(0.04), buckets(0.06), pts()],
@@ -184,7 +195,10 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-991-1-r": [lift(), pts(0.1)],
 
   // 991.2 (2015–2019)
+  "porsche-911-991-2-carrera": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), buckets(0.03), pts(0.06)],
   "porsche-911-991-2-carrera-s": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), ["Hinterachslenkung", 0.02], pccb(0.02), buckets(0.04), pts(0.06)],
+  "porsche-911-991-2-carrera-4": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), buckets(0.03), pts(0.06)],
+  "porsche-911-991-2-carrera-4s": [manual(0.1, "Schaltgetriebe (statt PDK)"), chrono(), exhaust(), ["Hinterachslenkung", 0.02], pccb(0.02), buckets(0.04), pts(0.06)],
   "porsche-911-991-2-carrera-t": [manual(0.1, "Schaltgetriebe (statt PDK)"), ["Hinterachslenkung", 0.02], buckets(0.04), pts(0.06)],
   "porsche-911-991-2-turbo-s": [lift(), exhaust(), buckets(0.03), pts(0.06)],
   "porsche-911-991-2-speedster": [heritage(), lift(0.02), pts(0.06)],
@@ -201,8 +215,12 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-991-2-gt2-rs": [weissach(0.12), lift(), pts(0.06)],
 
   // 992.1 (2019–2024)
+  "porsche-911-992-1-carrera": [chrono(), exhaust(), lift(0.02), buckets(0.03), pts(0.06)],
   "porsche-911-992-1-carrera-s": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), ["Hinterachslenkung", 0.02], pccb(0.02), lift(0.02), buckets(0.03), pts(0.06)],
+  "porsche-911-992-1-carrera-4": [chrono(), exhaust(), lift(0.02), buckets(0.03), pts(0.06)],
+  "porsche-911-992-1-carrera-4s": [manual(0.06, "Schaltgetriebe (statt PDK)"), chrono(), ["Hinterachslenkung", 0.02], pccb(0.02), lift(0.02), buckets(0.03), pts(0.06)],
   "porsche-911-992-1-carrera-gts": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Leichtbau-Paket", 0.04], lift(0.02), buckets(0.03), pts(0.06)],
+  "porsche-911-992-1-carrera-4-gts": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Leichtbau-Paket", 0.04], lift(0.02), buckets(0.03), pts(0.06)],
   "porsche-911-992-1-turbo-s": [["Leichtbau-Design-Paket", 0.04], lift(0.02), exhaust(), pts(0.06)],
   "porsche-911-992-1-gt3": [manual(0.08, "Schaltgetriebe (statt PDK)"), ["Touring-Paket (ohne Heckflügel)", 0.1], clubsport(0.02), lift(0.04), pccb(), buckets(), pts()],
   "porsche-911-992-1-gt3-rs": [weissach(0.08), lift(0.04), clubsport(0.01), pts()],
@@ -211,8 +229,11 @@ export const OPTIONS: Record<string, Opt[]> = {
   "porsche-911-992-1-dakar": [["Rallye Design Paket", 0.06], buckets(0.02), ["Dachträger mit Dachzelt (Zubehör)", 0.01]],
 
   // 992.2 (ab 2024), noch nah am Neupreis
+  "porsche-911-992-2-carrera": [chrono(), exhaust(), lift(0.02), buckets(0.03), pts(0.05)],
   "porsche-911-992-2-carrera-s": [["Hinterachslenkung", 0.02], pccb(0.02), lift(0.02), buckets(0.03), pts(0.05)],
+  "porsche-911-992-2-carrera-4s": [["Hinterachslenkung", 0.02], pccb(0.02), lift(0.02), buckets(0.03), pts(0.05)],
   "porsche-911-992-2-carrera-gts": [lift(0.02), buckets(0.03), pts(0.05)],
+  "porsche-911-992-2-carrera-4-gts": [lift(0.02), buckets(0.03), pts(0.05)],
   "porsche-911-992-2-turbo-s": [lift(0.02), buckets(0.02), pts(0.05)],
   "porsche-911-992-2-gt3": [manual(0.06, "Schaltgetriebe (statt PDK)"), ["Touring-Paket (ohne Heckflügel)", 0.06], weissach(0.05), lift(0.03), pccb(0.02), pts(0.06)],
 

@@ -875,5 +875,117 @@
     "url": "https://newsroom.porsche.com/en/christophorus/porsche-40-years-928-courage-development-transaxle-andrew-phinney-hans-clausecker-hans-georg-kasten-14622.html",
     "kind": "history",
     "title": "40 Jahre Porsche 928"
+  },
+  "porsche-911-997-1-carrera": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-997-2-carrera": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "event": "IAA Frankfurt 2008",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-991-1-carrera": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/7.-Generation-Porsche-911,-(991),-2011-2019.html",
+    "kind": "history",
+    "event": "IAA Frankfurt 2011",
+    "title": "Pressemappe 60 Jahre 911: Generation 991"
+  },
+  "porsche-911-991-2-carrera": {
+    "url": "https://newsroom.porsche.com/en/products/porsche-911-carrera-new-2015-11366.html",
+    "kind": "premiere",
+    "event": "IAA Frankfurt 2015",
+    "title": "Der neue 911 Carrera"
+  },
+  "porsche-911-992-1-carrera": {
+    "url": "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html",
+    "kind": "model",
+    "title": "Der neue 911 Carrera (Coupé und Cabriolet)"
+  },
+  "porsche-911-992-2-carrera": {
+    "url": "https://newsroom.porsche.com/en/2024/products/porsche-new-911-world-premiere-hybrid-36322.html",
+    "kind": "premiere",
+    "title": "Weltpremiere neuer 911 (992.2)"
+  },
+  "porsche-911-996-1-carrera-4": {
+    "url": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+    "kind": "history",
+    "title": "25 Jahre 911 Generation 996"
+  },
+  "porsche-911-996-2-carrera-4": {
+    "url": "https://newsroom.porsche.com/de/pressemappen/Porsche-Heritage-Experience/Porsche-911-(Typ-996)-Carrera-4-Cabriolet.html",
+    "kind": "history",
+    "title": "Porsche Heritage Experience: 911 (Typ 996) Carrera 4 Cabriolet"
+  },
+  "porsche-911-997-1-carrera-4": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-997-1-carrera-4s": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-997-2-carrera-4": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "event": "Paris 2008",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-997-2-carrera-4s": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+    "kind": "history",
+    "event": "Paris 2008",
+    "title": "Pressemappe 60 Jahre 911: Generation 997"
+  },
+  "porsche-911-991-1-carrera-4": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/7.-Generation-Porsche-911,-(991),-2011-2019.html",
+    "kind": "history",
+    "event": "Paris 2012",
+    "title": "Pressemappe 60 Jahre 911: Generation 991"
+  },
+  "porsche-911-991-1-carrera-4s": {
+    "url": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/7.-Generation-Porsche-911,-(991),-2011-2019.html",
+    "kind": "history",
+    "event": "Paris 2012",
+    "title": "Pressemappe 60 Jahre 911: Generation 991"
+  },
+  "porsche-911-991-2-carrera-4": {
+    "url": "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
+    "kind": "premiere",
+    "title": "Die neuen Allrad-Sportwagen 911 Carrera 4 und 911 Targa 4"
+  },
+  "porsche-911-991-2-carrera-4s": {
+    "url": "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
+    "kind": "premiere",
+    "title": "Die neuen Allrad-Sportwagen 911 Carrera 4 und 911 Targa 4"
+  },
+  "porsche-911-992-1-carrera-4": {
+    "url": "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html",
+    "kind": "model",
+    "title": "Der neue 911 Carrera 4 als Coupé und Cabriolet"
+  },
+  "porsche-911-992-1-carrera-4s": {
+    "url": "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html",
+    "kind": "model",
+    "title": "Der neue 911 (992)"
+  },
+  "porsche-911-992-1-carrera-4-gts": {
+    "url": "https://newsroom.porsche.com/de/2021/produkte/porsche-911-gts-modelle-premiere-24872.html",
+    "kind": "premiere",
+    "title": "Weltpremiere der 911 GTS-Modelle"
+  },
+  "porsche-911-992-2-carrera-4s": {
+    "url": "https://newsroom.porsche.com/de/2025/produkte/porsche-911-carrera-targa-4s-allradantrieb--39922.html",
+    "kind": "premiere",
+    "title": "Drei neue Modellvarianten des 911 mit Allradantrieb"
+  },
+  "porsche-911-992-2-carrera-4-gts": {
+    "url": "https://newsroom.porsche.com/de/pressemappen/911.html",
+    "kind": "premiere",
+    "title": "Pressemappe: Der neue 911 (992.2)"
   }
 }

@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../../data/db";
 import { getMetrics } from "../../data/market";
 import { useStore } from "../../state/store";
-import { cn, eur } from "../../lib/format";
+import { cn, eur, fromDisplay } from "../../lib/format";
 import { CarImage } from "../CarImage";
 import { Delta, Empty, Modal, Pill, Section, Segmented, Money } from "../ui";
 import { isEn, t } from "../../i18n";
@@ -123,7 +123,7 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
   }
 
   const save = () => {
-    const n = Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/\./g, "").replace(",", "."));
+    const n = fromDisplay(Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/\./g, "").replace(",", ".")));
     if (!v || !Number.isFinite(n) || n <= 0) {
       setError(t("Bitte einen gültigen Schwellenwert eingeben.", "Please enter a valid threshold."));
       return;
@@ -167,7 +167,7 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
             />
           </div>
           <div>
-            <label className="label">{t("Schwellenwert (€)", "Threshold (€)")}</label>
+            <label className="label">{t("Schwellenwert (€)", "Threshold ($)")}</label>
             <input
               className={cn("input", error && "border-down")}
               inputMode="numeric"

@@ -298,6 +298,7 @@ const EN: Record<string, string> = {
   "70 Jahre Porsche in Australien: 944 Turbo Cup": "70 years of Porsche in Australia: 944 Turbo Cup",
   "75 Jahre Produktion in Zuffenhausen": "75 years of production in Zuffenhausen",
   "alle Vierzylinder": "all four-cylinder cars",
+  "Schätzung": "estimate",
   "50 Jahre Porsche 914": "50 years of the Porsche 914",
   "Wie der 924 Porsche neu definierte": "When the 924 redefined Porsche",
   "Porsche 924 Carrera GT im Porsche Museum": "Porsche 924 Carrera GT in the Porsche Museum",

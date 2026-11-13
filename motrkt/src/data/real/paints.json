@@ -4659,6 +4659,3676 @@
      "hex": "#3f5f7f"
     }
    ]
+  },
+  {
+   "id": "924",
+   "series": "924",
+   "years": [
+    1976,
+    1988
+   ],
+   "title": "Porsche 924, Modelljahre 1976–1988",
+   "source": "https://files.porsche.com/f/332100/c84e93c4b0/924-overview-paint-colours.pdf",
+   "note": "Werksübersicht „Lackfarben bei Porsche-Fahrzeugen“ (Porsche Classic), je Farbe mit den Modelljahren, in denen sie angeboten wurde. Farbtöne geschätzt.",
+   "perYear": true,
+   "colors": [
+    {
+     "code": "L31B",
+     "name": "Marsrot",
+     "kind": "uni",
+     "hex": "#b5121b",
+     "years": [
+      1976,
+      1977,
+      1978
+     ]
+    },
+    {
+     "code": "L041",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#141414",
+     "years": [
+      1976,
+      1977,
+      1978,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "Z16A",
+     "name": "Rallyegelb",
+     "kind": "uni",
+     "hex": "#f2c200",
+     "years": [
+      1976,
+      1977,
+      1978,
+      1981
+     ]
+    },
+    {
+     "code": "L91Z",
+     "name": "Atlasweiß",
+     "kind": "uni",
+     "hex": "#efeee6",
+     "years": [
+      1976
+     ]
+    },
+    {
+     "code": "L62Y",
+     "name": "Signalgrün",
+     "kind": "uni",
+     "hex": "#3aa83a",
+     "years": [
+      1976,
+      1977,
+      1978
+     ]
+    },
+    {
+     "code": "L63Z",
+     "name": "Spanischgrün",
+     "kind": "uni",
+     "hex": "#2e6b3a",
+     "years": [
+      1976
+     ]
+    },
+    {
+     "code": "L87Z",
+     "name": "Maroon",
+     "kind": "uni",
+     "hex": "#5e1a1f",
+     "years": [
+      1976
+     ]
+    },
+    {
+     "code": "L96N",
+     "name": "Vipergrün-Metallic",
+     "kind": "metallic",
+     "hex": "#4e9a3a",
+     "years": [
+      1976
+     ]
+    },
+    {
+     "code": "L97A",
+     "name": "Diamantsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b9bbbb",
+     "years": [
+      1976,
+      1977,
+      1978,
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "L98Y",
+     "name": "Tizian-Metallic",
+     "kind": "metallic",
+     "hex": "#9a4a2a",
+     "years": [
+      1976
+     ]
+    },
+    {
+     "code": "L98Y",
+     "name": "Atlantic-Metallic",
+     "kind": "metallic",
+     "hex": "#1f4f73",
+     "years": [
+      1976
+     ]
+    },
+    {
+     "code": "32A",
+     "name": "Brokatrot",
+     "kind": "uni",
+     "hex": "#8e1b22",
+     "years": [
+      1977
+     ]
+    },
+    {
+     "code": "L90A",
+     "name": "Polarweiß",
+     "kind": "uni",
+     "hex": "#f4f4ef",
+     "years": [
+      1977
+     ]
+    },
+    {
+     "code": "95F",
+     "name": "Kupfer-Metallic",
+     "kind": "metallic",
+     "hex": "#9a5a35",
+     "years": [
+      1977,
+      1978
+     ]
+    },
+    {
+     "code": "96Y",
+     "name": "Malachit-Metallic",
+     "kind": "metallic",
+     "hex": "#1f5e4a",
+     "years": [
+      1977
+     ]
+    },
+    {
+     "code": "95E",
+     "name": "Resedagrün-Metallic",
+     "kind": "metallic",
+     "hex": "#6f8a5a",
+     "years": [
+      1977,
+      1978
+     ]
+    },
+    {
+     "code": "99F",
+     "name": "Bahamablau-Metallic",
+     "kind": "metallic",
+     "hex": "#3f78a8",
+     "years": [
+      1977,
+      1978
+     ]
+    },
+    {
+     "code": "L30C",
+     "name": "Malagarot",
+     "kind": "uni",
+     "hex": "#a3202a",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "L90E",
+     "name": "Alpinweiß",
+     "kind": "uni",
+     "hex": "#f2f1ea",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "L86A",
+     "name": "Cognacbraun",
+     "kind": "uni",
+     "hex": "#6e4428",
+     "years": [
+      1978
+     ]
+    },
+    {
+     "code": "L99Y",
+     "name": "Colibrigrün-Metallic",
+     "kind": "metallic",
+     "hex": "#2f8a62",
+     "years": [
+      1978,
+      1979
+     ]
+    },
+    {
+     "code": "LM9V",
+     "name": "Moccaschwarz",
+     "kind": "uni",
+     "hex": "#2e2420",
+     "years": [
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "LM7A",
+     "name": "Flieder",
+     "kind": "uni",
+     "hex": "#9a7fb0",
+     "years": [
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "LE1M",
+     "name": "Mexicobeige",
+     "kind": "uni",
+     "hex": "#cdb27f",
+     "years": [
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "LM3A",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e",
+     "years": [
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LM5V",
+     "name": "Petrolblau-Metallic",
+     "kind": "metallic",
+     "hex": "#24505f",
+     "years": [
+      1979
+     ]
+    },
+    {
+     "code": "LM5Y",
+     "name": "Minervablau-Metallic",
+     "kind": "metallic",
+     "hex": "#2a3f6a",
+     "years": [
+      1979,
+      1981
+     ]
+    },
+    {
+     "code": "LA3V",
+     "name": "Indianarot-Metallic",
+     "kind": "metallic",
+     "hex": "#8a2a2a",
+     "years": [
+      1979,
+      1981
+     ]
+    },
+    {
+     "code": "LY7V",
+     "name": "Dolomitgrau-Metallic",
+     "kind": "metallic",
+     "hex": "#7d7f7d",
+     "years": [
+      1979
+     ]
+    },
+    {
+     "code": "LY3B",
+     "name": "Venusrot",
+     "kind": "uni",
+     "hex": "#b3262a",
+     "years": [
+      1980,
+      1981
+     ]
+    },
+    {
+     "code": "LA5D",
+     "name": "Monacoblau",
+     "kind": "uni",
+     "hex": "#1f3a6e",
+     "years": [
+      1980,
+      1981
+     ]
+    },
+    {
+     "code": "LY4A",
+     "name": "Amethyst",
+     "kind": "uni",
+     "hex": "#5b3a6b",
+     "years": [
+      1980
+     ]
+    },
+    {
+     "code": "LD6V",
+     "name": "Onyx-Metallic",
+     "kind": "metallic",
+     "hex": "#2b2b2d",
+     "years": [
+      1980,
+      1981
+     ]
+    },
+    {
+     "code": "L94A",
+     "name": "Inarisilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b4b6b4",
+     "years": [
+      1980,
+      1981
+     ]
+    },
+    {
+     "code": "LA5Y",
+     "name": "Heliosblau-Metallic",
+     "kind": "metallic",
+     "hex": "#3c6fa8",
+     "years": [
+      1980
+     ]
+    },
+    {
+     "code": "LA1M",
+     "name": "Coloradobeige",
+     "kind": "uni",
+     "hex": "#d8c49a",
+     "years": [
+      1981
+     ]
+    },
+    {
+     "code": "LB6A",
+     "name": "Sundagrün",
+     "kind": "uni",
+     "hex": "#3f7a52",
+     "years": [
+      1981
+     ]
+    },
+    {
+     "code": "LD6A",
+     "name": "Havannabraun",
+     "kind": "uni",
+     "hex": "#5a3a26",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "LY5A",
+     "name": "Mauritiusblau",
+     "kind": "uni",
+     "hex": "#2a5a8c",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "LM8U",
+     "name": "Platin-Metallic",
+     "kind": "metallic",
+     "hex": "#a8a9a6",
+     "years": [
+      1981,
+      1982,
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LM9Y",
+     "name": "Schwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#141414",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "LY4V",
+     "name": "Saturn-Metallic",
+     "kind": "metallic",
+     "hex": "#8c8f90",
+     "years": [
+      1981
+     ]
+    },
+    {
+     "code": "LY7Z",
+     "name": "Meteor-Metallic",
+     "kind": "metallic",
+     "hex": "#6e7072",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "LY7A",
+     "name": "Gabungrau",
+     "kind": "uni",
+     "hex": "#6f736f",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LA3Y",
+     "name": "Surinam-Metallic",
+     "kind": "metallic",
+     "hex": "#5a6b3a",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LA6V",
+     "name": "Ihasa-Metallic",
+     "kind": "metallic",
+     "hex": "#7a6a55",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LM5Z",
+     "name": "Hellblau-Metallic",
+     "kind": "metallic",
+     "hex": "#8aa7c4",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LA3B",
+     "name": "Gambiarot",
+     "kind": "uni",
+     "hex": "#b0242a",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LY5B",
+     "name": "Kopenhagenblau",
+     "kind": "uni",
+     "hex": "#3b5f8f",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LY1L",
+     "name": "Pasadenagelb",
+     "kind": "uni",
+     "hex": "#e8c23a",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LM6V",
+     "name": "Moosgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#3d4a33",
+     "years": [
+      1983
+     ]
+    },
+    {
+     "code": "LM1V",
+     "name": "Hellbronze-Metallic",
+     "kind": "metallic",
+     "hex": "#a58a62",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LY5V",
+     "name": "Saphir-Metallic",
+     "kind": "metallic",
+     "hex": "#1f2f5a",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LY9V",
+     "name": "Montegoschwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#1a1a1e",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LD3V",
+     "name": "Sienarot-Metallic",
+     "kind": "metallic",
+     "hex": "#7d2a24",
+     "years": [
+      1983
+     ]
+    },
+    {
+     "code": "LZ7Z",
+     "name": "Geminigrau-Metallic",
+     "kind": "metallic",
+     "hex": "#8a8d8f",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LY7Y",
+     "name": "Zermattsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b7b9ba",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY8V",
+     "name": "Zobel-Metallic",
+     "kind": "metallic",
+     "hex": "#4a3a30",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LM3V",
+     "name": "Rubinrot-Metallic",
+     "kind": "metallic",
+     "hex": "#8f342c",
+     "years": [
+      1984
+     ]
+    },
+    {
+     "code": "LM1N",
+     "name": "Pastellbeige",
+     "kind": "uni",
+     "hex": "#ddcfae",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LB8Z",
+     "name": "Mahagonibraun-Metallic",
+     "kind": "metallic",
+     "hex": "#4f2a22",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LM6Y",
+     "name": "Kristallgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#4d7d72",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LM3Y",
+     "name": "Granatrot-Metallic",
+     "kind": "metallic",
+     "hex": "#5b1a24",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LA1Y",
+     "name": "Kalaharibeige-Metallic",
+     "kind": "metallic",
+     "hex": "#bfa77e",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LY7U",
+     "name": "Steingrau-Metallic",
+     "kind": "metallic",
+     "hex": "#988585",
+     "years": [
+      1985,
+      1986,
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LB7V",
+     "name": "Graphit-Metallic",
+     "kind": "metallic",
+     "hex": "#4a4c4e",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "L0A9",
+     "name": "Perlglanzweiß-Metallic",
+     "kind": "metallic",
+     "hex": "#e6e3da",
+     "years": [
+      1986
+     ]
+    },
+    {
+     "code": "LM1A",
+     "name": "Limonengelb",
+     "kind": "uni",
+     "hex": "#ecdf55",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LY5D",
+     "name": "Azuritblau",
+     "kind": "uni",
+     "hex": "#1d3f8a",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY3E",
+     "name": "Malvenrot",
+     "kind": "uni",
+     "hex": "#8c2f4a",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LY9Y",
+     "name": "Satinschwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#1c1c1e",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY5Z",
+     "name": "Nautic-Metallic",
+     "kind": "metallic",
+     "hex": "#2b3d5c",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY4Z",
+     "name": "Flamingo-Metallic",
+     "kind": "metallic",
+     "hex": "#c98a8f",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LY3V",
+     "name": "Maraschinorot-Metallic",
+     "kind": "metallic",
+     "hex": "#6e1626",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY1Y",
+     "name": "Mandelbeige-Metallic",
+     "kind": "metallic",
+     "hex": "#c7b28c",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY6Y",
+     "name": "Nilgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#7f9a84",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LM5U",
+     "name": "Diamantblau-Metallic",
+     "kind": "metallic",
+     "hex": "#9fb3c6",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LM8V",
+     "name": "Nougatbraun-Metallic",
+     "kind": "metallic",
+     "hex": "#5a4030",
+     "years": [
+      1987,
+      1988
+     ]
+    }
+   ]
+  },
+  {
+   "id": "928",
+   "series": "928",
+   "years": [
+    1978,
+    1993
+   ],
+   "title": "Porsche 928, Modelljahre 1978–1993",
+   "source": "https://files.porsche.com/f/332100/33fa378b40/928-overview-paint-colours.pdf",
+   "note": "Werksübersicht „Lackfarben bei Porsche-Fahrzeugen“ (Porsche Classic), je Farbe mit den Modelljahren, in denen sie angeboten wurde. Farbtöne geschätzt. Die Werksübersicht endet mit dem Modelljahr 1993; für 1994/95 (928 GTS) liegt keine Übersicht vor.",
+   "perYear": true,
+   "colors": [
+    {
+     "code": "027",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "106",
+     "name": "Talbotgelb",
+     "kind": "uni",
+     "hex": "#e8b52a",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "107",
+     "name": "Continentalorange",
+     "kind": "uni",
+     "hex": "#e2621f",
+     "years": [
+      1978
+     ]
+    },
+    {
+     "code": "273",
+     "name": "Farngrün",
+     "kind": "uni",
+     "hex": "#3a5a32",
+     "years": [
+      1978
+     ]
+    },
+    {
+     "code": "274",
+     "name": "Olivgrün",
+     "kind": "uni",
+     "hex": "#4f5a33",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "387",
+     "name": "Albertblau",
+     "kind": "uni",
+     "hex": "#032846",
+     "years": [
+      1978
+     ]
+    },
+    {
+     "code": "408",
+     "name": "Cockneybraun",
+     "kind": "uni",
+     "hex": "#3c2a20",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "451",
+     "name": "Moccaschwarz",
+     "kind": "uni",
+     "hex": "#2e2420",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "502",
+     "name": "Kaschmirbeige",
+     "kind": "uni",
+     "hex": "#c9b393",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "700",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#141414",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992
+     ]
+    },
+    {
+     "code": "908",
+     "name": "Grandprixweiß",
+     "kind": "uni",
+     "hex": "#eeeee6",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "265",
+     "name": "Oakgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#2f3d2a",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "266",
+     "name": "Silbergrün-Metallic",
+     "kind": "metallic",
+     "hex": "#8fa595",
+     "years": [
+      1978
+     ]
+    },
+    {
+     "code": "275",
+     "name": "Lindgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#8fb25a",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "304",
+     "name": "Minervablau-Metallic",
+     "kind": "metallic",
+     "hex": "#2a3f6a",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "376",
+     "name": "Petrolblau-Metallic",
+     "kind": "metallic",
+     "hex": "#24505f",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "443",
+     "name": "Braunkupfer-Metallic",
+     "kind": "metallic",
+     "hex": "#7a4a2a",
+     "years": [
+      1978,
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "936",
+     "name": "Silber-Metallic",
+     "kind": "metallic",
+     "hex": "#a8b0af",
+     "years": [
+      1978,
+      1979,
+      1980,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "305",
+     "name": "Arrowblau",
+     "kind": "uni",
+     "hex": "#1c3fa0",
+     "years": [
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "601",
+     "name": "Flieder",
+     "kind": "uni",
+     "hex": "#9a7fb0",
+     "years": [
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "30T",
+     "name": "Hellblau-Metallic",
+     "kind": "metallic",
+     "hex": "#8aa7c4",
+     "years": [
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "463",
+     "name": "Opal-Metallic",
+     "kind": "metallic",
+     "hex": "#b7ad99",
+     "years": [
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "464",
+     "name": "Tabak-Metallic",
+     "kind": "metallic",
+     "hex": "#6a4f36",
+     "years": [
+      1979,
+      1980
+     ]
+    },
+    {
+     "code": "708",
+     "name": "Schwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#141414",
+     "years": [
+      1979,
+      1980,
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "182",
+     "name": "Chiffonweiß",
+     "kind": "uni",
+     "hex": "#ece9dc",
+     "years": [
+      1981,
+      1982,
+      1984
+     ]
+    },
+    {
+     "code": "523",
+     "name": "Bambusbeige",
+     "kind": "uni",
+     "hex": "#cdb98e",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "524",
+     "name": "Burnusbraun",
+     "kind": "uni",
+     "hex": "#5a3a25",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "20A",
+     "name": "Minzgrün",
+     "kind": "uni",
+     "hex": "#6fb59a",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "956",
+     "name": "Zinn-Metallic",
+     "kind": "metallic",
+     "hex": "#8a8c8a",
+     "years": [
+      1981,
+      1982,
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "655",
+     "name": "Platin-Metallic",
+     "kind": "metallic",
+     "hex": "#a8a9a6",
+     "years": [
+      1981,
+      1982,
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "31G",
+     "name": "Pazificblau-Metallic",
+     "kind": "metallic",
+     "hex": "#2d5e8a",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "474",
+     "name": "Palisander-Metallic",
+     "kind": "metallic",
+     "hex": "#4a3029",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "20C",
+     "name": "Moosgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#3d4a33",
+     "years": [
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "895",
+     "name": "Weinrot-Metallic",
+     "kind": "metallic",
+     "hex": "#5e1d29",
+     "years": [
+      1981,
+      1982
+     ]
+    },
+    {
+     "code": "961",
+     "name": "Meteor-Metallic",
+     "kind": "metallic",
+     "hex": "#6e7072",
+     "years": [
+      1982,
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "966",
+     "name": "Hellbronze-Metallic",
+     "kind": "metallic",
+     "hex": "#a58a62",
+     "years": [
+      1982,
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "32Z",
+     "name": "Gletscherblau",
+     "kind": "uni",
+     "hex": "#b9cfe0",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "661",
+     "name": "Schieferblau-Metallic",
+     "kind": "metallic",
+     "hex": "#4a5868",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "662",
+     "name": "Rauchquarz-Metallic",
+     "kind": "metallic",
+     "hex": "#5c5550",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "810",
+     "name": "Rubinrot-Metallic",
+     "kind": "metallic",
+     "hex": "#8f342c",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "811",
+     "name": "Ziegelrot-Metallic",
+     "kind": "metallic",
+     "hex": "#8a3326",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "536",
+     "name": "Pastellbeige",
+     "kind": "uni",
+     "hex": "#ddcfae",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "673",
+     "name": "Marmorgrau",
+     "kind": "uni",
+     "hex": "#9b9b97",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "492",
+     "name": "Muskatbraun-Metallic",
+     "kind": "metallic",
+     "hex": "#6a4b35",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "822",
+     "name": "Granatrot-Metallic",
+     "kind": "metallic",
+     "hex": "#5b1a24",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "33P",
+     "name": "Irisblau-Metallic",
+     "kind": "metallic",
+     "hex": "#3a4f8a",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "33X",
+     "name": "Saphirblau-Metallic",
+     "kind": "metallic",
+     "hex": "#1e2f5a",
+     "years": [
+      1985
+     ]
+    },
+    {
+     "code": "33N",
+     "name": "Kristallgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#4d7d72",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "539",
+     "name": "Weißgold-Metallic",
+     "kind": "metallic",
+     "hex": "#d6cbb0",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "347",
+     "name": "Dunkelblau",
+     "kind": "uni",
+     "hex": "#1d2a48",
+     "years": [
+      1986,
+      1987,
+      1988,
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "33X",
+     "name": "Preußischblau-Metallic",
+     "kind": "metallic",
+     "hex": "#1c2848",
+     "years": [
+      1986
+     ]
+    },
+    {
+     "code": "80F",
+     "name": "Cherryrot",
+     "kind": "uni",
+     "hex": "#8c1a2b",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "10W",
+     "name": "Limonengelb",
+     "kind": "uni",
+     "hex": "#ecdf55",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "499",
+     "name": "Keramikbeige",
+     "kind": "uni",
+     "hex": "#cfc2a3",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "21M",
+     "name": "Türkis",
+     "kind": "uni",
+     "hex": "#2c9aa0",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "35Y",
+     "name": "Lagunengrün-Metallic",
+     "kind": "metallic",
+     "hex": "#2f6b6a",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "699",
+     "name": "Felsengrün-Metallic",
+     "kind": "metallic",
+     "hex": "#4f5b52",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "40B",
+     "name": "Nougatbraun-Metallic",
+     "kind": "metallic",
+     "hex": "#5a4030",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "697",
+     "name": "Diamantblau-Metallic",
+     "kind": "metallic",
+     "hex": "#9fb3c6",
+     "years": [
+      1987,
+      1988,
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "40D",
+     "name": "Espressobraun-Metallic",
+     "kind": "metallic",
+     "hex": "#3a2a22",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "35V",
+     "name": "Marineblau-Metallic",
+     "kind": "metallic",
+     "hex": "#1e2a4a",
+     "years": [
+      1987,
+      1988,
+      1990
+     ]
+    },
+    {
+     "code": "36P",
+     "name": "Veneziablau-Metallic",
+     "kind": "metallic",
+     "hex": "#2a5a8a",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "80D",
+     "name": "Cassisrot-Metallic",
+     "kind": "metallic",
+     "hex": "#5a1a33",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "60M",
+     "name": "Leinen",
+     "kind": "uni",
+     "hex": "#d8cdb4",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "548",
+     "name": "Apricotbeige",
+     "kind": "uni",
+     "hex": "#ddb88e",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "22C",
+     "name": "Muranogrün",
+     "kind": "uni",
+     "hex": "#2f6b55",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "37B",
+     "name": "Taubenblau-Metallic",
+     "kind": "metallic",
+     "hex": "#6f8094",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "693",
+     "name": "Steingrau-Metallic",
+     "kind": "metallic",
+     "hex": "#988585",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "22D",
+     "name": "Schiefer-Metallic",
+     "kind": "metallic",
+     "hex": "#5b5f63",
+     "years": [
+      1989,
+      1990,
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "81L",
+     "name": "Samtrot-Metallic",
+     "kind": "metallic",
+     "hex": "#6a1a24",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "550",
+     "name": "Leinen-Metallic",
+     "kind": "metallic",
+     "hex": "#d8cdb4",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "22E",
+     "name": "Tannengrün-Metallic",
+     "kind": "metallic",
+     "hex": "#26372e",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "40L",
+     "name": "Cognacbraun-Metallic",
+     "kind": "metallic",
+     "hex": "#6e4428",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "81K",
+     "name": "Lachssilber-Metallic",
+     "kind": "metallic",
+     "hex": "#c2a597",
+     "years": [
+      1989
+     ]
+    },
+    {
+     "code": "38B",
+     "name": "Maritimblau",
+     "kind": "uni",
+     "hex": "#1f3f8f",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "22S",
+     "name": "Signalgrün",
+     "kind": "uni",
+     "hex": "#3aa83a",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "22R",
+     "name": "Mintgrün",
+     "kind": "uni",
+     "hex": "#5fc9a9",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "82N",
+     "name": "Sternrubin",
+     "kind": "uni",
+     "hex": "#c41e63",
+     "years": [
+      1991,
+      1992
+     ]
+    },
+    {
+     "code": "37X",
+     "name": "Horizontblau-Metallic",
+     "kind": "metallic",
+     "hex": "#6f8eae",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "37U",
+     "name": "Cobaltblau-Metallic",
+     "kind": "metallic",
+     "hex": "#2b4fa0",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "82H",
+     "name": "Korallenrot-Metallic",
+     "kind": "metallic",
+     "hex": "#a3282e",
+     "years": [
+      1991,
+      1992
+     ]
+    },
+    {
+     "code": "92E",
+     "name": "Polarsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b4b7ba",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "738",
+     "name": "Schwarz-Perlcolor",
+     "kind": "perl",
+     "hex": "#141414",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "37W",
+     "name": "Nachtblau-Perlcolor",
+     "kind": "perl",
+     "hex": "#1b2238",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "38A",
+     "name": "Amethyst-Perlcolor",
+     "kind": "perl",
+     "hex": "#5b3a6b",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "39A",
+     "name": "Amazonasgrün-Perlcolor",
+     "kind": "perl",
+     "hex": "#1f4a3c",
+     "years": [
+      1991,
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "12G",
+     "name": "Speedgelb",
+     "kind": "uni",
+     "hex": "#f5d100",
+     "years": [
+      1993
+     ]
+    },
+    {
+     "code": "37E",
+     "name": "Veilchenblau-Metallic",
+     "kind": "metallic",
+     "hex": "#3d3a6e",
+     "years": [
+      1993
+     ]
+    },
+    {
+     "code": "38W",
+     "name": "Lavendelblau-Metallic",
+     "kind": "metallic",
+     "hex": "#6a6f9a",
+     "years": [
+      1993
+     ]
+    },
+    {
+     "code": "23I",
+     "name": "Wimbledongrün-Metallic",
+     "kind": "metallic",
+     "hex": "#2c3d2c",
+     "years": [
+      1993
+     ]
+    },
+    {
+     "code": "83E",
+     "name": "Himbeerrot-Metallic",
+     "kind": "metallic",
+     "hex": "#8a1f3d",
+     "years": [
+      1993
+     ]
+    }
+   ]
+  },
+  {
+   "id": "944",
+   "series": "944",
+   "years": [
+    1982,
+    1991
+   ],
+   "title": "Porsche 944, Modelljahre 1982–1991",
+   "source": "https://files.porsche.com/f/332100/91e22119aa/944-overview-paint-colours.pdf",
+   "note": "Werksübersicht „Lackfarben bei Porsche-Fahrzeugen“ (Porsche Classic), je Farbe mit den Modelljahren, in denen sie angeboten wurde. Farbtöne geschätzt.",
+   "perYear": true,
+   "colors": [
+    {
+     "code": "L90E",
+     "name": "Alpinweiß",
+     "kind": "uni",
+     "hex": "#f2f1ea",
+     "years": [
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LM9V",
+     "name": "Moccaschwarz",
+     "kind": "uni",
+     "hex": "#2e2420",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LM3A",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e",
+     "years": [
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LD6A",
+     "name": "Havannabraun",
+     "kind": "uni",
+     "hex": "#5a3a26",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LY5A",
+     "name": "Mauritiusblau",
+     "kind": "uni",
+     "hex": "#2a5a8c",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LY7A",
+     "name": "Gabungrau",
+     "kind": "uni",
+     "hex": "#6f736f",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LA3B",
+     "name": "Gambiarot",
+     "kind": "uni",
+     "hex": "#b0242a",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "L97A",
+     "name": "Diamantsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b9bbbb",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LM8U",
+     "name": "Platin-Metallic",
+     "kind": "metallic",
+     "hex": "#a8a9a6",
+     "years": [
+      1982,
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LM9Y",
+     "name": "Schwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#141414",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LY7Z",
+     "name": "Meteor-Metallic",
+     "kind": "metallic",
+     "hex": "#6e7072",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LA3Y",
+     "name": "Surinam-Metallic",
+     "kind": "metallic",
+     "hex": "#5a6b3a",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LA6V",
+     "name": "Ihasa-Metallic",
+     "kind": "metallic",
+     "hex": "#7a6a55",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "LM5Z",
+     "name": "Hellblau-Metallic",
+     "kind": "metallic",
+     "hex": "#8aa7c4",
+     "years": [
+      1982
+     ]
+    },
+    {
+     "code": "L041",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#141414",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LY5B",
+     "name": "Kopenhagenblau",
+     "kind": "uni",
+     "hex": "#3b5f8f",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LY1L",
+     "name": "Pasadenagelb",
+     "kind": "uni",
+     "hex": "#e8c23a",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LM6V",
+     "name": "Moosgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#3d4a33",
+     "years": [
+      1983
+     ]
+    },
+    {
+     "code": "LM1V",
+     "name": "Hellbronze-Metallic",
+     "kind": "metallic",
+     "hex": "#a58a62",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LY5V",
+     "name": "Saphir-Metallic",
+     "kind": "metallic",
+     "hex": "#1f2f5a",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LY9V",
+     "name": "Montegoschwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#1a1a1e",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LD3V",
+     "name": "Sienarot-Metallic",
+     "kind": "metallic",
+     "hex": "#7d2a24",
+     "years": [
+      1983
+     ]
+    },
+    {
+     "code": "LZ7Z",
+     "name": "Geminigrau-Metallic",
+     "kind": "metallic",
+     "hex": "#8a8d8f",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LY7Y",
+     "name": "Zermattsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b7b9ba",
+     "years": [
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989
+     ]
+    },
+    {
+     "code": "LY8V",
+     "name": "Zobel-Metallic",
+     "kind": "metallic",
+     "hex": "#4a3a30",
+     "years": [
+      1983,
+      1984
+     ]
+    },
+    {
+     "code": "LM3V",
+     "name": "Rubinrot-Metallic",
+     "kind": "metallic",
+     "hex": "#8f342c",
+     "years": [
+      1984
+     ]
+    },
+    {
+     "code": "LM1N",
+     "name": "Pastellbeige",
+     "kind": "uni",
+     "hex": "#ddcfae",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LB8Z",
+     "name": "Mahagonibraun-Metallic",
+     "kind": "metallic",
+     "hex": "#4f2a22",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LM6Y",
+     "name": "Kristallgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#4d7d72",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LM3Y",
+     "name": "Granatrot-Metallic",
+     "kind": "metallic",
+     "hex": "#5b1a24",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LA1Y",
+     "name": "Kalaharibeige-Metallic",
+     "kind": "metallic",
+     "hex": "#bfa77e",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "LY7U",
+     "name": "Steingrau-Metallic",
+     "kind": "metallic",
+     "hex": "#988585",
+     "years": [
+      1985,
+      1986,
+      1987,
+      1988,
+      1989
+     ]
+    },
+    {
+     "code": "LB7V",
+     "name": "Graphit-Metallic",
+     "kind": "metallic",
+     "hex": "#4a4c4e",
+     "years": [
+      1985,
+      1986
+     ]
+    },
+    {
+     "code": "L0A9",
+     "name": "Perlglanzweiß-Metallic",
+     "kind": "metallic",
+     "hex": "#e6e3da",
+     "years": [
+      1986
+     ]
+    },
+    {
+     "code": "LM1A",
+     "name": "Limonengelb",
+     "kind": "uni",
+     "hex": "#ecdf55",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LY5D",
+     "name": "Azuritblau",
+     "kind": "uni",
+     "hex": "#1d3f8a",
+     "years": [
+      1987,
+      1988,
+      1989,
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LY3E",
+     "name": "Malvenrot",
+     "kind": "uni",
+     "hex": "#8c2f4a",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LY9Y",
+     "name": "Satinschwarz-Metallic",
+     "kind": "metallic",
+     "hex": "#1c1c1e",
+     "years": [
+      1987,
+      1988,
+      1989
+     ]
+    },
+    {
+     "code": "LY5Z",
+     "name": "Nautic-Metallic",
+     "kind": "metallic",
+     "hex": "#2b3d5c",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY4Z",
+     "name": "Flamingo-Metallic",
+     "kind": "metallic",
+     "hex": "#c98a8f",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LY3Y",
+     "name": "Maraschinorot-Metallic",
+     "kind": "metallic",
+     "hex": "#6e1626",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY1Y",
+     "name": "Mandelbeige-Metallic",
+     "kind": "metallic",
+     "hex": "#c7b28c",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY6Y",
+     "name": "Nilgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#7f9a84",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LM5U",
+     "name": "Diamantblau-Metallic",
+     "kind": "metallic",
+     "hex": "#9fb3c6",
+     "years": [
+      1987
+     ]
+    },
+    {
+     "code": "LM8V",
+     "name": "Nougatbraun-Metallic",
+     "kind": "metallic",
+     "hex": "#5a4030",
+     "years": [
+      1987,
+      1988
+     ]
+    },
+    {
+     "code": "LY5U",
+     "name": "Gletscher-Metallic",
+     "kind": "metallic",
+     "hex": "#a9c3d4",
+     "years": [
+      1989,
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LY1Z",
+     "name": "Bambus-Metallic",
+     "kind": "metallic",
+     "hex": "#c9b98f",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "LM3U",
+     "name": "Samtrot-Metallic",
+     "kind": "metallic",
+     "hex": "#6a1a24",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "LM5P",
+     "name": "Taubenblau-Metallic",
+     "kind": "metallic",
+     "hex": "#6f8094",
+     "years": [
+      1989,
+      1990
+     ]
+    },
+    {
+     "code": "LM1U",
+     "name": "Leinen-Metallic",
+     "kind": "metallic",
+     "hex": "#d8cdb4",
+     "years": [
+      1989
+     ]
+    },
+    {
+     "code": "LY7T",
+     "name": "Kristallsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#c3c5c6",
+     "years": [
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LY7P",
+     "name": "Titan-Metallic",
+     "kind": "metallic",
+     "hex": "#8e8f8c",
+     "years": [
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LY9Z",
+     "name": "Panthero-Metallic",
+     "kind": "metallic",
+     "hex": "#3a3633",
+     "years": [
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LZ3T",
+     "name": "Zyklamrot-Perlcolor",
+     "kind": "perl",
+     "hex": "#9c1f4f",
+     "years": [
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LM5M",
+     "name": "Türkis-Metallic",
+     "kind": "metallic",
+     "hex": "#2c9aa0",
+     "years": [
+      1990
+     ]
+    },
+    {
+     "code": "LM3B",
+     "name": "Sternrubin",
+     "kind": "uni",
+     "hex": "#c41e63",
+     "years": [
+      1990,
+      1991
+     ]
+    },
+    {
+     "code": "LM5A",
+     "name": "Maritimblau",
+     "kind": "uni",
+     "hex": "#1f3f8f",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "LM5N",
+     "name": "Cobaltblau-Metallic",
+     "kind": "metallic",
+     "hex": "#2b4fa0",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "LY9B",
+     "name": "Brillantschwarz",
+     "kind": "uni",
+     "hex": "#0c0c0d",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "908",
+     "name": "Grandprixweiß",
+     "kind": "uni",
+     "hex": "#eeeee6",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "38A",
+     "name": "Amethyst-Perlcolor",
+     "kind": "perl",
+     "hex": "#5b3a6b",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "738",
+     "name": "Schwarz-Perlcolor",
+     "kind": "perl",
+     "hex": "#141414",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "92E",
+     "name": "Polarsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b4b7ba",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "22D",
+     "name": "Schiefer-Metallic",
+     "kind": "metallic",
+     "hex": "#5b5f63",
+     "years": [
+      1991
+     ]
+    },
+    {
+     "code": "37W",
+     "name": "Nachtblau-Perlcolor",
+     "kind": "perl",
+     "hex": "#1b2238",
+     "years": [
+      1991
+     ]
+    }
+   ]
+  },
+  {
+   "id": "968",
+   "series": "968",
+   "years": [
+    1992,
+    1995
+   ],
+   "title": "Porsche 968, Modelljahre 1992–1995",
+   "source": "https://files.porsche.com/f/332100/9cbef2dcf5/968-overview-paint-colours.pdf",
+   "note": "Werksübersicht „Lackfarben bei Porsche-Fahrzeugen“ (Porsche Classic), je Farbe mit den Modelljahren, in denen sie angeboten wurde. Farbtöne geschätzt.",
+   "perYear": true,
+   "colors": [
+    {
+     "code": "700",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#141414",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "908",
+     "name": "Grandprixweiß",
+     "kind": "uni",
+     "hex": "#eeeee6",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "80K",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "38B",
+     "name": "Maritimblau",
+     "kind": "uni",
+     "hex": "#1f3f8f",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "22S",
+     "name": "Signalgrün",
+     "kind": "uni",
+     "hex": "#3aa83a",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "22R",
+     "name": "Mintgrün",
+     "kind": "uni",
+     "hex": "#5fc9a9",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "82N",
+     "name": "Sternrubin",
+     "kind": "uni",
+     "hex": "#c41e63",
+     "years": [
+      1992
+     ]
+    },
+    {
+     "code": "22L",
+     "name": "Oakgrün-Metallic",
+     "kind": "metallic",
+     "hex": "#2f3d2a",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "37X",
+     "name": "Horizontblau-Metallic",
+     "kind": "metallic",
+     "hex": "#6f8eae",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "37U",
+     "name": "Cobaltblau-Metallic",
+     "kind": "metallic",
+     "hex": "#2b4fa0",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "82H",
+     "name": "Korallenrot-Metallic",
+     "kind": "metallic",
+     "hex": "#a3282e",
+     "years": [
+      1992
+     ]
+    },
+    {
+     "code": "92E",
+     "name": "Polarsilber-Metallic",
+     "kind": "metallic",
+     "hex": "#b4b7ba",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "22D",
+     "name": "Schiefer-Metallic",
+     "kind": "metallic",
+     "hex": "#5b5f63",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "738",
+     "name": "Schwarz-Perlcolor",
+     "kind": "perl",
+     "hex": "#141414",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "39A",
+     "name": "Amazonasgrün-Perlcolor",
+     "kind": "perl",
+     "hex": "#1f4a3c",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "37W",
+     "name": "Nachtblau-Perlcolor",
+     "kind": "perl",
+     "hex": "#1b2238",
+     "years": [
+      1992,
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "38A",
+     "name": "Amethyst-Perlcolor",
+     "kind": "perl",
+     "hex": "#5b3a6b",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "23I",
+     "name": "Wimbledongrün-Metallic",
+     "kind": "metallic",
+     "hex": "#2c3d2c",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "38W",
+     "name": "Lavendelblau-Metallic",
+     "kind": "metallic",
+     "hex": "#6a6f9a",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "83E",
+     "name": "Himbeerrot-Metallic",
+     "kind": "metallic",
+     "hex": "#8a1f3d",
+     "years": [
+      1992,
+      1993
+     ]
+    },
+    {
+     "code": "12G",
+     "name": "Speedgelb",
+     "kind": "uni",
+     "hex": "#f5d100",
+     "years": [
+      1993,
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "39E",
+     "name": "Rivierablau",
+     "kind": "uni",
+     "hex": "#1f6fd0",
+     "years": [
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "39D",
+     "name": "Amarantviolett",
+     "kind": "uni",
+     "hex": "#6b2a5a",
+     "years": [
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "37E",
+     "name": "Veilchenblau-Metallic",
+     "kind": "metallic",
+     "hex": "#3d3a6e",
+     "years": [
+      1993
+     ]
+    },
+    {
+     "code": "39N",
+     "name": "Irisblau-Perlcolor",
+     "kind": "perl",
+     "hex": "#3a4f8a",
+     "years": [
+      1994,
+      1995
+     ]
+    },
+    {
+     "code": "39R",
+     "name": "Aventuragrün-Perlcolor",
+     "kind": "perl",
+     "hex": "#23463a",
+     "years": [
+      1994,
+      1995
+     ]
+    }
+   ]
+  },
+  {
+   "id": "991-1",
+   "series": "911",
+   "years": [
+    2012,
+    2015
+   ],
+   "title": "991.1, Modelljahre 2012–2015",
+   "source": "https://www.stuttcars.com/wp-content/uploads/2021/05/911-991.1-Carrera-2011-05-EN.pdf",
+   "alsoSources": [
+    "https://www.stuttcars.com/wp-content/uploads/2021/05/Porsche_US-911_2013.pdf",
+    "https://www.stuttcars.com/wp-content/uploads/2021/05/Porsche_US-911_2014.pdf",
+    "https://www.stuttcars.com/wp-content/uploads/2021/05/Porsche_US-911_2015.pdf"
+   ],
+   "note": "Aus den Farbseiten der Porsche-Verkaufsprospekte (Ausgaben 05/2011, 2013, 2014 und 2015, teils für Nordamerika), je Ausgabe einem Modelljahr zugeordnet. Die Prospekte nennen keine Farbcodes; die Farbtöne hier sind geschätzt. Carraraweißmetallic und Tiefschwarzmetallic laut Prospekt ab 06/2014. Daneben Farbe nach Wahl (Paint to Sample).",
+   "perYear": true,
+   "confidence": "medium",
+   "colors": [
+    {
+     "code": "",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Carraraweiß",
+     "kind": "uni",
+     "hex": "#f1f1ec",
+     "years": [
+      2012
+     ]
+    },
+    {
+     "code": "",
+     "name": "Racinggelb",
+     "kind": "uni",
+     "hex": "#f7d417",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Platinsilbermetallic",
+     "kind": "metallic",
+     "hex": "#b5b3ac",
+     "years": [
+      2012,
+      2013
+     ]
+    },
+    {
+     "code": "",
+     "name": "Aquablaumetallic",
+     "kind": "metallic",
+     "hex": "#3a8aa8",
+     "years": [
+      2012,
+      2013
+     ]
+    },
+    {
+     "code": "",
+     "name": "Dunkelblaumetallic",
+     "kind": "metallic",
+     "hex": "#1d2a48",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Rubinrotmetallic",
+     "kind": "metallic",
+     "hex": "#6a1424",
+     "years": [
+      2012
+     ]
+    },
+    {
+     "code": "",
+     "name": "Anthrazitbraunmetallic",
+     "kind": "metallic",
+     "hex": "#3b3431",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Achatgraumetallic",
+     "kind": "metallic",
+     "hex": "#4a4a4b",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Basaltschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#1e1f22",
+     "years": [
+      2012,
+      2013,
+      2014
+     ]
+    },
+    {
+     "code": "",
+     "name": "GT-Silbermetallic",
+     "kind": "sonder",
+     "hex": "#a9acae",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Limegoldmetallic",
+     "kind": "sonder",
+     "hex": "#c9bf92",
+     "years": [
+      2012,
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Cognacmetallic",
+     "kind": "sonder",
+     "hex": "#7a5444",
+     "years": [
+      2012,
+      2013
+     ]
+    },
+    {
+     "code": "",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee",
+     "years": [
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Mahagonimetallic",
+     "kind": "metallic",
+     "hex": "#3a2225",
+     "years": [
+      2013,
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Rhodiumsilbermetallic",
+     "kind": "metallic",
+     "hex": "#b9bcbd",
+     "years": [
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Saphirblaumetallic",
+     "kind": "metallic",
+     "hex": "#1e2f5a",
+     "years": [
+      2014,
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Amarantrotmetallic",
+     "kind": "metallic",
+     "hex": "#8f1d2a",
+     "years": [
+      2014
+     ]
+    },
+    {
+     "code": "",
+     "name": "Carraraweißmetallic",
+     "kind": "metallic",
+     "hex": "#e8e9e6",
+     "years": [
+      2015
+     ]
+    },
+    {
+     "code": "",
+     "name": "Tiefschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#121417",
+     "years": [
+      2015
+     ]
+    }
+   ]
+  },
+  {
+   "id": "991-2",
+   "series": "911",
+   "years": [
+    2016,
+    2019
+   ],
+   "title": "991.2, Prospekt Modelljahr 2017",
+   "source": "https://www.stuttcars.com/wp-content/uploads/2021/05/Porsche_int-911_2017.pdf",
+   "note": "Farbseite des internationalen Porsche-Prospekts zum 911 Carrera (Modelljahr 2017): vier Uni-, acht Metallic- und vier Sonderfarben. Andere Modelljahre wichen ab (z. B. Kreide/Crayon später). GT-Modelle hatten eine eigene Auswahl. Farbtöne geschätzt.",
+   "confidence": "medium",
+   "colors": [
+    {
+     "code": "",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee"
+    },
+    {
+     "code": "",
+     "name": "Racinggelb",
+     "kind": "uni",
+     "hex": "#f7d417"
+    },
+    {
+     "code": "",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e"
+    },
+    {
+     "code": "",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515"
+    },
+    {
+     "code": "",
+     "name": "Carraraweißmetallic",
+     "kind": "metallic",
+     "hex": "#e8e9e6"
+    },
+    {
+     "code": "",
+     "name": "Rhodiumsilbermetallic",
+     "kind": "metallic",
+     "hex": "#b9bcbd"
+    },
+    {
+     "code": "",
+     "name": "Saphirblaumetallic",
+     "kind": "metallic",
+     "hex": "#1e2f5a"
+    },
+    {
+     "code": "",
+     "name": "Nachtblaumetallic",
+     "kind": "metallic",
+     "hex": "#1b2238"
+    },
+    {
+     "code": "",
+     "name": "Graphitblaumetallic",
+     "kind": "metallic",
+     "hex": "#343a44"
+    },
+    {
+     "code": "",
+     "name": "Achatgraumetallic",
+     "kind": "metallic",
+     "hex": "#4a4a4b"
+    },
+    {
+     "code": "",
+     "name": "Tiefschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#121417"
+    },
+    {
+     "code": "",
+     "name": "Mahagonimetallic",
+     "kind": "metallic",
+     "hex": "#3a2225"
+    },
+    {
+     "code": "",
+     "name": "GT-Silbermetallic",
+     "kind": "sonder",
+     "hex": "#a9acae"
+    },
+    {
+     "code": "",
+     "name": "Lavaorange",
+     "kind": "sonder",
+     "hex": "#e0451b"
+    },
+    {
+     "code": "",
+     "name": "Karminrot",
+     "kind": "sonder",
+     "hex": "#9e1520"
+    },
+    {
+     "code": "",
+     "name": "Miamiblau",
+     "kind": "sonder",
+     "hex": "#1494b0"
+    }
+   ]
+  },
+  {
+   "id": "992-1",
+   "series": "911",
+   "years": [
+    2020,
+    2024
+   ],
+   "title": "992.1, Prospekt Modelljahr 2020",
+   "source": "https://www.stuttcars.com/wp-content/uploads/2021/05/Porsche_US-911_2020-2.pdf",
+   "note": "Farbseite des Porsche-Prospekts zum 911 Carrera, Modelljahr 2020 (Ausgabe Nordamerika). Spätere Modelljahre brachten weitere Farben (z. B. Pythongrün, Haifischblau); sie fehlen hier. Farbtöne geschätzt.",
+   "confidence": "medium",
+   "colors": [
+    {
+     "code": "",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee"
+    },
+    {
+     "code": "",
+     "name": "Racinggelb",
+     "kind": "uni",
+     "hex": "#f7d417"
+    },
+    {
+     "code": "",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e"
+    },
+    {
+     "code": "",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515"
+    },
+    {
+     "code": "",
+     "name": "Carraraweißmetallic",
+     "kind": "metallic",
+     "hex": "#e8e9e6"
+    },
+    {
+     "code": "",
+     "name": "Dolomitsilbermetallic",
+     "kind": "metallic",
+     "hex": "#8b9094"
+    },
+    {
+     "code": "",
+     "name": "GT-Silbermetallic",
+     "kind": "metallic",
+     "hex": "#a9acae"
+    },
+    {
+     "code": "",
+     "name": "Achatgraumetallic",
+     "kind": "metallic",
+     "hex": "#4a4a4b"
+    },
+    {
+     "code": "",
+     "name": "Aventuringrünmetallic",
+     "kind": "metallic",
+     "hex": "#4a5245"
+    },
+    {
+     "code": "",
+     "name": "Enzianblaumetallic",
+     "kind": "metallic",
+     "hex": "#1a2c5a"
+    },
+    {
+     "code": "",
+     "name": "Nachtblaumetallic",
+     "kind": "metallic",
+     "hex": "#1b2238"
+    },
+    {
+     "code": "",
+     "name": "Tiefschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#121417"
+    },
+    {
+     "code": "",
+     "name": "Kreide",
+     "kind": "sonder",
+     "hex": "#b9b8b1"
+    },
+    {
+     "code": "",
+     "name": "Lavaorange",
+     "kind": "sonder",
+     "hex": "#e0451b"
+    },
+    {
+     "code": "",
+     "name": "Karminrot",
+     "kind": "sonder",
+     "hex": "#9e1520"
+    },
+    {
+     "code": "",
+     "name": "Miamiblau",
+     "kind": "sonder",
+     "hex": "#1494b0"
+    },
+    {
+     "code": "",
+     "name": "Lizardgrün",
+     "kind": "sonder",
+     "hex": "#4cb43c"
+    }
+   ]
+  },
+  {
+   "id": "992-2",
+   "series": "911",
+   "years": [
+    2025,
+    2026
+   ],
+   "title": "992.2, Konfigurator (Stand 13.11.2026)",
+   "source": "https://configurator.porsche.com/de-DE/mode/model/9921B2",
+   "alsoSources": [
+    "https://newsroom.porsche.com/de/pressemappen/911/Exterieur--Design-und-Karosserie.html"
+   ],
+   "note": "Außenfarben des 911 Carrera im deutschen Porsche-Konfigurator am 13.11.2026, mit Ausstattungscodes. Porsche ordnet sie in vier Farbwelten: Contrasts (Weiß, Schwarz, ohne Aufpreis), Shades (Metallic), Dreams und Legends (hier als Sonderfarben). Weitere Farben über Farbe nach Wahl und Farbe nach Wahl Plus. Farbtöne geschätzt.",
+   "colors": [
+    {
+     "code": "0Q",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee"
+    },
+    {
+     "code": "A1",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515"
+    },
+    {
+     "code": "2T",
+     "name": "Tiefschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#121417"
+    },
+    {
+     "code": "1H",
+     "name": "Vanadiumgraumetallic",
+     "kind": "metallic",
+     "hex": "#5d6267"
+    },
+    {
+     "code": "U2",
+     "name": "GT-Silbermetallic",
+     "kind": "metallic",
+     "hex": "#a9acae"
+    },
+    {
+     "code": "G7",
+     "name": "Eisgraumetallic",
+     "kind": "metallic",
+     "hex": "#a3a6a8"
+    },
+    {
+     "code": "G1",
+     "name": "Indischrot",
+     "kind": "sonder",
+     "hex": "#c8102e"
+    },
+    {
+     "code": "1A",
+     "name": "Enzianblaumetallic",
+     "kind": "sonder",
+     "hex": "#1a2c5a"
+    },
+    {
+     "code": "0L",
+     "name": "Karminrot",
+     "kind": "sonder",
+     "hex": "#9e1520"
+    },
+    {
+     "code": "D9",
+     "name": "Cartagenagelbmetallic",
+     "kind": "sonder",
+     "hex": "#d9c25a"
+    },
+    {
+     "code": "6M",
+     "name": "Provence",
+     "kind": "sonder",
+     "hex": "#a99bbd"
+    },
+    {
+     "code": "O1",
+     "name": "Luganoblau",
+     "kind": "sonder",
+     "hex": "#1d6fd0"
+    },
+    {
+     "code": "N4",
+     "name": "Oakgrünmetallic Neo",
+     "kind": "sonder",
+     "hex": "#3a4436"
+    },
+    {
+     "code": "U4",
+     "name": "Aventuringrünmetallic",
+     "kind": "sonder",
+     "hex": "#4a5245"
+    },
+    {
+     "code": "G9",
+     "name": "Shadegreenmetallic",
+     "kind": "sonder",
+     "hex": "#5d6a63"
+    },
+    {
+     "code": "2M",
+     "name": "Schiefergrau Neo",
+     "kind": "sonder",
+     "hex": "#4b5054"
+    },
+    {
+     "code": "3H",
+     "name": "Kreide",
+     "kind": "sonder",
+     "hex": "#b9b8b1"
+    }
+   ]
+  },
+  {
+   "id": "981",
+   "series": "boxster",
+   "years": [
+    2013,
+    2016
+   ],
+   "title": "Boxster und Cayman 981",
+   "source": "https://www.stuttcars.com/wp-content/uploads/2021/05/Cayman-981-2012-10-EN-2.pdf",
+   "alsoSources": [
+    "https://www.stuttcars.com/wp-content/uploads/2021/05/Porsche_int-Boxster_2013.pdf"
+   ],
+   "note": "Aus den Porsche-Prospekten zum Cayman (Ausgabe 10/2012) und zum Boxster (spätere Ausgabe). Der Cayman-Prospekt nennt Platinsilber und Aquablau, der Boxster-Prospekt stattdessen Rhodiumsilber und Saphirblau; die übrigen Farben sind gleich. Spätere Modelljahre (z. B. GTS, GT4, Spyder) hatten weitere Farben. Farbtöne geschätzt.",
+   "confidence": "medium",
+   "colors": [
+    {
+     "code": "",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee"
+    },
+    {
+     "code": "",
+     "name": "Racinggelb",
+     "kind": "uni",
+     "hex": "#f7d417"
+    },
+    {
+     "code": "",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e"
+    },
+    {
+     "code": "",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515"
+    },
+    {
+     "code": "",
+     "name": "Platinsilbermetallic",
+     "kind": "metallic",
+     "hex": "#b5b3ac"
+    },
+    {
+     "code": "",
+     "name": "Aquablaumetallic",
+     "kind": "metallic",
+     "hex": "#3a8aa8"
+    },
+    {
+     "code": "",
+     "name": "Rhodiumsilbermetallic",
+     "kind": "metallic",
+     "hex": "#b9bcbd"
+    },
+    {
+     "code": "",
+     "name": "Saphirblaumetallic",
+     "kind": "metallic",
+     "hex": "#1e2f5a"
+    },
+    {
+     "code": "",
+     "name": "Dunkelblaumetallic",
+     "kind": "metallic",
+     "hex": "#1d2a48"
+    },
+    {
+     "code": "",
+     "name": "Amarantrotmetallic",
+     "kind": "metallic",
+     "hex": "#8f1d2a"
+    },
+    {
+     "code": "",
+     "name": "Mahagonimetallic",
+     "kind": "metallic",
+     "hex": "#3a2225"
+    },
+    {
+     "code": "",
+     "name": "Anthrazitbraunmetallic",
+     "kind": "metallic",
+     "hex": "#3b3431"
+    },
+    {
+     "code": "",
+     "name": "Achatgraumetallic",
+     "kind": "metallic",
+     "hex": "#4a4a4b"
+    },
+    {
+     "code": "",
+     "name": "Basaltschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#1e1f22"
+    },
+    {
+     "code": "",
+     "name": "GT-Silbermetallic",
+     "kind": "sonder",
+     "hex": "#a9acae"
+    },
+    {
+     "code": "",
+     "name": "Limegoldmetallic",
+     "kind": "sonder",
+     "hex": "#c9bf92"
+    },
+    {
+     "code": "",
+     "name": "Cognacmetallic",
+     "kind": "sonder",
+     "hex": "#7a5444"
+    }
+   ]
+  },
+  {
+   "id": "718",
+   "series": "718",
+   "years": [
+    2016,
+    2025
+   ],
+   "title": "718 Boxster und Cayman, Prospekt",
+   "source": "https://porsche.fi/wp-content/uploads/2019/12/718-Catalogue.pdf",
+   "note": "Farbseite des internationalen Porsche-Prospekts „The 718“ (über Porsche Finnland, ohne Modelljahr; enthält bereits Crayon). Vier Uni-, acht Metallic- und vier Sonderfarben. Andere Modelljahre und die GT-Modelle wichen ab. Farbtöne geschätzt.",
+   "confidence": "medium",
+   "colors": [
+    {
+     "code": "",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee"
+    },
+    {
+     "code": "",
+     "name": "Racinggelb",
+     "kind": "uni",
+     "hex": "#f7d417"
+    },
+    {
+     "code": "",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e"
+    },
+    {
+     "code": "",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515"
+    },
+    {
+     "code": "",
+     "name": "Carraraweißmetallic",
+     "kind": "metallic",
+     "hex": "#e8e9e6"
+    },
+    {
+     "code": "",
+     "name": "Rhodiumsilbermetallic",
+     "kind": "metallic",
+     "hex": "#b9bcbd"
+    },
+    {
+     "code": "",
+     "name": "Saphirblaumetallic",
+     "kind": "metallic",
+     "hex": "#1e2f5a"
+    },
+    {
+     "code": "",
+     "name": "Nachtblaumetallic",
+     "kind": "metallic",
+     "hex": "#1b2238"
+    },
+    {
+     "code": "",
+     "name": "GT-Silbermetallic",
+     "kind": "metallic",
+     "hex": "#a9acae"
+    },
+    {
+     "code": "",
+     "name": "Graphitblaumetallic",
+     "kind": "metallic",
+     "hex": "#343a44"
+    },
+    {
+     "code": "",
+     "name": "Achatgraumetallic",
+     "kind": "metallic",
+     "hex": "#4a4a4b"
+    },
+    {
+     "code": "",
+     "name": "Tiefschwarzmetallic",
+     "kind": "metallic",
+     "hex": "#121417"
+    },
+    {
+     "code": "",
+     "name": "Crayon",
+     "kind": "sonder",
+     "hex": "#a8a8a3"
+    },
+    {
+     "code": "",
+     "name": "Lavaorange",
+     "kind": "sonder",
+     "hex": "#e0451b"
+    },
+    {
+     "code": "",
+     "name": "Karminrot",
+     "kind": "sonder",
+     "hex": "#9e1520"
+    },
+    {
+     "code": "",
+     "name": "Miamiblau",
+     "kind": "sonder",
+     "hex": "#1494b0"
+    }
+   ]
+  },
+  {
+   "id": "718-spyder",
+   "series": "718",
+   "years": [
+    2019,
+    2023
+   ],
+   "title": "718 Spyder, Prospekt Modelljahr 2021",
+   "source": "https://www.stuttcars.com/wp-content/uploads/2022/12/Porsche_US-718_2021.pdf",
+   "note": "Farbseite des Porsche-Prospekts zum 718 Spyder, Modelljahr 2021 (Ausgabe Nordamerika). Farbtöne geschätzt.",
+   "colors": [
+    {
+     "code": "",
+     "name": "Weiß",
+     "kind": "uni",
+     "hex": "#f2f2ee"
+    },
+    {
+     "code": "",
+     "name": "Racinggelb",
+     "kind": "uni",
+     "hex": "#f7d417"
+    },
+    {
+     "code": "",
+     "name": "Indischrot",
+     "kind": "uni",
+     "hex": "#c8102e"
+    },
+    {
+     "code": "",
+     "name": "Schwarz",
+     "kind": "uni",
+     "hex": "#151515"
+    },
+    {
+     "code": "",
+     "name": "Carraraweißmetallic",
+     "kind": "metallic",
+     "hex": "#e8e9e6"
+    },
+    {
+     "code": "",
+     "name": "GT-Silbermetallic",
+     "kind": "metallic",
+     "hex": "#a9acae"
+    },
+    {
+     "code": "",
+     "name": "Enzianblaumetallic",
+     "kind": "metallic",
+     "hex": "#1a2c5a"
+    },
+    {
+     "code": "",
+     "name": "Kreide",
+     "kind": "sonder",
+     "hex": "#b9b8b1"
+    },
+    {
+     "code": "",
+     "name": "Miamiblau",
+     "kind": "sonder",
+     "hex": "#1494b0"
+    }
+   ]
   }
  ],
  "scope": {
@@ -4733,6 +8403,42 @@
   ],
   "porsche-918": [
    "918"
+  ],
+  "porsche-924": [
+   "924"
+  ],
+  "porsche-928": [
+   "928"
+  ],
+  "porsche-944": [
+   "944"
+  ],
+  "porsche-968": [
+   "968"
+  ],
+  "porsche-911-991-1": [
+   "991-1"
+  ],
+  "porsche-911-991-2": [
+   "991-2"
+  ],
+  "porsche-911-992-1": [
+   "992-1"
+  ],
+  "porsche-911-992-2": [
+   "992-2"
+  ],
+  "porsche-boxster-981": [
+   "981"
+  ],
+  "porsche-cayman-981": [
+   "981"
+  ],
+  "porsche-718": [
+   "718"
+  ],
+  "porsche-718-718-spyder": [
+   "718-spyder"
   ]
  },
  "notes": {

@@ -3,7 +3,7 @@ import { brands, generationById, modelName, models, paintsFor, paintsForVariant,
 import { AS_OF, CONDITIONS, launchTime } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import type { Condition, Holding } from "../../data/types";
-import { eur } from "../../lib/format";
+import { eur, fromDisplay, toDisplay } from "../../lib/format";
 import { Modal } from "../ui";
 import { isEn, t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -34,7 +34,7 @@ function draftFrom(h?: Holding): Draft {
     brandId: v.brandId,
     modelId: v.modelId,
     variantId: v.id,
-    purchasePrice: h ? String(h.purchasePrice) : String(Math.round(getMetrics(v.id).value / 1000) * 1000),
+    purchasePrice: String(Math.round(toDisplay(h ? h.purchasePrice : Math.round(getMetrics(v.id).value / 1000) * 1000))),
     purchaseDate: toInput(h?.purchaseDate ?? AS_OF),
     mileage: h ? String(h.mileage) : "",
     condition: h?.condition ?? "2+",
@@ -90,7 +90,7 @@ export function HoldingForm({
 
   function submit() {
     const e: Record<string, string> = {};
-    const price = parseNum(d.purchasePrice);
+    const price = fromDisplay(parseNum(d.purchasePrice));
     const mileage = d.mileage.trim() === "" ? 0 : parseNum(d.mileage);
     if (!variant) e.variantId = t("Bitte eine Variante wählen.", "Please choose a variant.");
     if (!Number.isFinite(price) || price <= 0) e.purchasePrice = t("Bitte einen gültigen Kaufpreis eingeben.", "Please enter a valid purchase price.");
@@ -173,7 +173,7 @@ export function HoldingForm({
           {err("variantId")}
         </div>
         <div>
-          <label className="label">{t("Kaufpreis (€)", "Purchase price (€)")}</label>
+          <label className="label">{t("Kaufpreis (€)", "Purchase price ($)")}</label>
           <input className="input" inputMode="numeric" value={d.purchasePrice} onChange={(e) => set("purchasePrice", e.target.value)} />
           {err("purchasePrice")}
         </div>

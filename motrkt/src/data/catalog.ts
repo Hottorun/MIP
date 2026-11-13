@@ -297,6 +297,13 @@ export const CATALOG: BrandDef[] = [
                 transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#b7babe",
               }),
+              v("Carrera 4", [1998, 2001], 22000, 32_000, 0.045, 300, 3.4, 74_500, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.5 },
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#2b3a7a",
+              }),
               v("Turbo", [2000, 2005], 20499, 79_000, 0.065, 420, 3.6, 120_000, {
                 drive: "Allrad (AWD)",
                 tags: ["Turbo", "Allrad"],
@@ -326,6 +333,13 @@ export const CATALOG: BrandDef[] = [
                 gearbox: { Manual: 0.6, Automatik: 0.4 },
                 transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#b7babe",
+              }),
+              v("Carrera 4", [2001, 2004], 10000, 40_000, 0.04, 320, 3.6, 80_000, {
+                ...AWD,
+                body: { Coupé: 0.3, Cabriolet: 0.7 },
+                gearbox: { Manual: 0.6, Automatik: 0.4 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#c8102e",
               }),
               v("Carrera 4S", [2001, 2005], 23000, 48_000, 0.039, 320, 3.6, 93_000, {
                 ...AWD,
@@ -365,11 +379,31 @@ export const CATALOG: BrandDef[] = [
             years: [2004, 2008],
             shape: "modern911",
             variants: [
+              v("Carrera", [2004, 2008], 33000, 45_000, 0.04, 325, 3.6, 75_200, {
+                body: { Coupé: 0.62, Cabriolet: 0.38 },
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#f2c200",
+              }),
               v("Carrera S", [2004, 2008], 41000, 55_000, 0.045, 355, 3.8, 86_900, {
-                body: { Coupé: 0.65, Cabriolet: 0.3, Targa: 0.05 },
+                body: { Coupé: 0.68, Cabriolet: 0.32 },
                 gearbox: { Manual: 0.55, Automatik: 0.45 },
                 transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
                 color: "#7d7f7a",
+              }),
+              v("Carrera 4", [2005, 2008], 13000, 50_000, 0.04, 325, 3.6, 82_660, {
+                ...AWD,
+                body: { Coupé: 0.4, Cabriolet: 0.35, Targa: 0.25 },
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#c8102e",
+              }),
+              v("Carrera 4S", [2005, 2008], 31000, 60_000, 0.045, 355, 3.8, 92_870, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.4, Targa: 0.1 },
+                gearbox: { Manual: 0.55, Automatik: 0.45 },
+                transmission: "6-Gang Schaltgetriebe / 5-Stufen Tiptronic S",
+                color: "#b7babe",
               }),
               v("Turbo", [2006, 2009], 19000, 88_000, 0.05, 480, 3.6, 133_603, {
                 drive: "Allrad (AWD)",
@@ -401,11 +435,31 @@ export const CATALOG: BrandDef[] = [
             years: [2008, 2012],
             shape: "modern911",
             variants: [
+              v("Carrera", [2008, 2012], 12000, 62_000, 0.045, 345, 3.6, 83_032, {
+                body: { Coupé: 0.62, Cabriolet: 0.38 },
+                gearbox: { Manual: 0.45, Automatik: 0.55 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#e9e8e1",
+              }),
               v("Carrera S", [2008, 2012], 15000, 76_000, 0.05, 385, 3.8, 94_000, {
-                body: { Coupé: 0.65, Cabriolet: 0.3, Targa: 0.05 },
+                body: { Coupé: 0.68, Cabriolet: 0.32 },
                 gearbox: { Manual: 0.45, Automatik: 0.55 },
                 transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#1f6fd0",
+              }),
+              v("Carrera 4", [2008, 2012], 5000, 64_000, 0.045, 345, 3.6, 89_577, {
+                ...AWD,
+                body: { Coupé: 0.4, Cabriolet: 0.35, Targa: 0.25 },
+                gearbox: { Manual: 0.4, Automatik: 0.6 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#b7babe",
+              }),
+              v("Carrera 4S", [2008, 2012], 11000, 80_000, 0.05, 385, 3.8, 100_525, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.35, Targa: 0.15 },
+                gearbox: { Manual: 0.4, Automatik: 0.6 },
+                transmission: "6-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#8a1c2b",
               }),
               v("Turbo", [2009, 2012], 9000, 105_000, 0.052, 500, 3.8, 145_000, {
                 drive: "Allrad (AWD)",
@@ -459,11 +513,31 @@ export const CATALOG: BrandDef[] = [
             years: [2011, 2015],
             shape: "modern911",
             variants: [
+              v("Carrera", [2011, 2015], 30000, 62_000, 0.03, 350, 3.4, 88_037, {
+                body: { Coupé: 0.62, Cabriolet: 0.38 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#c8102e",
+              }),
               v("Carrera S", [2011, 2015], 35000, 72_000, 0.035, 400, 3.8, 102_436, {
-                body: { Coupé: 0.6, Cabriolet: 0.32, Targa: 0.08 },
+                body: { Coupé: 0.65, Cabriolet: 0.35 },
                 gearbox: { Manual: 0.25, Automatik: 0.75 },
                 transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#b7babe",
+              }),
+              v("Carrera 4", [2012, 2015], 9000, 66_000, 0.03, 350, 3.4, 97_557, {
+                ...AWD,
+                body: { Coupé: 0.4, Cabriolet: 0.35, Targa: 0.25 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#f2c200",
+              }),
+              v("Carrera 4S", [2012, 2015], 19000, 78_000, 0.035, 400, 3.8, 112_313, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.3, Targa: 0.2 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#4b3b33",
               }),
               v("Turbo S", [2013, 2015], 10000, 112_000, 0.025, 560, 3.8, 195_256, {
                 drive: "Allrad (AWD)",
@@ -490,11 +564,31 @@ export const CATALOG: BrandDef[] = [
             years: [2015, 2019],
             shape: "modern911",
             variants: [
+              v("Carrera", [2015, 2019], 22000, 80_000, 0.035, 370, 3.0, 96_605, {
+                body: { Coupé: 0.62, Cabriolet: 0.38 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#c8102e",
+              }),
               v("Carrera S", [2015, 2019], 25000, 92_000, 0.04, 420, 3.0, 110_000, {
-                body: { Coupé: 0.6, Cabriolet: 0.32, Targa: 0.08 },
+                body: { Coupé: 0.65, Cabriolet: 0.35 },
                 gearbox: { Manual: 0.25, Automatik: 0.75 },
                 transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
                 color: "#b7babe",
+              }),
+              v("Carrera 4", [2015, 2019], 9000, 84_000, 0.035, 370, 3.0, 103_983, {
+                ...AWD,
+                body: { Coupé: 0.4, Cabriolet: 0.35, Targa: 0.25 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#f2c200",
+              }),
+              v("Carrera 4S", [2015, 2019], 16000, 98_000, 0.04, 420, 3.0, 118_144, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.3, Targa: 0.2 },
+                gearbox: { Manual: 0.2, Automatik: 0.8 },
+                transmission: "7-Gang Schaltgetriebe / 7-Gang PDK",
+                color: "#1f6fd0",
               }),
               v("Carrera T", [2017, 2019], 5000, 108_000, 0.041, 370, 3.0, 107_000, {
                 gearbox: { Manual: 0.6, Automatik: 0.4 },
@@ -531,16 +625,43 @@ export const CATALOG: BrandDef[] = [
             years: [2019, 2024],
             shape: "modern911",
             variants: [
+              v("Carrera", [2019, 2024], 40000, 105_000, 0.01, 385, 3.0, 104_655, {
+                body: { Coupé: 0.65, Cabriolet: 0.35 },
+                ...PDK,
+                transmission: "8-Gang PDK",
+                color: "#c8102e",
+              }),
               v("Carrera S", [2019, 2024], 52000, 132_000, 0.015, 450, 3.0, 125_000, {
-                body: { Coupé: 0.65, Cabriolet: 0.3, Targa: 0.05 },
+                body: { Coupé: 0.68, Cabriolet: 0.32 },
                 gearbox: { Manual: 0.12, Automatik: 0.88 },
                 transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
                 color: "#cfccc2",
+              }),
+              v("Carrera 4", [2019, 2024], 12000, 108_000, 0.01, 385, 3.0, 111_000, {
+                ...AWD,
+                body: { Coupé: 0.45, Cabriolet: 0.3, Targa: 0.25 },
+                ...PDK,
+                transmission: "8-Gang PDK",
+                color: "#cfccc2",
+              }),
+              v("Carrera 4S", [2019, 2024], 30000, 135_000, 0.015, 450, 3.0, 127_979, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.3, Targa: 0.2 },
+                gearbox: { Manual: 0.1, Automatik: 0.9 },
+                transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
+                color: "#b7babe",
               }),
               v("Carrera GTS", [2021, 2024], 15000, 148_000, 0.032, 480, 3.0, 148_000, {
                 gearbox: { Manual: 0.2, Automatik: 0.8 },
                 transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
                 color: "#151619",
+              }),
+              v("Carrera 4 GTS", [2021, 2024], 9000, 152_000, 0.03, 480, 3.0, 148_835, {
+                ...AWD,
+                body: { Coupé: 0.35, Cabriolet: 0.25, Targa: 0.4 },
+                gearbox: { Manual: 0.15, Automatik: 0.85 },
+                transmission: "7-Gang Schaltgetriebe / 8-Gang PDK",
+                color: "#e9e8e1",
               }),
               v("Turbo S", [2020, 2024], 10000, 215_000, 0.028, 650, 3.7, 216_000, {
                 ...AWD,
@@ -574,18 +695,39 @@ export const CATALOG: BrandDef[] = [
             years: [2024, null],
             shape: "modern911",
             variants: [
+              v("Carrera", [2024, null], 8000, 125_000, 0, 394, 3.0, 128_700, {
+                body: { Coupé: 0.7, Cabriolet: 0.3 },
+                ...PDK,
+                transmission: "8-Gang PDK",
+                color: "#1f6fd0",
+              }),
               v("Carrera S", [2025, null], 8000, 158_000, 0, 480, 3.0, 154_800, {
                 body: { Coupé: 0.7, Cabriolet: 0.3 },
                 ...PDK,
                 transmission: "8-Gang PDK",
                 color: "#7d7f7a",
               }),
+              v("Carrera 4S", [2025, null], 3000, 165_000, 0, 480, 3.0, 163_000, {
+                ...AWD,
+                body: { Coupé: 0.5, Cabriolet: 0.3, Targa: 0.2 },
+                ...PDK,
+                transmission: "8-Gang PDK",
+                color: "#9fc1b4",
+              }),
               v("Carrera GTS", [2024, null], 9000, 172_000, 0, 541, 3.6, 170_600, {
-                body: { Coupé: 0.65, Cabriolet: 0.25, Targa: 0.1 },
+                body: { Coupé: 0.72, Cabriolet: 0.28 },
                 tags: ["Hybrid"],
                 ...PDK,
                 transmission: "8-Gang PDK (T-Hybrid)",
                 color: "#3b5a52",
+              }),
+              v("Carrera 4 GTS", [2024, null], 5000, 182_000, 0, 541, 3.6, 178_500, {
+                ...AWD,
+                tags: ["Allrad", "Hybrid"],
+                body: { Coupé: 0.35, Cabriolet: 0.3, Targa: 0.35 },
+                ...PDK,
+                transmission: "8-Gang PDK (T-Hybrid)",
+                color: "#c8102e",
               }),
               v("Turbo S", [2025, null], 3000, 285_000, 0, 711, 3.6, 271_000, {
                 ...AWD,

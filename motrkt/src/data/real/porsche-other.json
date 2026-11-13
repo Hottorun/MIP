@@ -298,7 +298,11 @@
       "hex": "#4a8a3c",
       "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-beginning-of-the-series.html",
       "confidence": "high",
-      "note": "Series-production 911 Turbo 3.0 unveiled 3 Oct 1974 at the Paris Motor Show, \"Painted in Viper Green Diamond\" with black leather and tartan seat centres (Porsche Newsroom). Hex is an approximation of the metallic green. (The 1973 IAA Turbo study was silver.)"
+      "note": "Series-production 911 Turbo 3.0 unveiled 3 Oct 1974 at the Paris Motor Show, \"Painted in Viper Green Diamond\" (Vipergrün-Diamant, code 249) with black leather and tartan seat centres, per Porsche's press kit \"50 Years of Porsche Turbo\". Not to be confused with the Porsche Museum's early Turbo 3.0 in Silver Green Diamond (Silbergrün-Diamant, code 250, \"Ice Green Metallic\"): one of the first 30 series cars, built 1975 for the French market, which the museum datasheet does not call the show car. The 1973 IAA study and the one-off for Louise Piëch (Aug 1974) were silver. Widerspruch: Porsche (Paint to Sample) schreibt, der 911 Turbo 3.0 (930) sei bekannt geworden, als er in Eichengrünmetallic vorgestellt wurde: https://media.porsche.com/paint-to-sample/en/911/oakgreenmetallic",
+      "alsoSources": [
+        "https://newsroom.porsche.com/dam/jcr:3c07547c-36bc-4e00-825c-5ac2bbe10805/Datenblatt%20911%20Turbo%203.0%20Coup%C3%A9.pdf",
+        "https://newsroom.porsche.com/de/pressemappen/50-Jahre-Porsche-Turbo-36122/Die-Anfänge-in-der-Serie.html"
+      ]
     },
     "specs": {
       "production": 2850,
@@ -1307,5 +1311,113 @@
     },
     "note": "5,4-l-V8 mit 350 PS, ersetzte S4 und GT; Neupreis 1992: 156.050 DM (Auto Bild).",
     "images": []
+  },
+  "porsche-718-718-boxster-25-jahre": {
+    "launchColor": {
+      "name": "GT-Silbermetallic (GT Silver Metallic) mit Akzenten in Neodyme",
+      "hex": "#A9ACAE",
+      "confidence": "high",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Porsche: Das Sondermodell wird in GT-Silbermetallic angeboten (wie die Studie von 1993), daneben Tiefschwarz- und Carraraweißmetallic; die Präsentationsfotos zeigen GT-Silber mit Neodyme-Akzenten."
+    }
+  },
+  "porsche-718-718-boxster-s": {
+    "launchColor": {
+      "name": "Lavaorange (Lava Orange)",
+      "hex": "#E0451B",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige orange Farbton. Weltpremiere Genf, März 2016. Porsches Bühnenfoto der Weltpremiere (Genf, März 2016) zeigt einen orangen 718 Boxster."
+    }
+  },
+  "porsche-718-718-cayman-s": {
+    "launchColor": {
+      "name": "Miamiblau (Miami Blue)",
+      "hex": "#1494B0",
+      "confidence": "high",
+      "source": "https://newsroom.porsche.com/en/products/porsche-cayman-model-series-718-sport-coupe-12475.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige türkisblaue Farbton. Porsches Foto vom Messestand der Weltpremiere (Auto China Peking, April 2016) zeigt einen 718 Cayman S in Miamiblau."
+    }
+  },
+  "porsche-718-718-cayman-gt4": {
+    "launchColor": {
+      "name": "Racinggelb (Racing Yellow)",
+      "hex": "#F7D417",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2019/products/porsche-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige gelbe Farbton."
+    }
+  },
+  "porsche-cayman-981-cayman-gt4": {
+    "launchColor": {
+      "name": "Racinggelb (Racing Yellow)",
+      "hex": "#F7D417",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/products/geneva-international-motor-show-porsche-cayman-gt4-911-gt3-rs-10052.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (981-Prospekte) ist das der einzige gelbe Farbton. Weltpremiere Genf, März 2015."
+    }
+  },
+  "porsche-718-718-boxster-gts-4-0": {
+    "launchColor": {
+      "name": "Pythongrün (Python Green)",
+      "hex": "#3AA24A",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; Pythongrün war 2020 die einzige grüne Serien-Sonderfarbe für die 718-Modelle (laut Porsche-Pressemitteilung vom 08.09.2020 auch für GT4 und Spyder)."
+    }
+  },
+  "porsche-cayman-987-2-cayman-r": {
+    "launchColor": {
+      "name": "Peridotmetallic (Peridot Metallic)",
+      "hex": "#8E953C",
+      "confidence": "high",
+      "source": "https://media.porsche.com/paint-to-sample/en/911/peridotmetallic",
+      "note": "Porsche (Paint to Sample): Der Cayman R wurde am 17. November 2010 auf der LA Auto Show in der Kommunikationsfarbe Peridotmetallic präsentiert."
+    }
+  },
+  "porsche-boxster-986-boxster-s-50-jahre-550-spyder": {
+    "launchColor": {
+      "name": "GT-Silbermetallic (GT Silver Metallic)",
+      "hex": "#A9ACAE",
+      "confidence": "high",
+      "source": "https://media.porsche.com/paint-to-sample/en/panamera/gtsilvermetallic",
+      "note": "Porsche (Paint to Sample): GT-Silbermetallic diente 2003/04 als Sonderfarbe für das Boxster-Sondermodell zum 50. Jahrestag des 550 Spyder."
+    }
+  },
+  "porsche-boxster-987-2-boxster-s-black-edition": {
+    "launchColor": {
+      "name": "Schwarz (Black)",
+      "hex": "#0E0E10",
+      "confidence": "high",
+      "source": "https://prnewswire.com/news-releases/porsche-boxster-s-black-edition-has-more-features-more-value-and-more-horsepower-115085449.html",
+      "note": "Porsche-Pressemitteilung vom 02.02.2011: Karosserie, Verdeck und 19-Zoll-Räder schwarz; auf 987 Exemplare limitiert."
+    }
+  },
+  "porsche-boxster-987-1-boxster-rs-60-spyder": {
+    "launchColor": {
+      "name": "GT-Silbermetallic (GT Silver Metallic)",
+      "hex": "#A9ACAE",
+      "confidence": "high",
+      "source": "https://www.autoblog.com/2007/11/27/porsche-boxster-rs-60-spyder-limited-edition/",
+      "note": "Laut der bei Autoblog wiedergegebenen Porsche-Pressemitteilung (November 2007) kommt das Sondermodell in GT-Silbermetallic mit Interieur in Carrerarot; auf 1.960 Exemplare limitiert."
+    }
+  },
+  "porsche-718-718-cayman": {
+    "launchColor": {
+      "name": "Miamiblau (Miami Blue)",
+      "hex": "#1494B0",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/products/porsche-cayman-model-series-718-sport-coupe-12475.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige türkisblaue Farbton. Achtung: Auf dem Messestand der Weltpremiere (Auto China Peking, April 2016) stand in Miamiblau ein 718 Cayman S; Cayman und Cayman S wurden gemeinsam vorgestellt."
+    }
+  },
+  "porsche-718-718-boxster": {
+    "launchColor": {
+      "name": "Lavaorange (Lava Orange)",
+      "hex": "#E0451B",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige orange Farbton. Porsches Bühnenfoto der Weltpremiere (Genf, März 2016) zeigt einen orangen 718 Boxster; Boxster und Boxster S wurden gemeinsam vorgestellt."
+    }
   }
 }

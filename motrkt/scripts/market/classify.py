@@ -364,15 +364,34 @@ def road(y, s, full=""):
         if 2007 <= y <= 2009: return r("911-997-1-turbo")
         if 2010 <= y <= 2013: return r("911-997-2-turbo")
         return None
+    # from the 997 on every Targa is all-wheel drive (Targa 4 / 4S / 4 GTS)
+    awd = four or (b == "Targa" and y >= 2006)
     if "gts" in s:
-        if four or b == "Targa" and y < 2025: return None
-        if 2022 <= y <= 2024: return r("911-992-1-carrera-gts") if b == "Coupé" else None
-        if y >= 2025 and not four: return r("911-992-2-carrera-gts")
+        # 911 GTS of the 997 and 991 have no variant of their own yet
+        if 2022 <= y <= 2024: return r("911-992-1-carrera-4-gts") if awd else r("911-992-1-carrera-gts") if b == "Coupé" else None
+        if y >= 2025: return r("911-992-2-carrera-4-gts") if awd else r("911-992-2-carrera-gts")
         return None
     if re.search(r"carrera t\b", s):
         return r("911-991-2-carrera-t") if y in (2018, 2019) and b == "Coupé" else None
-    if four and re.search(r"carrera 4s|\b4s\b", s) and 2002 <= y <= 2005 and b in ("Coupé", "Cabriolet"): return r("911-996-2-carrera-4s")
-    if four: return None
+    if awd:
+        # model years as in US titles; the 996 Carrera 4 and 4S were still built for model year 2005
+        if re.search(r"carrera 4s|targa 4s|\b4s\b|c4s", s):
+            if 2002 <= y <= 2005: return r("911-996-2-carrera-4s") if b in ("Coupé", "Cabriolet") else None
+            if 2006 <= y <= 2008: return r("911-997-1-carrera-4s")
+            if 2009 <= y <= 2012: return r("911-997-2-carrera-4s")
+            if 2013 <= y <= 2016: return r("911-991-1-carrera-4s")
+            if 2017 <= y <= 2019: return r("911-991-2-carrera-4s")
+            if 2020 <= y <= 2024: return r("911-992-1-carrera-4s")
+            if y >= 2025: return r("911-992-2-carrera-4s")
+            return None
+        if 1999 <= y <= 2001: return r("911-996-1-carrera-4") if b in ("Coupé", "Cabriolet") else None
+        if 2002 <= y <= 2005: return r("911-996-2-carrera-4") if b in ("Coupé", "Cabriolet") else None
+        if 2006 <= y <= 2008: return r("911-997-1-carrera-4")
+        if 2009 <= y <= 2012: return r("911-997-2-carrera-4")
+        if 2013 <= y <= 2016: return r("911-991-1-carrera-4")
+        if 2017 <= y <= 2019: return r("911-991-2-carrera-4")
+        if 2020 <= y <= 2024: return r("911-992-1-carrera-4")
+        return None   # the 992.2 has no plain Carrera 4
     if "targa" in s:
         return r("911-996-2-targa") if 2002 <= y <= 2005 else None
     if re.search(r"carrera s\b", s):
@@ -386,6 +405,12 @@ def road(y, s, full=""):
     if re.search(r"carrera\b|911 coupe|911 cabriolet", s):
         if 1999 <= y <= 2001: return r("911-996-1-carrera")
         if 2002 <= y <= 2004: return r("911-996-2-carrera")
+        if 2005 <= y <= 2008: return r("911-997-1-carrera")
+        if 2009 <= y <= 2012: return r("911-997-2-carrera")
+        if 2013 <= y <= 2016: return r("911-991-1-carrera")
+        if 2017 <= y <= 2019: return r("911-991-2-carrera")
+        if 2020 <= y <= 2024: return r("911-992-1-carrera")
+        if y >= 2025: return r("911-992-2-carrera")
         return None
     return None
 

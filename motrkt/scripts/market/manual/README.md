@@ -39,7 +39,15 @@ haben ein begrenztes Gewicht. Je mehr europäische Belege dazukommen, desto weni
 ## Händlerbestände (`haendler.csv`)
 
 Bestand mit Preis von early911s, Janzen Klassik, Karero, Oliver Neumann Sportclassics, Fiegenschuh, DAVID Finest
-Sports Cars und Motorlegenden, Stand 10.11.2026. Alle sieben Seiten erlauben das Lesen laut robots.txt. Gelesen wurde nur die öffentliche Fahrzeugliste bzw. die
+Sports Cars und Motorlegenden (Stand 10.11.2026) sowie Elevenclassics, 11er Ecke, Fischer Oldtimer, Röhrle Mobility,
+Carworld Classics (Maastricht, NL) und Pitstop Car Trading (Dronten, NL) (Stand 12.11.2026). Alle dreizehn Seiten
+erlauben das Lesen laut robots.txt. Die Basis-Carrera (997 bis 992) sind seit 12.11.2026 eingetragen. Die
+wassergekühlten Allradler haben seit 12.11.2026 eigene Varianten (Carrera 4 und 4S je Baureihe, 4 GTS beim 992; der
+992.2 hat keinen einfachen Carrera 4): Carrera 4 und Targa 4 stehen beim Carrera 4, Carrera 4S und Targa 4S beim
+Carrera 4S, Carrera 4 GTS und Targa 4 GTS beim Carrera 4 GTS. Ab dem 997 ist jeder Targa ein Allradler und zählt
+deshalb nie beim Carrera oder Carrera S. Das gilt genauso für Auktionsergebnisse (`classify.py`) und die Angebote von
+Classic Trader (`ctparse.py`). Der 997 GTS, der 991 GTS und der US-Carrera 2.7 haben noch keine eigene Variante und
+sind deshalb nicht eingetragen, ebenso SUVs und Limousinen. Gelesen wurde nur die öffentliche Fahrzeugliste bzw. die
 Detailseiten, mit Pausen zwischen den Abrufen. Fahrzeuge mit „Preis auf Anfrage“, Unikate (Prototypen, Presse-
 oder Rennfahrzeuge ohne passende Variante), Rechtslenker und Projekte sind nicht eingetragen; die Variante ist
 von Hand zugeordnet. Bei Netto-Preisen ist die MwSt. (19 %) aufgeschlagen. Kilometerstände unter 1.100 km (meist „nach Restaurierung“) stehen als unbekannt drin.

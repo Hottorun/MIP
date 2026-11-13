@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowUpRight, Minus, X } from "lucide-react";
-import { amount, cn, pct, trendClass } from "../lib/format";
+import { amount, cn, curSign, num, ownUsd, pct, trendClass } from "../lib/format";
 import { brandById } from "../data/db";
 import { t } from "../i18n";
 
@@ -294,13 +294,15 @@ export const axisProps = {
  * A typeset amount: digits written out in full in the serif face with lining figures.
  * `compact` rounds to three significant digits (for estimates), never to "k" or "Mio.".
  */
-export function Money({ value, compact, className }: { value: number | null | undefined; compact?: boolean; className?: string }) {
+/** An amount in euros, shown in the display currency. `sale`: a sale in dollars keeps its own dollar price in English. */
+export function Money({ value, compact, className, sale }: { value: number | null | undefined; compact?: boolean; className?: string; sale?: { currency?: string; priceOriginal?: number | null } }) {
   if (value === null || value === undefined || !Number.isFinite(value)) return <span className={cn("money", className)}>–</span>;
+  const own = sale ? ownUsd(sale) : null;
   return (
     <span className={cn("money", className)}>
       {value < 0 && "−"}
-      <span className="money-cur">€</span>
-      {amount(value, { compact })}
+      <span className="money-cur">{curSign()}</span>
+      {own !== null ? num(Math.round(own)) : amount(value, { compact })}
     </span>
   );
 }

@@ -24,7 +24,7 @@ W = sys.argv[1]
 PAGES = os.path.join(W, "web", "dealerphotos-pages.json")
 OUT = os.path.join(W, "web", "dealerphotos.json")
 IMG = re.compile(r'(?:src|href|data-src|data-lazy-src|data-full|content|srcset)\s*=\s*["\']([^"\']+)["\']|url\(\s*["\']?([^"\')]+)', re.I)
-EXT = re.compile(r"\.(?:jpe?g|webp|png|avif)(?:[?#]|$)|[?&]rule=mo-\d+\.jpg", re.I)
+EXT = re.compile(r"\.(?:jpe?g|webp|png|avif)(?:[?#]|$)|[?&]rule=mo-\d+\.jpg|/imgc/\d+/\d+/\d+/\d+$", re.I)   # last: autohaus-digital (11er Ecke)
 NOT_CAR = re.compile(r"logo|icon|favicon|flag|sprite|placeholder|avatar|portrait|banner|background|footer|overlay|\.png(?:[?#]|$)", re.I)
 
 
@@ -117,10 +117,13 @@ def main():
             continue
         host = urllib.parse.urlparse(u).netloc
         imgs = p["imgs"] if p.get("direct") else [i for i in p["imgs"] if count[(host, i)] == 1]
+        imgs = [re.sub(r"[?&]no_?cache=\d+$", "", i) for i in imgs]   # cache-busting stamp: changes on every visit
         # one entry per photo: drop resized copies ("…-640x427.jpg", "…-jpg.webp") of a photo already listed
         seen, keep = set(), []
         for i in imgs:
             name = i.split("?")[0].rsplit("/", 1)[-1]
+            if name.isdigit():                    # ".../<photo id>/<width>": the same photo in several widths
+                name = i.split("?")[0].rsplit("/", 2)[-2]
             cam = re.match(r"((?:IMG|DSC|DSCF|_MG|_DSC)_?\d{3,})", name)   # camera file number: the same photo in two sizes
             key = i if p.get("direct") else cam.group(1) if cam else re.sub(r"(-\d+x\d+)?(-jpg)?\.(jpe?g|webp|png)$", "", name)
             if key not in seen:

@@ -38,6 +38,8 @@ export type RealSale = {
   location?: string;
   /** Currency the price was given in (USD, EUR, GBP …), "" when unknown. */
   currency?: string;
+  /** Price in that currency as published by the house; for an unsold lot its high bid. */
+  priceOriginal?: number | null;
 };
 
 export type ParseResult = { rows: RealSale[]; errors: string[]; total: number };
@@ -65,6 +67,7 @@ const ALIASES: Record<string, string[]> = {
   url: ["url", "link", "quelle_url"],
   location: ["standort", "location", "verkaufsland"],
   currency: ["waehrung", "währung", "currency"],
+  priceOriginal: ["preis_original", "price_original", "originalpreis"],
   highBid: ["hoechstgebot_eur", "höchstgebot_eur", "high_bid", "high_bid_eur"],
 };
 
@@ -182,6 +185,7 @@ export function parseSalesCsv(text: string, origin = "CSV"): ParseResult {
       gearboxKnown: !!gearRaw,
       location: get("location").toUpperCase().slice(0, 2),
       currency: get("currency").toUpperCase().slice(0, 3),
+      priceOriginal: parseNumber(get("priceOriginal")),
     });
   });
   return { rows, errors, total: lines.length - 1 };

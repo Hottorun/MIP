@@ -119,6 +119,8 @@ export type Sale = {
   url?: string; // source link for imported real records
   conditionUnknown?: boolean; // imported record without a stated condition (normalised as "2")
   highBid?: number | null; // highest bid of an unsold auction lot (Bring a Trailer), EUR; display only
+  currency?: string; // currency the price was given in (USD, EUR, GBP …), "" when unknown
+  priceOriginal?: number | null; // price (unsold: high bid) in that currency; shown as is when it matches the display currency
 };
 
 export type Listing = {

@@ -1,17 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowDown, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { AS_OF, WEEK, getSeries } from "../data/generate";
 import { getMetrics, rebase } from "../data/market";
 import type { ModelCategory, Variant } from "../data/types";
 import { useStore } from "../state/store";
-import { cn, date, eur, num, pct } from "../lib/format";
+import { cn, date, eur, eurRange, num, pct } from "../lib/format";
+import { valueSpread } from "../data/real/model";
 import { CarImage } from "../components/CarImage";
 import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps, Money } from "../components/ui";
 import { t } from "../i18n";
 import { tr } from "../i18n/terms";
+import { UPCOMING_BRANDS, upcomingBrandById, type UpcomingBrand } from "../data/upcoming";
 
 type SortKey = "series" | "value" | "change12m" | "cagr5" | "rarity" | "liquidity" | "year" | "name";
 const SORTS: { value: SortKey; readonly label: string }[] = [
@@ -108,6 +110,8 @@ export default function Models() {
   const generationId = params.get("generation") ?? "";
   const variantId = params.get("variante") ?? "";
   const category = (params.get("kategorie") ?? "") as ModelCategory | "";
+  // Ferrari, BMW, Mercedes-Benz: announced only, their menu entry opens a teaser instead of the list
+  const upcoming = upcomingBrandById.get(brandId);
   const effectiveBrand = brandId || (modelId ? modelById.get(modelId)?.brandId ?? "" : "");
 
   const [query, setQuery] = useState("");
@@ -186,20 +190,31 @@ export default function Models() {
         <div>
           <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Modelle", "Models")}</h1>
           <p className="mt-1 text-[14px] text-muted">
-            {t(`${filtered.length} von ${variants.length} Varianten`, `${filtered.length} of ${variants.length} variants`)}
+            {upcoming
+              ? t("Marktdaten in Vorbereitung", "Market data in preparation")
+              : t(`${filtered.length} von ${variants.length} Varianten`, `${filtered.length} of ${variants.length} variants`)}
           </p>
         </div>
-        <Segmented
+        {!upcoming && <Segmented
           options={[
             { value: "grid", label: t("Galerie", "Gallery") },
             { value: "table", label: t("Liste", "List") },
           ]}
           value={view}
           onChange={(v) => setView(v as "grid" | "table")}
-        />
+        />}
       </div>
 
-      <div className="space-y-4 border-y border-line py-5">
+      <BrandMenu
+        active={upcoming ? upcoming.id : effectiveBrand || brands[0]?.id}
+        onSelect={(id) => setFilter({ marke: upcomingBrandById.has(id) || brands.length > 1 ? id : "", modell: "", generation: "", variante: "", kategorie: "" })}
+      />
+
+      {upcoming ? (
+        <BrandTeaser brand={upcoming} onBack={() => setFilter({ marke: "", modell: "", generation: "", variante: "", kategorie: "" })} />
+      ) : (
+      <>
+      <div className="space-y-4 border-b border-line pb-5">
         {brands.length > 1 && (
           <div className="flex flex-wrap items-center gap-1.5">
             <button className={cn("chip", !effectiveBrand && "chip-active")} onClick={() => setFilter({ marke: "", modell: "", generation: "", variante: "" })}>
@@ -397,7 +412,7 @@ export default function Models() {
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
                     <td className="text-right">
-                      {v.measured ? <Money value={m.value} /> : <span className="text-[13px] text-faint" title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>}
+                      {v.measured ? <ListValue v={v} value={m.value} /> : <span className="text-[13px] text-faint" title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>}
                     </td>
                     <td className="text-right">{v.measured ? <Delta value={m.change12m} /> : <span className="text-faint">–</span>}</td>
                     <td className="text-right tabular-nums">{v.measured ? pct(m.cagr5) : <span className="text-faint">–</span>}</td>
@@ -412,6 +427,8 @@ export default function Models() {
             </tbody>
           </table>
         </div>
+      )}
+      </>
       )}
 
       {compare.length > 0 && (
@@ -446,6 +463,89 @@ export default function Models() {
         <CompareView ids={compare} />
       </Modal>
     </div>
+  );
+}
+
+/** Value in the list: the median; for uncertain variants (early classics, scattered records) marked "ca." with the range on hover. */
+function ListValue({ v, value, compact, className }: { v: Variant; value: number; compact?: boolean; className?: string }) {
+  const s = valueSpread(v, value);
+  if (!s) return <Money value={value} compact={compact} className={className} />;
+  return (
+    <span className={cn("whitespace-nowrap", className)} title={t(`Typische Spanne ${eurRange(s.lo, s.hi)}`, `Typical range ${eurRange(s.lo, s.hi)}`)}>
+      <span className="mr-1 text-[0.8em] text-muted">{t("ca.", "approx.")}</span>
+      <Money value={value} compact={compact} />
+    </span>
+  );
+}
+
+/** Brand menu of the model list: the live brands, then the announced ones, each with a page of its own. */
+function BrandMenu({ active, onSelect }: { active?: string; onSelect: (id: string) => void }) {
+  // on narrow screens the menu scrolls sideways: keep the active brand in view
+  const activeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [active]);
+  const entries = [
+    ...brands.map((b) => ({ id: b.id, name: b.name, note: t(`${variants.filter((v) => v.brandId === b.id).length} Varianten`, `${variants.filter((v) => v.brandId === b.id).length} variants`), soon: false })),
+    ...UPCOMING_BRANDS.map((b) => ({ id: b.id, name: b.name, note: t("Demnächst", "Coming soon"), soon: true })),
+  ];
+  return (
+    <nav aria-label={t("Marken", "Brands")} className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+      <div className="flex min-w-max gap-7 border-b border-line sm:gap-10">
+        {entries.map((e) => {
+          const on = e.id === active;
+          return (
+            <button
+              key={e.id}
+              ref={on ? activeRef : undefined}
+              onClick={() => onSelect(e.id)}
+              aria-current={on ? "page" : undefined}
+              className={cn(
+                "-mb-px border-b-2 pb-3 text-left transition-colors",
+                on ? "border-ink" : "border-transparent hover:border-line-2",
+              )}
+            >
+              <span className={cn("block font-display text-[22px] leading-tight sm:text-[24px]", on ? "text-ink" : e.soon ? "text-faint" : "text-muted")}>{e.name}</span>
+              <span className={cn("mt-0.5 block text-[11px] font-semibold uppercase tracking-[0.12em]", e.soon ? "text-gold" : "text-muted")}>{e.note}</span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
+/** Teaser of an announced brand: what is planned, nothing more (no models, no data yet). */
+function BrandTeaser({ brand, onBack }: { brand: UpcomingBrand; onBack: () => void }) {
+  return (
+    <section aria-label={brand.name} className="animate-fade-in grid gap-12 pt-4 pb-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-16">
+      <div>
+        <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-gold">{t("Demnächst", "Coming soon")}</p>
+        <h2 className="mt-3 font-display text-[54px] leading-[1.02] sm:text-[72px]">{brand.name}</h2>
+        <p className="mt-2 text-[14px] text-muted">{brand.origin}</p>
+        <p className="mt-7 max-w-xl font-serif text-[18px] leading-[1.65] text-ink/90">{brand.intro}</p>
+        <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-muted">
+          {t(
+            `Marktwerte für ${brand.name} entstehen nach demselben Verfahren wie bei Porsche: aus echten Auktionsergebnissen und Angeboten, Variante für Variante belegt. Bis dahin bleibt die Modellliste bei Porsche.`,
+            `Market values for ${brand.name} will follow the same method as for Porsche: real auction results and listings, documented variant by variant. Until then the model list stays with Porsche.`,
+          )}
+        </p>
+        <button className="btn mt-8" onClick={onBack}>
+          {t("Zu den Porsche-Modellen", "Go to the Porsche models")}
+          <ArrowRight className="size-4" strokeWidth={1.5} />
+        </button>
+      </div>
+      <div className="lg:border-l lg:border-line lg:pl-12">
+        <p className="text-[13px] text-muted">{t("Geplant, unter anderem", "Planned, among others")}</p>
+        <ul className="mt-3 border-t border-line">
+          {brand.icons.map((name) => (
+            <li key={name} className="border-b border-line py-3.5 font-serif text-[20px] text-ink/75">
+              {name}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
   );
 }
 
@@ -529,7 +629,7 @@ function VariantCard({
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
         <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-        {v.measured ? <Money value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
+        {v.measured ? <ListValue v={v} value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
         <span>

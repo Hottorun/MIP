@@ -436,6 +436,9 @@ result = {"asOf": AS_OF.isoformat(), "grid": [ms(d) for d in GRID_DATES], "varia
           "sources": dict(collections.Counter(s["house"] for s in obs).most_common()),
           "offsets": {k: {c: round(v, 4) for c, v in d.items()} for k, d in delta.items()}, "offsetPairs": dinfo,
           "scatter": {c: round(x, 4) for c, x in SD.items()}, "bias": {c: round(math.sqrt(x), 4) for c, x in TAU2.items()}, "biasPairs": tauinfo, "minN": MIN_N}
+# ECB rate of the as-of day (or the last one before it): the English app shows prices in dollars at this rate
+_usd_day = max((d for d in fxdates["USD"] if d <= AS_OF.isoformat()), default=None)
+if _usd_day: result["fx"] = {"USD": fx["USD"][_usd_day], "date": _usd_day}
 excluded_all = []
 for v, l in byv.items():
     g = l[0]["g"]; gi = g if g in idx else PARENT[g]; f = idx[gi]; k = l[0]["k"]

@@ -94,7 +94,7 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
                 )}
               </div>
               <div className={"text-right text-[18px]" + (outliers.has(s.id) ? " text-muted line-through decoration-1" : "")}>{s.price ? (
-                  <Money value={s.price} />
+                  <Money value={s.price} sale={s} />
                 ) : (
                   <>
                     <span className="text-[14px] text-faint italic">{t("nicht verkauft", "not sold")}</span>

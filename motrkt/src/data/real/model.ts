@@ -171,3 +171,31 @@ export function modelValueAt(variantId: string, t: number): number | null {
   if (!e?.series || !e.value) return null;
   return interp(e.series, t);
 }
+
+/** Cars built before the 964 (1989): condition, originality and history move the price far more than on younger cars. */
+export const EARLY_CLASSIC_BEFORE = 1989;
+/**
+ * A value counts as clear only when the middle half of its records is narrower than this share of the value
+ * and it rests on at least CLEAR_MIN_N records; mostly younger cars. Every other value is shown as approximate, with its range.
+ */
+const CLEAR_SPREAD = 0.25;
+const CLEAR_MIN_N = 20;
+
+/**
+ * Typical price range (middle half of the records) for variants whose value is not clear-cut: early classics before the
+ * 964, and any variant whose records scatter or are few. Scaled to the value shown (body style, current week). Null for clear values.
+ */
+export function valueSpread(variant: { id: string; years: [number, number | null] }, shown: number): { lo: number; hi: number } | null {
+  const e = raw.variants[variant.id];
+  if (!e?.value || !e.lo || !e.hi) return null;
+  if (variant.years[0] >= EARLY_CLASSIC_BEFORE && (e.hi - e.lo) / e.value < CLEAR_SPREAD && e.n >= CLEAR_MIN_N) return null;
+  return valueRange(variant, shown);
+}
+
+/** Typical price range (middle half of the records) of any measured variant, scaled to the value shown. */
+export function valueRange(variant: { id: string }, shown: number): { lo: number; hi: number } | null {
+  const e = raw.variants[variant.id];
+  if (!e?.value || !e.lo || !e.hi || !(shown > 0)) return null;
+  const k = shown / e.value;
+  return { lo: e.lo * k, hi: e.hi * k };
+}

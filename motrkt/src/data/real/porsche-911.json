@@ -481,9 +481,9 @@
     "launchColor": {
       "name": "Sternrubin (Rubystone Red)",
       "hex": "#C8326B",
-      "source": "https://newsroom.porsche.com/en/history/porsche-history-911-chameleon-944-928-colourful-tradition-13262.html",
-      "confidence": "low",
-      "note": "Porsche Newsroom heritage pieces repeatedly feature a Rubystone (Star Ruby/Rubystar) 964 Carrera RS (also https://newsroom.porsche.com/en/2019/history/porsche-klassik-911-eight-generations-dna-18914.html), and Rubystone was new for MY1992 (RS launch year). The colour of the Geneva March 1991 show car itself was not found. Factory name on the colour chart is Sternrubin (code 82N, model years 1991–1992)."
+      "source": "https://media.porsche.com/paint-to-sample/en/911/rubystar",
+      "confidence": "high",
+      "note": "Porsche Newsroom heritage pieces repeatedly feature a Rubystone (Star Ruby/Rubystar) 964 Carrera RS (also https://newsroom.porsche.com/en/2019/history/porsche-klassik-911-eight-generations-dna-18914.html), and Rubystone was new for MY1992 (RS launch year). The colour of the Geneva March 1991 show car itself was not found. Factory name on the colour chart is Sternrubin (code 82N, model years 1991–1992). Porsche (Paint to Sample) nennt Rubystar ausdrücklich die Einführungsfarbe des 911 Carrera RS 3.6 (964). Frühere Quelle: https://newsroom.porsche.com/en/history/porsche-history-911-chameleon-944-928-colourful-tradition-13262.html"
     },
     "specs": {
       "production": 2282,
@@ -678,7 +678,7 @@
       "hex": "#B4B7BA",
       "source": "https://www.stuttcars.com/porsche-911-993-the-story/",
       "confidence": "medium",
-      "note": "Stuttcars: on display at the IAA Frankfurt premiere (9 Sept 1993) were a silver Carrera coupé and a yellow/black Supercup car. Polar Silver (92M) was Porsche's silver at the time; exact paint name inferred."
+      "note": "Stuttcars: on display at the IAA Frankfurt premiere (9 Sept 1993) were a silver Carrera coupé and a yellow/black Supercup car. Polar Silver (92M) was Porsche's silver at the time; exact paint name inferred. Laut Porsche (Paint to Sample) war Rivierablau eine der Markteinführungsfarben des 993; mehrere Pressefahrzeuge waren rivierablau: https://media.porsche.com/paint-to-sample/en/911/rivierablue"
     },
     "specs": {
       "production": 38626,
@@ -1499,7 +1499,7 @@
       "hex": "#F47B20",
       "source": "https://www.ultimatecarpage.com/car/2802/Porsche-997-GT3-RS.html",
       "confidence": "medium",
-      "note": "Show-car photo (2006 launch) shows Orange body with black wing/decals/wheels; Green/black was the other hero combination. Porsche release: standard Arctic Silver or Black, optional Orange or Green. The 997.2 GT3 RS 3.8 (2009) is associated with a white/red scheme per https://www.drive.com.au/news/2023-porsche-911-gt3-rs-leaked/."
+      "note": "Show-car photo (2006 launch) shows Orange body with black wing/decals/wheels; Green/black was the other hero combination. Porsche release: standard Arctic Silver or Black, optional Orange or Green. The 997.2 GT3 RS 3.8 (2009) is associated with a white/red scheme per https://www.drive.com.au/news/2023-porsche-911-gt3-rs-leaked/. Widerspruch: Laut Porsche (Paint to Sample, Farbe „Grün“/RS-Grün) wurde Grün 2007 für den 911 GT3 RS (997.1) entwickelt und als Kommunikationsfarbe gewählt: https://media.porsche.com/paint-to-sample/en/911/green"
     },
     "specs": {
       "hp": 415,
@@ -1775,7 +1775,7 @@
       "hex": "#F2581F",
       "source": "https://newsroom.porsche.com/en/products/porsche-colors-911-gt3-rs-lizard-green-communication-color-design-barbara-sika-daniela-milosevic-sina-brunner-christophorus-386-15491.html",
       "confidence": "high",
-      "note": "Porsche newsroom: predecessor GT3 RS 'was presented in Lava Orange' (paint code M2A). The 991.2 GT3 RS (2018) communication colour was Lizard Green (Lizardgrün)."
+      "note": "Porsche newsroom: predecessor GT3 RS 'was presented in Lava Orange' (paint code M2A). The 991.2 GT3 RS (2018) communication colour was Lizard Green (Lizardgrün). Porsche (Paint to Sample) nennt zur Markteinführung 2015 außerdem Ultraviolett als Kommunikationsfarbe: https://media.porsche.com/paint-to-sample/en/911/ultraviolet"
     },
     "specs": {
       "hp": 500,
@@ -2081,9 +2081,9 @@
     "launchColor": {
       "name": "Haifischblau (Shark Blue)",
       "hex": "#0B6FB8",
-      "source": "https://www.carpaints.co/uploads/detail/shark-blue-porsche-911-gt3-992",
+      "source": "https://media.porsche.com/paint-to-sample/en/911/sharkblue",
       "confidence": "high",
-      "note": "Paint code D5C; 'used as communication color for the car in 2021'; Porsche premiere photos (16 Feb 2021) show Shark Blue. Also: https://www.motor1.com/news/493170/porsche-911-gt3-blue-paint/"
+      "note": "Paint code D5C; 'used as communication color for the car in 2021'; Porsche premiere photos (16 Feb 2021) show Shark Blue. Also: https://www.motor1.com/news/493170/porsche-911-gt3-blue-paint/ Porsche (Paint to Sample): Haifischblau debütierte als Präsentationsfarbe des 911 GT3 (992). Frühere Quelle: https://www.carpaints.co/uploads/detail/shark-blue-porsche-911-gt3-992"
     },
     "specs": {
       "hp": 510,
@@ -2386,5 +2386,376 @@
         "caption": "Porsche 911 Dakar (992) in Shadegrün Metallic"
       }
     ]
+  },
+  "porsche-911-997-1-carrera": {
+    "specs": {
+      "hp": 325,
+      "liters": 3.6,
+      "newPrice": {
+        "amount": 75200,
+        "currency": "EUR",
+        "eur": 75200,
+        "year": 2004
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://newsroom.porsche.com/de/pressemappen/60-Jahre-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-2012.html"
+      ]
+    }
+  },
+  "porsche-911-997-2-carrera": {
+    "specs": {
+      "hp": 345,
+      "liters": 3.6,
+      "newPrice": {
+        "amount": 83032,
+        "currency": "EUR",
+        "eur": 83032,
+        "year": 2008
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://www.autoplenum.de/auto/tests/hightech-porsche-legt-beim-elfer-noch-eine-schippe-drauf-id1431"
+      ]
+    }
+  },
+  "porsche-911-991-1-carrera": {
+    "specs": {
+      "hp": 350,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 88037,
+        "currency": "EUR",
+        "eur": 88037,
+        "year": 2011
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/pdf/ac59216d-4488-4f2d-b837-f174a76ce249",
+        "https://porsche-club-deutschland.de/PcLife/11-3/PC-Life/PDFs/Porsche911Carrera.pdf",
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ]
+    },
+    "launchColor": {
+      "name": "Indischrot (Guards Red)",
+      "hex": "#C8102E",
+      "source": "https://www.ausmotive.com/2011/08/23/official-991-porsche-911-revealed.html",
+      "confidence": "medium",
+      "note": "Official Porsche launch photo set (23 Aug 2011) shows the base Carrera in Guards Red; the 60-years press kit photos of the 991 Carrera are red too."
+    }
+  },
+  "porsche-911-991-2-carrera": {
+    "specs": {
+      "hp": 370,
+      "liters": 3.0,
+      "newPrice": {
+        "amount": 96605,
+        "currency": "EUR",
+        "eur": 96605,
+        "year": 2015
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/produkte/porsche-911-carrera-2015-11363.html",
+        "https://www.germancarforum.com/threads/official-porsche-911-991-facelift.54137/post-761419",
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ]
+    }
+  },
+  "porsche-911-992-1-carrera": {
+    "specs": {
+      "hp": 385,
+      "liters": 3.0,
+      "newPrice": {
+        "amount": 104655,
+        "currency": "EUR",
+        "eur": 104655,
+        "year": 2019
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-coupe-cabriolet-achte-generation-18246.html",
+        "https://de.motor1.com/news/362339/porsche-911-carrera-992-leistung-preis/",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ]
+    }
+  },
+  "porsche-911-992-2-carrera": {
+    "specs": {
+      "hp": 394,
+      "liters": 3.0,
+      "newPrice": {
+        "amount": 128700,
+        "currency": "EUR",
+        "eur": 128700,
+        "year": 2024
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/2024/produkte/porsche-neuer-911-weltpremiere-hybrid-36321.html",
+        "https://de.motor1.com/news/721066/porsche-911-2024-facelift-hybrid/"
+      ]
+    },
+    "launchColor": {
+      "name": "Luganoblau (Lugano Blue)",
+      "hex": "#1D6FD0",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2024/products/porsche-new-911-world-premiere-hybrid-36322.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; im Konfigurator ist Luganoblau der einzige helle Blauton (Enzianblau ist dunkel). Porsches 911-Carrera-Modellseite zeigt den Wagen ebenfalls in Luganoblau."
+    }
+  },
+  "porsche-911-996-1-carrera-4": {
+    "specs": {
+      "hp": 300,
+      "liters": 3.4,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ]
+    }
+  },
+  "porsche-911-996-2-carrera-4": {
+    "specs": {
+      "hp": 320,
+      "liters": 3.6,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/pressemappen/Porsche-Heritage-Experience/Porsche-911-(Typ-996)-Carrera-4-Cabriolet.html",
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ]
+    }
+  },
+  "porsche-911-997-1-carrera-4": {
+    "specs": {
+      "hp": 325,
+      "liters": 3.6,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ]
+    }
+  },
+  "porsche-911-997-1-carrera-4s": {
+    "specs": {
+      "hp": 355,
+      "liters": 3.8,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ]
+    }
+  },
+  "porsche-911-997-2-carrera-4": {
+    "specs": {
+      "hp": 345,
+      "liters": 3.6,
+      "newPrice": {
+        "amount": 89577,
+        "currency": "EUR",
+        "eur": 89577,
+        "year": 2008
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+        "https://www.autobild.de/artikel/der-neue-porsche-911-carrera-4-725195.html"
+      ]
+    }
+  },
+  "porsche-911-997-2-carrera-4s": {
+    "specs": {
+      "hp": 385,
+      "liters": 3.8,
+      "newPrice": {
+        "amount": 100525,
+        "currency": "EUR",
+        "eur": 100525,
+        "year": 2008
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+        "https://www.autohaus.de/nachrichten/autohandel/porsche-911-carrera-4-facelift-fuer-den-fachmann-2758252"
+      ]
+    }
+  },
+  "porsche-911-991-1-carrera-4": {
+    "specs": {
+      "hp": 350,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 97557,
+        "currency": "EUR",
+        "eur": 97557,
+        "year": 2012
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/7.-Generation-Porsche-911,-(991),-2011-2019.html",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/991/",
+        "https://www.autoplenum.de/auto/tests/vier-gewinnt-der-neue-allrad-elfer-id18573"
+      ]
+    }
+  },
+  "porsche-911-991-1-carrera-4s": {
+    "specs": {
+      "hp": 400,
+      "liters": 3.8,
+      "newPrice": {
+        "amount": 112313,
+        "currency": "EUR",
+        "eur": 112313,
+        "year": 2012
+      },
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/7.-Generation-Porsche-911,-(991),-2011-2019.html",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/991/233546/",
+        "https://www.autoplenum.de/auto/tests/vier-gewinnt-der-neue-allrad-elfer-id18573"
+      ]
+    }
+  },
+  "porsche-911-991-2-carrera-4": {
+    "specs": {
+      "hp": 370,
+      "liters": 3.0,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html"
+      ]
+    },
+    "launchColor": {
+      "name": "Racinggelb (Racing Yellow)",
+      "hex": "#F7D417",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (Prospekt Modelljahr 2017) ist das der einzige gelbe Farbton. Gezeigt ist das Cabriolet."
+    }
+  },
+  "porsche-911-991-2-carrera-4s": {
+    "specs": {
+      "hp": 420,
+      "liters": 3.0,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html"
+      ]
+    },
+    "launchColor": {
+      "name": "Saphirblaumetallic (Sapphire Blue Metallic)",
+      "hex": "#1E2F5A",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; der helle Metallic-Blauton der Farbkarte 2017 ist Saphirblau (Nachtblau ist deutlich dunkler, Miamiblau türkis). Gezeigt ist der Targa 4S."
+    }
+  },
+  "porsche-911-992-1-carrera-4": {
+    "specs": {
+      "hp": 385,
+      "liters": 3.0,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html"
+      ]
+    }
+  },
+  "porsche-911-992-1-carrera-4s": {
+    "specs": {
+      "hp": 450,
+      "liters": 3.0,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html"
+      ]
+    }
+  },
+  "porsche-911-992-1-carrera-4-gts": {
+    "specs": {
+      "hp": 480,
+      "liters": 3.0,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/2021/produkte/porsche-911-gts-modelle-premiere-24872.html"
+      ]
+    }
+  },
+  "porsche-911-992-2-carrera-4s": {
+    "specs": {
+      "hp": 480,
+      "liters": 3.0,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/2025/produkte/porsche-911-carrera-targa-4s-allradantrieb--39922.html"
+      ]
+    }
+  },
+  "porsche-911-992-2-carrera-4-gts": {
+    "specs": {
+      "hp": 541,
+      "liters": 3.6,
+      "productionNote": "Schätzung",
+      "sources": [
+        "https://newsroom.porsche.com/de/pressemappen/911.html"
+      ]
+    }
+  },
+  "porsche-911-991-2-gt3-rs": {
+    "launchColor": {
+      "name": "Lizardgrün (Lizard Green)",
+      "hex": "#4CB43C",
+      "confidence": "high",
+      "source": "https://newsroom.porsche.com/en/products/porsche-colors-911-gt3-rs-lizard-green-communication-color-design-barbara-sika-daniela-milosevic-sina-brunner-christophorus-386-15491.html",
+      "note": "Weltpremiere Genfer Autosalon, März 2018. Laut Porsche (Christophorus 386) die Farbe der gesamten Produktkommunikation, beginnend mit der Weltpremiere."
+    }
+  },
+  "porsche-911-991-2-carrera-t": {
+    "launchColor": {
+      "name": "Racinggelb (Racing Yellow)",
+      "hex": "#F7D417",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-carrera-t-puristic-performance-driving-pleasure-touring-14410.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (Prospekt Modelljahr 2017) ist das der einzige gelbe Farbton. Porsche nennt Racinggelb ausdrücklich unter den Farben des Carrera T."
+    }
+  },
+  "porsche-911-991-2-turbo-s": {
+    "launchColor": {
+      "name": "Racinggelb (Racing Yellow)",
+      "hex": "#F7D417",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-turbo-911-turbo-s-sportscar-12061.html",
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (Prospekt Modelljahr 2017) ist das der einzige gelbe Farbton."
+    }
+  },
+  "porsche-911-991-1-50-jahre-edition": {
+    "launchColor": {
+      "name": "Geysirgraumetallic (Geyser Grey Metallic)",
+      "hex": "#A8A69D",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2019/products/porsche-911-50-years-anniversary-edition-19212.html",
+      "note": "Das Sondermodell gab es in Graphitgrau, Geysirgraumetallic und Schwarz. Die Präsentationsfotos zeigen den hellen Grauton, also Geysirgrau. Präsentiert auf der IAA Frankfurt, September 2013."
+    }
+  },
+  "porsche-911-997-2-sport-classic": {
+    "launchColor": {
+      "name": "Sportclassicgrau (Sport Classic Grey)",
+      "hex": "#7A858B",
+      "confidence": "high",
+      "source": "https://media.porsche.com/paint-to-sample/en/911/sportclassicgrey",
+      "note": "Porsche (Paint to Sample): eigens für den 911 Sport Classic entwickelt; im September 2009 auf der IAA Frankfurt in Sportclassicgrau präsentiert, nach 48 Stunden ausverkauft."
+    }
+  },
+  "porsche-911-997-2-speedster": {
+    "launchColor": {
+      "name": "Pure Blue",
+      "hex": "#2C5DA8",
+      "confidence": "high",
+      "source": "https://www.zawya.com/en/press-release/fourth-edition-of-a-sports-car-legend-the-new-porsche-911-speedster-drrkdn6u",
+      "note": "Porsche-Pressemitteilung vom 21.09.2010 (Pariser Autosalon): Die Außenfarbe „Pure Blue“ wurde exklusiv für den Speedster entwickelt; Carraraweiß gab es auf Wunsch ohne Aufpreis."
+    }
   }
 }

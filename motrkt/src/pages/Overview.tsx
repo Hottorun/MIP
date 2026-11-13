@@ -277,7 +277,7 @@ export default function Overview() {
                         {s.house}, {date(s.date)}
                       </div>
                     </div>
-                    <Money value={s.price} className="text-[18px]" />
+                    <Money value={s.price} sale={s} className="text-[18px]" />
                   </Link>
                 </li>
               );
@@ -308,7 +308,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
           >
             {variantTitle(v, { brand: false })}
           </Link>
-          <Money value={s.price} className="text-[15px]" />
+          <Money value={s.price} sale={s} className="text-[15px]" />
           <span className="text-[12.5px] text-muted">
             {s.house}, {date(s.date)}
           </span>

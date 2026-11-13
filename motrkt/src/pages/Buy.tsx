@@ -6,7 +6,7 @@ import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries 
 import { useLiveListings } from "../state/liveListings";
 import { getMetrics } from "../data/market";
 import type { Listing, Variant } from "../data/types";
-import { cn, date, eur, flag, km, num, pct } from "../lib/format";
+import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct } from "../lib/format";
 import { useStore } from "../state/store";
 import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
@@ -86,8 +86,8 @@ export default function Buy() {
 
   const filtered = useMemo(() => {
     const q = text.trim().toLowerCase();
-    const pMin = Number(priceMin) || 0;
-    const pMax = Number(priceMax) || Infinity;
+    const pMin = fromDisplay(Number(priceMin) || 0);
+    const pMax = fromDisplay(Number(priceMax) || Infinity);
     const yFrom = Number(yearFrom) || 0;
     const yTo = Number(yearTo) || Infinity;
     const kMax = Number(maxKm) || Infinity;
@@ -206,9 +206,9 @@ export default function Buy() {
             ))}
           </select>
           <div className="flex items-center gap-2">
-            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder={t("Preis ab €", "Price from €")} value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} aria-label={t("Preis ab", "Price from")} />
+            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder={t("Preis ab €", "Price from $")} value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} aria-label={t("Preis ab", "Price from")} />
             <span className="text-faint">{t("bis", "to")}</span>
-            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder="€" value={priceMax} onChange={(e) => setPriceMax(digits(e.target.value))} aria-label={t("Preis bis", "Price to")} />
+            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder={curSign()} value={priceMax} onChange={(e) => setPriceMax(digits(e.target.value))} aria-label={t("Preis bis", "Price to")} />
           </div>
           <button className="text-muted underline-offset-4 hover:text-ink hover:underline" onClick={() => setMoreFilters((m) => !m)} aria-expanded={moreFilters}>
             {moreFilters ? t("Weniger Filter", "Fewer filters") : t("Weitere Filter", "More filters")}

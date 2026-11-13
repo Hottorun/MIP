@@ -4,7 +4,7 @@ import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info,
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
-import { cn, date, num } from "../lib/format";
+import { cn, date, num, usdRate } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
@@ -448,6 +448,12 @@ function Footer() {
               `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Not investment advice.`,
             )}
           </p>
+          {usdRate() && (
+            <p>
+              Prices are shown in US dollars, converted from euros at the ECB rate of {date(Date.parse(usdRate()!.date))} (
+              {num(usdRate()!.rate, 4)} USD per EUR).
+            </p>
+          )}
           <Link to="/bildnachweise" className="link">
             {t("Bildnachweise und Quellen", "Image credits and sources")}
           </Link>

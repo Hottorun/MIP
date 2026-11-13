@@ -43,8 +43,8 @@ export function PaintChart({ variant }: { variant: Variant }) {
       sub={
         parts.length
           ? t(
-              `${total} Lacke, die Porsche in den Baujahren dieser Variante anbot, nach den Farbkarten des Werks.`,
-              `${total} paints Porsche offered in this variant's build years, from the factory's own colour charts.`,
+              `${total} Lacke, die Porsche in den Baujahren dieser Variante anbot, nach Porsches eigenen Unterlagen.`,
+              `${total} paints Porsche offered in this variant's build years, from Porsche's own documents.`,
             )
           : undefined
       }
@@ -71,8 +71,8 @@ export function PaintChart({ variant }: { variant: Variant }) {
             {note && <p className="text-[13.5px] text-muted">{note}</p>}
             <p>
               {t(
-                "Namen, Codes und Modelljahre wie auf den Werkskarten (Porsche Classic). Die Farbtöne sind angenähert: bei den alten Karten aus dem Scan gemessen und um das vergilbte Papier korrigiert, sonst nach dem Farbnamen geschätzt. Ein Bildschirm zeigt Lack nur ungefähr.",
-                "Names, codes and model years as printed on the factory charts (Porsche Classic). Shades are approximate: measured on the scans of the old charts and corrected for the yellowed paper, otherwise estimated from the colour name. A screen shows paint only roughly.",
+                "Namen, Codes und Modelljahre wie in den Quellen von Porsche: Werksfarbkarten (Porsche Classic), bei neueren Modellen Verkaufsprospekte oder der Konfigurator. Die Farbtöne sind angenähert: bei den alten Karten aus dem Scan gemessen und um das vergilbte Papier korrigiert, sonst nach dem Farbnamen geschätzt. Ein Bildschirm zeigt Lack nur ungefähr.",
+                "Names, codes and model years as given in Porsche's own sources: factory colour charts (Porsche Classic), for newer models sales brochures or the configurator. Shades are approximate: measured on the scans of the old charts and corrected for the yellowed paper, otherwise estimated from the colour name. A screen shows paint only roughly.",
               )}
             </p>
           </div>
@@ -99,7 +99,12 @@ function ChartPart({ part, variant, launch }: { part: PaintChartPart; variant: V
           {palette.title} <span className="text-[14px] font-normal text-muted">· {t(`${colors.length} Farben`, `${colors.length} colours`)}</span>
         </h3>
         <a href={palette.source} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[13px] text-gold hover:underline">
-          {t("Farbkarte des Werks", "Factory colour chart")} <ArrowUpRight className="size-3.5" />
+          {palette.source.includes("configurator.porsche.com")
+            ? t("Porsche-Konfigurator", "Porsche configurator")
+            : palette.source.includes("files.porsche.com")
+              ? t("Farbkarte des Werks", "Factory colour chart")
+              : t("Porsche-Prospekt", "Porsche brochure")}{" "}
+          <ArrowUpRight className="size-3.5" />
         </a>
       </div>
       <div className="space-y-6">
