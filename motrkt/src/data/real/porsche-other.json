@@ -18,7 +18,14 @@
       "sources": [
         "https://de.wikipedia.org/wiki/Porsche_356",
         "https://en.wikipedia.org/wiki/Porsche_356"
-      ]
+      ],
+      "newPrice": {
+        "amount": 11400,
+        "currency": "DEM",
+        "eur": 5829,
+        "year": 1955
+      },
+      "note": "Wikipedia: Preise von 11.400 bis 15.750 DM je nach Ausführung"
     },
     "note": "Production 21,045 is the whole 356 A series (Coupé, Cabriolet, Speedster). 60 PS / 1582 cc refers to the 1600 version. 356 A list prices ranged from 11,400 to 15,750 DM depending on version; no single Coupé 1600 price verified.",
     "images": [
@@ -1445,6 +1452,14 @@
       "confidence": "high",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Porsche: Das Sondermodell wird in GT-Silbermetallic angeboten (wie die Studie von 1993), daneben Tiefschwarz- und Carraraweißmetallic; die Präsentationsfotos zeigen GT-Silber mit Neodyme-Akzenten."
+    },
+    "specs": {
+      "hp": 400,
+      "liters": 4.0,
+      "production": 1250,
+      "sources": [
+        "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html"
+      ]
     }
   },
   "porsche-718-718-boxster-s": {
@@ -1454,6 +1469,14 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige orange Farbton. Weltpremiere Genf, März 2016. Porsches Bühnenfoto der Weltpremiere (Genf, März 2016) zeigt einen orangen 718 Boxster."
+    },
+    "specs": {
+      "hp": 350,
+      "liters": 2.5,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-cayman-s": {
@@ -1463,6 +1486,18 @@
       "confidence": "high",
       "source": "https://newsroom.porsche.com/en/products/porsche-cayman-model-series-718-sport-coupe-12475.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige türkisblaue Farbton. Porsches Foto vom Messestand der Weltpremiere (Auto China Peking, April 2016) zeigt einen 718 Cayman S in Miamiblau."
+    },
+    "specs": {
+      "hp": 350,
+      "liters": 2.5,
+      "years": [
+        2016,
+        2025
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-cayman-gt4": {
@@ -1472,6 +1507,18 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2019/products/porsche-718-spyder-cayman-gt4-naturally-aspired-engine-mid-engine.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige gelbe Farbton."
+    },
+    "specs": {
+      "hp": 420,
+      "liters": 4.0,
+      "years": [
+        2019,
+        2023
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-981-cayman-gt4": {
@@ -1481,6 +1528,20 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/geneva-international-motor-show-porsche-cayman-gt4-911-gt3-rs-10052.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (981-Prospekte) ist das der einzige gelbe Farbton. Weltpremiere Genf, März 2015."
+    },
+    "specs": {
+      "hp": 385,
+      "liters": 3.8,
+      "newPrice": {
+        "amount": 85776,
+        "currency": "EUR",
+        "eur": 85776,
+        "year": 2015
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_981c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-boxster-gts-4-0": {
@@ -1490,6 +1551,14 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; Pythongrün war 2020 die einzige grüne Serien-Sonderfarbe für die 718-Modelle (laut Porsche-Pressemitteilung vom 08.09.2020 auch für GT4 und Spyder). Hinweis: Porsche (Paint to Sample) datiert die Einführung von Pythongrün auf 2021, die Weltpremiere der GTS 4.0 war im Juni 2020; die Farbe war ab Modelljahr 2021 bestellbar."
+    },
+    "specs": {
+      "hp": 400,
+      "liters": 4.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-987-2-cayman-r": {
@@ -1499,6 +1568,20 @@
       "confidence": "high",
       "source": "https://media.porsche.com/paint-to-sample/en/911/peridotmetallic",
       "note": "Porsche (Paint to Sample): Der Cayman R wurde am 17. November 2010 auf der LA Auto Show in der Kommunikationsfarbe Peridotmetallic präsentiert."
+    },
+    "specs": {
+      "hp": 330,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 69830,
+        "currency": "EUR",
+        "eur": 69830,
+        "year": 2011
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_987c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-986-boxster-s-50-jahre-550-spyder": {
@@ -1508,6 +1591,20 @@
       "confidence": "high",
       "source": "https://media.porsche.com/paint-to-sample/en/panamera/gtsilvermetallic",
       "note": "Porsche (Paint to Sample): GT-Silbermetallic diente 2003/04 als Sonderfarbe für das Boxster-Sondermodell zum 50. Jahrestag des 550 Spyder."
+    },
+    "specs": {
+      "hp": 266,
+      "liters": 3.2,
+      "production": 1953,
+      "newPrice": {
+        "amount": 59192,
+        "currency": "EUR",
+        "eur": 59192,
+        "year": 2004
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ]
     }
   },
   "porsche-boxster-987-2-boxster-s-black-edition": {
@@ -1526,6 +1623,14 @@
       "confidence": "high",
       "source": "https://www.autoblog.com/2007/11/27/porsche-boxster-rs-60-spyder-limited-edition/",
       "note": "Laut der bei Autoblog wiedergegebenen Porsche-Pressemitteilung (November 2007) kommt das Sondermodell in GT-Silbermetallic mit Interieur in Carrerarot; auf 1.960 Exemplare limitiert."
+    },
+    "specs": {
+      "hp": 303,
+      "liters": 3.4,
+      "production": 1960,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ]
     }
   },
   "porsche-718-718-cayman": {
@@ -1535,6 +1640,18 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/porsche-cayman-model-series-718-sport-coupe-12475.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige türkisblaue Farbton. Achtung: Auf dem Messestand der Weltpremiere (Auto China Peking, April 2016) stand in Miamiblau ein 718 Cayman S; Cayman und Cayman S wurden gemeinsam vorgestellt."
+    },
+    "specs": {
+      "hp": 300,
+      "liters": 2.0,
+      "years": [
+        2016,
+        2025
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-boxster": {
@@ -1544,6 +1661,14 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige orange Farbton. Porsches Bühnenfoto der Weltpremiere (Genf, März 2016) zeigt einen orangen 718 Boxster; Boxster und Boxster S wurden gemeinsam vorgestellt."
+    },
+    "specs": {
+      "hp": 300,
+      "liters": 2.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-356-356-pre-a-coupe": {
@@ -1553,6 +1678,19 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2023/history/porsche-356-wood-framework-christophorus-406-icon-31841.html",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "newPrice": {
+        "amount": 10000,
+        "currency": "DEM",
+        "eur": 5113,
+        "year": 1950
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356"
+      ],
+      "note": "Wikipedia: Preis „knapp 10.000 DM“",
+      "productionNote": "Schätzung"
     }
   },
   "porsche-356-356-b-coupe": {
@@ -1562,6 +1700,15 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2026/scene-passion/porsche-garage-ivaylo-popivantchev-42826.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 356 B Coupé, 2026). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 60,
+      "liters": 1.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356"
+      ],
+      "note": "Grundmotor 1600; daneben 1600 S (75 PS) und S-90 (90 PS)",
+      "productionNote": "Schätzung"
     }
   },
   "porsche-356-356-c-coupe": {
@@ -1571,6 +1718,15 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-356c-claus-meirich-19777.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (356 C, 2020). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 75,
+      "liters": 1.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_356"
+      ],
+      "note": "Grundmotor 1600 C; daneben 1600 SC (95 PS)",
+      "productionNote": "Schätzung"
     }
   },
   "porsche-912-912-e": {
@@ -1580,6 +1736,18 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (912 E, 2022). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Porsche beschreibt den 912-E-Prototyp in Hellgelb (Farbcode 117): https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html"
+    },
+    "specs": {
+      "hp": 90,
+      "liters": 2.0,
+      "years": [
+        1976,
+        1976
+      ],
+      "production": 2099,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_912"
+      ]
     }
   },
   "porsche-boxster-986-boxster": {
@@ -1589,6 +1757,24 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster (986), 1996); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 1996 (Präsentationsjahr). Arenarotmetallic ist der einzige metallische Rotton der Boxster-Farbkarte 1997."
+    },
+    "specs": {
+      "hp": 204,
+      "liters": 2.5,
+      "years": [
+        1996,
+        2004
+      ],
+      "newPrice": {
+        "amount": 76500,
+        "currency": "DEM",
+        "eur": 39113,
+        "year": 1996
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-986-boxster-s": {
@@ -1598,6 +1784,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (986)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 252,
+      "liters": 3.2,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-987-1-boxster": {
@@ -1607,6 +1801,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/media-search.html",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat. Porsches Präsentationsfoto des Boxster S von 2005 zeigt Indischrot."
+    },
+    "specs": {
+      "hp": 240,
+      "liters": 2.7,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-987-1-boxster-s": {
@@ -1616,6 +1818,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (987), 2005); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2005 (Präsentationsjahr)."
+    },
+    "specs": {
+      "hp": 280,
+      "liters": 3.2,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-987-2-boxster": {
@@ -1625,6 +1835,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster (987), 2008); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2008 (Präsentationsjahr); dunkles Grün, nicht ganz eindeutig."
+    },
+    "specs": {
+      "hp": 255,
+      "liters": 2.9,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-987-2-boxster-s": {
@@ -1634,6 +1852,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (987.2)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 310,
+      "liters": 3.4,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-987-2-boxster-spyder": {
@@ -1643,6 +1869,14 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster Spyder (987), 2010); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2010 mit seitlichem Porsche-Schriftzug."
+    },
+    "specs": {
+      "hp": 320,
+      "liters": 3.4,
+      "production": 1667,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ]
     }
   },
   "porsche-boxster-981-boxster": {
@@ -1652,6 +1886,20 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster (981), 2013); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2012; Limegoldmetallic ist der einzige Goldton der 981-Farbkarte."
+    },
+    "specs": {
+      "hp": 265,
+      "liters": 2.7,
+      "newPrice": {
+        "amount": 49243,
+        "currency": "EUR",
+        "eur": 49243,
+        "year": 2012
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-981-boxster-s": {
@@ -1661,6 +1909,20 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (981), 2012); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2012; Limegoldmetallic ist der einzige Goldton der 981-Farbkarte."
+    },
+    "specs": {
+      "hp": 315,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 60191,
+        "currency": "EUR",
+        "eur": 60191,
+        "year": 2012
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-981-boxster-gts": {
@@ -1670,6 +1932,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster GTS, 2014); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 330,
+      "liters": 3.4,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-boxster-981-boxster-spyder": {
@@ -1679,6 +1949,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/products/porsche-boxster-spyder-roadster-world-premiere-new-york-international-auto-show-2015-10147.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster Spyder, 2015); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Weiß oder Carraraweißmetallic, nicht eindeutig."
+    },
+    "specs": {
+      "hp": 375,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-987-1-cayman-s": {
@@ -1688,6 +1966,20 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:2006_Porsche_Cayman_S_(68221).jpg",
       "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (2006 Porsche Cayman S (68221)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 295,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 60303,
+        "currency": "EUR",
+        "eur": 60303,
+        "year": 2007
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_987c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-987-1-cayman": {
@@ -1697,6 +1989,20 @@
       "confidence": "low",
       "source": "",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "hp": 245,
+      "liters": 2.7,
+      "newPrice": {
+        "amount": 48879,
+        "currency": "EUR",
+        "eur": 48879,
+        "year": 2007
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_987c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-987-2-cayman": {
@@ -1706,6 +2012,20 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:Porsche_Cayman_Facelift.JPG",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "hp": 265,
+      "liters": 2.9,
+      "newPrice": {
+        "amount": 50790,
+        "currency": "EUR",
+        "eur": 50790,
+        "year": 2011
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_987c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-987-2-cayman-s": {
@@ -1715,6 +2035,20 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:2009_Porsche_Cayman_S_1.jpg",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "hp": 320,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 62571,
+        "currency": "EUR",
+        "eur": 62571,
+        "year": 2011
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_987c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-981-cayman": {
@@ -1724,6 +2058,20 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/products/porsche-cayman-black-edition-11453.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Cayman Black Edition (981), 2015). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Das Foto zeigt die Black Edition von 2015."
+    },
+    "specs": {
+      "hp": 275,
+      "liters": 2.7,
+      "newPrice": {
+        "amount": 51385,
+        "currency": "EUR",
+        "eur": 51385,
+        "year": 2015
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_981c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-981-cayman-s": {
@@ -1733,6 +2081,20 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:Porsche_Cayman_S_(Type_981).jpg",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "hp": 325,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 64118,
+        "currency": "EUR",
+        "eur": 64118,
+        "year": 2015
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_981c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-cayman-981-cayman-gts": {
@@ -1742,6 +2104,20 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Cayman GTS, 2014); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 340,
+      "liters": 3.4,
+      "newPrice": {
+        "amount": 73757,
+        "currency": "EUR",
+        "eur": 73757,
+        "year": 2015
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Cayman_(Typ_981c)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-spyder": {
@@ -1751,6 +2127,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/press-kits/718-spyder-cayman-gt4.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Spyder, 2019); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 420,
+      "liters": 4.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-cayman-gts-4-0": {
@@ -1760,6 +2144,18 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Cayman GTS, 2020); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 400,
+      "liters": 4.0,
+      "years": [
+        2020,
+        2025
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-cayman-gt4-rs": {
@@ -1769,6 +2165,25 @@
       "confidence": "high",
       "source": "https://newsroom.porsche.com/en/2021/products/porsche-718-cayman-gt4-rs-la-auto-show-26459.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Cayman GT4 RS, 2021); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Porsche (Paint to Sample): Arktisgrau wurde mit dem 718 Cayman GT4 RS eingeführt: https://media.porsche.com/paint-to-sample/en/911/arcticgrey"
+    },
+    "specs": {
+      "hp": 500,
+      "liters": 4.0,
+      "years": [
+        2021,
+        2025
+      ],
+      "newPrice": {
+        "amount": 141338,
+        "currency": "EUR",
+        "eur": 141338,
+        "year": 2021
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)",
+        "https://newsroom.porsche.com/en/2021/products/porsche-718-cayman-gt4-rs-la-auto-show-26459.html"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-718-718-spyder-rs": {
@@ -1778,6 +2193,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2023/products/porsche-718-spyder-rs-world-premiere-32257.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Spyder RS, 2023); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Porsche nennt für den Spyder RS die Sonderfarben Arktisgrau, Haifischblau und Rubinstern Neo; der Grauton auf den Fotos ist nicht eindeutig (auch Vanadiumgrau möglich)."
+    },
+    "specs": {
+      "hp": 500,
+      "liters": 4.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+      ],
+      "productionNote": "Schätzung"
     }
   }
 }

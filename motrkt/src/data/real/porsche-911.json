@@ -1499,7 +1499,8 @@
         "https://de.wikipedia.org/wiki/Porsche_997",
         "https://en.wikipedia.org/wiki/Porsche_911_(997)",
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -1559,7 +1560,8 @@
         "https://de.wikipedia.org/wiki/Porsche_997",
         "https://en.wikipedia.org/wiki/Porsche_911_(997)",
         "https://www.autobild.de/artikel/preis-porsche-911-turbo-2006--54453.html"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -1668,7 +1670,8 @@
         "https://en.wikipedia.org/wiki/Porsche_911_(997)",
         "https://de.wikipedia.org/wiki/Porsche_997",
         "https://www.auto-motor-und-sport.de/neuheiten/20-jahre-porsche-911-gt3-sechs-generationen/"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -1825,7 +1828,8 @@
         "https://newsroom.porsche.com/dam/jcr:05c3198c-772f-4e4d-88ad-b6fce31b66ed/S11_0327_en.pdf",
         "https://en.wikipedia.org/wiki/Porsche_911_(991)",
         "https://de.wikipedia.org/wiki/Porsche_991"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -1884,7 +1888,8 @@
       "sources": [
         "https://www.ausmotive.com/2013/03/05/geneva-2013-porsche-911-gt3-revealed.html",
         "https://en.wikipedia.org/wiki/Porsche_911_(991)"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -1944,7 +1949,8 @@
         "https://de.wikipedia.org/wiki/Porsche_991",
         "https://en.wikipedia.org/wiki/Porsche_911_(991)",
         "https://newsroom.porsche.com/dam/jcr:89a80d43-57bf-4359-9a47-c1af9e7efd07/PM20180221e%20-%20A%20clear%20focus%20on%20motorsport_the%20new%20Porsche%20911%20GT3%20RS.PDF"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -2068,7 +2074,8 @@
         "https://en.wikipedia.org/wiki/Porsche_911_(991)",
         "https://de.wikipedia.org/wiki/Porsche_991",
         "https://www.stuttcars.com/porsche-911-turbo-s-991-2014-2016/"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -2132,7 +2139,8 @@
         "https://de.wikipedia.org/wiki/Porsche_991",
         "https://en.wikipedia.org/wiki/Porsche_911_(991)",
         "https://grassrootsmotorsports.com/news/coming-soon-700-horsepower-porsche/"
-      ]
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -2192,7 +2200,9 @@
         "https://newsroom.porsche.com/en/products/porsche-911-new-eighth-generation-992-timeless-machine-world-premiere-los-angeles-2018-news-tv-live-broadcasting-16473.html",
         "https://newsroom.porsche.com/en/products/porsche-911-new-eigth-generation-992-timeless-machine-design-icon-praesentation-zell-am-see-oestereich-16858.html",
         "https://de.wikipedia.org/wiki/Porsche_992"
-      ]
+      ],
+      "note": "Bauzeitraum laut Wikipedia 11/2018–05/2024",
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -2251,7 +2261,12 @@
       "sources": [
         "https://newsroom.porsche.com/dam/jcr:fb50dab0-0b3d-4b2d-b4d7-70e42fc381cf/PAG_992_GT3_EN.pdf",
         "https://de.wikipedia.org/wiki/Porsche_992"
-      ]
+      ],
+      "years": [
+        2021,
+        2024
+      ],
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -2302,7 +2317,7 @@
       "liters": 4.0,
       "years": [
         2022,
-        null
+        2024
       ],
       "newPrice": {
         "amount": 229517,
@@ -2311,8 +2326,11 @@
         "year": 2022
       },
       "sources": [
-        "https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html"
-      ]
+        "https://newsroom.porsche.com/en/2022/products/porsche-911-gt3-rs-world-premiere-29177.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "note": "vorher years: [2022, null]",
+      "productionNote": "Schätzung"
     },
     "images": [
       {
@@ -2654,6 +2672,10 @@
         "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-coupe-cabriolet-achte-generation-18246.html",
         "https://de.motor1.com/news/362339/porsche-911-carrera-992-leistung-preis/",
         "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "years": [
+        2019,
+        2024
       ]
     },
     "launchColor": {
@@ -2677,7 +2699,8 @@
       "productionNote": "Schätzung",
       "sources": [
         "https://newsroom.porsche.com/de/2024/produkte/porsche-neuer-911-weltpremiere-hybrid-36321.html",
-        "https://de.motor1.com/news/721066/porsche-911-2024-facelift-hybrid/"
+        "https://de.motor1.com/news/721066/porsche-911-2024-facelift-hybrid/",
+        "https://de.wikipedia.org/wiki/Porsche_992"
       ]
     },
     "launchColor": {
@@ -2864,7 +2887,8 @@
       "liters": 3.0,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html"
+        "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
+        "https://de.wikipedia.org/wiki/Porsche_991"
       ]
     },
     "launchColor": {
@@ -2881,7 +2905,8 @@
       "liters": 3.0,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html"
+        "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
+        "https://de.wikipedia.org/wiki/Porsche_991"
       ]
     },
     "launchColor": {
@@ -2898,7 +2923,12 @@
       "liters": 3.0,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html"
+        "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "years": [
+        2019,
+        2024
       ]
     },
     "launchColor": {
@@ -2915,8 +2945,10 @@
       "liters": 3.0,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html"
-      ]
+        "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "note": "Bauzeitraum laut Wikipedia 11/2018–05/2024"
     },
     "launchColor": {
       "name": "GT-Silbermetallic",
@@ -2932,7 +2964,12 @@
       "liters": 3.0,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/de/2021/produkte/porsche-911-gts-modelle-premiere-24872.html"
+        "https://newsroom.porsche.com/de/2021/produkte/porsche-911-gts-modelle-premiere-24872.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "years": [
+        2021,
+        2024
       ]
     },
     "launchColor": {
@@ -2949,7 +2986,8 @@
       "liters": 3.0,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/de/2025/produkte/porsche-911-carrera-targa-4s-allradantrieb--39922.html"
+        "https://newsroom.porsche.com/de/2025/produkte/porsche-911-carrera-targa-4s-allradantrieb--39922.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
       ]
     },
     "launchColor": {
@@ -2966,7 +3004,8 @@
       "liters": 3.6,
       "productionNote": "Schätzung",
       "sources": [
-        "https://newsroom.porsche.com/de/pressemappen/911.html"
+        "https://newsroom.porsche.com/de/pressemappen/911.html",
+        "https://de.wikipedia.org/wiki/Porsche_992"
       ]
     },
     "launchColor": {
@@ -2984,6 +3023,14 @@
       "confidence": "high",
       "source": "https://newsroom.porsche.com/en/products/porsche-colors-911-gt3-rs-lizard-green-communication-color-design-barbara-sika-daniela-milosevic-sina-brunner-christophorus-386-15491.html",
       "note": "Weltpremiere Genfer Autosalon, März 2018. Laut Porsche (Christophorus 386) die Farbe der gesamten Produktkommunikation, beginnend mit der Weltpremiere."
+    },
+    "specs": {
+      "liters": 4.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ],
+      "note": "Wikipedia: 383 kW (521 PS); Porsche nennt 520 PS",
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-991-2-carrera-t": {
@@ -2993,6 +3040,20 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/porsche-911-carrera-t-puristic-performance-driving-pleasure-touring-14410.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (Prospekt Modelljahr 2017) ist das der einzige gelbe Farbton. Porsche nennt Racinggelb ausdrücklich unter den Farben des Carrera T."
+    },
+    "specs": {
+      "hp": 370,
+      "liters": 3.0,
+      "newPrice": {
+        "amount": 107553,
+        "currency": "EUR",
+        "eur": 107553,
+        "year": 2017
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-991-2-turbo-s": {
@@ -3002,6 +3063,14 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/porsche-911-turbo-911-turbo-s-sportscar-12061.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (Prospekt Modelljahr 2017) ist das der einzige gelbe Farbton."
+    },
+    "specs": {
+      "hp": 580,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-991-1-50-jahre-edition": {
@@ -3011,6 +3080,13 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2019/products/porsche-911-50-years-anniversary-edition-19212.html",
       "note": "Das Sondermodell gab es in Graphitgrau, Geysirgraumetallic und Schwarz. Die Präsentationsfotos zeigen den hellen Grauton, also Geysirgrau. Präsentiert auf der IAA Frankfurt, September 2013."
+    },
+    "specs": {
+      "production": 1963,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ]
     }
   },
   "porsche-911-997-2-sport-classic": {
@@ -3020,6 +3096,12 @@
       "confidence": "high",
       "source": "https://media.porsche.com/paint-to-sample/en/911/sportclassicgrey",
       "note": "Porsche (Paint to Sample): eigens für den 911 Sport Classic entwickelt; im September 2009 auf der IAA Frankfurt in Sportclassicgrau präsentiert, nach 48 Stunden ausverkauft."
+    },
+    "specs": {
+      "production": 250,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ]
     }
   },
   "porsche-911-997-2-speedster": {
@@ -3029,6 +3111,14 @@
       "confidence": "high",
       "source": "https://www.zawya.com/en/press-release/fourth-edition-of-a-sports-car-legend-the-new-porsche-911-speedster-drrkdn6u",
       "note": "Porsche-Pressemitteilung vom 21.09.2010 (Pariser Autosalon): Die Außenfarbe „Pure Blue“ wurde exklusiv für den Speedster entwickelt; Carraraweiß gab es auf Wunsch ohne Aufpreis."
+    },
+    "specs": {
+      "hp": 408,
+      "liters": 3.8,
+      "production": 356,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ]
     }
   },
   "porsche-911-964-turbo-s-leichtbau": {
@@ -3038,6 +3128,21 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Turbo S, lightweight construction, 1992 - 1993). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 381,
+      "liters": 3.3,
+      "production": 86,
+      "newPrice": {
+        "amount": 295000,
+        "currency": "DEM",
+        "eur": 150831,
+        "year": 1992
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_964"
+      ],
+      "note": "Wikipedia datiert den Listenpreis auf 1991"
     }
   },
   "porsche-911-964-turbo-3-6": {
@@ -3047,6 +3152,21 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/media-search.html",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "hp": 360,
+      "liters": 3.6,
+      "production": 1436,
+      "newPrice": {
+        "amount": 204000,
+        "currency": "DEM",
+        "eur": 104304,
+        "year": 1993
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_964"
+      ],
+      "note": "Preis laut Preisliste 1992 (Wikipedia)"
     }
   },
   "porsche-911-964-carrera-rs-3-8": {
@@ -3056,6 +3176,19 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2023/company/porsche-911-carrera-rs-autobot-mirage-transformers-rise-of-the-beasts-32589.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 Carrera RS 3.8 (964), Transformers: Rise of the Beasts, 2023). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 300,
+      "newPrice": {
+        "amount": 225000,
+        "currency": "DEM",
+        "eur": 115041,
+        "year": 1993
+      },
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_964"
+      ],
+      "note": "Wikipedia nennt 90 gebaute Exemplare einschließlich RSR 3.8; Hubraum 3746 cm³"
     }
   },
   "porsche-911-993-carrera-4": {
@@ -3065,6 +3198,15 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:1996_Porsche_911_993_Carrera_4_(46807).jpg",
       "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (1996 Porsche 911 993 Carrera 4 (46807)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 272,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_993"
+      ],
+      "note": "272 PS bis Modelljahr 1995, danach 285 PS",
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-993-targa": {
@@ -3074,6 +3216,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 3.6 (993)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 1997."
+    },
+    "specs": {
+      "hp": 285,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_993"
+      ],
+      "note": "Wikipedia: 210 kW (286 PS); Porsche nennt 285 PS"
     }
   },
   "porsche-911-993-carrera-s": {
@@ -3083,6 +3233,15 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:1997_Porsche_911_993_Carrera_S_(80592).jpg",
       "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (1997 Porsche 911 993 Carrera S (80592)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 285,
+      "liters": 3.6,
+      "production": 3714,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_993"
+      ],
+      "note": "Wikipedia: 210 kW (286 PS); Porsche nennt 285 PS"
     }
   },
   "porsche-911-996-2-carrera": {
@@ -3092,6 +3251,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/products/porsche-one-millionth-911-milestone-seven-generations-13735.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 3.6 Coupé (996.2), 2004); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2004."
+    },
+    "specs": {
+      "hp": 320,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-996-2-carrera-4s": {
@@ -3101,6 +3268,14 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_Carrera_4S_coupe,_front_left,_06-08-2024.jpg",
       "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    },
+    "specs": {
+      "hp": 320,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-996-2-targa": {
@@ -3110,6 +3285,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 3.6 (MY 2002)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 2002 (Präsentationsjahr)."
+    },
+    "specs": {
+      "hp": 320,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-996-2-gt3": {
@@ -3119,6 +3302,13 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 GT3 (996.2), 2019). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 381,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ]
     }
   },
   "porsche-911-996-2-turbo-s": {
@@ -3128,6 +3318,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Turbo S Coupé (996), 2022). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 450,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_996"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-997-1-gt2": {
@@ -3137,6 +3335,13 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Porsche 911 (997) GT2); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 530,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ]
     }
   },
   "porsche-911-997-2-carrera-s": {
@@ -3146,6 +3351,14 @@
       "confidence": "low",
       "source": "https://commons.wikimedia.org/wiki/File:2009_Porsche_911_Carrera_S_PDK.jpg",
       "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (2009 Porsche 911 Carrera S PDK). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 385,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-997-2-turbo": {
@@ -3155,6 +3368,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/media-search.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 Turbo (997), 2020, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 500,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-997-2-gt3": {
@@ -3164,6 +3385,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
       "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 GT3 (997.2), 2019). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 435,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-997-2-gt3-rs": {
@@ -3173,6 +3402,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2020/sport-lifestyle/porsche-gb-997-911-gt3-rs-hebe-birthday-zaid-hamid-21925.html",
       "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (997.2 GT3 RS \"Hebe\", 2020). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    },
+    "specs": {
+      "hp": 450,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-997-2-turbo-s": {
@@ -3182,6 +3419,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (6th generation); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 530,
+      "liters": 3.8,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_997"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-991-2-carrera-s": {
@@ -3191,6 +3436,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/products/porsche-911-carrera-new-2015-11366.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera S, 2015); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2015; die Farbkarte kennt zwei Rottöne (Indischrot, Karminrot)."
+    },
+    "specs": {
+      "hp": 420,
+      "liters": 3.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-991-2-gt3": {
@@ -3200,6 +3453,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/products/porsche-911-gt3-world-premiere-geneva-motor-show-gims-2017-13466.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 GT3, 2017); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto; neben Indischrot gibt es Karminrot, der Ton ist nicht eindeutig."
+    },
+    "specs": {
+      "hp": 500,
+      "liters": 4.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-991-2-speedster": {
@@ -3209,6 +3470,12 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Speedster, 2019); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto; neben Indischrot gibt es Karminrot, der Ton ist nicht eindeutig."
+    },
+    "specs": {
+      "production": 1948,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_991"
+      ]
     }
   },
   "porsche-911-992-1-turbo-s": {
@@ -3218,6 +3485,18 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2020/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20110.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Turbo S, 2020); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Silberton nicht eindeutig."
+    },
+    "specs": {
+      "hp": 650,
+      "liters": 3.7,
+      "years": [
+        2020,
+        2024
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-992-1-carrera-gts": {
@@ -3227,6 +3506,18 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en_US/2021/products/porsche-911-gts-models-premiere-24878.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera GTS, 2021); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2021; tiefer Rotton, daher Karminrot statt Indischrot."
+    },
+    "specs": {
+      "hp": 480,
+      "liters": 3.0,
+      "years": [
+        2021,
+        2024
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-992-2-carrera-gts": {
@@ -3236,6 +3527,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2024/products/porsche-new-911-world-premiere-hybrid-36322.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera GTS, 2024); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Grauton nicht eindeutig (Schiefergrau Neo, Vanadiumgrau oder Eisgrau)."
+    },
+    "specs": {
+      "hp": 541,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-992-2-carrera-s": {
@@ -3245,6 +3544,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2025/products/porsche-911-carrera-s-and-cabriolet-38315.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera S, 2025); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Heller Grauton, nicht eindeutig."
+    },
+    "specs": {
+      "hp": 480,
+      "liters": 3.0,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-992-2-gt3": {
@@ -3254,6 +3561,18 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en_US/2024/products/porsche-the-2025-911-gt3-double-premiere-37598.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 GT3 with Weissach Package); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    },
+    "specs": {
+      "hp": 510,
+      "liters": 4.0,
+      "years": [
+        2024,
+        null
+      ],
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "productionNote": "Schätzung"
     }
   },
   "porsche-911-992-2-turbo-s": {
@@ -3263,6 +3582,14 @@
       "confidence": "low",
       "source": "https://newsroom.porsche.com/en/2025/products/porsche-911-turbo-s-top-of-the-range-model-twin-turbo-performance-hybrid-40446.html",
       "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Turbo S, 2025); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Grauton nicht eindeutig; Turbonit ist nur Akzentfarbe."
+    },
+    "specs": {
+      "hp": 711,
+      "liters": 3.6,
+      "sources": [
+        "https://de.wikipedia.org/wiki/Porsche_992"
+      ],
+      "productionNote": "Schätzung"
     }
   }
 }

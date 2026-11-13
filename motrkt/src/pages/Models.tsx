@@ -486,8 +486,9 @@ function BrandMenu({ active, onSelect }: { active?: string; onSelect: (id: strin
     activeRef.current?.scrollIntoView({ block: "nearest", inline: "nearest" });
   }, [active]);
   const entries = [
-    ...brands.map((b) => ({ id: b.id, name: b.name, note: t(`${variants.filter((v) => v.brandId === b.id).length} Varianten`, `${variants.filter((v) => v.brandId === b.id).length} variants`), soon: false })),
-    ...UPCOMING_BRANDS.map((b) => ({ id: b.id, name: b.name, note: t("Demnächst", "Coming soon"), soon: true })),
+    ...brands.map((b) => ({ id: b.id, name: b.name, soon: false })),
+    // announced brands: name only, greyed out
+    ...UPCOMING_BRANDS.map((b) => ({ id: b.id, name: b.name, soon: true })),
   ];
   return (
     <nav aria-label={t("Marken", "Brands")} className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
@@ -506,7 +507,6 @@ function BrandMenu({ active, onSelect }: { active?: string; onSelect: (id: strin
               )}
             >
               <span className={cn("block font-display text-[22px] leading-tight sm:text-[24px]", on ? "text-ink" : e.soon ? "text-faint" : "text-muted")}>{e.name}</span>
-              <span className={cn("mt-0.5 block text-[11px] font-semibold uppercase tracking-[0.12em]", e.soon ? "text-gold" : "text-muted")}>{e.note}</span>
             </button>
           );
         })}
