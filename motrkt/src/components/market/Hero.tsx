@@ -80,6 +80,17 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
         <span className="size-3 rounded-full ring-1 ring-ink/15" style={{ background: variant.launchColor.hex }} />
         {paintName(variant.launchColor.name)}
         {onChart?.code && <span className="text-faint">({t("Werkscode", "factory code")} {onChart.code})</span>}
+        {variant.launchColor.confidence === "low" && (
+          <span
+            className="rounded-full border border-line-2 px-2 py-px text-[12px] text-muted"
+            title={t(
+              "Nicht durch Porsche belegt: Annahme oder schwache Quelle (Inserat, Forum).",
+              "Not confirmed by Porsche: an assumption or a weak source (listing, forum).",
+            )}
+          >
+            {t("unsicher", "unconfirmed")}
+          </span>
+        )}
       </span>,
     ]);
   }

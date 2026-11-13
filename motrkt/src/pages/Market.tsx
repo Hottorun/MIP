@@ -10,7 +10,6 @@ import { Assessment, RecentSales } from "../components/market/SalesSection";
 import { Listings } from "../components/market/BottomRow";
 import { Evidence } from "../components/market/Evidence";
 import { MarketStats } from "../components/market/MarketStats";
-import { PaintChart } from "../components/market/PaintChart";
 import { SectionNav, type NavItem } from "../components/market/SectionNav";
 import { appTitle, t } from "../i18n";
 
@@ -21,7 +20,6 @@ const NAV: NavItem[] = [
   { id: "einschaetzung", label: () => t("Einschätzung", "Assessment") },
   { id: "nachweis", label: () => t("Belege", "Evidence") },
   { id: "daten", label: () => t("Daten und Ausstattung", "Data and equipment") },
-  { id: "farben", label: () => t("Werksfarben", "Factory colours") },
   { id: "angebote", label: () => t("Angebote", "Listings") },
 ];
 
@@ -110,12 +108,10 @@ function MarketPage({ variant }: { variant: Variant }) {
       <div id="daten">
         <Details variant={variant} picked={picked} onPick={setPicked} />
       </div>
-      <Band id="farben">
-        <PaintChart variant={variant} />
-      </Band>
-      <div id="angebote" className="empty:hidden">
+      {/* Werksfarben (PaintChart) vorerst ausgeblendet; die Daten in paints.json bleiben erhalten. */}
+      <Band id="angebote">
         <Listings variant={variant} body={body} />
-      </div>
+      </Band>
     </div>
   );
 }

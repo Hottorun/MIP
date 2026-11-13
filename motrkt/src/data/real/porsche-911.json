@@ -15,7 +15,14 @@
       ]
     },
     "images": [],
-    "note": "Basis-911 der O-Serie (Serienproduktion ab 14.9.1964 bis Juli 1967), 1991 cm³. Neupreis 21.900 DM laut Porsche Newsroom. Stückzahl im Katalog (8.520) = O-Serie-Coupés aus dem Fahrgestellnummernbereich 300001–308522 (Stuttcars-Produktionstabelle); Targa ab Modelljahr 1967 nicht enthalten, Literaturangaben schwanken."
+    "note": "Basis-911 der O-Serie (Serienproduktion ab 14.9.1964 bis Juli 1967), 1991 cm³. Neupreis 21.900 DM laut Porsche Newsroom. Stückzahl im Katalog (8.520) = O-Serie-Coupés aus dem Fahrgestellnummernbereich 300001–308522 (Stuttcars-Produktionstabelle); Targa ab Modelljahr 1967 nicht enthalten, Literaturangaben schwanken.",
+    "launchColor": {
+      "name": "Gelb (vermutlich Champagnergelb)",
+      "hex": "#E8C547",
+      "confidence": "low",
+      "source": "https://www.porscheclubgb.com/News-and-Events/News/2023/April-2023/60-years-and-counting",
+      "note": "Belegt nur durch Sekundärquellen. Laut Excellence-Magazin und Porsche Club GB war der Ausstellungswagen der IAA 1963 hellgelb (laut Selection RS „Champagnergelb“; https://www.porscheclubgb.com/News-and-Events/News/2023/April-2023/60-years-and-counting). Widerspruch: Porsches Museumswagen 901 Nr. 57 ist rot, der erste Serien-901 war laut Porsche (Paint to Sample) Irischgrün."
+    }
   },
   "porsche-911-f-modell-s-2-0": {
     "specs": {
@@ -28,7 +35,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahre 1967–1969: 4.582 Coupés + 1.539 Targa (Stuttcars). 160 PS, im Modelljahr 1969 (B-Serie, mechanische Einspritzung) 170 PS (de.wikipedia)."
+    "note": "Modelljahre 1967–1969: 4.582 Coupés + 1.539 Targa (Stuttcars). 160 PS, im Modelljahr 1969 (B-Serie, mechanische Einspritzung) 170 PS (de.wikipedia).",
+    "launchColor": {
+      "name": "Bahamagelb",
+      "hex": "#F2B800",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 S 2.0 Targa (1967), Christophorus). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Gezeigt ist ein Targa."
+    }
   },
   "porsche-911-f-modell-l-2-0": {
     "specs": {
@@ -45,7 +59,14 @@
       ]
     },
     "images": [],
-    "note": "Nur Modelljahr 1968 (A-Serie): 911 mit S-Ausstattung und 130-PS-Motor. 1.169 Coupés + 441 Targa (Stuttcars-Datenblatt; im Fließtext dort abweichend 575 Targa)."
+    "note": "Nur Modelljahr 1968 (A-Serie): 911 mit S-Ausstattung und 130-PS-Motor. 1.169 Coupés + 441 Targa (Stuttcars-Datenblatt; im Fließtext dort abweichend 575 Targa).",
+    "launchColor": {
+      "name": "Polorot",
+      "hex": "#C72A2A",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Porsche Typ 911 L 2.0 Coupé; My. 1968); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Polorot ist der einzige helle Rotton der Farbkarte 1968 (daneben nur das dunkle Burgundrot)."
+    }
   },
   "porsche-911-f-modell-t-2-0": {
     "specs": {
@@ -58,7 +79,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahr 1968: 2.132, Modelljahr 1969: 4.186 (Stuttcars). Serienmäßig 4-Gang-Getriebe (de.wikipedia)."
+    "note": "Modelljahr 1968: 2.132, Modelljahr 1969: 4.186 (Stuttcars). Serienmäßig 4-Gang-Getriebe (de.wikipedia).",
+    "launchColor": {
+      "name": "Blutorange",
+      "hex": "#E8501E",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_911_T_C-Serie_1969_(81_kW)_IAA_2019_JM_0933.jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (Porsche 911 T C-Serie 1969 (81 kW) IAA 2019 JM 0933). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-f-modell-e-2-0": {
     "specs": {
@@ -75,7 +103,14 @@
       ]
     },
     "images": [],
-    "note": "Nur Modelljahr 1969 (B-Serie), mechanische Einspritzung: 1.968 Coupés + 858 Targa (Stuttcars)."
+    "note": "Nur Modelljahr 1969 (B-Serie), mechanische Einspritzung: 1.968 Coupés + 858 Targa (Stuttcars).",
+    "launchColor": {
+      "name": "Blutorange",
+      "hex": "#E8501E",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Saxony_Classic_Rallye_2010_-_Porsche_911_E_1969_(aka).jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (Saxony Classic Rallye 2010 - Porsche 911 E 1969 (aka)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-f-modell-t-2-2": {
     "specs": {
@@ -88,7 +123,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahr 1970: 6.544 Coupés + 2.545 Targa; Modelljahr 1971: 2.517 Coupés + 3.476 Targa (Stuttcars). 2195 cm³."
+    "note": "Modelljahr 1970: 6.544 Coupés + 2.545 Targa; Modelljahr 1971: 2.517 Coupés + 3.476 Targa (Stuttcars). 2195 cm³.",
+    "launchColor": {
+      "name": "Signalorange (Annahme)",
+      "hex": "#EF6A1A",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_002.jpg",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-911-f-modell-e-2-2": {
     "specs": {
@@ -101,7 +143,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahr 1970: 1.971 Coupés + 933 Targa; Modelljahr 1971: 1.088 Coupés + 935 Targa (Stuttcars; die Modelljahr-Zuordnung ist dort uneinheitlich, die Summe nicht offiziell bestätigt)."
+    "note": "Modelljahr 1970: 1.971 Coupés + 933 Targa; Modelljahr 1971: 1.088 Coupés + 935 Targa (Stuttcars; die Modelljahr-Zuordnung ist dort uneinheitlich, die Summe nicht offiziell bestätigt).",
+    "launchColor": {
+      "name": "Signalorange (Annahme)",
+      "hex": "#EF6A1A",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:1970_Porsche_911_E_(8951255939).jpg",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-911-f-modell-s-2-2": {
     "specs": {
@@ -114,7 +163,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahr 1970: 1.744 Coupés + 729 Targa (Stuttcars); Modelljahr 1971: 1.430 Coupés + 788 Targa (Stuttcars-Datenblatt, dort unter dem S 2.4 geführt)."
+    "note": "Modelljahr 1970: 1.744 Coupés + 729 Targa (Stuttcars); Modelljahr 1971: 1.430 Coupés + 788 Targa (Stuttcars-Datenblatt, dort unter dem S 2.4 geführt).",
+    "launchColor": {
+      "name": "Pastellblau",
+      "hex": "#8FAFD0",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/Porsche-Heritage-Experience/Porsche-911-S-2.2-Targa.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 S 2.2 Targa). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Gezeigt ist ein Targa."
+    }
   },
   "porsche-911-f-modell-t-2-4": {
     "specs": {
@@ -126,7 +182,14 @@
       ]
     },
     "images": [],
-    "note": "2341 cm³ (als 2.4 vermarktet). 130 PS mit Vergasern; US/Japan mit Einspritzung 140 PS. Modelljahr 1972: 4.894 Coupés + 3.344 Targa (Stuttcars); Gesamtstückzahl im Katalog (16.903) inkl. Modelljahr 1973 nicht offiziell bestätigt. Neupreis laut Auto Katalog 1973/74 (zitiert in de.wikipedia, Renault Alpine A310) 23.480 DM; Katalogwert ist eine Schätzung."
+    "note": "2341 cm³ (als 2.4 vermarktet). 130 PS mit Vergasern; US/Japan mit Einspritzung 140 PS. Modelljahr 1972: 4.894 Coupés + 3.344 Targa (Stuttcars); Gesamtstückzahl im Katalog (16.903) inkl. Modelljahr 1973 nicht offiziell bestätigt. Neupreis laut Auto Katalog 1973/74 (zitiert in de.wikipedia, Renault Alpine A310) 23.480 DM; Katalogwert ist eine Schätzung.",
+    "launchColor": {
+      "name": "Vipergrün",
+      "hex": "#3FA535",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Viper Green: 911 T 2.4 Coupé, 1972, 2018, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Porsche-Illustration."
+    }
   },
   "porsche-911-f-modell-e-2-4": {
     "specs": {
@@ -138,7 +201,14 @@
       ]
     },
     "images": [],
-    "note": "Mechanische Einspritzung. Modelljahr 1972: 1.124 Coupés + 861 Targa (Stuttcars); Gesamtstückzahl im Katalog (4.406) nicht offiziell bestätigt."
+    "note": "Mechanische Einspritzung. Modelljahr 1972: 1.124 Coupés + 861 Targa (Stuttcars); Gesamtstückzahl im Katalog (4.406) nicht offiziell bestätigt.",
+    "launchColor": {
+      "name": "Aubergine",
+      "hex": "#3B2A4A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/1.-Generation---Motoren.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (1973, 911 E Coupé, 2.4 litre); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 1973."
+    }
   },
   "porsche-911-f-modell-s-2-4": {
     "specs": {
@@ -150,7 +220,14 @@
       ]
     },
     "images": [],
-    "note": "Mechanische Einspritzung, 190 PS. Gesamtstückzahl im Katalog (5.094) aus Sekundärquellen, nicht offiziell bestätigt."
+    "note": "Mechanische Einspritzung, 190 PS. Gesamtstückzahl im Katalog (5.094) aus Sekundärquellen, nicht offiziell bestätigt.",
+    "launchColor": {
+      "name": "Glasurblau (vermutlich)",
+      "hex": "#1F2F5C",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 S 2.4 Targa, 2022, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-f-modell-carrera-rs-2-7": {
     "specs": {
@@ -173,7 +250,14 @@
       ]
     },
     "images": [],
-    "note": "Vorgestellt im Oktober 1972 (Pariser Salon), gebaut bis Juli 1973. 1.525 Straßenfahrzeuge = 1.308 RS Touring (M472) + 217 RS Sport (M471) laut de.wikipedia; Porsche nennt 1.580 gebaute Fahrzeuge inkl. der 55 RSR 2.8 (eigener Eintrag unter GT-Rennwagen). Grundpreis 34.000 DM, Sport-Paket +700 DM, Touring-Paket +2.500 DM (Porsche Newsroom)."
+    "note": "Vorgestellt im Oktober 1972 (Pariser Salon), gebaut bis Juli 1973. 1.525 Straßenfahrzeuge = 1.308 RS Touring (M472) + 217 RS Sport (M471) laut de.wikipedia; Porsche nennt 1.580 gebaute Fahrzeuge inkl. der 55 RSR 2.8 (eigener Eintrag unter GT-Rennwagen). Grundpreis 34.000 DM, Sport-Paket +700 DM, Touring-Paket +2.500 DM (Porsche Newsroom).",
+    "launchColor": {
+      "name": "Grand-Prix-Weiß mit blauem Carrera-Schriftzug",
+      "hex": "#F2F0E8",
+      "confidence": "low",
+      "source": "https://supercarnostalgia.com/blog/porsche-911-carrera-rs-chassis-9113600016",
+      "note": "Laut der Fahrzeughistorie von Fahrgestell 9113600016 (Supercar Nostalgia, Händlerseite) war der Pariser Ausstellungswagen 1972 Grand-Prix-Weiß mit blauen Schriftzügen: https://supercarnostalgia.com/blog/porsche-911-carrera-rs-chassis-9113600016. Die Werksfarbkarte führt Grand-Prix-Weiß erst ab Modelljahr 1974. Porsche (Paint to Sample) verbindet den RS 2.7 vor allem mit Weiß und Vipergrün."
+    }
   },
   "porsche-911-g-modell-2-7": {
     "specs": {
@@ -192,7 +276,14 @@
       ]
     },
     "images": [],
-    "note": "Basis-911 der Modelljahre 1974–1977, K-Jetronic, 150 PS (ab Modelljahr 1976 165 PS). Neupreis 26.980 DM für das 150-PS-Coupé (Porsche Newsroom). Stückzahl laut Porsche Club GB (Fahrgestellnummern): 7.104 + 2.216 + 3.544 (inkl. 120 Japan) + 4.153."
+    "note": "Basis-911 der Modelljahre 1974–1977, K-Jetronic, 150 PS (ab Modelljahr 1976 165 PS). Neupreis 26.980 DM für das 150-PS-Coupé (Porsche Newsroom). Stückzahl laut Porsche Club GB (Fahrgestellnummern): 7.104 + 2.216 + 3.544 (inkl. 120 Japan) + 4.153.",
+    "launchColor": {
+      "name": "Talbotgelb",
+      "hex": "#F2A900",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/products/porsche-911-targa-generations-history-21010.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 2.7 Targa (Modelljahr 1977)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 1977, Targa."
+    }
   },
   "porsche-911-g-modell-s-2-7": {
     "specs": {
@@ -205,7 +296,14 @@
       ]
     },
     "images": [],
-    "note": "175 PS (Europa Modelljahre 1974–1975). Die Stückzahl (Porsche Club GB) enthält den US-911 S der Modelljahre 1975–1977 mit 165 PS."
+    "note": "175 PS (Europa Modelljahre 1974–1975). Die Stückzahl (Porsche Club GB) enthält den US-911 S der Modelljahre 1975–1977 mit 165 PS.",
+    "launchColor": {
+      "name": "Lichtgrün",
+      "hex": "#7DB46C",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/products/porsche-911-targa-generations-history-21010.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 S 2.7 Targa (Modelljahr 1974)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 1974 (Präsentationsjahr), Targa."
+    }
   },
   "porsche-911-g-modell-carrera-2-7": {
     "specs": {
@@ -218,7 +316,14 @@
       ]
     },
     "images": [],
-    "note": "Mit mechanischer Einspritzung (Motor des RS 2.7), Modelljahre 1974–1976: 1.011 + 423 (1974), 508 + 187 (1975), 113 + 20 (1976) laut Porsche Club GB. Nicht enthalten: 1.303 US-Carrera 2.7 mit K-Jetronic und 175 PS. de.wikipedia nennt 1.534 Coupés + 610 Targa."
+    "note": "Mit mechanischer Einspritzung (Motor des RS 2.7), Modelljahre 1974–1976: 1.011 + 423 (1974), 508 + 187 (1975), 113 + 20 (1976) laut Porsche Club GB. Nicht enthalten: 1.303 US-Carrera 2.7 mit K-Jetronic und 175 PS. de.wikipedia nennt 1.534 Coupés + 610 Targa.",
+    "launchColor": {
+      "name": "Orange",
+      "hex": "#F26B1D",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/2.-Generation-911,-(G-Serie),-1973---1989.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (1974, 911 Carrera Coupé, G-Series, 2.7 litre, Generations); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 1974 (Präsentationsjahr)."
+    }
   },
   "porsche-911-g-modell-carrera-3-0": {
     "specs": {
@@ -242,7 +347,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahre 1976–1977: 2.564 Coupés + 1.123 Targa (en.wikipedia, Stuttcars); Porsche Club GB zählt 3.651. Neupreis Coupé 44.950 DM laut Preisliste gültig ab 1.9.1975."
+    "note": "Modelljahre 1976–1977: 2.564 Coupés + 1.123 Targa (en.wikipedia, Stuttcars); Porsche Club GB zählt 3.651. Neupreis Coupé 44.950 DM laut Preisliste gültig ab 1.9.1975.",
+    "launchColor": {
+      "name": "Speedwaygrün (vermutlich)",
+      "hex": "#2EA34A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/history/porsche-sachsen-classic-2017-oldtimer-rallye-museum-911-carrera-targa-zwickau-sachsenring-czech-republic-dresden-14066.html",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (Porsche 911 Carrera 3.0 Targa (1976), Sachsen Classic 2017). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-g-modell-carrera-rs-3-0": {
     "specs": {
@@ -255,7 +367,14 @@
       ]
     },
     "images": [],
-    "note": "Straßenversion des RSR 3.0 (2993 cm³). 56 Straßenfahrzeuge laut Stuttcars; it.wikipedia nennt 109 inkl. RSR (RSR 3.0 eigener Eintrag unter GT-Rennwagen)."
+    "note": "Straßenversion des RSR 3.0 (2993 cm³). 56 Straßenfahrzeuge laut Stuttcars; it.wikipedia nennt 109 inkl. RSR (RSR 3.0 eigener Eintrag unter GT-Rennwagen).",
+    "launchColor": {
+      "name": "Grand-Prix-Weiß",
+      "hex": "#F2F0E8",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Carrera RS 3.0, Porsche Klassik 2021). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-g-modell-sc": {
     "specs": {
@@ -279,7 +398,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahre 1978–1983, 180 PS, ab September 1979 188 PS, ab 1980 204 PS (Porsche Newsroom). Cabriolet ab Modelljahr 1983. Stückzahl laut en.wikipedia; Angaben schwanken (it.wikipedia 57.972, Stuttcars 60.625). Neupreis Coupé 39.900 DM laut Preisliste gültig ab 1.6.1977."
+    "note": "Modelljahre 1978–1983, 180 PS, ab September 1979 188 PS, ab 1980 204 PS (Porsche Newsroom). Cabriolet ab Modelljahr 1983. Stückzahl laut en.wikipedia; Angaben schwanken (it.wikipedia 57.972, Stuttcars 60.625). Neupreis Coupé 39.900 DM laut Preisliste gültig ab 1.6.1977.",
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/2.-Generation-911,-(G-Serie),-1973---1989.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 SC 3.0 Targa). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-g-modell-sc-rs": {
     "specs": {
@@ -292,7 +418,14 @@
       ]
     },
     "images": [],
-    "note": "Rallye-Homologationsmodell (Typ 954), 250 PS laut Porsche Newsroom (Stuttcars: 255 PS). 20 Fahrzeuge für die Homologation, ein weiteres im Porsche Museum."
+    "note": "Rallye-Homologationsmodell (Typ 954), 250 PS laut Porsche Newsroom (Stuttcars: 255 PS). 20 Fahrzeuge für die Homologation, ein weiteres im Porsche Museum.",
+    "launchColor": {
+      "name": "Weiß im Rothmans-Rallyedesign",
+      "hex": "#F5F5F5",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Rothmans Porsche 911 SC/RS, Air|Water, OC Fair & Event Center, Kalifornien, 2025, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-g-modell-carrera-3-2": {
     "specs": {
@@ -316,7 +449,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahre 1984–1989, 3164 cm³, 231 PS (mit Katalysator 207 bzw. 217 PS). G50-Getriebe ab Modelljahr 1987. Stückzahl laut en.wikipedia (alle Karosserien). Neupreis Coupé 68.560 DM laut Preisübersicht 1985 (Preis bei Markteinführung 1983 nicht belegt). Werks-Turbolook M491: 3.572 Fahrzeuge (Stuttcars)."
+    "note": "Modelljahre 1984–1989, 3164 cm³, 231 PS (mit Katalysator 207 bzw. 217 PS). G50-Getriebe ab Modelljahr 1987. Stückzahl laut en.wikipedia (alle Karosserien). Neupreis Coupé 68.560 DM laut Preisübersicht 1985 (Preis bei Markteinführung 1983 nicht belegt). Werks-Turbolook M491: 3.572 Fahrzeuge (Stuttcars).",
+    "launchColor": {
+      "name": "Grand-Prix-Weiß",
+      "hex": "#F2F0E8",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Carrera 3.2 Coupé, Switzerland, 2018, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-g-modell-carrera-3-2-clubsport": {
     "specs": {
@@ -328,7 +468,14 @@
       ]
     },
     "images": [],
-    "note": "Modelljahre 1988–1989, gezeigt auf der IAA 1987; rund 70 kg leichter als der Carrera 3.2."
+    "note": "Modelljahre 1988–1989, gezeigt auf der IAA 1987; rund 70 kg leichter als der Carrera 3.2.",
+    "launchColor": {
+      "name": "Grand-Prix-Weiß",
+      "hex": "#F2F0E8",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Daniel Endreß, Gerd Rupp, l-r, 911 Carrera 3.2 Coupé Clubsport, Sachsen Classic, 2019, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-911-g-modell-speedster": {
     "specs": {
@@ -345,7 +492,14 @@
       ]
     },
     "images": [],
-    "note": "Gebaut von Anfang 1989 bis Juli 1989. Porsche Newsroom: 2.103 mit Turbo-Karosserie und 171 Exportfahrzeuge mit schmaler Karosserie (= 2.274, wie Stuttcars); en.wikipedia nennt 2.104 inkl. der schmalen, de.wikipedia 2.102."
+    "note": "Gebaut von Anfang 1989 bis Juli 1989. Porsche Newsroom: 2.103 mit Turbo-Karosserie und 171 Exportfahrzeuge mit schmaler Karosserie (= 2.274, wie Stuttcars); en.wikipedia nennt 2.104 inkl. der schmalen, de.wikipedia 2.102.",
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 3.2 Speedster (Turbolook), Modelljahr 1989); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 1989 (Präsentationsjahr)."
+    }
   },
   "porsche-911-964-carrera-2": {
     "launchColor": {
@@ -865,9 +1019,9 @@
     "launchColor": {
       "name": "Arenarot Metallic (Arena Red Metallic)",
       "hex": "#6E1A24",
-      "source": "https://rennlist.com/forums/993-turbo-forum/1339082-993-turbo-initial-release-press-kit.html",
-      "confidence": "low",
-      "note": "Forum description of the original factory 993 Turbo launch press kit mentions three 'area red' (Arena Red) colour slides. Premiere Geneva March 1995. Not confirmed by a Porsche source."
+      "source": "https://media.porsche.com/paint-to-sample/en/panamera/arenaredmetallic",
+      "confidence": "medium",
+      "note": "Forum description of the original factory 993 Turbo launch press kit mentions three 'area red' (Arena Red) colour slides. Premiere Geneva March 1995. Not confirmed by a Porsche source. Porsche (Paint to Sample): Arenarotmetallic wurde durch den 911 Turbo (993) bekannt, den Porsche in der Werbung („Kills bugs fast“) in dieser Farbe zeigte. Das belegt die Werbefarbe, nicht ausdrücklich die Farbe des Messewagens. Frühere Angabe: Arenarot Metallic (Arena Red Metallic) (low), Quelle https://rennlist.com/forums/993-turbo-forum/1339082-993-turbo-initial-release-press-kit.html."
     },
     "specs": {
       "production": 6015,
@@ -1047,8 +1201,8 @@
       "name": "Zenitblau Metallic (Zenith Blue Metallic)",
       "hex": "#2C4A8E",
       "source": "https://rennlist.com/forums/996-forum/240204-anyone-else-on-this-forum-have-a-zenith-blue-996-a.html",
-      "confidence": "medium",
-      "note": "Owner/forum reports that Zenith Blue was the colour used in all the early 996 introduction literature and the owner's manual; consistent with widely seen 1997 launch imagery. Not confirmed by a Porsche source. Paint code F1 (rennbow.org)."
+      "confidence": "low",
+      "note": "Owner/forum reports that Zenith Blue was the colour used in all the early 996 introduction literature and the owner's manual; consistent with widely seen 1997 launch imagery. Not confirmed by a Porsche source. Paint code F1 (rennbow.org). Herabgestuft (Prüfung 13.11.2026): nur Forenangabe, keine Porsche-Quelle gefunden."
     },
     "specs": {
       "hp": 300,
@@ -1495,11 +1649,11 @@
   },
   "porsche-911-997-1-gt3-rs": {
     "launchColor": {
-      "name": "Orange mit Schwarz (Orange with black)",
-      "hex": "#F47B20",
-      "source": "https://www.ultimatecarpage.com/car/2802/Porsche-997-GT3-RS.html",
-      "confidence": "medium",
-      "note": "Show-car photo (2006 launch) shows Orange body with black wing/decals/wheels; Green/black was the other hero combination. Porsche release: standard Arctic Silver or Black, optional Orange or Green. The 997.2 GT3 RS 3.8 (2009) is associated with a white/red scheme per https://www.drive.com.au/news/2023-porsche-911-gt3-rs-leaked/. Widerspruch: Laut Porsche (Paint to Sample, Farbe „Grün“/RS-Grün) wurde Grün 2007 für den 911 GT3 RS (997.1) entwickelt und als Kommunikationsfarbe gewählt: https://media.porsche.com/paint-to-sample/en/911/green"
+      "name": "Grün (RS Green) mit Schwarz",
+      "hex": "#3DA33A",
+      "source": "https://media.porsche.com/paint-to-sample/en/911/green",
+      "confidence": "high",
+      "note": "Porsche (Paint to Sample): Grün, auch „RS-Grün“, wurde für den 911 GT3 RS (997.1) entwickelt und als Kommunikationsfarbe gewählt. Frühere Angabe: Orange mit Schwarz (Orange with black) (medium), Quelle https://www.ultimatecarpage.com/car/2802/Porsche-997-GT3-RS.html. Damalige Notiz: Show-car photo (2006 launch) shows Orange body with black wing/decals/wheels; Green/black was the other hero combination. Porsche release: standard Arctic Silver or Black, optional Orange or Green. The 997.2 GT3 RS 3.8 (2009) is associated with a white/red scheme per https://www.drive.com.au/news/2023-porsche-911-gt3-rs-leaked/. Widerspruch: Laut Porsche (Paint to Sample, Farbe „Grün“/RS-Grün) wurde Grün 2007 für den 911 GT3 RS (997.1) entwickelt und als Kommunikationsfarbe gewählt: https://media.porsche.com/paint-to-sample/en/911/green"
     },
     "specs": {
       "hp": 415,
@@ -2200,9 +2354,9 @@
     "launchColor": {
       "name": "Shorebluemetallic (Shore Blue Metallic)",
       "hex": "#5E8FAE",
-      "source": "https://www.carpaints.co/uploads/detail/shore-blue-metallic-porsche-911-s-t-992",
+      "source": "https://newsroom.porsche.com/en/press-kits/911-s-t/Heritage-Design-Package.html",
       "confidence": "high",
-      "note": "Paint code R5G, introduced on and used as communication colour for the S/T; only available with Heritage Design Package (Porsche newsroom names it 'Shoreblue Metallic'). Presented 8 Feb 2023."
+      "note": "Paint code R5G, introduced on and used as communication colour for the S/T; only available with Heritage Design Package (Porsche newsroom names it 'Shoreblue Metallic'). Presented 8 Feb 2023. Porsche-Pressemappe: Shorebluemetallic gibt es für den 911 S/T nur mit dem Heritage Design Paket. Frühere Angabe: Shorebluemetallic (Shore Blue Metallic) (high), Quelle https://www.carpaints.co/uploads/detail/shore-blue-metallic-porsche-911-s-t-992."
     },
     "specs": {
       "production": 1963,
@@ -2402,6 +2556,13 @@
         "https://de.wikipedia.org/wiki/Porsche_997",
         "https://newsroom.porsche.com/de/pressemappen/60-Jahre-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-2012.html"
       ]
+    },
+    "launchColor": {
+      "name": "Speedgelb",
+      "hex": "#F9C700",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (2005, 911 Carrera Coupé (vorn) und 911 Carrera S Coupé); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2004: 911 Carrera in Gelb vorn, Carrera S in Rot dahinter. Speedgelb ist der einzige Gelbton der 997-Farbkarte."
     }
   },
   "porsche-911-997-2-carrera": {
@@ -2419,6 +2580,13 @@
         "https://de.wikipedia.org/wiki/Porsche_997",
         "https://www.autoplenum.de/auto/tests/hightech-porsche-legt-beim-elfer-noch-eine-schippe-drauf-id1431"
       ]
+    },
+    "launchColor": {
+      "name": "Carraraweiß",
+      "hex": "#F4F4F2",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation---Design-und-Modellvarianten.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera, Type 997, Generations); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Porsches Gruppenfoto zur 997.2 zeigt Modelle in Weiß, Gelb, Blau und Grüngrau."
     }
   },
   "porsche-911-991-1-carrera": {
@@ -2462,6 +2630,13 @@
         "https://www.germancarforum.com/threads/official-porsche-911-991-facelift.54137/post-761419",
         "https://de.wikipedia.org/wiki/Porsche_991"
       ]
+    },
+    "launchColor": {
+      "name": "Karminrot",
+      "hex": "#A3122A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-carrera-new-2015-11366.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera Coupé und Cabriolet, 2015); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2015; die Farbkarte kennt zwei Rottöne (Indischrot, Karminrot)."
     }
   },
   "porsche-911-992-1-carrera": {
@@ -2480,6 +2655,13 @@
         "https://de.motor1.com/news/362339/porsche-911-carrera-992-leistung-preis/",
         "https://de.wikipedia.org/wiki/Porsche_992"
       ]
+    },
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera, 2019); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto; neben Indischrot gibt es Karminrot, der Ton ist nicht eindeutig."
     }
   },
   "porsche-911-992-2-carrera": {
@@ -2515,6 +2697,13 @@
         "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
         "https://de.wikipedia.org/wiki/Porsche_996"
       ]
+    },
+    "launchColor": {
+      "name": "Zenitblaumetallic",
+      "hex": "#2C3E8F",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (1999, 911 Carrera 4 Coupé, 3.4 Liter); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 1999 (Präsentationsjahr)."
     }
   },
   "porsche-911-996-2-carrera-4": {
@@ -2526,6 +2715,13 @@
         "https://newsroom.porsche.com/de/pressemappen/Porsche-Heritage-Experience/Porsche-911-(Typ-996)-Carrera-4-Cabriolet.html",
         "https://de.wikipedia.org/wiki/Porsche_996"
       ]
+    },
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/de/pressemappen/Porsche-Heritage-Experience/Porsche-911-(Typ-996)-Carrera-4-Cabriolet.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Carrera 4 Cabriolet (996), Baujahr 2001, Porsche Museum). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Cabriolet aus dem Porsche Museum, Baujahr 2001."
     }
   },
   "porsche-911-997-1-carrera-4": {
@@ -2537,6 +2733,13 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
         "https://de.wikipedia.org/wiki/Porsche_997"
       ]
+    },
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Generationen.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (2005, 911 Carrera 4 Coupé); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2005 (Präsentationsjahr)."
     }
   },
   "porsche-911-997-1-carrera-4s": {
@@ -2548,6 +2751,13 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
         "https://de.wikipedia.org/wiki/Porsche_997"
       ]
+    },
+    "launchColor": {
+      "name": "Arktissilbermetallic",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (2005, 911 Carrera 4S Coupé, 3.8 Liter); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2005 (Präsentationsjahr)."
     }
   },
   "porsche-911-997-2-carrera-4": {
@@ -2565,6 +2775,13 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
         "https://www.autobild.de/artikel/der-neue-porsche-911-carrera-4-725195.html"
       ]
+    },
+    "launchColor": {
+      "name": "Arktissilbermetallic",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/de/2020/produkte/porsche-911-targa-generationen-historie-21009.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 4 (Modelljahr 2009)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Gezeigt ist der Targa 4, Modelljahr 2009."
     }
   },
   "porsche-911-997-2-carrera-4s": {
@@ -2582,6 +2799,13 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
         "https://www.autohaus.de/nachrichten/autohandel/porsche-911-carrera-4-facelift-fuer-den-fachmann-2758252"
       ]
+    },
+    "launchColor": {
+      "name": "Rubinrotmetallic",
+      "hex": "#7A1424",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/de/2020/produkte/porsche-911-targa-generationen-historie-21009.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 4S (Modelljahr 2009)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Gezeigt ist der Targa 4S, Modelljahr 2009."
     }
   },
   "porsche-911-991-1-carrera-4": {
@@ -2600,6 +2824,13 @@
         "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/991/",
         "https://www.autoplenum.de/auto/tests/vier-gewinnt-der-neue-allrad-elfer-id18573"
       ]
+    },
+    "launchColor": {
+      "name": "Racinggelb",
+      "hex": "#F7D417",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/de/2020/produkte/porsche-911-targa-generationen-historie-21009.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 4 3,4 (Modelljahr 2014)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Gezeigt ist der Targa 4, Modelljahr 2014."
     }
   },
   "porsche-911-991-1-carrera-4s": {
@@ -2618,6 +2849,13 @@
         "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/991/233546/",
         "https://www.autoplenum.de/auto/tests/vier-gewinnt-der-neue-allrad-elfer-id18573"
       ]
+    },
+    "launchColor": {
+      "name": "Anthrazitbraunmetallic",
+      "hex": "#3E2E26",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 4S Coupé (991)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
     }
   },
   "porsche-911-991-2-carrera-4": {
@@ -2648,7 +2886,7 @@
     },
     "launchColor": {
       "name": "Saphirblaumetallic (Sapphire Blue Metallic)",
-      "hex": "#1E2F5A",
+      "hex": "#1F4FA0",
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/de/produkte/porsche-neu-allrad-sportwagen-carrera-targa-11467.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; der helle Metallic-Blauton der Farbkarte 2017 ist Saphirblau (Nachtblau ist deutlich dunkler, Miamiblau türkis). Gezeigt ist der Targa 4S."
@@ -2662,6 +2900,13 @@
       "sources": [
         "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html"
       ]
+    },
+    "launchColor": {
+      "name": "Dolomitsilbermetallic",
+      "hex": "#B8BBBD",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 4, 2019); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Silberton nicht eindeutig (GT-Silber oder Dolomitsilber)."
     }
   },
   "porsche-911-992-1-carrera-4s": {
@@ -2672,6 +2917,13 @@
       "sources": [
         "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html"
       ]
+    },
+    "launchColor": {
+      "name": "GT-Silbermetallic",
+      "hex": "#A9ACAE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Generationen.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 4S (992)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Silberton nicht eindeutig (GT-Silber oder Dolomitsilber)."
     }
   },
   "porsche-911-992-1-carrera-4-gts": {
@@ -2682,6 +2934,13 @@
       "sources": [
         "https://newsroom.porsche.com/de/2021/produkte/porsche-911-gts-modelle-premiere-24872.html"
       ]
+    },
+    "launchColor": {
+      "name": "Kreide (Crayon)",
+      "hex": "#CFCAC0",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/de/2021/produkte/porsche-911-gts-modelle-premiere-24872.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 4 GTS, 2021); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Gezeigt ist der Targa 4 GTS. Kreide ist der einzige hellgraue Unifarbton der Farbkarte."
     }
   },
   "porsche-911-992-2-carrera-4s": {
@@ -2692,6 +2951,13 @@
       "sources": [
         "https://newsroom.porsche.com/de/2025/produkte/porsche-911-carrera-targa-4s-allradantrieb--39922.html"
       ]
+    },
+    "launchColor": {
+      "name": "Shadegreenmetallic",
+      "hex": "#9EB1A3",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/de/2025/produkte/porsche-911-carrera-targa-4s-allradantrieb--39922.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 4S, 911 Carrera 4S, 911 Carrera 4S Cabriolet, 2025); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2025; Shadegreenmetallic ist der einzige hell graugrüne Ton im Konfigurator."
     }
   },
   "porsche-911-992-2-carrera-4-gts": {
@@ -2702,6 +2968,13 @@
       "sources": [
         "https://newsroom.porsche.com/de/pressemappen/911.html"
       ]
+    },
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/de/pressemappen/911.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 4 GTS, 2024); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto; neben Indischrot gibt es Karminrot, der Ton ist nicht eindeutig."
     }
   },
   "porsche-911-991-2-gt3-rs": {
@@ -2756,6 +3029,240 @@
       "confidence": "high",
       "source": "https://www.zawya.com/en/press-release/fourth-edition-of-a-sports-car-legend-the-new-porsche-911-speedster-drrkdn6u",
       "note": "Porsche-Pressemitteilung vom 21.09.2010 (Pariser Autosalon): Die Außenfarbe „Pure Blue“ wurde exklusiv für den Speedster entwickelt; Carraraweiß gab es auf Wunsch ohne Aufpreis."
+    }
+  },
+  "porsche-911-964-turbo-s-leichtbau": {
+    "launchColor": {
+      "name": "Speedgelb",
+      "hex": "#F9C700",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-exclusive-makes-nearly-all-dreams-come-true-10720.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Turbo S, lightweight construction, 1992 - 1993). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-964-turbo-3-6": {
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-911-964-carrera-rs-3-8": {
+    "launchColor": {
+      "name": "Polarsilbermetallic",
+      "hex": "#C3C6C8",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2023/company/porsche-911-carrera-rs-autobot-mirage-transformers-rise-of-the-beasts-32589.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 Carrera RS 3.8 (964), Transformers: Rise of the Beasts, 2023). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-993-carrera-4": {
+    "launchColor": {
+      "name": "Polarsilbermetallic",
+      "hex": "#C3C6C8",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:1996_Porsche_911_993_Carrera_4_(46807).jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (1996 Porsche 911 993 Carrera 4 (46807)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-993-targa": {
+    "launchColor": {
+      "name": "Arktissilbermetallic",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 3.6 (993)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 1997."
+    }
+  },
+  "porsche-911-993-carrera-s": {
+    "launchColor": {
+      "name": "Arktissilbermetallic",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:1997_Porsche_911_993_Carrera_S_(80592).jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (1997 Porsche 911 993 Carrera S (80592)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-996-2-carrera": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-one-millionth-911-milestone-seven-generations-13735.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera 3.6 Coupé (996.2), 2004); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2004."
+    }
+  },
+  "porsche-911-996-2-carrera-4s": {
+    "launchColor": {
+      "name": "Arktissilbermetallic (Annahme)",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_Carrera_4S_coupe,_front_left,_06-08-2024.jpg",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-911-996-2-targa": {
+    "launchColor": {
+      "name": "Arktissilbermetallic",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en_US/products/porsche-911-targa-generations-history-21037.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Targa 3.6 (MY 2002)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto aus dem Modelljahr 2002 (Präsentationsjahr)."
+    }
+  },
+  "porsche-911-996-2-gt3": {
+    "launchColor": {
+      "name": "Carraraweiß",
+      "hex": "#F4F4F2",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 GT3 (996.2), 2019). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-996-2-turbo-s": {
+    "launchColor": {
+      "name": "Sealgraumetallic (vermutlich)",
+      "hex": "#7D8285",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 Turbo S Coupé (996), 2022). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-997-1-gt2": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation-Porsche-911,-(997),-2004-012.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Porsche 911 (997) GT2); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-911-997-2-carrera-s": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:2009_Porsche_911_Carrera_S_PDK.jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (2009 Porsche 911 Carrera S PDK). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-997-2-turbo": {
+    "launchColor": {
+      "name": "Aquablaumetallic",
+      "hex": "#1F6FB5",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 911 Turbo (997), 2020, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-997-2-gt3": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2019/products/porsche-20-years-911-gt3-jubilee-six-generations-18311.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (911 GT3 (997.2), 2019). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-997-2-gt3-rs": {
+    "launchColor": {
+      "name": "Grauschwarz",
+      "hex": "#3A3B3D",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/sport-lifestyle/porsche-gb-997-911-gt3-rs-hebe-birthday-zaid-hamid-21925.html",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (997.2 GT3 RS \"Hebe\", 2020). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-911-997-2-turbo-s": {
+    "launchColor": {
+      "name": "Silbermetallic (vermutlich GT-Silber)",
+      "hex": "#A9ACAE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (6th generation); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-911-991-2-carrera-s": {
+    "launchColor": {
+      "name": "Karminrot",
+      "hex": "#A3122A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-carrera-new-2015-11366.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera S, 2015); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2015; die Farbkarte kennt zwei Rottöne (Indischrot, Karminrot)."
+    }
+  },
+  "porsche-911-991-2-gt3": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-911-gt3-world-premiere-geneva-motor-show-gims-2017-13466.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 GT3, 2017); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto; neben Indischrot gibt es Karminrot, der Ton ist nicht eindeutig."
+    }
+  },
+  "porsche-911-991-2-speedster": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Speedster, 2019); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto; neben Indischrot gibt es Karminrot, der Ton ist nicht eindeutig."
+    }
+  },
+  "porsche-911-992-1-turbo-s": {
+    "launchColor": {
+      "name": "GT-Silbermetallic",
+      "hex": "#A9ACAE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/products/porsche-new-911-turbo-s-coupe-cabriolet-top-of-the-range-premiere-20110.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Turbo S, 2020); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Silberton nicht eindeutig."
+    }
+  },
+  "porsche-911-992-1-carrera-gts": {
+    "launchColor": {
+      "name": "Karminrot",
+      "hex": "#A3122A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en_US/2021/products/porsche-911-gts-models-premiere-24878.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera GTS, 2021); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2021; tiefer Rotton, daher Karminrot statt Indischrot."
+    }
+  },
+  "porsche-911-992-2-carrera-gts": {
+    "launchColor": {
+      "name": "Schiefergrau Neo",
+      "hex": "#6D7275",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2024/products/porsche-new-911-world-premiere-hybrid-36322.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera GTS, 2024); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Grauton nicht eindeutig (Schiefergrau Neo, Vanadiumgrau oder Eisgrau)."
+    }
+  },
+  "porsche-911-992-2-carrera-s": {
+    "launchColor": {
+      "name": "Eisgraumetallic",
+      "hex": "#C9CCCD",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2025/products/porsche-911-carrera-s-and-cabriolet-38315.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Carrera S, 2025); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Heller Grauton, nicht eindeutig."
+    }
+  },
+  "porsche-911-992-2-gt3": {
+    "launchColor": {
+      "name": "Weiß",
+      "hex": "#F5F5F5",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en_US/2024/products/porsche-the-2025-911-gt3-double-premiere-37598.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 GT3 with Weissach Package); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-911-992-2-turbo-s": {
+    "launchColor": {
+      "name": "Vanadiumgraumetallic (vermutlich)",
+      "hex": "#5F6366",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2025/products/porsche-911-turbo-s-top-of-the-range-model-twin-turbo-performance-hybrid-40446.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (911 Turbo S, 2025); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Grauton nicht eindeutig; Turbonit ist nur Akzentfarbe."
     }
   }
 }

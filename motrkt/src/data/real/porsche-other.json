@@ -600,7 +600,7 @@
       "hex": "#b3b6b8",
       "source": "https://www.secret-classics.com/en/porsche-carrera-gt-recommissioned-2/",
       "confidence": "medium",
-      "note": "Concept shown at the Louvre/Paris Motor Show in September 2000 (prototype 9R3/M 001 recorded as silver); production car premiered at Geneva in March 2003. GT Silver was the presentation colour of the press pictures; about 70% of cars were built in it."
+      "note": "Concept shown at the Louvre/Paris Motor Show in September 2000 (prototype 9R3/M 001 recorded as silver); production car premiered at Geneva in March 2003. GT Silver was the presentation colour of the press pictures; about 70% of cars were built in it. Porsche (Paint to Sample) bezeichnet GT-Silbermetallic als „untrennbar“ mit dem Carrera GT verbunden: https://media.porsche.com/paint-to-sample/en/panamera/gtsilvermetallic"
     },
     "specs": {
       "production": 1270,
@@ -801,7 +801,14 @@
       ]
     },
     "note": "VW-Porsche 914 mit 1,7-l-Vierzylinder von VW (D-Jetronic), 80 PS, Modelljahre 1970–1973. Neupreis 12.250 DM (1970, ohne Extras; de.wikipedia). 115.631 = alle Vierzylinder-914 zusammen (1.7, 2.0 und 1.8; Karmann Osnabrück, 1969–1976, Porsche Newsroom). Eine Aufteilung nach Motor veröffentlicht Porsche nicht.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Weidengrün",
+      "hex": "#B8B35A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/history/porsche-museum-50-years-917-914-panamera-16904.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (VW-Porsche 914, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-914-914-2-0": {
     "specs": {
@@ -827,7 +834,14 @@
       ]
     },
     "note": "914 2.0 mit 2,0-l-Vierzylinder, 100 PS (USA 88–95 PS), ab Modelljahr 1973 (Produktion ab August 1972) als Nachfolger des 914/6. Neupreis laut deutscher Preisliste für das Modelljahr 1974: 14.990 DM; für 1973 ist kein DM-Preis belegt. 115.631 = alle Vierzylinder-914 zusammen (1.7, 2.0 und 1.8; Karmann Osnabrück, 1969–1976, Porsche Newsroom). Eine Aufteilung nach Motor veröffentlicht Porsche nicht.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Gelbgrün",
+      "hex": "#9CC43A",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_914_2.0_(1976)_(34824742262).jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (Porsche 914 2.0 (1976)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-914-914-1-8": {
     "specs": {
@@ -853,7 +867,14 @@
       ]
     },
     "note": "914 1.8 ab August 1973 (Modelljahr 1974), in Europa 85 PS mit zwei Solex-Vergasern, in den USA 76 PS mit L-Jetronic. Neupreis laut deutscher Preisliste 1974: 13.990 DM. 115.631 = alle Vierzylinder-914 zusammen (1.7, 2.0 und 1.8; Karmann Osnabrück, 1969–1976, Porsche Newsroom). Eine Aufteilung nach Motor veröffentlicht Porsche nicht.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Irischgrün",
+      "hex": "#1F6E3A",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_914_1.8_(1974)_-_20310675120.jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (Porsche 914 1.8 (1974) - 20310675120). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-914-914-6": {
     "specs": {
@@ -878,7 +899,14 @@
       ]
     },
     "note": "914/6 mit dem 2,0-l-Sechszylinder des 911 T, 110 PS, gebaut 1969–1972 überwiegend in Zuffenhausen. Porsche nennt genau 3.338 Exemplare (andere Quellen 3.332 bis 3.353). Neupreis 19.980 DM (1970), kaum weniger als ein 911 T.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Hellelfenbein",
+      "hex": "#EDE3C8",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 914/6, Solitude, Stuttgart, 2023, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-924-924": {
     "specs": {
@@ -903,7 +931,14 @@
       ]
     },
     "note": "Vorgestellt im November 1975 bei einer Pressefahrveranstaltung in La Grande-Motte (Südfrankreich), gebaut bei Audi in Neckarsulm. Grundpreis 23.240 DM (Porsche Newsroom). 150.684 = alle 924 bis zum Produktionsende 1988 einschließlich Turbo und 924 S (Porsche); den 2.0 allein beziffert de.wikipedia mit „mehr als 130.000“. Präsentationsfarbe: keine Quelle gefunden, die die Farbe der Vorstellungsfahrzeuge nennt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Signalgrün",
+      "hex": "#2E9E4F",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/christophorus/porsche-924-944-968-928-transaxle-era-history-museum-exhibition-12537.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 924, transaxle era, 2016, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-924-924-turbo": {
     "launchColor": {
@@ -960,7 +995,14 @@
       ]
     },
     "note": "Typ 937, Homologationsmodell für die Gruppe 4; als Prototyp auf der IAA 1979 gezeigt. Neupreis laut de.wikipedia „ca. 60.000 DM“. Serienfarben laut Stuttcars Rot, Silber und Schwarz; die Farbe des IAA-Prototyps ist nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Silbermetallic",
+      "hex": "#B5B8BA",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-924-Carrera-GT.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 924 Carrera GT, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-924-924-carrera-gts": {
     "launchColor": {
@@ -968,7 +1010,7 @@
       "hex": "#b5121b",
       "source": "https://de.wikipedia.org/wiki/Porsche_924",
       "confidence": "high",
-      "note": "Alle 59 Carrera GTS (44 Straßenversion, 15 Clubsport) wurden in Indischrot ausgeliefert (de.wikipedia)."
+      "note": "Alle 59 Carrera GTS (44 Straßenversion, 15 Clubsport) wurden in Indischrot ausgeliefert (de.wikipedia). Ergänzung: Ein Prototyp (Fahrgestell 001, in Weissach gebaut) war Grand-Prix-Weiß; alle übrigen 58 Wagen indischrot."
     },
     "specs": {
       "production": 59,
@@ -1016,7 +1058,14 @@
       ]
     },
     "note": "2,5-l-Vierzylinder aus dem 944, 150 PS, ab Modelljahr 1988 160 PS. Neupreis 1986: 41.950 DM (de.wikipedia). Eine eigene Stückzahl nennt Porsche nicht. Präsentationsfarbe nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2026/history/porsche-transaxle-models-history-42008.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-944-944": {
     "specs": {
@@ -1041,7 +1090,14 @@
       ]
     },
     "note": "Weltpremiere auf der IAA im September 1981, Grundpreis 38.900 DM (Porsche Newsroom). Ab 1985 auch mit Katalysator (150 PS), 1988 auf 2,7 l und 165 PS vergrößert. Die ganze 944-Familie kam auf 163.302 Fahrzeuge (Porsche). Präsentationsfarbe nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/company/porsche-peter-schutz-ceo-obituary-14435.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat. Porsches Foto von 1982 ist schwarzweiß."
+    }
   },
   "porsche-944-944-turbo": {
     "specs": {
@@ -1065,7 +1121,14 @@
       ]
     },
     "note": "Typ 951, 220 PS, ab Modelljahr 1989 250 PS. Grundpreis 72.000 DM (de.wikipedia). Turbo Cabriolet 1991 als Sonderserie (528 laut Porsche, 625 laut en.wikipedia). Präsentationsfarbe nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Kalaharibeigemetallic (vermutlich)",
+      "hex": "#CDBFA3",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 944 Turbo Coupé, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-944-944-s": {
     "specs": {
@@ -1082,7 +1145,14 @@
       ]
     },
     "note": "Vierventil-Motor (16V), vorgestellt im August 1986 für das Modelljahr 1987. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-944.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-944-944-turbo-s": {
     "launchColor": {
@@ -1131,7 +1201,14 @@
       ]
     },
     "note": "3,0-l-Vierzylinder mit 211 PS, Coupé und Cabriolet. Das Cabriolet kostete 1989 89.900 DM (Zwischengas); für das Coupé ist kein DM-Preis belegt, der Wert im Katalog ist geschätzt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Azuritblau",
+      "hex": "#1F3E9A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-944-s2-restoration-glass-dome-19636.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (944 S2, 2020, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-968-968": {
     "specs": {
@@ -1155,7 +1232,14 @@
       ]
     },
     "note": "Gebaut in Zuffenhausen, IAA-Pressetag 12. September 1991. Grundpreis 89.900 DM (Porsche Newsroom; de.wikipedia: 89.800 DM), Cabriolet rund 10.000 DM teurer. Präsentationsfarbe nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Horizontblaumetallic",
+      "hex": "#8FB3CF",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2026/history/porsche-transaxle-models-924-new-direction-42007.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (968 Cabriolet, 1992, Porsche AG); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 1992 (Präsentationsjahr), Cabriolet."
+    }
   },
   "porsche-968-968-cs": {
     "specs": {
@@ -1178,7 +1262,14 @@
       ]
     },
     "note": "Club Sport: rund 50 kg leichter, ohne Rücksitze, Airbags und elektrische Komfortausstattung; billiger als das Serien-Coupé. Präsentationsfarbe nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2026/history/porsche-transaxle-models-history-42008.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-968-968-turbo-s": {
     "specs": {
@@ -1202,7 +1293,14 @@
       ]
     },
     "note": "Turbo-Vierzylinder mit 305 PS; Neupreis laut de.wikipedia „etwa 175.000 DM“. Präsentationsfarbe nicht belegt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/Forever-Young.-Celebrating-Transaxle/Porsche-968.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-928-928": {
     "launchColor": {
@@ -1251,7 +1349,14 @@
       ]
     },
     "note": "4,7-l-V8 mit 300 PS, ab 1984 310 PS. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Talbotgelb",
+      "hex": "#F2A900",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2025/history/porsche-customisation-dreams-39157.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (928 S „Boo“, 2025, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-928-928-s4": {
     "specs": {
@@ -1268,7 +1373,14 @@
       ]
     },
     "note": "5,0-l-V8 mit Vierventilköpfen, 320 PS. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/scene-passion/porsche-klassik-magazine-tobias-aichele-motorjournalist-928-22467.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (928 S4, 2020, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
   },
   "porsche-928-928-gt": {
     "specs": {
@@ -1285,7 +1397,14 @@
       ]
     },
     "note": "Nur mit Schaltgetriebe. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/christophorus/porsche-40-years-928-courage-development-transaxle-andrew-phinney-hans-clausecker-hans-georg-kasten-14622.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
   },
   "porsche-928-928-gts": {
     "specs": {
@@ -1310,7 +1429,14 @@
       ]
     },
     "note": "5,4-l-V8 mit 350 PS, ersetzte S4 und GT; Neupreis 1992: 156.050 DM (Auto Bild).",
-    "images": []
+    "images": [],
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 928 GTS, Nardò Technical Center, 1993, Porsche AG). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Das Foto zeigt den Rekordwagen in Esso-Design (Nardò 1993)."
+    }
   },
   "porsche-718-718-boxster-25-jahre": {
     "launchColor": {
@@ -1363,7 +1489,7 @@
       "hex": "#3AA24A",
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html",
-      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; Pythongrün war 2020 die einzige grüne Serien-Sonderfarbe für die 718-Modelle (laut Porsche-Pressemitteilung vom 08.09.2020 auch für GT4 und Spyder)."
+      "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; Pythongrün war 2020 die einzige grüne Serien-Sonderfarbe für die 718-Modelle (laut Porsche-Pressemitteilung vom 08.09.2020 auch für GT4 und Spyder). Hinweis: Porsche (Paint to Sample) datiert die Einführung von Pythongrün auf 2021, die Weltpremiere der GTS 4.0 war im Juni 2020; die Farbe war ab Modelljahr 2021 bestellbar."
     }
   },
   "porsche-cayman-987-2-cayman-r": {
@@ -1418,6 +1544,240 @@
       "confidence": "medium",
       "source": "https://newsroom.porsche.com/en/products/porsche-718-boxster-geneva-motorshow-world-premiere-12247.html",
       "note": "Farbe nach Porsches offiziellen Pressefotos zur Präsentation bestimmt; in der Werksfarbkarte (718-Prospekt) ist das der einzige orange Farbton. Porsches Bühnenfoto der Weltpremiere (Genf, März 2016) zeigt einen orangen 718 Boxster; Boxster und Boxster S wurden gemeinsam vorgestellt."
+    }
+  },
+  "porsche-356-356-pre-a-coupe": {
+    "launchColor": {
+      "name": "Silber (Annahme)",
+      "hex": "#B5B8BA",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2023/history/porsche-356-wood-framework-christophorus-406-icon-31841.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-356-356-b-coupe": {
+    "launchColor": {
+      "name": "Königsblau",
+      "hex": "#1E2E6B",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2026/scene-passion/porsche-garage-ivaylo-popivantchev-42826.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Porsche 356 B Coupé, 2026). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-356-356-c-coupe": {
+    "launchColor": {
+      "name": "Emailblau",
+      "hex": "#6E9CC8",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-356c-claus-meirich-19777.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (356 C, 2020). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-912-912-e": {
+    "launchColor": {
+      "name": "Hellgelb",
+      "hex": "#F3D23B",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (912 E, 2022). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Porsche beschreibt den 912-E-Prototyp in Hellgelb (Farbcode 117): https://newsroom.porsche.com/en/2022/history/porsche-klassik-912-e-prototype-26485.html"
+    }
+  },
+  "porsche-boxster-986-boxster": {
+    "launchColor": {
+      "name": "Arenarotmetallic",
+      "hex": "#7A1F2E",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster (986), 1996); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 1996 (Präsentationsjahr). Arenarotmetallic ist der einzige metallische Rotton der Boxster-Farbkarte 1997."
+    }
+  },
+  "porsche-boxster-986-boxster-s": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (986)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-boxster-987-1-boxster": {
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/media-search.html",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat. Porsches Präsentationsfoto des Boxster S von 2005 zeigt Indischrot."
+    }
+  },
+  "porsche-boxster-987-1-boxster-s": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (987), 2005); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2005 (Präsentationsjahr)."
+    }
+  },
+  "porsche-boxster-987-2-boxster": {
+    "launchColor": {
+      "name": "Racinggreenmetallic",
+      "hex": "#1F3B2C",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster (987), 2008); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Foto von 2008 (Präsentationsjahr); dunkles Grün, nicht ganz eindeutig."
+    }
+  },
+  "porsche-boxster-987-2-boxster-s": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (987.2)); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-boxster-987-2-boxster-spyder": {
+    "launchColor": {
+      "name": "Carraraweiß",
+      "hex": "#F4F4F2",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster Spyder (987), 2010); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2010 mit seitlichem Porsche-Schriftzug."
+    }
+  },
+  "porsche-boxster-981-boxster": {
+    "launchColor": {
+      "name": "Limegoldmetallic",
+      "hex": "#B9A86A",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster (981), 2013); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2012; Limegoldmetallic ist der einzige Goldton der 981-Farbkarte."
+    }
+  },
+  "porsche-boxster-981-boxster-s": {
+    "launchColor": {
+      "name": "Limegoldmetallic",
+      "hex": "#B9A86A",
+      "confidence": "medium",
+      "source": "https://newsroom.porsche.com/christophorus/en/2021/398/boxster-25-years.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster S (981), 2012); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Präsentationsfoto 2012; Limegoldmetallic ist der einzige Goldton der 981-Farbkarte."
+    }
+  },
+  "porsche-boxster-981-boxster-gts": {
+    "launchColor": {
+      "name": "Karminrot",
+      "hex": "#A3122A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster GTS, 2014); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-boxster-981-boxster-spyder": {
+    "launchColor": {
+      "name": "Weiß",
+      "hex": "#F5F5F5",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-boxster-spyder-roadster-world-premiere-new-york-international-auto-show-2015-10147.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Boxster Spyder, 2015); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Weiß oder Carraraweißmetallic, nicht eindeutig."
+    }
+  },
+  "porsche-cayman-987-1-cayman-s": {
+    "launchColor": {
+      "name": "Arktissilbermetallic",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:2006_Porsche_Cayman_S_(68221).jpg",
+      "note": "Farbe eines Kundenfahrzeugs auf einem freien Foto (2006 Porsche Cayman S (68221)). Kein Beleg für den Präsentationswagen; nur ein Anhaltspunkt."
+    }
+  },
+  "porsche-cayman-987-1-cayman": {
+    "launchColor": {
+      "name": "Arktissilbermetallic (Annahme)",
+      "hex": "#B9BCBE",
+      "confidence": "low",
+      "source": "",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-cayman-987-2-cayman": {
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_Cayman_Facelift.JPG",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-cayman-987-2-cayman-s": {
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:2009_Porsche_Cayman_S_1.jpg",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-cayman-981-cayman": {
+    "launchColor": {
+      "name": "Schwarz",
+      "hex": "#111111",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/products/porsche-cayman-black-edition-11453.html",
+      "note": "Farbe eines späteren Porsche-Archiv- oder Heritage-Fotos (Cayman Black Edition (981), 2015). Das ist nicht der Präsentationswagen; nur ein Anhaltspunkt. Das Foto zeigt die Black Edition von 2015."
+    }
+  },
+  "porsche-cayman-981-cayman-s": {
+    "launchColor": {
+      "name": "Indischrot (Annahme)",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://commons.wikimedia.org/wiki/File:Porsche_Cayman_S_(Type_981).jpg",
+      "note": "Kein Foto und keine Quelle zur Präsentationsfarbe gefunden. Annahme, damit jede Variante eine Farbe hat."
+    }
+  },
+  "porsche-cayman-981-cayman-gts": {
+    "launchColor": {
+      "name": "Karminrot",
+      "hex": "#A3122A",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/it/ppdb/2014/03/nuovo-binomio-di-spicco-con-performance-ulteriormente-migliorate-boxster-gts-e-cayman-gts.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (Cayman GTS, 2014); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-718-718-spyder": {
+    "launchColor": {
+      "name": "GT-Silbermetallic",
+      "hex": "#A9ACAE",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/press-kits/718-spyder-cayman-gt4.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Spyder, 2019); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-718-718-cayman-gts-4-0": {
+    "launchColor": {
+      "name": "Indischrot",
+      "hex": "#C8102E",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2020/products/porsche-718-gts-4-0-models-boxster-cayman-19733.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Cayman GTS, 2020); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet."
+    }
+  },
+  "porsche-718-718-cayman-gt4-rs": {
+    "launchColor": {
+      "name": "Arktisgrau (Arctic Grey)",
+      "hex": "#7F8487",
+      "confidence": "high",
+      "source": "https://newsroom.porsche.com/en/2021/products/porsche-718-cayman-gt4-rs-la-auto-show-26459.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Cayman GT4 RS, 2021); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Porsche (Paint to Sample): Arktisgrau wurde mit dem 718 Cayman GT4 RS eingeführt: https://media.porsche.com/paint-to-sample/en/911/arcticgrey"
+    }
+  },
+  "porsche-718-718-spyder-rs": {
+    "launchColor": {
+      "name": "Arktisgrau (Arctic Grey)",
+      "hex": "#7F8487",
+      "confidence": "low",
+      "source": "https://newsroom.porsche.com/en/2023/products/porsche-718-spyder-rs-world-premiere-32257.html",
+      "note": "Farbe nach einem zeitgenössischen Porsche-Pressefoto (718 Spyder RS, 2023); der Farbname ist aus der Werksfarbkarte der Zeit abgeleitet. Porsche nennt für den Spyder RS die Sonderfarben Arktisgrau, Haifischblau und Rubinstern Neo; der Grauton auf den Fotos ist nicht eindeutig (auch Vanadiumgrau möglich)."
     }
   }
 }
