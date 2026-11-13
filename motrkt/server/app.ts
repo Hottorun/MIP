@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname, join, normalize } from "node:path";
+import { fileURLToPath } from "node:url";
 import { handleApi } from "./api.ts";
 import { authGate, enableDemoAccount } from "./auth.ts";
 
@@ -9,8 +10,13 @@ import { authGate, enableDemoAccount } from "./auth.ts";
  * (server/prod.ts) and on Vercel by the function api/server.ts, which receives every request.
  */
 
-// Run from the project root (npm start, and Vercel functions run in the root of the project files).
-const DIST = process.env.MIP_DIST ?? join(process.cwd(), "dist");
+// The built app next to this file's folder: on Vercel the function's working directory is the repository root
+// (/var/task), with the project under motrkt/, so a path from process.cwd() misses it. The cwd is the fallback.
+const DIST =
+  process.env.MIP_DIST ??
+  [fileURLToPath(new URL("../dist", import.meta.url)), join(process.cwd(), "dist")].find((d) => existsSync(join(d, "index.html"))) ??
+  join(process.cwd(), "dist");
+if (!existsSync(join(DIST, "index.html"))) console.error(`dist/index.html fehlt (gesucht in ${DIST}, Modul ${import.meta.url})`);
 
 const TYPES: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -58,5 +64,11 @@ export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
     res.setHeader("Vary", "Accept-Encoding");
   }
   res.setHeader("Content-Length", statSync(file).size);
-  createReadStream(file).pipe(res);
+  createReadStream(file)
+    .on("error", (err) => {
+      console.error(err);
+      if (!res.headersSent) res.statusCode = 500;
+      res.end();
+    })
+    .pipe(res);
 }
