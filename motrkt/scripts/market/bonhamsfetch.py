@@ -14,7 +14,10 @@ usage: python3 -I bonhamsfetch.py WORK [--lot-pages N]
    auctioned lots that classify.py assigns to a variant (cached in WORK/web/bonhams/lots/). No HTML lot pages are
    needed. --lot-pages N stops after N new lot texts (for a first test run).
 Writes WORK/web/bonhams/bonhams.json, which build.py reads. Bonhams' permission for this access confirmed by the
-project owner on 11 November 2026. One request every 1.5 seconds. Stops if Bonhams answers with a bot challenge.
+project owner on 11 November 2026 (again on 13 November 2026). One request every 1.5 seconds. A bot challenge is never
+worked around: on the lot list nothing is written; on sale names or catalogue texts (filtered searches, which Bonhams
+sometimes answers with a challenge) no further request is made and the results are written without sale name or
+mileage, from what is cached.
 """
 import datetime as dt, gzip, html, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 from zoneinfo import ZoneInfo
@@ -150,9 +153,16 @@ try:
         date = local_date(x.get("hammerTime")) or local_date(x.get("auctionEndDate"))
         if c and date and date >= "2015-01-01": cands.append((x, title, chassis, date, sold, round(amt) if sold else None))
     print(len(cands), "auction results assigned to a variant", flush=True)
+except Blocked as e:
+    sys.exit("Bonhams answered the lot list with a bot challenge (%s); stopped, nothing written." % e)
 
-    # -------------------------------------------------------------------------------------------- 2. sale names
-    sales, sales_p = load("sales.json", {})
+def lot_path(x): return os.path.join(DIR, "lots", "%s.json" % re.sub(r"[^A-Za-z0-9-]", "_", x["id"]))
+
+
+# ------------------------------------------------------------------------------------------------ 2. sale names
+sales, sales_p = load("sales.json", {})
+new_pages, blocked = 0, None
+try:
     todo = sorted({x["auctionId"] for x, *_ in cands} - set(sales))
     for i in range(0, len(todo), 100):
         ids = todo[i: i + 100]
@@ -167,11 +177,8 @@ try:
         print("sales", i + len(ids), "of", len(todo), flush=True)
 
     # -------------------------------------------------------------------------------------------- 3. catalogue texts
-    def lot_path(x): return os.path.join(DIR, "lots", "%s.json" % re.sub(r"[^A-Za-z0-9-]", "_", x["id"]))
-
     todo = [x for x, *_ in cands if not os.path.exists(lot_path(x))]
     if LOT_PAGES is not None: todo = todo[:LOT_PAGES]
-    new_pages = 0
     for i in range(0, len(todo), 50):
         part = todo[i: i + 50]
         d = search("lots", q="*", per_page=50, filter_by="id:[%s]" % ",".join("`%s`" % x["id"] for x in part),
@@ -183,7 +190,9 @@ try:
             new_pages += 1
         print("lot texts", i + len(part), "of", len(todo), flush=True)
 except Blocked as e:
-    sys.exit("Bonhams answered with a bot challenge (%s); stopped, nothing written." % e)
+    blocked = str(e)
+    print("Bonhams answered with a bot challenge, no further requests this run; results without the missing sale names"
+          " and mileages", flush=True)
 
 
 MILEAGE = r"\b(\d{1,3}(?:[,.] ?\d{3})+|\d+)\s*(kilometres|kilometers|kms?|miles)\b"
@@ -194,7 +203,7 @@ def km_of(desc):
     """Stated mileage (km, rounded to 100) from the catalogue text: the bullet points under the lot name, which state
     the odometer (e.g. "Displays a little over 62,515 kilometres"), else a sentence of the text that gives the
     odometer reading at the time of cataloguing."""
-    body = re.split(r'<div class="LotDesc">', desc, 1)[-1]
+    body = re.split(r'<div class="LotDesc">', desc, maxsplit=1)[-1]
     bullets = [text(b) for b in re.findall(r"(?:•|&bull;|&#8226;)(.*?)(?=<br|•|&bull;|&#8226;|</div>|$)", body, re.S)]
     sents = [s for s in re.split(r"(?<=[.!?])\s+", text(body)) if re.search(r"odometer|speedometer", s, re.I)
              and re.search(r"cataloguing|catalogue|writing|currently|present|today|now (?:reads|shows|displays|indicates)", s, re.I)]
@@ -210,18 +219,24 @@ def km_of(desc):
     return None
 
 
+def lot_no(x):
+    """Lot number as printed ("123", "123A"); Bonhams gives it as {"full": ...}, as {"number", "letter"} or not at all."""
+    n = x.get("lotNo")
+    if isinstance(n, dict): return n.get("full") or ("%s%s" % (n.get("number") or "", n.get("letter") or "")).strip() or str(x["lotId"])
+    return str(n or x["lotId"])
+
+
 out = []
 for x, title, chassis, date, sold, amt in cands:
     p = lot_path(x)
-    if not os.path.exists(p): continue
-    desc = json.load(open(p))["catalogDesc"]
+    desc = json.load(open(p))["catalogDesc"] if os.path.exists(p) else ""
     if not chassis:
         m = re.search(r'<div class="LotName">(.*?)</div>', desc, re.S)
         chassis = split_title(m.group(1))[1] if m else ""
     s = sales.get(x["auctionId"]) or {}
-    out.append(dict(id=x["id"], code=x["auctionId"], lot=x["lotNo"]["full"] if x.get("lotNo") else x["lotId"], title=title,
+    out.append(dict(id=x["id"], code=x["auctionId"], lot=lot_no(x), title=title,
                     date=date, sold=sold, amt=amt, cur=(x.get("currency") or {}).get("iso_code") or None,
                     country=(x.get("country") or {}).get("code") or s.get("country") or "", chassis=chassis, km=km_of(desc),
                     url="https://www.bonhams.com/auction/%s/lot/%s/" % (x["auctionId"], x["lotId"]), sale=s.get("name") or ""))
 json.dump(out, open(os.path.join(DIR, "bonhams.json"), "w"), ensure_ascii=False)
-print(len(out), "Bonhams results since 2015;", new_pages, "new lot texts", flush=True)
+print(len(out), "Bonhams results since 2015;", new_pages, "new lot texts;", sum(1 for o in out if o["km"]), "with mileage", flush=True)
