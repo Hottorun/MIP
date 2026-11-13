@@ -5,7 +5,7 @@ import { tr } from "../i18n/terms";
 import { AS_OF, getListings, getSales } from "../data/generate";
 import { brandIndex, changeOver, getMetrics, holdingValue, inflationFactor, topMovers } from "../data/market";
 import type { Holding } from "../data/types";
-import { date, eur, km, num, pct } from "./format";
+import { date, eur, km, num, pct, liters } from "./format";
 
 /** AI Co-Pilot client: streams answers from the server (Claude) and falls back to a local, data-driven analyst. */
 
@@ -106,7 +106,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
     lines.push(
       "",
       `## Aktuell geöffnete Variante: ${variantTitle(focus)}`,
-      `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${num(focus.liters, 1)} l, ${focus.drive}, ${focus.transmission}`,
+      `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${liters(focus.liters)} l, ${focus.drive}, ${focus.transmission}`,
       `Neupreis ca. ${eur(focus.newPrice)} (${focus.newPriceYear}), inflationsbereinigt ca. ${eur(focus.newPrice * inflationFactor(focus.newPriceYear))}`,
       focus.measured
         ? `Marktwert Deutschland ${eur(m.value)} (aus europäischen Auktionsergebnissen, europäischen Angebotspreisen und bereinigten US-Auktionen); Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`

@@ -239,32 +239,36 @@ export const CATALOG: BrandDef[] = [
           },
           {
             name: "993",
-            years: [1994, 1998],
+            years: [1993, 1998],
             shape: "classic911",
             variants: [
               v("Carrera", [1994, 1998], 38626, 114_000, 0.061, 285, 3.6, 64_000, {
-                body: { Coupé: 0.6, Cabriolet: 0.32, Targa: 0.08 },
+                body: { Coupé: 0.6, Cabriolet: 0.4 },
                 gearbox: { Manual: 0.76, Automatik: 0.24 },
                 transmission: "6-Gang Schaltgetriebe / 4-Stufen Tiptronic S",
                 color: "#1f3f8f",
               }),
-              v("Carrera 4S", [1995, 1998], 6948, 164_000, 0.068, 285, 3.6, 76_000, { ...AWD, color: "#151619" }),
+              v("Carrera 4S", [1995, 1998], 6948, 164_000, 0.068, 285, 3.6, 76_000, { ...AWD, transmission: "6-Gang Schaltgetriebe", color: "#151619" }),
               v("Carrera RS", [1995, 1996], 1014, 346_000, 0.093, 300, 3.8, 82_000, {
                 tags: ["Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
                 color: "#efc11a",
               }),
               v("Turbo", [1995, 1998], 5978, 262_000, 0.084, 408, 3.6, 105_000, {
                 drive: "Allrad (AWD)",
+                transmission: "6-Gang Schaltgetriebe",
                 tags: ["Turbo", "Allrad"],
                 color: "#b7babe",
               }),
               v("Turbo S", [1997, 1998], 345, 720_000, 0.121, 450, 3.6, 155_000, {
                 drive: "Allrad (AWD)",
+                transmission: "6-Gang Schaltgetriebe",
                 tags: ["Turbo", "Allrad"],
                 color: "#efc11a",
               }),
               v("GT2", [1995, 1998], 57, 2_400_000, 0.135, 430, 3.6, 145_000, {
                 tags: ["Turbo", "Leichtbau"],
+                transmission: "6-Gang Schaltgetriebe",
                 color: "#e9e8e1",
               }),
               v("Carrera 4", [1994, 1998], 4000, 108_000, 0.058, 285, 3.6, 68_000, {
@@ -675,7 +679,7 @@ export const CATALOG: BrandDef[] = [
                 transmission: "7-Gang Schaltgetriebe",
                 color: "#7d7f7a",
               }),
-              v("Dakar", [2022, 2024], 2500, 264_000, 0.041, 480, 3.0, 223_000, { ...AWD, ...PDK, color: "#cfccc2" }),
+              v("Dakar", [2022, 2024], 2500, 264_000, 0.041, 480, 3.0, 223_000, { ...AWD, ...PDK, transmission: "8-Gang PDK", color: "#cfccc2" }),
               v("S/T", [2023, 2024], 1963, 468_000, 0.085, 525, 4.0, 292_000, {
                 tags: ["Leichtbau"],
                 transmission: "6-Gang Schaltgetriebe",
@@ -804,7 +808,7 @@ export const CATALOG: BrandDef[] = [
         generations: [
           {
             name: "912",
-            years: [1965, 1969],
+            years: [1965, 1976],
             shape: "classic911",
             variants: [
               v("912 Coupé", [1965, 1969], 30300, 62_000, 0.052, 90, 1.6, 8_500, {
@@ -1081,7 +1085,7 @@ export const CATALOG: BrandDef[] = [
         generations: [
           {
             name: "Carrera GT",
-            years: [2003, 2007],
+            years: [2003, 2006],
             shape: "hyper",
             variants: [
               v("Carrera GT", [2003, 2007], 1270, 1_340_000, 0.128, 612, 5.7, 452_000, {

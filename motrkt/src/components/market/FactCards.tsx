@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 import { generationById, genName, optionFactor, productionLabel, yearsLabel } from "../../data/db";
 import type { Variant } from "../../data/types";
 import { getMetrics, inflationFactor } from "../../data/market";
-import { cn, eur, hostOf, num, pct } from "../../lib/format";
+import { cn, eur, hostOf, num, pct, liters } from "../../lib/format";
 import { Section, Money } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -13,7 +13,7 @@ export function Details({ variant, picked, onPick }: { variant: Variant; picked:
   const specs: [string, string][] = [
     [t("Bauzeit", "Built"), yearsLabel(variant.years)],
     ["Generation", `${genName(gen)}, ${yearsLabel(gen.years)}`],
-    [t("Motor", "Engine"), `${num(variant.liters, 1)} l, ${variant.hp} PS`],
+    [t("Motor", "Engine"), `${liters(variant.liters)} l, ${variant.hp} PS`],
     [t("Antrieb", "Drive"), tr(variant.drive)],
     [t("Getriebe", "Gearbox"), tr(variant.transmission)],
     [t("Karosserie", "Body"), Object.keys(variant.body).map((b) => tr(b)).join(", ")],

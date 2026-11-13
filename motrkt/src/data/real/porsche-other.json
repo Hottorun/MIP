@@ -25,7 +25,8 @@
         "eur": 5829,
         "year": 1955
       },
-      "note": "Wikipedia: Preise von 11.400 bis 15.750 DM je nach Ausführung"
+      "note": "Wikipedia: Preise von 11.400 bis 15.750 DM je nach Ausführung",
+      "productionNote": "alle 356 A einschließlich Speedster und Convertible D"
     },
     "note": "Production 21,045 is the whole 356 A series (Coupé, Cabriolet, Speedster). 60 PS / 1582 cc refers to the 1600 version. 356 A list prices ranged from 11,400 to 15,750 DM depending on version; no single Coupé 1600 price verified.",
     "images": [
@@ -87,7 +88,10 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Porsche_356",
         "https://de.wikipedia.org/wiki/Porsche_356"
-      ]
+      ],
+      "hp": 60,
+      "liters": 1.6,
+      "note": "Grundmotor 1600 mit 60 PS (ab Herbst 1955); 1954/55 mit 1,5 Litern. Vorher 75 PS: das ist der 1600 Super, der als Ausstattung geführt wird."
     },
     "note": "Production 4,854 (all years) per en.wikipedia. Price: 12,200 DM ex works at introduction (de.wikipedia, year not stated; US price 1954 was US$2,995). Engines varied (1500: 55 PS, 1500 S: 70 PS, 1600: 60/75 PS), so no single power figure given.",
     "images": [
@@ -1204,8 +1208,16 @@
       "sources": [
         "https://de.wikipedia.org/wiki/Porsche_944",
         "https://en.wikipedia.org/wiki/Porsche_944",
-        "https://www.zwischengas.com/en/articles/cars/Porsche-944-S2-Cabriolet-1989-vier-grosse-Toepfe-fuer-Sonnenanbeter.html"
-      ]
+        "https://www.zwischengas.com/en/articles/cars/Porsche-944-S2-Cabriolet-1989-vier-grosse-Toepfe-fuer-Sonnenanbeter.html",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/944/1generation/"
+      ],
+      "newPrice": {
+        "amount": 73600,
+        "currency": "DEM",
+        "eur": 37631,
+        "year": 1989
+      },
+      "note": "Neupreis: ADAC-Listenpreis des S2 Coupé 1989; vorher 41.000 € (Katalogwert ohne Quelle)"
     },
     "note": "3,0-l-Vierzylinder mit 211 PS, Coupé und Cabriolet. Das Cabriolet kostete 1989 89.900 DM (Zwischengas); für das Coupé ist kein DM-Preis belegt, der Wert im Katalog ist geschätzt.",
     "images": [],
@@ -1400,8 +1412,16 @@
       ],
       "sources": [
         "https://en.wikipedia.org/wiki/Porsche_928",
-        "https://de.wikipedia.org/wiki/Porsche_928"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_928",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/928/1generation-facelift/"
+      ],
+      "newPrice": {
+        "amount": 145900,
+        "currency": "DEM",
+        "eur": 74597,
+        "year": 1991
+      },
+      "note": "ADAC-Listenpreis am Ende der Bauzeit (01/89–07/91); der Startpreis von 1989 ist nicht belegt; vorher Neupreis 62.000 € (Katalogwert ohne Quelle)"
     },
     "note": "Nur mit Schaltgetriebe. Ein DM-Neupreis ist nicht belegt; der Wert im Katalog ist geschätzt.",
     "images": [],
@@ -1458,8 +1478,16 @@
       "liters": 4.0,
       "production": 1250,
       "sources": [
-        "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html"
-      ]
+        "https://newsroom.porsche.com/en/2021/products/porsche-boxster-25-years-premiere-23375.html",
+        "https://www.auto-motor-und-sport.de/sportwagen/porsche-boxster-25-jahre-sechszylinder-edition-jubilaeum/"
+      ],
+      "newPrice": {
+        "amount": 94986,
+        "currency": "EUR",
+        "eur": 94986,
+        "year": 2021
+      },
+      "note": "vorher Neupreis 97.600 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-boxster-s": {
@@ -1474,9 +1502,17 @@
       "hp": 350,
       "liters": 2.5,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://de.motor1.com/news/152623/erste-mitfahrt-im-porsche-718-boxster-und-boxster-s-mit-technischen-daten-preisen-und-marktstart/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 66141,
+        "currency": "EUR",
+        "eur": 66141,
+        "year": 2016
+      },
+      "note": "vorher Neupreis 66.100 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-cayman-s": {
@@ -1495,9 +1531,17 @@
         2025
       ],
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)",
+        "https://www.autobild.de/artikel/porsche-718-cayman-2016-vorstellung-8950865.html"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 64118,
+        "currency": "EUR",
+        "eur": 64118,
+        "year": 2016
+      },
+      "note": "vorher Neupreis 64.100 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-cayman-gt4": {
@@ -1516,9 +1560,17 @@
         2023
       ],
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)",
+        "https://www.autohaus.de/nachrichten/autohersteller/porsche-718-gt4-die-rueckkehr-des-saugers-2710387"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 96206,
+        "currency": "EUR",
+        "eur": 96206,
+        "year": 2019
+      },
+      "note": "vorher Neupreis 96.200 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-cayman-981-cayman-gt4": {
@@ -1556,9 +1608,17 @@
       "hp": 400,
       "liters": 4.0,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://www.auto-motor-und-sport.de/neuheiten/porsche-cayman-boxster-gts-40-daten-preis-kauf-ausstattung/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 83949,
+        "currency": "EUR",
+        "eur": 83949,
+        "year": 2020
+      },
+      "note": "vorher Neupreis 91.800 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-cayman-987-2-cayman-r": {
@@ -1614,6 +1674,18 @@
       "confidence": "high",
       "source": "https://prnewswire.com/news-releases/porsche-boxster-s-black-edition-has-more-features-more-value-and-more-horsepower-115085449.html",
       "note": "Porsche-Pressemitteilung vom 02.02.2011: Karosserie, Verdeck und 19-Zoll-Räder schwarz; auf 987 Exemplare limitiert."
+    },
+    "specs": {
+      "newPrice": {
+        "amount": 63404,
+        "currency": "EUR",
+        "eur": 63404,
+        "year": 2011
+      },
+      "sources": [
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/boxster/987-facelift/"
+      ],
+      "note": "ADAC-Listenpreis (05/11–01/12); vorher Neupreis 64.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-boxster-987-1-boxster-rs-60-spyder": {
@@ -1629,8 +1701,16 @@
       "liters": 3.4,
       "production": 1960,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://www.autobild.de/artikel/porsche-boxster-rs-60-spyder-459510.html"
+      ],
+      "newPrice": {
+        "amount": 63873,
+        "currency": "EUR",
+        "eur": 63873,
+        "year": 2008
+      },
+      "note": "vorher Neupreis 61.600 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-cayman": {
@@ -1649,9 +1729,17 @@
         2025
       ],
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)",
+        "https://www.autobild.de/artikel/porsche-718-cayman-2016-vorstellung-8950865.html"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 51623,
+        "currency": "EUR",
+        "eur": 51623,
+        "year": 2016
+      },
+      "note": "vorher Neupreis 51.600 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-boxster": {
@@ -1666,9 +1754,17 @@
       "hp": 300,
       "liters": 2.0,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://de.motor1.com/news/152623/erste-mitfahrt-im-porsche-718-boxster-und-boxster-s-mit-technischen-daten-preisen-und-marktstart/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 53646,
+        "currency": "EUR",
+        "eur": 53646,
+        "year": 2016
+      },
+      "note": "vorher Neupreis 53.600 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-356-356-pre-a-coupe": {
@@ -1705,10 +1801,17 @@
       "hp": 60,
       "liters": 1.6,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_356"
+        "https://de.wikipedia.org/wiki/Porsche_356",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/356/b-modell/"
       ],
-      "note": "Grundmotor 1600; daneben 1600 S (75 PS) und S-90 (90 PS)",
-      "productionNote": "Schätzung"
+      "note": "Grundmotor 1600; daneben 1600 S (75 PS) und S-90 (90 PS); Neupreis: ADAC-Listenpreis des 1600 Coupé mit 60 PS (Bauzeit 10/59–08/61); vorher 9.000 € (Katalogwert ohne Quelle)",
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 12700,
+        "currency": "DEM",
+        "eur": 6493,
+        "year": 1960
+      }
     }
   },
   "porsche-356-356-c-coupe": {
@@ -1723,10 +1826,18 @@
       "hp": 75,
       "liters": 1.6,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_356"
+        "https://de.wikipedia.org/wiki/Porsche_356",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/356/c-modell/",
+        "https://de.wikipedia.org/wiki/Porsche_912"
       ],
-      "note": "Grundmotor 1600 C; daneben 1600 SC (95 PS)",
-      "productionNote": "Schätzung"
+      "note": "Grundmotor 1600 C; daneben 1600 SC (95 PS); Neupreis: 1600 C Coupé mit 75 PS (ADAC, de.wikipedia); vorher 9.500 € (Katalogwert ohne Quelle)",
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 14950,
+        "currency": "DEM",
+        "eur": 7644,
+        "year": 1964
+      }
     }
   },
   "porsche-912-912-e": {
@@ -1746,8 +1857,16 @@
       ],
       "production": 2099,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_912"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_912",
+        "https://en.wikipedia.org/wiki/Porsche_912"
+      ],
+      "newPrice": {
+        "amount": 10845,
+        "currency": "USD",
+        "eur": 13962,
+        "year": 1976
+      },
+      "note": "nur in den USA verkauft, dort 10.845 US-Dollar; umgerechnet zum Jahresmittel 1976 (2,518 DM je Dollar); vorher Neupreis 10.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-boxster-986-boxster": {
@@ -1875,8 +1994,16 @@
       "liters": 3.4,
       "production": 1667,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://www.porsche-club-deutschland.de/wp-content/uploads/2022/01/10-11_Boxster_Spyder.pdf"
+      ],
+      "newPrice": {
+        "amount": 63404,
+        "currency": "EUR",
+        "eur": 63404,
+        "year": 2010
+      },
+      "note": "vorher Neupreis 63.400 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-boxster-981-boxster": {
@@ -1937,9 +2064,17 @@
       "hp": 330,
       "liters": 3.4,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://www.stuttcars.com/porsche-boxster-gts-2015-2016/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 69949,
+        "currency": "EUR",
+        "eur": 69949,
+        "year": 2014
+      },
+      "note": "vorher Neupreis 73.000 € (Katalogwert ohne Quelle; 73.757 € kostete der Cayman GTS)"
     }
   },
   "porsche-boxster-981-boxster-spyder": {
@@ -1954,9 +2089,17 @@
       "hp": 375,
       "liters": 3.8,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://de.motor1.com/reviews/154821/der-mehr-bock-boxster-test-porsche-boxster-spyder-2015-mit-technischen-daten-preis-und-marktstart/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 79945,
+        "currency": "EUR",
+        "eur": 79945,
+        "year": 2015
+      },
+      "note": "vorher Neupreis 79.900 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-cayman-987-1-cayman-s": {
@@ -2132,9 +2275,17 @@
       "hp": 420,
       "liters": 4.0,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://www.autohaus.de/nachrichten/autohersteller/porsche-718-gt4-die-rueckkehr-des-saugers-2710387"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 93350,
+        "currency": "EUR",
+        "eur": 93350,
+        "year": 2019
+      },
+      "note": "vorher Neupreis 93.400 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-cayman-gts-4-0": {
@@ -2153,9 +2304,17 @@
         2025
       ],
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)"
+        "https://de.wikipedia.org/wiki/Porsche_718_Cayman_(Typ_982)",
+        "https://www.auto-motor-und-sport.de/neuheiten/porsche-cayman-boxster-gts-40-daten-preis-kauf-ausstattung/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 81926,
+        "currency": "EUR",
+        "eur": 81926,
+        "year": 2020
+      },
+      "note": "vorher Neupreis 89.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-718-718-cayman-gt4-rs": {
@@ -2198,9 +2357,17 @@
       "hp": 500,
       "liters": 4.0,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_Boxster"
+        "https://de.wikipedia.org/wiki/Porsche_Boxster",
+        "https://www.autobild.de/artikel/porsche-718-spyder-rs-2023-boxster-preis-ps-marktstart-sportwagen-22551827.html"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 155575,
+        "currency": "EUR",
+        "eur": 155575,
+        "year": 2023
+      },
+      "note": "vorher Neupreis 161.500 € (Katalogwert ohne Quelle)"
     }
   }
 }

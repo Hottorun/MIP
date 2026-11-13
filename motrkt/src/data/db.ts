@@ -90,9 +90,72 @@ function baseOptions(seed: VariantSeed, id: string): VariantOption[] {
   return opts;
 }
 
-function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: string): string[] {
+/** Buying hints. Each has one wording here and one translation in i18n/terms.ts. */
+const HINT = {
+  rustAir: "Rost (v. a. Kotflügel, Schweller, Wagenheberaufnahmen)",
+  rust356: "Rost (Bodenbleche, Schweller, Batteriekasten, Längsträger)",
+  rust914: "Rost (Batteriekasten, Längsträger, Kofferraumböden)",
+  rustTransaxle: "Rost (Schweller, Radläufe, Batteriekasten)",
+  rustScreens: "Rost an Front- und Heckscheibenrahmen",
+  engine356: "Motor: Ölverlust und zum Fahrgestell passender Motortyp (Kardex)",
+  fourCam: "Königswellenmotor (Fuhrmann): Revision sehr aufwendig, nur wenige Spezialisten",
+  engineEarly911: "Motor: Ölverlust und Verschleiß der Ventilführungen",
+  engineStuds: "Motor: Ölverlust und gerissene Zylinderkopf-Stehbolzen",
+  engine964: "Motor: Ölverlust an Zylindern und Köpfen (frühe Motoren ohne Kopfdichtung)",
+  engineLeaks: "Motor: Ölverlust (Ventildeckel, Steuerkettenkästen)",
+  engine993: "Verkokte Sekundärluftkanäle und Verschleiß der Ventilführungen",
+  engine912: "Motor (Typ 616): Ölverlust, Zustand von Zylindern und Kurbeltrieb",
+  engine912E: "Motor (2,0-Liter-Typ-4) und L-Jetronic-Einspritzung",
+  mfi: "Mechanische Einspritzpumpe (Bosch): Revision und Einstellung",
+  tensioners: "Kettenspanner (bis 1983 nicht ölgespeist)",
+  flywheel964: "Zweimassenschwungrad und Verteilerantrieb",
+  distributor964: "Verteilerantrieb (Riemen des Doppelzündverteilers)",
+  ims: "IMS-Lager und Zylinderlaufbahnen (M96/M97)",
+  rms: "Kurbelwellen-Dichtring (Ölverlust zwischen Motor und Getriebe)",
+  radiators: "Kühler und Klimakondensatoren im Bug (Laub, Korrosion)",
+  mezger: "Geklebte Kühlwasseranschlüsse am Motor (Mezger): verstiftet oder verschweißt?",
+  gt3Engine991: "Motor der 991.1 GT3: Tauschmotor bzw. verlängerte Motorgarantie belegt",
+  service: "Wartungsnachweise und Software-/Steuergerätestand",
+  overrev: "Überdrehzahlen im Motorsteuergerät auslesen",
+  track: "Rennstreckeneinsatz / Unfallhistorie (Spaltmaße, Lackschichtdicke)",
+  authentic: "Echtheit als Sondermodell belegen (Fahrgestellnummer, Geburtsurkunde)",
+  turbo: "Turbolader und Ladeluftkühlung",
+  turboNoIntercooler: "Turbolader (noch ohne Ladeluftkühler)",
+  flatnose: "Flachbau ab Werk belegen (Sonderwunsch-Auftrag bzw. Option M505/M506)",
+  matching: "Matching Numbers (Motor und Getriebe laut Geburtsurkunde)",
+  original: "Originalität (Interieur, Felgen, Werkzeug)",
+  authentic9146: "Echtheit als 914/6 belegen (viele Umbauten aus Vierzylindern)",
+  fuel914: "Gemischaufbereitung (Einspritzung bzw. Vergaser) und Unterdruckschläuche",
+  shift914: "Schaltgestänge (bis Modelljahr 1972 mit Heckschaltung)",
+  belt4: "Zahnriemen und Wasserpumpe (Wechselintervall)",
+  beltBalance: "Zahnriemen, Ausgleichswellenriemen und Wasserpumpe (Wechselintervall)",
+  camChain: "Steuerkette zwischen den Nockenwellen und Spanner (16V)",
+  clutch944: "Kupplung (Tausch aufwendig)",
+  dash944: "Risse im Armaturenbrett (frühe Modelle)",
+  flywheel968: "Zweimassenschwungrad und Kupplung",
+  torqueTube: "Transaxle: Lager der Zentralwelle und Getriebegeräusche",
+  belt928: "Zahnriemen, Riemenspannung und Wasserpumpe (V8)",
+  electrics928: "Zentralelektrik und Steckverbindungen",
+  thrust928: "Axiallager der Kurbelwelle bei Automatik (Vorspannung der Mitnehmerscheibe)",
+  awd959: "Allradsteuerung, Fahrwerkshydraulik und Elektronik: Wartung nur bei wenigen Spezialisten",
+  ride959: "Niveauregulierung und verstellbare Dämpfer (nur Komfort)",
+  wheels959: "Magnesium-Hohlspeichenräder mit Reifendrucküberwachung (Sonderreifen)",
+  idle: "Standzeiten und Wartungsnachweise",
+  clutchCGT: "Keramik-Kupplung (PCCC): Verschleiß und Tauschkosten",
+  recallCGT: "Fahrwerks-Rückruf von 2023 (Gelenke der Radaufhängung) erledigt?",
+  tyres: "Reifenalter und freigegebene Reifen",
+  hybrid: "Hochvoltbatterie und Hybridkomponenten (Garantie, Softwarestand)",
+  recall918: "Rückrufe erledigt? (Fahrwerksteile, Kabelbaum, Gurtbefestigung)",
+} as const;
+
+/**
+ * What to check before buying, by drivetrain family rather than by build year: air-cooled 911 (by generation),
+ * M96/M97 engines with intermediate shaft, Mezger engines, transaxle cars, and the supercars.
+ */
+function buildWeaknesses(brandId: string, seed: VariantSeed, modelName: string, generationName: string): string[] {
   const tags = seed.tags ?? [];
   const y = seed.years[0];
+  const name = seed.name;
   const list: string[] = [];
   if (tags.includes("Rennwagen")) {
     list.push("Chassis-Historie lückenlos belegt (Fahrgestellnummer, Rennergebnisse, Vorbesitzer)");
@@ -102,23 +165,91 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, generationName: str
     list.push("Keine Straßenzulassung, Betrieb nur auf der Rennstrecke");
     return list;
   }
-  if (brandId === "porsche") {
-    if (y < 1998) list.push("Rost (v. a. Kotflügel, Schweller, Wagenheberaufnahmen)");
-    if (y < 1998) list.push("Motor (Ölverlust, Kopfdichtung, Stehbolzen)");
-    if (generationName === "964") list.push("Zweimassenschwungrad und Verteilerantrieb");
-    // Early 911: mechanical injection on E, S and Carrera; the others: chain tensioners, oil-fed only from the Carrera 3.2 (1983).
-    if (generationName === "F-Modell" || generationName === "G-Modell") {
-      if (/^(E 2\.[024]|S 2\.[24]|Carrera 2\.7|Carrera RS 2\.7|Carrera RS 3\.0)$/.test(seed.name)) list.push("Mechanische Einspritzpumpe (Bosch): Revision und Einstellung");
-      else if (y < 1983) list.push("Kettenspanner (bis 1983 nicht ölgespeist)");
-    }
-    // M96/M97 engines (911 and Boxster/Cayman); the 997.2/987.2 got the new 9A1 engine without intermediate shaft.
-    if (["996.1", "996.2", "997.1", "986", "987.1"].includes(generationName) && !tags.includes("Leichtbau") && !tags.includes("Turbo"))
-      list.push("IMS-Lager und Zylinderlaufbahnen (M96/M97)");
-    if (y >= 1998) list.push("Wartungsnachweise und Software-/Steuergerätestand");
+  const turbo = tags.includes("Turbo");
+  const light = tags.includes("Leichtbau");
+  const gen = generationName;
+  if (brandId !== "porsche") {
+    if (light) list.push(HINT.track);
+    if (turbo) list.push(HINT.turbo);
+    if (y < 1990) list.push(HINT.original);
+    return list;
   }
-  if (tags.includes("Leichtbau")) list.push("Rennstreckeneinsatz / Unfallhistorie (Spaltmaße, Lackschichtdicke)");
-  if (tags.includes("Turbo")) list.push("Turbolader und Ladeluftkühlung");
-  if (y < 1990) list.push("Originalität (Interieur, Felgen, Werkzeug)");
+  // Mechanical injection on E, S and Carrera of the early 911; the others ran chain tensioners without oil feed until 1983.
+  const mfi = /^(E 2\.[024]|S 2\.[24]|Carrera 2\.7|Carrera RS 2\.7|Carrera RS 3\.0)$/.test(name);
+  if (modelName === "356") {
+    list.push(HINT.rust356, /Carrera/.test(name) ? HINT.fourCam : HINT.engine356, HINT.matching, HINT.original);
+  } else if (modelName === "912") {
+    list.push(HINT.rustAir, / E$/.test(name) ? HINT.engine912E : HINT.engine912, HINT.matching, HINT.original);
+  } else if (modelName === "914") {
+    list.push(HINT.rust914, name.includes("914/6") ? HINT.authentic9146 : HINT.fuel914, HINT.shift914, HINT.original);
+  } else if (gen === "F-Modell") {
+    list.push(HINT.rustAir, HINT.engineEarly911, mfi ? HINT.mfi : HINT.tensioners);
+    if (light) list.push(HINT.authentic);
+    list.push(HINT.matching, HINT.original);
+  } else if (gen === "G-Modell" || modelName === "930") {
+    list.push(HINT.rustAir, HINT.engineStuds);
+    if (mfi) list.push(HINT.mfi);
+    else if (y < 1983) list.push(HINT.tensioners);
+    if (turbo) list.push(name.includes("3.0") ? HINT.turboNoIntercooler : HINT.turbo);
+    if (name.includes("Flachbau")) list.push(HINT.flatnose);
+    if (light) list.push(HINT.authentic);
+    list.push(HINT.original);
+  } else if (gen === "964") {
+    list.push(HINT.rustScreens, turbo ? HINT.engineLeaks : HINT.engine964);
+    // Dual-mass flywheel on the Carrera; the RS has a light single-mass flywheel, the Turbo a single distributor.
+    if (!turbo) list.push(light ? HINT.distributor964 : HINT.flywheel964);
+    if (turbo) list.push(HINT.turbo);
+    if (light) list.push(HINT.authentic, HINT.track);
+  } else if (gen === "993") {
+    list.push(HINT.rustScreens, HINT.engine993, HINT.engineLeaks);
+    if (turbo) list.push(HINT.turbo);
+    if (light) list.push(HINT.authentic);
+  } else if (modelName === "924") {
+    list.push(name.includes("924 S") ? HINT.beltBalance : HINT.belt4);
+    // The 924 Turbo has no intercooler; the Carrera GT and GTS do.
+    if (turbo) list.push(name === "924 Turbo" ? HINT.turboNoIntercooler : HINT.turbo);
+    if (light) list.push(HINT.authentic);
+    // Fully galvanised from model year 1981.
+    if (y < 1981) list.push(HINT.rustTransaxle);
+    list.push(HINT.torqueTube, HINT.original);
+  } else if (modelName === "944") {
+    list.push(HINT.beltBalance);
+    if (/944 S/.test(name)) list.push(HINT.camChain);
+    if (turbo) list.push(HINT.turbo);
+    list.push(HINT.clutch944, HINT.rustTransaxle);
+    if (name === "944") list.push(HINT.dash944);
+    list.push(HINT.original);
+  } else if (modelName === "968") {
+    list.push(HINT.beltBalance, HINT.camChain, HINT.flywheel968);
+    if (turbo) list.push(HINT.turbo);
+    if (light) list.push(turbo ? HINT.authentic : HINT.track);
+  } else if (modelName === "928") {
+    list.push(HINT.belt928, HINT.electrics928);
+    // The 928 GT came with the manual gearbox only.
+    if (!name.includes("GT") || name.includes("GTS")) list.push(HINT.thrust928);
+    list.push(HINT.torqueTube);
+    if (y < 1990) list.push(HINT.original);
+  } else if (modelName === "959") {
+    list.push(HINT.awd959);
+    if (name.includes("Komfort")) list.push(HINT.ride959);
+    list.push(HINT.wheels959, HINT.turbo, HINT.idle);
+  } else if (modelName === "Carrera GT") {
+    list.push(HINT.clutchCGT, HINT.recallCGT, HINT.tyres, HINT.service);
+  } else if (modelName === "918") {
+    list.push(HINT.hybrid, HINT.recall918, HINT.service);
+  } else {
+    // Water-cooled 911, Boxster, Cayman and 718.
+    const m96 = ["996.1", "996.2", "997.1", "986", "987.1"].includes(gen);
+    // Mezger engine: Turbo, GT2 and GT3 of the 996 and 997.1, and the GT3 and GT2 RS of the 997.2.
+    const mezger = (m96 && (turbo || light)) || (gen === "997.2" && /^(GT3|GT2)/.test(name));
+    if (m96 && !mezger) list.push(HINT.ims, HINT.rms, HINT.radiators);
+    if (mezger) list.push(HINT.mezger);
+    if (gen === "991.1" && name === "GT3") list.push(HINT.gt3Engine991);
+    if (tags.includes("Hybrid")) list.push(HINT.hybrid);
+    if (turbo) list.push(HINT.turbo);
+    if (light) list.push(HINT.track, HINT.overrev);
+    list.push(HINT.service);
+  }
   return list.slice(0, 5);
 }
 
@@ -237,7 +368,7 @@ function build() {
             options: buildOptions(s, id),
             shape: s.shape ?? g.shape,
             markets: buildMarkets(b.id, id),
-            weaknesses: buildWeaknesses(b.id, s, g.name),
+            weaknesses: buildWeaknesses(b.id, s, m.name, g.name),
           };
           gen.variantIds.push(id);
           variants.push(variant);

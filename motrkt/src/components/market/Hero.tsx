@@ -6,7 +6,7 @@ import type { Body, Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { marketBasis, MIN_RECORDS, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
 import { useStore } from "../../state/store";
-import { cn, eur, fromDisplay, num, pct } from "../../lib/format";
+import { cn, eur, fromDisplay, num, pct, liters } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
 import { PhotoCredit, fillsFrame, frameRatio } from "../CarImage";
@@ -69,7 +69,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
 
   const facts: [string, React.ReactNode][] = [
     [t("Produktion", "Production"), productionLabel(variant)],
-    [t("Motor", "Engine"), `${num(variant.liters, 1)} l, ${variant.hp} PS`],
+    [t("Motor", "Engine"), `${liters(variant.liters)} l, ${variant.hp} PS`],
     [t("Neupreis", "Original list price"), `${eur(variant.newPrice)} (${variant.newPriceYear})`],
   ];
   if (variant.launchColor) {

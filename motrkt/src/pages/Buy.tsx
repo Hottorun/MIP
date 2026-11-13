@@ -6,7 +6,7 @@ import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries 
 import { useLiveListings } from "../state/liveListings";
 import { getMetrics } from "../data/market";
 import type { Listing, Variant } from "../data/types";
-import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct } from "../lib/format";
+import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters } from "../lib/format";
 import { useStore } from "../state/store";
 import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
@@ -371,7 +371,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
     [t("Farbe", "Colour"), l.color === "–" ? na : <span className="inline-flex items-center gap-1.5"><span className="inline-block size-3 rounded-full border border-white/20" style={{ background: l.colorHex }} />{tr(l.color)}</span>],
     [t("Karosserie", "Body"), tr(l.body)],
     [t("Getriebe", "Gearbox"), l.gearbox === null ? na : l.gearbox === "Manual" ? t("Schaltgetriebe", "Manual") : t("Automatik", "Automatic")],
-    [t("Leistung", "Power"), `${l.powerPs ?? v.hp} PS · ${num(v.liters, 1)} l`],
+    [t("Leistung", "Power"), `${l.powerPs ?? v.hp} PS · ${liters(v.liters)} l`],
     ["Matching Numbers", yesNo(l.matchingNumbers)],
     [t("Servicehistorie", "Service history"), l.serviceHistory === null ? na : l.serviceHistory ? t("Lückenlos", "Complete") : <span className="text-warn">{t("Unvollständig", "Incomplete")}</span>],
     [t("Standort", "Location"), `${flag(l.country)} ${l.city === "–" ? "" : `${tr(l.city)}, `}${tr(COUNTRY_NAMES[l.country] ?? l.country)}`],

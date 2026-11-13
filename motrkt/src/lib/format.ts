@@ -77,6 +77,11 @@ export function num(value: number, digits = 0): string {
   return nf(digits).format(value);
 }
 
+/** Engine displacement in litres: one decimal ("3,6"), two where the engine is known by them ("2,85" for the 959). */
+export function liters(value: number): string {
+  return num(value, Math.abs(value * 10 - Math.round(value * 10)) > 1e-6 ? 2 : 1);
+}
+
 export function km(value: number | null): string {
   if (!value) return "–";
   return `${eur0.format(Math.round(value))} km`;

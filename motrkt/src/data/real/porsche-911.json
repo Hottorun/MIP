@@ -11,8 +11,11 @@
       },
       "sources": [
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/1.-Generation-Porsche-911-(Ur-Elfer),-1963-1973.html",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://supercarnostalgia.com/blog/porsche-911-o-series-1965-1966-1967"
+      ],
+      "production": 8520,
+      "productionNote": "nur Coupés, August 1964 bis Juli 1967"
     },
     "images": [],
     "note": "Basis-911 der O-Serie (Serienproduktion ab 14.9.1964 bis Juli 1967), 1991 cm³. Neupreis 21.900 DM laut Porsche Newsroom. Stückzahl im Katalog (8.520) = O-Serie-Coupés aus dem Fahrgestellnummernbereich 300001–308522 (Stuttcars-Produktionstabelle); Targa ab Modelljahr 1967 nicht enthalten, Literaturangaben schwanken.",
@@ -31,8 +34,16 @@
       "liters": 2.0,
       "sources": [
         "https://www.stuttcars.com/porsche-911-s-1966/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 24480,
+        "currency": "DEM",
+        "eur": 12516,
+        "year": 1967
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 12.500 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Modelljahre 1967–1969: 4.582 Coupés + 1.539 Targa (Stuttcars). 160 PS, im Modelljahr 1969 (B-Serie, mechanische Einspritzung) 170 PS (de.wikipedia).",
@@ -55,8 +66,16 @@
       ],
       "sources": [
         "https://www.stuttcars.com/porsche-911-l-1968/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 20980,
+        "currency": "DEM",
+        "eur": 10727,
+        "year": 1968
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 11.000 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Nur Modelljahr 1968 (A-Serie): 911 mit S-Ausstattung und 130-PS-Motor. 1.169 Coupés + 441 Targa (Stuttcars-Datenblatt; im Fließtext dort abweichend 575 Targa).",
@@ -75,8 +94,16 @@
       "liters": 2.0,
       "sources": [
         "https://www.stuttcars.com/porsche-911-t-2-0-1968-1969/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 18980,
+        "currency": "DEM",
+        "eur": 9704,
+        "year": 1968
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 9.700 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Modelljahr 1968: 2.132, Modelljahr 1969: 4.186 (Stuttcars). Serienmäßig 4-Gang-Getriebe (de.wikipedia).",
@@ -99,8 +126,16 @@
       ],
       "sources": [
         "https://www.stuttcars.com/porsche-911-e-1969/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 24700,
+        "currency": "DEM",
+        "eur": 12629,
+        "year": 1969
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 11.700 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Nur Modelljahr 1969 (B-Serie), mechanische Einspritzung: 1.968 Coupés + 858 Targa (Stuttcars).",
@@ -119,8 +154,16 @@
       "liters": 2.2,
       "sources": [
         "https://www.stuttcars.com/porsche-911-t-2-2-1970-1971/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 19970,
+        "currency": "DEM",
+        "eur": 10210,
+        "year": 1970
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 10.600 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Modelljahr 1970: 6.544 Coupés + 2.545 Targa; Modelljahr 1971: 2.517 Coupés + 3.476 Targa (Stuttcars). 2195 cm³.",
@@ -139,8 +182,16 @@
       "liters": 2.2,
       "sources": [
         "https://www.stuttcars.com/porsche-911-e-2-2-1970-1971/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 24980,
+        "currency": "DEM",
+        "eur": 12772,
+        "year": 1970
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 12.300 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Modelljahr 1970: 1.971 Coupés + 933 Targa; Modelljahr 1971: 1.088 Coupés + 935 Targa (Stuttcars; die Modelljahr-Zuordnung ist dort uneinheitlich, die Summe nicht offiziell bestätigt).",
@@ -159,8 +210,16 @@
       "liters": 2.2,
       "sources": [
         "https://www.stuttcars.com/porsche-911-s-2-2-1970-1971/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 27140,
+        "currency": "DEM",
+        "eur": 13876,
+        "year": 1970
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 14.000 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Modelljahr 1970: 1.744 Coupés + 729 Targa (Stuttcars); Modelljahr 1971: 1.430 Coupés + 788 Targa (Stuttcars-Datenblatt, dort unter dem S 2.4 geführt).",
@@ -178,8 +237,16 @@
       "liters": 2.4,
       "sources": [
         "https://www.stuttcars.com/porsche-911-t-2-4-1972-1973/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 22980,
+        "currency": "DEM",
+        "eur": 11749,
+        "year": 1971
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 12.000 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "2341 cm³ (als 2.4 vermarktet). 130 PS mit Vergasern; US/Japan mit Einspritzung 140 PS. Modelljahr 1972: 4.894 Coupés + 3.344 Targa (Stuttcars); Gesamtstückzahl im Katalog (16.903) inkl. Modelljahr 1973 nicht offiziell bestätigt. Neupreis laut Auto Katalog 1973/74 (zitiert in de.wikipedia, Renault Alpine A310) 23.480 DM; Katalogwert ist eine Schätzung.",
@@ -197,8 +264,16 @@
       "liters": 2.4,
       "sources": [
         "https://www.stuttcars.com/porsche-911-e-2-4-1972-1973/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 25980,
+        "currency": "DEM",
+        "eur": 13283,
+        "year": 1972
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 13.800 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Mechanische Einspritzung. Modelljahr 1972: 1.124 Coupés + 861 Targa (Stuttcars); Gesamtstückzahl im Katalog (4.406) nicht offiziell bestätigt.",
@@ -216,8 +291,16 @@
       "liters": 2.4,
       "sources": [
         "https://www.stuttcars.com/porsche-911-s-2-4-1972-1973/",
-        "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_911_(1963)",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/urmodell/"
+      ],
+      "newPrice": {
+        "amount": 30680,
+        "currency": "DEM",
+        "eur": 15686,
+        "year": 1972
+      },
+      "note": "ADAC-Listenpreis des Coupés; vorher Neupreis 15.800 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "Mechanische Einspritzung, 190 PS. Gesamtstückzahl im Katalog (5.094) aus Sekundärquellen, nicht offiziell bestätigt.",
@@ -247,7 +330,8 @@
       "sources": [
         "https://newsroom.porsche.com/en/2022/history/porsche-50-years-911-carrera-rs-2-7-germanys-fastest-sports-car-28486.html",
         "https://de.wikipedia.org/wiki/Porsche_911_(1963)"
-      ]
+      ],
+      "productionNote": "Straßenversionen; mit den 55 RSR 2.8 insgesamt 1.580"
     },
     "images": [],
     "note": "Vorgestellt im Oktober 1972 (Pariser Salon), gebaut bis Juli 1973. 1.525 Straßenfahrzeuge = 1.308 RS Touring (M472) + 217 RS Sport (M471) laut de.wikipedia; Porsche nennt 1.580 gebaute Fahrzeuge inkl. der 55 RSR 2.8 (eigener Eintrag unter GT-Rennwagen). Grundpreis 34.000 DM, Sport-Paket +700 DM, Touring-Paket +2.500 DM (Porsche Newsroom).",
@@ -292,8 +376,17 @@
       "liters": 2.7,
       "sources": [
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/2.-Generation-911,-(G-Serie),-1973---1989.html",
-        "https://www.porscheclubgb.com/getmedia/c894d2e8-e050-400f-9919-ea5fb2d4268d/1974-1977-Production-Numbers"
-      ]
+        "https://www.porscheclubgb.com/getmedia/c894d2e8-e050-400f-9919-ea5fb2d4268d/1974-1977-Production-Numbers",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/g-serie/"
+      ],
+      "newPrice": {
+        "amount": 30980,
+        "currency": "DEM",
+        "eur": 15840,
+        "year": 1974
+      },
+      "productionNote": "einschließlich der US-Modelle bis 1977; in Europa nur Modelljahre 1974 und 1975",
+      "note": "ADAC-Listenpreis des Coupés (08/74–08/75); vorher Neupreis 15.300 € (Katalogwert ohne Quelle)"
     },
     "images": [],
     "note": "175 PS (Europa Modelljahre 1974–1975). Die Stückzahl (Porsche Club GB) enthält den US-911 S der Modelljahre 1975–1977 mit 165 PS.",
@@ -479,7 +572,7 @@
   },
   "porsche-911-g-modell-speedster": {
     "specs": {
-      "production": 2274,
+      "production": 2103,
       "hp": 231,
       "liters": 3.2,
       "years": [
@@ -488,8 +581,11 @@
       ],
       "sources": [
         "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-2-g-model-16459.html",
-        "https://www.stuttcars.com/porsche-911-speedster-1989/"
-      ]
+        "https://www.stuttcars.com/porsche-911-speedster-1989/",
+        "https://newsroom.porsche.com/en/2019/history/porsche-speedster-history-open-top-driving-pleasure-17559.html"
+      ],
+      "productionNote": "davon 171 mit schmaler Karosserie",
+      "note": "vorher production: 2274; Porsche nennt 2.103 Speedster insgesamt; 2.274 entstand, weil die 171 schmalen Wagen doppelt gezählt wurden. de.wikipedia nennt 2.102, Stuttcars 2.104."
     },
     "images": [],
     "note": "Gebaut von Anfang 1989 bis Juli 1989. Porsche Newsroom: 2.103 mit Turbo-Karosserie und 171 Exportfahrzeuge mit schmaler Karosserie (= 2.274, wie Stuttcars); en.wikipedia nennt 2.104 inkl. der schmalen, de.wikipedia 2.102.",
@@ -510,7 +606,7 @@
       "note": "Best guess only. Carrera 2 joined about a year after the Carrera 4 (MY1990); no source found naming the colour of its launch/press car. The source URL confirms timing and price only."
     },
     "specs": {
-      "production": 18219,
+      "production": 32766,
       "hp": 250,
       "liters": 3.6,
       "years": [
@@ -527,7 +623,9 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
         "https://en.wikipedia.org/wiki/Porsche_964",
         "https://de.wikipedia.org/wiki/Porsche_964"
-      ]
+      ],
+      "productionNote": "18.219 Coupés, 11.013 Cabriolets, 3.534 Targas",
+      "note": "vorher production: 18219; vorher nur die Coupés (18.219), obwohl die Variante alle drei Karosserien umfasst"
     },
     "images": [
       {
@@ -575,7 +673,7 @@
       "note": "Secondary source: the Paris Salon 1988 premiere car was red (same red as the 1950 Paris 356), and all ~230 'Venturetour' dealer-launch Carrera 4s (March 1989) were red. Paint name inferred as Indischrot/Guards Red (the standard red of the period); no Porsche source naming the paint found."
     },
     "specs": {
-      "production": 13353,
+      "production": 19484,
       "hp": 250,
       "liters": 3.6,
       "years": [
@@ -592,7 +690,9 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
         "https://en.wikipedia.org/wiki/Porsche_964",
         "https://de.wikipedia.org/wiki/Porsche_964"
-      ]
+      ],
+      "productionNote": "13.353 Coupés, 4.802 Cabriolets, 1.329 Targas",
+      "note": "vorher production: 13353; vorher nur die Coupés (13.353), obwohl die Variante alle drei Karosserien umfasst"
     },
     "images": [
       {
@@ -852,7 +952,8 @@
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/4.-Generation-Porsche-911,-(993),-1993-1998.html",
         "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/30-Jahre-911-Carrera-der-Generation-993-%E2%80%93-Der-letzte-seiner-Art.html",
         "https://en.wikipedia.org/wiki/Porsche_993"
-      ]
+      ],
+      "productionNote": "Coupé und Cabriolet, ohne Targa"
     },
     "images": [
       {
@@ -1276,7 +1377,8 @@
         "https://newsroom.porsche.com/en/press-kits/50-years-porsche-turbo/The-911-Turbo-generations.html",
         "https://newsroom.porsche.com/en/2022/history/porsche-25-years-911-generation-996-30384.html",
         "https://de.wikipedia.org/wiki/Porsche_996"
-      ]
+      ],
+      "productionNote": "Gesamtzahl laut Porsche bis Modelljahr 2005"
     },
     "images": [
       {
@@ -2924,12 +3026,20 @@
       "productionNote": "Schätzung",
       "sources": [
         "https://newsroom.porsche.com/de/2019/produkte/porsche-911-carrera-4-coupe-cabriolet-allrad-modelle-18651.html",
-        "https://de.wikipedia.org/wiki/Porsche_992"
+        "https://de.wikipedia.org/wiki/Porsche_992",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/992/"
       ],
       "years": [
         2019,
         2024
-      ]
+      ],
+      "newPrice": {
+        "amount": 112509,
+        "currency": "EUR",
+        "eur": 112509,
+        "year": 2019
+      },
+      "note": "ADAC-Listenpreis des Coupés (09/19–04/20); vorher Neupreis 111.000 € (Katalogwert ohne Quelle)"
     },
     "launchColor": {
       "name": "Dolomitsilbermetallic",
@@ -2946,9 +3056,16 @@
       "productionNote": "Schätzung",
       "sources": [
         "https://newsroom.porsche.com/en/2019/products/porsche-911-carrera-coupe-cabriolet-eighth-generation-18248.html",
-        "https://de.wikipedia.org/wiki/Porsche_992"
+        "https://de.wikipedia.org/wiki/Porsche_992",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/992/"
       ],
-      "note": "Bauzeitraum laut Wikipedia 11/2018–05/2024"
+      "note": "Bauzeitraum laut Wikipedia 11/2018–05/2024; ADAC-Listenpreis des Coupés (02/19–04/20); vorher Neupreis 127.979 € (Katalogwert ohne Quelle)",
+      "newPrice": {
+        "amount": 127979,
+        "currency": "EUR",
+        "eur": 127979,
+        "year": 2019
+      }
     },
     "launchColor": {
       "name": "GT-Silbermetallic",
@@ -3085,8 +3202,17 @@
       "production": 1963,
       "liters": 3.8,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_991"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://en.wikipedia.org/wiki/Porsche_991"
+      ],
+      "hp": 400,
+      "newPrice": {
+        "amount": 121119,
+        "currency": "EUR",
+        "eur": 121119,
+        "year": 2013
+      },
+      "note": "Serie 400 PS wie Carrera S, 430 PS nur mit Werksleistungssteigerung; vorher hp: 430 und Neupreis 124.000 € (Katalogwerte ohne Quelle)"
     }
   },
   "porsche-911-997-2-sport-classic": {
@@ -3100,8 +3226,16 @@
     "specs": {
       "production": 250,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_997"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_997",
+        "https://de.motor1.com/news/162712/porsche-911-sport-classic-exklusives-sammler-modell-zur-iaa-2009/"
+      ],
+      "newPrice": {
+        "amount": 201682,
+        "currency": "EUR",
+        "eur": 201682,
+        "year": 2009
+      },
+      "note": "vorher Neupreis 201.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-911-997-2-speedster": {
@@ -3203,10 +3337,18 @@
       "hp": 272,
       "liters": 3.6,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_993"
+        "https://de.wikipedia.org/wiki/Porsche_993",
+        "https://en.wikipedia.org/wiki/Porsche_993",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/993/"
       ],
-      "note": "272 PS bis Modelljahr 1995, danach 285 PS",
-      "productionNote": "Schätzung"
+      "note": "272 PS bis Modelljahr 1995, danach 285 PS; Stückzahl: 2.884 Coupés und 1.284 Cabriolets mit 272 PS, 1.860 Coupés und 1.138 Cabriolets mit 285 PS (en.wikipedia); vorher 4.000 als Schätzung; ADAC-Listenpreis des Coupés (09/94–09/95); vorher Neupreis 68.000 € (Katalogwert ohne Quelle)",
+      "production": 7166,
+      "newPrice": {
+        "amount": 137030,
+        "currency": "DEM",
+        "eur": 70062,
+        "year": 1995
+      }
     }
   },
   "porsche-911-993-targa": {
@@ -3273,9 +3415,17 @@
       "hp": 320,
       "liters": 3.6,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_996"
+        "https://de.wikipedia.org/wiki/Porsche_996",
+        "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/porsche/911/996-facelift/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 89816,
+        "currency": "EUR",
+        "eur": 89816,
+        "year": 2005
+      },
+      "note": "ADAC-Listenpreis am Ende der Bauzeit (08/01–10/05); der Startpreis von 2001 ist nicht belegt; vorher Neupreis 93.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-911-996-2-targa": {
@@ -3441,9 +3591,17 @@
       "hp": 420,
       "liters": 3.0,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_991"
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://www.ultimatecarpage.com/spec/6322/Porsche-911-Carrera-S.html"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 110766,
+        "currency": "EUR",
+        "eur": 110766,
+        "year": 2015
+      },
+      "note": "vorher Neupreis 110.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-911-991-2-gt3": {
@@ -3474,8 +3632,16 @@
     "specs": {
       "production": 1948,
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_991"
-      ]
+        "https://de.wikipedia.org/wiki/Porsche_991",
+        "https://www.auto-motor-und-sport.de/fahrbericht/porsche-911-speedster-2019/"
+      ],
+      "newPrice": {
+        "amount": 269274,
+        "currency": "EUR",
+        "eur": 269274,
+        "year": 2019
+      },
+      "note": "vorher Neupreis 269.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-911-992-1-turbo-s": {
@@ -3515,9 +3681,17 @@
         2024
       ],
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_992"
+        "https://de.wikipedia.org/wiki/Porsche_992",
+        "https://de.motor1.com/news/515870/porsche-911-gts-2021-vorgestellt/"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 140981,
+        "currency": "EUR",
+        "eur": 140981,
+        "year": 2021
+      },
+      "note": "vorher Neupreis 148.000 € (Katalogwert ohne Quelle; 148.835 € kostete der Carrera 4 GTS)"
     }
   },
   "porsche-911-992-2-carrera-gts": {
@@ -3570,9 +3744,17 @@
         null
       ],
       "sources": [
-        "https://de.wikipedia.org/wiki/Porsche_992"
+        "https://de.wikipedia.org/wiki/Porsche_992",
+        "https://www.autobild.de/artikel/test-highlight-2025-porsche-911-gt3-992.2-28511755.html"
       ],
-      "productionNote": "Schätzung"
+      "productionNote": "Schätzung",
+      "newPrice": {
+        "amount": 209000,
+        "currency": "EUR",
+        "eur": 209000,
+        "year": 2024
+      },
+      "note": "vorher Neupreis 230.000 € (Katalogwert ohne Quelle)"
     }
   },
   "porsche-911-992-2-turbo-s": {
