@@ -1,3 +1,11 @@
+"""ultimatecarpage.com auction pages -> results.
+
+usage: python3 -I ucpparse.py WORK/web/ucp OUT.json [SNAPSHOT.json]
+
+With SNAPSHOT (ucp-snapshot.json in the repo): auctions without a usable page in WORK/web/ucp (not fetched, e.g.
+because ultimatecarpage answers data-centre addresses such as GitHub Actions with a bot check) are taken from the
+snapshot; pages that were fetched take precedence.
+"""
 import re, html, json, sys, glob, os
 out = []
 for f in sorted(glob.glob(sys.argv[1] + "/*.html"), key=lambda p: int(os.path.basename(p)[:-5])):
@@ -19,5 +27,10 @@ for f in sorted(glob.glob(sys.argv[1] + "/*.html"), key=lambda p: int(os.path.ba
         out.append({"auction": aid, "event": title, "date": sale_date, "loc": html.unescape(loc.group(1)) if loc else "", "lot": lot.strip(), "b": [html.unescape(b) for b in bs],
                     "chassis": html.unescape(ch.group(1)).strip() if ch else "",
                     "price": re.sub(r"<[^>]+>", "", html.unescape(price)).strip(), "note": re.sub(r"<[^>]+>", "", html.unescape(note)).replace("\xa0", " ").strip()})
+fresh = {r["auction"] for r in out}
+if len(sys.argv) > 3 and os.path.exists(sys.argv[3]):
+    snap = [r for r in json.load(open(sys.argv[3])) if r["auction"] not in fresh]
+    print(len(out), "from pages,", len(snap), "from snapshot", os.path.basename(sys.argv[3]))
+    out += snap
 json.dump(out, open(sys.argv[2], "w"), ensure_ascii=False)
 print(len(out))

@@ -71,7 +71,7 @@ Der Server ruft die Search API mit Basic Auth ab (Zugangsdaten bleiben serversei
 
 ## AI Co-Pilot
 
-Der Co-Pilot nutzt Claude (`claude-opus-5-5`) über den Server-Endpunkt `/api/copilot`; der API-Key bleibt serverseitig.
+Der Co-Pilot nutzt Claude Haiku 5.5 (`claude-haiku-5-5`) über den Server-Endpunkt `/api/copilot`; der API-Key bleibt serverseitig.
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...

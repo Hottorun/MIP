@@ -102,7 +102,7 @@ jobs:
 
       - name: Log
         if: always()
-        run: tail -n 150 ~/mipwork/web/update-$(date +%F).log 2>/dev/null || true
+        run: cat ~/mipwork/web/update-$(date +%F).log 2>/dev/null || true
 
       - name: Rohdaten-Ordner vorhanden?
         id: work

@@ -13,7 +13,7 @@ try {
   /* no .env file – rely on the environment */
 }
 
-const MODEL = "claude-opus-5-5";
+const MODEL = "claude-haiku-5-5";
 const MAX_MESSAGES = 24;
 const MAX_MESSAGE_CHARS = 8_000;
 const MAX_CONTEXT_CHARS = 40_000;
@@ -98,13 +98,11 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
   };
 
   try {
-    const stream = getClient().beta.messages.stream({
+    // Claude Haiku 5.5 has no server-side refusal fallback: a declined request ends with stop_reason "refusal" (below).
+    const stream = getClient().messages.stream({
       model: MODEL,
       max_tokens: 64_000,
       output_config: { effort: "medium" },
-      // Re-run on a fallback model if a safety classifier declines the request.
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
       system: [
         { type: "text", text: SYSTEM_PROMPT },
         { type: "text", text: `<mip_marktdaten>\n${context}\n</mip_marktdaten>` },

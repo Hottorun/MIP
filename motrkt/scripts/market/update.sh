@@ -24,7 +24,7 @@ LAST=$(ls "$W/web/ucp" | sed 's/.html//' | sort -n | tail -1)
 # leerer Ordner: alle Auktionen seit 2015 (ultimatecarpage-Nummern bis rund 480, Stand November 2026)
 [ -n "$LAST" ] || LAST=460
 sh "$HERE/ucpfetch.sh" "$W" $((LAST > 460 ? LAST - 10 : 1)) $((LAST + 40))
-python3 -I "$HERE/ucpparse.py" "$W/web/ucp" "$W/web/ucp.json"
+python3 -I "$HERE/ucpparse.py" "$W/web/ucp" "$W/web/ucp.json" "$HERE/ucp-snapshot.json"
 echo "   Auktionshäuser direkt (Ergebnisse mit Lotseite, Fahrgestellnummer und Laufleistung)"
 # Bonhams (bonhamsfetch.py) fehlt hier: Bonhams' Such-API antwortet mit einer Bot-Abfrage, bis Bonhams den Zugang freigibt
 for f in rmfetch goodingfetch broadarrowfetch artcurialfetch; do
