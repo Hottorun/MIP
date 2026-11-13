@@ -49,5 +49,14 @@ export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
   res.setHeader("Content-Type", TYPES[extname(file)] ?? "application/octet-stream");
   // "private": everything here is behind the sign-in, so no shared cache (Vercel's CDN, proxies) may keep a copy
   res.setHeader("Cache-Control", file.includes(`${DIST}/assets/`) ? "private, max-age=31536000, immutable" : "private, no-cache");
+  // the compressed copy from the build (vite.config.ts): the main script is too large for a Vercel function uncompressed
+  const accepts = String(req.headers["accept-encoding"] ?? "");
+  const encoding = ["br", "gzip"].find((e) => accepts.includes(e) && existsSync(file + (e === "br" ? ".br" : ".gz")));
+  if (encoding) {
+    file += encoding === "br" ? ".br" : ".gz";
+    res.setHeader("Content-Encoding", encoding);
+    res.setHeader("Vary", "Accept-Encoding");
+  }
+  res.setHeader("Content-Length", statSync(file).size);
   createReadStream(file).pipe(res);
 }

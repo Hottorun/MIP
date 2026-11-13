@@ -1,3 +1,6 @@
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { brotliCompressSync, constants, gzipSync } from "node:zlib";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -22,6 +25,22 @@ export default defineConfig({
             })
             .catch(next);
         });
+      },
+    },
+    {
+      // Brotli and gzip copies of every built script, style and SVG (file.br, file.gz) for server/app.ts: the main
+      // script is several MB with the market data in it, and a Vercel function may not answer with more than 4.5 MB.
+      name: "mip-precompress",
+      apply: "build",
+      writeBundle(options, bundle) {
+        for (const name of Object.keys(bundle)) {
+          if (!/\.(js|css|svg|html)$/.test(name)) continue;
+          const file = join(options.dir ?? "dist", name);
+          const data = readFileSync(file);
+          if (data.length < 1024) continue;
+          writeFileSync(file + ".br", brotliCompressSync(data, { params: { [constants.BROTLI_PARAM_QUALITY]: 11, [constants.BROTLI_PARAM_SIZE_HINT]: data.length } }));
+          writeFileSync(file + ".gz", gzipSync(data, { level: 9 }));
+        }
       },
     },
   ],
