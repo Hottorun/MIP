@@ -27,8 +27,15 @@ sh "$HERE/ucpfetch.sh" "$W" $((LAST > 460 ? LAST - 10 : 1)) $((LAST + 40))
 python3 -I "$HERE/ucpparse.py" "$W/web/ucp" "$W/web/ucp.json" "$HERE/ucp-snapshot.json"
 echo "   Auktionshäuser direkt (Ergebnisse mit Lotseite, Fahrgestellnummer und Laufleistung)"
 # Bonhams (bonhamsfetch.py) fehlt hier: Bonhams' Such-API antwortet mit einer Bot-Abfrage, bis Bonhams den Zugang freigibt
+# Liefert ein Haus deutlich weniger als beim letzten Lauf (leere Liste, Drosselung), bleibt der letzte Stand.
 for f in rmfetch goodingfetch broadarrowfetch artcurialfetch; do
-  python3 -I "$HERE/$f.py" "$W" || echo "   $f fehlgeschlagen, weiter mit ultimatecarpage"
+  J="$W/web/${f%fetch}/${f%fetch}.json"
+  [ -f "$J" ] && cp "$J" "$J.prev"
+  python3 -I "$HERE/$f.py" "$W" || echo "   $f fehlgeschlagen"
+  if [ -f "$J.prev" ] && python3 -I "$HERE/check.py" --shrunk "$J.prev" "$J"; then
+    echo "   $f: deutlich weniger Ergebnisse als beim letzten Lauf, letzter Stand bleibt"
+    cp "$J.prev" "$J"
+  fi
 done
 
 echo "4/6 Angebote in Europa (Classic Trader)"

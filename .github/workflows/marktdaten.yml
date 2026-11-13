@@ -36,24 +36,6 @@ jobs:
           key: marktdaten-${{ github.run_id }}
           restore-keys: marktdaten-
 
-      # einmalig: der erste Lauf (13.11.2026) hat seine Rohdaten unter ~/work gesichert, zusammen mit dem Repo;
-      # nur web/ übernehmen, das Repo holt der Checkout danach frisch. Entfällt, sobald es einen ~/mipwork-Cache gibt.
-      - name: Rohdaten aus dem ersten Lauf übernehmen
-        id: first
-        if: steps.cache.outputs.cache-matched-key == ''
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/work
-          key: marktdaten-43482775034
-      - if: steps.first.outputs.cache-hit == 'true'
-        run: |
-          cd ~
-          mkdir -p ~/mipwork
-          mv ~/work/web ~/mipwork/web
-          rm -rf ~/work/MIP/MIP
-          mkdir -p ~/work/MIP/MIP
-          du -sh ~/mipwork
-
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
