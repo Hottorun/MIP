@@ -18,7 +18,9 @@ python3 -I "$HERE/batfetch.py" "$W/web/bat_porsche.jsonl" 1 --until-known || tru
 
 echo "3/6 Auktionshäuser (RM Sotheby's, Bonhams, Broad Arrow, Artcurial … über ultimatecarpage.com)"
 LAST=$(ls "$W/web/ucp" | sed 's/.html//' | sort -n | tail -1)
-sh "$HERE/ucpfetch.sh" "$W" $((LAST > 10 ? LAST - 10 : 1)) $((LAST + 40))
+# leerer Ordner: alle Auktionen seit 2015 (ultimatecarpage-Nummern bis rund 480, Stand November 2026)
+[ -n "$LAST" ] || LAST=460
+sh "$HERE/ucpfetch.sh" "$W" $((LAST > 460 ? LAST - 10 : 1)) $((LAST + 40))
 python3 -I "$HERE/ucpparse.py" "$W/web/ucp" "$W/web/ucp.json"
 echo "   Auktionshäuser direkt (Ergebnisse mit Lotseite, Fahrgestellnummer und Laufleistung)"
 # Bonhams (bonhamsfetch.py) fehlt hier: Bonhams' Such-API antwortet mit einer Bot-Abfrage, bis Bonhams den Zugang freigibt

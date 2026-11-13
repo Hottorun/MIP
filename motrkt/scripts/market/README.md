@@ -5,10 +5,16 @@ Angebote, die in den Wert eingehen) und `src/data/real/sales.csv` (Auktionsergeb
 Arbeitsverzeichnis mit den Rohdaten (nicht im Repo). Alles in einem Schritt: `sh update.sh WORK`.
 
 Täglich: `sh daily.sh` holt neue Daten, rechnet mit **heute** als Stichtag (abweichend: `MIP_AS_OF=JJJJ-MM-TT`), prüft
-die App und committet die Datendateien lokal (ohne Push). Die App liest den Stichtag aus `market-model.json`, das Datum
-„Marktdaten vom …“ stimmt also immer mit den Daten überein. Läuft als geplante Aufgabe „MIP: Marktdaten täglich
-aktualisieren“ jeden Morgen um 6 Uhr in der Claude-App. Händlerbestände in `manual/haendler.csv` werden dabei nicht
-automatisch erneuert.
+die App und mit `check.py`, dass die Daten nicht geschrumpft sind (Verkäufe mindestens 95 %, Angebote 60 %, Varianten
+mit Wert 90 % des letzten Stands; sonst Abbruch ohne Änderung), lädt sie in Postgres (falls `DATABASE_URL` gesetzt) und
+committet die Datendateien. Die App liest den Stichtag aus `market-model.json`, das Datum „Marktdaten vom …“ stimmt
+also immer mit den Daten überein. Händlerbestände in `manual/haendler.csv` werden dabei nicht automatisch erneuert.
+
+Läuft jeden Morgen um 4 Uhr auf GitHub Actions (`.github/workflows/marktdaten.yml`, auch von Hand startbar): dort mit
+`MIP_PUSH=1`, der Push löst das Deployment auf Vercel aus. Der Arbeitsordner liegt zwischen den Läufen im Actions-Cache.
+Fehlt er, lädt der Lauf ihn einmal aus dem Secret `MIP_SEED_URL` (zip oder tar.gz des Arbeitsordners). Er lässt sich nicht
+vollständig neu abrufen: `web/sales_old.csv` (frühere Verkäufe von Hand) und die Classic-Trader-Seiten früherer Tage
+(`web/ct/pages/`, Grundlage des Preisverlaufs) gibt es nur dort.
 
 ## Inserate verfolgen (`track.py`)
 

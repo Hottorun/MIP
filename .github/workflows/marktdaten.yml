@@ -1,0 +1,96 @@
+# Marktdaten täglich: Auktionsergebnisse und Angebote abrufen, Modell rechnen, prüfen, in die Datenbank laden und die
+# Datendateien committen. Der Push löst das Deployment auf Vercel aus. Siehe motrkt/scripts/market/README.md.
+#
+# Rohdaten (Arbeitsordner von update.sh) liegen zwischen den Läufen im Actions-Cache. Fehlt der Cache (erster Lauf,
+# oder 7 Tage ohne Lauf), wird der Ordner einmal aus dem Secret MIP_SEED_URL geladen (zip oder tar.gz des
+# Arbeitsordners mit web/sales_old.csv); ohne Secret bricht der Lauf ab, statt mit leeren Rohdaten zu veröffentlichen.
+# Secrets: DATABASE_URL (Postgres, optional), MIP_SEED_URL (nur für die Erstbefüllung).
+name: Marktdaten täglich
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 4 Uhr MEZ, 5 Uhr MESZ
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: marktdaten
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      TZ: Europe/Berlin
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: motrkt/package-lock.json
+
+      - run: npm ci
+        working-directory: motrkt
+
+      - name: Rohdaten vom letzten Lauf
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/work
+          key: marktdaten-${{ github.run_id }}
+          restore-keys: marktdaten-
+
+      - name: Rohdaten erstmalig einspielen
+        if: steps.cache.outputs.cache-matched-key == ''
+        env:
+          SEED_URL: ${{ secrets.MIP_SEED_URL }}
+        run: |
+          if [ -z "$SEED_URL" ]; then
+            echo "::error::Keine Rohdaten im Cache und kein Secret MIP_SEED_URL – Arbeitsordner einmal einspielen (siehe Kopf dieser Datei)."
+            exit 1
+          fi
+          curl -fsSL "$SEED_URL" -o /tmp/seed
+          mkdir -p /tmp/seedx
+          unzip -q /tmp/seed -d /tmp/seedx 2>/dev/null || tar -xzf /tmp/seed -C /tmp/seedx
+          OLD=$(find /tmp/seedx -path '*/web/sales_old.csv' | head -1)
+          if [ -z "$OLD" ]; then echo "::error::Archiv enthält kein web/sales_old.csv"; exit 1; fi
+          mv "$(dirname "$(dirname "$OLD")")" ~/work
+          du -sh ~/work
+
+      - name: Aktualisieren
+        working-directory: motrkt
+        env:
+          MIP_PUSH: "1"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          sh scripts/market/daily.sh ~/work
+
+      - name: Log
+        if: always()
+        run: tail -n 150 ~/work/web/update-$(date +%F).log 2>/dev/null || true
+
+      - name: Rohdaten-Ordner vorhanden?
+        id: work
+        if: always()
+        run: if [ -d ~/work/web ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; fi
+
+      # auch nach einem Abbruch: die Abrufe bis dahin sind gültig und müssen morgen nicht wiederholt werden
+      - name: Rohdaten für den nächsten Lauf
+        if: always() && steps.work.outputs.ok == '1'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/work
+          key: marktdaten-${{ github.run_id }}
