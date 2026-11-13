@@ -27,6 +27,33 @@ jobs:
     env:
       TZ: Europe/Berlin
     steps:
+      # vor dem Checkout: ~/mipwork liegt außerhalb des Repos (~/work wäre das Arbeitsverzeichnis des Runners selbst)
+      - name: Rohdaten vom letzten Lauf
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/mipwork
+          key: marktdaten-${{ github.run_id }}
+          restore-keys: marktdaten-
+
+      # einmalig: der erste Lauf (13.11.2026) hat seine Rohdaten unter ~/work gesichert, zusammen mit dem Repo;
+      # nur web/ übernehmen, das Repo holt der Checkout danach frisch. Entfällt, sobald es einen ~/mipwork-Cache gibt.
+      - name: Rohdaten aus dem ersten Lauf übernehmen
+        id: first
+        if: steps.cache.outputs.cache-matched-key == ''
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/work
+          key: marktdaten-43482775034
+      - if: steps.first.outputs.cache-hit == 'true'
+        run: |
+          cd ~
+          mkdir -p ~/mipwork
+          mv ~/work/web ~/mipwork/web
+          rm -rf ~/work/MIP/MIP
+          mkdir -p ~/work/MIP/MIP
+          du -sh ~/mipwork
+
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
@@ -44,22 +71,15 @@ jobs:
       - run: npm ci
         working-directory: motrkt
 
-      - name: Rohdaten vom letzten Lauf
-        id: cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/work
-          key: marktdaten-${{ github.run_id }}
-          restore-keys: marktdaten-
-
       - name: Rohdaten erstmalig einspielen
         if: steps.cache.outputs.cache-matched-key == ''
         env:
           SEED_URL: ${{ secrets.MIP_SEED_URL }}
         run: |
+          if [ -d ~/mipwork/web ]; then exit 0; fi
           if [ -z "$SEED_URL" ]; then
             echo "::warning::Keine Rohdaten im Cache: Neuabruf aller Quellen seit 2015."
-            mkdir -p ~/work/web
+            mkdir -p ~/mipwork/web
             exit 0
           fi
           curl -fsSL "$SEED_URL" -o /tmp/seed
@@ -67,8 +87,8 @@ jobs:
           unzip -q /tmp/seed -d /tmp/seedx 2>/dev/null || tar -xzf /tmp/seed -C /tmp/seedx
           OLD=$(find /tmp/seedx -path '*/web/sales_old.csv' | head -1)
           if [ -z "$OLD" ]; then echo "::error::Archiv enthält kein web/sales_old.csv"; exit 1; fi
-          mv "$(dirname "$(dirname "$OLD")")" ~/work
-          du -sh ~/work
+          mv "$(dirname "$(dirname "$OLD")")" ~/mipwork
+          du -sh ~/mipwork
 
       - name: Aktualisieren
         working-directory: motrkt
@@ -78,21 +98,21 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          sh scripts/market/daily.sh ~/work
+          sh scripts/market/daily.sh ~/mipwork
 
       - name: Log
         if: always()
-        run: tail -n 150 ~/work/web/update-$(date +%F).log 2>/dev/null || true
+        run: tail -n 150 ~/mipwork/web/update-$(date +%F).log 2>/dev/null || true
 
       - name: Rohdaten-Ordner vorhanden?
         id: work
         if: always()
-        run: if [ -d ~/work/web ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; fi
+        run: if [ -d ~/mipwork/web ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; fi
 
       # auch nach einem Abbruch: die Abrufe bis dahin sind gültig und müssen morgen nicht wiederholt werden
       - name: Rohdaten für den nächsten Lauf
         if: always() && steps.work.outputs.ok == '1'
         uses: actions/cache/save@v4
         with:
-          path: ~/work
+          path: ~/mipwork
           key: marktdaten-${{ github.run_id }}

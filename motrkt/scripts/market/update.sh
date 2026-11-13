@@ -38,6 +38,8 @@ echo "   Fotos der Händlerfahrzeuge (manual/haendler.csv)"
 python3 -I "$HERE/dealerphotos.py" "$W" || echo "   Händlerfotos fehlgeschlagen, weiter ohne neue Fotos"
 
 echo "5/6 Links zu den Originalseiten der Auktionshäuser, Zuordnung und Modell"
+# linkfetch braucht die Zuordnung eines früheren Laufs (sales_all.json); beim allerersten Lauf erst einmal bauen
+[ -f "$W/web/sales_all.json" ] || python3 -I "$HERE/build.py" "$W"
 python3 -I "$HERE/linkfetch.py" "$W"
 python3 -I "$HERE/build.py" "$W"
 python3 -I "$HERE/model.py" "$W" "$APP/market-model.json" "$APP/asks.json"
