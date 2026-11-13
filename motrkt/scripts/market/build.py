@@ -114,11 +114,13 @@ for o in out:
         o["orig"], o["cur"] = int(float(k["preis"])), (k.get("waehrung") or o["cur"]).strip()
         o["eur"] = round(to_eur(o["orig"], o["cur"], o["date"])); o["sold"] = True
 # --- Results straight from the auction houses (rmfetch.py, bonhamsfetch.py, goodingfetch.py, broadarrowfetch.py,
-# artcurialfetch.py; each writes WORK/web/<key>/<key>.json): direct lot links, chassis numbers and stated mileage. These
+# artcurialfetch.py, mecumfetch.py, iconicfetch.py, aguttesfetch.py, osenatfetch.py; each writes WORK/web/<key>/<key>.json):
+# direct lot links, chassis numbers and stated mileage. These
 # rows replace the same lots taken from ultimatecarpage: same chassis number within 7 days, or without one the same
 # variant within 7 days at a price within 2 %. ultimatecarpage rows a house's own data does not cover are kept.
 HOUSES = [("rm", "RM Sotheby's", "RM"), ("bonhams", "Bonhams", "BON"), ("gooding", "Gooding & Company", "GOO"),
-          ("broadarrow", "Broad Arrow", "BA"), ("artcurial", "Artcurial", "ART")]
+          ("broadarrow", "Broad Arrow", "BA"), ("artcurial", "Artcurial", "ART"), ("mecum", "Mecum", "MEC"),
+          ("iconic", "Iconic Auctioneers", "ICO"), ("aguttes", "Aguttes", "AGU"), ("osenat", "Osenat", "OSE")]
 # VINs and chassis numbers never use the letter O; some catalogues print "WPO…" for "WP0…"
 def chassis_key(c): return re.sub(r"[^A-Z0-9]", "", (c or "").upper()).replace("O", "0")
 def day(d): return dt.date.fromisoformat(d).toordinal()

@@ -27,9 +27,10 @@ sh "$HERE/ucpfetch.sh" "$W" $((LAST > 460 ? LAST - 10 : 1)) $((LAST + 40))
 python3 -I "$HERE/ucpparse.py" "$W/web/ucp" "$W/web/ucp.json" "$HERE/ucp-snapshot.json"
 echo "   Auktionshäuser direkt (Ergebnisse mit Lotseite, Fahrgestellnummer und Laufleistung)"
 # Liefert ein Haus deutlich weniger als beim letzten Lauf (leere Liste, Drosselung), bleibt der letzte Stand.
-for f in rmfetch bonhamsfetch goodingfetch broadarrowfetch artcurialfetch; do
+for f in rmfetch bonhamsfetch goodingfetch broadarrowfetch artcurialfetch mecumfetch iconicfetch aguttesfetch osenatfetch; do
   J="$W/web/${f%fetch}/${f%fetch}.json"
   [ -f "$J" ] && cp "$J" "$J.prev"
+  [ -f "$HERE/$f.py" ] || continue
   python3 -I "$HERE/$f.py" "$W" || echo "   $f fehlgeschlagen"
   if [ -f "$J.prev" ] && python3 -I "$HERE/check.py" --shrunk "$J.prev" "$J"; then
     echo "   $f: deutlich weniger Ergebnisse als beim letzten Lauf, letzter Stand bleibt"

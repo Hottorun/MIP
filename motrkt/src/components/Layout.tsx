@@ -444,8 +444,8 @@ function Footer() {
         <div className="space-y-2 text-[13px] leading-relaxed text-muted">
           <p>
             {t(
-              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) und ${num(N_ASKS)} Angeboten von Classic Trader und Händlern, umgerechnet zum EZB-Kurs des Verkaufstags. Keine Anlageberatung.`,
-              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Not investment advice.`,
+              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat) und ${num(N_ASKS)} Angeboten von Classic Trader und Händlern, umgerechnet zum EZB-Kurs des Verkaufstags. Keine Anlageberatung.`,
+              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Not investment advice.`,
             )}
           </p>
           {usdRate() && (
