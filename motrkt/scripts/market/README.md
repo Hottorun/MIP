@@ -17,6 +17,12 @@ Modellseite); nur der Preisverlauf der Inserate beginnt dann von vorn. `sales_ol
 Mecum, Barrett-Jackson, Iconic, Pressemeldungen) liegt im Repo und wird bei jedem Lauf in den Arbeitsordner kopiert –
 Änderungen also hier eintragen.
 
+ultimatecarpage.com beantwortet Abrufe aus Rechenzentren (GitHub Actions) mit einer Cloudflare-Bot-Abfrage; die wird
+nicht umgangen. `ucpfetch.sh` bricht dann nach der ersten Abfrage ab, und `ucpparse.py` nimmt die Auktionen aus
+`ucp-snapshot.json` (Stand 13.11.2026, alle Porsche-Lose, dazu je Los nur das Währungszeichen der übrigen für die
+Währung der Auktion). Neue ultimatecarpage-Auktionen kommen nur bei Abrufen von einem normalen Anschluss hinzu; die
+Ergebnisse von RM Sotheby's, Gooding, Broad Arrow und Artcurial holt das Update ohnehin direkt bei den Häusern.
+
 ## Inserate verfolgen (`track.py`)
 
 Läuft mit jedem Update und schreibt `src/data/real/listing-history.json`: für jedes Inserat erster und letzter Tag,
