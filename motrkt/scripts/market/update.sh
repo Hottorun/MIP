@@ -8,6 +8,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 APP=$HERE/../../src/data/real
 mkdir -p "$W/web/fx" "$W/web/ucp" "$W/tools"
 cp "$HERE/classify.py" "$W/tools/classify.py"
+cp "$HERE/sales_old.csv" "$W/web/sales_old.csv"  # frühere Verkäufe von Hand (Mecum, Barrett-Jackson, Presse …), gepflegt im Repo
 
 echo "1/6 Wechselkurse (EZB)"
 curl -sL -o "$W/web/fx/eurofxref-hist.zip" https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip
@@ -15,6 +16,8 @@ curl -sL -o "$W/web/fx/eurofxref-hist.zip" https://www.ecb.europa.eu/stats/eurof
 
 echo "2/6 Bring a Trailer (neueste Ergebnisse)"
 python3 -I "$HERE/batfetch.py" "$W/web/bat_porsche.jsonl" 1 --until-known || true
+# einmalig je Modellseite alle Ergebnisse seit 2015 (bat_models.done merkt sich fertige Modelle, danach ohne Abruf)
+python3 -I "$HERE/batmodels.py" "$W" || echo "   Modellseiten unvollständig, beim nächsten Lauf weiter"
 
 echo "3/6 Auktionshäuser (RM Sotheby's, Bonhams, Broad Arrow, Artcurial … über ultimatecarpage.com)"
 LAST=$(ls "$W/web/ucp" | sed 's/.html//' | sort -n | tail -1)

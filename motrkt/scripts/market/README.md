@@ -12,9 +12,10 @@ also immer mit den Daten überein. Händlerbestände in `manual/haendler.csv` we
 
 Läuft jeden Morgen um 4 Uhr auf GitHub Actions (`.github/workflows/marktdaten.yml`, auch von Hand startbar): dort mit
 `MIP_PUSH=1`, der Push löst das Deployment auf Vercel aus. Der Arbeitsordner liegt zwischen den Läufen im Actions-Cache.
-Fehlt er, lädt der Lauf ihn einmal aus dem Secret `MIP_SEED_URL` (zip oder tar.gz des Arbeitsordners). Er lässt sich nicht
-vollständig neu abrufen: `web/sales_old.csv` (frühere Verkäufe von Hand) und die Classic-Trader-Seiten früherer Tage
-(`web/ct/pages/`, Grundlage des Preisverlaufs) gibt es nur dort.
+Fehlt er, holt der Lauf alles seit 2015 neu (einige Stunden; `batmodels.py` läuft dabei einmal je Bring-a-Trailer-
+Modellseite); nur der Preisverlauf der Inserate beginnt dann von vorn. `sales_old.csv` (frühere Verkäufe von Hand:
+Mecum, Barrett-Jackson, Iconic, Pressemeldungen) liegt im Repo und wird bei jedem Lauf in den Arbeitsordner kopiert –
+Änderungen also hier eintragen.
 
 ## Inserate verfolgen (`track.py`)
 

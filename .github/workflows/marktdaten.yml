@@ -2,9 +2,10 @@
 # Datendateien committen. Der Push löst das Deployment auf Vercel aus. Siehe motrkt/scripts/market/README.md.
 #
 # Rohdaten (Arbeitsordner von update.sh) liegen zwischen den Läufen im Actions-Cache. Fehlt der Cache (erster Lauf,
-# oder 7 Tage ohne Lauf), wird der Ordner einmal aus dem Secret MIP_SEED_URL geladen (zip oder tar.gz des
-# Arbeitsordners mit web/sales_old.csv); ohne Secret bricht der Lauf ab, statt mit leeren Rohdaten zu veröffentlichen.
-# Secrets: DATABASE_URL (Postgres, optional), MIP_SEED_URL (nur für die Erstbefüllung).
+# oder 7 Tage ohne Lauf), beginnt der Lauf mit leerem Ordner und holt alles seit 2015 neu (dauert einige Stunden);
+# ein vorhandener Arbeitsordner lässt sich stattdessen über das Secret MIP_SEED_URL (zip oder tar.gz) einspielen.
+# check.py verhindert, dass ein unvollständiger Neuabruf die Daten ersetzt.
+# Secrets: DATABASE_URL (Postgres, optional), MIP_SEED_URL (optional).
 name: Marktdaten täglich
 
 on:
@@ -57,8 +58,9 @@ jobs:
           SEED_URL: ${{ secrets.MIP_SEED_URL }}
         run: |
           if [ -z "$SEED_URL" ]; then
-            echo "::error::Keine Rohdaten im Cache und kein Secret MIP_SEED_URL – Arbeitsordner einmal einspielen (siehe Kopf dieser Datei)."
-            exit 1
+            echo "::warning::Keine Rohdaten im Cache: Neuabruf aller Quellen seit 2015."
+            mkdir -p ~/work/web
+            exit 0
           fi
           curl -fsSL "$SEED_URL" -o /tmp/seed
           mkdir -p /tmp/seedx
