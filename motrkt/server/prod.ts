@@ -12,5 +12,5 @@ if (!existsSync(process.env.MIP_DIST ?? join(process.cwd(), "dist"))) {
 }
 
 createServer(handleRequest).listen(PORT, () => {
-  console.log(`MIP läuft auf http://localhost:${PORT}`);
+  console.log(`Carbay läuft auf http://localhost:${PORT}`);
 });

@@ -195,7 +195,7 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
 }
 
 // ------------------------------------------------------------------------------------------------ gate
-const OPEN = new Set(["/anmelden", "/favicon.svg"]);
+const OPEN = new Set(["/anmelden", "/favicon.svg", "/brand/carbay-wordmark.svg"]);
 
 /** Handles the request if it must not reach the app (sign-in page, auth API, or no session). Returns true then. */
 export async function authGate(req: IncomingMessage, res: ServerResponse): Promise<boolean> {
@@ -247,14 +247,15 @@ const LOGIN_PAGE = `<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300..600&family=Libre+Caslon+Display&family=Libre+Caslon+Text&display=swap" rel="stylesheet" />
 <meta name="theme-color" content="#efe7d7" />
-<title>Anmelden – MIP</title>
+<title>Anmelden – Carbay</title>
 <style>
   :root { --bg:#efe7d7; --panel:#f7f2e8; --line:#dccfb8; --line2:#c6b699; --ink:#3a2a1d; --muted:#78624d; --faint:#a38f77; --gold:#8b6232; --down:#9a3b2c; }
   * { box-sizing: border-box; }
   body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px;
          background:var(--bg); color:var(--ink); font:15px/1.5 "Jost","Futura","Century Gothic",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
   main { width:100%; max-width:380px; }
-  .logo { font-family:"Libre Caslon Display",Georgia,serif; font-size:30px; letter-spacing:.18em; text-align:center; margin:0 0 6px; }
+  .logo { text-align:center; margin:0 0 10px; line-height:0; }
+  .logo img { height:64px; width:auto; }
   .tag { text-align:center; color:var(--muted); font-size:13.5px; margin:0 0 28px; }
   .card { background:var(--panel); border:1px solid var(--line); padding:26px 24px 22px; }
   .tabs { display:flex; border-bottom:1px solid var(--line); margin:-4px 0 20px; }
@@ -276,7 +277,7 @@ const LOGIN_PAGE = `<!doctype html>
 </head>
 <body>
 <main>
-  <h1 class="logo">MIP</h1>
+  <h1 class="logo"><img src="/brand/carbay-wordmark.svg" alt="Carbay" width="134" height="64" /></h1>
   <p class="tag" data-de="Marktintelligenz für klassische Sportwagen" data-en="Market intelligence for classic sports cars"></p>
   <div class="card">
     <div class="tabs" role="tablist">
@@ -323,7 +324,7 @@ const LOGIN_PAGE = `<!doctype html>
   var $ = function (id) { return document.getElementById(id); };
   function render() {
     document.documentElement.lang = lang;
-    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – MIP";
+    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – Carbay";
     document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = el.getAttribute("data-" + lang); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     var reg = mode === "register";

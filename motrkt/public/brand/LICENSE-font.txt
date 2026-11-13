@@ -1,17 +1,15 @@
-Font: Pinyon Script (Regular, version 1.008) by Nicole Fally and Eben Sorkin
-Source: https://github.com/google/fonts/tree/main/ofl/pinyonscript (upstream https://github.com/SorkinType/Pinyon)
+Font: Italianno (Regular, version 1.100) by Robert E. Leuschke (TypeSETit)
+Source: https://github.com/google/fonts/tree/main/ofl/italianno (upstream https://github.com/googlefonts/italianno)
 Used in: carbay-wordmark.svg, carbay-wordmark-light.svg and carbay-mark.svg. The glyphs were converted to
-vector outlines and modified (hairline reinforcement, added swash); no font file is embedded or distributed.
-The Reserved Font Name restrictions of the OFL apply to modified fonts, not to artwork made with them.
+vector outlines; no font file is embedded or distributed.
 
 ---------------------------------------------------------------------------
 
-Copyright 2024 The Pinyon Project Authors (https://github.com/SorkinType/Pinyon)
+Copyright 2009 The Italianno Project Authors (https://github.com/googlefonts/italianno)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
-https://openfontlicense.org
-
+https://scripts.sil.org/OFL
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007

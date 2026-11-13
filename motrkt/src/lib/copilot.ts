@@ -98,7 +98,7 @@ function variantLine(id: string) {
 }
 
 export function buildContext(focusVariantId: string | undefined, portfolio: Holding[], watchlist: string[]): string {
-  const lines: string[] = [`Datenstand: ${date(AS_OF)}. Alle Werte in EUR. Quelle: MIP-Marktdatenbank (aggregierte Auktions-, Händler- und Privatverkäufe).`];
+  const lines: string[] = [`Datenstand: ${date(AS_OF)}. Alle Werte in EUR. Quelle: Carbay-Marktdatenbank (aggregierte Auktions-, Händler- und Privatverkäufe).`];
   const focus = focusVariantId ? variantById.get(focusVariantId) : undefined;
   if (focus) {
     const m = getMetrics(focus.id);
@@ -111,7 +111,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
       focus.measured
         ? `Marktwert Deutschland ${eur(m.value)} (aus europäischen Auktionsergebnissen, europäischen Angebotspreisen und bereinigten US-Auktionen); Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`
         : `Marktwert: keine belastbare Datenbasis (zu wenige belegte Verkäufe und Angebote). Keinen Wert schätzen oder erfinden.`,
-      `Rarity Score ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, MIP-Einschätzung: ${m.recommendation.label}`,
+      `Rarity Score ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, Carbay-Einschätzung: ${m.recommendation.label}`,
       `Letzte 12 Monate: ${m.sales12m} Transaktionen, Ø Verkaufspreis ${eur(m.avgPrice12m)}, Median-Laufleistung ${km(m.medianMileage)}, Ø Zustandsnote ${num(m.avgCondition, 1)}, Auktionsanteil ${pct(m.auctionShare, { signed: false, digits: 0 })}, Verkaufsquote ${pct(m.sellThrough, { signed: false, digits: 0 })}, Ø Zuschlag vs. Schätzung ${pct(m.premiumVsEstimate)}`,
       `Optionen/Wertfaktoren: ${focus.options.map((o) => `${o.name}${o.standard ? "" : o.measured ? ` (${pct(o.impact)}, gemessen an ${o.measured} Belegen)` : " (Einfluss nicht gemessen)"}`).join("; ")}`,
       `Typische Schwachstellen: ${focus.weaknesses.join("; ")}`,
@@ -214,8 +214,8 @@ export function localAnswer(question: string, focusVariantId: string | undefined
   const momentum = tr(m.momentum);
   const rec = tr(m.recommendation.label);
   const note = t(
-    "\n\n_Lokaler Analysemodus: Antwort aus MIP-Daten berechnet, ohne Sprachmodell. Keine Anlageberatung._",
-    "\n\n_Local analysis mode: answer calculated from MIP data, without a language model. Not investment advice._",
+    "\n\n_Lokaler Analysemodus: Antwort aus Carbay-Daten berechnet, ohne Sprachmodell. Keine Anlageberatung._",
+    "\n\n_Local analysis mode: answer calculated from Carbay data, without a language model. Not investment advice._",
   );
 
   if (has(" portfolio", " bestand", " sammlung", " meine fahrzeuge", " collection", " my cars")) {

@@ -8,7 +8,7 @@ import { cn, date, num, usdRate } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
-import { LogoFull, LogoMark } from "./LogoMark";
+import { LogoFull, LogoMark, LogoWordmark } from "./LogoMark";
 import { MODEL_CHANNELS } from "../data/real/model";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
@@ -67,8 +67,8 @@ export function Layout() {
 
 function Wordmark({ className }: { className?: string }) {
   return (
-    <Link to="/" className={cn("flex items-center", className)} aria-label={t("MIP Startseite", "MIP home")}>
-      <LogoMark size={56} />
+    <Link to="/" className={cn("flex items-center", className)} aria-label={t("Carbay Startseite", "Carbay home")}>
+      <LogoWordmark height={44} />
     </Link>
   );
 }
@@ -427,7 +427,7 @@ function Footer() {
     <footer className="mt-16 border-t border-line bg-panel-2">
       <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <LogoFull size={88} className="w-fit" />
+          <LogoFull height={60} className="w-fit" />
           <p className="mt-5 max-w-xs font-serif text-[15px] leading-relaxed text-muted italic">
             {t("Marktwerte, Verkäufe und Angebote klassischer Sportwagen.", "Market values, sales and listings of classic sports cars.")}
           </p>

@@ -1,39 +1,31 @@
-// MIP medallion: gold double ring with a gauge whose needle points up like a rising price.
-const GOLD = "#C3A46B";
-const TICKS = [180, 210, 240, 270, 300, 330, 360];
+import { t } from "../i18n";
 
-export function LogoMark({ size = 34, withText = true, className }: { size?: number; withText?: boolean; className?: string }) {
-  const cy = withText ? 70 : 82;
-  const rad = (a: number) => (a * Math.PI) / 180;
+// Carbay logo (public/brand/): the script wordmark (Italianno, outlined paths) and the square mark with its C, for
+// small places such as the favicon and the loading state.
+const WORDMARK_RATIO = 408.6 / 195.4;
+
+export function LogoWordmark({ height = 44, light = false, className }: { height?: number; light?: boolean; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 140 140" className={className} aria-hidden="true">
-      <circle cx="70" cy="70" r="70" fill="#111317" />
-      <circle cx="70" cy="70" r="62" fill="none" stroke={GOLD} strokeWidth="2" />
-      <circle cx="70" cy="70" r="55" fill="none" stroke={GOLD} strokeWidth="0.9" />
-      <g transform={`translate(70 ${cy})`} stroke={GOLD} strokeLinecap="round">
-        <path d="M-42 0 A42 42 0 0 1 42 0" fill="none" strokeWidth="1.2" />
-        {TICKS.map((a) => (
-          <line key={a} x1={34 * Math.cos(rad(a))} y1={34 * Math.sin(rad(a))} x2={39 * Math.cos(rad(a))} y2={39 * Math.sin(rad(a))} strokeWidth="1.8" />
-        ))}
-        <line x1="-3.5" y1="5" x2="19" y2="-27" stroke="#C0392B" strokeWidth="3.4" />
-        <circle r="5" fill={GOLD} stroke="none" />
-        <circle r="1.8" fill="#111317" stroke="none" />
-      </g>
-      {withText && (
-        <text x="70" y="102" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif" fontSize="20" letterSpacing="5" fill={GOLD}>
-          MIP
-        </text>
-      )}
-    </svg>
+    <img
+      src={light ? "/brand/carbay-wordmark-light.svg" : "/brand/carbay-wordmark.svg"}
+      alt="Carbay"
+      width={Math.round(height * WORDMARK_RATIO)}
+      height={height}
+      className={className}
+    />
   );
 }
 
-// Full logo: medallion with the tagline underneath, for places with enough room.
-export function LogoFull({ size = 72, className }: { size?: number; className?: string }) {
+export function LogoMark({ size = 34, className }: { size?: number; className?: string }) {
+  return <img src="/brand/carbay-mark.svg" alt="" width={size} height={size} className={className} aria-hidden="true" />;
+}
+
+// Full logo: wordmark with the tagline underneath, for places with enough room.
+export function LogoFull({ height = 56, className }: { height?: number; className?: string }) {
   return (
-    <div className={"flex flex-col items-center gap-3 " + (className ?? "")}>
-      <LogoMark size={size} />
-      <span className="text-[10.5px] tracking-[0.3em] text-muted uppercase">Market Intelligence Platform</span>
+    <div className={"flex flex-col items-start gap-2 " + (className ?? "")}>
+      <LogoWordmark height={height} />
+      <span className="text-[10.5px] tracking-[0.3em] text-muted uppercase">{t("Marktwerte klassischer Sportwagen", "Classic sports car values")}</span>
     </div>
   );
 }
