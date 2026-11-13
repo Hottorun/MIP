@@ -9,7 +9,7 @@ import { useStore } from "../../state/store";
 import { cn, eur, fromDisplay, num, pct } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
-import { PhotoCredit, frameRatio } from "../CarImage";
+import { PhotoCredit, fillsFrame, frameRatio } from "../CarImage";
 import { isEn, t } from "../../i18n";
 import { paintName, tr, photoCaption } from "../../i18n/terms";
 import { findPaint } from "../../data/real/paints";
@@ -313,14 +313,15 @@ function Gallery({ variant }: { variant: Variant }) {
   const ratio = frameRatio(photos);
   return (
     <figure aria-label={t("Bildergalerie", "Image gallery")} aria-roledescription={t("Galerie, mit Pfeiltasten blättern", "Gallery, use the arrow keys to browse")} className="min-w-0">
-      {/* Frame in the photos' own format (16:9 or 3:2): every picture is shown whole, never cropped. */}
+      {/* Frame in the first photo's format (16:9 or 3:2). A photo in a slightly different format fills it (only a
+          strip of background is trimmed) instead of showing bars; a very different one is shown whole. */}
       <div className="group relative touch-pan-y overflow-hidden bg-panel-3 select-none" style={{ aspectRatio: ratio }} {...(n > 1 ? swipe : {})}>
         <img
           key={photo.file}
           src={photo.file}
           alt={photoCaption(photo.caption) ?? variantTitle(variant)}
           draggable={false}
-          className={cn(slideIn(dir), "size-full object-contain")}
+          className={cn(slideIn(dir), "size-full", photo.ratio == null || fillsFrame(photo.ratio, ratio) ? "object-cover" : "object-contain")}
         />
         {photo.premiere && <span className="absolute top-4 left-4 rounded-[2px] bg-bg/90 px-2.5 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
         {n > 1 && (
@@ -356,7 +357,7 @@ function Gallery({ variant }: { variant: Variant }) {
               aria-label={`${t("Bild", "Image")} ${i + 1}`}
               aria-current={i === index}
             >
-              <img src={p.file} alt="" loading="lazy" className="size-full object-contain" />
+              <img src={p.file} alt="" loading="lazy" className="size-full object-cover" />
             </button>
           ))}
         </div>

@@ -36,9 +36,9 @@ export function CarImage({
   if (!photo) {
     return <CarArt shape={variant.shape} color={fallbackColor ?? variant.color} scene={scene} className={className} label={label} />;
   }
-  // The whole picture is always shown. 16:9 photos fill the (16:9) frames; any other format sits on a blurred,
-  // dimmed copy of itself instead of bare bars, so the car is never cut off.
-  const fills = photo.ratio != null && Math.abs(photo.ratio - 16 / 9) < 0.05;
+  // Landscape photos (3:2, 4:3, 16:9 …) fill the frame and lose only a strip of sky or road at the top and bottom,
+  // instead of showing side bars. Only unusual formats (portrait, square, panorama) sit whole on a blurred copy.
+  const fills = photo.ratio != null && fillsFrame(photo.ratio, 16 / 9);
   return (
     <div className={cn("relative overflow-hidden bg-panel-3", className)}>
       {!fills && <img src={photo.file} alt="" aria-hidden="true" loading={eager ? "eager" : "lazy"} decoding="async" className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-xl" />}
@@ -52,6 +52,15 @@ export function CarImage({
       {credit && <PhotoCredit photo={photo} className="absolute right-1.5 bottom-1 left-1.5 text-[10px] text-white/80 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]" />}
     </div>
   );
+}
+
+/**
+ * Whether a photo may be cropped to fill a frame: it keeps at least 74 % of its height (4:3 in 16:9) and at least
+ * 84 % of its width (16:9 in 3:2), so the car stays whole and only background is trimmed.
+ */
+export function fillsFrame(photoRatio: number, frameRatio: number): boolean {
+  const keep = photoRatio < frameRatio ? photoRatio / frameRatio : frameRatio / photoRatio;
+  return photoRatio < frameRatio ? keep >= 0.74 : keep >= 0.84;
 }
 
 /** Gallery frame for a variant's photos: the first photo's own format (launch.json keeps one format per variant). */
