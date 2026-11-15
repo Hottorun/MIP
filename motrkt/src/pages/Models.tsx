@@ -29,7 +29,6 @@ const ERAS = [
   { id: "90s", label: "1990–2004", test: (y: number) => y >= 1990 && y < 2005 },
   { id: "modern", get label() { return t("Ab 2005", "From 2005"); }, test: (y: number) => y >= 2005 },
 ];
-const TAGS = ["Turbo", "Leichtbau", "Allrad", "Hybrid"];
 const COMPARE_COLORS = ["#1f1d1a", "#8f6d33", "#8b847a", "#c4a76a"];
 const MAX_COMPARE = 4;
 
@@ -116,7 +115,6 @@ export default function Models() {
 
   const [query, setQuery] = useState("");
   const [era, setEra] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
   const [sort, setSort] = useState<SortKey>("series");
   const [desc, setDesc] = useState(false);
   const [view, setView] = useState<"grid" | "table">("grid");
@@ -142,7 +140,6 @@ export default function Models() {
       if (generationId && v.generationId !== generationId) return false;
       if (variantId && v.id !== variantId) return false;
       if (eraDef && !eraDef.test(v.years[0])) return false;
-      if (tags.length && !tags.every((t) => v.tags.includes(t))) return false;
       if (q && !variantTitle(v).toLowerCase().includes(q)) return false;
       return true;
     });
@@ -152,7 +149,7 @@ export default function Models() {
       const c = typeof x === "string" ? x.localeCompare(y as string) : (x as number) - (y as number);
       return desc ? -c : c;
     });
-  }, [effectiveBrand, modelId, generationId, variantId, category, era, tags, query, sort, desc]);
+  }, [effectiveBrand, modelId, generationId, variantId, category, era, query, sort, desc]);
   const sections = useMemo(() => groupSections(filtered), [filtered]);
   // Family headings ("Mittelmotor") only when the list spans more than one family.
   const showCategories = new Set(sections.map((s) => s.category)).size > 1;
@@ -316,13 +313,6 @@ export default function Models() {
               </option>
             ))}
           </select>
-          <div className="flex flex-wrap gap-1.5">
-            {TAGS.map((tag) => (
-              <button key={tag} className={cn("chip", tags.includes(tag) && "chip-active")} onClick={() => setTags((ts) => (ts.includes(tag) ? ts.filter((x) => x !== tag) : [...ts, tag]))}>
-                {tr(tag)}
-              </button>
-            ))}
-          </div>
           <div className="ml-auto flex items-center gap-2 text-muted">
             {t("Sortiert nach", "Sorted by")}
             <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => {
