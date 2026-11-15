@@ -8,6 +8,7 @@ import { getMetrics } from "../../data/market";
 import { outliersOf } from "../../data/real/model";
 import { date, km } from "../../lib/format";
 import { unsoldPrice } from "../../lib/unsold";
+import { BAT, mixHouses } from "../../lib/houseMix";
 import { Section, Money } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -48,7 +49,8 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
   const [expanded, setExpanded] = useState(false);
   const sales = getSales(variant.id).filter((s) => !body || s.body === body);
   const outliers = outliersOf(variant.id);
-  const shown = sales.slice(0, expanded ? 15 : 6);
+  const shown = mixHouses(sales, expanded ? 15 : 6);
+  const batHidden = sales.slice(0, shown.length).filter((s) => s.house === BAT).length > shown.filter((s) => s.house === BAT).length;
 
   return (
     <Section
@@ -109,6 +111,14 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
         <button className="mt-4 text-[14px] text-muted hover:text-ink" onClick={() => setExpanded((e) => !e)}>
           {expanded ? t("Weniger anzeigen", "Show less") : t(`${Math.min(15, sales.length) - 6} weitere anzeigen`, `Show ${Math.min(15, sales.length) - 6} more`)}
         </button>
+      )}
+      {batHidden && (
+        <p className="mt-3 text-[13px] text-faint">
+          {t(
+            "Bring a Trailer höchstens jedes dritte Ergebnis, damit auch andere Auktionshäuser sichtbar sind. Alle Verkäufe unter „Alle Ergebnisse“.",
+            "Bring a Trailer on at most every third place, so other auction houses show too. All sales under “All results”.",
+          )}
+        </p>
       )}
       <div className="mt-6 text-[13px] text-muted">
         {t("Weitere Ergebnisse direkt beim Auktionshaus", "More results directly at the auction house")}:{" "}

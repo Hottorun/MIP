@@ -18,6 +18,7 @@ import {
   topMovers,
 } from "../data/market";
 import type { Sale } from "../data/types";
+import { mixHouses } from "../lib/houseMix";
 import { date, num, pct, trendClass } from "../lib/format";
 import { CarImage } from "../components/CarImage";
 import { HeroSlideshow } from "../components/HeroSlideshow";
@@ -77,9 +78,9 @@ export default function Overview() {
     const out: Sale[] = [];
     for (const s of getAllSales()) {
       if (s.price !== null && variantById.has(s.variantId)) out.push(s);
-      if (out.length >= 24) break;
+      if (out.length >= 240) break;
     }
-    return out;
+    return mixHouses(out, 24);
   }, []);
 
   return (

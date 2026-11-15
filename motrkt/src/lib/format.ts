@@ -42,9 +42,16 @@ export function toDisplay(eurValue: number): number {
 export const ownUsd = (s: { currency?: string; priceOriginal?: number | null }): number | null =>
   inUsd() && s.currency === "USD" && s.priceOriginal ? s.priceOriginal : null;
 /** A sale's price or high bid (given in euros) as text, in the sale's own dollars where that applies. */
-export function saleAmount(eurValue: number, s: { currency?: string; priceOriginal?: number | null }): string {
+export function saleAmount(eurValue: number, s: { currency?: string; priceOriginal?: number | null }, opts: { rounded?: boolean } = {}): string {
   const own = ownUsd(s);
-  return own !== null ? "$" + nf(0).format(Math.round(own)) : eur(eurValue);
+  return own !== null ? "$" + nf(0).format(opts.rounded ? roundEven(own) : Math.round(own)) : eur(eurValue, opts);
+}
+
+/** Round to an even step (1.247.731 → 1.247.750): 50 from 10.000 up, 10 below. For estimates and high bids, which are
+ *  converted or guessed amounts, not sale prices. */
+export function roundEven(value: number): number {
+  const step = Math.abs(value) >= 10_000 ? 50 : 10;
+  return Math.round(value / step) * step;
 }
 
 /** Amount entered in the display currency, in euros (for storing and filtering). */
@@ -59,10 +66,10 @@ export function roundValue(value: number): number {
 }
 
 /** Amounts are always written out in full ("€ 2.330.000"), never abbreviated; `compact` rounds to three significant digits. */
-export function eur(value: number | null | undefined, opts: { compact?: boolean } = {}): string {
+export function eur(value: number | null | undefined, opts: { compact?: boolean; rounded?: boolean } = {}): string {
   if (value === null || value === undefined || !Number.isFinite(value)) return "–";
   const shown = toDisplay(value);
-  const v = opts.compact ? roundValue(shown) : Math.round(shown);
+  const v = opts.compact ? roundValue(shown) : opts.rounded ? roundEven(shown) : Math.round(shown);
   return `${v < 0 ? "−" : ""}${curSign()}${isEn() ? "" : " "}${eur0.format(Math.abs(v))}`;
 }
 
