@@ -19,7 +19,7 @@ export type RealSale = {
   price: number | null;
   estimateLow: number | null;
   estimateHigh: number | null;
-  /** Highest bid of an unsold lot (Bring a Trailer), EUR. Display only, never part of the market value. */
+  /** Highest bid of an unsold lot (Bring a Trailer, Hammer Price, the houses), EUR. Enters the market value as a bid channel, see model.ts. */
   highBid?: number | null;
   condition: Condition;
   mileage: number;

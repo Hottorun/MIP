@@ -575,8 +575,10 @@ function BasisLine({ variant, range = true }: { variant: Variant; range?: boolea
     c.US_AUC && t(`${num(c.US_AUC)} US-${c.US_AUC === 1 ? "Auktion" : "Auktionen"}`, `${num(c.US_AUC)} US ${c.US_AUC === 1 ? "auction" : "auctions"}`),
     c.US_ONL && t(`${num(c.US_ONL)} US-Online-${c.US_ONL === 1 ? "Auktion" : "Auktionen"}`, `${num(c.US_ONL)} US online ${c.US_ONL === 1 ? "auction" : "auctions"}`),
     c.US_ASK && t(`${num(c.US_ASK)} US-${c.US_ASK === 1 ? "Angebot" : "Angeboten"}`, `${num(c.US_ASK)} US ${c.US_ASK === 1 ? "listing" : "listings"}`),
+    c.EU_BID + c.US_BID > 0 &&
+      t(`${num(c.EU_BID + c.US_BID)} ${c.EU_BID + c.US_BID === 1 ? "Höchstgebot" : "Höchstgeboten"} unverkaufter Lose`, `${num(c.EU_BID + c.US_BID)} high ${c.EU_BID + c.US_BID === 1 ? "bid" : "bids"} of unsold lots`),
   ].filter(Boolean) as string[];
-  const us = c.US_AUC + c.US_ONL + c.US_ASK > 0;
+  const us = c.US_AUC + c.US_ONL + c.US_ASK + c.US_BID > 0;
   const list =
     (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${t("und", "and")} ${parts.at(-1)}` : parts[0]) +
     (us ? t(" (US-Preise bereinigt)", " (US prices adjusted)") : "");

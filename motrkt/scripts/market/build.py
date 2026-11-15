@@ -154,6 +154,14 @@ for key, house, prefix in HOUSES:
     out = [u for u in out if not (u["src"] == "ucp" and u["house"] == house and covered(u))]
     print("%s: %d results from the house, %d ultimatecarpage rows replaced" % (house, len(own), before - len(out)))
     out += own
+# --- Hammer Price app (hammerprice.csv next to this script, see hammerprice.py): sales and houses we cannot fetch,
+# and the highest bid of unsold lots
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # -I leaves the script folder out
+import hammerprice
+_hp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hammerprice.csv")
+if os.path.exists(_hp):
+    def _eur(a, c, d): return to_eur(a, c, d) if c == "EUR" or c in fx else None
+    out += hammerprice.load(_hp, classify, _eur, out, house_search)
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
 c = collections.Counter(o["variant"] for o in out if o["sold"])
 print(len(out), sum(c.values()))

@@ -23,6 +23,8 @@ const CHANNEL_LABEL: Record<Channel, () => string> = {
   US_AUC: () => t("Auktionsergebnisse in den USA", "Auction results in the USA"),
   US_ONL: () => t("Online-Auktionen in den USA (Bring a Trailer u. a.)", "Online auctions in the USA (Bring a Trailer etc.)"),
   US_ASK: () => t("Angebotspreise in den USA", "Asking prices in the USA"),
+  EU_BID: () => t("Höchstgebote unverkaufter Lose in Europa", "High bids of unsold lots in Europe"),
+  US_BID: () => t("Höchstgebote unverkaufter Lose in den USA", "High bids of unsold lots in the USA"),
 };
 
 const NORTH_AMERICA = new Set(["US", "CA"]);
@@ -76,7 +78,7 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
                     const n = nVariants(`${c}-EU_AUC`);
                     if (!n && d === 0)
                       return t("Abstand zu Europa noch nicht messbar; Gewicht begrenzt", "Gap to Europe not measurable yet; weight capped");
-                    return c === "EU_ASK"
+                    return c === "EU_ASK" || c === "EU_BID"
                       ? t(
                           `liegen im Mittel ${gap} ${above ? "über" : "unter"} Auktionsergebnissen in Europa${n ? ` (gemessen an ${n} Varianten)` : ""}; herausgerechnet`,
                           `are on average ${gap} ${above ? "above" : "below"} European auction results${n ? ` (measured on ${n} variants)` : ""}; taken out`,

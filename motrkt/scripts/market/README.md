@@ -51,6 +51,8 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 | `US_AUC` Auktionen USA | RM Sotheby's, Gooding, Broad Arrow … (Saalauktionen, Verkäufe in USD); von Hand: Verkäufe und Auktionsergebnisse von US-/kanadischen Händlern und Häusern | `rmfetch.py`, `goodingfetch.py`, `ucpfetch.sh`, `manual/*.csv` |
 | `US_ONL` Online-Auktionen USA | Bring a Trailer (von Hand auch Cars & Bids, PCARMARKET): eigene Quelle mit eigenem Abstand, damit die größte Plattform den Abstand der Saalauktionen nicht verwischt | `batfetch.py` |
 | `US_ASK` Angebote USA | von Hand: Angebote von US-/kanadischen Händlern | `manual/*.csv` |
+| alle Auktionskanäle | Hammer Price (App, mit schriftlicher Erlaubnis von Hand ausgelesen, Baujahre 1955–2026): Verkäufe und Höchstgebote vieler Häuser, auch solcher, die wir nicht abrufen können (Mecum vor 2023, Barrett-Jackson, Historics, COYS …). Ein Los, das wir schon vom Haus haben (gleiches Haus, Datum ±14 Tage, gleiche Losnummer und gleiches Baujahr bzw. Variante, oder bei Verkäufen Variante und Preis auf 2 % gleich), wird nicht doppelt gezählt; die Daten des Hauses gelten, Hammer Price ergänzt nur das Höchstgebot. Verkäufe in Japan und Saudi-Arabien stehen in der Liste, gehen aber nicht in den Marktwert ein. Jede Korrektur (Währung, Datum, Preis 0) steht in der Spalte `hinweis` | `hammerprice.csv` + `hammerprice.py` (in `build.py`) |
+| `EU_BID` / `US_BID` Höchstgebote | Höchstgebote unverkaufter Lose (Hammer Price, Bring a Trailer) | wie oben |
 
 Nicht automatisch abrufbar (geprüft am 10. November 2026): mobile.de (Such- und Inseratsseiten per robots.txt gesperrt;
 für die offizielle Search API braucht es Zugangsdaten von mobile.de, der Client liegt schon in `server/mobilede.ts`),
@@ -60,7 +62,7 @@ Dorotheum, Aguttes, H&H, Mecum, Hemmings (sperren KI-Crawler ausdrücklich), Bar
 Diese Sperren werden nicht umgangen.
 
 Jeder Titel wird per `classify.py` genau einer Variante zugeordnet oder verworfen (Umbauten, Replikas, Teile, nicht
-eindeutige Modelle). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
+eindeutige Modelle, „Re-Creation“, DP-Umbauten). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
 
 ## Modell (`model.py`)
 
@@ -88,7 +90,13 @@ eindeutige Modelle). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
    Verkäufers, `ctparse.py`), gehen nicht ein. Danach fällt jeder Preis heraus, der weiter als 2 × die gemessene
    Streuung seiner Quelle vom Niveau der Variante entfernt liegt, höchstens Faktor 2 in beide Richtungen
    (`OUT_K`, `OUT_MAX`). Die App zeigt alle ausgeschlossenen Belege mit Grund.
-7. **Mindestens 3 Belege** für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
+7. **Höchstgebote unverkaufter Lose** (`EU_BID`, `US_BID`): Ein Gebot zeigt, was mindestens ein Käufer zu zahlen
+   bereit war, liegt aber meist unter dem Preis, zu dem verkauft wird. Es geht als eigener Kanal ein; sein Abstand zu
+   den Verkäufen wird wie bei den anderen Kanälen gemessen und abgezogen (je Klassiker/moderne Fahrzeuge), `US_BID`
+   teilt sich den US-Anteil. Wird dasselbe Fahrzeug (Haus, Variante, Titel) binnen 400 Tagen erneut angeboten und
+   liegt der spätere Preis bzw. das spätere Gebot höchstens 30 % entfernt, zählt nur der spätere Beleg. Gebote gehen
+   nicht in den Zeitindex ein und zählen nicht für die Mindestzahl.
+8. **Mindestens 3 Belege** (Verkäufe oder Angebote) für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
    Empfehlung, sondern nur die Einzelbelege.
 
 Alle Zwischenergebnisse (Abstände, Streuungen, Gewichte, Kanalanteile je Variante) stehen in `market-model.json` und

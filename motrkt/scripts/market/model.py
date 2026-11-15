@@ -12,6 +12,11 @@ Evidence, each price converted to EUR at the ECB rate of its day:
   EU_ASK  asking prices in Europe (Classic Trader; hand-recorded listings from mobile.de, Elferspot, Kleinanzeigen and
           dealers in scripts/market/manual/), left-hand drive only
   US_ASK  hand-recorded asking prices of dealers in the USA and Canada
+  EU_BID  highest bids of unsold lots at auctions in Europe (Hammer Price app, the houses), and
+  US_BID  in North America (Bring a Trailer "bid to", Hammer Price): a bid is what one buyer was ready to pay, so the
+          car is worth at least that much to the market. Kept apart like the other channels: the model measures how
+          far bids sit below the sold prices of the same variants and how much they scatter, and weights them by
+          that; a value still needs MIN_N sold prices or asking prices besides the bids.
 
 Model (robust: weighted medians, the variant level a weighted interquartile mean):
   log p_i = a_v + f_g(t_i) + δ_c,k + λ_v(t) d_v(t_i) + e_i
@@ -46,9 +51,10 @@ EUROPE = {"DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "PT", "GB", "IE"
 EU_CUR = {"EUR", "GBP", "CHF", "SEK", "DKK", "NOK"}
 NORTH_AMERICA = {"US", "CA"}
 US_ONLINE = {"bring a trailer", "cars & bids", "cars and bids", "pcarmarket"}
-CHANNELS = ["EU_AUC", "US_AUC", "US_ONL", "EU_ASK", "US_ASK"]
+CHANNELS = ["EU_AUC", "US_AUC", "US_ONL", "EU_ASK", "US_ASK", "EU_BID", "US_BID"]
 ASK = {"EU_ASK", "US_ASK"}                 # asking prices: offset shared by the families, not used for the time index
-US = {"US_AUC", "US_ONL", "US_ASK"}        # North American channels: one shared bias term
+BID = {"EU_BID", "US_BID"}                 # highest bids of unsold lots: not used for the time index, not counted for MIN_N
+US = {"US_AUC", "US_ONL", "US_ASK", "US_BID"}  # North American channels: one shared bias term
 US_TAU = 0.12      # at least 12 % (SD, log scale) between a variant's US and European level, whatever the data suggest
 TAU_DEFAULT = 0.04 # bias variance (0.2 SD) of a channel with too few comparisons to measure it
 
@@ -129,11 +135,30 @@ def to_eur(amount, cur, date):
 
 # ---------------------------------------------------------------------------------------------------- evidence
 obs = []
-# auction results (sold only)
+# auction results: sold prices, and the highest bid of unsold lots (own channels EU_BID / US_BID). Sales outside Europe
+# and North America (nomodel: Japan, Saudi Arabia in the Hammer Price data) are listed in the app but not used.
 for s in json.load(open(S + "/web/sales_all.json")):
-    if not (s["sold"] and s["eur"] and s["eur"] > 500 and "2015-01-01" <= s["date"] <= AS_OF.isoformat()): continue
-    ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer") else us_channel(s["house"])
-    obs.append(dict(variant=s["variant"], date=s["date"], eur=s["eur"], ch=ch, house=s["house"], lot=s["lot"], body=s.get("body"), src="auction"))
+    if s.get("nomodel") or not ("2015-01-01" <= s["date"] <= AS_OF.isoformat()): continue
+    if s["sold"] and s["eur"] and s["eur"] > 500:
+        ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer") else us_channel(s["house"])
+        obs.append(dict(variant=s["variant"], date=s["date"], eur=s["eur"], ch=ch, house=s["house"], lot=s["lot"], body=s.get("body"), src="auction",
+                        title=s.get("title") or ""))
+    elif not s["sold"] and (s.get("bid") or 0) > 500:
+        cur = s.get("bidCur") or s.get("cur")
+        eu = cur in EU_CUR or ((s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer")
+        obs.append(dict(variant=s["variant"], date=s["date"], eur=s["bid"], ch="EU_BID" if eu else "US_BID", house=s["house"], lot=s["lot"],
+                        body=s.get("body"), src="bid", title=s.get("title") or ""))
+# the same car offered again and again (Mecum often re-runs a car that did not sell): a bid counts only if the car does
+# not come up again within 400 days at the same house (same variant and title, price within 30 %) - then the later
+# result, sold or not, stands for it
+_tk = lambda s: (s["house"], s["variant"], re.sub(r"[^a-z0-9]+", " ", s["title"].lower()).strip())
+_later = collections.defaultdict(list)
+for s in obs:
+    if s["src"] in ("auction", "bid"): _later[_tk(s)].append(s)
+_rerun = {id(s) for s in obs if s["src"] == "bid" and any(
+    0 < (dt.date.fromisoformat(o["date"]) - dt.date.fromisoformat(s["date"])).days <= 400 and abs(o["eur"] / s["eur"] - 1) <= 0.3 for o in _later[_tk(s)])}
+print("bids of cars offered again later, left out:", len(_rerun))
+obs = [s for s in obs if id(s) not in _rerun]
 
 def norm_body(b):
     """Classic Trader body labels ("Cabriolet (Targa)", "Coupé (Rennwagen)") -> Coupé, Cabriolet, Targa or Roadster."""
@@ -285,7 +310,7 @@ MIN_IDX = {"F": 150, "G": 150, "H": 300}; BW = {"F": 0.5, "G": 1.0, "H": 0.5}
 
 def fit_all(delta):
     adj = lambda s: delta[s["k"]][s["ch"]]
-    auc = [s for s in obs if s["ch"] not in ASK]
+    auc = [s for s in obs if s["ch"] not in ASK and s["ch"] not in BID]   # the time index follows sold prices only
     idx = {}
     for name, members in [("COLLECT", {"A", "T", "B", "H", "F", "G"}), ("MODERN", {"C", "D", "E", "E2"})] + [(g, {g}) for g in ["A", "T", "B", "H", "C", "D", "E", "E2", "F", "G"]]:
         ss = [s for s in auc if s["g"] in members]
@@ -499,7 +524,7 @@ for v, l in byv.items():
         med_all = median(allr)
         return {kk: [round(math.exp(median(xs) - med_all) - 1, 3), len(xs)] for kk, xs in lv.items() if len(xs) >= 6}
     chn = collections.Counter(s["ch"] for s, _ in keep)
-    ok = n >= MIN_N
+    ok = sum(1 for s, _ in keep if s["ch"] not in BID) >= MIN_N   # bids alone never make a value
     result["variants"][v] = {
         "value": round(series[-1]) if ok else None, "n": n, "n12": sum(1 for s, _ in keep if s["t"] >= T - 1), "n24": sum(1 for s, _ in keep if s["t"] >= T - 2),
         "ch": {c: chn.get(c, 0) for c in CHANNELS}, "share": share,

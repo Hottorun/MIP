@@ -27,8 +27,8 @@ H = ["variant_id", "fahrzeug", "datum", "quelle", "haus", "preis_eur", "schaetzu
 out = []
 for r in rows:
     gear = r["gear"] or ("Automatik" if r["year"] >= 1999 and r["src"] == "bat" and not re.search(r"\d-speed", r["title"].lower()) and False else "")
-    # unsold lots: the house's estimate (schaetzung_von/_bis) or the highest bid (Bring a Trailer), both in EUR; shown in
-    # the app only, the model reads sold prices alone
+    # unsold lots: the house's estimate (schaetzung_von/_bis) and the highest bid (Bring a Trailer, Hammer Price), both
+    # in EUR; the model reads the bid as its own channel (EU_BID/US_BID), the estimate is shown in the app only
     unsold = not r["sold"]
     out.append([r["variant"], r["title"].replace(";", ","), r["date"], "Auktion", r["house"], r["eur"] or "",
                 (unsold and r.get("estLow")) or "", (unsold and r.get("estHigh")) or "", "ja" if r["sold"] else "nein", "",

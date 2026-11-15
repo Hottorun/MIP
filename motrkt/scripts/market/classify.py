@@ -3,7 +3,7 @@ Conservative: anything modified, replica, part, or not clearly one variant is re
 import re, html
 
 P = "porsche-"
-EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw", "replica", "tribute", "recreation",
+EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw", "replica", "tribute", "recreation", "re-creation",
         "continuation", "kit car", "project", "conversion", "converted", "wide-body", "widebody", "rwb", "rauh", "ruf ",
         "ruf-", " ruf", "gemballa", "techart", "strosek", "emory", "gunther", "theon", "tuthill", "everrati", "electric",
         "safari", "rally", "hillclimb", "kart", "junior", "scale", "model", "wheels", "engine", "transaxle", "gearbox",
@@ -32,7 +32,7 @@ def has(s, *ws): return any(w in s for w in ws)
 def race(y, s, full):
     """Motorsport catalog (race cars are allowed to carry race keywords)."""
     R = P + "rennsportwagen-"; G = P + "gt-rennwagen-"; C = P + "cup-und-clubsport-"
-    if has(full, "replica", "recreation", "continuation", "tribute", "junior", "kart", "children", "scale", "model", "painting", "evocation", "-style", "style ",
+    if has(full, "replica", "recreation", "re-creation", "dp ", "continuation", "tribute", "junior", "kart", "children", "scale", "model", "painting", "evocation", "-style", "style ",
            "tool", " kit", "engine", "manual", "experience", "w/ ", "conversion", "gemballa", "rs america", "turbocharged",
            "powered", "modified", "slantnose", "slant nose", "gearbox", "transaxle", "parts", "literature", "wheels", "poster", "sign ", "bodywork", "simulator", "sculpture"):
         return None

@@ -8,6 +8,10 @@ import data from "./market-model.json";
  *  - US_AUC  live auction results in North America (RM Sotheby's, Gooding, Broad Arrow …; hand-recorded US sales)
  *  - US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids, PCARMARKET)
  *  - US_ASK  asking prices of dealers in the USA and Canada (hand-recorded)
+ *  - EU_BID  highest bids of unsold auction lots in Europe (Hammer Price, the houses' own results)
+ *  - US_BID  highest bids of unsold auction lots in North America (incl. Bring a Trailer)
+ * A bid shows what at least one buyer was willing to pay; its gap to sales is measured like that of any other channel.
+ * Bids do not count towards `minN` and are left out when the same car is offered again within about a year.
  * The gap of each channel to European auction results is measured from variants that have both, and removed; how much
  * a channel can move a variant's value is capped by how much that gap varies between variants. The US channels share
  * one such cap, so all US evidence together cannot outweigh the European evidence beyond it.
@@ -37,11 +41,11 @@ type RawEntry = {
   out?: { id: string; eur: number; dev: number; ch: Channel }[];
 };
 
-export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC" | "US_ONL" | "US_ASK";
+export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC" | "US_ONL" | "US_ASK" | "EU_BID" | "US_BID";
 
 /** Display order of the channels: European evidence first. */
-export const CHANNEL_ORDER: Channel[] = ["EU_AUC", "EU_ASK", "US_AUC", "US_ONL", "US_ASK"];
-const NO_CHANNELS: Record<Channel, number> = { EU_AUC: 0, EU_ASK: 0, US_AUC: 0, US_ONL: 0, US_ASK: 0 };
+export const CHANNEL_ORDER: Channel[] = ["EU_AUC", "EU_ASK", "EU_BID", "US_AUC", "US_ONL", "US_ASK", "US_BID"];
+const NO_CHANNELS: Record<Channel, number> = { EU_AUC: 0, EU_ASK: 0, US_AUC: 0, US_ONL: 0, US_ASK: 0, EU_BID: 0, US_BID: 0 };
 
 type Raw = {
   asOf: string;

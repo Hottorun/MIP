@@ -118,7 +118,7 @@ export type Sale = {
   trend: number; // price vs. market value at that date, e.g. 0.059
   url?: string; // source link for imported real records
   conditionUnknown?: boolean; // imported record without a stated condition (normalised as "2")
-  highBid?: number | null; // highest bid of an unsold auction lot (Bring a Trailer), EUR; display only
+  highBid?: number | null; // highest bid of an unsold auction lot (Bring a Trailer, Hammer Price, the houses), EUR; enters the market value as a bid channel (EU_BID/US_BID)
   currency?: string; // currency the price was given in (USD, EUR, GBP …), "" when unknown
   priceOriginal?: number | null; // price (unsold: high bid) in that currency; shown as is when it matches the display currency
 };
