@@ -18,3 +18,19 @@ export function readText(req: IncomingMessage, limit: number): Promise<string> {
     req.on("error", reject);
   });
 }
+
+/** The request body as bytes, at most `limit` bytes (rejects with "size" beyond that). */
+export function readBuffer(req: IncomingMessage, limit: number): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    let size = 0;
+    req.on("data", (c: Buffer) => {
+      if (size > limit) return;
+      size += c.length;
+      if (size > limit) reject(new Error("size"));
+      else chunks.push(c);
+    });
+    req.on("end", () => resolve(Buffer.concat(chunks)));
+    req.on("error", reject);
+  });
+}

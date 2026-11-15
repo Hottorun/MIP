@@ -12,6 +12,8 @@ const Buy = lazy(() => import("./pages/Buy"));
 const AiPage = lazy(() => import("./pages/AiPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Credits = lazy(() => import("./pages/Credits"));
+const MyCars = lazy(() => import("./pages/MyCars"));
+const Review = lazy(() => import("./pages/Review"));
 
 function MarketRedirect() {
   const { lastVariantId } = useStore();
@@ -32,6 +34,8 @@ export function App() {
         <Route path="kaufen" element={<Buy />} />
         <Route path="ai" element={<AiPage />} />
         <Route path="bildnachweise" element={<Credits />} />
+        <Route path="fahrzeug-melden" element={<MyCars />} />
+        <Route path="pruefung" element={<Review />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

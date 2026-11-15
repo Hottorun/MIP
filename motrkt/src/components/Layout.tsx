@@ -1,6 +1,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck } from "lucide-react";
+import { useMe } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { search, type SearchHit } from "../lib/search";
@@ -317,22 +318,6 @@ function NotificationBell() {
   );
 }
 
-/** The signed-in user's name (the server lets nobody into the app without a session). */
-function useUsername() {
-  const [name, setName] = useState<string | null>(null);
-  useEffect(() => {
-    let live = true;
-    fetch("/api/auth/me", { credentials: "same-origin" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => live && setName(j?.username ?? null))
-      .catch(() => {});
-    return () => {
-      live = false;
-    };
-  }, []);
-  return name;
-}
-
 async function signOut() {
   try {
     await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
@@ -346,7 +331,8 @@ function UserMenu() {
   const [importOpen, setImportOpen] = useState(false);
   const { portfolio, watchlist, alerts } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
-  const username = useUsername();
+  const me = useMe();
+  const username = me?.username ?? null;
   const item = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[14px] hover:bg-panel-2";
   return (
     <div className="relative" ref={ref}>
@@ -368,6 +354,14 @@ function UserMenu() {
           <Link to="/portfolio" className={item} onClick={() => setOpen(false)}>
             {t("Mein Portfolio", "My portfolio")}
           </Link>
+          <Link to="/fahrzeug-melden" className={item} onClick={() => setOpen(false)}>
+            <FileCheck2 className="size-3.5 text-muted" /> {t("Fahrzeug melden", "Report my car")}
+          </Link>
+          {me?.admin && (
+            <Link to="/pruefung" className={item} onClick={() => setOpen(false)}>
+              <ShieldCheck className="size-3.5 text-muted" /> {t("Prüfung", "Review")}
+            </Link>
+          )}
           <button
             className={item}
             onClick={() => {

@@ -1,10 +1,9 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { existsSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { handleMobileDe } from "./mobilede.ts";
 import { readText } from "./body.ts";
+import { handleUserCars } from "./userCars.ts";
+import { hasCredentials } from "./contractCheck.ts";
 
 // Load secrets from .env (ANTHROPIC_API_KEY, MOBILEDE_USERNAME, MOBILEDE_PASSWORD) without overriding the shell environment.
 try {
@@ -54,15 +53,6 @@ function parseMessages(raw: unknown): ChatMessage[] | null {
   return msgs;
 }
 
-/** Best-effort check whether the SDK will find credentials (env vars or an `ant auth login` profile). */
-function hasCredentials() {
-  return Boolean(
-    process.env.ANTHROPIC_API_KEY ||
-      process.env.ANTHROPIC_AUTH_TOKEN ||
-      process.env.ANTHROPIC_PROFILE ||
-      existsSync(join(homedir(), ".config", "anthropic")),
-  );
-}
 
 let client: Anthropic | null = null;
 function getClient() {
@@ -160,5 +150,6 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse) {
     return handleCopilot(req, res);
   }
   if (url.pathname.startsWith("/api/mobilede/")) return handleMobileDe(req, res, url);
+  if (/^\/api\/(fahrzeuge|pruefung)(\/|$)/.test(url.pathname)) return handleUserCars(req, res, url);
   sendJson(res, 404, { error: "Not found" });
 }

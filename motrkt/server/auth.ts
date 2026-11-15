@@ -30,6 +30,17 @@ export function enableDemoAccount() {
   demo = demoAccount as User;
 }
 
+/**
+ * Reviewers of the users' car reports (server/userCars.ts): the usernames in MIP_ADMINS, comma-separated. In local
+ * development (not on Vercel, not NODE_ENV=production) the demo account is a reviewer too, so the review page can be
+ * tried; in production it never is, its password being public.
+ */
+export function isAdmin(user: { id: string; username: string }) {
+  const names = (process.env.MIP_ADMINS ?? "").split(",").map((n) => n.trim().toLowerCase()).filter(Boolean);
+  if (names.includes(user.username.toLowerCase()) && !(demo && demo.id === user.id && process.env.VERCEL)) return true;
+  return Boolean(demo && demo.id === user.id && !process.env.VERCEL && process.env.NODE_ENV !== "production");
+}
+
 async function userByName(username: string): Promise<User | null> {
   if (demo && demo.username.toLowerCase() === username.toLowerCase()) return demo;
   const [u] = await db()<User[]>`select id, username, salt, hash from users where lower(username) = lower(${username})`;
@@ -137,7 +148,9 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   const path = url.pathname;
   if (path === "/api/auth/me" && req.method === "GET") {
     const u = await currentUser(req);
-    return u ? sendJson(res, 200, { username: u.username }) : sendJson(res, 401, { error: "not signed in" });
+    if (!u) return sendJson(res, 401, { error: "not signed in" });
+    const [p] = await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${u.id}`;
+    return sendJson(res, 200, { username: u.username, admin: isAdmin(u), premiumUntil: p?.premium_until ?? null });
   }
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });
 

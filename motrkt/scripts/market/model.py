@@ -213,7 +213,10 @@ for a in latest.values():
 other_land = collections.Counter()
 # the dealers' own photos of these cars (dealerphotos.py): {listing url: [image url, ...]}
 dealer_photos = json.load(open(S + "/web/dealerphotos.json")) if os.path.exists(S + "/web/dealerphotos.json") else {}
-for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
+# plus the cars users bought or sold, approved after a reviewer checked the purchase contract (user_cars in Postgres,
+# exported by scripts/db/export-user-cars.ts to the file in MIP_USER_CARS; art = Verkauf, so they count as sales)
+USER_CARS = os.environ.get("MIP_USER_CARS") or ""
+for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))) + ([USER_CARS] if os.path.isfile(USER_CARS) else []):
     for i, r in enumerate(csv.DictReader(open(fn, encoding="utf-8"), delimiter=";")):
         if not r.get("datum") or not r.get("preis"): continue
         vid = (r.get("variant_id") or "").strip()
@@ -224,7 +227,7 @@ for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
         eur = to_eur(float(r["preis"]), (r.get("waehrung") or "EUR").strip(), r["datum"])
         if not eur:
             other_land["Währung " + (r.get("waehrung") or "").strip()] += 1; continue
-        row = dict(id="M-%s-%d" % (os.path.basename(fn).split(".")[0], i), variant=vid, date=r["datum"], eur=round(eur), price=float(r["preis"]),
+        row = dict(id=("U-" + r["id"]) if r.get("id") else "M-%s-%d" % (os.path.basename(fn).split(".")[0], i), variant=vid, date=r["datum"], eur=round(eur), price=float(r["preis"]),
                    cur=r.get("waehrung") or "EUR", km=int(r["km"]) if (r.get("km") or "").isdigit() else None, year=int(r["baujahr"]),
                    title="Porsche %s" % r["fahrzeug"], seller=r.get("anbieter") or "", sellerName=None, country=(r.get("land") or "DE").upper(),
                    body=body_of(("%s %s" % (r["fahrzeug"], r.get("url") or "")).lower()), url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None,

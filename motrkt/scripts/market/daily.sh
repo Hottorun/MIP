@@ -12,7 +12,16 @@ LOG="$W/web/update-$(date +%F).log"
 export PATH="$HOME/.local/node/bin:$PATH"
 
 echo "Log: $LOG"
-sh "$HERE/update.sh" "$W" > "$LOG" 2>&1
+: > "$LOG"
+# approved cars of users (purchase contract checked) from Postgres, for model.py; in a temporary folder, not in $W,
+# which GitHub Actions keeps in its cache, and deleted after the run
+UC=$(mktemp -d)
+trap 'rm -rf "$UC"' EXIT
+if [ -n "$DATABASE_URL" ] || grep -q '^DATABASE_URL=.' "$APP/.env" 2>/dev/null; then
+  (cd "$APP" && npx tsx scripts/db/export-user-cars.ts "$UC/usercars.csv") >> "$LOG" 2>&1 || echo "   Nutzerfahrzeuge nicht exportiert" >> "$LOG"
+fi
+[ -f "$UC/usercars.csv" ] && export MIP_USER_CARS="$UC/usercars.csv"
+sh "$HERE/update.sh" "$W" >> "$LOG" 2>&1
 (cd "$APP" && npx tsc --noEmit -p .) >> "$LOG" 2>&1
 if ! python3 -I "$HERE/check.py" >> "$LOG" 2>&1; then
   tail -4 "$LOG"

@@ -37,6 +37,30 @@ Konten und Sitzungen liegen in Postgres (`db/migrations/002_accounts.sql`). Gesp
 Passwort und SHA-256-Werte der Sitzungs-Tokens. Nach 8 Fehlversuchen in 15 Minuten wird die Anmeldung für Name bzw.
 Adresse kurz gesperrt.
 
+## Eigenes Fahrzeug melden (`/fahrzeug-melden`)
+
+Nutzer tragen ein Auto ein, das sie selbst gekauft oder verkauft haben, und laden den Kaufvertrag hoch (PDF oder
+Foto, höchstens 4 MB). Erreichbar über das Kontomenü.
+
+1. **Daten**: Variante, Bezeichnung, Baujahr, Fahrgestellnummer, Kilometerstand, Preis mit Währung, Vertragsdatum,
+   Land, Gegenseite (privat, Händler, Auktion), dazu optional Karosserie, Getriebe, Lenkung, Farben, Zustandsnote,
+   Matching Numbers, Unfallfreiheit und Anmerkungen. Der Nutzer bestätigt die Angaben und die Verwendung.
+2. **KI-Vorprüfung** (`server/contractCheck.ts`): Claude liest den Vertrag und vergleicht ihn mit den Angaben
+   (Fahrzeug, FIN, Preis, Datum, Kilometer, Verkäufer). Ergebnis: passt, Abweichungen, unklar oder kein Kaufvertrag,
+   dazu Auffälligkeiten. Braucht `ANTHROPIC_API_KEY`; ohne prüft der Prüfer von Hand.
+3. **Prüfung** (`/pruefung`, nur für Prüfer): Angaben, Vertrag und KI-Ergebnis nebeneinander. Der Prüfer kann
+   Variante, Preis, Datum, Kilometer und Baujahr nach dem Vertrag korrigieren, dann freigeben oder mit Begründung
+   ablehnen. **Beide Entscheidungen löschen den Vertrag**; danach bleiben nur die geprüften Fahrzeugdaten.
+4. **Freigabe**: Der Nutzer erhält 12 Monate Premium (`users.premium_until`, verlängert sich bei jeder weiteren
+   Freigabe). Ein Bezahlbereich existiert noch nicht, bis dahin sieht jeder alles.
+5. **Analyse**: Der tägliche Lauf (`daily.sh`) exportiert die freigegebenen Fahrzeuge aus Postgres
+   (`scripts/db/export-user-cars.ts`) ohne FIN und ohne Nutzer in eine temporäre Datei, die `model.py` wie einen
+   dokumentierten Verkauf liest (Quelle „Carbay-Nutzer (Kaufvertrag geprüft)“). Danach gelten die üblichen Regeln
+   (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
+
+Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Lokal mit `npm run dev` ist zusätzlich das Demo-Konto
+Prüfer, in Produktion nie. Tabelle: `db/migrations/004_user_cars.sql`.
+
 ## Konfiguration (`.env`)
 
 `.env.example` nach `.env` kopieren und ausfüllen, danach `npm run dev` neu starten:
@@ -44,7 +68,8 @@ Adresse kurz gesperrt.
 | Variable | Zweck |
 |---|---|
 | `DATABASE_URL` | Postgres für Konten, Sitzungen und Marktdaten (auf Vercel auch `POSTGRES_URL`) |
-| `ANTHROPIC_API_KEY` | AI Co-Pilot mit Claude (ohne: lokaler Analysemodus) |
+| `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge mit Claude (ohne: lokaler Analysemodus, Verträge von Hand prüfen) |
+| `MIP_ADMINS` | Benutzernamen der Prüfer für gemeldete Fahrzeuge, kommagetrennt |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |
 
 Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell nur Porsche).
