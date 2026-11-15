@@ -284,7 +284,7 @@ function NotificationBell() {
             </button>
           </div>
           {items.length === 0 ? (
-            <div className="px-5 py-8 text-center text-[14px] text-muted">{t("Noch nichts Neues. Preisalarme legst du auf der Seite eines Fahrzeugs an.", "Nothing new yet. You can set price alerts on a car's page.")}</div>
+            <div className="px-5 py-8 text-center text-[14px] text-muted">{t("Noch nichts Neues. Preisalarme legen Sie auf der Seite eines Fahrzeugs an.", "Nothing new yet. You can set price alerts on a car's page.")}</div>
           ) : (
             <ul className="max-h-[60vh] overflow-y-auto">
               {items.map((n) => {

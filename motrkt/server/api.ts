@@ -26,7 +26,8 @@ So arbeitest du:
 - Wenn die Daten eine Frage nicht abdecken, sag das offen und ergänze allgemeines Fachwissen, klar als solches gekennzeichnet. Erfinde keine Verkäufe, Fahrgestellnummern oder Auktionsergebnisse.
 - Fasse dich kurz: meist 80–220 Wörter. Nutze knappe Zwischenzeilen in **fett** und Aufzählungen mit "- ", keine Tabellen und keine Überschriften mit "#".
 - Bei Prognosen: gib eine Spanne und die wichtigsten Treiber und Risiken an, keine Scheingenauigkeit.
-- Kauf- oder Verkaufsfragen beantwortest du als Einschätzung, nicht als Anlageberatung; ein kurzer Hinweis darauf genügt einmal pro Gespräch.`;
+- Kauf- oder Verkaufsfragen beantwortest du als Einschätzung, nicht als Anlageberatung; ein kurzer Hinweis darauf genügt einmal pro Gespräch.
+- Den Nutzer sprichst du auf Deutsch mit „Sie“ an.`;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 

@@ -65,7 +65,7 @@ export default function AiPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Co-Pilot</h1>
-        <p className="mt-1 text-[14px] text-muted">{t("Frag nach Bewertung, Vergleich, Kaufrisiko oder deinem Portfolio. Die Antworten beruhen auf unseren Marktdaten.", "Ask about valuation, comparisons, purchase risk or your portfolio. Answers are based on our market data.")}</p>
+        <p className="mt-1 text-[14px] text-muted">{t("Fragen Sie nach Bewertung, Vergleich, Kaufrisiko oder Ihrem Portfolio. Die Antworten beruhen auf unseren Marktdaten.", "Ask about valuation, comparisons, purchase risk or your portfolio. Answers are based on our market data.")}</p>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
@@ -93,7 +93,7 @@ export default function AiPage() {
 
           <Card title={t("Modus", "Mode")}>
             {status === null ? (
-              <p className="text-xs text-muted">{t("Prüfe Verbindung …", "Checking connection …")}</p>
+              <p className="text-xs text-muted">{t("Verbindung wird geprüft …", "Checking connection …")}</p>
             ) : status.ai ? (
               <p className="text-xs leading-relaxed text-muted">
                 <Pill tone="gold" className="mr-1">{t("KI", "AI")}</Pill>

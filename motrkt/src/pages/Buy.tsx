@@ -253,7 +253,7 @@ export default function Buy() {
       {filtered.length === 0 ? (
         <Empty>
           {t("Keine Inserate für diese Filter.", "No listings match these filters.")}{" "}
-          {savedOnly && t("Merke dir Inserate über das Herz-Symbol.", "Save listings with the heart icon.")}
+          {savedOnly && t("Merken Sie sich Inserate über das Herz-Symbol.", "Save listings with the heart icon.")}
         </Empty>
       ) : (
         <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

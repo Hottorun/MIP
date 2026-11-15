@@ -21,7 +21,7 @@ export function WatchlistSection() {
     <>
       <Section title={t("Beobachtet", "Watched")} sub={watched.length ? t(`${watched.length} Varianten`, `${watched.length} variants`) : undefined}>
         {watched.length === 0 ? (
-          <Empty>{t("Noch nichts beobachtet. Auf der Seite eines Fahrzeugs findest du „Beobachten“.", "Nothing watched yet. You'll find “Watch” on each car's page.")}</Empty>
+          <Empty>{t("Noch nichts beobachtet. Auf der Seite eines Fahrzeugs finden Sie „Beobachten“.", "Nothing watched yet. You'll find “Watch” on each car's page.")}</Empty>
         ) : (
           <ul id="watchlist" className="grid scroll-mt-28 grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {watched.map((v) => {

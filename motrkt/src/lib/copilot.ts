@@ -221,7 +221,7 @@ export function localAnswer(question: string, focusVariantId: string | undefined
   if (has(" portfolio", " bestand", " sammlung", " meine fahrzeuge", " collection", " my cars")) {
     if (!portfolio.length)
       return t(
-        `Dein Portfolio ist noch leer. Lege im Bereich **Portfolio** Fahrzeuge an, dann kann ich Wertentwicklung, Klumpenrisiken und Rebalancing-Ideen auswerten.${note}`,
+        `Ihr Portfolio ist noch leer. Legen Sie im Bereich **Portfolio** Fahrzeuge an, dann kann ich Wertentwicklung, Klumpenrisiken und Rebalancing-Ideen auswerten.${note}`,
         `Your portfolio is still empty. Add cars in the **Portfolio** section and I can analyse value development, concentration risks and rebalancing ideas.${note}`,
       );
     const rows = portfolio.map((h) => ({ h, v: variantById.get(h.variantId)!, value: holdingValue(h) }));
