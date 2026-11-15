@@ -14,6 +14,11 @@ EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw
         "lightweight-", "evocation", "hommage", "homage", "custom", "bespoke", "speedster-", "rothsport", "magnus", "lanzante",
         "nardone", "kaege", "paul stephens", "alfaholics", "cars & coffee", "simulator", "sculpture", "documents", "sign ", "turbocharged", "supercharged", "swapped", "tool kit", "toolkit", "tool roll",
         "body", "frame", "hardtop for", "top for", "fuchs", "bbs", "bumper", "wing", "hood", "door", "steering", "instrument"]
+# one-offs and factory specials that share a name with a series model but are a different car (prototypes, factory
+# GT and race versions, lightweights, limited club editions, coachbuilt or tuned cars): left out of the series variant
+SPECIAL = re.compile(r"prototype|\bimsa\b|\bscca\b|\bt/r\b|914/6 r\b|914/6 ['\"]?gt|\bm471\b|gt specification|carrera 4 leichtbau|\bctr\b"
+                     r"|tag turbo|bandama|turbo gts|retro rod|magnum|rocket|club coupe|\b993 gt\b|\b993 club ?sport|gt3[- ]r\b|n-gt"
+                     r"|super 90 gt|super gt\b")
 TRACK = ["race car", "racecar", "track car", "race-prepped", "race prepped", "racer", "track-prepped", "vintage race"]
 RACE_OK = ["race car", "racecar", "track car", "racer"]
 
@@ -490,6 +495,7 @@ def classify(title, note=""):
     v = race(y, s, full)
     if v: return v, ("Roadster" if has(s, "spyder", "rs 60", "rsk", "908/0", "917/") else "Coupé"), gearbox(s), y
     if any(w in full for w in EXCL) or any(w in full for w in TRACK): return None
+    if SPECIAL.search(full): return None
     # strip noise tokens
     s2 = re.sub(r"\b(euro|european|rhd|row|us-spec|japanese-market|coupe|w/|with)\b", " ", s)
     res = road(y, s2.strip(), full)

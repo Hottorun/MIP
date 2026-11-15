@@ -69,7 +69,9 @@ in EUR/GBP mit denselben Zahlen). Der Zuschlag von der Seite bleibt in `sales.cs
 Höchstgebote unverkaufter Lose bleiben ohne Aufgeld; ihr Abstand wird als eigener Kanal gemessen.
 
 Jeder Titel wird per `classify.py` genau einer Variante zugeordnet oder verworfen (Umbauten, Replikas, Teile, nicht
-eindeutige Modelle, „Re-Creation“, DP-Umbauten). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
+eindeutige Modelle, „Re-Creation“, DP-Umbauten). Sondermodelle, die nur den Namen einer Serienvariante tragen, zählen
+nicht für diese Variante: Prototypen, Werks-GT- und Rennversionen (IMSA, SCCA, T/R, 914/6 GT und M471, N-GT, GT3-R),
+Club Coupé, 964 Carrera 4 Leichtbau, CTR sowie Tuning- und Karosserieumbauten. Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
 
 ## Modell (`model.py`)
 
