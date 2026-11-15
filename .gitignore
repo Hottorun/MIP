@@ -1,1 +1,6 @@
 .DS_Store
+
+# lokale Arbeitsdateien, nicht ins Repository
+.claude/
+Datenpruefung-*.md
+*.tsbuildinfo
