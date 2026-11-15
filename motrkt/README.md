@@ -61,6 +61,14 @@ Foto, höchstens 4 MB). Erreichbar über das Kontomenü.
 Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Lokal mit `npm run dev` ist zusätzlich das Demo-Konto
 Prüfer, in Produktion nie. Tabelle: `db/migrations/004_user_cars.sql`.
 
+## Forum je Modell
+
+Ganz unten auf jeder Modellseite (`/markt/:variante#forum`) tauschen sich angemeldete Nutzer in Themen aus: Thema mit
+erstem Beitrag eröffnen, antworten, lesen. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag gemeldet hat, trägt
+das Abzeichen „Besitzer“. Autoren löschen eigene Beiträge, Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen
+aus; die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen.
+Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`.
+
 ## Konfiguration (`.env`)
 
 `.env.example` nach `.env` kopieren und ausfüllen, danach `npm run dev` neu starten:
@@ -110,7 +118,7 @@ Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenver
 | Route | Inhalt |
 |---|---|
 | `/` | Marktüberblick: Gesamtindex, Markenindizes, Gewinner/Verlierer, bemerkenswerte Verkäufe |
-| `/markt/:variante` | Detailansicht einer Variante (Wertentwicklung, Seltenheit, Optionen, Verkäufe, Empfehlung, Co-Pilot) |
+| `/markt/:variante` | Detailansicht einer Variante (Wertentwicklung, Seltenheit, Optionen, Verkäufe, Empfehlung, Co-Pilot, Forum) |
 | `/modelle` | Katalog mit Filtern, Tabellenansicht und Vergleich (bis 4 Varianten) |
 | `/auktionen` | Durchsuchbare Auktionsergebnisse (ID, FIN, Haus) |
 | `/portfolio` | Bestand, Wertentwicklung, Allokation, Watchlist, Preisalarme, CSV-Export |

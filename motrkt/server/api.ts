@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { handleMobileDe } from "./mobilede.ts";
 import { readText } from "./body.ts";
 import { handleUserCars } from "./userCars.ts";
+import { handleForum } from "./forum.ts";
 import { hasCredentials } from "./contractCheck.ts";
 
 // Load secrets from .env (ANTHROPIC_API_KEY, MOBILEDE_USERNAME, MOBILEDE_PASSWORD) without overriding the shell environment.
@@ -151,5 +152,6 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse) {
   }
   if (url.pathname.startsWith("/api/mobilede/")) return handleMobileDe(req, res, url);
   if (/^\/api\/(fahrzeuge|pruefung)(\/|$)/.test(url.pathname)) return handleUserCars(req, res, url);
+  if (url.pathname.startsWith("/api/forum/")) return handleForum(req, res, url);
   sendJson(res, 404, { error: "Not found" });
 }

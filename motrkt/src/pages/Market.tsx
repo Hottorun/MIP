@@ -10,6 +10,7 @@ import { Assessment, RecentSales } from "../components/market/SalesSection";
 import { Listings } from "../components/market/BottomRow";
 import { Evidence } from "../components/market/Evidence";
 import { MarketStats } from "../components/market/MarketStats";
+import { Forum } from "../components/market/Forum";
 import { SectionNav, type NavItem } from "../components/market/SectionNav";
 import { appTitle, t } from "../i18n";
 
@@ -21,6 +22,7 @@ const NAV: NavItem[] = [
   { id: "nachweis", label: () => t("Belege", "Evidence") },
   { id: "daten", label: () => t("Daten und Ausstattung", "Data and equipment") },
   { id: "angebote", label: () => t("Angebote", "Listings") },
+  { id: "forum", label: () => t("Forum", "Forum") },
 ];
 
 /** Full-width tinted band: every other block of the page sits on it, so the long page reads in clear parts. */
@@ -112,6 +114,9 @@ function MarketPage({ variant }: { variant: Variant }) {
       <Band id="angebote">
         <Listings variant={variant} body={body} />
       </Band>
+      <div id="forum">
+        <Forum variant={variant} />
+      </div>
     </div>
   );
 }
