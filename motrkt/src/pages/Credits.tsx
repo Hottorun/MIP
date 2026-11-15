@@ -24,10 +24,10 @@ type Tab = "photos" | "colors" | "specs";
 
 export default function Credits() {
   const [tab, setTab] = useState<Tab>("photos");
-  const withPhotos = variants.filter((v) => v.photos.length);
+  const withPhotos = variants.filter((v) => v.marketPhotos.length);
   const stats = useMemo(
     () => ({
-      photos: variants.reduce((s, v) => s + v.photos.length, 0),
+      photos: variants.reduce((s, v) => s + v.marketPhotos.length, 0),
       colors: variants.filter((v) => v.launchColor).length,
       specs: variants.filter((v) => v.specSources.length).length,
     }),
@@ -40,8 +40,8 @@ export default function Credits() {
           <h1 className="font-serif text-3xl">{t("Bildnachweise & Quellen", "Image credits & sources")}</h1>
           <p className="mt-1 text-sm text-muted">
             {t(
-              `${stats.photos} frei lizenzierte Fotos (Wikimedia Commons) · ${stats.colors} recherchierte Präsentationsfarben · ${stats.specs} Varianten mit belegten Spezifikationen`,
-              `${stats.photos} freely licensed photos (Wikimedia Commons) · ${stats.colors} researched launch colours · ${stats.specs} variants with sourced specifications`,
+              `${stats.photos} Fotos von Porsche und Fachmagazinen · ${stats.colors} recherchierte Präsentationsfarben · ${stats.specs} Varianten mit belegten Spezifikationen`,
+              `${stats.photos} photos from Porsche and motoring magazines · ${stats.colors} researched launch colours · ${stats.specs} variants with sourced specifications`,
             )}
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function Credits() {
       {tab === "photos" && (
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 2xl:grid-cols-3">
           {withPhotos.flatMap((v) =>
-            v.photos.map((p) => (
+            v.marketPhotos.map((p) => (
               <div key={p.file} className="panel flex gap-3 p-3">
                 <Link to={`/markt/${v.id}`} className="shrink-0">
                   <CarImage variant={v} photo={p} className="aspect-video w-32 shrink-0 rounded-md" />
@@ -81,7 +81,7 @@ export default function Credits() {
                   </div>
                   {p.page && (
                     <a href={p.page} target="_blank" rel="noreferrer" className="mt-0.5 inline-flex items-center gap-1 text-faint hover:text-ink">
-                      Wikimedia Commons <ExternalLink className="size-3" />
+                      {hostOf(p.page)} <ExternalLink className="size-3" />
                     </a>
                   )}
                   {p.exact === false && <Pill className="ml-1 text-[10px]">{t("ähnliches Modell", "similar model")}</Pill>}

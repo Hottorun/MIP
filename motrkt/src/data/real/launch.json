@@ -33,14 +33,6 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.774
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250546&w=1920&h=1280&crop=0&public=1&cs=bf30aed77c48fc7e",
-   "caption": "1970, 911 S Coupé, 2.0 litre, Generations",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.335
   }
  ],
  "porsche-911-f-modell-l-2-0": [
@@ -279,12 +271,12 @@
  ],
  "porsche-911-964-carrera-2": [
   {
-   "file": "https://newsroom.porsche.com/dam/jcr:d9f3334a-f401-43f3-9f17-9e1f041583b3/b1-P13_0147.jpg",
-   "caption": "911, Type 964",
-   "page": "https://newsroom.porsche.com/en/history/porsche-911-seven-generations-part-3-type-964-16466.html",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252914&w=1920&h=1280&crop=0&public=1&cs=2da57cb24471a259",
+   "caption": "Porsche 911 Carrera 2 Targa (964)",
+   "page": "https://newsroom.porsche.com/en/press-kits.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.774
+   "ratio": 1.5
   },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250554&w=1920&h=1280&crop=0&public=1&cs=97ea7ef2fa8b6365",
@@ -655,13 +647,20 @@
  ],
  "porsche-911-991-1-carrera-s": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250535&w=1920&h=1280&crop=0&public=1&cs=e92ddc56c74c31bf",
-   "caption": "2012, 911 Carrera Coupé, Type 991, 3.4 litre, Generations",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/3.-Generation-Porsche-911,-(964),-1988---1994.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "exact": false,
-   "ratio": 1.501
+   "file": "https://images.evo.co.uk/evo/images/dir_954/car_photo_477250.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera S (991.1)",
+   "page": "https://www.evo.co.uk/porsche/911/4132/all-new-porsche-911-carrera-s-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/images/dir_954/car_photo_477256.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera S (991.1)",
+   "page": "https://www.evo.co.uk/porsche/911/4132/all-new-porsche-911-carrera-s-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250537&w=1920&h=1280&crop=0&public=1&cs=b229d9bcebe147c6",
@@ -1002,17 +1001,6 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.5
-  }
- ],
- "porsche-356-356-b-carrera-1600-gs-gt-coupe": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/1961_Porsche_356_Carrera_GT.jpg/1920px-1961_Porsche_356_Carrera_GT.jpg",
-   "caption": "Porsche 356 B Carrera GT (1961), Hampton Court Concours 2023",
-   "page": "https://commons.wikimedia.org/wiki/File:1961_Porsche_356_Carrera_GT.jpg",
-   "author": "MrWalkr",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.443
   }
  ],
  "porsche-930-turbo-3-0": [
@@ -2809,82 +2797,66 @@
  ],
  "porsche-911-993-carrera-4": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/1996_Porsche_911_993_Carrera_4_%2846807%29.jpg/1920px-1996_Porsche_911_993_Carrera_4_%2846807%29.jpg",
-   "caption": "1996 Porsche 911 993 Carrera 4 (46807)",
-   "page": "https://commons.wikimedia.org/wiki/File:1996_Porsche_911_993_Carrera_4_(46807).jpg",
-   "author": "Calreyn88",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.815
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250552&w=1920&h=1280&crop=1&public=1&cs=55632b1f4497cd6f",
+   "caption": "911 Carrera Coupé (993), 1994 – gleiche Karosserie wie der Carrera 4",
+   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "ratio": 1.5
   }
  ],
  "porsche-911-996-2-carrera-4s": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/2003_Porsche_911_Carrera_4S_coupe%2C_front_left%2C_06-08-2024.jpg/1920px-2003_Porsche_911_Carrera_4S_coupe%2C_front_left%2C_06-08-2024.jpg",
-   "caption": "2003 Porsche 911 Carrera 4S coupe, front left, 06-08-2024",
-   "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_Carrera_4S_coupe,_front_left,_06-08-2024.jpg",
-   "author": "MercurySable99",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.456
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=341591&w=1920&h=1280&crop=0&public=1&cs=348ee09d1d5b7e3e",
+   "caption": "Porsche 911 Carrera 4S (996), Isle of Man, 2026",
+   "page": "https://newsroom.porsche.com/en.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "ratio": 1.778
   },
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/2003_Porsche_911_Carrera_4S_coupe%2C_rear_left%2C_06-08-2024.jpg/1920px-2003_Porsche_911_Carrera_4S_coupe%2C_rear_left%2C_06-08-2024.jpg",
-   "caption": "2003 Porsche 911 Carrera 4S coupe, rear left, 06-08-2024",
-   "page": "https://commons.wikimedia.org/wiki/File:2003_Porsche_911_Carrera_4S_coupe,_rear_left,_06-08-2024.jpg",
-   "author": "MercurySable99",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.515
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=341589&w=1920&h=1280&crop=0&public=1&cs=1280d0eed367449a",
+   "caption": "Porsche 911 Carrera 4S (996), Isle of Man, 2026",
+   "page": "https://newsroom.porsche.com/en.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "ratio": 1.778
   }
  ],
  "porsche-911-997-1-gt3-rs": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Porsche_911_%28997%29_GT3_RS_3.6_-_avant.jpg/1920px-Porsche_911_%28997%29_GT3_RS_3.6_-_avant.jpg",
-   "caption": "Porsche 911 (997) GT3 RS 3.6 - avant",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(997)_GT3_RS_3.6_-_avant.jpg",
-   "author": "The Car Spy",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.498
-  },
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Porsche_911_%28997%29_GT3_RS_3.6_-_profil.jpg/1920px-Porsche_911_%28997%29_GT3_RS_3.6_-_profil.jpg",
-   "caption": "Porsche 911 (997) GT3 RS 3.6 - profil",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(997)_GT3_RS_3.6_-_profil.jpg",
-   "author": "The Car Spy",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.498
-  },
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Porsche_911_%28997%29_GT3_RS_3.6_-_arri%C3%A8re.jpg/1920px-Porsche_911_%28997%29_GT3_RS_3.6_-_arri%C3%A8re.jpg",
-   "caption": "Porsche 911 (997) GT3 RS 3.6 - arrière",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_(997)_GT3_RS_3.6_-_arri%C3%A8re.jpg",
-   "author": "The Car Spy",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.498
+   "file": "https://images.evo.co.uk/evo/2026/04%20April/Porsche%20911%20GT3%20RS%20997.1_vuqrrt.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 GT3 RS (997.1)",
+   "page": "https://www.evo.co.uk/porsche/207459/best-porsches-from-boxster-to-carrera-gt-theres-a-porsche-for-everyone",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-cayman-987-1-cayman-s": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=323513&w=1920&h=1280&crop=0&public=1&cs=28b9daa5f2849eaa",
-   "caption": "Cayman S, IAA, Frankfurt, 2005",
-   "page": "https://newsroom.porsche.com/en/2025/history/porsche-iaa-since-1950-ten-milestones-40407.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.5,
-   "premiere": true
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29-12.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (987.1)",
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   },
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/2006_Porsche_Cayman_S_%2868221%29.jpg/1920px-2006_Porsche_Cayman_S_%2868221%29.jpg",
-   "caption": "2006 Porsche Cayman S (68221)",
-   "page": "https://commons.wikimedia.org/wiki/File:2006_Porsche_Cayman_S_(68221).jpg",
-   "author": "Calreyn88",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.805
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29-7.png?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (987.1)",
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29-13.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (987.1)",
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-cup-und-clubsport-911-cup-3-8-993": [
@@ -3087,78 +3059,14 @@
    "ratio": 1.774
   }
  ],
- "porsche-914-914-2-0": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Porsche_914_2.0_%281976%29_%2834824742262%29.jpg/1920px-Porsche_914_2.0_%281976%29_%2834824742262%29.jpg",
-   "caption": "Porsche 914 2.0 (1976)",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_914_2.0_(1976)_(34824742262).jpg",
-   "author": "Andrew Bone",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.703
-  }
- ],
  "porsche-911-f-modell-t-2-0": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Porsche_911_T_C-Serie_1969_%2881_kW%29_IAA_2019_JM_0933.jpg/1920px-Porsche_911_T_C-Serie_1969_%2881_kW%29_IAA_2019_JM_0933.jpg",
-   "caption": "Porsche 911 T C-Serie 1969 (81 kW) IAA 2019 JM 0933",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_T_C-Serie_1969_(81_kW)_IAA_2019_JM_0933.jpg",
-   "author": "Johannes Maximilian",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.5
-  }
- ],
- "porsche-911-f-modell-e-2-0": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Saxony_Classic_Rallye_2010_-_Porsche_911_E_1969_%28aka%29.jpg/1920px-Saxony_Classic_Rallye_2010_-_Porsche_911_E_1969_%28aka%29.jpg",
-   "caption": "Saxony Classic Rallye 2010 - Porsche 911 E 1969 (aka)",
-   "page": "https://commons.wikimedia.org/wiki/File:Saxony_Classic_Rallye_2010_-_Porsche_911_E_1969_(aka).jpg",
-   "author": "André Karwath aka Aka",
-   "license": "CC BY-SA 2.5",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
-   "ratio": 1.517
-  }
- ],
- "porsche-911-f-modell-t-2-2": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_002.jpg/1920px-Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_002.jpg",
-   "caption": "Paris - Bonhams 2016 - Porsche 911T 2.2 litres coupé - 1969 - 002",
-   "page": "https://commons.wikimedia.org/wiki/File:Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_002.jpg",
-   "author": "Thesupermat",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.5
-  },
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_003.jpg/1920px-Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_003.jpg",
-   "caption": "Paris - Bonhams 2016 - Porsche 911T 2.2 litres coupé - 1969 - 003",
-   "page": "https://commons.wikimedia.org/wiki/File:Paris_-_Bonhams_2016_-_Porsche_911T_2.2_litres_coup%C3%A9_-_1969_-_003.jpg",
-   "author": "Thesupermat",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.5
-  }
- ],
- "porsche-911-f-modell-e-2-2": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/1970_Porsche_911_E_%288951255939%29.jpg/1920px-1970_Porsche_911_E_%288951255939%29.jpg",
-   "caption": "1970 Porsche 911 E",
-   "page": "https://commons.wikimedia.org/wiki/File:1970_Porsche_911_E_(8951255939).jpg",
-   "author": "Niels de Wit",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.496
-  }
- ],
- "porsche-911-f-modell-t-2-4": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/teaser_original_720x1_5/dam/pnr/porsche_newsroom/Produkte/911/911-GT3-RS-2018-neu/Christophorus-Farbenlehre/Historische-Modelle/b2-RGB-Acr309332692952532-15842.jpg/jcr:content/b2-RGB-Acr309332692952532-15842.jpg",
-   "caption": "Viper Green: 911 T 2.4 Coupé, 1972, 2018, Porsche AG",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251412&w=1920&h=1280&crop=1&public=1&cs=3d9d84736ede4f87",
+   "caption": "911 T, Schwedische Rallye 1968",
+   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.774
+   "ratio": 1.5
   }
  ],
  "porsche-911-f-modell-s-2-4": [
@@ -3183,23 +3091,38 @@
  ],
  "porsche-911-997-2-carrera-s": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/2009_Porsche_911_Carrera_S_PDK.jpg/1920px-2009_Porsche_911_Carrera_S_PDK.jpg",
-   "caption": "2009 Porsche 911 Carrera S PDK",
-   "page": "https://commons.wikimedia.org/wiki/File:2009_Porsche_911_Carrera_S_PDK.jpg",
-   "author": "Calreyn88",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.736
+   "file": "https://images.evo.co.uk/evo/images/dir_829/car_photo_414535.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera S (997.2)",
+   "page": "https://www.evo.co.uk/porsche/911/3535/porsche-911-carrera-s-powerkit-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/images/dir_829/car_photo_414529.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera S (997.2)",
+   "page": "https://www.evo.co.uk/porsche/911/3535/porsche-911-carrera-s-powerkit-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/images/dir_829/car_photo_414532.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera S (997.2)",
+   "page": "https://www.evo.co.uk/porsche/911/3535/porsche-911-carrera-s-powerkit-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-911-997-2-turbo": [
   {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/teaser_original_720x1_5/dam/pnr/2020/history/Christophorus-Wolfgang-Porsche-Le-Mans-1970/Gallery-3/technology/Turbo-engines/Porsche-911-Turbo-(997)/b-la1.jpg/jcr:content/b-la1.jpg",
-   "caption": "Porsche 911 Turbo (997), 2020, Porsche AG",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.781
+   "file": "https://images.evo.co.uk/evo/2024/7/Porsche%20911%20Turbo%20history%20main-8.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Turbo (997)",
+   "page": "https://www.evo.co.uk/porsche/911-turbo/206748/revisiting-every-porsche-911-turbo-car-pictures-of-the-week",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-914-914-6": [
@@ -3212,27 +3135,6 @@
    "ratio": 1.778
   }
  ],
- "porsche-914-914-1-8": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Porsche_914_1.8_%281974%29_-_20310675120.jpg/1920px-Porsche_914_1.8_%281974%29_-_20310675120.jpg",
-   "caption": "Porsche 914 1.8 (1974) - 20310675120",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_914_1.8_(1974)_-_20310675120.jpg",
-   "author": "SG2012",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.5
-  }
- ],
- "porsche-boxster-987-1-boxster": [
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/teaser_original_720x1_5/dam/pnr/2021/Products/Boxster-25-Years/Historic/Boxster_987.jpeg/jcr:content/Boxster_987.jpeg",
-   "caption": "Boxster (987), 2008, Porsche AG",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.777
-  }
- ],
  "porsche-cayman-987-1-cayman": [],
  "porsche-rennsportwagen-550-bis-rs-60-718-rsk": [
   {
@@ -3242,17 +3144,6 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.774
-  }
- ],
- "porsche-gt-rennwagen-996-bis-992-911-gt3-r-997": [
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Frikadelli_Racing_Porsche_911_GT3_R_997.jpg/1920px-Frikadelli_Racing_Porsche_911_GT3_R_997.jpg",
-   "caption": "Frikadelli Racing Porsche 911 GT3 R 997",
-   "page": "https://commons.wikimedia.org/wiki/File:Frikadelli_Racing_Porsche_911_GT3_R_997.jpg",
-   "author": "Patrick Ch. Apfeld",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-   "ratio": 1.5
   }
  ],
  "porsche-911-996-2-gt3-rs": [
@@ -3267,98 +3158,133 @@
  ],
  "porsche-911-997-2-gt2-rs": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/2010_Porsche_911_GT2_RS.jpg/1920px-2010_Porsche_911_GT2_RS.jpg",
-   "caption": "2010 Porsche 911 GT2 RS",
-   "page": "https://commons.wikimedia.org/wiki/File:2010_Porsche_911_GT2_RS.jpg",
-   "author": "Calreyn88",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.743
+   "file": "https://images.evo.co.uk/evo/images/dir_767/car_photo_383566.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 GT2 RS (997)",
+   "page": "https://www.evo.co.uk/porsche/911/3226/porsche-911-gt2-rs-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/images/dir_767/car_photo_383557.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 GT2 RS (997)",
+   "page": "https://www.evo.co.uk/porsche/911/3226/porsche-911-gt2-rs-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/images/dir_767/car_photo_383584.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 GT2 RS (997)",
+   "page": "https://www.evo.co.uk/porsche/911/3226/porsche-911-gt2-rs-review-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-911-993-carrera-s": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/1997_Porsche_911_993_Carrera_S_%2880592%29.jpg/1920px-1997_Porsche_911_993_Carrera_S_%2880592%29.jpg",
-   "caption": "1997 Porsche 911 993 Carrera S (80592)",
-   "page": "https://commons.wikimedia.org/wiki/File:1997_Porsche_911_993_Carrera_S_(80592).jpg",
-   "author": "Calreyn88",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.536
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252920&w=1920&h=1280&crop=0&public=1&cs=6e0eba548b05659e",
+   "caption": "911 Carrera 4S (993) – breite Karosserie wie beim Carrera S",
+   "page": "https://newsroom.porsche.com/en/press-kits.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "ratio": 1.5
   },
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Porsche_E-993_911_Carrera_S_%28No.29%29_%2824052609525%29.jpg/1920px-Porsche_E-993_911_Carrera_S_%28No.29%29_%2824052609525%29.jpg",
-   "caption": "Porsche E-993 911 Carrera S (No.29)",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_E-993_911_Carrera_S_(No.29)_(24052609525).jpg",
-   "author": "先従隗始",
-   "license": "CC0",
-   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252922&w=1920&h=1280&crop=0&public=1&cs=427ce803b3b4d273",
+   "caption": "911 Carrera 4S (993) – breite Karosserie wie beim Carrera S",
+   "page": "https://newsroom.porsche.com/en/press-kits.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "ratio": 1.5
+  },
+  {
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=252923&w=1920&h=1280&crop=0&public=1&cs=eaa9f42208683f6e",
+   "caption": "911 Carrera 4S (993) – breite Karosserie wie beim Carrera S",
+   "page": "https://newsroom.porsche.com/en/press-kits.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.5
   }
  ],
  "porsche-cayman-987-2-cayman": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/0/00/Porsche_Cayman_Facelift.JPG",
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
    "caption": "Porsche Cayman (987.2)",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_Cayman_Facelift.JPG",
-   "author": "Thomas doerfer",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-   "ratio": 1.428
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-cayman-987-2-cayman-s": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/2009_Porsche_Cayman_S_1.jpg/1920px-2009_Porsche_Cayman_S_1.jpg",
-   "caption": "2009 Porsche Cayman S 1",
-   "page": "https://commons.wikimedia.org/wiki/File:2009_Porsche_Cayman_S_1.jpg",
-   "author": "Calreyn88",
-   "license": "CC0",
-   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-   "ratio": 1.758
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29-18.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (987.2)",
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29-17.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (987.2)",
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/2024/3/Porsche%20Cayman%20%28987%2C%202005%20-%202015%29-16.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (987.2)",
+   "page": "https://www.evo.co.uk/porsche/cayman/6438/porsche-cayman-987-2005-2012-review-history-prices-and-specs",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-cayman-987-2-cayman-r": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/2011_Porsche_Cayman_R_%2869245%29.jpg/1920px-2011_Porsche_Cayman_R_%2869245%29.jpg",
-   "caption": "2011 Porsche Cayman R",
-   "page": "https://commons.wikimedia.org/wiki/File:2011_Porsche_Cayman_R_(69245).jpg",
-   "author": "Calreyn88",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "ratio": 1.717
+   "file": "https://images.autoexpress.co.uk/autoexpress/images/car_photo_439090.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman R (987.2)",
+   "page": "https://www.autoexpress.co.uk/gallery/11455/porsche-cayman-r-pictures",
+   "author": "© Auto Express",
+   "license": "Redaktionelles Foto, Auto Express",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/2024/12/Best_Porsches_evo_CaymanR_04_s2qifz.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman R (987.2)",
+   "page": "https://www.evo.co.uk/porsche/207459/best-porsches-from-boxster-to-carrera-gt-theres-a-porsche-for-everyone",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   }
  ],
  "porsche-cayman-981-cayman-s": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Porsche_Cayman_S_%28Type_981%29.jpg/1920px-Porsche_Cayman_S_%28Type_981%29.jpg",
-   "caption": "Porsche Cayman S (Type 981)",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_Cayman_S_(Type_981).jpg",
-   "author": "Cpl.Winky",
-   "license": "CC BY-SA 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-   "ratio": 1.472
-  }
- ],
- "porsche-gt-rennwagen-934-bis-964-rsr-964-carrera-rsr-3-8": [
+   "file": "https://images.evo.co.uk/evo/images/dir_1124/car_photo_562087.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (981), 2013",
+   "page": "https://www.evo.co.uk/porsche/cayman-s/5783/porsche-cayman-s-review-best-of-2013-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
   {
-   "file": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Porsche_911_Carrera_RSR_3.8_%28964%2C_1993%29_%2852874246338%29.jpg/1920px-Porsche_911_Carrera_RSR_3.8_%28964%2C_1993%29_%2852874246338%29.jpg",
-   "caption": "Porsche 911 Carrera RSR 3.8 (964), 1993",
-   "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_Carrera_RSR_3.8_(964,_1993)_(52874246338).jpg",
-   "author": "Charles from Port Chester, New York",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.645
-  }
- ],
- "porsche-boxster-987-2-boxster-s-black-edition": [
+   "file": "https://images.evo.co.uk/evo/images/dir_1124/car_photo_562072.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (981), 2013",
+   "page": "https://www.evo.co.uk/porsche/cayman-s/5783/porsche-cayman-s-review-best-of-2013-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
   {
-   "file": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/2011_Porsche_Boxster_S_Black_Edition_Auto.jpg/1920px-2011_Porsche_Boxster_S_Black_Edition_Auto.jpg",
-   "caption": "Porsche Boxster S Black Edition, 2011",
-   "page": "https://commons.wikimedia.org/wiki/File:2011_Porsche_Boxster_S_Black_Edition_Auto.jpg",
-   "author": "Calreyn88",
-   "license": "CC0",
-   "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "file": "https://images.evo.co.uk/evo/images/dir_1124/car_photo_562075.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche Cayman S (981), 2013",
+   "page": "https://www.evo.co.uk/porsche/cayman-s/5783/porsche-cayman-s-review-best-of-2013-pictures",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
    "ratio": 1.778
   }
  ],
@@ -3396,14 +3322,6 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.776
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=237844&w=1920&h=1280&crop=0&public=1&cs=6ec225054765513d",
-   "caption": "Porsche Tennis Grand Prix 1980 - Porsche 924 Turbo, Alpin White; winner's car",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 2.966
   }
  ],
  "porsche-924-924-carrera-gts": [
@@ -3470,22 +3388,6 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.778
-  },
-  {
-   "file": "https://newsroom.porsche.com/.imaging/mte/porsche-templating-theme/teaser_original_720x1_5/dam/pnr/2020/history/Porsche-Klassik-16/Glass-dome/Gallery-1/b-IMG_7357.jpg/jcr:content/b-IMG_7357.jpg",
-   "caption": "944 S2, 2020, Porsche AG",
-   "page": "https://newsroom.porsche.com/en/2020/history/porsche-klassik-944-s2-restoration-glass-dome-19636.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.778
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=237903&w=1920&h=1280&crop=0&public=1&cs=c5451c15c71860d5",
-   "caption": "Porsche Tennis Grand Prix 1989 -  Porsche 944 S2 Cabriolet, Guards Red; winner's car",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 2.869
   }
  ],
  "porsche-968-968": [
@@ -3598,20 +3500,20 @@
  ],
  "porsche-911-997-1-carrera": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251489&w=1920&h=1280&crop=0&public=1&cs=7aefc7f756293769",
-   "caption": "2005, 911 Carrera Coupé (vorn) und 911 Carrera S Coupé",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.338
+   "file": "https://images.evo.co.uk/evo/2024/11/Porsche_911_997_evo_01_lynpx9.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera (997.1)",
+   "page": "https://www.evo.co.uk/porsche/911/6578/used-porsche-911-997-2004-2012-review-history-specs-and-buying-guide",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   },
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250534&w=1920&h=1280&crop=0&public=1&cs=c58e7cc5fa1ebadc",
-   "caption": "911 Carrera, Type 997, Generations",
-   "page": "https://newsroom.porsche.com/en/media-search.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.499
+   "file": "https://images.evo.co.uk/evo/2024/11/Porsche_911_997_evo_02_dob1vz.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera (997.1)",
+   "page": "https://www.evo.co.uk/porsche/911/6578/used-porsche-911-997-2004-2012-review-history-specs-and-buying-guide",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251522&w=1920&h=1280&crop=0&public=1&cs=a77a20c2640e44c6",
@@ -3624,25 +3526,25 @@
  ],
  "porsche-911-997-2-carrera": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250534&w=1920&h=1280&crop=0&public=1&cs=c58e7cc5fa1ebadc",
-   "caption": "911 Carrera, Type 997, Generations",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation---Design-und-Modellvarianten.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.498
+   "file": "https://images.evo.co.uk/evo/images/dir_534/car_photo_267333.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera (997.2)",
+   "page": "https://www.evo.co.uk/porsche/6624/porsche-997-mk2",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/images/dir_534/car_photo_267411.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 911 Carrera (997.2)",
+   "page": "https://www.evo.co.uk/porsche/6624/porsche-997-mk2",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
   },
   {
    "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250533&w=1920&h=1280&crop=0&public=1&cs=f73ed0c3cf79a746",
    "caption": "911 Carrera Cabriolet, Type 997, Generations",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/6.-Generation---Karosserievarianten-und-Innovationen.html",
-   "author": "© Porsche AG",
-   "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.498
-  },
-  {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251512&w=1920&h=1280&crop=0&public=1&cs=06026751caa0d111",
-   "caption": "2009, 911 Carrera, Type 997",
-   "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "ratio": 1.498
@@ -3728,12 +3630,12 @@
  ],
  "porsche-911-996-1-carrera-4": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251506&w=1920&h=1280&crop=0&public=1&cs=cb2cc34ac848522f",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251506&w=1920&h=1280&crop=1&public=1&cs=cb2cc34ac848522f",
    "caption": "1999, 911 Carrera 4 Coupé, 3.4 Liter",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.239
+   "ratio": 1.5
   }
  ],
  "porsche-911-996-2-carrera-4": [
@@ -3766,12 +3668,12 @@
  ],
  "porsche-911-997-1-carrera-4s": [
   {
-   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251509&w=1920&h=1280&crop=0&public=1&cs=96bb3f9b496fdc6a",
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=251509&w=1920&h=1280&crop=1&public=1&cs=96bb3f9b496fdc6a",
    "caption": "2005, 911 Carrera 4S Coupé, 3.8 Liter",
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911/60-Jahre-911---Allgemeines-Technik.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "ratio": 1.0
+   "ratio": 1.5
   }
  ],
  "porsche-911-997-2-carrera-4": [
@@ -3981,6 +3883,32 @@
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
    "premiere": true,
+   "ratio": 1.778
+  }
+ ],
+ "porsche-968-968-cs": [
+  {
+   "file": "https://images.evo.co.uk/evo/2019/06/alp_0255.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 968 Club Sport",
+   "page": "https://www.evo.co.uk/features/22750/porsche-968-club-sport-behind-the-wheel-of-an-icon",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/2019/06/alp_0175-2.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 968 Club Sport",
+   "page": "https://www.evo.co.uk/features/22750/porsche-968-club-sport-behind-the-wheel-of-an-icon",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
+   "ratio": 1.778
+  },
+  {
+   "file": "https://images.evo.co.uk/evo/2019/06/alp_4672.jpg?w=1920&h=1080&fit=crop&auto=format,compress",
+   "caption": "Porsche 968 Club Sport",
+   "page": "https://www.evo.co.uk/features/22750/porsche-968-club-sport-behind-the-wheel-of-an-icon",
+   "author": "© evo",
+   "license": "Redaktionelles Foto, evo Magazin",
    "ratio": 1.778
   }
  ]

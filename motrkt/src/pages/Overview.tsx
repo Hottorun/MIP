@@ -59,7 +59,7 @@ export default function Overview() {
     () =>
       topMovers(
         variants
-          .filter((v) => v.measured && (v.marketPhotos.length || v.photos.length))
+          .filter((v) => v.measured && v.marketPhotos.length > 0)
           .map((v) => v.id),
         4,
       ).winners,

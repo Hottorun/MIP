@@ -57,11 +57,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
     () =>
       SLIDES.flatMap((s) => {
         const v = variantById.get(s.variantId);
-        const photos = v
-          ? v.marketPhotos.length
-            ? v.marketPhotos
-            : v.photos
-          : [];
+        const photos = v ? v.marketPhotos : [];
         const photo = photos[s.photo] ?? photos[0];
         return v && photo ? [{ v, photo, year: s.year }] : [];
       }),

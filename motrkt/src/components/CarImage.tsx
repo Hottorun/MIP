@@ -6,8 +6,8 @@ import { t } from "../i18n";
 import { photoCaption, tr } from "../i18n/terms";
 
 /**
- * Preview image: the official manufacturer photo (as in the market tab) first, then a Wikimedia Commons photo,
- * otherwise the illustrated fallback in the variant's launch color. `photo` shows one specific picture instead.
+ * Preview image: the curated professional photo (as in the market tab), otherwise the illustrated fallback in the
+ * variant's launch color. Wikimedia Commons photos are not shown (private pictures of varying quality). `photo` shows one specific picture instead.
  */
 export function CarImage({
   variant,
@@ -31,7 +31,7 @@ export function CarImage({
   eager?: boolean;
   photo?: Photo;
 }) {
-  const photos = variant.marketPhotos.length ? variant.marketPhotos : variant.photos;
+  const photos = variant.marketPhotos;
   const photo = picked ?? photos[index] ?? photos[0];
   if (!photo) {
     return <CarArt shape={variant.shape} color={fallbackColor ?? variant.color} scene={scene} className={className} label={label} />;
