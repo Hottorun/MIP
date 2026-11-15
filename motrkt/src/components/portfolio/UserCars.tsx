@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { FileCheck2, Upload } from "lucide-react";
-import { brands, generationById, modelName, models, variantById, variantTitle, yearsLabel } from "../data/db";
-import { getMetrics } from "../data/market";
-import { cn, date, eur, num } from "../lib/format";
-import { isEn, t } from "../i18n";
-import { Card, Pill } from "../components/ui";
-import { ACCEPT, COUNTERPARTY, MAX_BYTES, STATUS_LABEL, STATUS_TONE, api, uploadContract, useMe, type UserCar } from "../lib/userCars";
+import { brands, generationById, modelName, models, variantById, variantTitle, yearsLabel } from "../../data/db";
+import { getMetrics } from "../../data/market";
+import { cn, date, eur, num } from "../../lib/format";
+import { isEn, t } from "../../i18n";
+import { Card, Pill, Section } from "../ui";
+import { ACCEPT, COUNTERPARTY, MAX_BYTES, STATUS_LABEL, STATUS_TONE, api, uploadContract, useMe, type UserCar } from "../../lib/userCars";
 
 const COUNTRIES = ["DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "GB", "DK", "SE", "NO", "PL", "CZ", "US", "CA"];
 const CURRENCIES = ["EUR", "CHF", "GBP", "USD", "SEK", "DKK", "NOK", "CAD"];
@@ -63,7 +63,8 @@ const FIELD_ERR: Record<string, () => string> = {
   file: () => t("Bitte den Kaufvertrag hochladen (PDF oder Foto, höchstens 4 MB).", "Please upload the purchase contract (PDF or photo, at most 4 MB)."),
 };
 
-export default function MyCars() {
+/** Report an own bought or sold car with its purchase contract, shown on the portfolio page (#melden). */
+export function UserCarsSection() {
   const me = useMe();
   const [cars, setCars] = useState<UserCar[] | null>(null);
   const [premiumUntil, setPremiumUntil] = useState<string | null>(null);
@@ -88,10 +89,10 @@ export default function MyCars() {
   const premium = premiumUntil && new Date(premiumUntil) > new Date();
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <Section title={t("Eigenes Fahrzeug melden", "Report my car")} sub={t("Mit Kaufvertrag, für Ihren kostenlosen Premium-Zugang", "With the purchase contract, for your free premium access")}>
+      <div id="melden" className="max-w-4xl scroll-mt-28 space-y-6">
       <div>
-        <h1 className="font-display text-[34px] leading-tight sm:text-[40px]">{t("Mein Fahrzeug melden", "Report my car")}</h1>
-        <p className="mt-2 max-w-2xl text-[15px] text-muted">
+        <p className="max-w-2xl text-[15px] text-muted">
           {t(
             `Sie haben einen Porsche gekauft oder verkauft? Tragen Sie die Daten ein und laden Sie den Kaufvertrag hoch. Wir prüfen den Vertrag, und nach der Freigabe geht der Preis anonym in unsere Marktwerte ein. Als Dank erhalten Sie ${months} Monate Premium-Zugang kostenlos.`,
             `Bought or sold a Porsche? Enter the details and upload the purchase contract. We check the contract, and once approved the price enters our market values anonymously. As a thank-you you get ${months} months of premium access free.`,
@@ -161,7 +162,8 @@ export default function MyCars() {
           {cars?.map((c) => <CarRow key={c.id} car={c} onChange={load} />)}
         </ul>
       </Card>
-    </div>
+      </div>
+    </Section>
   );
 }
 

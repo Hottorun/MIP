@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Pencil, Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../data/db";
@@ -11,6 +11,7 @@ import { cn, date, eur, km, pct, trendClass } from "../lib/format";
 import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money } from "../components/ui";
 import { HoldingForm } from "../components/portfolio/HoldingForm";
 import { WatchlistSection } from "../components/portfolio/Watchlist";
+import { UserCarsSection } from "../components/portfolio/UserCars";
 import { yearTicks } from "../components/insights/palette";
 import { t } from "../i18n";
 import { tr } from "../i18n/terms";
@@ -22,6 +23,10 @@ function csvCell(v: string | number) {
 
 export default function Portfolio() {
   const { portfolio, addHolding, updateHolding, removeHolding, toast } = useStore();
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash === "#melden") document.getElementById("melden")?.scrollIntoView({ behavior: "smooth" });
+  }, [hash]);
   const [range, setRange] = useState<RangeKey>("5J");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Holding | undefined>();
@@ -227,6 +232,8 @@ export default function Portfolio() {
           </Section>
         </>
       )}
+
+      <UserCarsSection />
 
       <WatchlistSection />
 

@@ -354,7 +354,7 @@ function UserMenu() {
           <Link to="/portfolio" className={item} onClick={() => setOpen(false)}>
             {t("Mein Portfolio", "My portfolio")}
           </Link>
-          <Link to="/fahrzeug-melden" className={item} onClick={() => setOpen(false)}>
+          <Link to="/portfolio#melden" className={item} onClick={() => setOpen(false)}>
             <FileCheck2 className="size-3.5 text-muted" /> {t("Fahrzeug melden", "Report my car")}
           </Link>
           {me?.admin && (

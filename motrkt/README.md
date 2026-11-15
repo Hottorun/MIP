@@ -37,10 +37,10 @@ Konten und Sitzungen liegen in Postgres (`db/migrations/002_accounts.sql`). Gesp
 Passwort und SHA-256-Werte der Sitzungs-Tokens. Nach 8 Fehlversuchen in 15 Minuten wird die Anmeldung für Name bzw.
 Adresse kurz gesperrt.
 
-## Eigenes Fahrzeug melden (`/fahrzeug-melden`)
+## Eigenes Fahrzeug melden (Portfolio, `/portfolio#melden`)
 
 Nutzer tragen ein Auto ein, das sie selbst gekauft oder verkauft haben, und laden den Kaufvertrag hoch (PDF oder
-Foto, höchstens 4 MB). Erreichbar über das Kontomenü.
+Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontomenü erreichbar (`/fahrzeug-melden` leitet dorthin).
 
 1. **Daten**: Variante, Bezeichnung, Baujahr, Fahrgestellnummer, Kilometerstand, Preis mit Währung, Vertragsdatum,
    Land, Gegenseite (privat, Händler, Auktion), dazu optional Karosserie, Getriebe, Lenkung, Farben, Zustandsnote,
