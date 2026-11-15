@@ -100,6 +100,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1984;2096;;911 Carrera;Santa Monica 2015;Auctions America;HIGH BID;42500;USD;2015-07-17;app;;
 1955;2110;;356 Pre-A 1500 Speedster;Santa Monica 2015;Auctions America;HIGH BID;270000;USD;2015-07-17;app;;
 1970;2111;;911S;Santa Monica 2015;Auctions America;HIGH BID;190000;USD;2015-07-17;app;;
+1954;2116;;356 Pre-A Cabriolet Outlaw by Emory;Santa Monica 2015;Auctions America;HIGH BID;180000;USD;2015-07-17;app;;
 1987;2117;;911 Turbo (Type 930);Santa Monica 2015;Auctions America;SOLD;118250;USD;2015-07-17;app;;
 2003;2118;;911 GT2 (Type 996);Santa Monica 2015;Auctions America;HIGH BID;96000;USD;2015-07-17;app;;
 1960;2126;;356 B Cabriolet;Santa Monica 2015;Auctions America;HIGH BID;140000;USD;2015-07-17;app;;
@@ -125,6 +126,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1979;617;;911SC;Monterey 2015;Russo and Steele;SOLD;31900;USD;2015-08-13;app;;
 1984;629;;911 Turbo (Type 930);Monterey 2015;Russo and Steele;SOLD;95700;USD;2015-08-13;app;;
 1962;634;;356 Coupe;Monterey 2015;Russo and Steele;SOLD;60500;USD;2015-08-13;app;;
+1953;646;;356 Pre-A Coupe;Monterey 2015;Russo and Steele;HIGH BID;130000;USD;2015-08-13;app;;
 1989;650;;911 Speedster;Monterey 2015;Russo and Steele;HIGH BID;185000;USD;2015-08-13;app;;
 1994;653;;911 Turbo 3.6 (Type 964);Monterey 2015;Russo and Steele;HIGH BID;215000;USD;2015-08-13;app;;
 1959;657;;356 A Cabriolet;Monterey 2015;Russo and Steele;HIGH BID;150000;USD;2015-08-13;app;;
@@ -180,6 +182,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1975;1;;911 Carrera Targa;Monterey 2015;Mecum;SOLD;57200;USD;2015-08-15;losabgleich;;
 1961;100;;356 B Coupe;Monterey 2015;Mecum;SOLD;68750;USD;2015-08-15;losabgleich;;
 1977;103;;911 Turbo (Type 930);Monterey 2015;Mecum;HIGH BID;174000;USD;2015-08-15;losabgleich;;
+1953;104;;356 Pre-A Coupe;Monterey 2015;Mecum;HIGH BID;310000;USD;2015-08-15;losabgleich;;
 1987;106;;911 Turbo Slantnose (Type 930);Monterey 2015;Mecum;HIGH BID;55000;USD;2015-08-15;losabgleich;;
 1973;108;;911S Targa;Monterey 2015;Mecum;SOLD;181500;USD;2015-08-15;losabgleich;;
 1960;11;;356 B Roadster;Monterey 2015;Mecum;SOLD;187000;USD;2015-08-15;losabgleich;;
@@ -231,6 +234,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1964;47;;356 C 1600 Coupe;Monterey 2015;Mecum;HIGH BID;55000;USD;2015-08-15;losabgleich;;
 1977;5.1;;911S Targa;Monterey 2015;Mecum;SOLD;57200;USD;2015-08-15;losabgleich;;
 1986;50;;935 Kremer K2;Monterey 2015;Mecum;SOLD;429000;USD;2015-08-15;losabgleich;;
+1953;51;;356 Pre-A Coupe;Monterey 2015;Mecum;HIGH BID;250000;USD;2015-08-15;losabgleich;;
 1989;62;;911 Turbo Cabriolet (Type 930);Monterey 2015;Mecum;SOLD;220000;USD;2015-08-15;losabgleich;;
 1967;63;;912;Monterey 2015;Mecum;HIGH BID;37500;USD;2015-08-15;losabgleich;;
 2003;63.1;;911 Carrera (Type 996);Monterey 2015;Mecum;HIGH BID;25000;USD;2015-08-15;losabgleich;;
@@ -302,6 +306,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1988;664;NR;911 Carrera;Las Vegas 2015;Barrett-Jackson;SOLD;39050;USD;2015-09-24;app;;
 1989;713;;911 Turbo Cabriolet (Type 930);Las Vegas 2015;Barrett-Jackson;HIGH BID;160000;USD;2015-09-24;app;;
 1979;726;;911 Turbo (Type 930);Las Vegas 2015;Barrett-Jackson;SOLD;176000;USD;2015-09-24;app;;
+1953;734;;356 Pre-A Coupe Custom;Las Vegas 2015;Barrett-Jackson;SOLD;154000;USD;2015-09-24;app;;
 1997;753;NR;911 Carrera Cabriolet (Type 993);Las Vegas 2015;Barrett-Jackson;SOLD;40700;USD;2015-09-24;app;;
 1973;244;;911T;Philadelphia: Simeone 2015;Bonhams;HIGH BID;48000;USD;2015-10-05;app;;
 1971;258;;911T;Philadelphia: Simeone 2015;Bonhams;SOLD;49500;USD;2015-10-05;app;;
@@ -1011,6 +1016,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2007;88;;911 GT3 RS (Type 997.1);Monterey 2016;Mecum;SOLD;247500;USD;2016-08-20;losabgleich;;
 2011;89;;911 Speedster (Type 997.2);Monterey 2016;Mecum;HIGH BID;335000;USD;2016-08-20;losabgleich;;
 2004;90;;Carrera GT;Monterey 2016;Mecum;SOLD;671000;USD;2016-08-20;losabgleich;;
+1954;93;;356 Pre-A Speedster;Monterey 2016;Mecum;HIGH BID;220000;USD;2016-08-20;losabgleich;;
 1996;93.1;;911 Turbo (Type 993);Monterey 2016;Mecum;HIGH BID;155000;USD;2016-08-20;losabgleich;;
 1966;94;;911 Deluxe RS;Monterey 2016;Mecum;HIGH BID;225000;USD;2016-08-20;losabgleich;;
 1997;97.1;;911 Targa (Type 993);Monterey 2016;Mecum;HIGH BID;60000;USD;2016-08-20;losabgleich;;
@@ -1144,6 +1150,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1997;177;;911 Turbo S (Type 993);Hilton Head 2016;Auctions America;HIGH BID;400000;USD;2016-11-05;app;;
 1979;181;;911 Turbo (Type 930);Hilton Head 2016;Auctions America;HIGH BID;69000;USD;2016-11-05;app;;
 1957;184;;356 A Speedster;Hilton Head 2016;Auctions America;SOLD;665500;USD;2016-11-05;app;;
+1953;185;;356 Coupe Custom;Hilton Head 2016;Auctions America;SOLD;57750;USD;2016-11-05;app;;
 1985;188;;911 Carrera;Hilton Head 2016;Auctions America;HIGH BID;57500;USD;2016-11-05;app;;
 1967;191;;911S;Hilton Head 2016;Auctions America;SOLD;110000;USD;2016-11-05;app;;
 1979;202;;911 Turbo (Type 930);Hilton Head 2016;Auctions America;HIGH BID;85000;USD;2016-11-05;app;;
@@ -1155,6 +1162,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1994;150;;968 Cabriolet;Dallas 2016;Mecum;SOLD;17600;USD;2016-11-05;losabgleich;;
 2012;150;;911 GT3 Cup 4.0 Brumos Edition (Type 997.2);Dallas 2016;Mecum;HIGH BID;450000;USD;2016-11-05;losabgleich;;
 2012;151;;911 Carrera GTS B59 Edition (Type 997.2);Dallas 2016;Mecum;HIGH BID;150000;USD;2016-11-05;losabgleich;;
+1953;153;;356 Pre-A Coupe;Dallas 2016;Mecum;SOLD;110000;USD;2016-11-05;losabgleich;;
 2011;155;;911 Speedster (Type 997.2);Dallas 2016;Mecum;HIGH BID;300000;USD;2016-11-05;losabgleich;;
 1996;171;;911 Turbo (Type 993);Dallas 2016;Mecum;HIGH BID;130000;USD;2016-11-05;losabgleich;;
 1988;193;;911 Turbo (Type 930);Dallas 2016;Mecum;SOLD;110000;USD;2016-11-05;losabgleich;;
@@ -1229,6 +1237,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1990;299;;911 Carrera 4 Cabriolet (Type 964);Duemila Ruote 2016;RM Sotheby's;SOLD;67200;EUR;2016-11-25;losabgleich;;
 2007;306;;911 GT3 RS (Type 997.1);Duemila Ruote 2016;RM Sotheby's;SOLD;212800;EUR;2016-11-25;losabgleich;;
 1989;307;;911 Speedster;Duemila Ruote 2016;RM Sotheby's;SOLD;291200;EUR;2016-11-25;losabgleich;;
+1953;313;;356 1100 Coupe;Duemila Ruote 2016;RM Sotheby's;SOLD;133280;EUR;2016-11-25;losabgleich;;
 2007;320;;911 GT3 Cup (Type 997.1);Duemila Ruote 2016;RM Sotheby's;SOLD;78400;EUR;2016-11-25;losabgleich;;
 1966;322;;911 2.0;Duemila Ruote 2016;RM Sotheby's;SOLD;145600;EUR;2016-11-25;losabgleich;;
 1973;325;;911S;Duemila Ruote 2016;RM Sotheby's;SOLD;184800;EUR;2016-11-25;losabgleich;;
@@ -1446,6 +1455,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1970;35;;914/6;Scottsdale 2017;Bonhams;SOLD;60500;USD;2017-01-19;losabgleich;;
 2015;36;;918 Spyder;Scottsdale 2017;Bonhams;HIGH BID;1250000;USD;2017-01-19;losabgleich;;
 1977;4;;911 Carrera 3.0;Scottsdale 2017;Bonhams;SOLD;60500;USD;2017-01-19;losabgleich;;
+1953;47;;356 Pre-A Cabriolet;Scottsdale 2017;Bonhams;SOLD;225500;USD;2017-01-19;losabgleich;;
 1960;61;;356 B 1600 Cabriolet;Scottsdale 2017;Bonhams;SOLD;154000;USD;2017-01-19;losabgleich;;
 1979;73;;911 Turbo (Type 930);Scottsdale 2017;Bonhams;SOLD;93500;USD;2017-01-19;losabgleich;;
 1964;88;;904 Carrera GTS;Scottsdale 2017;Bonhams;SOLD;2310000;USD;2017-01-19;losabgleich;;
@@ -1453,6 +1463,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1961;98;;356 Outlaw;Scottsdale 2017;Bonhams;SOLD;104500;USD;2017-01-19;losabgleich;;
 1974;15;;911 Carrera Targa;Scottsdale 2017;Kruse Auctions;HIGH BID;94000;USD;2017-01-19;app;;
 1955;37;;356 Pre-A 1600 Speedster;Scottsdale 2017;Kruse Auctions;SOLD;297000;USD;2017-01-19;app;;
+1953;57;;356 Pre-A 1500 Cabriolet;Scottsdale 2017;Kruse Auctions;SOLD;275000;USD;2017-01-19;app;;
 1989;76;;911 Speedster;Scottsdale 2017;Kruse Auctions;HIGH BID;160000;USD;2017-01-19;app;;
 1959;8;;356 A 1600 Convertible D;Scottsdale 2017;Kruse Auctions;SOLD;154000;USD;2017-01-19;app;;
 1965;111;;356 C Cabriolet;Scottsdale 2017;RM Sotheby's;SOLD;145750;USD;2017-01-19;losabgleich;;
@@ -1650,6 +1661,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2011;66;Charity;911 GT3 RS 3.8 (Type 997.2);Amelia Island 2017;Gooding & Co.;SOLD;154000;USD;2017-03-10;losabgleich;;
 1958;67;;356 A Speedster;Amelia Island 2017;Gooding & Co.;SOLD;473000;USD;2017-03-10;losabgleich;;
 1989;7;;911 Speedster;Amelia Island 2017;Gooding & Co.;SOLD;271700;USD;2017-03-10;losabgleich;;
+1954;74;;356 Pre-A Cabriolet;Amelia Island 2017;Gooding & Co.;HIGH BID;180000;USD;2017-03-10;losabgleich;;
 1993;75;;911 Carrera 3.8 RSR (Type 964);Amelia Island 2017;Gooding & Co.;HIGH BID;875000;USD;2017-03-10;losabgleich;;
 1962;77;;356 B Carrera 2 Coupe;Amelia Island 2017;Gooding & Co.;HIGH BID;350000;USD;2017-03-10;losabgleich;;
 1988;78;;959 Komfort;Amelia Island 2017;Gooding & Co.;HIGH BID;800000;USD;2017-03-10;losabgleich;;
@@ -1921,6 +1933,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1979;85;;DP35;Spa Classic 2017;Bonhams;HIGH BID;320000;EUR;2017-05-21;losabgleich;;
 1975;93;;911 Carrera 2.7 'Group 4 Specification';Spa Classic 2017;Bonhams;WITHDRAWN;;;2017-05-21;losabgleich;;
 1989;122;;911 Speedster 'Narrow Body';Villa Erba 2017;RM Sotheby's;HIGH BID;185000;EUR;2017-05-27;losabgleich;;
+1954;128;;356 Pre-A Speedster;Villa Erba 2017;RM Sotheby's;SOLD;336000;EUR;2017-05-27;losabgleich;;
 1993;133;;911 Carrera 3.8 RSR (Type 964);Villa Erba 2017;RM Sotheby's;SOLD;2016000;EUR;2017-05-27;losabgleich;;
 1988;138;;959 Komfort;Villa Erba 2017;RM Sotheby's;HIGH BID;775000;EUR;2017-05-27;losabgleich;;
 2015;142;;918 Spyder Weissach;Villa Erba 2017;RM Sotheby's;SOLD;1456000;EUR;2017-05-27;losabgleich;;
@@ -2004,6 +2017,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1993;231;;911 Turbo 3.6 (Type 964);Goodwood: Festival of Speed 2017;Bonhams;SOLD;138140;GBP;2017-06-30;losabgleich;;
 2005;236;;911 Turbo S (Type 996);Goodwood: Festival of Speed 2017;Bonhams;HIGH BID;62000;GBP;2017-06-30;losabgleich;;
 1973;245;;911 Carrera 2.7 RS Lightweight;Goodwood: Festival of Speed 2017;Bonhams;SOLD;830300;GBP;2017-06-30;losabgleich;;
+1952;251;;356 Pre-A Coupe;Goodwood: Festival of Speed 2017;Bonhams;SOLD;144860;GBP;2017-06-30;losabgleich;;
 1974;253;;911 935 Kremer K3 Tribute;Goodwood: Festival of Speed 2017;Bonhams;HIGH BID;52000;GBP;2017-06-30;losabgleich;;
 2010;254;;911 GT2 RS (Type 997.2);Goodwood: Festival of Speed 2017;Bonhams;SOLD;320700;GBP;2017-06-30;losabgleich;;
 1967;257;;911S 'Sunroof Coupe';Goodwood: Festival of Speed 2017;Bonhams;HIGH BID;195000;GBP;2017-06-30;losabgleich;;
@@ -2170,6 +2184,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1961;57;NR;[Porsche-Diesel] Junior Tractor;Monterey 2017;Bonhams;SOLD;77000;USD;2017-08-18;losabgleich;;
 1956;64;NR;356 A 1600 Speedster;Monterey 2017;Bonhams;SOLD;297000;USD;2017-08-18;losabgleich;;
 1955;92;;356 Pre-A 1500 Continental Coupe;Monterey 2017;Bonhams;SOLD;288200;USD;2017-08-18;losabgleich;;
+1954;108;;356 Pre-A 1500 Super Speedster;Monterey 2017;Gooding & Co.;SOLD;352000;USD;2017-08-18;losabgleich;;
 1989;110;;911 Speedster;Monterey 2017;Gooding & Co.;SOLD;297000;USD;2017-08-18;losabgleich;;
 1967;113;;911S Targa 'Soft Window';Monterey 2017;Gooding & Co.;SOLD;285000;USD;2017-08-18;losabgleich;;
 1964;129;;904 Carrera GTS;Monterey 2017;Gooding & Co.;SOLD;1540000;USD;2017-08-18;losabgleich;;
@@ -2207,6 +2222,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1997;164;NR;911 Cup 3.8 RSR (Type 993);Monterey 2017;RM Sotheby's;SOLD;357500;USD;2017-08-18;losabgleich;;
 2015;230;;918 Spyder;Monterey 2017;RM Sotheby's;SOLD;1842500;USD;2017-08-18;losabgleich;;
 2011;235;;911 GT3 RS 4.0 (Type 997.2);Monterey 2017;RM Sotheby's;SOLD;418000;USD;2017-08-18;losabgleich;;
+1951;247;;356 Pre-A 1500 Coupe;Monterey 2017;RM Sotheby's;SOLD;1017500;USD;2017-08-18;losabgleich;;
 1992;250;NR;911 Carrera RS (Type 964);Monterey 2017;RM Sotheby's;SOLD;275000;USD;2017-08-18;losabgleich;;
 1995;255;NR;911 Carrera RS 3.8 Clubsport (Type 993);Monterey 2017;RM Sotheby's;SOLD;407000;USD;2017-08-18;losabgleich;;
 1970;256;;908/03;Monterey 2017;RM Sotheby's;SOLD;3575000;USD;2017-08-18;losabgleich;;
@@ -2329,6 +2345,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1992;128;;911 Carrera RS (Type 964);London 2017;RM Sotheby's;HIGH BID;180000;GBP;2017-09-06;losabgleich;;
 1996;129;;911 Turbo (Type 993);London 2017;RM Sotheby's;HIGH BID;160000;GBP;2017-09-06;losabgleich;;
 1967;130;;911 Targa 'Soft Window';London 2017;RM Sotheby's;HIGH BID;80000;GBP;2017-09-06;losabgleich;;
+1953;143;;356 Pre-A Coupe;London 2017;RM Sotheby's;HIGH BID;170000;GBP;2017-09-06;losabgleich;;
 1992;149;;911 Carrera RS (Type 964);London 2017;RM Sotheby's;HIGH BID;160000;GBP;2017-09-06;losabgleich;;
 1997;156;;911 Carrera RSR (Type 993);London 2017;RM Sotheby's;HIGH BID;700000;GBP;2017-09-06;losabgleich;;
 1986;159;;Gemballa Avalanche;London 2017;RM Sotheby's;HIGH BID;110000;GBP;2017-09-06;losabgleich;;
@@ -2488,6 +2505,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1990;259;;928 GT Track Car;Porsche: By Silverstone Auctions 2017;Silverstone Auctions;HIGH BID;10000;GBP;2017-10-21;losabgleich;;
 2016;18;;911 Targa 4S 30th Anniversario Italia Edition (Type 991.2);Padua 2017;Bonhams;HIGH BID;165000;EUR;2017-10-28;losabgleich;;
 1973;28;;911S;Padua 2017;Bonhams;SOLD;97500;EUR;2017-10-28;losabgleich;;
+1954;45;;356 Pre-A 1500 Speedster;Padua 2017;Bonhams;HIGH BID;390000;EUR;2017-10-28;losabgleich;;
 1970;9;;911T Targa;Padua 2017;Bonhams;SOLD;97750;EUR;2017-10-28;losabgleich;;
 1974;107;;911 Targa;Greensboro: November 2017;GAA Classic Cars;SOLD;23540;USD;2017-11-02;app;;
 1987;168;;911 Turbo Slantnose (Type 930);Greensboro: November 2017;GAA Classic Cars;SOLD;107000;USD;2017-11-02;app;;
@@ -2724,10 +2742,12 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2015;51;;918 Spyder;Scottsdale 2018;Bonhams;SOLD;1292500;USD;2018-01-18;losabgleich;;
 2016;52;;911R (Type 991.2);Scottsdale 2018;Bonhams;SOLD;478500;USD;2018-01-18;losabgleich;;
 1997;55;;911 Turbo (Type 993);Scottsdale 2018;Bonhams;SOLD;179300;USD;2018-01-18;losabgleich;;
+1953;58;;356 Pre-A 1500 Cabriolet 'Supercharged';Scottsdale 2018;Bonhams;HIGH BID;170000;USD;2018-01-18;losabgleich;;
 1960;68;NR;356 B 1600 Super Coupe;Scottsdale 2018;Bonhams;SOLD;93500;USD;2018-01-18;losabgleich;;
 1960;73;;356 B Super 90 Roadster;Scottsdale 2018;Bonhams;SOLD;170500;USD;2018-01-18;losabgleich;;
 2005;81;;Carrera GT;Scottsdale 2018;Bonhams;WITHDRAWN;;;2018-01-18;losabgleich;;
 1968;91;NR;911L;Scottsdale 2018;Bonhams;SOLD;84700;USD;2018-01-18;losabgleich;;
+1954;94;NR;356 Pre-A Speedster;Scottsdale 2018;Bonhams;SOLD;220000;USD;2018-01-18;losabgleich;;
 1961;96;NR;356 B Coupe;Scottsdale 2018;Bonhams;SOLD;58300;USD;2018-01-18;losabgleich;;
 2007;97;NR;911 Turbo (Type 997.1);Scottsdale 2018;Bonhams;SOLD;50600;USD;2018-01-18;losabgleich;;
 1982;48;;911 Turbo Slantnose (Type 930);Scottsdale 2018;Kruse Auctions;HIGH BID;180000;USD;2018-01-18;app;;
@@ -2736,8 +2756,11 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2015;58;;918 Spyder;Scottsdale 2018;Kruse Auctions;HIGH BID;1350000;USD;2018-01-18;app;;
 1976;83;;911 Turbo (Type 930);Scottsdale 2018;Kruse Auctions;HIGH BID;75000;USD;2018-01-18;app;;
 1967;139;NR;911S;Scottsdale 2018;RM Sotheby's;SOLD;190400;USD;2018-01-18;losabgleich;;
+1953;140;NR;356 Pre-A 1500 Cabriolet;Scottsdale 2018;RM Sotheby's;SOLD;280000;USD;2018-01-18;losabgleich;;
 1988;141;NR;911 Turbo Slantnose (Type 930);Scottsdale 2018;RM Sotheby's;SOLD;162400;USD;2018-01-18;losabgleich;;
 1955;142;NR;356 Pre-A 1500 Speedster;Scottsdale 2018;RM Sotheby's;SOLD;351500;USD;2018-01-18;losabgleich;;
+1953;143;NR;356 Pre-A Coupe;Scottsdale 2018;RM Sotheby's;SOLD;224000;USD;2018-01-18;losabgleich;;
+1953;144;NR;356 Pre-A 1500 Cabriolet;Scottsdale 2018;RM Sotheby's;SOLD;257600;USD;2018-01-18;losabgleich;;
 1987;155;;959 Komfort;Scottsdale 2018;RM Sotheby's;SOLD;1160000;USD;2018-01-18;losabgleich;;
 1976;164;NR;911 Turbo (Type 930);Scottsdale 2018;RM Sotheby's;SOLD;173600;USD;2018-01-18;losabgleich;;
 1973;212;NR;911E Targa;Scottsdale 2018;RM Sotheby's;SOLD;92400;USD;2018-01-18;losabgleich;;
@@ -2800,6 +2823,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1970;21;NR;911S;Scottsdale 2018;Gooding & Co.;SOLD;209000;USD;2018-01-19;losabgleich;;
 1957;39;;356 A Speedster;Scottsdale 2018;Gooding & Co.;SOLD;533500;USD;2018-01-19;losabgleich;;
 1985;4;NR;944 Turbo Cup;Scottsdale 2018;Gooding & Co.;SOLD;71500;USD;2018-01-19;losabgleich;;
+1953;57;;356 Pre-A 1500 Super Cabriolet;Scottsdale 2018;Gooding & Co.;SOLD;374000;USD;2018-01-19;losabgleich;;
 1973;58;NR;911T Targa;Scottsdale 2018;Gooding & Co.;SOLD;313500;USD;2018-01-19;losabgleich;;
 1961;64;NR;356 B Coupe;Scottsdale 2018;Gooding & Co.;SOLD;93500;USD;2018-01-19;losabgleich;;
 1955;67;NR;356 Pre-A Speedster;Scottsdale 2018;Gooding & Co.;SOLD;209000;USD;2018-01-19;losabgleich;;
@@ -2829,6 +2853,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;387;;911S Targa;Paris 2018;Bonhams;SOLD;145883;EUR;2018-02-08;losabgleich;;
 1972;398;;911T;Paris 2018;Bonhams;HIGH BID;60000;EUR;2018-02-08;losabgleich;;
 1985;424;;911 Turbo (Type 930);Paris 2018;Bonhams;HIGH BID;78000;EUR;2018-02-08;losabgleich;;
+1951;105;;356 Pre-A 1300 Coupe;Paris 2018;Artcurial Motorcars;SOLD;870000;EUR;2018-02-09;losabgleich;;
 1984;107;NR;911 Turbo (Type 930);Paris 2018;Artcurial Motorcars;SOLD;127600;EUR;2018-02-09;losabgleich;;
 1972;111;;911S Targa;Paris 2018;Artcurial Motorcars;SOLD;156600;EUR;2018-02-09;losabgleich;;
 1985;122;;962 C;Paris 2018;Artcurial Motorcars;HIGH BID;950000;EUR;2018-02-09;losabgleich;;
@@ -2839,6 +2864,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1989;40;;911 Turbo Cabriolet (Type 930);Paris 2018;Artcurial Motorcars;SOLD;156600;EUR;2018-02-09;losabgleich;;
 1989;41;;911 Speedster;Paris 2018;Artcurial Motorcars;HIGH BID;140000;EUR;2018-02-09;losabgleich;;
 1970;80;NR;911T Targa;Paris 2018;Artcurial Motorcars;SOLD;87000;EUR;2018-02-09;losabgleich;;
+1954;97;;356 Pre-A 1500 Coupe;Paris 2018;Artcurial Motorcars;HIGH BID;160000;EUR;2018-02-09;losabgleich;;
 1982;101;;911SC;Los Angeles 2018;Mecum;HIGH BID;25000;USD;2018-02-16;losabgleich;;
 1989;121;;911 Speedster Turbo Custom;Los Angeles 2018;Mecum;HIGH BID;125000;USD;2018-02-16;losabgleich;;
 1991;145.1;;911 Carrera 2 Cabriolet (Type 964);Los Angeles 2018;Mecum;HIGH BID;23000;USD;2018-02-16;losabgleich;;
@@ -2898,6 +2924,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2011;13;;911 GT2 RS (Type 997.2);Amelia Island 2018;Gooding & Co.;SOLD;539000;USD;2018-03-09;losabgleich;;
 1974;22;;911 Carrera 2.1 Turbo RSR;Amelia Island 2018;Gooding & Co.;HIGH BID;5400000;USD;2018-03-09;losabgleich;;
 1969;27;NR;911S;Amelia Island 2018;Gooding & Co.;SOLD;154000;USD;2018-03-09;losabgleich;;
+1953;3;NR;356 Pre-A 1500 Super Coupe;Amelia Island 2018;Gooding & Co.;SOLD;88000;USD;2018-03-09;losabgleich;;
 1960;30;;356 B 1600 GS/GT Carrera Coupe;Amelia Island 2018;Gooding & Co.;HIGH BID;900000;USD;2018-03-09;losabgleich;;
 1966;32;;911;Amelia Island 2018;Gooding & Co.;SOLD;258500;USD;2018-03-09;losabgleich;;
 1957;33;;356 A Speedster;Amelia Island 2018;Gooding & Co.;SOLD;572000;USD;2018-03-09;losabgleich;;
@@ -2977,6 +3004,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2007;133;;911 GT3 RS (Type 997.1);Essen 2018;COYS;SOLD;119375;EUR;2018-03-24;manuell;;
 1972;134;;911T;Essen 2018;COYS;WITHDRAWN;;;2018-03-24;manuell;;
 1976;135;;911 Turbo (Type 930);Essen 2018;COYS;SOLD;122187;EUR;2018-03-24;manuell;;
+1952;136;;356 Pre-A Coupe;Essen 2018;COYS;HIGH BID;195000;EUR;2018-03-24;manuell;;
 1976;149;;911 Turbo (Type 930);Essen 2018;COYS;HIGH BID;70000;EUR;2018-03-24;manuell;;
 1982;150;;911 Turbo (Type 930) Martini Tribute;Essen 2018;COYS;SOLD;80000;EUR;2018-03-24;manuell;;
 1976;151;;911S Targa;Essen 2018;COYS;SOLD;39100;EUR;2018-03-24;manuell;;
@@ -3615,11 +3643,13 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;181;;911 Carrera 2.8 RSR;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;HIGH BID;2000000;USD;2018-10-27;losabgleich;;
 1996;182;NR;911 Carrera 4S (Type 993);Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;117600;USD;2018-10-27;losabgleich;;
 2011;183;;911 GT3 RS 4.0 (Type 997.2);Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;566000;USD;2018-10-27;losabgleich;;
+1951;184;;356 Pre-A 1300 Cabriolet;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;HIGH BID;460000;USD;2018-10-27;losabgleich;;
 2015;185;;918 Spyder;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;1407500;USD;2018-10-27;losabgleich;;
 2011;186;NR;911 GT3 RS 3.8 (Type 997.2);Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;196000;USD;2018-10-27;losabgleich;;
 1963;187;NR;356 B 1600 'Sunroof' Coupe;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;117600;USD;2018-10-27;losabgleich;;
 1994;188;NR;911 Speedster (Type 964);Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;190400;USD;2018-10-27;losabgleich;;
 1991;189;;911 Turbo 3.3 (Type 964);Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;210000;USD;2018-10-27;losabgleich;;
+1951;190;;356 Pre-A Coupe;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;HIGH BID;525000;USD;2018-10-27;losabgleich;;
 1985;191;;959 Prototype;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;1000000;USD;2018-10-27;losabgleich;;
 1973;192;;911 Carrera 2.7 RS Touring;Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;698000;USD;2018-10-27;losabgleich;;
 1994;193;;911 Turbo S Slantnose X85 (Type 964);Porsche: 70th Anniversary Sale 2018;RM Sotheby's;SOLD;560000;USD;2018-10-27;losabgleich;;
@@ -3952,8 +3982,10 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1958;257;NR;[Porsche-Diesel] Standard F 208 Tractor;Paris 2019;Bonhams;SOLD;14950;EUR;2019-02-07;losabgleich;;
 1965;267;;356 C Cabriolet;Paris 2019;Bonhams;SOLD;126500;EUR;2019-02-07;losabgleich;;
 1961;280;;356 B 1600 Coupe;Paris 2019;Bonhams;SOLD;69666;EUR;2019-02-07;losabgleich;;
+1950;288;;356 Pre-A Coupe;Paris 2019;Bonhams;SOLD;805000;EUR;2019-02-07;losabgleich;;
 1956;295;;356 A GS/GT Carrera Coupe;Paris 2019;Bonhams;HIGH BID;380000;EUR;2019-02-07;losabgleich;;
 1972;333;;911T Targa;Paris 2019;Bonhams;SOLD;86250;EUR;2019-02-07;losabgleich;;
+1953;122;;356 Pre-A 1500 Super Cabriolet;Paris 2019;Artcurial Motorcars;HIGH BID;200000;EUR;2019-02-08;losabgleich;;
 1970;123;;911S;Paris 2019;Artcurial Motorcars;SOLD;104400;EUR;2019-02-08;losabgleich;;
 1971;124;;"916 Prototype ""Brutus""";Paris 2019;Artcurial Motorcars;SOLD;928000;EUR;2019-02-08;losabgleich;;
 2006;129;;Carrera GT;Paris 2019;Artcurial Motorcars;HIGH BID;670000;EUR;2019-02-08;losabgleich;;
@@ -4194,6 +4226,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1989;135;;911 Turbo (Type 930);Essen 2019;RM Sotheby's;SOLD;97750;EUR;2019-04-11;losabgleich;;
 1992;136;NR;928 GTS;Essen 2019;RM Sotheby's;SOLD;51750;EUR;2019-04-11;losabgleich;;
 1992;145;;911 Carrera RS (Type 964);Essen 2019;RM Sotheby's;HIGH BID;145000;EUR;2019-04-11;losabgleich;;
+1954;150;;356 Pre-A Cabriolet;Essen 2019;RM Sotheby's;HIGH BID;220000;EUR;2019-04-11;losabgleich;;
 1966;223;;911;Essen 2019;RM Sotheby's;HIGH BID;110000;EUR;2019-04-11;losabgleich;;
 2011;224;NR;911 GT3 RS (Type 997.2);Essen 2019;RM Sotheby's;SOLD;138000;EUR;2019-04-11;losabgleich;;
 1991;233;;911 Turbo 3.3 (Type 964);Essen 2019;RM Sotheby's;SOLD;90850;EUR;2019-04-11;losabgleich;;
@@ -4343,6 +4376,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1991;203;;944 Turbo;Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;32480;GBP;2019-07-13;app;;
 1981;228;;911 Turbo (Type 930);Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;91840;GBP;2019-07-13;app;;
 1988;232;;911 Carrera Cabriolet 'Turbo-Look';Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;28560;GBP;2019-07-13;app;;
+1954;237;;[Allgaier-Porsche] A111 Tractor;Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;10000;GBP;2019-07-13;app;;
 1992;241;NR;944 Turbo Cabriolet;Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;16980;GBP;2019-07-13;app;;
 1988;253;;928 S4;Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;11320;GBP;2019-07-13;app;;
 2004;255;NR;Boxster;Brooklands Motor Museum: July 2019;Historics Auctioneers;SOLD;4528;GBP;2019-07-13;app;;
@@ -4459,6 +4493,8 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1962;10;;356 B Super 90 Roadster 'Twin Grille';Monterey 2019;Gooding & Co.;SOLD;610000;USD;2019-08-16;losabgleich;;
 1997;103;;911 Turbo S (Type 993);Monterey 2019;Gooding & Co.;SOLD;368000;USD;2019-08-16;losabgleich;;
 1979;105;NR;911 Turbo (Type 930);Monterey 2019;Gooding & Co.;SOLD;196000;USD;2019-08-16;losabgleich;;
+1951;112;;356 Pre-A Coupe;Monterey 2019;Gooding & Co.;HIGH BID;380000;USD;2019-08-16;losabgleich;;
+1953;133;;356 Pre-A 1500 Coupe;Monterey 2019;Gooding & Co.;HIGH BID;200000;USD;2019-08-16;losabgleich;;
 1991;14;;911 (Type 964) Reimagined by Singer;Monterey 2019;Gooding & Co.;SOLD;857500;USD;2019-08-16;losabgleich;;
 1965;167;;911;Monterey 2019;Gooding & Co.;HIGH BID;170000;USD;2019-08-16;losabgleich;;
 1988;28;;959 Sport;Monterey 2019;Gooding & Co.;HIGH BID;1700000;USD;2019-08-16;losabgleich;;
@@ -4617,8 +4653,11 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1983;360;NR;911SC Cabriolet;Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;52640;USD;2019-09-28;losabgleich;;
 1969;361;NR;912;Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;100800;USD;2019-09-28;losabgleich;;
 1970;362;NR;914/6;Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;134400;USD;2019-09-28;losabgleich;;
+1951;363;NR;356 Pre-A 'Split-Window' Coupe (Project);Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;98000;USD;2019-09-28;losabgleich;;
 1960;365;NR;[Porsche-Diesel] Junior 108 K Tractor;Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;7840;USD;2019-09-28;losabgleich;;
+1953;366;NR;356 Limousine Conversion;Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;207200;USD;2019-09-28;losabgleich;;
 1973;368;NR;911 Carrera 2.7 RS Touring (Project);Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;412000;USD;2019-09-28;losabgleich;;
+1952;370;NR;356 Pre-A Cabriolet;Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;299250;USD;2019-09-28;losabgleich;;
 2007;371;NR;911 GT3 RS (Type 997.1);Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;184800;USD;2019-09-28;losabgleich;;
 1997;372;NR;911 Turbo (Type 993);Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;368000;USD;2019-09-28;losabgleich;;
 1988;374;NR;911 Turbo Slantnose (Type 930);Taj Ma Garaj Collection 2019;RM Sotheby's;SOLD;193200;USD;2019-09-28;losabgleich;;
@@ -4919,6 +4958,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1972;165;NR;911T;Scottsdale 2020;RM Sotheby's;SOLD;75040;USD;2020-01-16;losabgleich;;
 1979;221;;911 Turbo (Type 930);Scottsdale 2020;RM Sotheby's;SOLD;390000;USD;2020-01-16;losabgleich;;
 2017;223;NR;911 Carrera S Endurance Ring Edition 'Seven-Speed' (Type 991.2);Scottsdale 2020;RM Sotheby's;SOLD;145600;USD;2020-01-16;losabgleich;;
+1953;226;NR;356 Pre-A Coupe;Scottsdale 2020;RM Sotheby's;SOLD;173600;USD;2020-01-16;losabgleich;;
 1962;232;;356 B Roadster 'Twin Grille';Scottsdale 2020;RM Sotheby's;HIGH BID;220000;USD;2020-01-16;losabgleich;;
 1976;236;NR;914 2.0;Scottsdale 2020;RM Sotheby's;SOLD;53200;USD;2020-01-16;losabgleich;;
 1961;243;NR;356 B Super Cabriolet;Scottsdale 2020;RM Sotheby's;SOLD;120400;USD;2020-01-16;losabgleich;;
@@ -4988,6 +5028,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1986;673.1;;911 Turbo (Type 930) 934/5 Tribute;Scottsdale 2020;Leake;HIGH BID;50000;USD;2020-01-18;app;;
 2008;683.1;;911 Turbo Cabriolet (Type 997.1);Scottsdale 2020;Leake;HIGH BID;50000;USD;2020-01-18;app;;
 1964;146;;904 Carrera GTS;Paris 2020;RM Sotheby's;SOLD;1917500;EUR;2020-02-05;losabgleich;;
+1952;147;;356 Pre-A Cabriolet 'Split-Window' by Gläser;Paris 2020;RM Sotheby's;WITHDRAWN;;;2020-02-05;losabgleich;;
 1996;154;;911 Carrera RS 3.8 Clubsport (Type 993);Paris 2020;RM Sotheby's;HIGH BID;300000;EUR;2020-02-05;losabgleich;;
 2005;166;;911 GT3 RS Clubsport (Type 996);Paris 2020;RM Sotheby's;SOLD;252500;EUR;2020-02-05;losabgleich;;
 2005;175;;Gemballa Mirage GT Gold Edition;Paris 2020;RM Sotheby's;HIGH BID;625000;EUR;2020-02-05;losabgleich;;
@@ -5004,6 +5045,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1987;291;NR;928 S4;Paris 2020;Bonhams;SOLD;23000;EUR;2020-02-06;losabgleich;;
 1982;294;;911 Turbo (Type 930);Paris 2020;Bonhams;HIGH BID;70000;EUR;2020-02-06;losabgleich;;
 1975;295;;911S;Paris 2020;Bonhams;HIGH BID;65000;EUR;2020-02-06;losabgleich;;
+1954;151;;356 Pre-A 1500 Super Cabriolet;Paris 2020;Artcurial Motorcars;SOLD;208800;EUR;2020-02-07;losabgleich;;
 1989;152;;911 Carrera Clubsport;Paris 2020;Artcurial Motorcars;SOLD;128736;EUR;2020-02-07;losabgleich;;
 1959;155;NR;[Porsche-Diesel] Standard 218 Tractor;Paris 2020;Artcurial Motorcars;HIGH BID;;;2020-02-07;losabgleich;;
 1958;79;;356 A 1600 Speedster;Paris 2020;Artcurial Motorcars;SOLD;266800;EUR;2020-02-07;losabgleich;;
@@ -5153,6 +5195,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2005;81;;911 Turbo S (Type 996);May Motoring Auction 2020;Bonhams;HIGH BID;42000;GBP;2020-05-30;app;;
 2007;82;;911 Turbo Cabriolet (Type 997.1);May Motoring Auction 2020;Bonhams;HIGH BID;40000;GBP;2020-05-30;app;;
 2008;83;;911 Carrera S (Type 997.1);May Motoring Auction 2020;Bonhams;HIGH BID;23000;GBP;2020-05-30;app;;
+1950;108;NR;[Porsche-Diesel] A111 Tractor (Project);Petitjean Collection: Online Only 2020;RM Sotheby's;SOLD;3960;EUR;2020-06-03;losabgleich;;
 1956;109;NR;[Allgaier-Porsche] AP22 Tractor (Project);Petitjean Collection: Online Only 2020;RM Sotheby's;SOLD;4180;EUR;2020-06-03;losabgleich;;
 1960;132;NR;356 B Cabriolet;Petitjean Collection: Online Only 2020;RM Sotheby's;SOLD;71500;EUR;2020-06-03;losabgleich;;
 1976;139;NR;911 Targa;Petitjean Collection: Online Only 2020;RM Sotheby's;SOLD;36300;EUR;2020-06-03;losabgleich;;
@@ -5175,6 +5218,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2011;371;;911 GT3 RS 4.0 (Type 997.2);The European Sale: Online Only 2020;RM Sotheby's;SOLD;269500;EUR;2020-06-03;losabgleich;;
 1998;373;;911 Turbo RUF Turbo R (Type 993);The European Sale: Online Only 2020;RM Sotheby's;SOLD;159500;EUR;2020-06-03;losabgleich;;
 1956;374;;356 A 1600 Coupe;The European Sale: Online Only 2020;RM Sotheby's;SOLD;91300;EUR;2020-06-03;losabgleich;;
+1953;381;;356 Pre-A Cabriolet;The European Sale: Online Only 2020;RM Sotheby's;SOLD;165000;EUR;2020-06-03;losabgleich;;
 1967;406;;911;The European Sale: Online Only 2020;RM Sotheby's;SOLD;106700;EUR;2020-06-03;losabgleich;;
 2020;409;;935 (Type 991.2);The European Sale: Online Only 2020;RM Sotheby's;SOLD;1320000;EUR;2020-06-03;losabgleich;;
 1967;113;;912;July: Online Only 2020;Barrett-Jackson;HIGH BID;;;2020-07-10;app;;
@@ -5191,6 +5235,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2010;229;;911 GT2 (Type 997.1);Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;HIGH BID;110000;EUR;2020-07-14;losabgleich;;
 1960;231;;356 B Super 90 Cabriolet;Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;HIGH BID;100000;EUR;2020-07-14;losabgleich;;
 1979;235;NR;DP 935 (Type 930);Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;SOLD;92400;EUR;2020-07-14;losabgleich;;
+1954;237;;356 Pre-A Cabriolet;Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;SOLD;198000;EUR;2020-07-14;losabgleich;;
 1973;243;;911S Targa;Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;SOLD;99000;EUR;2020-07-14;losabgleich;;
 2019;251;;911 Speedster (Type 991.2);Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;SOLD;280000;EUR;2020-07-14;losabgleich;;
 1967;258;;911;Open Roads, European Summer Auction: Online Only 2020;RM Sotheby's;HIGH BID;76000;EUR;2020-07-14;losabgleich;;
@@ -5437,6 +5482,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1955;161;;356 A GS Carrera 'Sunroof' Coupe;London 2020;RM Sotheby's;WITHDRAWN;;;2020-10-26;losabgleich;;
 1992;162;;911 Turbo S 3.3 Lightweight (Type 964);London 2020;RM Sotheby's;HIGH BID;610000;GBP;2020-10-26;losabgleich;;
 2019;167;;911 Speedster (Type 991.2);London 2020;RM Sotheby's;HIGH BID;235000;GBP;2020-10-26;losabgleich;;
+1954;11;;356 Pre-A Speedster;1000 Finarte 2020;Finarte;HIGH BID;;;2020-10-30;app;;App zeigt 0, Preis unbekannt
 1955;13;;356 Pre-A 1500 Coupe;1000 Finarte 2020;Finarte;HIGH BID;;;2020-10-30;app;;
 1960;19;;356 B Super 90 'Sunroof' Coupe;1000 Finarte 2020;Finarte;HIGH BID;;;2020-10-30;app;;
 1961;21;;356 B Coupe;1000 Finarte 2020;Finarte;HIGH BID;;;2020-10-30;app;;
@@ -5450,6 +5496,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1989;47;;911 Speedster;1000 Finarte 2020;Finarte;SOLD;153225;EUR;2020-10-30;app;;
 1990;48;;911 Carrera 4 Cabriolet (Type 964);1000 Finarte 2020;Finarte;HIGH BID;;;2020-10-30;app;;
 1991;49;;911 Carrera 4 (Type 964);1000 Finarte 2020;Finarte;SOLD;53345;EUR;2020-10-30;app;;
+1952;5;;356 Pre-A 1500 Super Coupe;1000 Finarte 2020;Finarte;SOLD;227000;EUR;2020-10-30;app;;
 1993;50;;968;1000 Finarte 2020;Finarte;HIGH BID;;;2020-10-30;app;;
 1994;51;;911 Carrera (Type 993);1000 Finarte 2020;Finarte;SOLD;73775;EUR;2020-10-30;app;;
 2000;55;;Boxster;1000 Finarte 2020;Finarte;SOLD;18160;EUR;2020-10-30;app;;
@@ -5462,6 +5509,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1999;2007;;911 Carrera (Type 996);Open Roads, Fall: Online Only 2020;RM Sotheby's;HIGH BID;16000;USD;2020-11-11;losabgleich;;
 1994;2016;;911 Speedster (Type 964);Open Roads, Fall: Online Only 2020;RM Sotheby's;SOLD;132000;USD;2020-11-11;losabgleich;;
 1995;2028;;911 Carrera RS 3.8 (Type 993);Open Roads, Fall: Online Only 2020;RM Sotheby's;HIGH BID;250000;USD;2020-11-11;losabgleich;;
+1951;2033;;356 Pre-A Coupe;Open Roads, Fall: Online Only 2020;RM Sotheby's;HIGH BID;285000;USD;2020-11-11;losabgleich;;
 2003;2034;;911 Turbo X50 (Type 996);Open Roads, Fall: Online Only 2020;RM Sotheby's;HIGH BID;53000;USD;2020-11-11;losabgleich;;
 2019;2048;;911 Turbo S Cabriolet (Type 991.2) Exclusive Series;Open Roads, Fall: Online Only 2020;RM Sotheby's;SOLD;247500;USD;2020-11-11;losabgleich;;
 1977;2078;;911 Turbo (Type 930);Open Roads, Fall: Online Only 2020;RM Sotheby's;SOLD;121000;USD;2020-11-11;losabgleich;;
@@ -5578,6 +5626,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2011;31;;911 GT2 RS (Type 997.2);Geared Online: Scottsdale Edition 2021;Gooding & Co.;SOLD;374000;USD;2021-01-22;losabgleich;;
 1969;50;;911E Targa;Geared Online: Scottsdale Edition 2021;Gooding & Co.;HIGH BID;48000;USD;2021-01-22;losabgleich;;
 1973;130;;911 Carrera 2.7 RS Touring;Scottsdale 2021;RM Sotheby's;HIGH BID;450000;USD;2021-01-22;losabgleich;;
+1953;148;;356 Coupe Outlaw;Scottsdale 2021;RM Sotheby's;SOLD;159600;USD;2021-01-22;losabgleich;;
 1992;178;;911 Carrera RS N/GT (Type 964);Scottsdale 2021;RM Sotheby's;HIGH BID;175000;USD;2021-01-22;losabgleich;;
 1988;181;NR;944 Turbo Rothmans Cup;Scottsdale 2021;RM Sotheby's;SOLD;89600;USD;2021-01-22;losabgleich;;
 1957;20;;550 A Spyder;Paris 2021;Artcurial Motorcars;HIGH BID;3500000;EUR;2021-02-05;losabgleich;;
@@ -5585,6 +5634,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1977;114;NR;911 Turbo (Type 930);Paris 2021;RM Sotheby's;SOLD;103500;EUR;2021-02-13;losabgleich;;
 1957;119;;356 A 1600 Speedster;Paris 2021;RM Sotheby's;HIGH BID;240000;EUR;2021-02-13;losabgleich;;
 1994;133;;911 Cup 3.8 (Type 993);Paris 2021;RM Sotheby's;SOLD;218500;EUR;2021-02-13;losabgleich;;
+1952;137;;356 Pre-A Coupe 'Split-Window';Paris 2021;RM Sotheby's;SOLD;460000;EUR;2021-02-13;losabgleich;;
 1971;112;;911T Targa;Open Roads, February European Offering: Online Only 2021;RM Sotheby's;SOLD;75900;EUR;2021-02-19;losabgleich;;
 1985;130;NR;911 Turbo (Type 930);Open Roads, February European Offering: Online Only 2021;RM Sotheby's;SOLD;84700;EUR;2021-02-19;losabgleich;;
 1986;210;;944 Turbo;Open Roads, February North American Offering: Online Only 2021;RM Sotheby's;HIGH BID;23000;USD;2021-02-19;losabgleich;;
@@ -5626,6 +5676,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1997;229;;911 Carrera S (Type 993);Open Roads, March North American Offering: Online Only 2021;RM Sotheby's;HIGH BID;83000;USD;2021-03-17;losabgleich;;
 1960;242;NR;356 B 1600 Cabriolet;Open Roads, March North American Offering: Online Only 2021;RM Sotheby's;SOLD;132000;USD;2021-03-17;losabgleich;;
 1993;245;NR;928 GTS;Open Roads, March North American Offering: Online Only 2021;RM Sotheby's;SOLD;71500;USD;2021-03-17;losabgleich;;
+1953;251;;356 Pre-A Coupe (Project);Open Roads, March North American Offering: Online Only 2021;RM Sotheby's;SOLD;88000;USD;2021-03-17;losabgleich;;
 1975;258;;911 Turbo (Type 930);Open Roads, March North American Offering: Online Only 2021;RM Sotheby's;HIGH BID;170000;USD;2021-03-17;losabgleich;;
 2001;265;;911 Turbo (Type 996);Open Roads, March North American Offering: Online Only 2021;RM Sotheby's;SOLD;46200;USD;2021-03-17;losabgleich;;
 2002;10;NR;Boxster;Glendale 2021;Mecum;SOLD;16500;USD;2021-03-19;losabgleich;;
@@ -5667,6 +5718,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1996;1371.1;NR;911 Turbo (Type 993);Scottsdale 2021;Barrett-Jackson;SOLD;170500;USD;2021-03-23;app;;
 2016;1373.1;NR;911 GT3 RS (Type 991.2);Scottsdale 2021;Barrett-Jackson;SOLD;242000;USD;2021-03-23;app;;
 1999;352;NR;Boxster;Scottsdale 2021;Barrett-Jackson;SOLD;12650;USD;2021-03-23;app;;
+1953;403;NR;[Allgaier-Porsche] Tractor;Scottsdale 2021;Barrett-Jackson;SOLD;55000;USD;2021-03-23;app;;
 1999;403.1;NR;911 Carrera 4 (Type 996);Scottsdale 2021;Barrett-Jackson;SOLD;40700;USD;2021-03-23;app;;
 1977;414;NR;911S Targa;Scottsdale 2021;Barrett-Jackson;SOLD;46200;USD;2021-03-23;app;;
 1977;685.1;NR;911 Cabriolet Slantnose Conversion;Scottsdale 2021;Barrett-Jackson;SOLD;36300;USD;2021-03-23;app;;
@@ -5844,6 +5896,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;144;;911 Carrera 2.7 RS Touring;Monaco 2021;Artcurial Motorcars;SOLD;470960;EUR;2021-07-19;losabgleich;;
 1973;145;;911 Carrera 2.8 RSR;Monaco 2021;Artcurial Motorcars;HIGH BID;1340000;EUR;2021-07-19;losabgleich;;
 1980;197;;911SC Retro Rod by Julia 911;Monaco 2021;Artcurial Motorcars;HIGH BID;;;2021-07-19;losabgleich;;
+1953;198;;356 Pre-A 1500 Super Coupe;Monaco 2021;Artcurial Motorcars;HIGH BID;140000;EUR;2021-07-19;losabgleich;;
 1970;221;NR;914/6;Monaco 2021;Artcurial Motorcars;HIGH BID;;;2021-07-19;losabgleich;;
 1975;224;;911 Turbo (Type 930);Monaco 2021;Artcurial Motorcars;HIGH BID;200000;EUR;2021-07-19;losabgleich;;
 2000;225;;911 Turbo (Type 996);Monaco 2021;Artcurial Motorcars;HIGH BID;;;2021-07-19;losabgleich;;
@@ -5901,17 +5954,20 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1974;53115;;911 Carerra;Mohr Imports Monterey Car Week Collection 2021;Bring a Trailer;SOLD;95000;USD;2021-08-10;app;;
 1988;211;;911 Turbo Slantnose (Type 930);Monterey 2021;RM Sotheby's;SOLD;254800;USD;2021-08-12;losabgleich;;
 1988;212;;911 Turbo Cabriolet Slantnose (Type 930);Monterey 2021;RM Sotheby's;SOLD;285500;USD;2021-08-12;losabgleich;;
+1951;214;;356 Pre-A Coupe;Monterey 2021;RM Sotheby's;SOLD;456000;USD;2021-08-12;losabgleich;;
 1986;219;;962;Monterey 2021;RM Sotheby's;HIGH BID;800000;USD;2021-08-12;losabgleich;;
 1968;220;;911 Targa 'Soft Window';Monterey 2021;RM Sotheby's;SOLD;257600;USD;2021-08-12;losabgleich;;
 1956;227;;356 A 1500 GS Carrera Coupe;Monterey 2021;RM Sotheby's;SOLD;472500;USD;2021-08-12;losabgleich;;
 1955;230;;550 Spyder;Monterey 2021;RM Sotheby's;HIGH BID;2900000;USD;2021-08-12;losabgleich;;
 1990;232;;RUF BTR Carrera 4 (Type 964);Monterey 2021;RM Sotheby's;SOLD;218400;USD;2021-08-12;losabgleich;;
 1955;233;;356 Pre-A 1500 Continental Cabriolet;Monterey 2021;RM Sotheby's;SOLD;368000;USD;2021-08-12;losabgleich;;
+1954;236;;[Glöckler-Porsche] 356 Carrera 1500 Coupe;Monterey 2021;RM Sotheby's;HIGH BID;620000;USD;2021-08-12;losabgleich;;
 1974;239;;911 Carrera 3.0 RSR IROC;Monterey 2021;RM Sotheby's;HIGH BID;1500000;USD;2021-08-12;losabgleich;;
 1971;244;;914/6 'M471';Monterey 2021;RM Sotheby's;SOLD;626500;USD;2021-08-12;losabgleich;;
 1977;262;;935 K3;Monterey 2021;RM Sotheby's;HIGH BID;1400000;USD;2021-08-12;losabgleich;;
 1975;273;NR;911 Turbo (Type 930);Monterey 2021;RM Sotheby's;SOLD;179200;USD;2021-08-12;losabgleich;;
 2015;318;NR;918 Spyder Weissach;Monterey 2021;RM Sotheby's;SOLD;1737500;USD;2021-08-12;losabgleich;;
+1954;325;;356 Pre-A 1500 Super Speedster;Monterey 2021;RM Sotheby's;SOLD;687000;USD;2021-08-12;losabgleich;;
 1970;328;;917K;Monterey 2021;RM Sotheby's;HIGH BID;15000000;USD;2021-08-12;losabgleich;;
 1987;330;NR;911 Turbo Cabriolet (Type 930);Monterey 2021;RM Sotheby's;SOLD;179200;USD;2021-08-12;losabgleich;;
 1992;334;;911 Carrera RS N/GT (Type 964);Monterey 2021;RM Sotheby's;SOLD;357000;USD;2021-08-12;losabgleich;;
@@ -6110,6 +6166,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1990;26;NR;911 Carrera 2 (Type 964) 'Hot Rod' by Tim Streit;Automobiles sur les Champs 2021;Artcurial Motorcars;HIGH BID;;;2021-10-24;losabgleich;;
 1992;50;;911 Carrera RS (Type 964);Automobiles sur les Champs 2021;Artcurial Motorcars;HIGH BID;100000;EUR;2021-10-24;losabgleich;;
 1980;77;;911SC Weissach Edition;Automobiles sur les Champs 2021;Artcurial Motorcars;HIGH BID;48000;EUR;2021-10-24;losabgleich;;
+1954;5;;356 Pre-A 1500 Speedster;Icons of Excellence & Haute Luxury 2021;RM Sotheby's;HIGH BID;450000;USD;2021-10-24;manuell;;
 1965;13;NR;356 C 1600 Coupe;Greenwich 2021;Bonhams;SOLD;78400;USD;2021-10-25;app;;
 2008;42;NR;911 GT3 RS (Type 997.1);Greenwich 2021;Bonhams;SOLD;313000;USD;2021-10-25;app;;
 2019;3;NR;911 GT3 RS (Type 991.2) 'MR Kit';Online: Collector Car Auction TOKYO, Collection No. 6 2021;BINGO (BH Auction Co.);HIGH BID;;;2021-10-31;app;JP;Markt JP: nicht im Marktwert
@@ -6255,6 +6312,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1968;1551;NR;912 'Competition Prepared';Scottsdale 2022;Barrett-Jackson;SOLD;31900;USD;2022-01-24;app;;
 2004;1551.1;NR;911 Carrera 4S Cabriolet (Type 996);Scottsdale 2022;Barrett-Jackson;SOLD;47300;USD;2022-01-24;app;;
 2008;1552;NR;Cayenne GTS Custom 'Overland Prepared';Scottsdale 2022;Barrett-Jackson;SOLD;55000;USD;2022-01-24;app;;
+1953;1563.1;NR;[Allgaier-Porsche] Tractor;Scottsdale 2022;Barrett-Jackson;SOLD;33000;USD;2022-01-24;app;;
 1979;1601.1;NR;911 Turbo (Type 930) Custom;Scottsdale 2022;Barrett-Jackson;SOLD;132000;USD;2022-01-24;app;;
 2004;165;NR;911 Carrera Cabriolet (Type 996);Scottsdale 2022;Barrett-Jackson;SOLD;30250;USD;2022-01-24;app;;
 1999;181;NR;911 Carrera (Type 996);Scottsdale 2022;Barrett-Jackson;SOLD;31350;USD;2022-01-24;app;;
@@ -6283,6 +6341,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1988;32;;911 Carrera Cabriolet;Scottsdale 2022;Bonhams;SOLD;72800;USD;2022-01-27;losabgleich;;
 2009;38;;911 Turbo (Type 997.1);Scottsdale 2022;Bonhams;SOLD;95200;USD;2022-01-27;losabgleich;;
 1996;47;NR;911 Carrera Cabriolet (Type 993);Scottsdale 2022;Bonhams;SOLD;89600;USD;2022-01-27;losabgleich;;
+1954;54;;356 Pre-A 1500 Coupe;Scottsdale 2022;Bonhams;SOLD;257600;USD;2022-01-27;losabgleich;;
 1978;73;;911 Turbo (Type 930);Scottsdale 2022;Bonhams;SOLD;134400;USD;2022-01-27;losabgleich;;
 1989;79;NR;911 Speedster;Scottsdale 2022;Bonhams;SOLD;252000;USD;2022-01-27;losabgleich;;
 1989;89;NR;911 Carrera;Scottsdale 2022;Bonhams;SOLD;81760;USD;2022-01-27;losabgleich;;
@@ -6305,6 +6364,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1987;149;;959 Komfort;Scottsdale 2022;RM Sotheby's;SOLD;1600000;USD;2022-01-27;app;;
 1957;151;;356 A 1600 Speedster;Scottsdale 2022;RM Sotheby's;SOLD;401000;USD;2022-01-27;app;;
 2011;154;;911 GT2 RS (Type 997.2);Scottsdale 2022;RM Sotheby's;SOLD;687000;USD;2022-01-27;app;;
+1951;163;;356 Pre-A Coupe;Scottsdale 2022;RM Sotheby's;SOLD;527500;USD;2022-01-27;app;;
 1973;164;;911S;Scottsdale 2022;RM Sotheby's;WITHDRAWN;;;2022-01-27;app;;
 2014;174;NR;911 GT America (Type 991.1);Scottsdale 2022;RM Sotheby's;SOLD;123200;USD;2022-01-27;app;;
 1957;21;NR;356 A Speedster;Geared Online: Scottsdale Edition 2022;Gooding & Co.;SOLD;247500;USD;2022-01-28;losabgleich;;
@@ -6439,6 +6499,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1959;101;NR;[Porsche-Diesel] Standard 218 Tractor;Paris 2022;Artcurial Motorcars;SOLD;25520;EUR;2022-03-18;losabgleich;;
 1956;199;NR;[Porsche-Diesel] A111 Tractor;Paris 2022;Artcurial Motorcars;SOLD;17400;EUR;2022-03-18;losabgleich;;
 1961;200;;356 B Super 90 Roadster;Paris 2022;Artcurial Motorcars;SOLD;104400;EUR;2022-03-18;losabgleich;;
+1950;201;;356 Pre-A Coupe;Paris 2022;Artcurial Motorcars;SOLD;415000;EUR;2022-03-18;losabgleich;;
 1974;202;;911 Carrera 3.0 RSR;Paris 2022;Artcurial Motorcars;HIGH BID;1600000;EUR;2022-03-18;losabgleich;;
 1968;203;;907 'Short-Tail, ex-Works';Paris 2022;Artcurial Motorcars;SOLD;4292000;EUR;2022-03-18;losabgleich;;
 2016;220;;911R (Type 991.2);Paris 2022;Artcurial Motorcars;SOLD;336400;EUR;2022-03-18;losabgleich;;
@@ -6505,6 +6566,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1989;140;;911 Turbo Cabriolet (Type 930);Monaco 2022;RM Sotheby's;HIGH BID;140000;EUR;2022-05-14;losabgleich;;
 1976;147;;911 Turbo (Type 930);Monaco 2022;RM Sotheby's;SOLD;303125;EUR;2022-05-14;losabgleich;;
 1973;172;;911 Carrera 2.7 RS Lightweight;Monaco 2022;RM Sotheby's;SOLD;1287500;EUR;2022-05-14;losabgleich;;
+1952;179;;356 Pre-A Cabriolet 'Split-Window' by Gläser;Monaco 2022;RM Sotheby's;HIGH BID;400000;EUR;2022-05-14;losabgleich;;
 2008;180;;911 GT3 RS (Type 997.1);Monaco 2022;RM Sotheby's;HIGH BID;115000;EUR;2022-05-14;losabgleich;;
 2004;102;NR;Boxster;Indianapolis 2022;Mecum;SOLD;12100;USD;2022-05-20;losabgleich;;
 2019;106;;911 Speedster (Type 991.2);Indianapolis 2022;Mecum;SOLD;412500;USD;2022-05-20;losabgleich;;
@@ -6695,6 +6757,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1988;39;;911 Carrera;Monterey 2022;Bonhams;SOLD;113120;USD;2022-08-19;losabgleich;;
 1972;43;;911T;Monterey 2022;Bonhams;SOLD;252000;USD;2022-08-19;losabgleich;;
 1968;47;NR;912;Monterey 2022;Bonhams;SOLD;70000;USD;2022-08-19;losabgleich;;
+1953;59;;356 Pre-A Coupe;Monterey 2022;Bonhams;SOLD;183680;USD;2022-08-19;losabgleich;;
 1980;61;;911SC Targa;Monterey 2022;Bonhams;SOLD;84000;USD;2022-08-19;losabgleich;;
 1974;64;;911 Carrera 2.7;Monterey 2022;Bonhams;SOLD;117600;USD;2022-08-19;losabgleich;;
 1966;66;;911;Monterey 2022;Bonhams;SOLD;224000;USD;2022-08-19;losabgleich;;
@@ -6718,6 +6781,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;167;NR;911S;Monterey 2022;Gooding & Co.;SOLD;246400;USD;2022-08-20;losabgleich;;
 1976;17;;934;Monterey 2022;Gooding & Co.;SOLD;1275000;USD;2022-08-20;losabgleich;;
 2005;171;NR;911 Turbo S (Type 996);Monterey 2022;Gooding & Co.;SOLD;229600;USD;2022-08-20;losabgleich;;
+1951;173;;356 Pre-A Coupe;Monterey 2022;Gooding & Co.;HIGH BID;990000;USD;2022-08-20;losabgleich;;
 1956;177;;356 A Speedster;Monterey 2022;Gooding & Co.;SOLD;522000;USD;2022-08-20;losabgleich;;
 1958;19;;356 A 1500 GS/GT Carrera Speedster;Monterey 2022;Gooding & Co.;SOLD;1325000;USD;2022-08-20;losabgleich;;
 1989;22;;911 Carrera Clubsport;Monterey 2022;Gooding & Co.;SOLD;467000;USD;2022-08-20;losabgleich;;
@@ -6759,6 +6823,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2015;79;;911 Carrera 4 GTS (Type 991.1);Monterey 2022;Mecum;HIGH BID;110000;USD;2022-08-20;losabgleich;;
 2018;86;;Panamera Turbo S Hybrid;Monterey 2022;Mecum;HIGH BID;120000;USD;2022-08-20;losabgleich;;
 1964;87.1;NR;356 C Coupe;Monterey 2022;Mecum;SOLD;104500;USD;2022-08-20;losabgleich;;
+1952;88;;356 Pre-A 1500 Super Cabriolet;Monterey 2022;Mecum;HIGH BID;200000;USD;2022-08-20;losabgleich;;
 1975;89;;911 Turbo (Type 930);Monterey 2022;Mecum;HIGH BID;150000;USD;2022-08-20;losabgleich;;
 1994;90;;911 Speedster (Type 964);Monterey 2022;Mecum;HIGH BID;175000;USD;2022-08-20;losabgleich;;
 1976;426;;911 Turbo (Type 930);Silverstone Classic 2022;Silverstone Auctions;SOLD;123750;GBP;2022-08-27;losabgleich;;
@@ -6807,6 +6872,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1967;332;;911 Targa 'Soft Window';Goodwood: Revival 2022;Bonhams;SOLD;172500;GBP;2022-09-17;losabgleich;;
 1964;351;;904 Carrera GTS;Goodwood: Revival 2022;Bonhams;SOLD;614200;GBP;2022-09-17;losabgleich;;
 1973;396;;911 Carrera 2.8 RSR Tribute;Goodwood: Revival 2022;Bonhams;SOLD;172500;GBP;2022-09-17;losabgleich;;
+1954;400;;356 Pre-A 1500 Coupe Outlaw;Goodwood: Revival 2022;Bonhams;SOLD;184000;GBP;2022-09-17;losabgleich;;
 1965;408;;911 'Competition Prepared, FIA HTP';Goodwood: Revival 2022;Bonhams;SOLD;166750;GBP;2022-09-17;losabgleich;;
 1975;3140;NR;911S Targa;Gene Ponder Collection 2022;RM Sotheby's;SOLD;68750;USD;2022-09-22;losabgleich;;
 1956;3212;NR;356 A 1600 Speedster;Gene Ponder Collection 2022;RM Sotheby's;SOLD;357500;USD;2022-09-22;losabgleich;;
@@ -7113,6 +7179,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1989;131;;911 Turbo (Type 930);Scottsdale 2023;Bonhams;HIGH BID;200000;USD;2023-01-27;losabgleich;;
 1977;136;;911S Targa;Scottsdale 2023;Bonhams;SOLD;98000;USD;2023-01-27;losabgleich;;
 1964;142;;356 SC Coupe;Scottsdale 2023;Bonhams;SOLD;128800;USD;2023-01-27;losabgleich;;
+1954;147;;356 Pre-A 1500 Coupe;Scottsdale 2023;Bonhams;SOLD;295400;USD;2023-01-27;losabgleich;;
 1964;154;;356 C Coupe Outlaw;Scottsdale 2023;Bonhams;SOLD;136640;USD;2023-01-27;losabgleich;;
 2005;160;;Carrera GT;Scottsdale 2023;Bonhams;SOLD;1033500;USD;2023-01-27;losabgleich;;
 1966;161;;911;Scottsdale 2023;Bonhams;HIGH BID;145000;USD;2023-01-27;losabgleich;;
@@ -7122,6 +7189,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1966;184;;911 Outlaw 'ex-Magnus Walker';Scottsdale 2023;Bonhams;SOLD;184800;USD;2023-01-27;losabgleich;;
 1972;189;;911S Targa;Scottsdale 2023;Bonhams;SOLD;218400;USD;2023-01-27;losabgleich;;
 1989;192;;911 Turbo Cabriolet (Type 930);Scottsdale 2023;Bonhams;SOLD;176400;USD;2023-01-27;losabgleich;;
+1952;194;;356 Pre-A 1500 Super Cabriolet;Scottsdale 2023;Bonhams;HIGH BID;180000;USD;2023-01-27;losabgleich;;
 1963;201;;356 B 1600 Super Cabriolet;Scottsdale 2023;Bonhams;SOLD;217280;USD;2023-01-27;losabgleich;;
 1955;205;;356 Pre-A 1500 Continental Coupe;Scottsdale 2023;Bonhams;SOLD;221200;USD;2023-01-27;losabgleich;;
 1987;207;;911 Carrera Cabriolet;Scottsdale 2023;Bonhams;SOLD;61600;USD;2023-01-27;losabgleich;;
@@ -7137,6 +7205,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1995;503;NR;968 Club Sport;Paris 2023;Bonhams;SOLD;34500;EUR;2023-02-01;losabgleich;;
 1996;516;NR;911 Turbo (Type 993);Paris 2023;Bonhams;SOLD;126500;EUR;2023-02-01;losabgleich;;
 1960;521;;356 B 1600 Super Cabriolet;Paris 2023;Bonhams;SOLD;132250;EUR;2023-02-01;losabgleich;;
+1954;525;;356 Pre-A 1500 Coupe;Paris 2023;Bonhams;SOLD;149500;EUR;2023-02-01;losabgleich;;
 1996;528;NR;911 Turbo (Type 993);Paris 2023;Bonhams;SOLD;178250;EUR;2023-02-01;losabgleich;;
 1991;529;NR;911 Turbo 3.3 (Type 964);Paris 2023;Bonhams;SOLD;172500;EUR;2023-02-01;losabgleich;;
 1977;530;NR;911 Turbo (Type 930);Paris 2023;Bonhams;SOLD;166750;EUR;2023-02-01;losabgleich;;
@@ -7165,10 +7234,12 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;120;;911 Carrera 2.7 RS Touring;Paris 2023;RM Sotheby's;SOLD;477500;EUR;2023-02-01;losabgleich;;
 1976;124;;911 Carrera 3.0;Paris 2023;RM Sotheby's;HIGH BID;130000;EUR;2023-02-01;losabgleich;;
 2000;126;;911 Turbo (Type 996);Paris 2023;RM Sotheby's;SOLD;166750;EUR;2023-02-01;losabgleich;;
+1951;129;;356 Pre-A Coupe 'Split-Window';Paris 2023;RM Sotheby's;HIGH BID;400000;EUR;2023-02-01;losabgleich;;
 1995;130;;911 Carrera RS 3.8 RUF Turbo R (Type 993);Paris 2023;RM Sotheby's;SOLD;359375;EUR;2023-02-01;losabgleich;;
 1965;140;NR;911;Paris 2023;RM Sotheby's;SOLD;126500;EUR;2023-02-01;losabgleich;;
 1995;142;;911 Carrera RS 3.8 Clubsport (Type 993);Paris 2023;RM Sotheby's;HIGH BID;215000;EUR;2023-02-01;losabgleich;;
 1964;160;;904 Carrera GTS;Paris 2023;RM Sotheby's;HIGH BID;1800000;EUR;2023-02-01;losabgleich;;
+1953;164;NR;356 Pre-A Coupe (Project);Paris 2023;RM Sotheby's;SOLD;218500;EUR;2023-02-01;losabgleich;;
 1993;174;;928 GTS;Paris 2023;RM Sotheby's;SOLD;135700;EUR;2023-02-01;losabgleich;;
 1989;187;;911 Turbo Slantnose (Type 930);Paris 2023;RM Sotheby's;SOLD;190000;EUR;2023-02-01;losabgleich;;
 2000;189;;911 GT3 R (Type 996);Paris 2023;RM Sotheby's;SOLD;195500;EUR;2023-02-01;losabgleich;;
@@ -7209,6 +7280,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1970;63;NR;911E;Paris 2023;Artcurial Motorcars;SOLD;92800;EUR;2023-02-03;losabgleich;;
 1968;64;NR;911T Targa 'Soft Window';Paris 2023;Artcurial Motorcars;SOLD;104400;EUR;2023-02-03;losabgleich;;
 1989;65;;911 Speedster;Paris 2023;Artcurial Motorcars;SOLD;168200;EUR;2023-02-03;losabgleich;;
+1951;73;;356 Pre-A 1500 Coupe;Paris 2023;Artcurial Motorcars;HIGH BID;240000;EUR;2023-02-03;losabgleich;;
 1972;74;;911S Targa;Paris 2023;Artcurial Motorcars;HIGH BID;100000;EUR;2023-02-03;losabgleich;;
 1980;75;;911SC 'Rally Prepared';Paris 2023;Artcurial Motorcars;HIGH BID;115000;EUR;2023-02-03;losabgleich;;
 2005;76;;Carrera GT;Paris 2023;Artcurial Motorcars;HIGH BID;990000;EUR;2023-02-03;losabgleich;;
@@ -7241,6 +7313,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;108;;911T Targa;Amelia Island 2023;Bonhams;SOLD;131040;USD;2023-03-02;losabgleich;;
 1978;115;NR;911SC Targa;Amelia Island 2023;Bonhams;SOLD;47040;USD;2023-03-02;losabgleich;;
 1982;122;;911 Turbo (Type 930) 3.5 by Andial;Amelia Island 2023;Bonhams;HIGH BID;105000;USD;2023-03-02;losabgleich;;
+1951;139;;356 Pre-A 1300 Cabriolet;Amelia Island 2023;Bonhams;SOLD;285000;USD;2023-03-02;losabgleich;;
 1988;152;NR;911 Carrera Cabriolet;Amelia Island 2023;Bonhams;SOLD;64400;USD;2023-03-02;losabgleich;;
 2022;154;;911 Targa 4S (Type 992.1);Amelia Island 2023;Bonhams;SOLD;156800;USD;2023-03-02;losabgleich;;
 1990;179;NR;911 Carrera 4 Cabriolet (Type 964);Amelia Island 2023;Bonhams;SOLD;56000;USD;2023-03-02;losabgleich;;
@@ -7289,6 +7362,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1997;193;;911 Turbo (Type 993);Amelia Island 2023;Broad Arrow Auctions;SOLD;246400;USD;2023-03-04;losabgleich;;
 1964;194;;356 C Carrera 2 Coupe;Amelia Island 2023;Broad Arrow Auctions;HIGH BID;425000;USD;2023-03-04;losabgleich;;
 2016;199;;911R (Type 991.2);Amelia Island 2023;Broad Arrow Auctions;SOLD;500000;USD;2023-03-04;losabgleich;;
+1953;201;;356 Pre-A Coupe;Amelia Island 2023;Broad Arrow Auctions;SOLD;201600;USD;2023-03-04;losabgleich;;
 1987;202;;911 Turbo RUF BTR (Type 930);Amelia Island 2023;Broad Arrow Auctions;SOLD;268800;USD;2023-03-04;losabgleich;;
 1979;122;NR;911 Turbo (Type 930);Amelia Island 2023;RM Sotheby's;SOLD;252000;USD;2023-03-04;losabgleich;;
 2018;124;NR;911 GT3 Touring (Type 991.2);Amelia Island 2023;RM Sotheby's;SOLD;240800;USD;2023-03-04;losabgleich;;
@@ -7481,6 +7555,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2003;246;NR;911 Turbo (Type 996);Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;SOLD;112000;USD;2023-06-01;losabgleich;;
 2005;247;;Carrera GT;Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;SOLD;1028000;USD;2023-06-01;losabgleich;;
 1988;248;;944 Turbo Rothmans Cup;Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;SOLD;196000;USD;2023-06-01;losabgleich;;
+1953;249;;356 Pre-A 1500 Coupe;Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;SOLD;224000;USD;2023-06-01;losabgleich;;
 1988;250;;911 Turbo (Type 930);Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;HIGH BID;125000;USD;2023-06-01;losabgleich;;
 1967;251;;910;Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;HIGH BID;2300000;USD;2023-06-01;losabgleich;;
 2011;252;NR;911 GT3 RS 4.0 (Type 997.2);Porsche: 75th Anniversary Sale 2023;Broad Arrow Auctions;SOLD;637500;USD;2023-06-01;losabgleich;;
@@ -7609,6 +7684,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2002;203;NR;911 Turbo (Type 996);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;74750;EUR;2023-07-12;losabgleich;;
 2017;204;NR;911 Carrera S Endurance Racing Edition (Type 991.2);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;105800;EUR;2023-07-12;losabgleich;;
 1993;206;NR;911 Turbo 3.6 (Type 964);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;320000;EUR;2023-07-12;losabgleich;;
+1953;207;NR;356 Pre-A 1500 Cabriolet;The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;178250;EUR;2023-07-12;losabgleich;;
 1978;208;NR;911 Turbo (Type 930);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;74750;EUR;2023-07-12;losabgleich;;
 1996;209;NR;911 Turbo 'WLS 2' (Type 993);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;224250;EUR;2023-07-12;losabgleich;;
 1968;210;NR;911T Targa 'Soft-Window';The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;94300;EUR;2023-07-12;losabgleich;;
@@ -7629,6 +7705,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2010;226;NR;911 GT2 RS (Type 997.2);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;421250;EUR;2023-07-12;losabgleich;;
 1991;227;NR;911 Targa (Type 964);The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;132250;EUR;2023-07-12;losabgleich;;
 1960;228;NR;356 B Super 90 Roadster;The Carrera Collection: Italy 2023;RM Sotheby's;SOLD;172500;EUR;2023-07-12;losabgleich;;
+1954;218;;356 Pre-A 1500 Cabriolet;Goodwood: Festival of Speed 2023;Bonhams;SOLD;287500;GBP;2023-07-14;losabgleich;;
 2014;223;NR;911 Carrera S 50th Anniversary Edition (Type 991.1);Goodwood: Festival of Speed 2023;Bonhams;SOLD;78200;GBP;2023-07-14;losabgleich;;
 1971;229;;911 'S/T Competition Prepared';Goodwood: Festival of Speed 2023;Bonhams;HIGH BID;95000;GBP;2023-07-14;losabgleich;;
 2017;249;;911 Carrera S Endurance Racing Edition (Type 991.2);Goodwood: Festival of Speed 2023;Bonhams;HIGH BID;82000;GBP;2023-07-14;losabgleich;;
@@ -7696,6 +7773,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1992;212;NR;911 Carrera RS (Type 964);Monterey 2023;RM Sotheby's;SOLD;500000;USD;2023-08-17;losabgleich;;
 1974;223;NR;911 Carrera 2.7;Monterey 2023;RM Sotheby's;SOLD;434000;USD;2023-08-17;losabgleich;;
 1972;227;;911 Carrera RS 2.7 'Development Car';Monterey 2023;RM Sotheby's;SOLD;758500;USD;2023-08-17;losabgleich;;
+1953;229;NR;356 Pre-A 1500 Cabriolet;Monterey 2023;RM Sotheby's;SOLD;246400;USD;2023-08-17;losabgleich;;
 1994;231;NR;911 Speedster (Type 964);Monterey 2023;RM Sotheby's;SOLD;246400;USD;2023-08-17;losabgleich;;
 1995;232;;911 Turbo Cabriolet (Type 993);Monterey 2023;RM Sotheby's;HIGH BID;850000;USD;2023-08-17;losabgleich;;
 2019;233;;935 (Type 991.2);Monterey 2023;RM Sotheby's;SOLD;1600000;USD;2023-08-17;losabgleich;;
@@ -7744,6 +7822,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1975;47;;911 Carrera 3.0 RSR;Monterey 2023;Gooding & Co.;HIGH BID;1550000;USD;2023-08-18;losabgleich;;
 1967;58;NR;911S Soft-Window Targa;Monterey 2023;Gooding & Co.;WITHDRAWN;;;2023-08-18;losabgleich;;
 2022;6;NR;911 GT3 Touring (Type 991.2);Monterey 2023;Gooding & Co.;SOLD;368000;USD;2023-08-18;losabgleich;;
+1953;63;;356 Pre-A 1500 Coupe;Monterey 2023;Gooding & Co.;HIGH BID;230000;USD;2023-08-18;losabgleich;;
 1962;100;;356B 1600 S Cabriolet;Monterey 2023;Mecum;SOLD;132000;USD;2023-08-18;losabgleich;;
 1963;101;;356C Coupe;Monterey 2023;Mecum;SOLD;91300;USD;2023-08-18;losabgleich;;
 1970;102;;914-6;Monterey 2023;Mecum;SOLD;77000;USD;2023-08-18;losabgleich;;
@@ -7761,6 +7840,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2007;169;;911 Turbo (Type 997.1);Monterey 2023;Mecum;SOLD;106700;USD;2023-08-18;losabgleich;;
 2016;176;;Cayman GT4;Monterey 2023;Mecum;SOLD;110000;USD;2023-08-18;losabgleich;;
 1964;21;;356C Coupe;Monterey 2023;Mecum;HIGH BID;75000;USD;2023-08-18;losabgleich;;
+1954;22;;356 Pre-A 1500 Coupe;Monterey 2023;Mecum;HIGH BID;235000;USD;2023-08-18;losabgleich;;
 2012;247;;911 Carrera;Monterey 2023;Mecum;SOLD;82500;USD;2023-08-18;losabgleich;;
 1970;34;;911T;Monterey 2023;Mecum;SOLD;99000;USD;2023-08-18;losabgleich;;
 1971;43;;911T Targa;Monterey 2023;Mecum;HIGH BID;85000;USD;2023-08-18;losabgleich;;
@@ -7968,6 +8048,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1973;139;;911 Carrera 2.7 RS Touring;Munich 2023;RM Sotheby's;SOLD;;;2023-11-25;losabgleich;;
 1957;147;;356 A 1600 Speedster;Munich 2023;RM Sotheby's;HIGH BID;340000;EUR;2023-11-25;losabgleich;;
 2018;161;NR;911 GT2 RS Weissach (Type 991.2);Munich 2023;RM Sotheby's;SOLD;353750;EUR;2023-11-25;losabgleich;;
+1954;173;;356 Pre-A 1500 Cabriolet;Munich 2023;RM Sotheby's;SOLD;212750;EUR;2023-11-25;losabgleich;;
 2002;174;;911 GT3 RS 'European GTP' (Type 996);Munich 2023;RM Sotheby's;HIGH BID;175000;EUR;2023-11-25;losabgleich;;
 1995;38;;911 Carrera 4 (Type 993);November: Online Only 2023;Finarte;HIGH BID;80000;EUR;2023-11-27;app;;
 1977;2106;NR;924 Martini Championship Edition;The White Collection 2023;RM Sotheby's;SOLD;29120;USD;2023-12-01;losabgleich;;
@@ -8024,6 +8105,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2015;2157;;918 Spyder Weissach;The White Collection 2023;RM Sotheby's;SOLD;3937500;USD;2023-12-01;losabgleich;;
 1987;2159;NR;944 Turbo Cup;The White Collection 2023;RM Sotheby's;SOLD;162400;USD;2023-12-01;losabgleich;;
 1978;2160;NR;911SC Martini Championship Edition;The White Collection 2023;RM Sotheby's;SOLD;128800;USD;2023-12-01;losabgleich;;
+1953;2161;NR;356 Pre-A 1500 America Coupe;The White Collection 2023;RM Sotheby's;SOLD;224000;USD;2023-12-01;losabgleich;;
 1959;2162;NR;[Porsche-Diesel] Junior 108 S Tractor;The White Collection 2023;RM Sotheby's;SOLD;58800;USD;2023-12-01;losabgleich;;
 1962;2164;NR;[Porsche-Diesel] Junior 109 Tractor;The White Collection 2023;RM Sotheby's;SOLD;56000;USD;2023-12-01;losabgleich;;
 1999;189;;911 Carrera Convertible;Kansas City 2023;Mecum;SOLD;25300;USD;2023-12-02;losabgleich;;
@@ -8313,6 +8395,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1994;107;NR;968 Cabriolet;Miami 2024;RM Sotheby's;SOLD;78400;USD;2024-03-01;losabgleich;;
 1988;111;NR;911 Carrera Cabriolet;Miami 2024;RM Sotheby's;SOLD;89600;USD;2024-03-01;losabgleich;;
 2019;115;;911 Speedster (Type 991.2);Miami 2024;RM Sotheby's;SOLD;362500;USD;2024-03-01;losabgleich;;
+1954;124;;356 Pre-A Speedster;Miami 2024;RM Sotheby's;SOLD;302000;USD;2024-03-01;losabgleich;;
 1966;128;;906 Carrera 6;Miami 2024;RM Sotheby's;SOLD;2205000;USD;2024-03-01;losabgleich;;
 1968;130;;911 T/R;Miami 2024;RM Sotheby's;SOLD;467000;USD;2024-03-01;losabgleich;;
 2008;135;NR;911 GT2 (Type 997.1);Miami 2024;RM Sotheby's;SOLD;280000;USD;2024-03-01;losabgleich;;
@@ -8457,8 +8540,10 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1996;144;;911 GT2 (Type 993);The Porsche Auction 2024;Broad Arrow Auctions;HIGH BID;1600000;USD;2024-04-27;losabgleich;;
 1969;145;;"908/02 Langheck ""Flunder"" Spyder";The Porsche Auction 2024;Broad Arrow Auctions;HIGH BID;4200000;USD;2024-04-27;losabgleich;;
 1996;146;NR;911 Carrera (Type 993);The Porsche Auction 2024;Broad Arrow Auctions;SOLD;114800;USD;2024-04-27;losabgleich;;
+1952;147;;"356 Pre-A ""Split Window"" 1500 Coupe";The Porsche Auction 2024;Broad Arrow Auctions;SOLD;198800;USD;2024-04-27;losabgleich;;
 1977;148;;911S;The Porsche Auction 2024;Broad Arrow Auctions;HIGH BID;120000;USD;2024-04-27;losabgleich;;
 1970;149;;911 E Coupe;The Porsche Auction 2024;Broad Arrow Auctions;SOLD;134400;USD;2024-04-27;losabgleich;;
+1954;150;;"356 Pre-A ""Knickscheibe"" 1500 Coupe";The Porsche Auction 2024;Broad Arrow Auctions;HIGH BID;180000;USD;2024-04-27;losabgleich;;
 1992;151;;911 Carrera RS (Type 964);The Porsche Auction 2024;Broad Arrow Auctions;HIGH BID;230000;USD;2024-04-27;losabgleich;;
 2012;152;;911 Turbo S (Type 997.2);The Porsche Auction 2024;Broad Arrow Auctions;HIGH BID;190000;USD;2024-04-27;losabgleich;;
 1973;153;;911 E Targa;The Porsche Auction 2024;Broad Arrow Auctions;SOLD;123200;USD;2024-04-27;losabgleich;;
@@ -8705,12 +8790,14 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1961;262;;356 B 1600 Super Cabriolet;Monterey 2024;Broad Arrow Auctions;SOLD;229600;USD;2024-08-14;losabgleich;;
 1964;264;;904 Carrera GTS;Monterey 2024;Broad Arrow Auctions;HIGH BID;2100000;USD;2024-08-14;losabgleich;;
 1996;266;;911 GT2;Monterey 2024;Broad Arrow Auctions;SOLD;1242500;USD;2024-08-14;losabgleich;;
+1954;269;NR;"356 Pre-A ""Knickscheibe"" 1500 Coupe";Monterey 2024;Broad Arrow Auctions;SOLD;173600;USD;2024-08-14;losabgleich;;
 1971;272;;911 S Coupe;Monterey 2024;Broad Arrow Auctions;SOLD;168000;USD;2024-08-14;losabgleich;;
 1997;275;;911 GT1 Rennversion;Monterey 2024;Broad Arrow Auctions;SOLD;7045000;USD;2024-08-14;losabgleich;;
 1989;285;;911 Speedster;Monterey 2024;Broad Arrow Auctions;SOLD;246400;USD;2024-08-14;losabgleich;;
 1973;292;;911 E Targa;Monterey 2024;Broad Arrow Auctions;HIGH BID;160000;USD;2024-08-14;losabgleich;;
 1962;108;NR;356 B 1600 Super Roadster 'Twin Grille';Monterey 2024;RM Sotheby's;SOLD;324000;USD;2024-08-15;losabgleich;;
 1989;111;NR;911 Speedster;Monterey 2024;RM Sotheby's;SOLD;210000;USD;2024-08-15;losabgleich;;
+1954;128;NR;356 Pre-A 1500 Speedster;Monterey 2024;RM Sotheby's;SOLD;412000;USD;2024-08-15;losabgleich;;
 1989;135;NR;911 Turbo Cabriolet Slantnose (Type 930);Monterey 2024;RM Sotheby's;SOLD;291000;USD;2024-08-15;losabgleich;;
 1960;136;NR;356 B 1600 Roadster;Monterey 2024;RM Sotheby's;SOLD;196000;USD;2024-08-15;losabgleich;;
 2005;140;NR;Carrera GT;Monterey 2024;RM Sotheby's;SOLD;1352500;USD;2024-08-15;losabgleich;;
@@ -8747,6 +8834,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1993;119;;964 Carrera RS America;Monterey 2024;Bonhams;SOLD;193200;USD;2024-08-16;losabgleich;;
 1963;120;;356B T6 Super 90 Sunroof Coupe;Monterey 2024;Bonhams;HIGH BID;100000;USD;2024-08-16;losabgleich;;
 1965;121;;911 2.0 Coupe;Monterey 2024;Bonhams;HIGH BID;250000;USD;2024-08-16;losabgleich;;
+1953;136;;356 Pre-A 1500 Super Coupe;Monterey 2024;Bonhams;SOLD;246400;USD;2024-08-16;losabgleich;;
 1955;139;NR;356 Pre-A 1500 Continental Cabriolet;Monterey 2024;Bonhams;SOLD;187600;USD;2024-08-16;losabgleich;;
 2015;142.1;;918 Spyder Weissach;Monterey 2024;Bonhams;HIGH BID;2150000;USD;2024-08-16;losabgleich;;
 1957;145;;356A 1600 Speedster;Monterey 2024;Bonhams;SOLD;472500;USD;2024-08-16;losabgleich;;
@@ -8871,6 +8959,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1996;110;NR;993 Turbo X50 sunroof Coupé;Zoute 2024;Bonhams;SOLD;170000;EUR;2024-10-06;losabgleich;;
 2010;114;NR;997 GT2 RS;Zoute 2024;Bonhams;SOLD;340000;EUR;2024-10-06;losabgleich;;
 2004;119;NR;996.2 GT2;Zoute 2024;Bonhams;SOLD;140000;EUR;2024-10-06;losabgleich;;
+1953;123;NR;356 'Pre-A' 1500 Super Knickscheibe Cabriolet;Zoute 2024;Bonhams;SOLD;180000;EUR;2024-10-06;losabgleich;;
 1996;134;;993 Carrera RS 3.8-litre Coupé;Zoute 2024;Bonhams;SOLD;280000;EUR;2024-10-06;losabgleich;;
 1995;136;NR;928 GTS 'Sunroof' Coupé;Zoute 2024;Bonhams;SOLD;80000;EUR;2024-10-06;losabgleich;;
 1993;153;NR;964 Carrera 2 Works Turbo Look Cabriolet;Zoute 2024;Bonhams;SOLD;115000;EUR;2024-10-06;losabgleich;;
@@ -9059,6 +9148,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1969;127;;911S 'Sunroof Coupe';Scottsdale 2025;Bonhams;HIGH BID;200000;USD;2025-01-25;losabgleich;;
 1960;131;;356B Super 90 Roadster;Scottsdale 2025;Bonhams;HIGH BID;220000;USD;2025-01-25;losabgleich;;
 1978;132;NR;930 3.3 Turbo Coupe;Scottsdale 2025;Bonhams;SOLD;112000;USD;2025-01-25;losabgleich;;
+1954;135;;356 Pre-A 1500 Coupe;Scottsdale 2025;Bonhams;HIGH BID;180000;USD;2025-01-25;losabgleich;;
 1967;140;;911S 2.0 'Soft Window' Targa;Scottsdale 2025;Bonhams;SOLD;280000;USD;2025-01-25;losabgleich;;
 1988;143;NR;911 Carrera 3.2 Cabriolet;Scottsdale 2025;Bonhams;SOLD;47040;USD;2025-01-25;losabgleich;;
 2009;145;NR;911 'Type 997.1' Turbo Cabriolet;Scottsdale 2025;Bonhams;SOLD;67200;USD;2025-01-25;losabgleich;;
@@ -9107,6 +9197,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1971;171;NR;911 S 2.2 Targa;Paris 2025;RM Sotheby's;SOLD;92000;EUR;2025-02-04;losabgleich;;
 1956;173;NR;[Porsche-Diesel] A111 'Junior';Paris 2025;RM Sotheby's;SOLD;21275;EUR;2025-02-04;losabgleich;;
 1986;229;;911 Turbo 'Flat Nose' Coupé;Paris 2025;RM Sotheby's;SOLD;252500;EUR;2025-02-04;losabgleich;;
+1954;234;NR;356 'Pre-A' 1500 Cabriolet;Paris 2025;RM Sotheby's;SOLD;158700;EUR;2025-02-04;losabgleich;;
 1994;255;;911 Turbo 3.6;Paris 2025;RM Sotheby's;SOLD;342500;EUR;2025-02-04;losabgleich;;
 1964;104;NR;356C 1600 Super Coupé;The Grand Palais 2025;Bonhams;SOLD;66700;EUR;2025-02-06;losabgleich;;
 1971;109;NR;911S 2.2-Litre Targa;The Grand Palais 2025;Bonhams;SOLD;109250;EUR;2025-02-06;losabgleich;;
@@ -9120,8 +9211,10 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1962;103;;356 B Carrera 2000 GS;Retromobile 2025;Artcurial Motorcars;SOLD;348000;EUR;2025-02-08;losabgleich;;
 1968;104;;911 S Targa SWB;Retromobile 2025;Artcurial Motorcars;SOLD;168200;EUR;2025-02-08;losabgleich;;
 1967;105;;911 S SWB;Retromobile 2025;Artcurial Motorcars;SOLD;220400;EUR;2025-02-08;losabgleich;;
+1954;106;;356 Pre A 1300;Retromobile 2025;Artcurial Motorcars;SOLD;145000;EUR;2025-02-08;losabgleich;;
 1995;108;;993 Carrera RS;Retromobile 2025;Artcurial Motorcars;HIGH BID;190000;EUR;2025-02-08;losabgleich;;
 1993;109;;964 Turbo 3.6L;Retromobile 2025;Artcurial Motorcars;SOLD;307400;EUR;2025-02-08;losabgleich;;
+1952;27;;356 Pre-A 1300;Retromobile 2025;Artcurial Motorcars;SOLD;417600;EUR;2025-02-08;losabgleich;;
 1956;28;;356 A Speedster 1600;Retromobile 2025;Artcurial Motorcars;SOLD;243600;EUR;2025-02-08;losabgleich;;
 1972;36;NR;911 Carrera 2.7 RS;Retromobile 2025;Artcurial Motorcars;SOLD;406000;EUR;2025-02-08;losabgleich;;
 1957;44;;356 A T1;Retromobile 2025;Artcurial Motorcars;SOLD;156600;EUR;2025-02-08;losabgleich;;
@@ -9181,8 +9274,10 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1997;115;NR;993 Carrera S;Amelia Island 2025;Gooding & Co.;SOLD;246400;USD;2025-03-06;losabgleich;;
 1966;120;NR;911 2.0;Amelia Island 2025;Gooding & Co.;SOLD;156800;USD;2025-03-06;losabgleich;;
 1988;133;;959 Komfort;Amelia Island 2025;Gooding & Co.;SOLD;2205000;USD;2025-03-06;losabgleich;;
+1954;137;NR;356 1500 Coupe;Amelia Island 2025;Gooding & Co.;SOLD;162400;USD;2025-03-06;losabgleich;;
 1997;14;NR;993 Turbo;Amelia Island 2025;Gooding & Co.;SOLD;268800;USD;2025-03-06;losabgleich;;
 1964;140;;356 C Carrera 2 Coupe;Amelia Island 2025;Gooding & Co.;SOLD;511000;USD;2025-03-06;losabgleich;;
+1952;145;NR;356 1500 Super Coupe;Amelia Island 2025;Gooding & Co.;SOLD;235200;USD;2025-03-06;losabgleich;;
 1959;146;;356 A 1600 GS Carrera Deluxe Coupe;Amelia Island 2025;Gooding & Co.;SOLD;401000;USD;2025-03-06;losabgleich;;
 1965;149;NR;356 SC Cabriolet;Amelia Island 2025;Gooding & Co.;SOLD;212800;USD;2025-03-06;losabgleich;;
 1960;153;NR;356 B Roadster;Amelia Island 2025;Gooding & Co.;SOLD;145600;USD;2025-03-06;losabgleich;;
@@ -9316,6 +9411,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1985;183;;911 3.2-Litre Carrera Supersport Targa;Goodwood: Members' Meeting 2025;Bonhams;SOLD;80500;GBP;2025-04-13;app;;
 2009;202;;911 Carrera 4S Cabriolet;Shift Online: Europe and Middle East 2025;RM Sotheby's;SOLD;64900;EUR;2025-04-23;losabgleich;;"App zeigt $; Online-Auktion für Europa, RM nennt dieselbe Zahl in EUR"
 1989;221;NR;911 Carrera 3.2 'Turbo-Look' Cabriolet;Shift Online: Europe and Middle East 2025;RM Sotheby's;SOLD;58300;GBP;2025-04-23;losabgleich;;
+1953;235;;356 Pre-A 1500 Cabriolet;Shift Online: Europe and Middle East 2025;RM Sotheby's;HIGH BID;160000;EUR;2025-04-23;losabgleich;;
 1970;236;NR;911 S 2.2 Coupé;Shift Online: Europe and Middle East 2025;RM Sotheby's;SOLD;81400;EUR;2025-04-23;losabgleich;;"App zeigt $; Online-Auktion für Europa, RM nennt dieselbe Zahl in EUR"
 2000;239;;911 GT3 R 'RSR Specification';Shift Online: Europe and Middle East 2025;RM Sotheby's;HIGH BID;130000;EUR;2025-04-23;losabgleich;;
 1966;246;NR;911 Coupé;Shift Online: Europe and Middle East 2025;RM Sotheby's;SOLD;105600;EUR;2025-04-23;losabgleich;;"App zeigt $; Online-Auktion für Europa, RM nennt dieselbe Zahl in EUR"
@@ -9377,6 +9473,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1991;241;NR;911 Carrera 4 Cabriolet;The Porsche Air/Water Auction 2025;Broad Arrow Auctions;SOLD;91840;USD;2025-04-26;losabgleich;;
 1986;242;NR;944 Turbo;The Porsche Air/Water Auction 2025;Broad Arrow Auctions;SOLD;44800;USD;2025-04-26;losabgleich;;
 2001;244;NR;911 Turbo;The Porsche Air/Water Auction 2025;Broad Arrow Auctions;SOLD;109200;USD;2025-04-26;losabgleich;;
+1948;245;NR;"[Recreation] Type 356/1 ""Gmünd Roadster"" Recreation";The Porsche Air/Water Auction 2025;Broad Arrow Auctions;SOLD;30800;USD;2025-04-26;losabgleich;;
 1975;246;;911 Carrera MFI Coupe;The Porsche Air/Water Auction 2025;Broad Arrow Auctions;HIGH BID;200000;USD;2025-04-26;losabgleich;;
 1988;247;;944 Turbo Cup Toshiba-ISG;The Porsche Air/Water Auction 2025;Broad Arrow Auctions;SOLD;142800;USD;2025-04-26;losabgleich;;
 1996;248;;911 Turbo;The Porsche Air/Water Auction 2025;Broad Arrow Auctions;HIGH BID;240000;USD;2025-04-26;losabgleich;;
@@ -9745,6 +9842,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1989;139;;911 Speedster;Zoute 2025;Broad Arrow Auctions;SOLD;184000;EUR;2025-10-10;losabgleich;;
 1975;156;;911 Turbo;Zoute 2025;Broad Arrow Auctions;HIGH BID;220000;EUR;2025-10-10;losabgleich;;
 1987;167;;959 Komfort;Zoute 2025;Broad Arrow Auctions;HIGH BID;1500000;EUR;2025-10-10;losabgleich;;
+1953;170;NR;"356 Pre-A ""Knickscheibe"" 1500 Cabriolet";Zoute 2025;Broad Arrow Auctions;SOLD;161000;EUR;2025-10-10;losabgleich;;
 2018;178;;911 Turbo S TECHART Gtstreet R Cabriolet;Zoute 2025;Broad Arrow Auctions;HIGH BID;300000;EUR;2025-10-10;losabgleich;;
 1997;179;NR;911 Carrera 4S;Zoute 2025;Broad Arrow Auctions;SOLD;152375;EUR;2025-10-10;losabgleich;;
 1995;180;;911 Carrera RS;Zoute 2025;Broad Arrow Auctions;SOLD;276000;EUR;2025-10-10;losabgleich;;
@@ -10132,6 +10230,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1958;28;NR;356 A Super Coupe;Amelia Island 2026;Gooding & Co.;SOLD;145600;USD;2026-03-05;losabgleich;;
 1965;29;NR;911;Amelia Island 2026;Gooding & Co.;SOLD;168000;USD;2026-03-05;losabgleich;;
 1958;4;NR;356 A Super Coupe;Amelia Island 2026;Gooding & Co.;SOLD;123200;USD;2026-03-05;losabgleich;;
+1951;42;NR;356 Coupe;Amelia Island 2026;Gooding & Co.;SOLD;218400;USD;2026-03-05;losabgleich;;
 1955;45;NR;356 Speedster;Amelia Island 2026;Gooding & Co.;SOLD;145600;USD;2026-03-05;losabgleich;;
 1985;5;NR;911 Carrera 3.2 M491 Coupe;Amelia Island 2026;Gooding & Co.;SOLD;137200;USD;2026-03-05;losabgleich;;
 1965;6;NR;356 C Coupe;Amelia Island 2026;Gooding & Co.;SOLD;86800;USD;2026-03-05;losabgleich;;
@@ -10295,6 +10394,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1965;167;;911 2.2-Litre Coupe;Goodwood: Members' Meeting 2026;Bonhams;SOLD;126500;GBP;2026-04-19;manuell;;
 1998;110;;993 Turbo WLS2;Monaco 2026;Bonhams;WITHDRAWN;;;2026-04-24;losabgleich;;
 1957;116;;356A Speedster;Monaco 2026;Bonhams;SOLD;230000;EUR;2026-04-24;losabgleich;;
+1954;117;;356 Pre-A 1500 Coupe;Monaco 2026;Bonhams;HIGH BID;105000;EUR;2026-04-24;losabgleich;;
 2018;134;;911 Type 991 GT2 RS Weissach;Monaco 2026;Bonhams;SOLD;388125;EUR;2026-04-24;losabgleich;;
 1999;135;;911 Type 996 GT3-R (N-GT);Monaco 2026;Bonhams;HIGH BID;220000;EUR;2026-04-24;losabgleich;;
 1970;115;;914;Auburn Spring 2026;Kruse Auctions;SOLD;35000;USD;2026-04-24;app;;
@@ -10531,6 +10631,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 1994;124;;911 RUF RCT EVO Speedster;The Quail Auction 2026;Broad Arrow Auctions;HIGH BID;725000;USD;2026-08-13;losabgleich;;
 1992;129;;911 Carrera RS;The Quail Auction 2026;Broad Arrow Auctions;SOLD;357000;USD;2026-08-13;losabgleich;;
 1990;131;NR;911 Targa Restomod;The Quail Auction 2026;Broad Arrow Auctions;SOLD;235200;USD;2026-08-13;losabgleich;;
+1951;136;;[Porsche-Sauter] 356 Pre-A Sportwagen Roadster;The Quail Auction 2026;Broad Arrow Auctions;HIGH BID;1500000;USD;2026-08-13;losabgleich;;
 1992;138;;911 Carrera RS Clubsport N/GT;The Quail Auction 2026;Broad Arrow Auctions;SOLD;368000;USD;2026-08-13;losabgleich;;
 1990;139;NR;911 Reimagined;The Quail Auction 2026;Broad Arrow Auctions;SOLD;1600000;USD;2026-08-13;losabgleich;;
 1965;150;;"356 C ""Emory Special"" Cabriolet";The Quail Auction 2026;Broad Arrow Auctions;SOLD;610000;USD;2026-08-13;losabgleich;;
@@ -10620,6 +10721,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2016;320;;911 R;Monterey 2026;RM Sotheby's;SOLD;830000;USD;2026-08-14;losabgleich;;
 1973;321;;911 Carrera RS 2.7 Touring;Monterey 2026;RM Sotheby's;SOLD;896000;USD;2026-08-14;losabgleich;;
 1989;325;;959 Sport;Monterey 2026;RM Sotheby's;SOLD;7045000;USD;2026-08-14;losabgleich;;
+1952;342;;356 America Roadster;Monterey 2026;RM Sotheby's;SOLD;2205000;USD;2026-08-14;losabgleich;;
 1975;343;NR;911 Turbo;Monterey 2026;RM Sotheby's;SOLD;335000;USD;2026-08-14;losabgleich;;
 1955;355;;550 Spyder;Monterey 2026;RM Sotheby's;SOLD;;;2026-08-14;losabgleich;;
 1958;356;;356 A Carrera 1500 GT Speedster;Monterey 2026;RM Sotheby's;SOLD;857500;USD;2026-08-14;losabgleich;;
@@ -10752,6 +10854,7 @@ baujahr;los;nr;modell;auktion;haus;status;preis;waehrung;datum;datum_quelle;land
 2000;143;NR;911 GT3;Zoute Concours 2026;Broad Arrow Auctions;SOLD;138000;EUR;2026-10-09;losabgleich;;
 2005;146;;Carrera GT;Zoute Concours 2026;Broad Arrow Auctions;SOLD;2762500;EUR;2026-10-09;losabgleich;;
 1988;150;;911 Turbo Coupe;Zoute Concours 2026;Broad Arrow Auctions;SOLD;161000;EUR;2026-10-09;losabgleich;;
+1953;155;NR;"356 Pre-A ""Knickscheibe"" 1500 Cabriolet";Zoute Concours 2026;Broad Arrow Auctions;SOLD;172500;EUR;2026-10-09;losabgleich;;
 2016;160;;911 R;Zoute Concours 2026;Broad Arrow Auctions;SOLD;540625;EUR;2026-10-09;losabgleich;;
 2015;173;;918 Spyder Weissach Package;Zoute Concours 2026;Broad Arrow Auctions;SOLD;3212500;EUR;2026-10-09;losabgleich;;
 1995;176;;911 Turbo;Zoute Concours 2026;Broad Arrow Auctions;SOLD;207000;EUR;2026-10-09;losabgleich;;
