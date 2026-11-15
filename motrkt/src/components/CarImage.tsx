@@ -37,8 +37,9 @@ export function CarImage({
     return <CarArt shape={variant.shape} color={fallbackColor ?? variant.color} scene={scene} className={className} label={label} />;
   }
   // Landscape photos (3:2, 4:3, 16:9 …) fill the frame and lose only a strip of sky or road at the top and bottom,
-  // instead of showing side bars. Only unusual formats (portrait, square, panorama) sit whole on a blurred copy.
-  const fills = photo.ratio != null && fillsFrame(photo.ratio, 16 / 9);
+  // instead of showing side bars. Unusual formats (portrait, square, panorama) and tightly framed photos (fit: contain)
+  // sit whole on a blurred copy.
+  const fills = photo.fit !== "contain" && photo.ratio != null && fillsFrame(photo.ratio, 16 / 9);
   return (
     <div className={cn("relative overflow-hidden bg-panel-3", className)}>
       {!fills && <img src={photo.file} alt="" aria-hidden="true" loading={eager ? "eager" : "lazy"} decoding="async" className="absolute inset-0 size-full scale-110 object-cover opacity-60 blur-xl" />}
