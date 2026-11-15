@@ -61,6 +61,13 @@ Cars & Bids (Bot-Schutz), Catawiki, Car & Classic, Coys (sperren Abrufe), AutoSc
 Dorotheum, Aguttes, H&H, Mecum, Hemmings (sperren KI-Crawler ausdrücklich), Barrett-Jackson (nur Google erlaubt).
 Diese Sperren werden nicht umgangen.
 
+**Preise immer mit Aufgeld**, also was der Käufer zahlt – so veröffentlichen es die Häuser (RM Sotheby's, Bonhams,
+Gooding, Broad Arrow, Mecum, Iconic, Artcurial, Aguttes; Osenat ab 2017, davor aus den Verkaufsbedingungen
+aufgeschlagen) und so führt es Hammer Price mit „Include Buyer Premiums“. Bring a Trailer zeigt bei „Sold for“ den
+Zuschlag ohne Käufergebühr; `build.py` schlägt sie auf (5 %, mindestens 250, höchstens 5.000, ab 2024 7.500; Verkäufe
+in EUR/GBP mit denselben Zahlen). Der Zuschlag von der Seite bleibt in `sales.csv` als `zuschlag_original` erhalten.
+Höchstgebote unverkaufter Lose bleiben ohne Aufgeld; ihr Abstand wird als eigener Kanal gemessen.
+
 Jeder Titel wird per `classify.py` genau einer Variante zugeordnet oder verworfen (Umbauten, Replikas, Teile, nicht
 eindeutige Modelle, „Re-Creation“, DP-Umbauten). Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
 

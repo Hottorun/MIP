@@ -36,6 +36,11 @@ out = []
 # --- Bring a Trailer
 seen = set()
 import os, itertools
+def bat_fee(hammer, date):
+    """Bring a Trailer's buyer's fee on top of the "Sold for" price (the hammer price): 5 %, at least 250, at most 5,000
+    (7,500 from 2024; BaT raised the cap in January 2024). The few sales in EUR or GBP get the same figures in their
+    currency. Every other house publishes its results with the buyer's premium, so BaT sales are put on that footing."""
+    return int(min(max(round(hammer * 0.05), 250), 7500 if date >= "2024-01-01" else 5000))
 bat_lines = itertools.chain(*(open(S + "/web/" + fn) for fn in ("bat_porsche.jsonl", "bat_models.jsonl") if os.path.exists(S + "/web/" + fn)))
 for line in bat_lines:
     it = json.loads(line)
@@ -55,9 +60,11 @@ for line in bat_lines:
     m = re.search(r"([A-Z]{3}) \$?([\d,]+)", st)
     if m: cur, amt = m.group(1), int(m.group(2).replace(",", ""))
     if not amt: continue
+    hammer = amt
+    if sold: amt += bat_fee(amt, date)   # price paid; the bid of an unsold lot stays as bid
     eur = round(to_eur(amt, cur, date))
     out.append(dict(variant=vid, title=title, date=date, house="Bring a Trailer", eur=eur if sold else None, bid=eur if not sold else None,
-                    sold=sold, orig=amt, cur=cur, km=km_from_title(title), loc=it.get("country_code") or "", body=body, gear=gear,
+                    sold=sold, orig=amt, hammer=hammer if sold else None, cur=cur, km=km_from_title(title), loc=it.get("country_code") or "", body=body, gear=gear,
                     vin="", lot="BAT-%s" % it["id"], url=it["url"], year=year, src="bat"))
 # --- ultimatecarpage (RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial ...)
 MONTHS = {m: i + 1 for i, m in enumerate(["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])}
