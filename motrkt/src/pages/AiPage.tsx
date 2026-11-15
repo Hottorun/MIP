@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { brands, variantById, variantName, variantShortTitle, variantTitle, variants } from "../data/db";
 import { t } from "../i18n";
 import { getMetrics } from "../data/market";
 import { useStore } from "../state/store";
-import { fetchCopilotStatus, type CopilotStatus } from "../lib/copilot";
 import { Copilot } from "../components/Copilot";
-import { Card, Pill } from "../components/ui";
+import { Card } from "../components/ui";
 
 function promptGroups(name: string, sibling: string | undefined) {
   return [
@@ -41,15 +40,6 @@ export default function AiPage() {
   const { lastVariantId } = useStore();
   const [focus, setFocus] = useState(lastVariantId);
   const [prompt, setPrompt] = useState<{ text: string; nonce: number }>();
-  const [status, setStatus] = useState<CopilotStatus | null>(null);
-
-  useEffect(() => {
-    let alive = true;
-    fetchCopilotStatus().then((s) => alive && setStatus(s));
-    return () => {
-      alive = false;
-    };
-  }, []);
 
   const v = variantById.get(focus) ?? variantById.get(lastVariantId)!;
   const sibling = useMemo(
@@ -89,27 +79,6 @@ export default function AiPage() {
               ))}
             </select>
             <p className="mt-2 text-xs text-muted">{t("Der Co-Pilot bezieht Fragen ohne konkrete Fahrzeugnennung auf dieses Fahrzeug.", "Questions that don’t name a specific car refer to this one.")}</p>
-          </Card>
-
-          <Card title={t("Modus", "Mode")}>
-            {status === null ? (
-              <p className="text-xs text-muted">{t("Verbindung wird geprüft …", "Checking connection …")}</p>
-            ) : status.ai ? (
-              <p className="text-xs leading-relaxed text-muted">
-                <Pill tone="gold" className="mr-1">{t("KI", "AI")}</Pill>
-                {t(
-                  "Ein KI-Sprachmodell beantwortet freie Fragen auf Grundlage unserer Marktdaten. Keine Anlageberatung.",
-                  "An AI language model answers free-form questions based on our market data. Not investment advice.",
-                )}
-              </p>
-            ) : (
-              <p className="text-xs leading-relaxed text-muted">
-                {t(
-                  "Die Antworten werden direkt aus unseren Marktdaten berechnet. Am besten eignen sich die Vorschläge unten. Keine Anlageberatung.",
-                  "Answers are calculated directly from our market data. The suggestions below work best. Not investment advice.",
-                )}
-              </p>
-            )}
           </Card>
 
           <Card title={t("Vorschläge", "Suggestions")}>

@@ -9,7 +9,7 @@ import { cn, date, num, usdRate } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
-import { LogoFull, LogoMark, LogoWordmark } from "./LogoMark";
+import { LogoMark, LogoWordmark } from "./LogoMark";
 import { MODEL_CHANNELS } from "../data/real/model";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
@@ -409,6 +409,8 @@ function LangSwitch({ className }: { className?: string }) {
   );
 }
 
+const footLabel = "text-[11px] tracking-[0.22em] text-faint uppercase";
+
 function Footer() {
   const links = [
     { to: "/", label: t("Start", "Home") },
@@ -420,39 +422,50 @@ function Footer() {
   ];
   return (
     <footer className="mt-16 border-t border-line bg-panel-2">
-      <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.3fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-[1360px] gap-12 px-5 pt-16 pb-12 sm:px-8 md:grid-cols-[1.2fr_1fr_1.3fr] md:gap-16">
         <div>
-          <LogoFull height={60} className="w-fit" />
-          <p className="mt-5 max-w-xs font-serif text-[15px] leading-relaxed text-muted italic">
+          <LogoWordmark height={60} />
+          <span className="mt-6 block h-px w-10 bg-gold" aria-hidden="true" />
+          <p className="mt-5 max-w-[16rem] font-serif text-[16px] leading-relaxed text-muted italic">
             {t("Marktwerte, Verkäufe und Angebote klassischer Sportwagen.", "Market values, sales and listings of classic sports cars.")}
           </p>
         </div>
-        <ul className="grid grid-cols-2 gap-y-2 text-[14px]">
-          {links.map((l) => (
-            <li key={l.label}>
-              <Link to={l.to} className="text-muted hover:text-ink">
-                {l.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div className="space-y-2 text-[13px] leading-relaxed text-muted">
-          <p>
-            {t(
-              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat), umgerechnet zum EZB-Kurs des Verkaufstags. Angebote von Classic Trader und Händlern zeigen wir zum Vergleich, sie zählen nicht zum Marktwert. Keine Anlageberatung.`,
-              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat), converted at the ECB rate on the day of sale. Listings from Classic Trader and dealers are shown for comparison and do not count towards the market value. Not investment advice.`,
-            )}
-          </p>
-          {usdRate() && (
+        <nav aria-label={t("Seiten", "Pages")}>
+          <div className={footLabel}>{t("Entdecken", "Explore")}</div>
+          <ul className="mt-5 grid grid-cols-2 gap-x-8 gap-y-3 text-[14.5px]">
+            {links.map((l) => (
+              <li key={l.label}>
+                <Link to={l.to} className="text-muted transition-colors hover:text-ink">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div>
+          <div className={footLabel}>{t("Daten und Quellen", "Data and sources")}</div>
+          <div className="mt-5 space-y-3 text-[13px] leading-relaxed text-muted">
             <p>
-              Prices are shown in US dollars, converted from euros at the ECB rate of {date(Date.parse(usdRate()!.date))} (
-              {num(usdRate()!.rate, 4)} USD per EUR).
+              {t(
+                `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat), umgerechnet zum EZB-Kurs des Verkaufstags. Angebote von Classic Trader und Händlern zeigen wir zum Vergleich, sie zählen nicht zum Marktwert.`,
+                `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat), converted at the ECB rate on the day of sale. Listings from Classic Trader and dealers are shown for comparison and do not count towards the market value.`,
+              )}
             </p>
-          )}
-          <Link to="/bildnachweise" className="link">
-            {t("Bildnachweise und Quellen", "Image credits and sources")}
-          </Link>
+            {usdRate() && (
+              <p>
+                Prices are shown in US dollars, converted from euros at the ECB rate of {date(Date.parse(usdRate()!.date))} (
+                {num(usdRate()!.rate, 4)} USD per EUR).
+              </p>
+            )}
+            <Link to="/bildnachweise" className="link inline-block">
+              {t("Bildnachweise und Quellen", "Image credits and sources")}
+            </Link>
+          </div>
         </div>
+      </div>
+      <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line px-5 py-6 text-[12.5px] text-faint sm:px-8">
+        <span>© {new Date(AS_OF).getFullYear()} Carbay</span>
+        <span>{t("Keine Anlageberatung.", "Not investment advice.")}</span>
       </div>
     </footer>
   );
