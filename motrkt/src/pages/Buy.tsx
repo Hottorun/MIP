@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Briefcase, ChevronDown, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
+import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
@@ -17,8 +17,8 @@ type SortKey = "deal" | "priceAsc" | "priceDesc" | "newest" | "mileage";
 type SellerFilter = "" | Listing["sellerType"];
 
 const PAGE = 24;
-const filterSelect = "border-b border-line-2 pb-1 focus:border-ink focus:outline-none";
-const filterInput = "border-b border-line-2 bg-transparent pb-1 placeholder:text-faint focus:border-ink focus:outline-none";
+const barSelect = "cursor-pointer bg-transparent text-ink focus:outline-none";
+const barInput = "bg-transparent tabular-nums placeholder:text-faint focus:outline-none";
 
 type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number | null };
 
@@ -72,6 +72,7 @@ export default function Buy() {
   const [maxKm, setMaxKm] = useState("");
   const [seller, setSeller] = useState<SellerFilter>("");
   const [savedOnly, setSavedOnly] = useState(false);
+  const [dealsOnly, setDealsOnly] = useState(false);
   const [text, setText] = useState("");
   const [sort, setSort] = useState<SortKey>("deal");
   const [visible, setVisible] = useState(PAGE);
@@ -94,20 +95,21 @@ export default function Buy() {
     const yTo = Number(yearTo) || Infinity;
     const kMax = Number(maxKm) || Infinity;
     const saved = new Set(savedListings);
-    return all.filter(({ l, v }) => {
+    return all.filter(({ l, v, deal }) => {
       if (variantFilter && v.id !== variantFilter.id) return false;
       if (l.price < pMin || l.price > pMax) return false;
       if (l.year < yFrom || l.year > yTo) return false;
       if (kMax < Infinity && (l.mileage === null || l.mileage > kMax)) return false;
       if (seller && l.sellerType !== seller) return false;
       if (savedOnly && !saved.has(l.id)) return false;
+      if (dealsOnly && !(deal !== null && deal < -0.07)) return false;
       if (q) {
         const hay = `${variantTitle(v)} ${l.id} ${l.vin} ${l.city} ${tr(l.city)} ${l.seller} ${l.color} ${tr(l.color)}`.toLowerCase();
         if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
       }
       return true;
     });
-  }, [all, variantFilter, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, savedListings, text]);
+  }, [all, variantFilter, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, savedListings, text]);
 
   const counts = useMemo(() => {
     const byModel = new Map<string, number>();
@@ -137,7 +139,7 @@ export default function Buy() {
     return out.sort(cmp[sort]);
   }, [base, brand, model, generation, sort]);
 
-  useEffect(() => setVisible(PAGE), [variantParam, brand, model, generation, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, text, sort]);
+  useEffect(() => setVisible(PAGE), [variantParam, brand, model, generation, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, text, sort]);
 
   const selected = selectedId ? all.find((e) => e.l.id === selectedId) : undefined;
   const openListing = (id: string | null) => {
@@ -162,6 +164,7 @@ export default function Buy() {
     setMaxKm("");
     setSeller("");
     setSavedOnly(false);
+    setDealsOnly(false);
     setText("");
     if (variantParam) clearVariant();
   };
@@ -179,107 +182,149 @@ export default function Buy() {
   const modelLabel = (m: Model) => (brand || brands.length === 1 ? modelName(m) : `${brandById.get(m.brandId)!.name} ${modelName(m)}`);
   const brandTotal = brand ? base.filter((e) => e.v.brandId === brand).length : base.length;
   const extraFilters = [yearFrom, yearTo, maxKm, seller].filter(Boolean).length;
-  const anyFilter = Boolean(brand || model || priceMin || priceMax || extraFilters || savedOnly || text || variantParam);
+  const anyFilter = Boolean(brand || model || priceMin || priceMax || extraFilters || savedOnly || dealsOnly || text || variantParam);
+  const marketDeals = all.filter((e) => e.deal !== null && e.deal < -0.07).length;
+  const modelsListed = new Set(all.map((e) => e.v.modelId)).size;
+  const divider = <span aria-hidden className="hidden h-5 w-px bg-line sm:block" />;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Kaufen", "Buy")}</h1>
-        <p className="mt-1 max-w-2xl text-[14px] text-muted">
-          {t(
-            `${num(all.length)} ${showingLive ? "Inserate live von mobile.de" : "Inserate von Classic Trader und Händlerseiten"}, jeweils verglichen mit dem fairen Marktwert für Zustand und Laufleistung.`,
-            `${num(all.length)} ${showingLive ? "live listings from mobile.de" : "listings from Classic Trader and dealer sites"}, each compared with the fair market value for its condition and mileage.`,
+    <div className="space-y-10">
+      <header className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        <div className="max-w-2xl">
+          <div className="text-[11px] font-medium tracking-[0.18em] text-gold uppercase">{t("Marktplatz", "Marketplace")}</div>
+          <h1 className="mt-2 font-display text-[44px] leading-[1.05] sm:text-[56px]">{t("Kaufen", "Buy")}</h1>
+          <p className="mt-3 font-serif text-[17px] leading-relaxed text-muted italic">
+            {t(
+              "Jedes Angebot im Vergleich zum fairen Marktwert, bereinigt um Zustand und Laufleistung.",
+              "Every listing set against its fair market value, adjusted for condition and mileage.",
+            )}
+          </p>
+          <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} sourceLabel={showingLive ? t("Live von mobile.de", "Live from mobile.de") : t("Von Classic Trader und Händlerseiten", "From Classic Trader and dealer sites")} />
+        </div>
+        <dl className="flex divide-x divide-line">
+          {[
+            [t("Inserate", "Listings"), num(all.length)],
+            [t("Unter Marktwert", "Below value"), num(marketDeals)],
+            [t("Modelle", "Models"), num(modelsListed)],
+          ].map(([k, val]) => (
+            <div key={k} className="px-4 first:pl-0 last:pr-0 sm:px-7">
+              <dd className="font-serif text-[30px] leading-none tabular-nums sm:text-[34px]">{val}</dd>
+              <dt className="mt-2 text-[10.5px] tracking-[0.1em] whitespace-nowrap text-muted uppercase sm:text-[11px] sm:tracking-[0.12em]">{k}</dt>
+            </div>
+          ))}
+        </dl>
+      </header>
+
+      <div className="z-20 -mx-5 lg:sticky lg:top-[72px] px-5 py-2 backdrop-blur-sm sm:-mx-8 sm:px-8" style={{ background: "color-mix(in srgb, var(--color-bg) 88%, transparent)" }}>
+        <div className="rounded-[3px] border border-line bg-panel px-4 py-3 text-[14px] shadow-[0_1px_0_rgba(31,29,26,0.03)]">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <div className="flex w-full items-center gap-2 sm:w-64">
+              <Search className="size-4 shrink-0 text-faint" strokeWidth={1.5} />
+              <input className="min-w-0 flex-1 bg-transparent placeholder:text-faint focus:outline-none" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("Modell, Stadt, Händler oder FIN", "Model, city, dealer or VIN")} aria-label={t("Inserate durchsuchen", "Search listings")} />
+              {text && (
+                <button onClick={() => setText("")} className="text-faint hover:text-ink" aria-label={t("Suche leeren", "Clear search")}>
+                  <X className="size-3.5" />
+                </button>
+              )}
+            </div>
+            {divider}
+            {brands.length > 1 && (
+              <select className={barSelect} value={brand} onChange={(e) => { setBrand(e.target.value); pickModel(""); }} aria-label={t("Marke", "Brand")}>
+                <option value="">{t("Alle Marken", "All brands")}</option>
+                {brands.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name}
+                  </option>
+                ))}
+              </select>
+            )}
+            <ModelMenu models={brandModels} counts={counts.byModel} total={brandTotal} value={model} label={modelLabel} onPick={pickModel} />
+            {activeModel && activeModel.generationIds.length > 1 && (
+              <select className={barSelect} value={generation} onChange={(e) => setGeneration(e.target.value)} aria-label="Generation">
+                <option value="">{t(`Alle Generationen (${num(counts.byModel.get(activeModel.id) ?? 0)})`, `All generations (${num(counts.byModel.get(activeModel.id) ?? 0)})`)}</option>
+                {activeModel.generationIds.map((id) => {
+                  const g = generationById.get(id)!;
+                  return (
+                    <option key={id} value={id}>
+                      {`${genName(g)}, ${yearsLabel(g.years)} (${num(counts.byGen.get(id) ?? 0)})`}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+            {divider}
+            <div className="flex items-center gap-2">
+              <input className={cn(barInput, "w-24")} inputMode="numeric" placeholder={t("Preis ab €", "Price from $")} value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} aria-label={t("Preis ab", "Price from")} />
+              <span className="text-faint">–</span>
+              <input className={cn(barInput, "w-24")} inputMode="numeric" placeholder={t(`bis ${curSign()}`, `to ${curSign()}`)} value={priceMax} onChange={(e) => setPriceMax(digits(e.target.value))} aria-label={t("Preis bis", "Price to")} />
+            </div>
+            {divider}
+            <button className="inline-flex items-center gap-1.5 text-muted hover:text-ink" onClick={() => setMoreFilters((m) => !m)} aria-expanded={moreFilters}>
+              <SlidersHorizontal className="size-3.5" strokeWidth={1.5} />
+              {t("Filter", "Filters")}
+              {extraFilters > 0 && <span className="rounded-full bg-ink px-1.5 text-[11px] text-bg tabular-nums">{extraFilters}</span>}
+            </button>
+            <label className="flex items-center gap-2 text-muted lg:ml-auto">
+              <ArrowUpDown className="size-3.5" strokeWidth={1.5} />
+              <select className={cn(barSelect, "text-ink")} value={sort} onChange={(e) => setSort(e.target.value as SortKey)} aria-label={t("Sortierung", "Sort order")}>
+                <option value="deal">{t("Bester Preis zum Marktwert", "Best price vs. market value")}</option>
+                <option value="priceAsc">{t("Preis aufsteigend", "Price, low to high")}</option>
+                <option value="priceDesc">{t("Preis absteigend", "Price, high to low")}</option>
+                <option value="newest">{t("Neueste zuerst", "Newest first")}</option>
+                <option value="mileage">{t("Laufleistung", "Mileage")}</option>
+              </select>
+            </label>
+          </div>
+          {moreFilters && (
+            <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-3">
+              <div className="flex items-center gap-2">
+                <span className="text-muted">{t("Baujahr", "Year")}</span>
+                <input className={cn(barInput, "w-16")} inputMode="numeric" placeholder={t("von", "from")} value={yearFrom} onChange={(e) => setYearFrom(digits(e.target.value).slice(0, 4))} aria-label={t("Baujahr ab", "Year from")} />
+                <span className="text-faint">–</span>
+                <input className={cn(barInput, "w-16")} inputMode="numeric" placeholder={t("bis", "to")} value={yearTo} onChange={(e) => setYearTo(digits(e.target.value).slice(0, 4))} aria-label={t("Baujahr bis", "Year to")} />
+              </div>
+              {divider}
+              <input className={cn(barInput, "w-36")} inputMode="numeric" placeholder={t("Max. Laufleistung km", "Max. mileage km")} value={maxKm} onChange={(e) => setMaxKm(digits(e.target.value))} aria-label={t("Maximale Laufleistung", "Maximum mileage")} />
+              {divider}
+              <select className={barSelect} value={seller} onChange={(e) => setSeller(e.target.value as SellerFilter)} aria-label={t("Verkäufer", "Seller")}>
+                <option value="">{t("Alle Verkäufer", "All sellers")}</option>
+                <option value="Händler">{tr("Händler")}</option>
+                <option value="Privat">{tr("Privat")}</option>
+              </select>
+            </div>
           )}
-        </p>
-        <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} />
+        </div>
       </div>
 
-      <div className="space-y-4 border-y border-line py-5 text-[14px]">
-        <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
-          <div className="flex w-full items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink sm:w-72">
-            <Search className="size-4 text-muted" strokeWidth={1.5} />
-            <input className="min-w-0 flex-1 bg-transparent focus:outline-none" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("Modell, Stadt, Händler oder FIN", "Model, city, dealer or VIN")} aria-label={t("Inserate durchsuchen", "Search listings")} />
-          </div>
-          {brands.length > 1 && (
-            <select className={filterSelect} value={brand} onChange={(e) => { setBrand(e.target.value); pickModel(""); }} aria-label={t("Marke", "Brand")}>
-              <option value="">{t("Alle Marken", "All brands")}</option>
-              {brands.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.name}
-                </option>
-              ))}
-            </select>
-          )}
-          <ModelMenu models={brandModels} counts={counts.byModel} total={brandTotal} value={model} label={modelLabel} onPick={pickModel} />
-          {activeModel && activeModel.generationIds.length > 1 && (
-            <select className={filterSelect} value={generation} onChange={(e) => setGeneration(e.target.value)} aria-label="Generation">
-              <option value="">{t(`Alle Generationen (${num(counts.byModel.get(activeModel.id) ?? 0)})`, `All generations (${num(counts.byModel.get(activeModel.id) ?? 0)})`)}</option>
-              {activeModel.generationIds.map((id) => {
-                const g = generationById.get(id)!;
-                return (
-                  <option key={id} value={id}>
-                    {`${genName(g)}, ${yearsLabel(g.years)} (${num(counts.byGen.get(id) ?? 0)})`}
-                  </option>
-                );
-              })}
-            </select>
-          )}
-          <div className="flex items-center gap-2">
-            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder={t("Preis ab €", "Price from $")} value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} aria-label={t("Preis ab", "Price from")} />
-            <span className="text-faint">{t("bis", "to")}</span>
-            <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder={curSign()} value={priceMax} onChange={(e) => setPriceMax(digits(e.target.value))} aria-label={t("Preis bis", "Price to")} />
-          </div>
-          <button className="text-muted underline-offset-4 hover:text-ink hover:underline" onClick={() => setMoreFilters((m) => !m)} aria-expanded={moreFilters}>
-            {moreFilters ? t("Weniger Filter", "Fewer filters") : t("Weitere Filter", "More filters")}
-            {!moreFilters && extraFilters > 0 && <span className="ml-1 text-ink">({extraFilters})</span>}
-          </button>
-          <label className="flex items-center gap-2 text-muted sm:ml-auto">
-            {t("Sortiert nach", "Sorted by")}
-            <select className={cn(filterSelect, "text-ink")} value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-              <option value="deal">{t("Bester Preis zum Marktwert", "Best price vs. market value")}</option>
-              <option value="priceAsc">{t("Preis aufsteigend", "Price, low to high")}</option>
-              <option value="priceDesc">{t("Preis absteigend", "Price, high to low")}</option>
-              <option value="newest">{t("Neueste zuerst", "Newest first")}</option>
-              <option value="mileage">{t("Laufleistung", "Mileage")}</option>
-            </select>
-          </label>
-        </div>
-        {moreFilters && (
-          <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
-            <div className="flex items-center gap-2">
-              <input className={cn(filterInput, "w-20")} inputMode="numeric" placeholder={t("Baujahr", "Year")} value={yearFrom} onChange={(e) => setYearFrom(digits(e.target.value).slice(0, 4))} aria-label={t("Baujahr ab", "Year from")} />
-              <span className="text-faint">{t("bis", "to")}</span>
-              <input className={cn(filterInput, "w-20")} inputMode="numeric" placeholder={t("Baujahr", "Year")} value={yearTo} onChange={(e) => setYearTo(digits(e.target.value).slice(0, 4))} aria-label={t("Baujahr bis", "Year to")} />
-            </div>
-            <input className={cn(filterInput, "w-36")} inputMode="numeric" placeholder={t("Max. Laufleistung km", "Max. mileage km")} value={maxKm} onChange={(e) => setMaxKm(digits(e.target.value))} aria-label={t("Maximale Laufleistung", "Maximum mileage")} />
-            <select className={filterSelect} value={seller} onChange={(e) => setSeller(e.target.value as SellerFilter)} aria-label={t("Verkäufer", "Seller")}>
-              <option value="">{t("Alle Verkäufer", "All sellers")}</option>
-              <option value="Händler">{tr("Händler")}</option>
-              <option value="Privat">{tr("Privat")}</option>
-            </select>
-          </div>
-        )}
-        <div className="flex flex-wrap items-center gap-2">
-          <button className={cn("chip", savedOnly && "chip-active")} onClick={() => setSavedOnly((m) => !m)}>
-            <Heart className="size-3.5" strokeWidth={1.5} /> {t("Gemerkt", "Saved")} ({savedListings.length})
-          </button>
-          {variantFilter && (
-            <span className="chip chip-active">
-              {variantTitle(variantFilter)}
-              <button onClick={clearVariant} aria-label={t("Variantenfilter entfernen", "Remove variant filter")}>
-                <X className="size-3" />
-              </button>
-            </span>
-          )}
-          <span className="ml-auto text-[13px] text-muted">
-            {t(`${num(filtered.length)} Inserate, davon ${num(topDeals)} deutlich unter Marktwert`, `${num(filtered.length)} listings, ${num(topDeals)} of them well below market value`)}
-          </span>
-          {anyFilter && (
-            <button className="text-[13px] text-muted hover:text-ink" onClick={reset}>
-              {t("Filter zurücksetzen", "Reset filters")}
+      <div className="-mt-4 flex flex-wrap items-center gap-2">
+        <button className={cn("chip", dealsOnly && "chip-active")} onClick={() => setDealsOnly((m) => !m)} aria-pressed={dealsOnly}>
+          <span className={cn("size-1.5 rounded-full", dealsOnly ? "bg-bg" : "bg-up")} /> {t("Unter Marktwert", "Below market value")}
+        </button>
+        <button className={cn("chip", savedOnly && "chip-active")} onClick={() => setSavedOnly((m) => !m)} aria-pressed={savedOnly}>
+          <Heart className="size-3.5" strokeWidth={1.5} fill={savedOnly ? "currentColor" : "none"} /> {t("Gemerkt", "Saved")} <span className="tabular-nums opacity-70">{savedListings.length}</span>
+        </button>
+        {variantFilter && (
+          <span className="chip chip-active">
+            {variantTitle(variantFilter)}
+            <button onClick={clearVariant} aria-label={t("Variantenfilter entfernen", "Remove variant filter")}>
+              <X className="size-3" />
             </button>
+          </span>
+        )}
+        <span className="ml-auto text-[13px] text-muted">
+          <span className="font-serif text-[16px] text-ink tabular-nums">{num(filtered.length)}</span> {t("Inserate", "listings")}
+          {topDeals > 0 && (
+            <>
+              {" · "}
+              <span className="text-up">{t(`${num(topDeals)} unter Marktwert`, `${num(topDeals)} below value`)}</span>
+            </>
           )}
-        </div>
+        </span>
+        {anyFilter && (
+          <button className="text-[13px] text-muted underline-offset-4 hover:text-ink hover:underline" onClick={reset}>
+            {t("Zurücksetzen", "Reset")}
+          </button>
+        )}
       </div>
 
       {filtered.length === 0 ? (
@@ -288,17 +333,25 @@ export default function Buy() {
           {savedOnly && t("Merken Sie sich Inserate über das Herz-Symbol.", "Save listings with the heart icon.")}
         </Empty>
       ) : (
-        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-7 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.slice(0, visible).map((e) => (
             <ListingCard key={e.l.id} e={e} saved={savedListings.includes(e.l.id)} onSave={() => toggleSavedListing(e.l.id)} onOpen={() => openListing(e.l.id)} />
           ))}
         </div>
       )}
-      {visible < filtered.length && (
-        <div className="flex justify-center">
-          <button className="btn" onClick={() => setVisible((n) => n + PAGE)}>
-            {t(`Mehr laden (${num(filtered.length - visible)} weitere)`, `Load more (${num(filtered.length - visible)} more)`)}
-          </button>
+      {filtered.length > 0 && (
+        <div className="flex flex-col items-center gap-4 pt-2">
+          <div className="text-[12px] tracking-[0.08em] text-muted uppercase">
+            {t(`${num(Math.min(visible, filtered.length))} von ${num(filtered.length)} angezeigt`, `Showing ${num(Math.min(visible, filtered.length))} of ${num(filtered.length)}`)}
+          </div>
+          <div className="h-px w-48 bg-line">
+            <div className="h-px bg-ink transition-all" style={{ width: `${(Math.min(visible, filtered.length) / filtered.length) * 100}%` }} />
+          </div>
+          {visible < filtered.length && (
+            <button className="btn mt-2 px-8" onClick={() => setVisible((n) => n + PAGE)}>
+              {t("Weitere Inserate laden", "Load more listings")}
+            </button>
+          )}
         </div>
       )}
 
@@ -315,32 +368,42 @@ export default function Buy() {
 function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean; onSave: () => void; onOpen: () => void }) {
   const { l, v } = e;
   const d = dealLabel(e.deal);
+  const badge =
+    e.deal === null ? null : d.tone === "up" ? (
+      <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-up shadow-sm">{t(`${pct(-e.deal, { digits: 0, signed: false })} unter Marktwert`, `${pct(-e.deal, { digits: 0, signed: false })} below value`)}</span>
+    ) : d.tone === "down" ? (
+      <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-down shadow-sm">{t(`${pct(e.deal, { digits: 0, signed: false })} über Marktwert`, `${pct(e.deal, { digits: 0, signed: false })} above value`)}</span>
+    ) : (
+      <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-muted shadow-sm">{d.label}</span>
+    );
   return (
     <article className="group cursor-pointer" onClick={onOpen}>
-      <div className="relative aspect-video overflow-hidden bg-panel-3">
-        <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full" />
-        <span className="absolute bottom-3 left-3 rounded-[2px] bg-bg/90 px-1.5 py-0.5 text-[11px] text-ink">{l.source}</span>
+      <div className="relative aspect-[4/3] overflow-hidden rounded-[3px] bg-panel-3">
+        <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        {badge && <div className="absolute top-3 left-3">{badge}</div>}
+        <span className="absolute bottom-3 left-3 text-[11px] text-white/0 transition-colors duration-500 group-hover:text-white/90">{l.source}</span>
         <button
           onClick={(ev) => {
             ev.stopPropagation();
             onSave();
           }}
-          className={cn("absolute top-3 right-3 rounded-full bg-bg/85 p-2 text-ink transition-opacity focus-visible:opacity-100", saved ? "opacity-100" : "opacity-0 group-hover:opacity-100")}
+          className={cn("absolute top-3 right-3 rounded-full bg-bg/90 p-2 text-ink shadow-sm transition-opacity focus-visible:opacity-100", saved ? "opacity-100" : "opacity-0 group-hover:opacity-100")}
           aria-label={saved ? t("Nicht mehr merken", "Unsave") : t("Inserat merken", "Save listing")}
           aria-pressed={saved}
         >
           <Heart className="size-4" strokeWidth={1.5} fill={saved ? "currentColor" : "none"} />
         </button>
       </div>
-      <div className="mt-3 flex items-baseline justify-between gap-3">
-        <span className="min-w-0 truncate font-serif text-[16.5px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-        <Money value={l.price} className="shrink-0 text-[16.5px]" />
+      <div className="mt-4 text-[11px] tracking-[0.1em] text-faint uppercase">
+        {l.year} · {km(l.mileage)}
       </div>
-      <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
-        <span className="min-w-0 truncate text-muted">
-          {l.year}, {km(l.mileage)}, {place(l)}
+      <h3 className="mt-1 truncate font-serif text-[18px] leading-snug decoration-line-2 underline-offset-4 group-hover:underline">{variantTitle(v, { brand: false })}</h3>
+      <div className="mt-2 flex items-baseline justify-between gap-3 border-t border-line pt-2">
+        <Money value={l.price} className="text-[17px]" />
+        <span className="min-w-0 truncate text-[13px] text-muted">
+          {flag(l.country)} {place(l)}
         </span>
-        <span className={cn("shrink-0", d.tone === "up" ? "text-up" : d.tone === "down" ? "text-down" : "text-muted")}>{d.label}</span>
       </div>
     </article>
   );
@@ -624,12 +687,12 @@ function ModelMenu({
     cn("flex w-full items-baseline justify-between gap-3 rounded-[2px] px-2 py-1 text-left text-[14px] transition-colors", active ? "bg-ink text-bg" : n === 0 ? "text-faint hover:bg-panel-2" : "text-ink hover:bg-panel-2");
   return (
     <div ref={ref} className="relative">
-      <button className={cn(filterSelect, "inline-flex items-center gap-1.5")} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="true">
+      <button className={cn(barSelect, "inline-flex items-center gap-1.5")} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="true">
         {current ? label(current) : t("Alle Modelle", "All models")}
         <ChevronDown className={cn("size-3.5 text-muted transition-transform", open && "rotate-180")} strokeWidth={1.5} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-30 mt-2 w-[min(640px,calc(100vw-32px))] rounded-[3px] border border-line bg-bg p-4 shadow-lg">
+        <div className="absolute top-full left-0 z-30 mt-4 w-[min(640px,calc(100vw-48px))] rounded-[3px] border border-line bg-bg p-4 shadow-lg">
           <button className={cn(row(!value, total), "mb-3 w-auto")} onClick={() => pick("")}>
             {t("Alle Modelle", "All models")} <span className={cn("tabular-nums text-[12px]", !value ? "text-bg/70" : "text-faint")}>{num(total)}</span>
           </button>
@@ -673,21 +736,23 @@ function SourceBar({
   live,
   preferLive,
   setPreferLive,
+  sourceLabel,
 }: {
   live: ReturnType<typeof useLiveListings>;
   preferLive: boolean;
   setPreferLive: (v: boolean) => void;
+  sourceLabel: string;
 }) {
   if (live.status === "checking") return null;
   if (live.status === "off") {
     return (
-      <p className="mt-1 text-xs text-faint">
-        {t("Täglich aktualisiert.", "Updated daily.")}
+      <p className="mt-3 text-[12px] text-faint">
+        {sourceLabel} · {t("täglich aktualisiert", "updated daily")}
       </p>
     );
   }
   return (
-    <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs">
+    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
       <span className="inline-flex rounded-md border border-line p-0.5">
         <button className={cn("rounded px-2 py-0.5", preferLive ? "bg-gold/20 text-gold-2" : "text-muted")} onClick={() => setPreferLive(true)}>
           mobile.de live
