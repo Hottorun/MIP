@@ -1,6 +1,8 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
+  Area,
+  AreaChart,
   Bar,
   BarChart,
   CartesianGrid,
@@ -18,11 +20,11 @@ import {
   ZAxis,
 } from "recharts";
 import { brands, variants, variantTitle } from "../data/db";
-import { AS_OF } from "../data/generate";
+import { AS_OF, getSeries } from "../data/generate";
 import { brandIndex, changeOver, cycleData, getMetrics, marketIndex, rangeOptions, rebase, sliceRange, type RangeKey } from "../data/market";
 import { auctionCalendar, auctionWindows, auctionYears, bodyPremium, generationRows, houseStats, mileageBands, usPremium } from "../data/insights";
 import { cn, date, eur, num, pct, trendClass } from "../lib/format";
-import { axisProps, Card, ChartTooltipBox, Delta, Section, Segmented } from "../components/ui";
+import { axisProps, Card, ChartTooltipBox, Delta, Section, Segmented, Sparkline } from "../components/ui";
 import { TrendHeatmap } from "../components/insights/TrendHeatmap";
 import { brandColor, yearTicks } from "../components/insights/palette";
 import { locale, t } from "../i18n";
@@ -38,34 +40,123 @@ const pp = (a: number, b: number) => {
 const monthName = (m: number, style: "short" | "long" = "short") => new Date(Date.UTC(2020, m, 1)).toLocaleString(locale(), { month: style, timeZone: "UTC" });
 const km = (n: number) => `${num(n / 1000)}${t(" Tsd. km", "k km")}`;
 
+const NAV = () => [
+  { id: "ueberblick", label: t("Überblick", "Overview") },
+  { id: "markt", label: t("Marktentwicklung", "Market trend") },
+  { id: "gewinner", label: t("Gewinner und Verlierer", "Gainers and losers") },
+  { id: "modellreihen", label: t("Modellreihen", "Model lines") },
+  { id: "auktionen", label: t("Auktionsmarkt", "Auction market") },
+  { id: "preis", label: t("Preisfaktoren", "Price drivers") },
+  { id: "haeuser", label: t("Häuser und Termine", "Houses and timing") },
+  { id: "monate", label: t("Monat für Monat", "Month by month") },
+  { id: "seltenheit", label: t("Seltenheit", "Rarity") },
+];
+
 export default function Insights() {
   return (
-    <div className="space-y-16">
+    <div>
       <div>
         <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Insights</h1>
-        <p className="mt-1 text-[14px] text-muted">
+        <p className="mt-1 max-w-3xl text-[14px] text-muted">
           {t(
             `Der Markt auf einen Blick: Wertentwicklung, Auktionsgeschehen und was den Preis bestimmt. Stand ${date(AS_OF)}, ${variants.filter((v) => v.measured).length} bewertete Varianten.`,
             `The market at a glance: value trends, auction activity and what drives prices. As of ${date(AS_OF)}, ${variants.filter((v) => v.measured).length} valued variants.`,
           )}
         </p>
       </div>
-      <KpiRow />
-      <MarketTrend />
-      <Movers />
-      <ModelLines />
-      <AuctionMarket />
-      <PriceDrivers />
-      <HousesAndCalendar />
-      <TrendHeatmap />
-      <Section title={t("Seltenheit und Rendite", "Rarity and return")} sub={t("Zahlen sich seltene Fahrzeuge langfristig aus? Jeder Punkt ist eine Variante, die Größe zeigt den Marktwert.", "Do rare cars pay off in the long run? Each dot is a variant, size shows market value.")}>
-        <RarityScatter />
-      </Section>
+      <SectionNav />
+      <div className="mt-8 space-y-16">
+        <Anchor id="ueberblick">
+          <KpiRow />
+          <KeyFindings />
+        </Anchor>
+        <Anchor id="markt">
+          <MarketTrend />
+        </Anchor>
+        <Anchor id="gewinner">
+          <Movers />
+        </Anchor>
+        <Anchor id="modellreihen">
+          <ModelLines />
+        </Anchor>
+        <Anchor id="auktionen">
+          <AuctionMarket />
+        </Anchor>
+        <Anchor id="preis">
+          <PriceDrivers />
+        </Anchor>
+        <Anchor id="haeuser">
+          <HousesAndCalendar />
+        </Anchor>
+        <Anchor id="monate">
+          <TrendHeatmap />
+        </Anchor>
+        <Anchor id="seltenheit">
+          <Section title={t("Seltenheit und Rendite", "Rarity and return")} sub={t("Zahlen sich seltene Fahrzeuge langfristig aus? Jeder Punkt ist eine Variante, die Größe zeigt den Marktwert.", "Do rare cars pay off in the long run? Each dot is a variant, size shows market value.")}>
+            <Card>
+              <RarityScatter />
+            </Card>
+          </Section>
+        </Anchor>
+      </div>
     </div>
   );
 }
 
 // ------------------------------------------------------------------------------------------------ building blocks
+
+function Anchor({ id, children }: { id: string; children: ReactNode }) {
+  return (
+    <div id={id} data-insight-section className="scroll-mt-[136px] space-y-6">
+      {children}
+    </div>
+  );
+}
+
+/** Sticky jump bar under the site header; the section in view is underlined. */
+function SectionNav() {
+  const items = NAV();
+  const [active, setActive] = useState(items[0].id);
+  const barRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const els = [...document.querySelectorAll<HTMLElement>("[data-insight-section]")];
+    const onScroll = () => {
+      const y = 150;
+      let cur = els[0]?.id;
+      for (const el of els) if (el.getBoundingClientRect().top <= y) cur = el.id;
+      setActive(cur);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  useEffect(() => {
+    barRef.current?.querySelector<HTMLElement>(`[data-id="${active}"]`)?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, [active]);
+  return (
+    <nav aria-label={t("Abschnitte", "Sections")} className="sticky top-[72px] z-20 -mx-5 mt-6 border-b border-line bg-bg/95 px-5 backdrop-blur-sm sm:-mx-8 sm:px-8">
+      <div ref={barRef} className="no-scrollbar flex gap-5 overflow-x-auto">
+        {items.map((it) => (
+          <a
+            key={it.id}
+            href={`#${it.id}`}
+            data-id={it.id}
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById(it.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className={cn(
+              "shrink-0 whitespace-nowrap border-b-2 py-3 text-[13.5px] transition-colors",
+              active === it.id ? "border-gold text-ink" : "border-transparent text-muted hover:text-ink",
+            )}
+          >
+            {it.label}
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+}
 
 function Takeaway({ children }: { children: ReactNode }) {
   return <p className="mt-4 max-w-3xl text-[14.5px] leading-relaxed text-ink/85">{children}</p>;
@@ -85,6 +176,27 @@ function Kpi({ label, value, delta, note }: { label: string; value: ReactNode; d
   );
 }
 
+/** Headline figure with its history as a small line. */
+function KpiCard({ label, value, delta, note, spark, sparkNote }: { label: string; value: ReactNode; delta?: ReactNode; note?: string; spark: number[]; sparkNote: string }) {
+  return (
+    <div className="panel flex min-w-0 flex-col justify-between gap-4 p-4 sm:p-5">
+      <div>
+        <div className="text-[13px] text-muted">{label}</div>
+        <div className="mt-1.5 font-serif text-[30px] leading-none tabular-nums sm:text-[34px]">{value}</div>
+        {(delta || note) && (
+          <div className="mt-2 text-[12.5px] text-muted">
+            {delta} {note}
+          </div>
+        )}
+      </div>
+      <div>
+        <Sparkline values={spark} width={220} height={34} color={GOLD} fill className="block h-[34px] w-full" />
+        <div className="mt-1 text-[11px] text-faint">{sparkNote}</div>
+      </div>
+    </div>
+  );
+}
+
 type BarRow = { key: string; label: string; href?: string; value: number; display: string; note?: string; muted?: boolean };
 
 /** Ranked horizontal bars in plain HTML: label, bar from a shared zero line, value. Negative values grow to the left. */
@@ -94,7 +206,7 @@ function RankBars({ rows, tone = "sign" }: { rows: BarRow[]; tone?: "sign" | "go
   const span = hi - lo || 1;
   const zero = (-lo / span) * 100;
   return (
-    <ul className="space-y-1">
+    <ul className="divide-y divide-line/70">
       {rows.map((r) => {
         const left = r.value < 0 ? ((r.value - lo) / span) * 100 : zero;
         const width = (Math.abs(r.value) / span) * 100;
@@ -107,16 +219,16 @@ function RankBars({ rows, tone = "sign" }: { rows: BarRow[]; tone?: "sign" | "go
           <span className="truncate">{r.label}</span>
         );
         return (
-          <li key={r.key} className="group grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)_4.25rem] items-center gap-3 rounded-[2px] py-1 text-[13.5px] hover:bg-panel-2 sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)_4.5rem]" title={r.note ? `${r.label}: ${r.display} · ${r.note}` : `${r.label}: ${r.display}`}>
+          <li key={r.key} className="grid grid-cols-[minmax(0,8.5rem)_minmax(0,1fr)_4.25rem] items-center gap-3 py-1.5 text-[13.5px] sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)_4.5rem]" title={r.note ? `${r.label}: ${r.display} · ${r.note}` : `${r.label}: ${r.display}`}>
             <span className={cn("flex min-w-0 flex-col", r.muted && "text-muted")}>
               {label}
               {r.note && <span className="truncate text-[11.5px] text-faint">{r.note}</span>}
             </span>
-            <span className="relative h-3">
-              {lo < 0 && <span className="absolute inset-y-[-3px] w-px bg-line-2" style={{ left: `${zero}%` }} />}
-              <span className="absolute inset-y-0 rounded-[2px]" style={{ left: `${left}%`, width: `max(${width}%, 2px)`, background: color, opacity: r.muted ? 0.5 : 0.85 }} />
+            <span className="relative h-2.5 rounded-full bg-panel-2">
+              {lo < 0 && <span className="absolute inset-y-[-4px] w-px bg-line-2" style={{ left: `${zero}%` }} />}
+              <span className="absolute inset-y-0 rounded-full" style={{ left: `${left}%`, width: `max(${width}%, 3px)`, background: color, opacity: r.muted ? 0.5 : 0.85 }} />
             </span>
-            <span className="text-right tabular-nums">{r.display}</span>
+            <span className={cn("text-right font-medium tabular-nums", tone === "sign" && trendClass(r.value))}>{r.display}</span>
           </li>
         );
       })}
@@ -124,33 +236,109 @@ function RankBars({ rows, tone = "sign" }: { rows: BarRow[]; tone?: "sign" | "go
   );
 }
 
-// ------------------------------------------------------------------------------------------------ KPI row
+// ------------------------------------------------------------------------------------------------ overview
 
 function KpiRow() {
   const { now, before } = auctionWindows();
-  const idx = changeOver(marketIndex(), 52);
+  const idxSeries = marketIndex();
+  const idx = changeOver(idxSeries, 52);
+  const years = auctionYears().filter((y) => y.lots >= 200);
+  const full = years.filter((y) => !y.partial);
+  const since = years[0]?.year;
   return (
-    <dl className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-4">
-      <Kpi label={t("Marktindex, 12 Monate", "Market index, 12 months")} value={<span className={trendClass(idx)}>{pct(idx)}</span>} note={t("über alle Varianten", "across all variants")} />
-      <Kpi
-        label={t("Verkaufsquote", "Sell-through rate")}
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <KpiCard
+        label={t("Marktindex, 12 Monate", "Market index, 12 months")}
+        value={<span className={trendClass(idx)}>{pct(idx)}</span>}
+        note={t("über alle bewerteten Varianten", "across all valued variants")}
+        spark={idxSeries.filter((_, i) => i % 4 === 0).map((p) => p.value)}
+        sparkNote={t(`Verlauf seit ${date(idxSeries[0].t, "year")}`, `Trend since ${date(idxSeries[0].t, "year")}`)}
+      />
+      <KpiCard
+        label={t("Verkaufsquote, 12 Monate", "Sell-through, 12 months")}
         value={pct(now.sellThrough, { signed: false, digits: 0 })}
         delta={<span className={trendClass(now.sellThrough - before.sellThrough)}>{pp(now.sellThrough, before.sellThrough)}</span>}
         note={t("ggü. Vorjahr", "vs. prior year")}
+        spark={years.map((y) => y.sellThrough)}
+        sparkNote={t(`je Jahr seit ${since}`, `per year since ${since}`)}
       />
-      <Kpi
+      <KpiCard
         label={t("Versteigerte Fahrzeuge, 12 Monate", "Cars auctioned, 12 months")}
         value={num(now.lots)}
         delta={<Delta value={now.lots / before.lots - 1} arrow={false} digits={0} />}
         note={t("ggü. Vorjahr", "vs. prior year")}
+        spark={full.map((y) => y.lots)}
+        sparkNote={t(`je Jahr seit ${since}`, `per year since ${since}`)}
       />
-      <Kpi
-        label={t("Anteil Online-Auktionen", "Share of online auctions")}
-        value={pct(now.onlineShare, { signed: false, digits: 0 })}
-        delta={<span className="text-ink/80">{pp(now.onlineShare, before.onlineShare)}</span>}
-        note={t("ggü. Vorjahr", "vs. prior year")}
-      />
-    </dl>
+    </div>
+  );
+}
+
+/** The four headline stories of the page, each linking to its section. */
+function KeyFindings() {
+  const items = useMemo(() => {
+    const all = variants.filter((v) => v.measured).map((v) => ({ v, m: getMetrics(v.id) }));
+    const top = [...all].sort((a, b) => b.m.change12m - a.m.change12m)[0];
+    const line = [...generationRows()].sort((a, b) => b.change12m - a.change12m)[0];
+    const bands = mileageBands();
+    const low = bands.filter((b) => b.to !== null && b.to <= 30_000);
+    const high = bands.filter((b) => b.from >= 100_000);
+    const cal = auctionCalendar();
+    const peakMonth = cal.months.indexOf(Math.max(...cal.months));
+    const out: { id: string; kicker: string; value: ReactNode; text: string }[] = [];
+    if (top)
+      out.push({
+        id: "gewinner",
+        kicker: t("Stärkste Variante", "Top variant"),
+        value: <span className="text-up">{pct(top.m.change12m)}</span>,
+        text: t(`${variantTitle(top.v)} in den letzten 12 Monaten.`, `${variantTitle(top.v)} over the last 12 months.`),
+      });
+    if (line)
+      out.push({
+        id: "modellreihen",
+        kicker: t("Stärkste Modellreihe", "Top model line"),
+        value: <span className="text-up">{pct(line.change12m)}</span>,
+        text: t(`${line.label}, Median aus ${line.variants} Varianten.`, `${line.label}, median of ${line.variants} variants.`),
+      });
+    if (low.length && high.length) {
+      const hi = Math.min(...high.map((b) => b.effect));
+      out.push({
+        id: "preis",
+        kicker: t("Laufleistung", "Mileage"),
+        value: <span className="text-down">{pct(hi, { digits: 0 })}</span>,
+        text: t(
+          `Abschlag für Fahrzeuge über 100.000 km, wenig gefahrene bringen bis zu ${pct(Math.max(...low.map((b) => b.effect)), { digits: 0 })}.`,
+          `Discount for cars over 100,000 km; low-mileage cars fetch up to ${pct(Math.max(...low.map((b) => b.effect)), { digits: 0 })}.`,
+        ),
+      });
+    }
+    out.push({
+      id: "haeuser",
+      kicker: t("Auktionskalender", "Auction calendar"),
+      value: monthName(peakMonth, "long"),
+      text: t("Der Monat mit den meisten Saalauktionen, die beste Zeit für Auswahl und Bieter.", "The month with the most live auctions, the best time for choice and bidders."),
+    });
+    return out;
+  }, []);
+  return (
+    <div className="panel grid divide-y divide-line sm:grid-cols-2 sm:divide-y-0 xl:grid-cols-4 xl:divide-x">
+      {items.map((it, i) => (
+        <a
+          key={it.id}
+          href={`#${it.id}`}
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById(it.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className={cn("group flex flex-col gap-1.5 p-4 transition-colors hover:bg-panel-2 sm:p-5", i % 2 === 1 && "sm:border-l sm:border-line xl:border-l-0", i >= 2 && "sm:border-t sm:border-line xl:border-t-0")}
+        >
+          <span className="text-[12px] uppercase tracking-[0.08em] text-faint">{it.kicker}</span>
+          <span className="font-serif text-[24px] leading-tight tabular-nums">{it.value}</span>
+          <span className="text-[13px] leading-snug text-muted">{it.text}</span>
+          <span className="mt-auto pt-1 text-[12.5px] text-ink/70 group-hover:text-gold">{t("Zum Abschnitt", "Go to section")} →</span>
+        </a>
+      ))}
+    </div>
   );
 }
 
@@ -165,31 +353,51 @@ function MarketTrend() {
   const peak = cycle.reduce((a, b) => (b.value > a.value ? b : a));
   const change = data.length ? data[data.length - 1].value / data[0].value - 1 : 0;
   const short = range === "1M" || range === "6M" || range === "1J";
+  const lo = Math.min(...data.map((p) => p.value));
+  const hi = Math.max(...data.map((p) => p.value));
+  const pad = (hi - lo) * 0.12 || 1;
   return (
-    <Section
-      title={t("Marktentwicklung", "Market trend")}
-      sub={t("Gesamtindex aller bewerteten Varianten, gewichtet nach Marktwert", "Overall index of all valued variants, weighted by market value")}
-      actions={<Segmented options={rangeOptions(["1J", "5J", "10J", "Max"])} value={range} onChange={setRange} />}
-    >
-      <div className="flex items-baseline gap-3">
-        <span className={cn("font-serif text-[26px] tabular-nums", trendClass(change))}>{pct(change)}</span>
-        <span className="text-[13px] text-muted">{t(`im gewählten Zeitraum, seit ${date(data[0]?.t ?? AS_OF)}`, `in the selected period, since ${date(data[0]?.t ?? AS_OF)}`)}</span>
-      </div>
-      <div className="mt-3 h-64 sm:h-72">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-            <CartesianGrid stroke="var(--color-line)" vertical={false} />
-            <XAxis dataKey="t" type="number" scale="time" domain={["dataMin", "dataMax"]} ticks={short ? undefined : yearTicks(data[0]?.t ?? AS_OF, AS_OF)} tickFormatter={(v) => date(v, short ? "short" : "year")} minTickGap={short ? 40 : 8} {...axisProps} />
-            <YAxis {...axisProps} width={40} domain={["auto", "auto"]} />
-            <Tooltip
-              content={({ active, payload, label }) =>
-                active && payload?.length ? <ChartTooltipBox title={date(Number(label))} rows={[{ label: "Index", value: num(Number(payload[0].value), 1), color: GOLD }]} /> : null
-              }
-            />
-            <Line dataKey="value" stroke={GOLD} strokeWidth={2} dot={false} isAnimationActive={false} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <Section title={t("Marktentwicklung", "Market trend")} sub={t("Gesamtindex aller bewerteten Varianten, gewichtet nach Marktwert", "Overall index of all valued variants, weighted by market value")}>
+      <Card
+        title={
+          <span className="flex items-baseline gap-3">
+            <span className={cn("font-serif text-[26px] tabular-nums", trendClass(change))}>{pct(change)}</span>
+            <span className="text-[13px] font-normal text-muted">{t(`seit ${date(data[0]?.t ?? AS_OF)}`, `since ${date(data[0]?.t ?? AS_OF)}`)}</span>
+          </span>
+        }
+        actions={<Segmented options={rangeOptions(["1J", "5J", "10J", "Max"])} value={range} onChange={setRange} />}
+      >
+        <div className="h-64 sm:h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
+              <defs>
+                <linearGradient id="mkt-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8f6d33" stopOpacity={0.22} />
+                  <stop offset="100%" stopColor="#8f6d33" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid stroke="var(--color-line)" vertical={false} />
+              <XAxis dataKey="t" type="number" scale="time" domain={["dataMin", "dataMax"]} ticks={short ? undefined : yearTicks(data[0]?.t ?? AS_OF, AS_OF)} tickFormatter={(v) => date(v, short ? "short" : "year")} minTickGap={short ? 40 : 8} {...axisProps} />
+              <YAxis {...axisProps} width={40} domain={[Math.floor(lo - pad), Math.ceil(hi + pad)]} tickFormatter={(v) => num(Number(v))} />
+              <Tooltip
+                cursor={{ stroke: "var(--color-line-2)" }}
+                content={({ active, payload, label }) =>
+                  active && payload?.length ? (
+                    <ChartTooltipBox
+                      title={date(Number(label))}
+                      rows={[
+                        { label: "Index", value: num(Number(payload[0].value), 1), color: GOLD },
+                        { label: t("seit Beginn", "since start"), value: pct(Number(payload[0].value) / data[0].value - 1) },
+                      ]}
+                    />
+                  ) : null
+                }
+              />
+              <Area dataKey="value" stroke={GOLD} strokeWidth={2} fill="url(#mkt-fill)" dot={false} activeDot={{ r: 4, fill: GOLD, stroke: "var(--color-panel)", strokeWidth: 2 }} isAnimationActive={false} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
       <Takeaway>
         {t(
           <>
@@ -258,46 +466,64 @@ function BrandComparison() {
 // ------------------------------------------------------------------------------------------------ movers
 
 function Movers() {
+  const [metric, setMetric] = useState<"12m" | "5y">("12m");
   const { up, down, rising, total } = useMemo(() => {
+    const key = metric === "12m" ? "change12m" : "cagr5";
     const all = variants.filter((v) => v.measured).map((v) => ({ v, m: getMetrics(v.id) }));
-    const sorted = [...all].sort((a, b) => b.m.change12m - a.m.change12m);
-    return { up: sorted.slice(0, 5), down: sorted.slice(-5).reverse(), rising: all.filter((x) => x.m.change12m > 0).length, total: all.length };
-  }, []);
-  const list = (rows: typeof up) => (
-    <ol className="divide-y divide-line border-y border-line">
-      {rows.map(({ v, m }, i) => (
-        <li key={v.id}>
-          <Link to={`/markt/${v.id}`} className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto] items-baseline gap-3 py-2.5 transition-colors hover:bg-panel-2">
-            <span className="text-[12px] tabular-nums text-faint">{i + 1}</span>
-            <span className="min-w-0">
-              <span className="block truncate text-[14.5px]">{variantTitle(v)}</span>
-              <span className="text-[12.5px] text-muted tabular-nums">{eur(m.value, { compact: true })}</span>
-            </span>
-            <Delta value={m.change12m} className="text-[14px]" />
-          </Link>
-        </li>
-      ))}
-    </ol>
+    const sorted = [...all].sort((a, b) => b.m[key] - a.m[key]);
+    return { up: sorted.slice(0, 5), down: sorted.slice(-5).reverse(), rising: all.filter((x) => x.m[key] > 0).length, total: all.length };
+  }, [metric]);
+  const weeks = metric === "12m" ? 53 : 261;
+  const list = (rows: typeof up, title: string) => (
+    <Card title={title}>
+      <ol className="-mx-2">
+        {rows.map(({ v, m }, i) => {
+          const s = getSeries(v.id).slice(-weeks);
+          const step = Math.max(1, Math.floor(s.length / 40));
+          const value = metric === "12m" ? m.change12m : m.cagr5;
+          return (
+            <li key={v.id}>
+              <Link to={`/markt/${v.id}`} className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-[2px] px-2 py-2.5 transition-colors hover:bg-panel-2 sm:grid-cols-[1.25rem_minmax(0,1fr)_88px_4.5rem]">
+                <span className="text-[12px] tabular-nums text-faint">{i + 1}</span>
+                <span className="min-w-0">
+                  <span className="block truncate text-[14.5px]">{variantTitle(v)}</span>
+                  <span className="text-[12.5px] text-muted tabular-nums">{eur(m.value, { compact: true })}</span>
+                </span>
+                <Sparkline values={s.filter((_, j) => j % step === 0 || j === s.length - 1).map((p) => p.value)} width={88} height={28} className="hidden sm:block" />
+                <Delta value={value} className="justify-end text-[14px]" />
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+    </Card>
   );
   return (
-    <Section title={t("Gewinner und Verlierer", "Gainers and losers")} sub={t("Varianten mit der größten Wertveränderung in den letzten 12 Monaten", "Variants with the largest change in value over the last 12 months")}>
-      <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
-        <div>
-          <h3 className="mb-2 text-[13px] text-muted">{t("Stärkste Zuwächse", "Biggest gains")}</h3>
-          {list(up)}
-        </div>
-        <div>
-          <h3 className="mb-2 text-[13px] text-muted">{t("Stärkste Rückgänge", "Biggest drops")}</h3>
-          {list(down)}
-        </div>
+    <Section
+      title={t("Gewinner und Verlierer", "Gainers and losers")}
+      sub={metric === "12m" ? t("Varianten mit der größten Wertveränderung in den letzten 12 Monaten", "Variants with the largest change in value over the last 12 months") : t("Varianten mit der höchsten und niedrigsten Rendite pro Jahr über 5 Jahre", "Variants with the highest and lowest annual return over 5 years")}
+      actions={
+        <Segmented
+          options={[
+            { value: "12m", label: t("12 Monate", "12 months") },
+            { value: "5y", label: t("Pro Jahr, 5 Jahre", "Per year, 5 years") },
+          ]}
+          value={metric}
+          onChange={setMetric}
+        />
+      }
+    >
+      <div className="grid gap-6 lg:grid-cols-2">
+        {list(up, t("Stärkste Zuwächse", "Biggest gains"))}
+        {list(down, t("Stärkste Rückgänge", "Biggest drops"))}
       </div>
       <Takeaway>
         {t(
           <>
-            <strong>{rising}</strong> von {total} Varianten sind in den letzten 12 Monaten im Wert gestiegen, {total - rising} gefallen.
+            <strong>{rising}</strong> von {total} Varianten liegen {metric === "12m" ? "nach 12 Monaten" : "über fünf Jahre"} im Plus, {total - rising} im Minus. Die kleinen Linien zeigen den Wertverlauf im selben Zeitraum.
           </>,
           <>
-            <strong>{rising}</strong> of {total} variants rose in value over the last 12 months, {total - rising} fell.
+            <strong>{rising}</strong> of {total} variants are up {metric === "12m" ? "over 12 months" : "over five years"}, {total - rising} are down. The small lines show the value trend over the same period.
           </>,
         )}
       </Takeaway>
@@ -334,22 +560,27 @@ function ModelLines() {
         />
       }
     >
-      {!all && rows.length > 14 && <p className="mb-3 text-[12.5px] text-faint">{t("Die sieben stärksten und die sieben schwächsten Modellreihen", "The seven strongest and the seven weakest model lines")}</p>}
-      <RankBars
-        rows={shown.map((r) => ({
-          key: r.id,
-          label: r.label,
-          href: r.href,
-          value: r[key],
-          display: pct(r[key]),
-          note: `${r.variants} ${t("Varianten", "variants")} · ${t("Median", "median")} ${eur(r.value, { compact: true })}`,
-        }))}
-      />
-      {rows.length > 14 && (
-        <button onClick={() => setAll((a) => !a)} className="mt-3 text-[13px] text-muted underline-offset-4 hover:text-ink hover:underline">
-          {all ? t("Weniger anzeigen", "Show fewer") : t(`Alle ${rows.length} Modellreihen anzeigen`, `Show all ${rows.length} model lines`)}
-        </button>
-      )}
+      <Card
+        title={all || rows.length <= 14 ? t(`Alle ${rows.length} Modellreihen`, `All ${rows.length} model lines`) : t("Die sieben stärksten und schwächsten", "The seven strongest and weakest")}
+        actions={
+          rows.length > 14 ? (
+            <button onClick={() => setAll((a) => !a)} className="text-[13px] text-muted underline-offset-4 hover:text-ink hover:underline">
+              {all ? t("Weniger anzeigen", "Show fewer") : t(`Alle ${rows.length} anzeigen`, `Show all ${rows.length}`)}
+            </button>
+          ) : undefined
+        }
+      >
+        <RankBars
+          rows={shown.map((r) => ({
+            key: r.id,
+            label: r.label,
+            href: r.href,
+            value: r[key],
+            display: pct(r[key]),
+            note: `${r.variants} ${t("Varianten", "variants")} · ${t("Median", "median")} ${eur(r.value, { compact: true })}`,
+          }))}
+        />
+      </Card>
       {best && worst && (
         <Takeaway>
           {metric === "12m"
@@ -386,7 +617,7 @@ function AuctionMarket() {
   const peak = full.reduce((a, b) => (b.sellThrough > a.sellThrough ? b : a), full[0]);
   const partialNote = last?.partial ? t(`${last.year} bis ${date(AS_OF)}`, `${last.year} up to ${date(AS_OF)}`) : null;
 
-  const chart = (dataKey: "sellThrough" | "onlineShare", label: string) => (
+  const chart = (dataKey: "sellThrough", label: string) => (
     <div className="h-56">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={years} margin={{ top: 8, right: 4, left: -12, bottom: 0 }}>
@@ -421,7 +652,7 @@ function AuctionMarket() {
   if (!first || !last || !prev) return null;
   return (
     <Section title={t("Auktionsmarkt", "Auction market")} sub={t("Alle erfassten Auktionslose der Varianten auf Carbay, verkauft und nicht verkauft", "All recorded auction lots of the variants on Carbay, sold and unsold")}>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div>
         <Card title={t("Verkaufsquote", "Sell-through rate")} sub={t("Anteil der Lose mit Zuschlag", "Share of lots that sold")}>
           {chart("sellThrough", t("Verkaufsquote", "Sell-through"))}
           <p className="mt-3 text-[13.5px] leading-relaxed text-ink/85">
@@ -431,19 +662,6 @@ function AuctionMarket() {
               </>,
               <>
                 {last.partial ? `${last.year} so far` : last.year}: <strong>{pct(last.sellThrough, { signed: false, digits: 0 })}</strong>, after {pct(prev.sellThrough, { signed: false, digits: 0 })} in {prev.year}. The peak was {peak.year} at {pct(peak.sellThrough, { signed: false, digits: 0 })}; in {first.year} it was only {pct(first.sellThrough, { signed: false, digits: 0 })}.
-              </>,
-            )}
-          </p>
-        </Card>
-        <Card title={t("Anteil Online-Auktionen", "Share of online auctions")} sub={t("Bring a Trailer, Cars & Bids, PCARMARKET", "Bring a Trailer, Cars & Bids, PCARMARKET")}>
-          {chart("onlineShare", t("Online-Anteil", "Online share"))}
-          <p className="mt-3 text-[13.5px] leading-relaxed text-ink/85">
-            {t(
-              <>
-                {first.year} liefen nur <strong>{pct(first.onlineShare, { signed: false, digits: 0 })}</strong> der Lose online, {last.partial ? "heute" : last.year} sind es <strong>{pct(last.onlineShare, { signed: false, digits: 0 })}</strong>. Der Markt hat sich vom Auktionssaal ins Netz verlagert.
-              </>,
-              <>
-                In {first.year} only <strong>{pct(first.onlineShare, { signed: false, digits: 0 })}</strong> of lots ran online, {last.partial ? "today" : `in ${last.year}`} it is <strong>{pct(last.onlineShare, { signed: false, digits: 0 })}</strong>. The market has moved from the saleroom to the internet.
               </>,
             )}
           </p>

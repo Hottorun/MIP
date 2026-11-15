@@ -258,3 +258,11 @@ body {
 .gallery-in-prev {
   animation: gallery-in-prev 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* horizontal scroller without a visible scrollbar (Insights section bar) */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

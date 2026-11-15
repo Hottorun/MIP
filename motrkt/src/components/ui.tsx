@@ -27,7 +27,7 @@ export function Card({
           <h2 className="panel-title min-w-0">
             {title} {sub && <span className="panel-sub ml-1.5">{sub}</span>}
           </h2>
-          {actions && <div className="flex shrink-0 items-center gap-1.5">{actions}</div>}
+          {actions && <div className="flex max-w-full flex-wrap items-center gap-1.5">{actions}</div>}
         </header>
       )}
       <div className={cn("min-h-0 flex-1 px-5 pb-5", !title && !actions && "pt-5", bodyClassName)}>{children}</div>
