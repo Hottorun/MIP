@@ -102,7 +102,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
     >
       <div
         ref={stage}
-        className="relative sm:h-[min(86vh,820px)] sm:min-h-[560px]"
+        className="relative sm:flex sm:min-h-[max(560px,min(86vh,820px))] sm:flex-col"
         onPointerDown={(e) => (swipe.current = { x: e.clientX, y: e.clientY })}
         onPointerUp={(e) => {
           const s = swipe.current;
@@ -151,7 +151,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
           />
         </div>
 
-        <div className="relative z-[3] mx-auto -mt-20 flex max-w-[1360px] flex-col px-5 pb-6 sm:mt-0 sm:h-full sm:justify-end sm:px-8 sm:pb-40">
+        <div className="relative z-[3] mx-auto -mt-20 flex w-full max-w-[1360px] flex-col px-5 pb-6 sm:mt-0 sm:flex-1 sm:justify-end sm:px-8 sm:pt-16 sm:pb-40">
           <div className="max-w-xl">
             <h1 className="font-display text-[40px] leading-[1.04] sm:text-[60px]">
               {t("Was klassische Sportwagen heute wert sind.", "What classic sports cars are worth today.")}
