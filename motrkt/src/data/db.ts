@@ -442,7 +442,9 @@ export const genName = (g: Generation) => tr(g.name);
 export const variantName = (v: Variant) => tr(v.name);
 
 /** "Porsche 911 (964) Carrera RS", "Porsche Boxster Spyder (987.2)", "Porsche 718 Spyder", "Porsche 959 Komfort" */
-export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string {
+/** `gen: false` leaves out the generation ("911 S 2.0" instead of "911 (F-Modell) S 2.0"), for lists that are
+ *  already grouped under a heading per generation. */
+export function variantTitle(v: Variant, opts: { brand?: boolean; gen?: boolean } = {}): string {
   const brand = brandById.get(v.brandId)!;
   const model = modelById.get(v.modelId)!;
   const gen = generationById.get(v.generationId)!;
@@ -450,7 +452,7 @@ export function variantTitle(v: Variant, opts: { brand?: boolean } = {}): string
   if (opts.brand !== false) parts.push(brand.name);
   // Race cars carry their own names ("Porsche 917 K"); the motorsport groups are only for the menus.
   if (model.category === "motorsport") return [...parts, variantName(v)].join(" ");
-  const genSuffix = gen.name !== model.name ? ` (${genName(gen)})` : "";
+  const genSuffix = gen.name !== model.name && opts.gen !== false ? ` (${genName(gen)})` : "";
   if (includesModel(v, model.name)) parts.push(`${variantName(v)}${genSuffix}`);
   else parts.push(`${modelName(model)}${genSuffix}`, variantName(v));
   return parts.join(" ");

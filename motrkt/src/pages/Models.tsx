@@ -408,7 +408,7 @@ export default function Models() {
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
                       </button>
                     </td>
-                    <td className="font-serif font-bold">{variantTitle(v)}</td>
+                    <td className="font-serif font-bold">{variantTitle(v, { gen: false })}</td>
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
                     <td className="text-right">
@@ -628,7 +628,7 @@ function VariantCard({
         </button>
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
-        <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
+        <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false, gen: false })}</span>
         {v.measured ? <ListValue v={v} value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
