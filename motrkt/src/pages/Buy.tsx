@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Briefcase, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
-import { brandById, brands, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
+import { Briefcase, ChevronDown, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
+import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
 import { getMetrics } from "../data/market";
-import type { Listing, Variant } from "../data/types";
+import type { Listing, Model, Variant } from "../data/types";
 import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters } from "../lib/format";
 import { useStore } from "../state/store";
 import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
@@ -64,6 +64,7 @@ export default function Buy() {
 
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
+  const [generation, setGeneration] = useState("");
   const [priceMin, setPriceMin] = useState("");
   const [priceMax, setPriceMax] = useState("");
   const [yearFrom, setYearFrom] = useState("");
@@ -84,7 +85,8 @@ export default function Buy() {
   const all = useMemo(() => enrich(source), [source]);
   const brandModels = models.filter((m) => !brand || m.brandId === brand);
 
-  const filtered = useMemo(() => {
+  // Everything but brand, model and generation: the model list counts against this, so its numbers follow the other filters.
+  const base = useMemo(() => {
     const q = text.trim().toLowerCase();
     const pMin = fromDisplay(Number(priceMin) || 0);
     const pMax = fromDisplay(Number(priceMax) || Infinity);
@@ -92,10 +94,8 @@ export default function Buy() {
     const yTo = Number(yearTo) || Infinity;
     const kMax = Number(maxKm) || Infinity;
     const saved = new Set(savedListings);
-    const out = all.filter(({ l, v }) => {
+    return all.filter(({ l, v }) => {
       if (variantFilter && v.id !== variantFilter.id) return false;
-      if (brand && v.brandId !== brand) return false;
-      if (model && v.modelId !== model) return false;
       if (l.price < pMin || l.price > pMax) return false;
       if (l.year < yFrom || l.year > yTo) return false;
       if (kMax < Infinity && (l.mileage === null || l.mileage > kMax)) return false;
@@ -107,6 +107,26 @@ export default function Buy() {
       }
       return true;
     });
+  }, [all, variantFilter, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, savedListings, text]);
+
+  const counts = useMemo(() => {
+    const byModel = new Map<string, number>();
+    const byGen = new Map<string, number>();
+    for (const { v } of base) {
+      if (brand && v.brandId !== brand) continue;
+      byModel.set(v.modelId, (byModel.get(v.modelId) ?? 0) + 1);
+      byGen.set(v.generationId, (byGen.get(v.generationId) ?? 0) + 1);
+    }
+    return { byModel, byGen };
+  }, [base, brand]);
+
+  const filtered = useMemo(() => {
+    const out = base.filter(({ v }) => {
+      if (brand && v.brandId !== brand) return false;
+      if (model && v.modelId !== model) return false;
+      if (generation && v.generationId !== generation) return false;
+      return true;
+    });
     const cmp: Record<SortKey, (a: Enriched, b: Enriched) => number> = {
       deal: (a, b) => dealRank(a) - dealRank(b),
       priceAsc: (a, b) => a.l.price - b.l.price,
@@ -115,9 +135,9 @@ export default function Buy() {
       mileage: (a, b) => (a.l.mileage ?? Number.MAX_SAFE_INTEGER) - (b.l.mileage ?? Number.MAX_SAFE_INTEGER),
     };
     return out.sort(cmp[sort]);
-  }, [all, variantFilter, brand, model, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, savedListings, text, sort]);
+  }, [base, brand, model, generation, sort]);
 
-  useEffect(() => setVisible(PAGE), [variantParam, brand, model, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, text, sort]);
+  useEffect(() => setVisible(PAGE), [variantParam, brand, model, generation, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, text, sort]);
 
   const selected = selectedId ? all.find((e) => e.l.id === selectedId) : undefined;
   const openListing = (id: string | null) => {
@@ -134,6 +154,7 @@ export default function Buy() {
   const reset = () => {
     setBrand("");
     setModel("");
+    setGeneration("");
     setPriceMin("");
     setPriceMax("");
     setYearFrom("");
@@ -148,47 +169,39 @@ export default function Buy() {
   const topDeals = filtered.filter((e) => e.deal !== null && e.deal < -0.07).length;
   const digits = (s: string) => s.replace(/\D/g, "");
 
+  const pickModel = (id: string) => {
+    setModel(id);
+    setGeneration("");
+    if (id) setBrand(modelById.get(id)!.brandId);
+    if (variantParam) clearVariant();
+  };
+  const activeModel = model ? modelById.get(model) : undefined;
+  const modelLabel = (m: Model) => (brand || brands.length === 1 ? modelName(m) : `${brandById.get(m.brandId)!.name} ${modelName(m)}`);
+  const brandTotal = brand ? base.filter((e) => e.v.brandId === brand).length : base.length;
+  const extraFilters = [yearFrom, yearTo, maxKm, seller].filter(Boolean).length;
+  const anyFilter = Boolean(brand || model || priceMin || priceMax || extraFilters || savedOnly || text || variantParam);
+
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Kaufen", "Buy")}</h1>
-          <p className="mt-1 max-w-2xl text-[14px] text-muted">
-            {t(
-              `${num(all.length)} ${showingLive ? "Inserate live von mobile.de" : "Inserate von Classic Trader und Händlerseiten"}, jeweils verglichen mit dem fairen Marktwert für Zustand und Laufleistung.`,
-              `${num(all.length)} ${showingLive ? "live listings from mobile.de" : "listings from Classic Trader and dealer sites"}, each compared with the fair market value for its condition and mileage.`,
-            )}
-          </p>
-          <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} />
-        </div>
-        <label className="flex items-center gap-2 text-[14px] text-muted">
-          {t("Sortiert nach", "Sorted by")}
-          <select className="border-b border-line-2 pb-1 text-ink focus:border-ink focus:outline-none" value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-            <option value="deal">{t("Bester Preis zum Marktwert", "Best price vs. market value")}</option>
-            <option value="priceAsc">{t("Preis aufsteigend", "Price, low to high")}</option>
-            <option value="priceDesc">{t("Preis absteigend", "Price, high to low")}</option>
-            <option value="newest">{t("Neueste zuerst", "Newest first")}</option>
-            <option value="mileage">{t("Laufleistung", "Mileage")}</option>
-          </select>
-        </label>
+      <div>
+        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Kaufen", "Buy")}</h1>
+        <p className="mt-1 max-w-2xl text-[14px] text-muted">
+          {t(
+            `${num(all.length)} ${showingLive ? "Inserate live von mobile.de" : "Inserate von Classic Trader und Händlerseiten"}, jeweils verglichen mit dem fairen Marktwert für Zustand und Laufleistung.`,
+            `${num(all.length)} ${showingLive ? "live listings from mobile.de" : "listings from Classic Trader and dealer sites"}, each compared with the fair market value for its condition and mileage.`,
+          )}
+        </p>
+        <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} />
       </div>
 
       <div className="space-y-4 border-y border-line py-5 text-[14px]">
         <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
-          <div className="flex w-72 items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink">
+          <div className="flex w-full items-center gap-2 border-b border-line-2 pb-1 focus-within:border-ink sm:w-72">
             <Search className="size-4 text-muted" strokeWidth={1.5} />
             <input className="min-w-0 flex-1 bg-transparent focus:outline-none" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("Modell, Stadt, Händler oder FIN", "Model, city, dealer or VIN")} aria-label={t("Inserate durchsuchen", "Search listings")} />
           </div>
           {brands.length > 1 && (
-            <select
-              className={filterSelect}
-              value={brand}
-              onChange={(e) => {
-                setBrand(e.target.value);
-                setModel("");
-              }}
-              aria-label={t("Marke", "Brand")}
-            >
+            <select className={filterSelect} value={brand} onChange={(e) => { setBrand(e.target.value); pickModel(""); }} aria-label={t("Marke", "Brand")}>
               <option value="">{t("Alle Marken", "All brands")}</option>
               {brands.map((b) => (
                 <option key={b.id} value={b.id}>
@@ -197,14 +210,20 @@ export default function Buy() {
               ))}
             </select>
           )}
-          <select className={filterSelect} value={model} onChange={(e) => setModel(e.target.value)} aria-label={t("Modell", "Model")}>
-            <option value="">{t("Alle Modelle", "All models")}</option>
-            {brandModels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {brand || brands.length === 1 ? modelName(m) : `${brandById.get(m.brandId)!.name} ${modelName(m)}`}
-              </option>
-            ))}
-          </select>
+          <ModelMenu models={brandModels} counts={counts.byModel} total={brandTotal} value={model} label={modelLabel} onPick={pickModel} />
+          {activeModel && activeModel.generationIds.length > 1 && (
+            <select className={filterSelect} value={generation} onChange={(e) => setGeneration(e.target.value)} aria-label="Generation">
+              <option value="">{t(`Alle Generationen (${num(counts.byModel.get(activeModel.id) ?? 0)})`, `All generations (${num(counts.byModel.get(activeModel.id) ?? 0)})`)}</option>
+              {activeModel.generationIds.map((id) => {
+                const g = generationById.get(id)!;
+                return (
+                  <option key={id} value={id}>
+                    {`${genName(g)}, ${yearsLabel(g.years)} (${num(counts.byGen.get(id) ?? 0)})`}
+                  </option>
+                );
+              })}
+            </select>
+          )}
           <div className="flex items-center gap-2">
             <input className={cn(filterInput, "w-24")} inputMode="numeric" placeholder={t("Preis ab €", "Price from $")} value={priceMin} onChange={(e) => setPriceMin(digits(e.target.value))} aria-label={t("Preis ab", "Price from")} />
             <span className="text-faint">{t("bis", "to")}</span>
@@ -212,7 +231,18 @@ export default function Buy() {
           </div>
           <button className="text-muted underline-offset-4 hover:text-ink hover:underline" onClick={() => setMoreFilters((m) => !m)} aria-expanded={moreFilters}>
             {moreFilters ? t("Weniger Filter", "Fewer filters") : t("Weitere Filter", "More filters")}
+            {!moreFilters && extraFilters > 0 && <span className="ml-1 text-ink">({extraFilters})</span>}
           </button>
+          <label className="flex items-center gap-2 text-muted sm:ml-auto">
+            {t("Sortiert nach", "Sorted by")}
+            <select className={cn(filterSelect, "text-ink")} value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+              <option value="deal">{t("Bester Preis zum Marktwert", "Best price vs. market value")}</option>
+              <option value="priceAsc">{t("Preis aufsteigend", "Price, low to high")}</option>
+              <option value="priceDesc">{t("Preis absteigend", "Price, high to low")}</option>
+              <option value="newest">{t("Neueste zuerst", "Newest first")}</option>
+              <option value="mileage">{t("Laufleistung", "Mileage")}</option>
+            </select>
+          </label>
         </div>
         {moreFilters && (
           <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
@@ -244,9 +274,11 @@ export default function Buy() {
           <span className="ml-auto text-[13px] text-muted">
             {t(`${num(filtered.length)} Inserate, davon ${num(topDeals)} deutlich unter Marktwert`, `${num(filtered.length)} listings, ${num(topDeals)} of them well below market value`)}
           </span>
-          <button className="text-[13px] text-muted hover:text-ink" onClick={reset}>
-            {t("Filter zurücksetzen", "Reset filters")}
-          </button>
+          {anyFilter && (
+            <button className="text-[13px] text-muted hover:text-ink" onClick={reset}>
+              {t("Filter zurücksetzen", "Reset filters")}
+            </button>
+          )}
         </div>
       </div>
 
@@ -551,6 +583,80 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
         )}
       </div>
     </Modal>
+  );
+}
+
+/** Dropdown with every model, grouped by family, each with its number of listings under the current filters. */
+function ModelMenu({
+  models: list,
+  counts,
+  total,
+  value,
+  label,
+  onPick,
+}: {
+  models: Model[];
+  counts: Map<string, number>;
+  total: number;
+  value: string;
+  label: (m: Model) => string;
+  onPick: (id: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: MouseEvent) => !ref.current?.contains(e.target as Node) && setOpen(false);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open]);
+  const current = list.find((m) => m.id === value);
+  const pick = (id: string) => {
+    onPick(id);
+    setOpen(false);
+  };
+  const row = (active: boolean, n: number) =>
+    cn("flex w-full items-baseline justify-between gap-3 rounded-[2px] px-2 py-1 text-left text-[14px] transition-colors", active ? "bg-ink text-bg" : n === 0 ? "text-faint hover:bg-panel-2" : "text-ink hover:bg-panel-2");
+  return (
+    <div ref={ref} className="relative">
+      <button className={cn(filterSelect, "inline-flex items-center gap-1.5")} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="true">
+        {current ? label(current) : t("Alle Modelle", "All models")}
+        <ChevronDown className={cn("size-3.5 text-muted transition-transform", open && "rotate-180")} strokeWidth={1.5} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 z-30 mt-2 w-[min(640px,calc(100vw-32px))] rounded-[3px] border border-line bg-bg p-4 shadow-lg">
+          <button className={cn(row(!value, total), "mb-3 w-auto")} onClick={() => pick("")}>
+            {t("Alle Modelle", "All models")} <span className={cn("tabular-nums text-[12px]", !value ? "text-bg/70" : "text-faint")}>{num(total)}</span>
+          </button>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+            {MODEL_CATEGORIES.map((c) => {
+              const family = list.filter((m) => m.category === c.id);
+              if (family.length === 0) return null;
+              return (
+                <div key={c.id}>
+                  <div className="mb-1 px-2 text-[11px] font-medium tracking-[0.08em] text-muted uppercase">{c.label}</div>
+                  {family.map((m) => {
+                    const n = counts.get(m.id) ?? 0;
+                    const active = value === m.id;
+                    return (
+                      <button key={m.id} className={row(active, n)} onClick={() => pick(active ? "" : m.id)}>
+                        <span className="truncate">{label(m)}</span>
+                        <span className={cn("tabular-nums text-[12px]", active ? "text-bg/70" : "text-faint")}>{num(n)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
