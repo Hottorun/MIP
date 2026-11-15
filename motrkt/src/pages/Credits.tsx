@@ -40,8 +40,8 @@ export default function Credits() {
           <h1 className="font-serif text-3xl">{t("Bildnachweise & Quellen", "Image credits & sources")}</h1>
           <p className="mt-1 text-sm text-muted">
             {t(
-              `${stats.photos} Fotos von Porsche und Fachmagazinen · ${stats.colors} recherchierte Präsentationsfarben · ${stats.specs} Varianten mit belegten Spezifikationen`,
-              `${stats.photos} photos from Porsche and motoring magazines · ${stats.colors} researched launch colours · ${stats.specs} variants with sourced specifications`,
+              `${stats.photos} Fotos von Porsche, Fachmagazinen und Fotografen · ${stats.colors} recherchierte Präsentationsfarben · ${stats.specs} Varianten mit belegten Spezifikationen`,
+              `${stats.photos} photos from Porsche, motoring magazines and photographers · ${stats.colors} researched launch colours · ${stats.specs} variants with sourced specifications`,
             )}
           </p>
         </div>
@@ -165,8 +165,8 @@ export default function Credits() {
       )}
       <p className="text-xs text-faint">
         {t(
-          "Fotos stammen ausschließlich von Wikimedia Commons unter den jeweils angegebenen freien Lizenzen.",
-          "Photos come exclusively from Wikimedia Commons under the free licences stated.",
+          "Fotos stammen von Porsche (Pressefotos), aus Fachmagazinen und, wo es keine gibt, von Fotografen auf Wikimedia Commons unter den jeweils angegebenen freien Lizenzen.",
+          "Photos come from Porsche (press photos), motoring magazines and, where none exist, photographers on Wikimedia Commons under the free licences stated.",
         )}
       </p>
     </div>
