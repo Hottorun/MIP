@@ -51,7 +51,7 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 | `US_AUC` Auktionen USA | RM Sotheby's, Gooding, Broad Arrow … (Saalauktionen, Verkäufe in USD); von Hand: Verkäufe und Auktionsergebnisse von US-/kanadischen Händlern und Häusern | `rmfetch.py`, `goodingfetch.py`, `ucpfetch.sh`, `manual/*.csv` |
 | `US_ONL` Online-Auktionen USA | Bring a Trailer (von Hand auch Cars & Bids, PCARMARKET): eigene Quelle mit eigenem Abstand, damit die größte Plattform den Abstand der Saalauktionen nicht verwischt | `batfetch.py` |
 | `US_ASK` Angebote USA | von Hand: Angebote von US-/kanadischen Händlern | `manual/*.csv` |
-| alle Auktionskanäle | Hammer Price (App, mit schriftlicher Erlaubnis von Hand ausgelesen, Baujahre 1955–2026): Verkäufe und Höchstgebote vieler Häuser, auch solcher, die wir nicht abrufen können (Mecum vor 2023, Barrett-Jackson, Historics, COYS …). Ein Los, das wir schon vom Haus haben (gleiches Haus, Datum ±14 Tage, gleiche Losnummer und gleiches Baujahr bzw. Variante, oder bei Verkäufen Variante und Preis auf 2 % gleich), wird nicht doppelt gezählt; die Daten des Hauses gelten, Hammer Price ergänzt nur das Höchstgebot. Verkäufe in Japan und Saudi-Arabien stehen in der Liste, gehen aber nicht in den Marktwert ein. Jede Korrektur (Währung, Datum, Preis 0) steht in der Spalte `hinweis` | `hammerprice.csv` + `hammerprice.py` (in `build.py`) |
+| alle Auktionskanäle | Hammer Price (App, mit schriftlicher Erlaubnis von Hand ausgelesen, Baujahre 1948–2026): Verkäufe und Höchstgebote vieler Häuser, auch solcher, die wir nicht abrufen können (Mecum vor 2023, Barrett-Jackson, Historics, COYS …). Ein Los, das wir schon vom Haus haben (gleiches Haus, Datum ±14 Tage, gleiche Losnummer und gleiches Baujahr bzw. Variante, oder bei Verkäufen Variante und Preis auf 2 % gleich), wird nicht doppelt gezählt; die Daten des Hauses gelten, Hammer Price ergänzt nur das Höchstgebot. Verkäufe in Japan und Saudi-Arabien stehen in der Liste, gehen aber nicht in den Marktwert ein. Nennt die App nur „911“, „911 Targa“ o. ä., ordnet `by_year` nach Baujahr zu, wo nur ein Serienmodell in Frage kommt (1978–1983 911 SC, 1984–1988 Carrera 3.2, 1986–1988 924 S); der Titel bleibt wie in der App. Jede Korrektur (Währung, Datum, Preis 0) steht in der Spalte `hinweis` | `hammerprice.csv` + `hammerprice.py` (in `build.py`) |
 | `EU_BID` / `US_BID` Höchstgebote | Höchstgebote unverkaufter Lose (Hammer Price, Bring a Trailer) | wie oben |
 
 Nicht automatisch abrufbar (geprüft am 10. November 2026): mobile.de (Such- und Inseratsseiten per robots.txt gesperrt;
@@ -70,15 +70,24 @@ Höchstgebote unverkaufter Lose bleiben ohne Aufgeld; ihr Abstand wird als eigen
 
 Jeder Titel wird per `classify.py` genau einer Variante zugeordnet oder verworfen (Umbauten, Replikas, Teile, nicht
 eindeutige Modelle, „Re-Creation“, DP-Umbauten). Sondermodelle, die nur den Namen einer Serienvariante tragen, zählen
-nicht für diese Variante: Prototypen, Werks-GT- und Rennversionen (IMSA, SCCA, T/R, 914/6 GT und M471, N-GT, GT3-R),
-Club Coupé, 964 Carrera 4 Leichtbau, CTR sowie Tuning- und Karosserieumbauten. Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
+nicht für diese Variante: Prototypen, Werks-GT- und Rennversionen (IMSA, SCCA, T/R, 914/6 GT und M471, N-GT bzw. N/GT, GT3-R),
+Club Coupé, 964 Carrera 4 Leichtbau, CTR sowie Tuning- und Karosserieumbauten.
+Steht im Titel ein Hubraum, muss er zur Variante passen („911 S 2.2“ ist der 2.2 S, auch mit Baujahr 1969; „930 3.3“
+von 1977 oder „Turbo 3.4L“ sind Umbauten und fallen weg). Nennt der Titel „997.2“, „(991.2)“ o. ä., entscheidet das
+am Generationswechsel, sofern das Baujahr in die Bauzeit dieser Variante fällt (`variant_years.json`, aus dem Katalog);
+sonst gilt das Baujahr. „Turbo“ im Titel einer Variante ohne Turbo, Boxster oder Cayman bei einer 911-Variante und
+Tuner-Motoren werden verworfen. Schreibweisen wie „Carrera 2S“, „Carrera 4 S“, „Turbo 'S'“, „Boxster 3.2 S“, „GT4RS“
+werden dem richtigen Modell zugeordnet. Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
 
 ## Modell (`model.py`)
 
     log p = a_v + f_g(t) + δ_c,k + λ_v(t)·d_v(t) + e
 
-1. **Zeitindex** `f_g` je Marktsegment aus allen Auktionsergebnissen (kernelgewichtete Mediane der Log-Preise,
-   robust gegen Ausreißer). Damit werden ältere Preise auf heute hochgerechnet.
+1. **Zeitindex** `f_g` je Marktsegment aus allen Auktionsergebnissen (kernelgewichtete Interquartilsmittel der
+   Log-Preise, robust gegen Ausreißer). Damit werden ältere Preise auf heute hochgerechnet. Das Fenster wird bei wenigen
+   Verkäufen in kleinen Schritten breiter; mit dem Median und groben Schritten sprang der Index der kleinen Gruppe
+   959/Carrera GT/918 in den letzten zwei Wochen um 12 %, ohne dass sich der Markt bewegt hatte. Ebenso der eigene
+   Verlauf `d_v` je Variante.
 2. **Kanalabstand** `δ`: Für jede Variante mit Preisen in zwei Kanälen wird die Differenz der Mediane gebildet und über
    alle solchen Varianten gepoolt (gewichteter Median). Daraus folgt per gewichteter kleinster Quadrate, um wie viel
    Angebotspreise und US-Ergebnisse im Mittel über bzw. unter den europäischen Auktionsergebnissen liegen. Der
@@ -111,7 +120,9 @@ Club Coupé, 964 Carrera 4 Leichtbau, CTR sowie Tuning- und Karosserieumbauten. 
    den Verkäufen wird wie bei den anderen Kanälen gemessen und abgezogen (je Klassiker/moderne Fahrzeuge), `US_BID`
    teilt sich den US-Anteil. Wird dasselbe Fahrzeug (Haus, Variante, Titel) binnen 400 Tagen erneut angeboten und
    liegt der spätere Preis bzw. das spätere Gebot höchstens 30 % entfernt, zählt nur der spätere Beleg. Gebote gehen
-   nicht in den Zeitindex ein und zählen nicht für die Mindestzahl.
+   nicht in den Zeitindex und nicht in den Verlauf der Variante ein und zählen nicht für die Mindestzahl. Sie
+   korrigieren den Wert nur schwach: zusammen höchstens 5 % Gewicht (`BID_SHARE`) und nie mehr als 2 % Änderung
+   (`BID_MAX`), wie viele Gebote es auch gibt.
 8. **Mindestens 3 Belege** (Verkäufe oder Angebote) für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
    Empfehlung, sondern nur die Einzelbelege.
 

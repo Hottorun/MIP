@@ -44,6 +44,8 @@ from classify import body as body_of  # noqa: E402
 AS_OF = dt.date.fromisoformat(os.environ.get("MIP_AS_OF") or dt.date.today().isoformat())  # cut-off day: today unless set
 MIN_N = 3          # observations needed for a published value
 OWN_MIN = 12       # observations needed for an own price path
+BID_SHARE = 0.05   # highest bids of unsold lots together carry at most 5 % of a variant's level ...
+BID_MAX = math.log(1.02)   # ... and never move it by more than 2 %: a bid is a hint, not a price
 RECENCY = 2.0      # e-folding time (years) of the recency weight in the level estimate
 OUT_K = 2.0        # a price farther than OUT_K x the scatter of its source from the variant's level is left out ...
 OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way,
@@ -262,15 +264,15 @@ for s in obs: byv[s["variant"]].append(s)
 
 
 # ---------------------------------------------------------------------------------------------------- time index
-def smooth(pts, grid, h0, min_w):
+def smooth(pts, grid, h0, min_w, stat=None):
     out = []
     for m in grid:
         h = h0
         while True:
             ks = [(r, w * math.exp(-0.5 * ((t - m) / h) ** 2)) for t, r, w in pts if abs(t - m) < 3 * h]
             if sum(k for _, k in ks) >= min_w or h > 3: break
-            h *= 1.4
-        out.append(wmedian([r for r, _ in ks], [k for _, k in ks]) if ks else None)
+            h *= 1.05   # widen in small steps: a coarse step (1.4) made the curve jump where few sales fall in the window
+        out.append((stat or wmedian)([r for r, _ in ks], [k for _, k in ks]) if ks else None)
     last = None
     for i, x in enumerate(out):
         if x is None: out[i] = last
@@ -300,7 +302,10 @@ def fit_index(ss, adj, iters=8, h=0.25):
         for s in keep: vs[s["variant"]].append(s)
         for v, l in vs.items():
             a[v] = median([s["y"] - adj(s) - interp(GRID, f, s["t"]) for s in l])
-        f = smooth([(s["t"], s["y"] - adj(s) - a[s["variant"]], 1.0) for s in keep], GRID, h, 15)
+        # interquartile mean, not the median: with few cars (959, Carrera GT, 918) the median jumps from one car to the
+        # next as the window moves; together with the window widening in coarse steps at the last grid point, where it
+        # is one-sided, that made a drop of 12 % in the last two weeks without any market move
+        f = smooth([(s["t"], s["y"] - adj(s) - a[s["variant"]], 1.0) for s in keep], GRID, h, 15, wiqm)
         f = [x - f[-1] for x in f]
         if it >= 1:
             keep = [s for s in ss if s["variant"] in a and abs(s["y"] - adj(s) - a[s["variant"]] - interp(GRID, f, s["t"])) < 1.0]
@@ -525,12 +530,21 @@ for v, l in byv.items():
     for c in prec:
         if c in US: prec[c] /= 1 + US_TAU ** 2 * S_us
     a = sum(mc[c] * prec[c] for c in mc) / sum(prec.values())
-    share = {c: round(prec[c] / sum(prec.values()), 3) for c in mc}
+    share = {c: prec[c] / sum(prec.values()) for c in mc}
+    # highest bids only correct the level of the sales slightly: at most BID_SHARE of the weight, at most BID_MAX
+    sp = {c: p for c, p in prec.items() if c not in BID}; bp = {c: p for c, p in prec.items() if c in BID}
+    if sp and bp:
+        a0 = sum(mc[c] * p for c, p in sp.items()) / sum(sp.values())
+        mb = sum(mc[c] * p for c, p in bp.items()) / sum(bp.values())
+        w = min(BID_SHARE, sum(bp.values()) / sum(prec.values()))
+        a = a0 + max(-BID_MAX, min(BID_MAX, w * (mb - a0)))
+        share = {c: (1 - w) * p / sum(sp.values()) for c, p in sp.items()} | {c: w * p / sum(bp.values()) for c, p in bp.items()}
+    share = {c: round(x, 3) for c, x in share.items()}
     keep = [(s, b - mc[s["ch"]] + a) for s, b in keep]   # each channel centred on the combined level
     d = [0.0] * len(GRID); lam = [0.0] * len(GRID)
     if n >= OWN_MIN:
-        pts = [(s["t"], b - a, WCH[s["ch"]]) for s, b in keep]
-        d = smooth(pts, GRID, 0.6, 8)
+        pts = [(s["t"], b - a, WCH[s["ch"]]) for s, b in keep if s["ch"] not in BID]   # the course follows sales, not bids
+        d = smooth(pts, GRID, 0.6, 8, wiqm)   # as the index: interquartile mean, no jumps from a median flipping between cars
         for i, m in enumerate(GRID):
             ws = [w * math.exp(-0.5 * ((t - m) / 0.6) ** 2) for t, _, w in pts]
             neff = (sum(ws) ** 2 / sum(x * x for x in ws)) if sum(ws) > 0 else 0

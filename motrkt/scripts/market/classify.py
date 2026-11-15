@@ -1,8 +1,10 @@
 """Assign an auction title (year + model text) to exactly one catalog variant, or None.
 Conservative: anything modified, replica, part, or not clearly one variant is rejected."""
-import re, html
+import re, html, json, os
 
 P = "porsche-"
+# build years of each variant (from the catalog, src/data): a title's displacement or "997.2" decides only within them
+YEARS = {k: (v[0], v[1] or 9999) for k, v in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "variant_years.json"))).items()}
 EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw", "replica", "tribute", "recreation", "re-creation",
         "continuation", "kit car", "project", "conversion", "converted", "wide-body", "widebody", "rwb", "rauh", "ruf ",
         "ruf-", " ruf", "gemballa", "techart", "strosek", "emory", "gunther", "theon", "tuthill", "everrati", "electric",
@@ -17,7 +19,7 @@ EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw
 # one-offs and factory specials that share a name with a series model but are a different car (prototypes, factory
 # GT and race versions, lightweights, limited club editions, coachbuilt or tuned cars): left out of the series variant
 SPECIAL = re.compile(r"prototype|\bimsa\b|\bscca\b|\bt/r\b|914/6 r\b|914/6 ['\"]?gt|\bm471\b|gt specification|carrera 4 leichtbau|\bctr\b"
-                     r"|tag turbo|bandama|turbo gts|retro rod|magnum|rocket|club coupe|\b993 gt\b|\b993 club ?sport|gt3[- ]r\b|n-gt"
+                     r"|tag turbo|bandama|turbo gts|retro rod|magnum|rocket|club coupe|\b993 gt\b|\b993 club ?sport|gt3[- ]r\b|gt2[- ]?r\b|\bn[-/]gt\b"
                      r"|super 90 gt|super gt\b")
 TRACK = ["race car", "racecar", "track car", "race-prepped", "race prepped", "racer", "track-prepped", "vintage race"]
 RACE_OK = ["race car", "racecar", "track car", "racer"]
@@ -125,14 +127,18 @@ def early(y, s, b, full):
     def F(v): return (P + "911-f-modell-" + v, b)
     def G(v): return (P + "911-g-modell-" + v, b)
     # 911T, 911 E, 911S, 911L (not "911 SC", "911 Targa"); also with the displacement first: "911 2.4 S", "911 2.2 T"
-    m = re.search(r"\b911\s?(?:(2\.[024])\s)?([tels])\b", s)
+    m = re.search(r"\b911\s?(?:(2\.[0247])\s)?([tels])\b", s)
     L = m.group(2) if m else ""
-    disp = m.group(1) if m else None
+    # the displacement may stand before or after the letter: "911 2.2 S", "911 S 2.2", "911S 2.2-Litre"
+    disps = set(re.findall(r"(?<![\d.])(2\.[024])(?![\dk])", s))
+    disp = disps.pop() if len(disps) == 1 else ("x" if disps else None)
     rs = re.search(r"\brs\b", s)
-    if disp and y <= 1973:
-        # displacement named in the title: the variant picked from the model year must have it (else the title is unclear)
-        r0 = early_f(y, L, rs, s, b, F)
-        return r0 if r0 and r0[0].endswith(disp.replace(".", "-")) else None
+    if disp and y <= 1973 and (L or disp != "2.0"):
+        # displacement named in the title: it decides between 2.0, 2.2 and 2.4 (a car built in 1969 with the 2.2 is a
+        # 2.2 of model year 1970), as long as the build year lies within that variant's years
+        if disp == "x" or not L or rs or has(s, "carrera", "speedster", " sc "): return None
+        v0 = "911-f-modell-%s-%s" % (L, disp.replace(".", "-"))
+        return F(v0[13:]) if P + v0 in YEARS and YEARS[P + v0][0] <= y <= YEARS[P + v0][1] else None
     if y <= 1973:  # F-Modell
         if rs: return F("carrera-rs-2-7") if y == 1973 and has(s, "carrera", "2.7") and b == "Coupé" else None
         if has(s, "carrera", "speedster", " sc "): return None
@@ -270,6 +276,8 @@ def road(y, s, full=""):
     if not re.search(r"\b911|\b930|\b964|\b993|\b996|\b997|\b991|\b992|carrera|turbo|gt[23]|speedster", s): return mid(y, s, b)
     e = early(y, s, b, full)
     if e is not False: return e
+    # the 964 Turbo S Leichtbau, in English listings "Lightweight", has its own variant
+    if 1992 <= y <= 1993 and re.search(r"turbo (3\.3 )?s (3\.3 )?lightweight", s): s = s.replace("lightweight", "leichtbau")
     if has(s,"rs america", "america rs", "america roadster", "anniversary", "jubil", "30 jahre", "edition", "exclusive", "club coupe",
            "sc ", "sc/", "3.2", "carrera 3.0", "2.7", "911t", "911e", "911s", "911l", " l ", " e ", "2.0", "2.2", "2.4",
            "lightweight", "cup", "rsr", "safari", "dakar") and not (("dakar" in s) and y >= 2023) and not re.search(r"50th|50 jahre|50 years", s):
@@ -482,6 +490,14 @@ def mid(y, s, b):
 
 GEN = {"964": "964", "993": "993", "996": "996", "997": "997", "991": "991", "992": "992", "986": "986", "987": "987", "981": "981", "982": "718"}
 
+def disp_ok(v, s):
+    """False if the title names a displacement the variant does not have: engine swap, conversion or another version
+    ("1977 930 3.3", "911 Turbo 3.4L", "Carrera RSR 2.1 Turbo" under the RSR 3.0)."""
+    vd = {"%s.%s" % x for x in re.findall(r"-(\d)-(\d)(?=-|$)", v)}
+    td = set(re.findall(r"(?<![\d.,])([1-4]\.\d)(?![\dk])(?!\s?k\b)", re.sub(r"\b\d+(\.\d+)?k?[- ]mile", " ", s)))
+    return not (vd and td and not td & vd)
+
+
 def classify(title, note=""):
     """-> (variant_id, body, gearbox, year) or None"""
     sp = split(title)
@@ -491,8 +507,14 @@ def classify(title, note=""):
     if note: model = model + " " + note
     full = (pre + " " + model).lower()
     s = model.lower().replace("gt3 carrera rs", "gt3 rs").replace("weissach package", "weissach")
+    s = re.sub(r"\b(gt[234])rs\b", r"\1 rs", s)                       # "GT4RS", "GT3RS"
+    s = re.sub(r"\b(boxster|cayman)( \(?98[67](\.[12])?\)?)? [23]\.\d ?s\b", r"\1 s", s)   # "Boxster 3.4 S" is the Boxster S
+    s = re.sub(r"\bcarrera 2 ?s\b", "carrera s", s)                    # "Carrera 2S" (993, 997) is the Carrera S
+    s = re.sub(r"\bcarrera 4 s\b", "carrera 4s", s)
+    s = re.sub(r"\bturbo ['\"]s['\"]", "turbo s", s)                   # "Turbo 'S'"
     if re.search(r"exclusive|edition|anniversary|endurance|outlaw|prepared|competition|race|rally|recreation|modified|spec|specification|by ", note) and not re.search(r"50(th)? (years|jahre|anniversary)", note): return None
     v = race(y, s, full)
+    if v and not disp_ok(v, s): return None
     if v: return v, ("Roadster" if has(s, "spyder", "rs 60", "rsk", "908/0", "917/") else "Coupé"), gearbox(s), y
     if any(w in full for w in EXCL) or any(w in full for w in TRACK): return None
     if SPECIAL.search(full): return None
@@ -502,4 +524,16 @@ def classify(title, note=""):
     if not res: return None
     for tok, g in GEN.items():
         if re.search(r"\b" + tok + r"\b", s) and g not in res[0]: return None
-    return res[0], res[1], gearbox(s), y
+    v = res[0]
+    if not disp_ok(v, s): return None
+    # a Boxster or Cayman is never a 911 (a "Cayman Turbo" is a conversion); tuners' engines (Andial)
+    if re.search(r"\b(boxster|cayman)\b", s) and "911" in v or has(full, "andial"): return None
+    # "Turbo" or "Twin-Turbo" in the title of a variant without turbo (conversions, other models)
+    if re.search(r"\bturbo\b", full) and not re.search(r"turbo|930|959|gt2|918|carrera-gt", v): return None
+    # generation named as "997.2", "(991.2)": decides at the change of generation, within the variant's build years
+    # (titles near the change often carry the other generation's number: then the build year decides)
+    g = re.search(r"\b(99[1-7]|98[17])\.([12])\b", s)
+    if g and re.search(g.group(1) + r"-[12]-", v) and g.group(1) + "-" + g.group(2) + "-" not in v:
+        alt = re.sub(g.group(1) + r"-[12]-", g.group(1) + "-" + g.group(2) + "-", v)
+        if alt in YEARS and YEARS[alt][0] <= y <= YEARS[alt][1]: v = alt
+    return v, res[1], gearbox(s), y

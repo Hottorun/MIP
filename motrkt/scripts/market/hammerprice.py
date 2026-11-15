@@ -25,6 +25,17 @@ def lotn(x):
     return re.sub(r"^[a-z]+", "", x)
 
 
+def by_year(m, y):
+    """The app names many cars only "911", "911 Targa" or "924"; where the build year leaves one series model, name it.
+    1978-1983: every 911 that is not a Turbo is a 911 SC; 1984-1988 a Carrera 3.2 (1989 also the 964 Carrera 4);
+    1986-1988: the 924 is the 924 S (the 2.0-litre 924 ended in 1985)."""
+    g = re.match(r"^911( Carrera)?( Coupe| Targa| Cabriolet)?$", m)
+    if g and 1978 <= y <= 1983 and not g.group(1): return "911 SC" + (g.group(2) or "")
+    if g and 1984 <= y <= 1988: return "911 Carrera 3.2" + (g.group(2) or "")
+    if m == "924" and 1986 <= y <= 1988: return "924 S"
+    return m
+
+
 def day(d): return dt.date.fromisoformat(d).toordinal()
 
 
@@ -45,7 +56,7 @@ def load(path, classify, to_eur, out, url_of):
         # spellings of the app the classifier does not know: "Boxter", "911R", a bare "930" (the 930 is the Turbo)
         m_ = re.sub(r"\bBoxter\b", "Boxster", r["modell"]); m_ = re.sub(r"\b911R\b", "911 R", m_); m_ = re.sub(r"^930$", "930 Turbo", m_)
         title = "%s Porsche %s" % (r["baujahr"], m_)
-        c = classify(title)
+        c = classify("%s Porsche %s" % (r["baujahr"], by_year(m_, int(r["baujahr"]))))
         if not c: st["keiner Variante eindeutig zuzuordnen"] += 1; continue
         vid, body, gear, year = c
         amt, cur = int(r["preis"]), r["waehrung"]
