@@ -32,7 +32,7 @@ function promptGroups(name: string, sibling: string | undefined) {
     },
     {
       title: t("Markt", "Market"),
-      prompts: [t("Auktionstrends der letzten 12 Monate zusammenfassen", "Summarise auction trends of the last 12 months"), t("Welche Varianten haben das stärkste Momentum?", "Which variants have the strongest momentum?")],
+      prompts: [t("Auktionstrends der letzten 12 Monate zusammenfassen", "Summarise auction trends of the last 12 months"), t("Welche Varianten legen zuletzt am stärksten zu?", "Which variants have the strongest momentum?")],
     },
   ];
 }
@@ -96,30 +96,17 @@ export default function AiPage() {
               <p className="text-xs text-muted">{t("Prüfe Verbindung …", "Checking connection …")}</p>
             ) : status.ai ? (
               <p className="text-xs leading-relaxed text-muted">
-                <Pill tone="gold" className="mr-1">Claude</Pill>
+                <Pill tone="gold" className="mr-1">{t("KI", "AI")}</Pill>
                 {t(
-                  <>
-                    Antworten kommen von <span className="text-ink">{status.model}</span> über den Carbay-Server; die Marktdaten werden als Kontext mitgeschickt. Ist die API nicht erreichbar, springt automatisch der lokale Modus ein.
-                  </>,
-                  <>
-                    Answers come from <span className="text-ink">{status.model}</span> via the Carbay server; the market data is sent along as context. If the API can’t be reached, local mode takes over automatically.
-                  </>,
+                  "Ein KI-Sprachmodell beantwortet freie Fragen auf Grundlage unserer Marktdaten. Keine Anlageberatung.",
+                  "An AI language model answers free-form questions based on our market data. Not investment advice.",
                 )}
               </p>
             ) : (
               <p className="text-xs leading-relaxed text-muted">
-                <Pill className="mr-1">{t("Lokaler Modus", "Local mode")}</Pill>
                 {t(
-                  <>
-                    Antworten werden direkt aus den Marktdaten berechnet – ohne Sprachmodell. Für freie Fragen mit Claude Opus 5.5 vor dem Start
-                    <code className="mx-1 rounded bg-panel-3 px-1 text-ink">ANTHROPIC_API_KEY</code>
-                    setzen und <code className="rounded bg-panel-3 px-1 text-ink">npm run dev</code> neu starten.
-                  </>,
-                  <>
-                    Answers are calculated directly from the market data – without a language model. For free-form questions with Claude Opus 5.5, set
-                    <code className="mx-1 rounded bg-panel-3 px-1 text-ink">ANTHROPIC_API_KEY</code>
-                    before starting and restart <code className="rounded bg-panel-3 px-1 text-ink">npm run dev</code>.
-                  </>,
+                  "Die Antworten werden direkt aus unseren Marktdaten berechnet. Am besten eignen sich die Vorschläge unten. Keine Anlageberatung.",
+                  "Answers are calculated directly from our market data. The suggestions below work best. Not investment advice.",
                 )}
               </p>
             )}

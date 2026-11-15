@@ -233,7 +233,7 @@ function Segments() {
                     title={`${label} · ${payload[0].payload.count} ${t("Varianten", "variants")}`}
                     rows={[
                       { label: "Ø 12M", value: pct(Number(payload[0].payload.change12m) / 100), color: "var(--color-gold)" },
-                      { label: t("Ø CAGR 5J", "Ø CAGR 5Y"), value: pct(Number(payload[0].payload.cagr5) / 100), color: "var(--color-line-2)" },
+                      { label: t("Ø Rendite p. a. 5 J.", "Ø return p.a. 5Y"), value: pct(Number(payload[0].payload.cagr5) / 100), color: "var(--color-line-2)" },
                     ]}
                   />
                 ) : null
@@ -266,12 +266,12 @@ function RiskScatter({ mode }: { mode: "rarity" | "vol" }) {
       })),
     [mode],
   );
-  const xLabel = mode === "rarity" ? "Rarity Score" : t("Volatilität 1J", "Volatility 1Y");
-  const cagr = t("CAGR 5J", "CAGR 5Y");
+  const xLabel = mode === "rarity" ? t("Seltenheit", "Rarity") : t("Volatilität 1J", "Volatility 1Y");
+  const cagr = t("Rendite p. a. 5 J.", "Return p.a. 5Y");
   return (
     <Card
       title={mode === "rarity" ? t("Seltenheit vs. Rendite", "Rarity vs. return") : t("Rendite-Risiko-Profil", "Return-risk profile")}
-      sub={mode === "rarity" ? t("Rarity Score vs. CAGR 5J, Größe = Marktwert", "Rarity score vs. CAGR 5Y, size = market value") : t("Volatilität vs. CAGR 5J", "Volatility vs. CAGR 5Y")}
+      sub={mode === "rarity" ? t("Seltenheit vs. jährliche Rendite über 5 Jahre, Größe = Marktwert", "Rarity vs. annual return over 5 years, size = market value") : t("Schwankung vs. jährliche Rendite über 5 Jahre", "Volatility vs. annual return over 5 years")}
     >
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
@@ -348,8 +348,8 @@ function Reports() {
       {
         title: `${t("Top-Performer", "Top performer")}: ${variantTitle(top.v)}`,
         body: t(
-          `${pct(top.m.change12m)} in 12 Monaten auf ${eur(top.m.value)}. Momentum ${top.m.momentum.toLowerCase()}, Rarity ${top.m.rarityScore}/100.`,
-          `${pct(top.m.change12m)} in 12 months to ${eur(top.m.value)}. Momentum ${tr(top.m.momentum).toLowerCase()}, rarity ${top.m.rarityScore}/100.`,
+          `${pct(top.m.change12m)} in 12 Monaten auf ${eur(top.m.value)}. Preisdynamik ${top.m.momentum.toLowerCase()}, Seltenheit ${top.m.rarityScore}/100.`,
+          `${pct(top.m.change12m)} in 12 months to ${eur(top.m.value)}. momentum ${tr(top.m.momentum).toLowerCase()}, rarity ${top.m.rarityScore}/100.`,
         ),
         href: `/markt/${top.v.id}`,
         cta: t("Marktdaten", "Market data"),
@@ -357,8 +357,8 @@ function Reports() {
       {
         title: `${t("Größter Rücksetzer", "Biggest drop")}: ${variantTitle(flop.v)}`,
         body: t(
-          `${pct(flop.m.change12m)} in 12 Monaten – Marktwert jetzt ${eur(flop.m.value)}. Mögliche Einstiegschance, wenn die Fundamentaldaten (CAGR 5J ${pct(flop.m.cagr5)}) intakt sind.`,
-          `${pct(flop.m.change12m)} in 12 months – market value now ${eur(flop.m.value)}. A possible entry point if the fundamentals (CAGR 5Y ${pct(flop.m.cagr5)}) are intact.`,
+          `${pct(flop.m.change12m)} in 12 Monaten – Marktwert jetzt ${eur(flop.m.value)}. Mögliche Einstiegschance, wenn die langfristige Entwicklung (${pct(flop.m.cagr5)} pro Jahr über 5 Jahre) stimmt.`,
+          `${pct(flop.m.change12m)} in 12 months – market value now ${eur(flop.m.value)}. A possible entry point if the long-term trend (${pct(flop.m.cagr5)} a year over 5 years) holds.`,
         ),
         href: `/markt/${flop.v.id}`,
         cta: t("Analyse öffnen", "Open analysis"),
@@ -376,7 +376,7 @@ function Reports() {
         brand: true,
         title: `${t("Marke mit Rückenwind", "Brand with momentum")}: ${lead}`,
         body: t(
-          `Der ${lead}-Index stieg um ${pct(brandRows[0].c)} in 12 Monaten; Schlusslicht ist ${tail.b.name} (${pct(tail.c)}). ${momentum} von ${all.length} Varianten zeigen starkes Momentum.`,
+          `Der ${lead}-Index stieg um ${pct(brandRows[0].c)} in 12 Monaten; Schlusslicht ist ${tail.b.name} (${pct(tail.c)}). ${momentum} von ${all.length} Varianten zeigen eine starke Preisdynamik.`,
           `The ${lead} index rose ${pct(brandRows[0].c)} in 12 months; ${tail.b.name} brings up the rear (${pct(tail.c)}). ${momentum} of ${all.length} variants show strong momentum.`,
         ),
         href: `/modelle?marke=${brandRows[0].b.id}`,
@@ -385,8 +385,8 @@ function Reports() {
       {
         title: `${t("Bestes Rendite-Risiko-Verhältnis", "Best return-to-risk ratio")}: ${variantTitle(sharpe.v)}`,
         body: t(
-          `CAGR 5J ${pct(sharpe.m.cagr5)} bei nur ${pct(sharpe.m.vol1y, { signed: false })} Volatilität – Quote ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
-          `CAGR 5Y ${pct(sharpe.m.cagr5)} with only ${pct(sharpe.m.vol1y, { signed: false })} volatility – ratio ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
+          `${pct(sharpe.m.cagr5)} pro Jahr über 5 Jahre bei nur ${pct(sharpe.m.vol1y, { signed: false })} Schwankung – Verhältnis ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
+          `${pct(sharpe.m.cagr5)} a year over 5 years with only ${pct(sharpe.m.vol1y, { signed: false })} volatility – ratio ${num(sharpe.m.cagr5 / sharpe.m.vol1y, 2)}.`,
         ),
         href: `/markt/${sharpe.v.id}`,
         cta: t("Marktdaten", "Market data"),

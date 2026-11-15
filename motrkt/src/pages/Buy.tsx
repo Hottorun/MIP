@@ -576,14 +576,7 @@ function SourceBar({
   if (live.status === "off") {
     return (
       <p className="mt-1 text-xs text-faint">
-        {t(
-          <>
-            Täglich aktualisiert. Für mobile.de-Inserate den API-Zugang in <code>.env</code> eintragen (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) und neu starten.
-          </>,
-          <>
-            Updated daily. For mobile.de listings, add the API access to <code>.env</code> (<code>MOBILEDE_USERNAME</code>, <code>MOBILEDE_PASSWORD</code>) and restart.
-          </>,
-        )}
+        {t("Täglich aktualisiert.", "Updated daily.")}
       </p>
     );
   }

@@ -94,7 +94,7 @@ export async function askCopilot(opts: {
 function variantLine(id: string) {
   const v = variantById.get(id)!;
   const m = getMetrics(id);
-  return `- ${variantTitle(v)} (${yearsLabel(v.years)}, ${num(v.production)} Stk.): Marktwert ${eur(m.value)}, 12M ${pct(m.change12m)}, CAGR 5J ${pct(m.cagr5)}, Vol. ${pct(m.vol1y, { signed: false })}, Rarity ${m.rarityScore}/100, Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, Einschätzung ${m.recommendation.label}`;
+  return `- ${variantTitle(v)} (${yearsLabel(v.years)}, ${num(v.production)} Stk.): Marktwert ${eur(m.value)}, 12M ${pct(m.change12m)}, Rendite p. a. 5 J. ${pct(m.cagr5)}, Vol. ${pct(m.vol1y, { signed: false })}, Seltenheit ${m.rarityScore}/100, Liquidität ${m.liquidity}/100, Preisdynamik ${m.momentum}, Einschätzung ${m.recommendation.label}`;
 }
 
 export function buildContext(focusVariantId: string | undefined, portfolio: Holding[], watchlist: string[]): string {
@@ -109,9 +109,9 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
       `Bauzeit ${yearsLabel(focus.years)}, Produktion ${num(focus.production)} Stück, ${focus.hp} PS, ${liters(focus.liters)} l, ${focus.drive}, ${focus.transmission}`,
       `Neupreis ca. ${eur(focus.newPrice)} (${focus.newPriceYear}), inflationsbereinigt ca. ${eur(focus.newPrice * inflationFactor(focus.newPriceYear))}`,
       focus.measured
-        ? `Marktwert Deutschland ${eur(m.value)} (aus europäischen Auktionsergebnissen, europäischen Angebotspreisen und bereinigten US-Auktionen); Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; CAGR 5J ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`
+        ? `Marktwert Deutschland ${eur(m.value)} (aus europäischen Auktionsergebnissen, europäischen Angebotspreisen und bereinigten US-Auktionen); Veränderung 1M ${pct(m.change1m)}, 3M ${pct(m.change3m)}, 6M ${pct(m.change6m)}, 12M ${pct(m.change12m)}; Rendite p. a. 5 J. ${pct(m.cagr5)}; Volatilität 1J ${pct(m.vol1y, { signed: false })}; max. Drawdown 5J ${pct(m.maxDD5)}`
         : `Marktwert: keine belastbare Datenbasis (zu wenige belegte Verkäufe und Angebote). Keinen Wert schätzen oder erfinden.`,
-      `Rarity Score ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Momentum ${m.momentum}, Carbay-Einschätzung: ${m.recommendation.label}`,
+      `Seltenheit ${m.rarityScore}/100 (Perzentil ${m.rarityPercentile} %), Liquidität ${m.liquidity}/100, Preisdynamik ${m.momentum}, Carbay-Einschätzung: ${m.recommendation.label}`,
       `Letzte 12 Monate: ${m.sales12m} Transaktionen, Ø Verkaufspreis ${eur(m.avgPrice12m)}, Median-Laufleistung ${km(m.medianMileage)}, Ø Zustandsnote ${num(m.avgCondition, 1)}, Auktionsanteil ${pct(m.auctionShare, { signed: false, digits: 0 })}, Verkaufsquote ${pct(m.sellThrough, { signed: false, digits: 0 })}, Ø Zuschlag vs. Schätzung ${pct(m.premiumVsEstimate)}`,
       `Optionen/Wertfaktoren: ${focus.options.map((o) => `${o.name}${o.standard ? "" : o.measured ? ` (${pct(o.impact)}, gemessen an ${o.measured} Belegen)` : " (Einfluss nicht gemessen)"}`).join("; ")}`,
       `Typische Schwachstellen: ${focus.weaknesses.join("; ")}`,
@@ -265,8 +265,8 @@ export function localAnswer(question: string, focusVariantId: string | undefined
       const x = getMetrics(id);
       const vv = variantById.get(id)!;
       return t(
-        `**${variantShortTitle(vv)}**\n- Marktwert ${eur(x.value)}, 12M ${pct(x.change12m)}, CAGR 5J ${pct(x.cagr5)}\n- Volatilität ${pct(x.vol1y, { signed: false })}, Rarity ${x.rarityScore}/100, Liquidität ${x.liquidity}/100\n- ${num(vv.production)} Stück, ${vv.hp} PS, Momentum ${x.momentum}, Einschätzung ${x.recommendation.label}`,
-        `**${variantShortTitle(vv)}**\n- Market value ${eur(x.value)}, 12M ${pct(x.change12m)}, CAGR 5Y ${pct(x.cagr5)}\n- Volatility ${pct(x.vol1y, { signed: false })}, rarity ${x.rarityScore}/100, liquidity ${x.liquidity}/100\n- ${num(vv.production)} built, ${vv.hp} PS, momentum ${tr(x.momentum)}, assessment ${tr(x.recommendation.label)}`,
+        `**${variantShortTitle(vv)}**\n- Marktwert ${eur(x.value)}, 12M ${pct(x.change12m)}, Rendite p. a. 5 J. ${pct(x.cagr5)}\n- Volatilität ${pct(x.vol1y, { signed: false })}, Seltenheit ${x.rarityScore}/100, Liquidität ${x.liquidity}/100\n- ${num(vv.production)} Stück, ${vv.hp} PS, Momentum ${x.momentum}, Einschätzung ${x.recommendation.label}`,
+        `**${variantShortTitle(vv)}**\n- Market value ${eur(x.value)}, 12M ${pct(x.change12m)}, return p.a. 5Y ${pct(x.cagr5)}\n- Volatility ${pct(x.vol1y, { signed: false })}, rarity ${x.rarityScore}/100, liquidity ${x.liquidity}/100\n- ${num(vv.production)} built, ${vv.hp} PS, momentum ${tr(x.momentum)}, assessment ${tr(x.recommendation.label)}`,
       );
     });
     const best = [...others].sort((a, b) => getMetrics(b).recommendation.score - getMetrics(a).recommendation.score)[0];
@@ -316,8 +316,8 @@ ${weak}
 - 5 Jahre: ${eur(f5.low, { compact: true })} – ${eur(f5.high, { compact: true })}, Basisszenario ${eur(f5.mid, { compact: true })} (${pct(f5.base)} p. a.)
 
 **Treiber**
-- Historische Rendite ${pct(m.cagr5)} p. a. (5J), Momentum ${m.momentum.toLowerCase()} (${pct(m.change3m)} in 3M)
-- Rarity ${m.rarityScore}/100 bei ${num(v.production)} Stück
+- Historische Rendite ${pct(m.cagr5)} p. a. (5J), Preisdynamik ${m.momentum.toLowerCase()} (${pct(m.change3m)} in 3M)
+- Seltenheit ${m.rarityScore}/100 bei ${num(v.production)} Stück
 
 **Risiken**
 - Volatilität ${pct(m.vol1y, { signed: false })}; letzter Rückgang bis ${pct(m.maxDD5)}
@@ -328,7 +328,7 @@ ${weak}
 
 **Drivers**
 - Historical return ${pct(m.cagr5)} p.a. (5Y), momentum ${momentum.toLowerCase()} (${pct(m.change3m)} in 3M)
-- Rarity ${m.rarityScore}/100 with ${num(v.production)} built
+- Seltenheit ${m.rarityScore}/100 with ${num(v.production)} built
 
 **Risks**
 - Volatility ${pct(m.vol1y, { signed: false })}; last drawdown down to ${pct(m.maxDD5)}
@@ -346,7 +346,7 @@ ${weak}
 - ${sales.length} Transaktionen, davon ${pct(m.auctionShare, { signed: false, digits: 0 })} über Auktionen
 - Verkaufsquote ${pct(m.sellThrough, { signed: false, digits: 0 })}, Ø Zuschlag vs. Schätzung ${pct(m.premiumVsEstimate)}
 - Ø Verkaufspreis ${eur(m.avgPrice12m)}, Marktwert heute ${eur(m.value)} (${pct(m.change12m)} ggü. Vorjahr)${top ? `\n- Höchster Preis: ${eur(top.price)} bei ${top.house} (${date(top.date)}, Zustand ${top.condition}, ${km(top.mileage)})` : ""}
-- Momentum: ${m.momentum} – ${rising ? "Preise ziehen zuletzt an" : "Preise geben zuletzt nach"} (${pct(m.change3m)} in 3M)${note}`,
+- Preisdynamik: ${m.momentum} – ${rising ? "Preise ziehen zuletzt an" : "Preise geben zuletzt nach"} (${pct(m.change3m)} in 3M)${note}`,
       `**Auction trends ${name} – last 12 months**
 - ${sales.length} transactions, ${pct(m.auctionShare, { signed: false, digits: 0 })} of them at auction
 - Sell-through rate ${pct(m.sellThrough, { signed: false, digits: 0 })}, avg. hammer price vs. estimate ${pct(m.premiumVsEstimate)}
@@ -357,14 +357,14 @@ ${weak}
 
   return t(
     `**${variantTitle(v)} – Kurzanalyse**
-- Marktwert ${eur(m.value)} (${pct(m.change12m)} in 12M), CAGR 5J ${pct(m.cagr5)}
-- Rarity ${m.rarityScore}/100, Liquidität ${m.liquidity}/100, Momentum ${m.momentum}
+- Marktwert ${eur(m.value)} (${pct(m.change12m)} in 12M), Rendite p. a. 5 J. ${pct(m.cagr5)}
+- Seltenheit ${m.rarityScore}/100, Liquidität ${m.liquidity}/100, Preisdynamik ${m.momentum}
 - Einschätzung: **${m.recommendation.label}** – ${m.thesis}
 
 Ich kann außerdem einen **Preis-Ausblick**, einen **Variantenvergleich**, eine **Risikoanalyse** konkreter Angebote oder eine **Zusammenfassung der Auktionen** liefern.${note}`,
     `**${variantTitle(v)} – quick analysis**
-- Market value ${eur(m.value)} (${pct(m.change12m)} in 12M), CAGR 5Y ${pct(m.cagr5)}
-- Rarity ${m.rarityScore}/100, liquidity ${m.liquidity}/100, momentum ${momentum}
+- Market value ${eur(m.value)} (${pct(m.change12m)} in 12M), return p.a. 5Y ${pct(m.cagr5)}
+- Seltenheit ${m.rarityScore}/100, liquidity ${m.liquidity}/100, momentum ${momentum}
 - Assessment: **${rec}** – ${m.thesis}
 
 I can also provide a **price outlook**, a **variant comparison**, a **risk analysis** of specific listings or a **summary of recent auctions**.${note}`,

@@ -168,12 +168,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
       )}
       <p className="mt-6 max-w-3xl text-[12.5px] leading-relaxed text-faint">
         {t(
-          `Inserate werden täglich verfolgt: ${num(TRACKING.tracked)} erfasst, ${num(TRACKING.gone)} nicht mehr online, ${num(TRACKING.priceCuts)} Preissenkungen${TRACKING.medianCut !== null ? ` (Median ${pct(TRACKING.medianCut)})` : ""}. Daraus lässt sich nach einigen Wochen messen, wie weit Angebotspreise über den tatsächlichen Verkaufspreisen liegen.`,
-          `Listings are followed daily: ${num(TRACKING.tracked)} tracked, ${num(TRACKING.gone)} gone offline, ${num(TRACKING.priceCuts)} price cuts${TRACKING.medianCut !== null ? ` (median ${pct(TRACKING.medianCut)})` : ""}. After a few weeks this measures how far asking prices sit above actual sale prices.`,
-        )}{" "}
-        {t(
-          "Angebote: Classic Trader, automatisch erfasst. mobile.de, Elferspot, AutoScout24 und Kleinanzeigen sperren automatische Abrufe; Inserate von dort und Angebote, Verkäufe und Auktionsergebnisse weiterer Händler und Auktionshäuser in Europa und den USA lassen sich von Hand erfassen und fließen dann genauso ein. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company und Bring a Trailer. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
-          "Listings: Classic Trader, collected automatically. mobile.de, Elferspot, AutoScout24 and Kleinanzeigen block automated access; listings from there, and listings, sales and auction results of further dealers and auction houses in Europe and the USA, can be recorded by hand and then count the same way. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company and Bring a Trailer. Converted at the ECB rate of the day.",
+          "Angebote von Classic Trader und spezialisierten Händlern, täglich aktualisiert. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company, Bring a Trailer und weitere. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
+          "Listings from Classic Trader and specialist dealers, updated daily. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company, Bring a Trailer and others. Converted at the ECB rate of the day.",
         )}
       </p>
     </Section>

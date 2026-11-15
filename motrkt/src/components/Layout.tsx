@@ -362,15 +362,17 @@ function UserMenu() {
               <ShieldCheck className="size-3.5 text-muted" /> {t("Prüfung", "Review")}
             </Link>
           )}
-          <button
-            className={item}
-            onClick={() => {
-              setImportOpen(true);
-              setOpen(false);
-            }}
-          >
-            <Upload className="size-3.5 text-muted" /> {t("Verkäufe importieren (CSV)", "Import sales (CSV)")}
-          </button>
+          {me?.admin && (
+            <button
+              className={item}
+              onClick={() => {
+                setImportOpen(true);
+                setOpen(false);
+              }}
+            >
+              <Upload className="size-3.5 text-muted" /> {t("Verkäufe importieren (CSV)", "Import sales (CSV)")}
+            </button>
+          )}
           <div className="my-1 border-t border-line" />
           <button className={item} onClick={signOut}>
             <LogOut className="size-3.5 text-muted" /> {t("Abmelden", "Sign out")}

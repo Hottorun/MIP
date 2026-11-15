@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { variants, variantTitle } from "../../data/db";
-import { AS_OF, DAY, getSeries } from "../../data/generate";
+import { AS_OF, getSeries } from "../../data/generate";
 import { getMetrics, monthlyChanges } from "../../data/market";
 import { date, pct } from "../../lib/format";
 import { Card, Delta, Segmented } from "../ui";
@@ -16,7 +16,14 @@ export function TrendHeatmap() {
   const [sort, setSort] = useState<Sort>("desc");
 
   // Each cell covers the ~4 weeks ending at series end − i months; label it by the calendar month it mostly falls into.
-  const months = useMemo(() => Array.from({ length: 12 }, (_, k) => date(AS_OF - (11 - k) * 30.44 * DAY - 14 * DAY, "month")), []);
+  const months = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, k) => {
+        const d = new Date(AS_OF);
+        return date(new Date(d.getFullYear(), d.getMonth() - (11 - k), 15).getTime(), "month");
+      }),
+    [],
+  );
 
   const rows = useMemo(() => {
     let list = variants.filter((v) => v.measured).map((v) => ({ v, m: getMetrics(v.id), cells: monthlyChanges(getSeries(v.id), 12) }));

@@ -140,9 +140,9 @@ export function Copilot({
       <div className="mb-2 flex items-center gap-2 text-xs text-muted">
         <MessageSquare className="size-3.5" />
         <span className="flex-1">{t("Wie kann ich Ihnen helfen?", "How can I help you?")}</span>
-        {status && (
-          <Pill tone={status.ai ? "gold" : "neutral"} className="text-[10px]">
-            {status.ai ? `Claude · ${status.model?.replace("claude-", "").replace(/-/g, " ")}` : t("Lokaler Modus", "Local mode")}
+        {status?.ai && (
+          <Pill tone="gold" className="text-[10px]">
+            {t("KI", "AI")}
           </Pill>
         )}
         {full && chat.length > 0 && (

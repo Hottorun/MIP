@@ -20,7 +20,7 @@ const SORTS: { value: SortKey; readonly label: string }[] = [
   { value: "series", get label() { return t("Modellreihe", "Model series"); } },
   { value: "value", get label() { return t("Marktwert", "Market value"); } },
   { value: "change12m", label: "12M" },
-  { value: "cagr5", get label() { return t("CAGR 5J", "CAGR 5Y"); } },
+  { value: "cagr5", get label() { return t("Rendite p. a. 5 J.", "Return p.a. 5Y"); } },
   { value: "year", get label() { return t("Bauzeit", "Build years"); } },
 ];
 const ERAS = [
@@ -378,7 +378,7 @@ export default function Models() {
                 <th className="text-right">{t("Stückzahl", "Units")}</th>
                 <SortTh label={t("Marktwert", "Market value")} k="value" sort={sort} desc={desc} onSort={headerSort} right />
                 <SortTh label="12M" k="change12m" sort={sort} desc={desc} onSort={headerSort} right />
-                <SortTh label={t("CAGR 5J", "CAGR 5Y")} k="cagr5" sort={sort} desc={desc} onSort={headerSort} right />
+                <SortTh label={t("Rendite p. a. 5 J.", "Return p.a. 5Y")} k="cagr5" sort={sort} desc={desc} onSort={headerSort} right />
                 <th>{t("Einschätzung", "Assessment")}</th>
                 <th>{t("Vergl.", "Comp.")}</th>
               </tr>
@@ -676,7 +676,7 @@ function CompareView({ ids }: { ids: string[] }) {
   const metricRows: { label: string; get: (v: Variant) => React.ReactNode }[] = [
     { label: t("Marktwert", "Market value"), get: (v) => (v.measured ? eur(getMetrics(v.id).value) : t("keine Daten", "no data")) },
     { label: "12M", get: (v) => (v.measured ? <Delta value={getMetrics(v.id).change12m} /> : "–") },
-    { label: t("CAGR 5J", "CAGR 5Y"), get: (v) => (v.measured ? pct(getMetrics(v.id).cagr5) : "–") },
+    { label: t("Rendite p. a. 5 J.", "Return p.a. 5Y"), get: (v) => (v.measured ? pct(getMetrics(v.id).cagr5) : "–") },
     { label: t("Volatilität 1J", "Volatility 1Y"), get: (v) => (v.measured ? pct(getMetrics(v.id).vol1y, { signed: false }) : "–") },
     { label: t("Max. Drawdown 5J", "Max. drawdown 5Y"), get: (v) => (v.measured ? <span className="text-down">{pct(getMetrics(v.id).maxDD5)}</span> : "–") },
     { label: t("Stückzahl", "Units"), get: (v) => num(v.production) },
