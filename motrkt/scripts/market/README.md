@@ -83,6 +83,13 @@ eindeutige Modelle, „Re-Creation“, DP-Umbauten). Preise werden zum EZB-Kurs 
    US-Kanäle teilen sich einen gemeinsamen Anteil `US_TAU` = 12 % (Mindestwert, auch wenn weniger gemessen wird):
    Zusammen zählen alle US-Belege einer Variante höchstens mit `1 / US_TAU²`, egal wie viele es sind. Je mehr
    europäische Belege dazukommen, desto kleiner wird damit der US-Anteil, ohne dass US-Daten gelöscht werden.
+   **Bring a Trailer** ist mit Abstand die größte Einzelquelle. Damit die Plattform den Wert nicht allein bestimmt,
+   werden ihre Belege (Verkäufe und Gebote) je Variante mit einem gemeinsamen Faktor heruntergewichtet, bis sie
+   nicht mehr Gewicht haben als das Auktionshaus mit dem größten Gewicht für diese Variante (Gewicht aus der Zahl
+   seiner Belege wie oben). Untergrenze ist das Gewicht von 5 Verkäufen (`BAT_FLOOR`), damit dort, wo andere Häuser
+   die Variante nur ein- oder zweimal verkauft haben, nicht ein einzelner Verkauf den Wert setzt. Ohne anderes
+   Auktionshaus behält Bring a Trailer sein volles Gewicht. Der Faktor steht je Variante als `batWeight` in
+   `market-model.json`.
 4. **Aktualität**: Innerhalb eines Kanals zählen jüngere Preise mehr (Gewicht `exp(−Alter/2 Jahre)`).
 5. **Eigener Verlauf** ab 12 Belegen (zum Segmentindex hin geschrumpft), sonst folgt die Kurve dem Segment.
 6. **Unplausible Preise raus**: Classic-Trader-Inserate, die laut Inserat Nachbau, Umbau, Rennwagen, Projekt-,

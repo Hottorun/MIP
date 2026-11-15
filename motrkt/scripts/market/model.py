@@ -29,6 +29,8 @@ Each channel's observations are weighted with the inverse of its measured scatte
 Indirect evidence (US prices, asking prices) is further capped by its measured bias; the US channels share one bias
 term of at least US_TAU (the US market as a whole may sit apart from Europe for a given variant), so however many US
 records there are, together they cannot outweigh the European evidence beyond that limit.
+Bring a Trailer, the largest single source, counts no more than the auction house with the most weight for the
+variant, and at least like a house with BAT_FLOOR sales.
 A value is published only with at least MIN_N observations; otherwise the variant shows its individual records only.
 """
 import collections, csv, datetime as dt, glob, json, math, os, re, sys
@@ -465,6 +467,8 @@ result = {"asOf": AS_OF.isoformat(), "grid": [ms(d) for d in GRID_DATES], "varia
 _usd_day = max((d for d in fxdates["USD"] if d <= AS_OF.isoformat()), default=None)
 if _usd_day: result["fx"] = {"USD": fx["USD"][_usd_day], "date": _usd_day}
 excluded_all = []
+BAT = "Bring a Trailer"; BATF = []
+BAT_FLOOR = 5      # Bring a Trailer counts at least like a house with this many sales of the variant
 for v, l in byv.items():
     g = l[0]["g"]; gi = g if g in idx else PARENT[g]; f = idx[gi]; k = l[0]["k"]
     base = [s["y"] - interp(GRID, f, s["t"]) - delta[k][s["ch"]] for s in l]
@@ -485,14 +489,36 @@ for v, l in byv.items():
     out_v = [{"id": s["lot"], "eur": s["eur"], "dev": round(math.exp(b - a) - 1, 3), "ch": s["ch"]} for s, b in zip(l, base) if id(s) not in kept_ids]
     excluded_all.extend(dict(x, variant=v) for x in out_v)
     n = len(keep)
+    # Bring a Trailer counts no more than any other single auction house: its records (sales and bids) are scaled down
+    # by one factor until their weight is no larger than that of the auction house with the most weight for this variant
+    # (each house's weight from its record count, as in the channel precision below), but never below the weight of
+    # BAT_FLOOR records: where other houses sold the variant once or twice, a single sale would otherwise set the value.
+    # Without another auction house there is nothing to compare with and Bring a Trailer keeps its full weight.
+    hprec = lambda c, n: 1 / (math.pi / 2 * SD[c] ** 2 / n + TAU2[c] - (US_TAU ** 2 if c in US else 0.0))
+    hn = collections.defaultdict(collections.Counter)
+    for s, _ in keep:
+        if s["ch"] not in ASK: hn[s["house"]][s["ch"]] += 1
+    nb = hn.pop(BAT, None)
+    fb = 1.0
+    if nb and hn:
+        cap = max(max(sum(hprec(c, k) for c, k in cnt.items()) for cnt in hn.values()), hprec("US_ONL", BAT_FLOOR))
+        pb = lambda f: sum(hprec(c, f * k) for c, k in nb.items())
+        if pb(1.0) > cap:
+            lo, hi = 0.0, 1.0
+            for _ in range(40):
+                mid = (lo + hi) / 2
+                lo, hi = (mid, hi) if pb(mid) <= cap else (lo, mid)
+            fb = lo
+    BATF.append(fb)
+    wb = lambda s: fb if s["house"] == BAT else 1.0
     # level per channel (recency-weighted only for large samples), then combined by precision
     mc, prec = {}, {}
     for c in CHANNELS:
         xs = [(s, b) for s, b in keep if s["ch"] == c]
         if not xs: continue
         # recent prices count most (weight halves about every 1.4 years); older ones still help via the time index
-        mc[c] = wiqm([b for _, b in xs], [math.exp(-(T - s["t"]) / RECENCY) for s, _ in xs])
-        prec[c] = 1 / (math.pi / 2 * SD[c] ** 2 / len(xs) + TAU2[c] - (US_TAU ** 2 if c in US else 0.0))
+        mc[c] = wiqm([b for _, b in xs], [wb(s) * math.exp(-(T - s["t"]) / RECENCY) for s, _ in xs])
+        prec[c] = hprec(c, sum(wb(s) for s, _ in xs))
     # the US channels share one bias term (US_TAU^2): their combined precision is S / (1 + US_TAU^2 S), so all US
     # evidence together never counts more than 1 / US_TAU^2, however many US records there are
     S_us = sum(p for c, p in prec.items() if c in US)
@@ -527,7 +553,7 @@ for v, l in byv.items():
     ok = sum(1 for s, _ in keep if s["ch"] not in BID) >= MIN_N   # bids alone never make a value
     result["variants"][v] = {
         "value": round(series[-1]) if ok else None, "n": n, "n12": sum(1 for s, _ in keep if s["t"] >= T - 1), "n24": sum(1 for s, _ in keep if s["t"] >= T - 2),
-        "ch": {c: chn.get(c, 0) for c in CHANNELS}, "share": share,
+        "ch": {c: chn.get(c, 0) for c in CHANNELS}, "share": share, "batWeight": round(fb, 3),
         "chLevel": {c: round(math.exp(mc[c] + delta[k][c] + f[-1] + dd[-1])) for c in mc},
         "lo": round(q(0.25)) if ok and len(tadj) >= 6 else None, "hi": round(q(0.75)) if ok and len(tadj) >= 6 else None,
         "first": min(s["date"] for s, _ in keep), "last": max(s["date"] for s, _ in keep), "index": gi, "family": k,
@@ -552,5 +578,6 @@ for a in asks:
 asks = sorted((a for a in asks if a["variant"] in known), key=lambda a: (a["variant"], -a["eur"]))
 json.dump([{k: a.get(k) for k in ("id", "variant", "date", "eur", "price", "cur", "km", "year", "title", "body", "seller", "sellerName", "country", "url", "source", "excluded", "note", "img")} for a in asks],
           open(OUT_ASKS, "w"), ensure_ascii=False, separators=(",", ":"))
+_cut = [f for f in BATF if f < 1]; print("Bring a Trailer capped to the weight of the heaviest other house in %d of %d variants (median factor %.2f)" % (len(_cut), len(BATF), sorted(_cut)[len(_cut) // 2] if _cut else 1))
 print("price outliers left out:", collections.Counter(x["ch"] for x in excluded_all), "listings flagged by text:", sum(1 for a in asks if a.get("excluded") and not a["id"] in price_out))
 print(sum(1 for x in result["variants"].values() if x["value"]), "variants with a value;", len(obs), "observations;", result["channels"])

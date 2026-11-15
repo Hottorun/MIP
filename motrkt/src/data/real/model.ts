@@ -14,7 +14,9 @@ import data from "./market-model.json";
  * Bids do not count towards `minN` and are left out when the same car is offered again within about a year.
  * The gap of each channel to European auction results is measured from variants that have both, and removed; how much
  * a channel can move a variant's value is capped by how much that gap varies between variants. The US channels share
- * one such cap, so all US evidence together cannot outweigh the European evidence beyond it.
+ * one such cap, so all US evidence together cannot outweigh the European evidence beyond it. Bring a Trailer, by far the
+ * largest single source, counts no more than the auction house with the most weight for the variant (at least like a
+ * house with five sales).
  * A value is published only with at least `minN` records; otherwise the variant shows its individual records only.
  */
 
@@ -37,6 +39,9 @@ type RawEntry = {
   ch?: Partial<Record<Channel, number>>;
   share?: Partial<Record<Channel, number>>;
   chLevel?: Partial<Record<Channel, number>>;
+  /** Factor on the Bring a Trailer records (1 = full weight), so that the platform counts no more than the auction house
+   * with the most weight for this variant (at least like a house with five sales); see BAT_FLOOR in model.py. */
+  batWeight?: number;
   /** Records left out as implausible: deviation from the variant's level (0.65 = 65 % above). */
   out?: { id: string; eur: number; dev: number; ch: Channel }[];
 };
@@ -90,6 +95,8 @@ export type MarketBasis = {
   /** Measured offset of asking prices and US results against European auction results (log scale) for this family. */
   offsets: Record<Channel, number>;
   family: string;
+  /** Factor on the Bring a Trailer records (1 = full weight); below 1 where other houses carry less weight. */
+  batWeight: number;
 };
 
 export const SEGMENT_LABEL: Record<string, string> = {
@@ -140,6 +147,7 @@ export function marketBasis(variantId: string): MarketBasis | undefined {
     level: e.chLevel ?? {},
     offsets: { ...NO_CHANNELS, ...raw.offsets[e.family ?? "COLLECT"] },
     family: e.family ?? "COLLECT",
+    batWeight: e.batWeight ?? 1,
   };
 }
 

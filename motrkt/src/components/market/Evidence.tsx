@@ -52,8 +52,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
       <div id="belege" className="scroll-mt-32" />
       <p className="max-w-3xl text-[15px] leading-relaxed text-muted">
         {t(
-          "Der Marktwert gibt an, was ein Fahrzeug dieser Variante heute in Deutschland und Europa tatsächlich kostet: gemessen an Auktionsergebnissen in Europa. Angebotspreise und US-Ergebnisse fließen nur bereinigt ein. Um wie viel sie im Mittel abweichen, messen wir für jede Quelle an allen Varianten, für die es beides gibt. Alle US-Belege zusammen haben ein begrenztes Gewicht, auch wenn es viele sind.",
-          "The market value is what a car of this variant actually costs in Germany and Europe today, measured on European auction results. Asking prices and US results enter only after adjustment; by how much they differ on average is measured for each source across all variants that have both. All US records together carry a capped weight, however many there are.",
+          "Der Marktwert gibt an, was ein Fahrzeug dieser Variante heute in Deutschland und Europa tatsächlich kostet: gemessen an Auktionsergebnissen in Europa. Angebotspreise und US-Ergebnisse fließen nur bereinigt ein. Um wie viel sie im Mittel abweichen, messen wir für jede Quelle an allen Varianten, für die es beides gibt. Alle US-Belege zusammen haben ein begrenztes Gewicht, auch wenn es viele sind, und Bring a Trailer zählt nicht mehr als jedes andere Auktionshaus.",
+          "The market value is what a car of this variant actually costs in Germany and Europe today, measured on European auction results. Asking prices and US results enter only after adjustment; by how much they differ on average is measured for each source across all variants that have both. All US records together carry a capped weight, however many there are, and Bring a Trailer counts no more than any other auction house.",
         )}
       </p>
 
@@ -88,6 +88,14 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
                           `are on average ${gap} ${above ? "above" : "below"} European auction results${n ? ` (measured on ${n} variants)` : ""}; taken out, weight capped`,
                         );
                   })()}
+                  </span>
+                )}
+                {(c === "US_ONL" || c === "US_BID") && b.batWeight < 1 && (
+                  <span className="block text-[12.5px] text-faint">
+                    {t(
+                      "Bring a Trailer zählt höchstens so viel wie das Auktionshaus mit dem größten Gewicht für diese Variante",
+                      "Bring a Trailer counts no more than the auction house with the most weight for this variant",
+                    )}
                   </span>
                 )}
               </div>
