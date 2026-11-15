@@ -5,8 +5,13 @@ usage: python3 -I ctfetch.py WORK [--max N]
 Reads the public listing sitemaps (allowed by robots.txt), keeps the Porsche listing URLs and stores each listing page
 once per day under WORK/web/ct/pages/<YYYY-MM-DD>/<id>.html.gz. One request every 1.5 s. Pages already stored for
 today are skipped, so an interrupted run can simply be restarted.
+
+The listing pages show no date the car was put online. Classic Trader numbers its listings in order, and the sitemaps
+give each listing's last change (lastmod), so a listing was online at the latest by the earliest lastmod of any listing
+(of any make) with the same or a higher number. That date, per Porsche listing, is merged into WORK/web/ct/listed.json
+(the earliest date any run found); model.py uses it to tell how long a car has been on offer.
 """
-import datetime as dt, gzip, os, re, sys, time, urllib.request
+import datetime as dt, gzip, json, os, re, sys, time, urllib.request
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 SITEMAPS = ["https://cdn.classic-trader.com/I/sitemap/sitemap.de.car.listing%s.xml" % s for s in ["", "_0", "_1", "_2", "_3", "_4", "_5"]]
@@ -32,20 +37,47 @@ def get(url, tries=3):
     return None, b""
 
 
+def listed_dates(sitemaps):
+    """{listing number: latest possible day it went online} from the sitemap texts (all makes)."""
+    seen = {}
+    for text in sitemaps:
+        for loc, lm in re.findall(r"<loc>([^<]+)</loc>\s*<lastmod>([^<]+)</lastmod>", text):
+            m = re.search(r"/(\d+)/?$", loc)
+            if m:
+                n = int(m.group(1)); seen[n] = min(seen.get(n, "9999"), lm[:10])
+    out, low = {}, "9999"
+    for n in sorted(seen, reverse=True):
+        low = min(low, seen[n]); out[n] = low
+    return out
+
+
+def merge_listed(work, sitemaps, ids):
+    """Adds the listing dates of the Porsche listings `ids` to WORK/web/ct/listed.json, keeping the earliest date known."""
+    path = os.path.join(work, "web", "ct", "listed.json")
+    old = json.load(open(path)) if os.path.exists(path) else {}
+    new = listed_dates(sitemaps)
+    for i in ids:
+        if int(i) in new: old[i] = min(old.get(i, "9999"), new[int(i)])
+    json.dump(old, open(path, "w"), sort_keys=True)
+    return old
+
+
 def main():
     work = sys.argv[1]
     limit = int(sys.argv[sys.argv.index("--max") + 1]) if "--max" in sys.argv else None
     day = dt.date.today().isoformat()
     out = os.path.join(work, "web", "ct", "pages", day)
     os.makedirs(out, exist_ok=True)
-    urls = set()
+    urls, texts = set(), []
     for sm in SITEMAPS:
         code, body = get(sm)
         if code != 200:
             continue
-        urls.update(re.findall(r"<loc>(https://www\.classic-trader\.com/de/automobile/inserat/porsche/[^<]+)</loc>", body.decode("utf-8", "replace")))
+        texts.append(body.decode("utf-8", "replace"))
+        urls.update(re.findall(r"<loc>(https://www\.classic-trader\.com/de/automobile/inserat/porsche/[^<]+)</loc>", texts[-1]))
         time.sleep(DELAY)
     urls = sorted(urls)
+    merge_listed(work, texts, [u.rstrip("/").rsplit("/", 1)[-1] for u in urls])
     with open(os.path.join(work, "web", "ct", "urls-%s.txt" % day), "w") as f:
         f.write("\n".join(urls))
     print(len(urls), "Porsche listings in sitemap", flush=True)

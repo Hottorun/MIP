@@ -32,6 +32,9 @@ records there are, together they cannot outweigh the European evidence beyond th
 Bring a Trailer, the largest single source, counts no more than the auction house with the most weight for the
 variant, and at least like a house with BAT_FLOOR sales.
 A value is published only with at least MIN_N observations; otherwise the variant shows its individual records only.
+An asking price counts fully while the car has been on offer up to STALE_DAYS; a car still unsold after that is likely
+priced above the market, so its weight halves every STALE_HALF days beyond, down to STALE_MIN. A listing that has gone
+offline (probably sold) keeps its full weight with its last asking price.
 """
 import collections, csv, datetime as dt, glob, json, math, os, re, sys
 
@@ -51,6 +54,14 @@ OUT_K = 2.0        # a price farther than OUT_K x the scatter of its source from
 OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way,
 OUT_WIDE = 1.099   # ... or a factor 3 (log 3) for variants whose own prices scatter widely (cheap and good cars, e.g. 944)
 OUT_MIN_N = 5      # below this many records only the factor-2 limit applies
+STALE_DAYS = 90    # an asking price counts fully for this many days on offer ...
+STALE_HALF = 180   # ... then its weight halves every STALE_HALF days ...
+STALE_MIN = 0.25   # ... down to this share
+
+
+def stale_weight(days, gone):
+    if gone or days is None or days <= STALE_DAYS: return 1.0
+    return max(STALE_MIN, 0.5 ** ((days - STALE_DAYS) / STALE_HALF))
 EUROPE = {"DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "PT", "GB", "IE", "DK", "SE", "NO", "FI", "PL", "CZ", "SK", "HU", "SI", "HR", "MC", "LI", "GR", "EE", "LV", "LT", "RO", "BG"}
 EU_CUR = {"EUR", "GBP", "CHF", "SEK", "DKK", "NOK"}
 NORTH_AMERICA = {"US", "CA"}
@@ -174,9 +185,16 @@ def norm_body(b):
 
 # asking prices: keep each listing once (its latest snapshot), dated the last day it was seen
 asks_raw = json.load(open(S + "/web/asks.json")) if os.path.exists(S + "/web/asks.json") else []
-latest = {}
+latest, first_seen = {}, {}
 for a in asks_raw:
     if a["id"] not in latest or a["day"] > latest[a["id"]]["day"]: latest[a["id"]] = a
+    first_seen[a["id"]] = min(first_seen.get(a["id"], a["day"]), a["day"])
+# the day each listing went online at the latest (ctfetch.py, from the sitemaps) and the fetch days that saw (nearly)
+# all listings: a listing missing from the last such day has gone offline
+listed = json.load(open(S + "/web/ct/listed.json")) if os.path.exists(S + "/web/ct/listed.json") else {}
+_per_day = collections.Counter(a["day"] for a in asks_raw)
+_full = [d for d, n in _per_day.items() if n >= 0.8 * median(list(_per_day.values()))] if _per_day else []
+last_full = max(_full) if _full else None
 asks = []
 for a in latest.values():
     if not a.get("variant") or a.get("rhd") or (a.get("country") or "") not in EUROPE: continue
@@ -184,7 +202,8 @@ for a in latest.values():
     if not eur: continue
     asks.append(dict(id=a["id"], variant=a["variant"], date=a["day"], eur=round(eur), price=a["price"], cur=a["cur"], km=a.get("km"), year=a["year"],
                      title="Porsche %s" % a["model"], seller=a["seller"], sellerName=a.get("sellerName"), country=a["country"], body=norm_body(a.get("body")),
-                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText"), img=a.get("img") or None, ch="EU_ASK"))
+                     url=a["url"], source="Classic Trader", excluded=a.get("flag"), note=a.get("flagText"), img=a.get("img") or None, ch="EU_ASK",
+                     listed=min(first_seen[a["id"]], listed.get(a["id"].split("-")[-1], "9999")), gone=bool(last_full and a["day"] < last_full)))
 
 # hand-recorded listings, sales and auction results (mobile.de, Elferspot, Kleinanzeigen, dealers and auction houses in
 # Europe and North America): scripts/market/manual/*.csv. Routed by country (land) and kind (art):
@@ -209,7 +228,7 @@ for fn in sorted(glob.glob(os.path.join(HERE, "manual", "*.csv"))):
                    cur=r.get("waehrung") or "EUR", km=int(r["km"]) if (r.get("km") or "").isdigit() else None, year=int(r["baujahr"]),
                    title="Porsche %s" % r["fahrzeug"], seller=r.get("anbieter") or "", sellerName=None, country=(r.get("land") or "DE").upper(),
                    body=body_of(("%s %s" % (r["fahrzeug"], r.get("url") or "")).lower()), url=r.get("url") or "", source=r.get("quelle") or "manuell", excluded=None, note=None,
-                   img=dealer_photos.get((r.get("url") or "").strip()) or None)
+                   img=dealer_photos.get((r.get("url") or "").strip()) or None, listed=r["datum"], gone=False)
         land = row["country"]
         if land not in EUROPE and land not in NORTH_AMERICA:
             other_land[land] += 1; continue
@@ -226,8 +245,10 @@ if other_land: print("manual rows not used (outside Europe and North America, or
 seen, uniq = {}, []
 for a in sorted(asks, key=lambda a: (a["date"], str(a["id"]).zfill(12)), reverse=True):
     key = (a["variant"], a["year"], a["country"], a["km"]) if a["km"] else ("id", a["id"])
-    if key in seen: continue
-    seen[key] = True
+    if key in seen:   # a re-listed car has been on offer since its first listing
+        if a.get("listed") and seen[key].get("listed"): seen[key]["listed"] = min(seen[key]["listed"], a["listed"])
+        continue
+    seen[key] = a
     uniq.append(a)
 print("asks", len(asks), "after removing duplicate cars", len(uniq))
 asks = uniq
@@ -236,7 +257,11 @@ asks = uniq
 # ctparse.py) are shown in the app but do not enter the value
 for a in asks:
     if a.get("excluded"): continue
-    obs.append(dict(variant=a["variant"], date=a["date"], eur=a["eur"], ch=a["ch"], house=a["source"], lot=a["id"], body=a.get("body"), src="ask"))
+    a["days"] = (dt.date.fromisoformat(a["date"]) - dt.date.fromisoformat(a["listed"])).days if a.get("listed") else None
+    obs.append(dict(variant=a["variant"], date=a["date"], eur=a["eur"], ch=a["ch"], house=a["source"], lot=a["id"], body=a.get("body"), src="ask",
+                    w=stale_weight(a["days"], a.get("gone"))))
+_sw = [stale_weight(a["days"], a.get("gone")) for a in asks if not a.get("excluded")]
+print("asking prices on offer longer than %d days: %d of %d, mean weight %.2f" % (STALE_DAYS, sum(1 for x in _sw if x < 1), len(_sw), sum(_sw) / len(_sw) if _sw else 1))
 
 # de-duplicate auction results reported twice (same variant, price within 0.5 %, within 10 days)
 obs.sort(key=lambda s: (s["variant"], s["date"]))
@@ -515,7 +540,7 @@ for v, l in byv.items():
                 lo, hi = (mid, hi) if pb(mid) <= cap else (lo, mid)
             fb = lo
     BATF.append(fb)
-    wb = lambda s: fb if s["house"] == BAT else 1.0
+    wb = lambda s: (fb if s["house"] == BAT else 1.0) * s.get("w", 1.0)   # also the weight of long-unsold asking prices
     # level per channel (recency-weighted only for large samples), then combined by precision
     mc, prec = {}, {}
     for c in CHANNELS:

@@ -109,6 +109,15 @@ werden dem richtigen Modell zugeordnet. Preise werden zum EZB-Kurs des Tages in 
    Auktionshaus behält Bring a Trailer sein volles Gewicht. Der Faktor steht je Variante als `batWeight` in
    `market-model.json`.
 4. **Aktualität**: Innerhalb eines Kanals zählen jüngere Preise mehr (Gewicht `exp(−Alter/2 Jahre)`).
+   **Standzeit der Angebote**: Ein Angebot zählt voll, solange das Auto bis zu 90 Tage angeboten wird
+   (`STALE_DAYS`). Steht es länger unverkauft im Netz, ist es vermutlich über dem Markt bepreist: Sein Gewicht halbiert
+   sich je weitere 180 Tage (`STALE_HALF`), höchstens bis auf ein Viertel (`STALE_MIN`). Ein Inserat, das offline
+   gegangen ist (vermutlich verkauft), zählt mit seinem letzten Preis voll. Classic Trader nennt kein Einstelldatum,
+   nummeriert die Inserate aber fortlaufend. `ctfetch.py` leitet deshalb aus den Sitemaps (`lastmod` aller
+   Inserate, jeder Marke) je Nummer das späteste mögliche Einstelldatum ab und sammelt es in
+   `WORK/web/ct/listed.json`. Die Standzeit ist damit eher unter- als überschätzt. Ein neu eingestelltes Auto, das
+   schon einmal inseriert war, gilt ab dem ersten Inserat. Für Inserate in `manual/*.csv` zählt `datum` als
+   Einstelltag.
 5. **Eigener Verlauf** ab 12 Belegen (zum Segmentindex hin geschrumpft), sonst folgt die Kurve dem Segment.
 6. **Unplausible Preise raus**: Classic-Trader-Inserate, die laut Inserat Nachbau, Umbau, Rennwagen, Projekt-,
    Teile- oder Unfallfahrzeug sind (Merkmale `isReplica`/`isConverted`/`isRacingCar` und Titel/Beschreibung des
