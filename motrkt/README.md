@@ -1,6 +1,6 @@
-# MIP – Marktintelligenz für klassische Sportwagen
+# MIP – Marktintelligenz für Sportwagen
 
-Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios klassischer Sportwagen (Porsche).
+Web-App für Marktwerte, Auktionen, Inserate und Sammlungsportfolios von Sportwagen, vom Klassiker bis zum Neuwagen (Porsche).
 
 ## Starten
 

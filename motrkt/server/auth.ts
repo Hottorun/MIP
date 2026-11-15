@@ -291,7 +291,7 @@ const LOGIN_PAGE = `<!doctype html>
 <body>
 <main>
   <h1 class="logo"><img src="/brand/carbay-wordmark.svg" alt="Carbay" width="134" height="64" /></h1>
-  <p class="tag" data-de="Marktintelligenz für klassische Sportwagen" data-en="Market intelligence for classic sports cars"></p>
+  <p class="tag" data-de="Marktintelligenz für Sportwagen" data-en="Market intelligence for sports cars"></p>
   <div class="card">
     <div class="tabs" role="tablist">
       <button type="button" role="tab" id="tab-login" aria-selected="true" data-de="Anmelden" data-en="Sign in"></button>

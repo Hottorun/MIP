@@ -427,7 +427,7 @@ function Footer() {
           <LogoWordmark height={60} />
           <span className="mt-6 block h-px w-10 bg-gold" aria-hidden="true" />
           <p className="mt-5 max-w-[16rem] font-serif text-[16px] leading-relaxed text-muted italic">
-            {t("Marktwerte, Verkäufe und Angebote klassischer Sportwagen.", "Market values, sales and listings of classic sports cars.")}
+            {t("Marktwerte, Verkäufe und Angebote von Sportwagen, vom Klassiker bis zum Neuwagen.", "Market values, sales and listings of sports cars, from classics to new cars.")}
           </p>
         </div>
         <nav aria-label={t("Seiten", "Pages")}>

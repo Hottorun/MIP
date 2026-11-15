@@ -154,7 +154,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
         <div className="relative z-[3] mx-auto -mt-20 flex w-full max-w-[1360px] flex-col px-5 pb-6 sm:mt-0 sm:flex-1 sm:justify-end sm:px-8 sm:pt-16 sm:pb-40">
           <div className="max-w-xl">
             <h1 className="font-display text-[40px] leading-[1.04] sm:text-[60px]">
-              {t("Was klassische Sportwagen heute wert sind.", "What classic sports cars are worth today.")}
+              {t("Was Ihre Leidenschaft heute wert ist.", "What your passion is worth today.")}
             </h1>
             {children}
           </div>
