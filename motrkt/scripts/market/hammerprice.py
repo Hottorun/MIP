@@ -12,7 +12,8 @@ currency: price differences are counted in `check`.
 import csv, datetime as dt, os, re, collections
 
 HOUSE = {"Gooding & Co.": "Gooding & Company", "Broad Arrow Auctions": "Broad Arrow", "Artcurial Motorcars": "Artcurial",
-         "Iconic Auctioneers formerly known as Silverstone Auctions": "Iconic Auctioneers", "H & H Classics": "H&H"}
+         "Iconic Auctioneers formerly known as Silverstone Auctions": "Iconic Auctioneers", "H & H Classics": "H&H",
+         "Silverstone Auctions": "Iconic Auctioneers", "Keno Brothers": "Keno Auctions", "RM Auctions": "RM Sotheby's"}
 SAME = {"Silverstone Auctions": "Iconic Auctioneers"}   # one house, two names
 SKIP_HOUSE = {"Bring a Trailer"}                         # fetched directly, every lot
 CODE = lambda h: re.sub(r"[^A-Z0-9]", "", h.upper())[:6]

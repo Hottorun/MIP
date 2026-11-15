@@ -69,7 +69,10 @@ for x in U:
         if x["price"].startswith(sym): bycur[x["auction"]][cur] += 1
 def house_of(ev):
     ev = re.sub(r"^\d{4} ", "", ev)
-    for k, v in [("RM Sotheby", "RM Sotheby's"), ("Gooding", "Gooding & Company"), ("Bonhams", "Bonhams"), ("Broad Arrow", "Broad Arrow"), ("Artcurial", "Artcurial"), ("Mecum", "Mecum"), ("Barrett", "Barrett-Jackson"), ("Collecting Cars", "Collecting Cars"), ("Dorotheum", "Dorotheum"), ("Aguttes", "Aguttes"), ("Osenat", "Osenat"), ("Silverstone", "Silverstone Auctions"), ("H&H", "H&H"), ("Iconic", "Iconic Auctioneers")]:
+    # one name per house: "RM Auctions" is RM Sotheby's before the rename, Silverstone Auctions became Iconic Auctioneers
+    if ev.startswith("RM "): return "RM Sotheby's"
+    if ev.startswith("Keno"): return "Keno Auctions"
+    for k, v in [("RM Sotheby", "RM Sotheby's"), ("Gooding", "Gooding & Company"), ("Bonhams", "Bonhams"), ("Broad Arrow", "Broad Arrow"), ("Artcurial", "Artcurial"), ("Mecum", "Mecum"), ("Barrett", "Barrett-Jackson"), ("Collecting Cars", "Collecting Cars"), ("Dorotheum", "Dorotheum"), ("Aguttes", "Aguttes"), ("Osenat", "Osenat"), ("Silverstone", "Iconic Auctioneers"), ("H&H", "H&H"), ("Iconic", "Iconic Auctioneers")]:
         if k in ev: return v
     return ev.split(" ")[0]
 def house_search(house, title):
@@ -80,7 +83,7 @@ def house_search(house, title):
     if house == "RM Sotheby's": return "https://rmsothebys.com/search/?SearchTerm=%s#?SortBy=Availability&SearchTerm=%s&page=1&pageSize=40" % (e, e)
     # no linkable search: the house's page with past auction results
     return {"Bonhams": "https://cars.bonhams.com/auctions/results/", "Gooding & Company": "https://www.goodingco.com/results",
-            "Artcurial": "https://www.artcurial.com/en/results-auctions-sales", "Keno": "https://www.kenoauctions.com/"}.get(house)
+            "Artcurial": "https://www.artcurial.com/en/results-auctions-sales", "Keno Auctions": "https://www.kenoauctions.com/"}.get(house)
 for x in U:
     b = x["b"]
     if not any("Porsche" in s for s in b): continue
