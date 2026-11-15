@@ -526,8 +526,8 @@ function BrandTeaser({ brand, onBack }: { brand: UpcomingBrand; onBack: () => vo
         <p className="mt-7 max-w-xl font-serif text-[18px] leading-[1.65] text-ink/90">{brand.intro}</p>
         <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-muted">
           {t(
-            `Marktwerte für ${brand.name} entstehen nach demselben Verfahren wie bei Porsche: aus echten Auktionsergebnissen und Angeboten, Variante für Variante belegt. Bis dahin bleibt die Modellliste bei Porsche.`,
-            `Market values for ${brand.name} will follow the same method as for Porsche: real auction results and listings, documented variant by variant. Until then the model list stays with Porsche.`,
+            `Marktwerte für ${brand.name} entstehen nach demselben Verfahren wie bei Porsche: aus echten Auktionsergebnissen, Variante für Variante belegt. Bis dahin bleibt die Modellliste bei Porsche.`,
+            `Market values for ${brand.name} will follow the same method as for Porsche: real auction results, documented variant by variant. Until then the model list stays with Porsche.`,
           )}
         </p>
         <button className="btn mt-8" onClick={onBack}>

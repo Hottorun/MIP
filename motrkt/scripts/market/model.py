@@ -1,4 +1,5 @@
-"""Market model: German/European market value per variant from auction results and asking prices.
+"""Market model: German/European market value per variant from auction results (asking prices only while
+ASKS_IN_VALUE is set; currently off).
 
 usage: python3 -I model.py WORK OUT_MODEL_JSON OUT_ASKS_JSON
 
@@ -57,6 +58,10 @@ OUT_MIN_N = 5      # below this many records only the factor-2 limit applies
 STALE_DAYS = 90    # an asking price counts fully for this many days on offer ...
 STALE_HALF = 180   # ... then its weight halves every STALE_HALF days ...
 STALE_MIN = 0.25   # ... down to this share
+# Asking prices (dealers and private sellers, EU_ASK and US_ASK) do not enter the value for now: the value follows
+# prices actually paid at auction (plus highest bids of unsold lots and purchase contracts checked by us). Listings are
+# still read, flagged and written to OUT_ASKS for the app (listings page, deal score against the value).
+ASKS_IN_VALUE = False
 
 
 def stale_weight(days, gone):
@@ -259,11 +264,11 @@ asks = uniq
 # listings that are no genuine complete car of the variant (replica, conversion, project, accident damage; see
 # ctparse.py) are shown in the app but do not enter the value
 for a in asks:
-    if a.get("excluded"): continue
+    if a.get("excluded") or not ASKS_IN_VALUE: continue
     a["days"] = (dt.date.fromisoformat(a["date"]) - dt.date.fromisoformat(a["listed"])).days if a.get("listed") else None
     obs.append(dict(variant=a["variant"], date=a["date"], eur=a["eur"], ch=a["ch"], house=a["source"], lot=a["id"], body=a.get("body"), src="ask",
                     w=stale_weight(a["days"], a.get("gone"))))
-_sw = [stale_weight(a["days"], a.get("gone")) for a in asks if not a.get("excluded")]
+_sw = [stale_weight(a["days"], a.get("gone")) for a in asks if not a.get("excluded") and ASKS_IN_VALUE]
 print("asking prices on offer longer than %d days: %d of %d, mean weight %.2f" % (STALE_DAYS, sum(1 for x in _sw if x < 1), len(_sw), sum(_sw) / len(_sw) if _sw else 1))
 
 # de-duplicate auction results reported twice (same variant, price within 0.5 %, within 10 days)
@@ -613,6 +618,17 @@ json.dump(result, open(OUT, "w"), ensure_ascii=False, separators=(",", ":"))
 # asks used, for the evidence list in the app (newest first)
 known = {v for v, _ in json.load(open(os.path.join(HERE, "variant_ids.json")))}
 price_out = {x["id"]: x for x in excluded_all if x["ch"] in ASK}
+if not ASKS_IN_VALUE:
+    # listings are not in the value, but implausible prices are still flagged for the app (no "bargain" that is a
+    # wreck or a typo): compared with the variant's value, after removing the usual premium of asking prices over it
+    # (median over all listings), more than a factor 2 either way
+    vals = {v: x["value"] for v, x in result["variants"].items() if x.get("value")}
+    lr = [(a, math.log(a["eur"] / vals[a["variant"]])) for a in asks if not a.get("excluded") and a["variant"] in vals]
+    if lr:
+        prem = median([r for _, r in lr])
+        print("asking prices over the value: median %+.1f %%" % (100 * (math.exp(prem) - 1)))
+        for a, r in lr:
+            if abs(r - prem) > OUT_MAX: price_out[a["id"]] = {"dev": round(math.exp(r - prem) - 1, 3)}
 for a in asks:
     if not a.get("excluded") and a["id"] in price_out:
         d = price_out[a["id"]]["dev"]

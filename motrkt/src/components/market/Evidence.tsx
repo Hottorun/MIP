@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { Body, Variant } from "../../data/types";
-import { CHANNEL_ORDER, marketBasis, MODEL_OFFSET_PAIRS, type Channel } from "../../data/real/model";
+import { CHANNEL_ORDER, marketBasis, type Channel } from "../../data/real/model";
 import { asksFor, type Ask } from "../../data/real/asks";
 import { daysBetween, historyOf, TRACKING } from "../../data/real/listingHistory";
 import { date, km, num, pct } from "../../lib/format";
@@ -38,22 +38,20 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
   const asks = asksFor(variant.id).filter((a) => !body || a.body === body);
   const [all, setAll] = useState(false);
   if (!b) return null;
-  const channels = CHANNEL_ORDER.filter((c) => b.channels[c] > 0);
+  const channels = CHANNEL_ORDER.filter((c) => b.channels[c] > 0 && c !== "EU_ASK" && c !== "US_ASK"); // listings do not enter the value
   const usAsks = asks.some((a) => NORTH_AMERICA.has(a.country));
   const off = b.offsets;
   const used = asks.filter((a) => !a.excluded);
   const out = asks.filter((a) => a.excluded);
   const shown = all ? used : used.slice(0, 8);
-  const pairs = MODEL_OFFSET_PAIRS[b.family]?.pairs ?? {};
-  const nVariants = (k: string) => pairs[k]?.[1];
 
   return (
     <Section title={t("Belege für den Marktwert", "Evidence for the market value")}>
       <div id="belege" className="scroll-mt-32" />
       <p className="max-w-3xl text-[15px] leading-relaxed text-muted">
         {t(
-          "Der Marktwert gibt an, was ein Fahrzeug dieser Variante heute in Deutschland und Europa tatsächlich kostet: gemessen an Auktionsergebnissen in Europa. Angebotspreise und US-Ergebnisse fließen nur bereinigt ein. Um wie viel sie im Mittel abweichen, messen wir für jede Quelle an allen Varianten, für die es beides gibt. Alle US-Belege zusammen haben ein begrenztes Gewicht, auch wenn es viele sind, und Bring a Trailer zählt nicht mehr als jedes andere Auktionshaus. Höchstgebote unverkaufter Lose korrigieren den Wert nur schwach, um höchstens 2 %.",
-          "The market value is what a car of this variant actually costs in Germany and Europe today, measured on European auction results. Asking prices and US results enter only after adjustment; by how much they differ on average is measured for each source across all variants that have both. All US records together carry a capped weight, however many there are, and Bring a Trailer counts no more than any other auction house. High bids of unsold lots only correct the value slightly, by at most 2 %.",
+          "Der Marktwert zeigt, was diese Variante heute in Europa tatsächlich kostet. Er beruht nur auf Preisen, die bei Auktionen wirklich bezahlt wurden; US-Auktionen rechnen wir auf das europäische Niveau um und zählen sie nur begrenzt. Angebote von Händlern und Privatleuten fließen nicht ein.",
+          "The market value shows what this variant actually costs in Europe today. It rests only on prices actually paid at auction; US auctions are converted to the European level and count only to a limited extent. Listings by dealers and private sellers do not enter it.",
         )}
       </p>
 
@@ -75,27 +73,17 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
                     const d = off[c] ?? 0;
                     const gap = pct(Math.abs(Math.exp(d) - 1), { digits: 0, signed: false });
                     const above = d >= 0;
-                    const n = nVariants(`${c}-EU_AUC`);
-                    if (!n && d === 0)
-                      return t("Abstand zu Europa noch nicht messbar; Gewicht begrenzt", "Gap to Europe not measurable yet; weight capped");
-                    return c === "EU_ASK" || c === "EU_BID"
-                      ? t(
-                          `liegen im Mittel ${gap} ${above ? "über" : "unter"} Auktionsergebnissen in Europa${n ? ` (gemessen an ${n} Varianten)` : ""}; herausgerechnet`,
-                          `are on average ${gap} ${above ? "above" : "below"} European auction results${n ? ` (measured on ${n} variants)` : ""}; taken out`,
-                        )
-                      : t(
-                          `liegen im Mittel ${gap} ${above ? "über" : "unter"} Auktionsergebnissen in Europa${n ? ` (gemessen an ${n} Varianten)` : ""}; herausgerechnet, Gewicht begrenzt`,
-                          `are on average ${gap} ${above ? "above" : "below"} European auction results${n ? ` (measured on ${n} variants)` : ""}; taken out, weight capped`,
-                        );
+                    if (d === 0) return t("Abstand zu Europa noch nicht messbar", "Gap to Europe not measurable yet");
+                    return t(
+                      `im Mittel ${gap} ${above ? "über" : "unter"} Europa, umgerechnet`,
+                      `on average ${gap} ${above ? "above" : "below"} Europe, converted`,
+                    );
                   })()}
                   </span>
                 )}
                 {(c === "US_ONL" || c === "US_BID") && b.batWeight < 1 && (
                   <span className="block text-[12.5px] text-faint">
-                    {t(
-                      "Bring a Trailer zählt höchstens so viel wie das Auktionshaus mit dem größten Gewicht für diese Variante",
-                      "Bring a Trailer counts no more than the auction house with the most weight for this variant",
-                    )}
+                    {t("Bring a Trailer mit begrenztem Gewicht", "Bring a Trailer with capped weight")}
                   </span>
                 )}
               </div>
@@ -120,8 +108,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
           ))}
           <p className="mt-2 text-[12.5px] text-faint">
             {t(
-              "Niveau heute: Median der zeitbereinigten Preise dieser Quelle, wie sie vor der Bereinigung sind. Anteil am Wert: Gewicht nach Anzahl, Streuung und gemessener Abweichung der Quelle. Auktionsergebnisse stehen einzeln unter „Jüngste Verkäufe“.",
-              "Level today: median of this source's time-adjusted prices before adjustment. Share of value: weight by number of records, scatter and measured deviation of the source. Auction results are listed one by one under “Recent sales”.",
+              "Niveau heute: mittlerer Preis der Quelle vor der Umrechnung. Anteil: Gewicht der Quelle im Marktwert.",
+              "Level today: median price of the source before conversion. Share: the source's weight in the market value.",
             )}
           </p>
         </div>
@@ -131,6 +119,7 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
         {usAsks ? t("Angebote in Europa und Nordamerika", "Listings in Europe and North America") : t("Angebote in Europa", "Listings in Europe")}
         {body ? ` · ${tr(body)}` : ""} <span className="text-muted">({num(used.length)})</span>
       </h3>
+      <p className="mt-1 text-[13px] text-faint">{t("Zum Vergleich, nicht im Marktwert enthalten.", "For comparison, not part of the market value.")}</p>
       {used.length === 0 ? (
         <p className="mt-3 text-[14.5px] text-muted">
           {t("Derzeit ist kein Angebot dieser Variante mit Preis erfasst.", "No priced listing of this variant is on record at the moment.")}
@@ -151,12 +140,12 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
       {out.length > 0 && (
         <details className="mt-8">
           <summary className="cursor-pointer text-[15px] text-muted hover:text-ink">
-            {t(`Nicht berücksichtigte Angebote (${out.length})`, `Listings left out (${out.length})`)}
+            {t(`Aussortierte Angebote (${out.length})`, `Listings set aside (${out.length})`)}
           </summary>
           <p className="mt-2 max-w-3xl text-[13px] text-faint">
             {t(
-              "Nachbauten, Umbauten, Projekt- und Unfallfahrzeuge sowie Preise, die weit über oder unter vergleichbaren Fahrzeugen liegen, gehen nicht in den Marktwert ein. Grundlage sind die Angaben im Inserat und der Preisvergleich.",
-              "Replicas, conversions, project and accident cars, and prices far above or below comparable cars do not enter the market value. This rests on what the listing states and on the price comparison.",
+              "Nachbauten, Umbauten, Projekt- und Unfallfahrzeuge, erkannt an den Angaben im Inserat.",
+              "Replicas, conversions, project and accident cars, recognised from what the listing states.",
             )}
           </p>
           <ul className="mt-3 border-t border-line">
@@ -168,8 +157,8 @@ export function Evidence({ variant, body = null }: { variant: Variant; body?: Bo
       )}
       <p className="mt-6 max-w-3xl text-[12.5px] leading-relaxed text-faint">
         {t(
-          "Angebote von Classic Trader und spezialisierten Händlern, täglich aktualisiert. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company, Bring a Trailer und weitere. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
-          "Listings from Classic Trader and specialist dealers, updated daily. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company, Bring a Trailer and others. Converted at the ECB rate of the day.",
+          "Angebote von Classic Trader und spezialisierten Händlern, täglich aktualisiert, nur zum Vergleich. Auktionsergebnisse: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company, Bring a Trailer und weitere. Umrechnung zum EZB-Kurs des jeweiligen Tages.",
+          "Listings from Classic Trader and specialist dealers, updated daily, for comparison only. Auction results: RM Sotheby's, Bonhams, Broad Arrow, Artcurial, Gooding & Company, Bring a Trailer and others. Converted at the ECB rate of the day.",
         )}
       </p>
     </Section>

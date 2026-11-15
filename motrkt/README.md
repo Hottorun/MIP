@@ -130,5 +130,6 @@ Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenver
 
 - **Echte Verkäufe:** `src/data/real/sales.csv` (öffentlich berichtete Ergebnisse mit Quellen-URL) bzw. CSV-Import im Kontomenü. Varianten mit ≥ 3 Verkäufen in 24 Monaten werden daraus bewertet („Echte Daten“).
 - **Fotos, Präsentationsfarben, Spezifikationen:** `src/data/real/*.json` und `public/cars/` (Wikimedia Commons, freie Lizenzen, siehe `/bildnachweise`). Recherche-Helfer: `scripts/commons.py`.
+- **Marktwert:** nur tatsächlich bezahlte Preise aus Auktionen (Europa voll, USA umgerechnet und begrenzt), dazu schwach gewichtete Höchstgebote unverkaufter Lose und geprüfte Käufe der Nutzer. Angebote von Händlern und Privatleuten zählen derzeit nicht (`ASKS_IN_VALUE` in `scripts/market/model.py`); sie werden weiter angezeigt und nur auf Plausibilität geprüft.
 - **Inserate:** die echten Angebote aus `src/data/real/asks.json` (Classic Trader und Händlerseiten), die am letzten Erfassungstag noch online waren, ohne Nachbauten, Umbauten, Unfallwagen und unplausible Preise. Angaben, die die Quelle nicht nennt (Zustand, Farbe, FIN), bleiben leer.
 - Watchlist, Portfolio, Alarme und Chatverlauf liegen im `localStorage` des Browsers und starten leer.

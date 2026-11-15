@@ -488,8 +488,8 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
               {e.deal === null ? (
                 <p className="text-xs text-muted">
                   {t(
-                    "Für diese Variante gibt es zu wenige belegte Verkäufe und Angebote für einen Marktwert.",
-                    "There are too few recorded sales and listings for this variant to give a market value.",
+                    "Für diese Variante gibt es zu wenige belegte Auktionsergebnisse für einen Marktwert.",
+                    "There are too few recorded auction results for this variant to give a market value.",
                   )}
                 </p>
               ) : (

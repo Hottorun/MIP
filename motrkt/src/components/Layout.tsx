@@ -14,7 +14,6 @@ import { MODEL_CHANNELS } from "../data/real/model";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
 const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL;
-const N_ASKS = MODEL_CHANNELS.EU_ASK + MODEL_CHANNELS.US_ASK;
 
 const NAV_LEFT = [
   { to: "/", get label() { return t("Start", "Home"); } },
@@ -40,8 +39,8 @@ export function Layout() {
         <span className="hidden sm:inline">
           {" "}
           {t(
-            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015 und ${num(N_ASKS)} Angeboten.`,
-            `Market values from ${num(N_AUCTIONS)} auction results since 2015 and ${num(N_ASKS)} listings.`,
+            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015.`,
+            `Market values from ${num(N_AUCTIONS)} auction results since 2015.`,
           )}
         </span>
       </div>
@@ -440,8 +439,8 @@ function Footer() {
         <div className="space-y-2 text-[13px] leading-relaxed text-muted">
           <p>
             {t(
-              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat) und ${num(N_ASKS)} Angeboten von Classic Trader und Händlern, umgerechnet zum EZB-Kurs des Verkaufstags. Keine Anlageberatung.`,
-              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat) and ${num(N_ASKS)} listings from Classic Trader and dealers, converted at the ECB rate on the day of sale. Not investment advice.`,
+              `Marktwerte, Verläufe und Verkäufe beruhen auf ${num(N_AUCTIONS)} öffentlichen Auktionsergebnissen (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat), umgerechnet zum EZB-Kurs des Verkaufstags. Angebote von Classic Trader und Händlern zeigen wir zum Vergleich, sie zählen nicht zum Marktwert. Keine Anlageberatung.`,
+              `Market values, price histories and sales are based on ${num(N_AUCTIONS)} public auction results (Bring a Trailer, RM Sotheby's, Gooding, Bonhams, Broad Arrow, Artcurial, Mecum, Iconic, Aguttes, Osenat), converted at the ECB rate on the day of sale. Listings from Classic Trader and dealers are shown for comparison and do not count towards the market value. Not investment advice.`,
             )}
           </p>
           {usdRate() && (
