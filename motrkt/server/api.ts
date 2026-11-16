@@ -156,6 +156,26 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
   }
 }
 
+/** Errors from the browser (src/lib/report.ts) land in the server log, where Vercel's runtime logs keep them. */
+async function handleClientError(req: IncomingMessage, res: ServerResponse) {
+  const user = await currentUser(req);
+  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  if (await overLimit("fehler", user.id)) return sendJson(res, 429, { error: "too_many" });
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse((await readText(req, 8_000)) || "{}");
+  } catch {
+    return sendJson(res, 400, { error: "bad request" });
+  }
+  const s = (v: unknown, n: number) => (typeof v === "string" ? v.slice(0, n) : "");
+  console.error(
+    "client error",
+    JSON.stringify({ user: user.username, kind: s(body.kind, 40), message: s(body.message, 500), page: s(body.page, 300), stack: s(body.stack, 2000), ua: s(req.headers["user-agent"], 200), at: new Date().toISOString() }),
+  );
+  res.statusCode = 204;
+  res.end();
+}
+
 export async function handleApi(req: IncomingMessage, res: ServerResponse) {
   const url = new URL(req.url ?? "/", "http://localhost");
   if (url.pathname === "/api/copilot/status" && req.method === "GET") {
@@ -168,5 +188,6 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse) {
   if (/^\/api\/(fahrzeuge|pruefung)(\/|$)/.test(url.pathname)) return handleUserCars(req, res, url);
   if (url.pathname.startsWith("/api/forum/")) return handleForum(req, res, url);
   if (url.pathname === "/api/zustand") return handleUserState(req, res);
+  if (url.pathname === "/api/fehler" && req.method === "POST") return handleClientError(req, res);
   sendJson(res, 404, { error: "Not found" });
 }

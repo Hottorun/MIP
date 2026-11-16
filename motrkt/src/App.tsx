@@ -13,6 +13,9 @@ const AiPage = lazy(() => import("./pages/AiPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Credits = lazy(() => import("./pages/Credits"));
 const Review = lazy(() => import("./pages/Review"));
+const Account = lazy(() => import("./pages/Account"));
+const Impressum = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Impressum })));
+const Datenschutz = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Datenschutz })));
 
 function MarketRedirect() {
   const { lastVariantId } = useStore();
@@ -35,6 +38,9 @@ export function App() {
         <Route path="bildnachweise" element={<Credits />} />
         <Route path="fahrzeug-melden" element={<Navigate to="/portfolio#melden" replace />} />
         <Route path="pruefung" element={<Review />} />
+        <Route path="konto" element={<Account />} />
+        <Route path="impressum" element={<Impressum />} />
+        <Route path="datenschutz" element={<Datenschutz />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

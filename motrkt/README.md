@@ -65,6 +65,20 @@ Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Nur der Vite-Ent
 zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht über `MIP_ADMINS`, weil das Passwort
 öffentlich ist. Tabelle: `db/migrations/004_user_cars.sql`.
 
+## Konto, Impressum, Datenschutz
+
+Unter `/konto` ändern Nutzer ihr Passwort (andere Browser werden abgemeldet), laden alle zu ihrem Konto gespeicherten
+Daten als JSON herunter und löschen ihr Konto (Sitzungen, gespeicherte Daten und offene Meldungen samt Verträgen
+werden gelöscht; geprüfte Fahrzeuge ohne FIN und Forumsbeiträge bleiben ohne Kontobezug). Das Demo-Konto kann nichts
+davon. Impressum und Datenschutzerklärung (`/impressum`, `/datenschutz`) zeigen die Texte aus `src/legal.ts`; ohne
+Sitzung liefert sie der Server als eigene Seiten (`server/legalPages.ts`), damit sie von der Anmeldeseite aus
+erreichbar sind. **Vor der Veröffentlichung `OPERATOR` in `src/legal.ts` ausfüllen** – solange Angaben fehlen,
+zeigen beide Seiten einen Warnhinweis.
+
+Fehler im Browser (Rendering, unbehandelte Ausnahmen) meldet die App an `/api/fehler`; der Server protokolliert sie,
+auf Vercel stehen sie in den Runtime-Logs. Live-Inserate von mobile.de werden erst geladen, wenn eine Seite sie
+zeigt (Kaufen, Modellseite), nicht beim App-Start.
+
 ## Forum je Modell
 
 Ganz unten auf jeder Modellseite (`/markt/:variante#forum`) tauschen sich angemeldete Nutzer in Themen aus: Thema mit

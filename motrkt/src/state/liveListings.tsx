@@ -3,7 +3,11 @@ import type { Listing } from "../data/types";
 import { fetchGeneration, fetchMobileStatus, generationQueries } from "../lib/mobilede";
 import { t } from "../i18n";
 
-/** Live mobile.de listings for the whole (enabled) catalog, loaded once per session when the API is configured. */
+/**
+ * Live mobile.de listings for the whole (enabled) catalog, loaded once per session when the API is configured – but
+ * only once a page that shows listings (Buy, a model page) asks for them, not on every app start: the partner API
+ * has a quota and the fan-out is a few dozen requests.
+ */
 
 type LiveState = {
   status: "checking" | "off" | "loading" | "ready" | "error";
@@ -11,6 +15,7 @@ type LiveState = {
   error: string | null;
   loadedAt: number | null;
   refresh: () => void;
+  want: () => void;
 };
 
 const LiveContext = createContext<LiveState | null>(null);
@@ -21,8 +26,10 @@ export function LiveListingsProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [loadedAt, setLoadedAt] = useState<number | null>(null);
   const [nonce, setNonce] = useState(0);
+  const [wanted, setWanted] = useState(false);
 
   useEffect(() => {
+    if (!wanted) return;
     const controller = new AbortController();
     (async () => {
       if (!(await fetchMobileStatus())) return setStatus("off");
@@ -57,15 +64,18 @@ export function LiveListingsProvider({ children }: { children: ReactNode }) {
       setError(e instanceof Error ? e.message : t("mobile.de nicht erreichbar", "mobile.de not reachable"));
     });
     return () => controller.abort();
-  }, [nonce]);
+  }, [nonce, wanted]);
 
   const refresh = useCallback(() => setNonce((n) => n + 1), []);
-  const value = useMemo(() => ({ status, listings, error, loadedAt, refresh }), [status, listings, error, loadedAt, refresh]);
+  const want = useCallback(() => setWanted(true), []);
+  const value = useMemo(() => ({ status, listings, error, loadedAt, refresh, want }), [status, listings, error, loadedAt, refresh, want]);
   return <LiveContext.Provider value={value}>{children}</LiveContext.Provider>;
 }
 
 export function useLiveListings(): LiveState {
   const ctx = useContext(LiveContext);
   if (!ctx) throw new Error("useLiveListings must be used inside <LiveListingsProvider>");
+  const { want } = ctx;
+  useEffect(() => want(), [want]);
   return ctx;
 }

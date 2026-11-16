@@ -9,6 +9,7 @@ export const LIMITS = {
   copilot: { max: 60, minutes: 60 }, // Co-Pilot answers per user and hour
   contract: { max: 10, minutes: 24 * 60 }, // contract uploads per user and day (the AI check runs on each)
   mobilede: { max: 600, minutes: 60 }, // mobile.de searches per user and hour (one app start needs a few dozen)
+  fehler: { max: 30, minutes: 60 }, // browser error reports per user and hour
 } as const;
 
 /** Counts one request for `key`; true when the limit for this window is already used up (the request is not counted then). */

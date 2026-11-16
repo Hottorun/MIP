@@ -7,6 +7,9 @@ import { LiveListingsProvider } from "./state/liveListings";
 import { App } from "./App";
 import { LangProvider } from "./i18n";
 import "./index.css";
+import { watchGlobalErrors } from "./lib/report";
+
+watchGlobalErrors();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -4,6 +4,7 @@ import { TLSSocket } from "node:tls";
 import demoAccount from "./demo-account.json" with { type: "json" };
 import { readText } from "./body.ts";
 import { db } from "./db.ts";
+import { sendLegalPage } from "./legalPages.ts";
 
 /**
  * Accounts with username and password. Without a valid session the server hands out nothing but the sign-in page
@@ -169,7 +170,11 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
     const [p] = await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${u.id}`;
     return sendJson(res, 200, { username: u.username, admin: isAdmin(u), premiumUntil: p?.premium_until ?? null });
   }
+  if (path === "/api/auth/export" && req.method === "GET") return exportAccount(req, res);
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });
+
+  if (path === "/api/auth/password") return changePassword(req, res);
+  if (path === "/api/auth/delete") return deleteAccount(req, res);
 
   if (path === "/api/auth/logout") {
     const token = sessionToken(req);
@@ -226,6 +231,95 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   return sendJson(res, 404, { error: "Not found" });
 }
 
+// ------------------------------------------------------------------------------------------------ account
+// Password change, data export and deletion (/konto). The demo account has none of these: it is shared.
+
+async function changePassword(req: IncomingMessage, res: ServerResponse) {
+  const user = await currentUser(req);
+  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  if (isDemo(user)) return sendJson(res, 403, { error: "demo" });
+  let body: Record<string, unknown>;
+  try {
+    body = await readBody(req);
+  } catch {
+    return sendJson(res, 400, { error: "bad request" });
+  }
+  const current = typeof body.current === "string" ? body.current : "";
+  const next = typeof body.next === "string" ? body.next : "";
+  if (next.length < PW_MIN || next.length > PW_MAX) return sendJson(res, 400, { error: "password_length" });
+  if (next.toLowerCase() === user.username.toLowerCase()) return sendJson(res, 400, { error: "password_is_username" });
+  const full = await userById(user.id);
+  if (!full) return sendJson(res, 401, { error: "not signed in" });
+  const got = await hashPassword(current.slice(0, PW_MAX), full.salt);
+  if (!timingSafeEqual(got, Buffer.from(full.hash, "hex"))) return sendJson(res, 400, { error: "wrong_password" });
+  const salt = randomBytes(16).toString("hex");
+  const hash = (await hashPassword(next, salt)).toString("hex");
+  const token = sessionToken(req);
+  await db().begin(async (tx) => {
+    await tx`update users set salt = ${salt}, hash = ${hash} where id = ${user.id}`;
+    // every other browser is signed out; this one keeps its session
+    await tx`delete from sessions where user_id = ${user.id} and token_hash <> ${sha(token ?? "")}`;
+  });
+  return sendJson(res, 200, { ok: true });
+}
+
+/** Everything stored about the account as one JSON file (data portability); the contract files are not included. */
+async function exportAccount(req: IncomingMessage, res: ServerResponse) {
+  const user = await currentUser(req);
+  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  if (isDemo(user)) return sendJson(res, 403, { error: "demo" });
+  const sql = db();
+  const [account] = await sql`select username, created_at, premium_until from users where id = ${user.id}`;
+  const [state] = await sql`select state, updated_at from user_state where user_id = ${user.id}`;
+  const cars = await sql`select id, status, created_at, role, variant_id, title, build_year, vin, km, price, currency, sale_date, country, counterparty,
+                                body, gearbox, steering, color_ext, color_int, condition, matching_numbers, accident_free, notes, contract_name,
+                                contract_type, contract_size, contract_deleted_at, reviewed_at, review_note
+                         from user_cars where user_id = ${user.id} order by created_at`;
+  const topics = await sql`select id, variant_id, title, created_at, hidden_at from forum_topics where user_id = ${user.id} order by created_at`;
+  const posts = await sql`select id, topic_id, body, created_at, hidden_at from forum_posts where user_id = ${user.id} order by created_at`;
+  const sessions = await sql`select expires_at from sessions where user_id = ${user.id}`;
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="carbay-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
+  res.setHeader("Cache-Control", "no-store");
+  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, forum: { topics, posts }, sessions }, null, 2));
+}
+
+/**
+ * Deletes the account: sessions, stored state, open car reports with their contracts. Decided reports (approved
+ * ones are part of the market model, anonymously) and forum posts stay, detached from the account: no user id, chassis
+ * number, notes or author name any more.
+ */
+async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
+  const user = await currentUser(req);
+  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  if (isDemo(user)) return sendJson(res, 403, { error: "demo" });
+  let body: Record<string, unknown>;
+  try {
+    body = await readBody(req);
+  } catch {
+    return sendJson(res, 400, { error: "bad request" });
+  }
+  const password = typeof body.password === "string" ? body.password : "";
+  const full = await userById(user.id);
+  if (!full) return sendJson(res, 401, { error: "not signed in" });
+  const got = await hashPassword(password.slice(0, PW_MAX), full.salt);
+  if (!timingSafeEqual(got, Buffer.from(full.hash, "hex"))) return sendJson(res, 400, { error: "wrong_password" });
+  const gone = "deleted:" + sha(user.id).slice(0, 16); // stable, not traceable to the name
+  await db().begin(async (tx) => {
+    await tx`delete from sessions where user_id = ${user.id}`;
+    await tx`delete from user_state where user_id = ${user.id}`;
+    await tx`delete from user_cars where user_id = ${user.id} and status not in ('approved', 'rejected')`;
+    await tx`update user_cars set user_id = ${gone}, vin = '', notes = null, contract = null, contract_name = null,
+             contract_deleted_at = coalesce(contract_deleted_at, now()) where user_id = ${user.id}`;
+    await tx`update forum_topics set user_id = ${gone}, username = '[gelöscht]' where user_id = ${user.id}`;
+    await tx`update forum_posts set user_id = ${gone}, username = '[gelöscht]' where user_id = ${user.id}`;
+    await tx`delete from users where id = ${user.id}`;
+  });
+  setCookie(req, res, "", 0);
+  return sendJson(res, 200, { ok: true });
+}
+
 // ------------------------------------------------------------------------------------------------ gate
 const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-touch-icon.png", "/brand/carbay-wordmark.svg"]);
 
@@ -247,6 +341,11 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     return true;
   }
   if (OPEN.has(url.pathname)) return false;
+  // Impressum and privacy notice must be reachable without an account; signed in, the app renders the same texts
+  if ((url.pathname === "/impressum" || url.pathname === "/datenschutz") && !(await currentUser(req))) {
+    sendLegalPage(res, url.pathname.slice(1) as "impressum" | "datenschutz", url.searchParams.get("lang"));
+    return true;
+  }
   if (await currentUser(req)) {
     if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) await renewSession(req, res);
     return false;
@@ -320,6 +419,7 @@ const LOGIN_PAGE = `<!doctype html>
   .lang { text-align:center; margin-top:18px; font-size:12.5px; letter-spacing:.08em; }
   .lang button { background:none; border:0; font:inherit; color:var(--faint); cursor:pointer; padding:2px 4px; }
   .lang button[aria-pressed="true"] { color:var(--ink); }
+  .legal { text-align:center; margin-top:14px; font-size:12px; } .legal a { color:var(--faint); text-decoration:none; margin:0 6px; } .legal a:hover { color:var(--ink); }
 </style>
 </head>
 <body>
@@ -348,6 +448,7 @@ const LOGIN_PAGE = `<!doctype html>
     </form>
   </div>
   <div class="lang"><button type="button" data-lang="de">DE</button> | <button type="button" data-lang="en">EN</button></div>
+  <p class="legal"><a href="/impressum">Impressum</a><a href="/datenschutz" data-de="Datenschutz" data-en="Privacy"></a></p>
 </main>
 <script>
 (function () {

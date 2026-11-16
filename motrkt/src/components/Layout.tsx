@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck, Settings } from "lucide-react";
 import { useMe } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
@@ -11,6 +11,7 @@ import { ImportModal } from "./ImportModal";
 import { AS_OF } from "../data/generate";
 import { LogoMark, LogoWordmark } from "./LogoMark";
 import { MODEL_CHANNELS } from "../data/real/model";
+import { reportError } from "../lib/report";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
 const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL;
@@ -75,6 +76,7 @@ class PageErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
   }
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error("page error", error, info.componentStack);
+    reportError("render", error, { component: (info.componentStack ?? "").slice(0, 600) });
   }
   render() {
     if (!this.state.error) return this.props.children;
@@ -411,6 +413,9 @@ function UserMenu() {
             </button>
           )}
           <div className="my-1 border-t border-line" />
+          <Link to="/konto" className={item} onClick={() => setOpen(false)}>
+            <Settings className="size-3.5 text-muted" /> {t("Konto und Daten", "Account and data")}
+          </Link>
           <button className={item} onClick={signOut}>
             <LogOut className="size-3.5 text-muted" /> {t("Abmelden", "Sign out")}
           </button>
@@ -503,7 +508,11 @@ function Footer() {
       </div>
       <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line px-5 py-6 text-[12.5px] text-faint sm:px-8">
         <span>© {new Date(AS_OF).getFullYear()} Carbay</span>
-        <span>{t("Keine Anlageberatung.", "Not investment advice.")}</span>
+        <span className="flex gap-5">
+          <Link to="/impressum" className="hover:text-ink">Impressum</Link>
+          <Link to="/datenschutz" className="hover:text-ink">{t("Datenschutz", "Privacy")}</Link>
+          <span>{t("Keine Anlageberatung.", "Not investment advice.")}</span>
+        </span>
       </div>
     </footer>
   );
