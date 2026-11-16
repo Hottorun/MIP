@@ -34,17 +34,25 @@ export function WatchlistSection() {
                     </div>
                     <div className="mt-3 flex items-baseline justify-between gap-3">
                       <span className="min-w-0 truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
-                      <Money value={m.value} compact className="shrink-0 text-[16px]" />
+                      {v.measured ? <Money value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
                     </div>
                   </Link>
                   <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px]">
                     <span>
-                      <Delta value={m.change12m} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
+                      {v.measured ? (
+                        <>
+                          <Delta value={m.change12m} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
+                        </>
+                      ) : (
+                        <span className="text-faint">{t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}</span>
+                      )}
                     </span>
                     <span className="flex gap-3">
-                      <button className="text-muted hover:text-ink" onClick={() => setAlertFor(v.id)}>
-                        {t("Preisalarm", "Price alert")}
-                      </button>
+                      {v.measured && (
+                        <button className="text-muted hover:text-ink" onClick={() => setAlertFor(v.id)}>
+                          {t("Preisalarm", "Price alert")}
+                        </button>
+                      )}
                       <button
                         className="text-muted hover:text-ink"
                         onClick={() => {
@@ -69,8 +77,8 @@ export function WatchlistSection() {
             {alerts.map((a) => {
               const v = variantById.get(a.variantId);
               if (!v) return null;
-              const value = getMetrics(v.id).value;
-              const hit = a.direction === "above" ? value >= a.threshold : value <= a.threshold;
+              const value = v.measured ? getMetrics(v.id).value : null;
+              const hit = value !== null && (a.direction === "above" ? value >= a.threshold : value <= a.threshold);
               return (
                 <li key={a.id} className="flex items-center gap-4 border-b border-line py-4">
                   <div className="min-w-0 flex-1">
@@ -79,8 +87,8 @@ export function WatchlistSection() {
                     </Link>
                     <div className="text-[13px] text-muted">
                       {t(
-                        `Wenn der Wert ${a.direction === "above" ? "über" : "unter"} ${eur(a.threshold)} ${a.direction === "above" ? "steigt" : "fällt"}. Aktuell ${eur(value)}.`,
-                        `When the value ${a.direction === "above" ? "rises above" : "falls below"} ${eur(a.threshold)}. Now ${eur(value)}.`,
+                        `Wenn der Wert ${a.direction === "above" ? "über" : "unter"} ${eur(a.threshold)} ${a.direction === "above" ? "steigt" : "fällt"}. Aktuell ${value === null ? "kein Marktwert" : eur(value)}.`,
+                        `When the value ${a.direction === "above" ? "rises above" : "falls below"} ${eur(a.threshold)}. Now ${value === null ? "no market value" : eur(value)}.`,
                       )}
                     </div>
                   </div>
@@ -110,7 +118,7 @@ export function WatchlistSection() {
 export function AlertModal({ variantId, onClose }: { variantId: string | null; onClose: () => void }) {
   const { addAlert, toast } = useStore();
   const v = variantId ? variantById.get(variantId) : undefined;
-  const value = v ? getMetrics(v.id).value : 0;
+  const value = v?.measured ? getMetrics(v.id).value : 0;
   const [direction, setDirection] = useState<"above" | "below">("above");
   const [threshold, setThreshold] = useState("");
   const [error, setError] = useState("");
@@ -124,7 +132,7 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
 
   const save = () => {
     const n = fromDisplay(Number(isEn() ? threshold.replace(/[,\s]/g, "") : threshold.replace(/\./g, "").replace(",", ".")));
-    if (!v || !Number.isFinite(n) || n <= 0) {
+    if (!v || !v.measured || !Number.isFinite(n) || n <= 0) {
       setError(t("Bitte einen gültigen Schwellenwert eingeben.", "Please enter a valid threshold."));
       return;
     }
@@ -143,7 +151,7 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
           <button className="btn" onClick={onClose}>
             {t("Abbrechen", "Cancel")}
           </button>
-          <button className="btn btn-gold" onClick={save}>
+          <button className="btn btn-gold" onClick={save} disabled={!v?.measured}>
             {t("Alarm setzen", "Set alert")}
           </button>
         </>
@@ -153,7 +161,9 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
         <div className="space-y-3">
           <div>
             <div className="font-serif text-[17px]">{variantTitle(v)}</div>
-            <div className="text-[13px] text-muted">{t("Aktueller Marktwert", "Current market value")}: {eur(value)}</div>
+            <div className="text-[13px] text-muted">
+              {t("Aktueller Marktwert", "Current market value")}: {v.measured ? eur(value) : t("keine Daten (zu wenige Belege)", "no data (too few records)")}
+            </div>
           </div>
           <div>
             <label className="label">{t("Benachrichtigen, wenn der Marktwert", "Notify me when the market value is")}</label>

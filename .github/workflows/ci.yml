@@ -1,0 +1,31 @@
+# Bei jedem Push und Pull Request: Typen prüfen und die App bauen (npm run build = tsc --noEmit && vite build).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: motrkt
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: motrkt/package-lock.json
+      - run: npm ci
+      - run: npm run build

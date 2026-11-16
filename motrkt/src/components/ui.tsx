@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowUpRight, Minus, X } from "lucide-react";
 import { amount, cn, curSign, num, ownUsd, pct, trendClass } from "../lib/format";
@@ -305,4 +305,41 @@ export function Money({ value, compact, className, sale }: { value: number | nul
       {own !== null ? num(Math.round(own)) : amount(value, { compact })}
     </span>
   );
+}
+
+/**
+ * In-app replacement for window.confirm: `const { confirm, dialog } = useConfirm()`, render `{dialog}` once, then
+ * `if (await confirm(t("…", "…"))) …`. Resolves false when dismissed.
+ */
+export function useConfirm() {
+  const [state, setState] = useState<{ message: ReactNode; title?: ReactNode; confirmLabel?: string; resolve: (ok: boolean) => void } | null>(null);
+  const confirm = useCallback(
+    (message: ReactNode, opts: { title?: ReactNode; confirmLabel?: string } = {}) =>
+      new Promise<boolean>((resolve) => setState({ message, ...opts, resolve })),
+    [],
+  );
+  const close = (ok: boolean) => {
+    state?.resolve(ok);
+    setState(null);
+  };
+  const dialog = state ? (
+    <Modal
+      open
+      onClose={() => close(false)}
+      title={state.title ?? t("Bitte bestätigen", "Please confirm")}
+      footer={
+        <>
+          <button className="btn" onClick={() => close(false)}>
+            {t("Abbrechen", "Cancel")}
+          </button>
+          <button className="btn btn-gold" onClick={() => close(true)} autoFocus>
+            {state.confirmLabel ?? t("Bestätigen", "Confirm")}
+          </button>
+        </>
+      }
+    >
+      <p className="text-sm text-muted">{state.message}</p>
+    </Modal>
+  ) : null;
+  return { confirm, dialog };
 }

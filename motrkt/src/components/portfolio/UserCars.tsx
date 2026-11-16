@@ -5,7 +5,7 @@ import { brands, generationById, modelName, models, variantById, variantTitle, y
 import { getMetrics } from "../../data/market";
 import { cn, date, eur, num } from "../../lib/format";
 import { isEn, t } from "../../i18n";
-import { Card, Pill, Section } from "../ui";
+import { Card, Pill, Section, useConfirm } from "../ui";
 import { ACCEPT, COUNTERPARTY, MAX_BYTES, STATUS_LABEL, STATUS_TONE, api, uploadContract, useMe, type UserCar } from "../../lib/userCars";
 
 const COUNTRIES = ["DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "GB", "DK", "SE", "NO", "PL", "CZ", "US", "CA"];
@@ -174,8 +174,10 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const open = car.status === "awaiting_contract" || car.status === "pending";
+  const { confirm, dialog: confirmDialog } = useConfirm();
   return (
     <li className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 py-3">
+      {confirmDialog}
       <div className="min-w-0">
         <div className="font-serif text-[17px]">
           {v ? (
@@ -232,7 +234,7 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
               className="btn text-[13px]"
               disabled={busy}
               onClick={async () => {
-                if (!confirm(t("Meldung zurückziehen? Der Vertrag wird gelöscht.", "Withdraw this report? The contract will be deleted."))) return;
+                if (!(await confirm(t("Meldung zurückziehen? Der Vertrag wird gelöscht.", "Withdraw this report? The contract will be deleted."), { confirmLabel: t("Zurückziehen", "Withdraw") }))) return;
                 await api(`/api/fahrzeuge/${car.id}`, { method: "DELETE" }).catch(() => {});
                 onChange();
               }}
@@ -306,7 +308,7 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
       onDone();
     } catch {
       setBusy(false);
-      alert(
+      setMsg(
         t(
           "Die Daten sind gespeichert, aber der Kaufvertrag konnte nicht hochgeladen werden. Sie können ihn in der Liste erneut hochladen.",
           "The details are saved, but the contract could not be uploaded. You can upload it again from the list.",

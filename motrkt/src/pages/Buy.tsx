@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, Mail, RefreshCw, Search, Star, X } from "lucide-react";
+import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, RefreshCw, Search, Star, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
 import { getMetrics } from "../data/market";
 import type { Listing, Model, Variant } from "../data/types";
-import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters } from "../lib/format";
+import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters, safeUrl } from "../lib/format";
 import { useStore } from "../state/store";
 import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
@@ -62,24 +62,45 @@ export default function Buy() {
   const variantFilter = variantParam ? variantById.get(variantParam) : undefined;
   const selectedId = params.get("inserat");
 
-  const [brand, setBrand] = useState("");
-  const [model, setModel] = useState("");
-  const [generation, setGeneration] = useState("");
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
-  const [yearFrom, setYearFrom] = useState("");
-  const [yearTo, setYearTo] = useState("");
-  const [maxKm, setMaxKm] = useState("");
-  const [seller, setSeller] = useState<SellerFilter>("");
-  const [savedOnly, setSavedOnly] = useState(false);
-  const [dealsOnly, setDealsOnly] = useState(false);
-  const [text, setText] = useState("");
-  const [sort, setSort] = useState<SortKey>("deal");
+  // The filters live in the URL (like on the Models page): a filtered view can be shared, reloaded and gone back to.
+  const get = (k: string) => params.get(k) ?? "";
+  const setFilters = (next: Record<string, string | boolean>) => {
+    const p = new URLSearchParams(params);
+    for (const [k, v] of Object.entries(next)) {
+      if (v === true) p.set(k, "1");
+      else if (v) p.set(k, v);
+      else p.delete(k);
+    }
+    setParams(p, { replace: true });
+  };
+  const brand = get("marke");
+  const model = get("modell");
+  const generation = get("generation");
+  const setGeneration = (v: string) => setFilters({ generation: v });
+  const priceMin = get("preis_von");
+  const setPriceMin = (v: string) => setFilters({ preis_von: v });
+  const priceMax = get("preis_bis");
+  const setPriceMax = (v: string) => setFilters({ preis_bis: v });
+  const yearFrom = get("jahr_von");
+  const setYearFrom = (v: string) => setFilters({ jahr_von: v });
+  const yearTo = get("jahr_bis");
+  const setYearTo = (v: string) => setFilters({ jahr_bis: v });
+  const maxKm = get("km_bis");
+  const setMaxKm = (v: string) => setFilters({ km_bis: v });
+  const seller = get("anbieter") as SellerFilter;
+  const setSeller = (v: SellerFilter) => setFilters({ anbieter: v });
+  const savedOnly = get("gemerkt") === "1";
+  const dealsOnly = get("deals") === "1";
+  const text = get("suche");
+  const setText = (v: string) => setFilters({ suche: v });
+  const sort = (get("sortierung") || "deal") as SortKey;
+  const setSort = (v: SortKey) => setFilters({ sortierung: v === "deal" ? "" : v });
   const [visible, setVisible] = useState(PAGE);
   const [moreFilters, setMoreFilters] = useState(false);
 
   const live = useLiveListings();
-  const [preferLive, setPreferLive] = useState(true);
+  const preferLive = get("quelle") !== "demo";
+  const setPreferLive = (v: boolean) => setFilters({ quelle: v ? "" : "demo" });
   const liveAvailable = live.listings.length > 0;
   const showingLive = preferLive && liveAvailable;
   const source = showingLive ? live.listings : getAllListings();
@@ -153,31 +174,14 @@ export default function Buy() {
     next.delete("variant");
     setParams(next, { replace: true });
   };
-  const reset = () => {
-    setBrand("");
-    setModel("");
-    setGeneration("");
-    setPriceMin("");
-    setPriceMax("");
-    setYearFrom("");
-    setYearTo("");
-    setMaxKm("");
-    setSeller("");
-    setSavedOnly(false);
-    setDealsOnly(false);
-    setText("");
-    if (variantParam) clearVariant();
-  };
+  const reset = () =>
+    setFilters({ marke: "", modell: "", generation: "", preis_von: "", preis_bis: "", jahr_von: "", jahr_bis: "", km_bis: "", anbieter: "", gemerkt: "", deals: "", suche: "", variant: "" });
 
   const topDeals = filtered.filter((e) => e.deal !== null && e.deal < -0.07).length;
   const digits = (s: string) => s.replace(/\D/g, "");
 
-  const pickModel = (id: string) => {
-    setModel(id);
-    setGeneration("");
-    if (id) setBrand(modelById.get(id)!.brandId);
-    if (variantParam) clearVariant();
-  };
+  const pickModel = (id: string) => setFilters({ modell: id, generation: "", marke: id ? modelById.get(id)!.brandId : brand, variant: "" });
+  const pickBrand = (id: string) => setFilters({ marke: id, modell: "", generation: "", variant: "" });
   const activeModel = model ? modelById.get(model) : undefined;
   const modelLabel = (m: Model) => (brand || brands.length === 1 ? modelName(m) : `${brandById.get(m.brandId)!.name} ${modelName(m)}`);
   const brandTotal = brand ? base.filter((e) => e.v.brandId === brand).length : base.length;
@@ -229,7 +233,7 @@ export default function Buy() {
             </div>
             {divider}
             {brands.length > 1 && (
-              <select className={barSelect} value={brand} onChange={(e) => { setBrand(e.target.value); pickModel(""); }} aria-label={t("Marke", "Brand")}>
+              <select className={barSelect} value={brand} onChange={(e) => pickBrand(e.target.value)} aria-label={t("Marke", "Brand")}>
                 <option value="">{t("Alle Marken", "All brands")}</option>
                 {brands.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -297,10 +301,10 @@ export default function Buy() {
       </div>
 
       <div className="-mt-4 flex flex-wrap items-center gap-2">
-        <button className={cn("chip", dealsOnly && "chip-active")} onClick={() => setDealsOnly((m) => !m)} aria-pressed={dealsOnly}>
+        <button className={cn("chip", dealsOnly && "chip-active")} onClick={() => setFilters({ deals: !dealsOnly })} aria-pressed={dealsOnly}>
           <span className={cn("size-1.5 rounded-full", dealsOnly ? "bg-bg" : "bg-up")} /> {t("Unter Marktwert", "Below market value")}
         </button>
-        <button className={cn("chip", savedOnly && "chip-active")} onClick={() => setSavedOnly((m) => !m)} aria-pressed={savedOnly}>
+        <button className={cn("chip", savedOnly && "chip-active")} onClick={() => setFilters({ gemerkt: !savedOnly })} aria-pressed={savedOnly}>
           <Heart className="size-3.5" strokeWidth={1.5} fill={savedOnly ? "currentColor" : "none"} /> {t("Gemerkt", "Saved")} <span className="tabular-nums opacity-70">{savedListings.length}</span>
         </button>
         {variantFilter && (
@@ -355,7 +359,7 @@ export default function Buy() {
         </div>
       )}
 
-      {selected && <ListingModal e={selected} all={all} onClose={() => openListing(null)} onOpen={openListing} />}
+      {selected && <ListingModal key={selected.l.id} e={selected} all={all} onClose={() => openListing(null)} onOpen={openListing} />}
       {selectedId && !selected && (
         <Modal open onClose={() => openListing(null)} title={t("Inserat nicht gefunden", "Listing not found")}>
           <p className="text-sm text-muted">{t(`Das Inserat ${selectedId} ist nicht mehr aktiv.`, `Listing ${selectedId} is no longer active.`)}</p>
@@ -412,13 +416,6 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
 function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[]; onClose: () => void; onOpen: (id: string) => void }) {
   const { l, v } = e;
   const { watchlist, toggleWatch, addHolding, toast } = useStore();
-  const [inquiry, setInquiry] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: t(
-      `Guten Tag, ich interessiere mich für Ihr Inserat ${l.id} (${l.title}, ${l.year}). Ist das Fahrzeug noch verfügbar?`,
-      `Hello, I'm interested in your listing ${l.id} (${l.title}, ${l.year}). Is the car still available?`,
-    ),
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [added, setAdded] = useState(false);
   const d = dealLabel(e.deal);
   const watched = watchlist.includes(v.id);
@@ -428,23 +425,6 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
     .filter((o) => o.v.id === v.id && o.l.id !== l.id)
     .sort((a, b) => dealRank(a) - dealRank(b))
     .slice(0, 4);
-
-  useEffect(() => {
-    setInquiry(false);
-    setErrors({});
-    setAdded(false);
-  }, [l.id]);
-
-  const submit = () => {
-    const errs: Record<string, string> = {};
-    if (form.name.trim().length < 2) errs.name = t("Bitte Namen angeben", "Please enter your name");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errs.email = t("Bitte gültige E-Mail angeben", "Please enter a valid email address");
-    if (form.message.trim().length < 10) errs.message = t("Nachricht zu kurz", "Message too short");
-    setErrors(errs);
-    if (Object.keys(errs).length) return;
-    toast(t(`Anfrage an ${l.seller} gesendet`, `Enquiry sent to ${tr(l.seller)}`));
-    setInquiry(false);
-  };
 
   const na = t("k. A.", "n/a");
   const yes = t("Ja", "Yes");
@@ -511,9 +491,6 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
           >
             <Briefcase className="size-4" /> {added ? t("Im Portfolio", "In portfolio") : t("Als gekauft ins Portfolio", "Add to portfolio as bought")}
           </button>
-          <button className="btn btn-gold" hidden={Boolean(l.url)} onClick={() => setInquiry((i) => !i)}>
-            <Mail className="size-4" /> {t("Anfrage senden", "Send enquiry")}
-          </button>
         </>
       }
     >
@@ -532,37 +509,11 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
             <NoPhoto className="aspect-video w-full" />
           )}
           {l.url && (
-            <a href={l.url} target="_blank" rel="noreferrer" className="flex items-center justify-between border-t border-line px-3 py-2 text-sm text-gold hover:bg-panel-3">
+            <a href={safeUrl(l.url)} target="_blank" rel="noreferrer" className="flex items-center justify-between border-t border-line px-3 py-2 text-sm text-gold hover:bg-panel-3">
               {t(`Inserat bei ${l.source} ansehen und Anbieter kontaktieren`, `View the listing on ${l.source} and contact the seller`)} <ExternalLink className="size-4" />
             </a>
           )}
         </div>
-
-        {inquiry && (
-          <div className="animate-fade-in space-y-2 rounded-lg border border-gold/40 bg-gold/5 p-3">
-            <div className="text-sm font-semibold">{t(`Anfrage an ${l.seller}`, `Enquiry to ${tr(l.seller)}`)}</div>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              <div>
-                <input className="input" placeholder="Name" value={form.name} onChange={(ev) => setForm({ ...form, name: ev.target.value })} />
-                {errors.name && <div className="mt-0.5 text-xs text-down">{errors.name}</div>}
-              </div>
-              <div>
-                <input className="input" placeholder={t("E-Mail", "Email")} type="email" value={form.email} onChange={(ev) => setForm({ ...form, email: ev.target.value })} />
-                {errors.email && <div className="mt-0.5 text-xs text-down">{errors.email}</div>}
-              </div>
-            </div>
-            <textarea className="input min-h-20" value={form.message} onChange={(ev) => setForm({ ...form, message: ev.target.value })} />
-            {errors.message && <div className="text-xs text-down">{errors.message}</div>}
-            <div className="flex justify-end gap-2">
-              <button className="btn btn-ghost" onClick={() => setInquiry(false)}>
-                {t("Abbrechen", "Cancel")}
-              </button>
-              <button className="btn btn-gold" onClick={submit}>
-                {t("Senden", "Send")}
-              </button>
-            </div>
-          </div>
-        )}
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
           <dl className="space-y-1.5 text-sm md:col-span-3">

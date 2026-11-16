@@ -93,6 +93,7 @@ export async function askCopilot(opts: {
 
 function variantLine(id: string) {
   const v = variantById.get(id)!;
+  if (!v.measured) return `- ${variantTitle(v)} (${yearsLabel(v.years)}, ${num(v.production)} Stk.): kein Marktwert (zu wenige Belege)`;
   const m = getMetrics(id);
   return `- ${variantTitle(v)} (${yearsLabel(v.years)}, ${num(v.production)} Stk.): Marktwert ${eur(m.value)}, 12M ${pct(m.change12m)}, Rendite p. a. 5 J. ${pct(m.cagr5)}, Vol. ${pct(m.vol1y, { signed: false })}, Seltenheit ${m.rarityScore}/100, Liquidität ${m.liquidity}/100, Preisdynamik ${m.momentum}, Einschätzung ${m.recommendation.label}`;
 }
@@ -133,7 +134,8 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
     for (const h of portfolio) {
       const v = variantById.get(h.variantId)!;
       const value = holdingValue(h);
-      lines.push(`- ${variantTitle(v)}, Zustand ${h.condition}, ${km(h.mileage)}, gekauft ${date(h.purchaseDate)} für ${eur(h.purchasePrice)}, heute ${eur(value)} (${pct(value / h.purchasePrice - 1)}), Anteil ${pct(value / total, { signed: false })}`);
+      const today = v.measured ? `heute ${eur(value)} (${pct(value / h.purchasePrice - 1)})` : "kein Marktwert (zu wenige Belege), zählt mit dem Kaufpreis";
+      lines.push(`- ${variantTitle(v)}, Zustand ${h.condition}, ${km(h.mileage)}, gekauft ${date(h.purchaseDate)} für ${eur(h.purchasePrice)}, ${today}, Anteil ${pct(value / total, { signed: false })}`);
     }
   }
   if (watchlist.length) {
@@ -232,7 +234,8 @@ export function localAnswer(question: string, focusVariantId: string | undefined
     const brandsShare = new Map<string, number>();
     for (const r of rows) brandsShare.set(r.v.brandId, (brandsShare.get(r.v.brandId) ?? 0) + r.value);
     const topBrand = [...brandsShare.entries()].sort((a, b) => b[1] - a[1])[0];
-    const avg12 = rows.reduce((s, r) => s + getMetrics(r.v.id).change12m * r.value, 0) / total;
+    const measuredTotal = rows.reduce((s, r) => s + (r.v.measured ? r.value : 0), 0);
+    const avg12 = measuredTotal ? rows.reduce((s, r) => s + (r.v.measured ? getMetrics(r.v.id).change12m * r.value : 0), 0) / measuredTotal : 0;
     const best = rows[0];
     const worst = rows[rows.length - 1];
     const brandName = brands.find((b) => b.id === topBrand[0])!.name;

@@ -4,11 +4,11 @@ import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis }
 import { Pencil, Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
-import { getMetrics, holdingValue, portfolioSeries, rangeOptions, sliceRange, type RangeKey } from "../data/market";
+import { getMetrics, holdingMeasured, holdingValue, portfolioSeries, rangeOptions, sliceRange, type RangeKey } from "../data/market";
 import type { Holding } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, km, pct, trendClass } from "../lib/format";
-import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money } from "../components/ui";
+import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money, useConfirm } from "../components/ui";
 import { HoldingForm } from "../components/portfolio/HoldingForm";
 import { WatchlistSection } from "../components/portfolio/Watchlist";
 import { UserCarsSection } from "../components/portfolio/UserCars";
@@ -23,6 +23,7 @@ function csvCell(v: string | number) {
 
 export default function Portfolio() {
   const { portfolio, addHolding, updateHolding, removeHolding, toast } = useStore();
+  const { confirm, dialog: confirmDialog } = useConfirm();
   const { hash } = useLocation();
   useEffect(() => {
     if (hash === "#melden") document.getElementById("melden")?.scrollIntoView({ behavior: "smooth" });
@@ -35,15 +36,18 @@ export default function Portfolio() {
     () =>
       portfolio.map((h) => {
         const v = variantById.get(h.variantId)!;
-        const value = holdingValue(h);
-        return { h, v, value, m: getMetrics(v.id), gain: value / h.purchasePrice - 1 };
+        const measured = holdingMeasured(h);
+        const value = holdingValue(h); // the purchase price when the variant has no market value
+        return { h, v, value, measured, m: getMetrics(v.id), gain: measured ? value / h.purchasePrice - 1 : null };
       }),
     [portfolio],
   );
 
   const total = rows.reduce((s, r) => s + r.value, 0);
   const cost = rows.reduce((s, r) => s + r.h.purchasePrice, 0);
-  const perf12 = total ? rows.reduce((s, r) => s + r.m.change12m * r.value, 0) / total : 0;
+  const measuredTotal = rows.reduce((s, r) => s + (r.measured ? r.value : 0), 0);
+  const perf12 = measuredTotal ? rows.reduce((s, r) => s + (r.measured ? r.m.change12m * r.value : 0), 0) / measuredTotal : 0;
+  const unmeasured = rows.filter((r) => !r.measured).length;
 
   const chartData = useMemo(() => {
     const series = sliceRange(portfolioSeries(portfolio), range);
@@ -70,9 +74,9 @@ export default function Portfolio() {
         tr(r.h.color),
         new Date(r.h.purchaseDate).toISOString().slice(0, 10),
         r.h.purchasePrice,
-        Math.round(r.value),
-        (r.gain * 100).toFixed(1),
-        (r.m.change12m * 100).toFixed(1),
+        r.measured ? Math.round(r.value) : "",
+        r.gain === null ? "" : (r.gain * 100).toFixed(1),
+        r.measured ? (r.m.change12m * 100).toFixed(1) : "",
         ((r.value / total) * 100).toFixed(1),
         tr(r.h.note),
       ]
@@ -116,6 +120,14 @@ export default function Portfolio() {
           <Kpi label={t(`Gewinn seit Kauf, Einstand ${eur(cost, { compact: true })}`, `Gain since purchase, cost ${eur(cost, { compact: true })}`)} value={<Money value={total - cost} />} tone={total - cost} />
           <Kpi label={t("Veränderung in 12 Monaten", "Change in 12 months")} value={pct(perf12)} tone={perf12} />
         </dl>
+        {unmeasured > 0 && (
+          <p className="mt-3 text-[12.5px] text-faint">
+            {t(
+              `${unmeasured} ${unmeasured === 1 ? "Fahrzeug hat" : "Fahrzeuge haben"} noch keinen Marktwert (zu wenige Belege) und ${unmeasured === 1 ? "zählt" : "zählen"} mit dem Kaufpreis.`,
+              `${unmeasured} ${unmeasured === 1 ? "car has" : "cars have"} no market value yet (too few records) and ${unmeasured === 1 ? "counts" : "count"} at purchase price.`,
+            )}
+          </p>
+        )}
       </div>
 
       {rows.length === 0 ? (
@@ -195,11 +207,11 @@ export default function Portfolio() {
                         <td className="text-right tabular-nums">{km(r.h.mileage)}</td>
                         <td className="tabular-nums">{date(r.h.purchaseDate)}</td>
                         <td className="text-right tabular-nums">{eur(r.h.purchasePrice)}</td>
-                        <td className="text-right"><Money value={r.value} /></td>
-                        <td className={cn("text-right tabular-nums", trendClass(r.gain))}>{pct(r.gain)}</td>
                         <td className="text-right">
-                          <Delta value={r.m.change12m} arrow={false} />
+                          {r.measured ? <Money value={r.value} /> : <span className="text-[13px] text-faint" title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>}
                         </td>
+                        <td className={cn("text-right tabular-nums", r.gain !== null && trendClass(r.gain))}>{r.gain === null ? <span className="text-faint">–</span> : pct(r.gain)}</td>
+                        <td className="text-right">{r.measured ? <Delta value={r.m.change12m} arrow={false} /> : <span className="text-faint">–</span>}</td>
                         <td className="text-right">
                           <button
                             className="btn btn-ghost p-1.5"
@@ -214,8 +226,8 @@ export default function Portfolio() {
                           <button
                             className="btn btn-ghost p-1.5 text-muted hover:text-down"
                             aria-label={t("Löschen", "Delete")}
-                            onClick={() => {
-                              if (confirm(t(`${variantTitle(r.v)} aus dem Portfolio entfernen?`, `Remove ${variantTitle(r.v)} from the portfolio?`))) {
+                            onClick={async () => {
+                              if (await confirm(t(`${variantTitle(r.v)} aus dem Portfolio entfernen?`, `Remove ${variantTitle(r.v)} from the portfolio?`), { confirmLabel: t("Entfernen", "Remove") })) {
                                 removeHolding(r.h.id);
                                 toast(t("Fahrzeug entfernt", "Car removed"), "info");
                               }
@@ -237,6 +249,7 @@ export default function Portfolio() {
 
       <WatchlistSection />
 
+      {confirmDialog}
       <HoldingForm
         open={formOpen}
         holding={editing}

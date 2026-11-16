@@ -34,7 +34,7 @@ function draftFrom(h?: Holding): Draft {
     brandId: v.brandId,
     modelId: v.modelId,
     variantId: v.id,
-    purchasePrice: String(Math.round(toDisplay(h ? h.purchasePrice : Math.round(getMetrics(v.id).value / 1000) * 1000))),
+    purchasePrice: h ? String(Math.round(toDisplay(h.purchasePrice))) : v.measured ? String(Math.round(toDisplay(Math.round(getMetrics(v.id).value / 1000) * 1000))) : "",
     purchaseDate: toInput(h?.purchaseDate ?? AS_OF),
     mileage: h ? String(h.mileage) : "",
     condition: h?.condition ?? "2+",
@@ -169,7 +169,12 @@ export function HoldingForm({
               </option>
             ))}
           </select>
-          {variant && <p className="mt-1 text-xs text-muted">{t("Aktueller Marktwert (Median)", "Current market value (median)")}: {eur(getMetrics(variant.id).value)}</p>}
+          {variant && (
+            <p className="mt-1 text-xs text-muted">
+              {t("Aktueller Marktwert (Median)", "Current market value (median)")}:{" "}
+              {variant.measured ? eur(getMetrics(variant.id).value) : t("keine Daten, das Fahrzeug zählt mit dem Kaufpreis", "no data, the car counts at purchase price")}
+            </p>
+          )}
           {err("variantId")}
         </div>
         <div>

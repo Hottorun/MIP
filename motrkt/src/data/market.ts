@@ -313,14 +313,18 @@ export function inflationFactor(year: number): number {
 // ---------------------------------------------------------------------------------------------
 // Portfolio
 
+/** Whether the holding's variant has a measured market value; without one it is booked at its purchase price. */
+export const holdingMeasured = (h: Holding) => Boolean(variantById.get(h.variantId)?.measured);
+
 export function holdingValue(h: Holding): number {
+  if (!holdingMeasured(h)) return h.purchasePrice;
   return last(getSeries(h.variantId)) * CONDITION_FACTOR[h.condition];
 }
 
 export function holdingSeries(h: Holding): PricePoint[] {
   return getSeries(h.variantId)
     .filter((p) => p.t >= h.purchaseDate)
-    .map((p) => ({ ...p, value: p.value * CONDITION_FACTOR[h.condition] }));
+    .map((p) => ({ ...p, value: holdingMeasured(h) ? p.value * CONDITION_FACTOR[h.condition] : h.purchasePrice }));
 }
 
 /** Weekly total portfolio value: purchase price is booked until the holding is in the series. */
@@ -333,6 +337,10 @@ export function portfolioSeries(holdings: Holding[]): PricePoint[] {
     let total = 0;
     for (const h of holdings) {
       if (h.purchaseDate > t) continue;
+      if (!holdingMeasured(h)) {
+        total += h.purchasePrice;
+        continue;
+      }
       const s = getSeries(h.variantId);
       const idx = Math.floor((t - s[0].t) / WEEK);
       total += idx >= 0 && idx < s.length ? s[idx].value * CONDITION_FACTOR[h.condition] : h.purchasePrice;

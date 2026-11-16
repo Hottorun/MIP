@@ -22,7 +22,7 @@ export function useNotifications() {
     const items: Notification[] = [];
     for (const a of alerts) {
       const v = variantById.get(a.variantId);
-      if (!v) continue;
+      if (!v?.measured) continue;
       const value = getMetrics(v.id).value;
       const hit = a.direction === "above" ? value >= a.threshold : value <= a.threshold;
       if (hit) {

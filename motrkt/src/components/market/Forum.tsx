@@ -4,7 +4,7 @@ import type { Variant } from "../../data/types";
 import { variantTitle } from "../../data/db";
 import { cn, num } from "../../lib/format";
 import { locale, t } from "../../i18n";
-import { Section } from "../ui";
+import { Section, useConfirm } from "../ui";
 import { api } from "../../lib/userCars";
 
 /** Forum of one variant at the bottom of its page (server/forum.ts): topics, then one topic with its replies. */
@@ -171,6 +171,7 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
   const [reply, setReply] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const { confirm, dialog: confirmDialog } = useConfirm();
   const load = () =>
     api<Thread>(`/api/forum/thema/${id}`)
       .then(setThread)
@@ -180,13 +181,14 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
   }, [id]);
 
   async function hide(postId: string) {
-    if (!confirm(t("Diesen Beitrag entfernen?", "Remove this post?"))) return;
+    if (!(await confirm(t("Diesen Beitrag entfernen?", "Remove this post?"), { confirmLabel: t("Entfernen", "Remove") }))) return;
     await api(`/api/forum/beitrag/${postId}/ausblenden`, { method: "POST" }).catch(() => {});
     load();
   }
 
   return (
     <div>
+      {confirmDialog}
       <button className="mb-4 inline-flex items-center gap-1 text-[14px] text-muted hover:text-ink" onClick={onBack}>
         <ChevronLeft className="size-4" /> {t("Alle Themen", "All topics")}
       </button>
@@ -199,7 +201,7 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
               <button
                 className="text-[12.5px] text-faint hover:text-down"
                 onClick={async () => {
-                  if (!confirm(t("Ganzes Thema ausblenden?", "Hide the whole topic?"))) return;
+                  if (!(await confirm(t("Ganzes Thema ausblenden?", "Hide the whole topic?"), { confirmLabel: t("Ausblenden", "Hide") }))) return;
                   await api(`/api/forum/thema/${id}/ausblenden`, { method: "POST" }).catch(() => {});
                   onBack();
                 }}

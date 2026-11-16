@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck } from "lucide-react";
 import { useMe } from "../lib/userCars";
@@ -55,7 +55,9 @@ export function Layout() {
               </div>
             }
           >
-            <Outlet />
+            <PageErrorBoundary key={pathname}>
+              <Outlet />
+            </PageErrorBoundary>
           </Suspense>
         </div>
       </main>
@@ -63,6 +65,37 @@ export function Layout() {
       <Toasts />
     </div>
   );
+}
+
+/** A page that throws while rendering shows this instead of a blank app; the header and footer stay usable. */
+class PageErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null };
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("page error", error, info.componentStack);
+  }
+  render() {
+    if (!this.state.error) return this.props.children;
+    return (
+      <div className="mx-auto max-w-md py-24 text-center">
+        <h1 className="font-serif text-2xl">{t("Diese Seite konnte nicht angezeigt werden.", "This page could not be shown.")}</h1>
+        <p className="mt-3 text-sm text-muted">
+          {t("Ein Fehler ist aufgetreten. Neu laden hilft meist; sonst bitte später noch einmal versuchen.", "Something went wrong. Reloading usually helps; otherwise please try again later.")}
+        </p>
+        <p className="mt-2 font-mono text-[12px] text-faint">{this.state.error.message}</p>
+        <div className="mt-6 flex justify-center gap-3">
+          <button className="btn btn-gold" onClick={() => location.reload()}>
+            {t("Neu laden", "Reload")}
+          </button>
+          <Link to="/" className="btn" onClick={() => this.setState({ error: null })}>
+            {t("Zur Startseite", "Home")}
+          </Link>
+        </div>
+      </div>
+    );
+  }
 }
 
 function Wordmark({ className }: { className?: string }) {
