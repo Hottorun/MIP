@@ -68,7 +68,7 @@ export function LotGallery({ url, house, image }: { url?: string; house: string;
         <span>
           {lot
             ? t(`Fotos dieses Fahrzeugs gibt es auf der Seite von ${house}.`, `Photos of this car are on the ${house} page.`)
-            : t(`Für diesen Verkauf haben wir keinen Link zum einzelnen Los, nur zu den Ergebnissen von ${house}.`, `For this sale we have no link to the single lot, only to ${house}'s results.`)}
+            : t(`Für diesen Verkauf haben wir keinen Link zum einzelnen Los, nur zur Seite von ${house}.`, `For this sale we have no link to the single lot, only to ${house}'s site.`)}
         </span>
         {link}
       </div>

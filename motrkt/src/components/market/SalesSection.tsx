@@ -11,6 +11,7 @@ import { unsoldPrice } from "../../lib/unsold";
 import { BAT, mixHouses } from "../../lib/houseMix";
 import { Section, Money } from "../ui";
 import { LotThumb } from "../LotPhotos";
+import { isHousePage } from "../../lib/lotPages";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
@@ -24,6 +25,7 @@ const isHouseSearch = (url: string) => url.includes("rmsothebys.com/search/") ||
 function linkNote(url: string) {
   if (isHouseSearch(url)) return t("Link zur Suche beim Auktionshaus", "link to the search at the auction house");
   if (isHouseResults(url)) return t("Link zu den Auktionsergebnissen des Hauses", "link to the house's auction results");
+  if (isHousePage(url)) return t("kein Link zum Los, nur zur Seite des Auktionshauses", "no link to the lot, only to the auction house's site");
   if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Link zur Ergebnisliste der Auktion", "link to the sale's results");
   if (url.includes("ultimatecarpage.com")) return t("Link zur Ergebnisliste bei ultimatecarpage.com", "link to the result list at ultimatecarpage.com");
   return null;
@@ -41,6 +43,7 @@ function houseSearchLinks(v: Variant) {
 function linkTitle(url: string) {
   if (isHouseSearch(url)) return t("Dieses Fahrzeug in der Suche des Auktionshauses öffnen", "Open this car in the auction house's search");
   if (isHouseResults(url)) return t("Vergangene Auktionen beim Auktionshaus öffnen", "Open past auctions at the auction house");
+  if (isHousePage(url)) return t("Seite des Auktionshauses öffnen", "Open the auction house's site");
   if (/rmsothebys\.com\/auctions\/[^/]+\/lots\/$/.test(url)) return t("Ergebnisse der Auktion bei RM Sotheby's öffnen", "Open the sale's results at RM Sotheby's");
   if (url.includes("ultimatecarpage.com")) return t("Ergebnisliste bei ultimatecarpage.com öffnen", "Open the result list at ultimatecarpage.com");
   return t("Los beim Auktionshaus öffnen", "Open the lot at the auction house");

@@ -2,6 +2,7 @@ import { hiddenVariantIds, variantById, variants, variantShortTitle, variantTitl
 import { inLang, t } from "../../i18n";
 import type { Body, Condition, Gearbox, SaleSource } from "../types";
 import { dataset } from "./dataset";
+import { HOUSE_PAGES } from "../../lib/lotPages";
 
 const bundledCsv = dataset().salesCsv;
 
@@ -186,7 +187,7 @@ export function parseSalesCsv(text: string, origin = "CSV"): ParseResult {
       gearbox: gearRaw.startsWith("a") || gearRaw.includes("pdk") || gearRaw.includes("tip") ? "Automatik" : gearRaw ? "Manual" : (Object.keys(v.gearbox)[0] as Gearbox),
       color: get("color") || "–",
       vin: get("vin") || "–",
-      url: get("url") || undefined,
+      url: get("url") || HOUSE_PAGES[get("house")] || undefined,
       image: /^https:\/\//.test(get("image")) ? get("image").replace(/%3B/g, ";") : undefined,
       gearboxKnown: !!gearRaw,
       location: get("location").toUpperCase().slice(0, 2),
