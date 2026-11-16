@@ -13,6 +13,7 @@ npm install
 npm run db:migrate       # Tabellen anlegen (db/migrations)
 npm run db:import        # Marktdaten aus src/data/real laden
 npm run dev              # http://localhost:5173
+npm test                 # Vitest: *.test.ts in src/ und server/ (läuft auch in der CI vor dem Build)
 ```
 
 Produktion:
@@ -47,7 +48,7 @@ Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontom
 1. **Daten**: Variante, Bezeichnung, Baujahr, Fahrgestellnummer, Kilometerstand, Preis mit Währung, Vertragsdatum,
    Land, Gegenseite (privat, Händler, Auktion), dazu optional Karosserie, Getriebe, Lenkung, Farben, Zustandsnote,
    Matching Numbers, Unfallfreiheit und Anmerkungen. Der Nutzer bestätigt die Angaben und die Verwendung.
-2. **KI-Vorprüfung** (`server/contractCheck.ts`): Claude liest den Vertrag und vergleicht ihn mit den Angaben
+2. **KI-Vorprüfung** (`server/contractCheck.ts`, läuft nach dem Upload im Hintergrund): Claude liest den Vertrag und vergleicht ihn mit den Angaben
    (Fahrzeug, FIN, Preis, Datum, Kilometer, Verkäufer). Ergebnis: passt, Abweichungen, unklar oder kein Kaufvertrag,
    dazu Auffälligkeiten. Braucht `ANTHROPIC_API_KEY`; ohne prüft der Prüfer von Hand.
 3. **Prüfung** (`/pruefung`, nur für Prüfer): Angaben, Vertrag und KI-Ergebnis nebeneinander. Der Prüfer kann
@@ -136,4 +137,7 @@ Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenver
 - **Fotos, Präsentationsfarben, Spezifikationen:** `src/data/real/*.json` und `public/cars/` (Wikimedia Commons, freie Lizenzen, siehe `/bildnachweise`). Recherche-Helfer: `scripts/commons.py`.
 - **Marktwert:** nur tatsächlich bezahlte Preise aus Auktionen (Europa voll, USA umgerechnet und begrenzt), dazu schwach gewichtete Höchstgebote unverkaufter Lose und geprüfte Käufe der Nutzer. Angebote von Händlern und Privatleuten zählen derzeit nicht (`ASKS_IN_VALUE` in `scripts/market/model.py`); sie werden weiter angezeigt und nur auf Plausibilität geprüft.
 - **Inserate:** die echten Angebote aus `src/data/real/asks.json` (Classic Trader und Händlerseiten), die am letzten Erfassungstag noch online waren, ohne Nachbauten, Umbauten, Unfallwagen und unplausible Preise. Angaben, die die Quelle nicht nennt (Zustand, Farbe, FIN), bleiben leer.
-- Watchlist, Portfolio, Alarme und Chatverlauf liegen im `localStorage` des Browsers und starten leer.
+- Watchlist, Portfolio, Preisalarme, gemerkte Inserate und gelesene Benachrichtigungen liegen je Konto in Postgres
+  (`user_state`, `db/migrations/007_user_state.sql`, `server/userState.ts`) und folgen dem Konto auf jedes Gerät; der
+  Browser hält eine Kopie im `localStorage`. Beim Laden gewinnt die Server-Kopie, jede Änderung wird nach kurzer
+  Verzögerung hochgeladen. Das Demo-Konto und der Chatverlauf bleiben nur im Browser.

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowUpRight, Minus, X } from "lucide-react";
 import { amount, cn, curSign, num, ownUsd, pct, trendClass } from "../lib/format";
@@ -214,24 +214,51 @@ export function Modal({
   footer?: ReactNode;
   wide?: boolean;
 }) {
+  const box = useRef<HTMLDivElement>(null);
+  const titleId = useId();
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    // focus moves into the dialog, stays there (Tab cycles), and returns to the opener when it closes
+    const opener = document.activeElement as HTMLElement | null;
+    const focusable = () =>
+      [...(box.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? [])];
+    const first = focusable().find((el) => !el.hasAttribute("data-close")) ?? box.current;
+    first?.focus({ preventScroll: true });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") return onClose();
+      if (e.key !== "Tab" || !box.current) return;
+      const els = focusable();
+      if (!els.length) return e.preventDefault();
+      const i = els.indexOf(document.activeElement as HTMLElement);
+      if (e.shiftKey && (i <= 0 || !box.current.contains(document.activeElement))) {
+        e.preventDefault();
+        els[els.length - 1].focus();
+      } else if (!e.shiftKey && (i === els.length - 1 || !box.current.contains(document.activeElement))) {
+        e.preventDefault();
+        els[0].focus();
+      }
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      opener?.focus?.({ preventScroll: true });
+    };
   }, [open, onClose]);
   if (!open) return null;
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-ink/25 p-4 pt-[8vh] backdrop-blur-[2px]" onMouseDown={onClose}>
       <div
+        ref={box}
         role="dialog"
         aria-modal="true"
-        className={cn("animate-fade-in w-full rounded-[3px] border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(20,20,20,0.22)]", wide ? "max-w-3xl" : "max-w-lg")}
+        aria-labelledby={titleId}
+        tabIndex={-1}
+        className={cn("animate-fade-in w-full rounded-[3px] border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(20,20,20,0.22)] focus:outline-none", wide ? "max-w-3xl" : "max-w-lg")}
         onMouseDown={(e) => e.stopPropagation()}
       >
         <header className="flex items-center justify-between border-b border-line px-6 py-4">
-          <h2 className="font-serif text-xl">{title}</h2>
-          <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label={t("Schließen", "Close")}>
+          <h2 id={titleId} className="font-serif text-xl">{title}</h2>
+          <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label={t("Schließen", "Close")} data-close>
             <X className="size-4" />
           </button>
         </header>

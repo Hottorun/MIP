@@ -38,6 +38,9 @@ export function enableDemoAccount(opts: { admin?: boolean } = {}) {
  * account is a reviewer only where enableDemoAccount({ admin: true }) said so (npm run dev), never because MIP_ADMINS
  * or NODE_ENV say so.
  */
+/** The shared demo account (its state is not stored per user, see server/userState.ts). */
+export const isDemo = (user: { id: string }) => Boolean(demo && demo.id === user.id);
+
 export function isAdmin(user: { id: string; username: string }) {
   if (demo && demo.id === user.id) return demoAdmin;
   const names = (process.env.MIP_ADMINS ?? "").split(",").map((n) => n.trim().toLowerCase()).filter(Boolean);

@@ -1,13 +1,14 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { brotliCompressSync, constants, gzipSync } from "node:zlib";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { handleApi } from "./server/api.ts";
 import { authGate, enableDemoAccount } from "./server/auth.ts";
 
 export default defineConfig({
+  test: { include: ["src/**/*.test.ts", "server/**/*.test.ts"], environment: "node" },
   plugins: [
     react(),
     tailwindcss(),

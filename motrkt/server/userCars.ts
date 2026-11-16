@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { randomUUID } from "node:crypto";
+import { waitUntil } from "@vercel/functions";
 import variantIds from "../scripts/market/variant_ids.json" with { type: "json" };
 import { readBuffer, readText } from "./body.ts";
 import { checkContract, type Entered } from "./contractCheck.ts";
@@ -180,7 +181,9 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
       }
       await db()`update user_cars set contract = ${file}, contract_type = ${type}, contract_name = ${name}, contract_size = ${file.length},
                  status = 'pending', ai_check = null, ai_checked_at = null where id = ${own.id}`;
-      await runCheck(own.id); // a few seconds; the reviewer can repeat it
+      // The AI check takes a while (Opus reads the whole contract): answer now, check in the background. On Vercel
+      // waitUntil keeps the function alive for it; elsewhere it is a no-op and the process stays up anyway.
+      waitUntil(runCheck(own.id).catch((err) => console.error("contract check", err)));
       return sendJson(res, 200, { ok: true });
     }
     if (!sub && req.method === "DELETE") {

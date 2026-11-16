@@ -302,7 +302,7 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
       setBusy(false);
       return;
     }
-    setMsg(t("Kaufvertrag wird hochgeladen und vorgeprüft …", "Uploading and pre-checking the contract …"));
+    setMsg(t("Kaufvertrag wird hochgeladen …", "Uploading the contract …"));
     try {
       await uploadContract(id, file!);
       onDone();

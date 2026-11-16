@@ -289,7 +289,7 @@ export default function Auctions() {
                 {rows.map((s) => {
                   const v = variantById.get(s.variantId)!;
                   return (
-                    <tr key={`${s.id}-${s.variantId}-${s.date}-${s.vin}`} onClick={() => setSelected(s)}>
+                    <tr key={`${s.id}-${s.variantId}-${s.date}-${s.vin}`} onClick={() => setSelected(s)} tabIndex={0} role="button" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(s); } }}>
                       <td className="text-muted">{date(s.date)}</td>
                       <td className="font-serif">{variantTitle(v, { brand: false })}</td>
                       <td>

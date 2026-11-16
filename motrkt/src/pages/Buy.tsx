@@ -381,18 +381,18 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
       <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-muted shadow-sm">{d.label}</span>
     );
   return (
-    <article className="group cursor-pointer" onClick={onOpen}>
+    <article className="group cursor-pointer" onClick={onOpen} tabIndex={0} role="button" onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onOpen(); } }}>
       <div className="relative aspect-[4/3] overflow-hidden rounded-[3px] bg-panel-3">
         <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         {badge && <div className="absolute top-3 left-3">{badge}</div>}
-        <span className="absolute bottom-3 left-3 text-[11px] text-white/0 transition-colors duration-500 group-hover:text-white/90">{l.source}</span>
+        <span className="absolute bottom-3 left-3 text-[11px] text-white/0 transition-colors duration-500 group-hover:text-white/90 pointer-coarse:text-white/90">{l.source}</span>
         <button
           onClick={(ev) => {
             ev.stopPropagation();
             onSave();
           }}
-          className={cn("absolute top-3 right-3 rounded-full bg-bg/90 p-2 text-ink shadow-sm transition-opacity focus-visible:opacity-100", saved ? "opacity-100" : "opacity-0 group-hover:opacity-100")}
+          className={cn("absolute top-3 right-3 rounded-full bg-bg/90 p-2 text-ink shadow-sm transition-opacity focus-visible:opacity-100", saved ? "opacity-100" : "opacity-0 group-hover:opacity-100 pointer-coarse:opacity-100")}
           aria-label={saved ? t("Nicht mehr merken", "Unsave") : t("Inserat merken", "Save listing")}
           aria-pressed={saved}
         >

@@ -67,26 +67,72 @@ function load(): Persisted {
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
+/** Everything that is stored, with the items of switched-off brands put back. */
+function toStored(state: Persisted): Persisted {
+  return {
+    ...state,
+    watchlist: [...state.watchlist, ...hiddenItems.watchlist],
+    portfolio: [...state.portfolio, ...hiddenItems.portfolio],
+    alerts: [...state.alerts, ...hiddenItems.alerts],
+  };
+}
+
+const SYNC_URL = "/api/zustand";
+const SYNC_DELAY = 800;
+
 function useStoreValue() {
   const [state, setState] = useState<Persisted>(load);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const timers = useRef(new Map<string, number>());
+  // Server copy per account (server/userState.ts): "pending" until the first answer, "off" for the demo account or
+  // without a server, "on" afterwards – then every change is pushed, debounced. The server copy wins on load; before it
+  // exists the browser's copy is uploaded once.
+  const sync = useRef<"pending" | "off" | "on">("pending");
+  const pushTimer = useRef<number | null>(null);
 
   useEffect(() => {
     try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          ...state,
-          watchlist: [...state.watchlist, ...hiddenItems.watchlist],
-          portfolio: [...state.portfolio, ...hiddenItems.portfolio],
-          alerts: [...state.alerts, ...hiddenItems.alerts],
-        }),
-      );
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toStored(state)));
     } catch {
       /* storage full or unavailable – keep working in memory */
     }
+    if (sync.current !== "on") return;
+    if (pushTimer.current) window.clearTimeout(pushTimer.current);
+    pushTimer.current = window.setTimeout(() => {
+      const { chat: _chat, ...rest } = toStored(state);
+      void _chat;
+      fetch(SYNC_URL, { method: "PUT", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(rest) }).catch(() => {});
+    }, SYNC_DELAY);
   }, [state]);
+
+  useEffect(() => {
+    let live = true;
+    fetch(SYNC_URL, { credentials: "same-origin" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: { state: Partial<Persisted> | null; sync: boolean } | null) => {
+        if (!live || !j?.sync) {
+          sync.current = "off";
+          return;
+        }
+        if (j.state) {
+          // the server copy replaces lists and the last variant; the chat stays as it is in this browser
+          setState((s) => {
+            const { visible, hidden } = partition({ ...DEFAULT_STATE, ...j.state, chat: s.chat });
+            hiddenItems = hidden;
+            return visible;
+          });
+          // "on" after that render, so the server copy is not pushed straight back
+          window.setTimeout(() => (sync.current = "on"), 0);
+        } else {
+          sync.current = "on";
+          setState((s) => ({ ...s })); // first upload of what this browser has
+        }
+      })
+      .catch(() => (sync.current = "off"));
+    return () => {
+      live = false;
+    };
+  }, []);
 
   const toast = useCallback((message: string, tone: Toast["tone"] = "success") => {
     const id = uid();

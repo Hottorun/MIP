@@ -4,6 +4,7 @@ import { handleMobileDe } from "./mobilede.ts";
 import { readText } from "./body.ts";
 import { handleUserCars } from "./userCars.ts";
 import { handleForum } from "./forum.ts";
+import { handleUserState } from "./userState.ts";
 import { hasCredentials } from "./contractCheck.ts";
 import { currentUser } from "./auth.ts";
 import { overLimit } from "./limits.ts";
@@ -166,5 +167,6 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse) {
   if (url.pathname.startsWith("/api/mobilede/")) return handleMobileDe(req, res, url);
   if (/^\/api\/(fahrzeuge|pruefung)(\/|$)/.test(url.pathname)) return handleUserCars(req, res, url);
   if (url.pathname.startsWith("/api/forum/")) return handleForum(req, res, url);
+  if (url.pathname === "/api/zustand") return handleUserState(req, res);
   sendJson(res, 404, { error: "Not found" });
 }

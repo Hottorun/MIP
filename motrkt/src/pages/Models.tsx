@@ -392,7 +392,7 @@ export default function Models() {
                 ...s.items.map((v) => {
                 const m = getMetrics(v.id);
                 return (
-                  <tr key={v.id} onClick={() => navigate(`/markt/${v.id}`)}>
+                  <tr key={v.id} onClick={() => navigate(`/markt/${v.id}`)} tabIndex={0} role="link" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); navigate(`/markt/${v.id}`); } }}>
                     <td onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => toggleWatch(v.id)} aria-label="Watchlist" className={watchlist.includes(v.id) ? "text-gold" : "text-faint hover:text-ink"}>
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
@@ -609,7 +609,7 @@ function VariantCard({
           }}
           className={cn(
             "absolute top-3 right-3 rounded-full bg-bg/85 p-2 transition-opacity focus-visible:opacity-100",
-            watched ? "text-ink opacity-100" : "text-ink opacity-0 group-hover:opacity-100",
+            watched ? "text-ink opacity-100" : "text-ink opacity-0 group-hover:opacity-100 pointer-coarse:opacity-100",
           )}
           aria-label={watched ? t("Nicht mehr beobachten", "Stop watching") : t("Beobachten", "Watch")}
           aria-pressed={watched}
