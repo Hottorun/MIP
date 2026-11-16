@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, ExternalLink, Search, X 
 import { brands, variantById, variantTitle, variants } from "../data/db";
 import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, WEEK, getAllSales } from "../data/generate";
 import { mean } from "../data/market";
+import { CALENDAR_AS_OF, HOUSE_CALENDARS, calendarSales, type CalendarSale } from "../data/real/auction-calendar";
 import type { Sale } from "../data/types";
 import { cn, date, eur, flag, fromDisplay, km, num, pct, saleAmount } from "../lib/format";
 import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
@@ -220,6 +221,8 @@ export default function Auctions() {
         </dl>
       </div>
 
+      <UpcomingAuctions />
+
       <Section title={t("Ergebnisse", "Results")} sub={t(`${num(sorted.length)} Verkäufe`, `${num(sorted.length)} sales`)}>
         <div className="space-y-4">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
@@ -381,6 +384,85 @@ export default function Auctions() {
 
       <SaleModal sale={selected} onClose={() => setSelected(null)} />
     </div>
+  );
+}
+
+/** Coming auctions of the houses in our data, with a link to each sale; refreshed by the daily update. */
+function UpcomingAuctions() {
+  const [expanded, setExpanded] = useState(false);
+  const sales = calendarSales;
+  const visible = expanded ? sales : sales.slice(0, 8);
+  const today = CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF;
+  const fmt = (iso: string, o: Intl.DateTimeFormatOptions) => new Date(iso).toLocaleDateString(locale(), { ...o, timeZone: "UTC" });
+  const inDays = (iso: string) => {
+    const d = Math.round((Date.parse(iso) - today) / 86_400_000);
+    return d <= 0 ? t("läuft", "running") : d === 1 ? t("morgen", "tomorrow") : t(`in ${d} Tagen`, `in ${d} days`);
+  };
+  const span = (s: CalendarSale) =>
+    s.end ? `${fmt(s.date, { day: "numeric", month: "short" })} – ${fmt(s.end, { day: "numeric", month: "short", year: "numeric" })}` : fmt(s.date, { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+
+  return (
+    <Section
+      title={t("Kommende Auktionen", "Upcoming auctions")}
+      sub={t(
+        `Termine der Häuser aus unserer Datenbank · täglich aktualisiert${CALENDAR_AS_OF ? `, Stand ${date(Date.parse(CALENDAR_AS_OF))}` : ""}`,
+        `Dates of the houses in our data · updated daily${CALENDAR_AS_OF ? `, as of ${date(Date.parse(CALENDAR_AS_OF))}` : ""}`,
+      )}
+    >
+      <div className="space-y-6">
+        {sales.length === 0 ? (
+          <Empty>{t("Die Termine werden mit dem nächsten täglichen Update geladen.", "The dates load with the next daily update.")}</Empty>
+        ) : (
+          <ul className="divide-y divide-line overflow-hidden rounded-[3px] border border-line bg-panel">
+            {visible.map((s) => (
+              <li key={`${s.house}|${s.name}|${s.date}`} className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
+                <div className="w-12 shrink-0 text-center">
+                  <div className="font-serif text-[22px] leading-none">{fmt(s.date, { day: "numeric" })}</div>
+                  <div className="mt-1 text-[11px] tracking-[0.12em] text-gold uppercase">{fmt(s.date, { month: "short" })}</div>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[12px] text-muted">
+                    {s.house} · {span(s)} · {inDays(s.date)}
+                  </div>
+                  <div className="font-serif text-[17px] leading-snug">{s.name}</div>
+                  {(s.place || s.country || s.porsche) && (
+                    <div className="text-[12px] text-faint">
+                      {s.country && `${flag(s.country)} `}
+                      {s.place}
+                      {s.porsche ? `${s.place || s.country ? " · " : ""}${s.porsche === 1 ? t("1 Porsche im Katalog", "1 Porsche in the catalogue") : t(`${s.porsche} Porsche im Katalog`, `${s.porsche} Porsches in the catalogue`)}` : ""}
+                    </div>
+                  )}
+                </div>
+                {s.url && (
+                  <a href={s.url} target="_blank" rel="noreferrer" className="btn shrink-0">
+                    {t("Zur Auktion", "View sale")} <ExternalLink className="size-3.5" />
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+        {sales.length > 8 && (
+          <div className="flex justify-center">
+            <button className="btn" onClick={() => setExpanded((e) => !e)}>
+              {expanded ? t("Weniger anzeigen", "Show fewer") : t(`Alle ${sales.length} Termine anzeigen`, `Show all ${sales.length} dates`)}
+            </button>
+          </div>
+        )}
+        <div>
+          <div className="kpi-label">{t("Auktionskalender der Häuser", "Auction calendars of the houses")}</div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {HOUSE_CALENDARS.map((h) => (
+              <a key={h.house} href={h.url} target="_blank" rel="noreferrer" className="chip inline-flex items-center gap-1">
+                {h.house}
+                {h.online && <span className="text-gold">· {t("laufend online", "live online")}</span>}
+                <ExternalLink className="size-3 text-faint" />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Section>
   );
 }
 

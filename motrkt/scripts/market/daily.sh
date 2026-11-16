@@ -25,7 +25,7 @@ sh "$HERE/update.sh" "$W" >> "$LOG" 2>&1
 (cd "$APP" && npx tsc --noEmit -p .) >> "$LOG" 2>&1
 if ! python3 -I "$HERE/check.py" >> "$LOG" 2>&1; then
   tail -4 "$LOG"
-  git -C "$APP" checkout -- src/data/real/market-model.json src/data/real/asks.json src/data/real/sales.csv src/data/real/listing-history.json
+  git -C "$APP" checkout -- src/data/real/market-model.json src/data/real/asks.json src/data/real/sales.csv src/data/real/listing-history.json src/data/real/auction-calendar.json
   echo "Abbruch: neue Daten deutlich kleiner als die alten (siehe Log), nichts übernommen."
   exit 1
 fi
@@ -35,7 +35,7 @@ if [ -n "$DATABASE_URL" ] || grep -q '^DATABASE_URL=.' "$APP/.env" 2>/dev/null; 
 fi
 
 cd "$ROOT"
-git add motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json
+git add motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json motrkt/src/data/real/auction-calendar.json
 if git diff --cached --quiet; then
   echo "Keine neuen Daten."
 else

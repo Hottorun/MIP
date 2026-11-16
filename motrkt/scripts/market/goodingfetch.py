@@ -128,6 +128,25 @@ try:
         if classify(title): cands.append((v, title, amt))
     print(len(cands), "auction results assigned to a variant", flush=True)
 
+    # upcoming auction lots (sale not over, no price yet), for the list of coming auctions; no lot pages needed
+    soon = []
+    for v in lots.values():
+        if v.get("auctionType") not in ("Live Auction", "Online Only") or v.get("privateSalesPrice") or v.get("askingPrice") or v.get("salePrice"): continue
+        if v.get("itemType") not in (None, "Cars") or v.get("lotNumber") is None or not v.get("slug"): continue
+        start = ts_date(v.get("auctionStartDate"))
+        end = ts_date(v.get("auctionEndDate") or v.get("upcomingAuctionEndDate")) or start
+        if not end or end.date() < NOW.date(): continue
+        title = re.sub(r"\s+\([A-Z]{2,3}\d\d\)$", "", re.sub(r"\s+", " ", v.get("title") or "").strip())
+        if not re.match(r"\d{4} ", title) and v.get("modelYear"): title = "%s %s" % (v["modelYear"], title)
+        if "porsche" not in title.lower(): title = "%s Porsche %s" % (v.get("modelYear") or "", v.get("model") or title)
+        if not classify(title): continue
+        online = v.get("auctionType") == "Online Only"
+        soon.append(dict(house="Gooding & Company",sale=re.sub(r"\s+", " ", v.get("auctionName") or "").strip(),
+                         date=(end if online else start or end).date().isoformat(), end=end.date().isoformat(), lot=str(v["lotNumber"]),
+                         title=title, url="%s/lot/%s" % (SITE, v["slug"]), est=None, country="", online=online))
+    json.dump(soon, open(os.path.join(DIR, "upcoming_lots.json"), "w"), ensure_ascii=False)
+    print(len(soon), "upcoming Porsche lots", flush=True)
+
     # -------------------------------------------------------------------------------------------- 2. lot pages
     def lot_path(v): return os.path.join(DIR, "lots", "%s.json" % re.sub(r"[^A-Za-z0-9-]", "_", v["slug"]))
 

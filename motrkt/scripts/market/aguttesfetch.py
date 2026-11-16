@@ -333,6 +333,21 @@ try:
     for u, x in (new_up or {}).items():
         if classify(title_of(x)): upcoming[u] = x
     save(upcoming, up_p)
+    # the lots on offer now, for the list of coming auctions (a failed search keeps the last list)
+    if new_up is not None:
+        def est(x):
+            try: lo, hi = int(float(x.get("low"))), int(float(x.get("high")))
+            except (TypeError, ValueError): return None
+            return [lo, hi, "EUR"] if 0 < lo <= hi else None
+        soon = [dict(house="Aguttes", sale=text(fr((x.get("auction") or {}).get("title"))) or "Aguttes",
+                     saleUrl="%s/catalogue/%s" % (BASE, x["auction_uuid"]) if x.get("auction_uuid") else None,
+                     date=((x.get("auction") or {}).get("start_date") or "")[:10] or None,
+                     end=((x.get("auction") or {}).get("end_date") or "")[:10] or None, lot=str(x.get("lot_no") or ""),
+                     title=title_of(x), url=BASE + x["href"], est=est(x), country="FR",
+                     online=(x.get("auction") or {}).get("type") == "timed")
+                for x in new_up.values() if classify(title_of(x))]
+        save(soon, os.path.join(DIR, "upcoming_lots.json"))
+        print(len(soon), "upcoming Porsche lots", flush=True)
 
     def wanted(x): return (x.get("auction") or {}).get("start_date", "")[:10] >= SINCE and classify(title_of(x))
 

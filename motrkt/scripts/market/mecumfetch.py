@@ -148,11 +148,23 @@ try:
 
     # results only: cars that sold (with the price shown) or went unsold ("bid goes on"); upcoming and withdrawn lots
     # have no result, Road Art, tractors and engines are not cars
-    cands, skipped, today = [], {}, dt.date.today().isoformat()
+    cands, skipped, today, soon = [], {}, dt.date.today().isoformat(), []
     for h in lots.values():
         a = (tax(h, "auction_tax") or [{}])[0]
         result = {x.get("slug") for x in tax(h, "sale_result")}
         types = {x.get("name") for x in tax(h, "lot_type")}
+        # upcoming cars (no result yet, sale not over): for the list of coming auctions (upcoming_lots.json)
+        if "Auto" in types and not result and not h.get("sold") and not h.get("bid_goes_on") and (day(a.get("end_timestamp")) or "") >= today:
+            title = re.sub(r"\s+", " ", html.unescape(h.get("post_title") or "")).strip()
+            if not re.match(r"\d{4} ", title) and h.get("lot_year"): title = "%s %s" % (h["lot_year"], title)
+            run = ((tax(h, "run_date") or [{}])[0].get("name") or "")[:10]
+            lo, hi = num(h.get("low_estimate_meta")), num(h.get("high_estimate_meta"))
+            if classify(title):
+                soon.append(dict(house="Mecum", sale=re.sub(r"\s+", " ", html.unescape(a.get("title") or (a.get("name") or "").split("|")[0])).strip(),
+                                 saleUrl="%s/auctions/%s/" % (SITE, a["slug"]) if a.get("slug") else None,
+                                 date=run if re.match(r"\d{4}-\d\d-\d\d$", run) else day(a.get("start_timestamp")), end=day(a.get("end_timestamp")),
+                                 lot=str(h.get("lot_number_meta") or ""), title=title, url=SITE + h["permalink"], country="US",
+                                 est=[lo, hi, "USD"] if lo and hi and 0 < lo <= hi else None))
         if "Auto" not in types: status = "not a car"
         elif str(h.get("hide_sale_result_meta") or "") == "1": status = "result hidden"
         elif "sold" in result or h.get("sold") == 1:
@@ -173,6 +185,8 @@ try:
         if not re.match(r"\d{4} ", title) and h.get("lot_year"): title = "%s %s" % (h["lot_year"], title)
         if not classify(title): continue
         cands.append((h, a, title, date, status))
+    save(soon, os.path.join(DIR, "upcoming_lots.json"))
+    print(len(soon), "upcoming Porsche lots", flush=True)
     print(len(cands), "auction results since 2015 assigned to a variant; left out:",
           ", ".join("%d %s" % (n, k) for k, n in sorted(skipped.items())), flush=True)
 

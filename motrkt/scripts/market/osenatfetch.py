@@ -376,8 +376,15 @@ def est_of(s):
     return [int(re.sub(r"\D", "", m.group(1))), int(re.sub(r"\D", "", m.group(2))), "EUR"] if m else None
 
 
-out, skipped, unclassified = [], Counter(), []
+out, skipped, unclassified, soon = [], Counter(), [], []
 for sid, s in sales.items():
+    # sales still to come: their Porsche lots go to the list of coming auctions (upcoming_lots.json)
+    if s.get("date") and s["date"] >= TODAY.isoformat():
+        for c in s["cards"]:
+            line = head_of(re.sub(r"\s*(\.\.\.|…)$", "", c["text"]))
+            if not YEAR_PORSCHE.search(line) or not classify(title_of(line)): continue
+            soon.append(dict(house="Osenat", sale=re.sub(r"\s+", " ", s["name"]).strip(), saleUrl="%s/catalogue/%s" % (BASE, sid), date=s["date"], lot=c["lot"],
+                             title=title_of(line), url=BASE + c["url"], est=est_of(c["est"]), country="FR"))
     if not s.get("date") or s["date"] < SINCE or s["date"] > TODAY.isoformat(): continue
     over = (TODAY - dt.date.fromisoformat(s["date"])).days >= SETTLE_DAYS
     place = ascii_low(s.get("place") or "")
@@ -408,6 +415,8 @@ for sid, s in sales.items():
         out.append(row)
 out.sort(key=lambda r: (r["date"], r["code"], int(re.sub(r"\D", "", r["lot"]) or 0)))
 json.dump(out, open(os.path.join(DIR, "osenat.json"), "w"), ensure_ascii=False)
+json.dump(soon, open(os.path.join(DIR, "upcoming_lots.json"), "w"), ensure_ascii=False)
+print(len(soon), "upcoming Porsche lots", flush=True)
 if skipped: print("notes:", ", ".join("%d %s" % (n, k) for k, n in sorted(skipped.items())), flush=True)
 if unclassified: print(len(unclassified), "Porsche lots not assigned to a variant, e.g.", unclassified[:12], flush=True)
 waiting = sum(1 for s in sales.values() if not s.get("date") and not s.get("missing")) + sum(1 for sid in cands if sid not in sales)

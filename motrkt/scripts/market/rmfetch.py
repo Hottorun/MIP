@@ -123,6 +123,31 @@ for code in sorted({c[2] for c in cands}):
     print("sale", code, sales[code], flush=True)
 
 
+# upcoming lots (not auctioned yet; "Asking" lots are private sales), for the list of coming auctions: sale date from
+# the sale page like above (fetched again while the sale page shows no date yet), estimate from the list
+def list_estimate(value):
+    """"€70,000 - €120,000 EUR" -> [70000, 120000, "EUR"]; None for "Estimate Upon Request" and the like."""
+    m = re.search(r"([\d][\d,.']{2,})\s*-\s*\D{0,4}([\d][\d,.']{2,})\s*([A-Z]{3})\s*$", value or "")
+    if not m: return None
+    lo, hi = (int(re.sub(r"\D", "", x)) for x in (m.group(1), m.group(2)))
+    return [lo, hi, m.group(3)] if 0 < lo <= hi else None
+
+
+soon = [(it, code_of(it["link"])) for it in lots.values()
+        if not it.get("auctioned") and it.get("valueType") != "Asking" and code_of(it["link"]) and classify(it["publicName"])]
+for code in sorted({c for _, c in soon}):
+    if sales.get(code): continue
+    h = get("%s/auctions/%s/" % (BASE, code))
+    if h is None: continue
+    sales[code] = sale_date(h)
+    save(sales, sales_p)
+    print("upcoming sale", code, sales[code], flush=True)
+save([dict(house="RM Sotheby's", sale=it.get("header") or "", saleUrl="%s/auctions/%s/" % (BASE, code), date=sales.get(code), lot=it["lot"], title=text(it["publicName"]),
+           url=it["link"], est=list_estimate(it.get("value")), country=it.get("countryCode") or "", image=it.get("crop") or None,
+           noreserve=it.get("valueType") == "Offered Without Reserve") for it, code in soon], os.path.join(DIR, "upcoming_lots.json"))
+print(len(soon), "upcoming Porsche lots", flush=True)
+
+
 # ------------------------------------------------------------------------------------------------ 3. lot pages
 def lot_details(h):
     """Chassis number and stated mileage (km, rounded to 100) from a lot page."""
