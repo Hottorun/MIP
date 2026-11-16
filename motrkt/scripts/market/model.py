@@ -42,7 +42,7 @@ import collections, csv, datetime as dt, glob, json, math, os, re, sys
 S, OUT, OUT_ASKS = sys.argv[1], sys.argv[2], sys.argv[3]
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from classify import classify  # noqa: E402
+from classify import classify, EARLY_RESULTS  # noqa: E402
 from classify import body as body_of  # noqa: E402
 
 AS_OF = dt.date.fromisoformat(os.environ.get("MIP_AS_OF") or dt.date.today().isoformat())  # cut-off day: today unless set
@@ -123,7 +123,7 @@ def group(vid):
     if "-356-" in vid or "-912-" in vid or "-914-" in vid: return "A"
     if any(k in vid for k in ("-924-", "-944-", "-968-", "-928-")): return "T"
     if any(k in vid for k in ("-930-", "-964-", "-993-", "-f-modell-", "-g-modell-")): return "B"
-    if "959" in vid or vid.endswith("carrera-gt-carrera-gt") or "918" in vid: return "F"
+    if "959" in vid or vid.endswith("carrera-gt-carrera-gt") or "918" in vid or vid.startswith("porsche-911-gt1-"): return "F"
     gt = any(k in vid for k in ["gt3", "gt2", "-r", "sport-classic", "speedster", "s-t", "dakar", "50-jahre"]) and "-911-" in vid
     if vid.endswith("-r") or gt: return "D"
     if "-911-" in vid: return "C"
@@ -597,7 +597,9 @@ for v, l in byv.items():
         med_all = median(allr)
         return {kk: [round(math.exp(median(xs) - med_all) - 1, 3), len(xs)] for kk, xs in lv.items() if len(xs) >= 6}
     chn = collections.Counter(s["ch"] for s, _ in keep)
-    ok = sum(1 for s, _ in keep if s["ch"] not in BID) >= MIN_N   # bids alone never make a value
+    # bids alone never make a value; the rarest variants (EARLY_RESULTS in classify.py, a sale every few years) get a
+    # value from a single sale, carried to today by their segment's index; the app says how thin that basis is
+    ok = sum(1 for s, _ in keep if s["ch"] not in BID) >= (1 if v in EARLY_RESULTS else MIN_N)
     result["variants"][v] = {
         "value": round(series[-1]) if ok else None, "n": n, "n12": sum(1 for s, _ in keep if s["t"] >= T - 1), "n24": sum(1 for s, _ in keep if s["t"] >= T - 2),
         "ch": {c: chn.get(c, 0) for c in CHANNELS}, "share": share, "batWeight": round(fb, 3),

@@ -134,7 +134,10 @@ werden dem richtigen Modell zugeordnet. Preise werden zum EZB-Kurs des Tages in 
    korrigieren den Wert nur schwach: zusammen höchstens 5 % Gewicht (`BID_SHARE`) und nie mehr als 2 % Änderung
    (`BID_MAX`), wie viele Gebote es auch gibt.
 8. **Mindestens 3 Belege** (Verkäufe oder Angebote) für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
-   Empfehlung, sondern nur die Einzelbelege.
+   Empfehlung, sondern nur die Einzelbelege. Ausnahme sind die seltensten Varianten (`EARLY_RESULTS` in `classify.py`,
+   derzeit der 911 GT1 Straßenversion): ihnen reicht ein Verkauf seit 2015, fortgeschrieben mit dem Index ihres Segments.
+   Die App nennt dann, auf wie wenigen Verkäufen der Wert beruht. Ihre Ergebnisse vor 2015 stehen in der Liste, zählen
+   aber nicht zum Wert.
 
 Alle Zwischenergebnisse (Abstände, Streuungen, Gewichte, Kanalanteile je Variante) stehen in `market-model.json` und
 werden in der App unter „Belege für den Marktwert“ angezeigt.

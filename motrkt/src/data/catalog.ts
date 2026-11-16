@@ -1404,6 +1404,26 @@ export const CATALOG: BrandDef[] = [
           },
         ],
       },
+      {
+        name: "911 GT1",
+        category: "super",
+        generations: [
+          {
+            name: "911 GT1",
+            years: [1996, 1998],
+            shape: "hyper",
+            variants: [
+              // road version for the GT1 homologation, about 20 built; the race cars are under Rennsportwagen
+              v("911 GT1 Straßenversion", [1996, 1998], 20, 6_500_000, 0.08, 544, 3.2, 793_000, {
+                drive: "Mittelmotor, Heck (RWD)",
+                tags: ["Turbo"],
+                transmission: "6-Gang Schaltgetriebe",
+                color: "#b7babe",
+              }),
+            ],
+          },
+        ],
+      },
       // Motorsport: race cars Porsche sold to customer teams and collectors. Factory-only cars and one-offs
       // (936, 919 Hybrid, 911 RSR works cars) are left out as they have no market.
       {

@@ -1,7 +1,7 @@
 """Build sales rows (EUR) from Bring a Trailer, ultimatecarpage and the auction houses' own results."""
 import json, os, re, sys, csv, datetime as dt, collections, bisect, html
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # classify.py next to this script (-I leaves the folder out)
-from classify import classify
+from classify import classify, EARLY_RESULTS
 S = sys.argv[1]
 # links to the original lot pages (linkfetch.py); results without one keep the result list they were taken from
 LINKS = json.load(open(S + "/web/links/links.json")) if os.path.exists(S + "/web/links/links.json") else {}
@@ -107,7 +107,7 @@ for x in U:
         if not cur: continue
         amt = int(m.group(2).replace(",", "").split(".")[0]); sold = True
     ym = re.match(r"(\d{4})", x["event"]); yr = int(ym.group(1))
-    if yr < 2015: continue
+    if yr < 2015 and vid not in EARLY_RESULTS: continue
     dm = re.match(r"([A-Z][a-z]+)\s+(\d+)", x["date"] or "")
     if dm and dm.group(1) in MONTHS: date = "%04d-%02d-%02d" % (yr, MONTHS[dm.group(1)], int(dm.group(2)))
     else: continue

@@ -2,10 +2,10 @@
 import json, sys, csv, re, collections, os, datetime
 S, OUT = sys.argv[1], sys.argv[2]
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # classify.py next to this script
-from classify import classify
+from classify import classify, EARLY_RESULTS
 rows = json.load(open(S + "/web/sales_all.json"))
 AS_OF = os.environ.get("MIP_AS_OF") or datetime.date.today().isoformat()  # cut-off day: today unless set
-rows = [r for r in rows if "2015-01-01" <= r["date"] <= AS_OF]
+rows = [r for r in rows if ("2015-01-01" <= r["date"] or r["variant"] in EARLY_RESULTS) and r["date"] <= AS_OF]
 # earlier curated rows from sources other than ultimatecarpage (Mecum, Barrett-Jackson, Iconic, press releases)
 old = list(csv.reader(open(S + "/web/sales_old.csv"), delimiter=";"))
 hdr = old[0]; kept = []; dropped = []

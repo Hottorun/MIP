@@ -4,7 +4,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { bodyChoices, bodyEffect, brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
 import type { Body, Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
-import { marketBasis, MIN_RECORDS, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
+import { marketBasis, MIN_RECORDS, SEGMENT_LABEL, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
 import { useStore } from "../../state/store";
 import { cn, eur, fromDisplay, num, pct, liters, safeUrl } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
@@ -152,6 +152,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
                 )}
           </p>
         )}
+        <ThinBasis variant={variant} />
         <p className="mt-2 text-[13px] text-faint">
           {picked.length ? `${t("Median ohne Optionen", "Median without options")} ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
           <BasisLine variant={variant} range={!range || picked.length > 0} />{" · "}
@@ -588,6 +589,26 @@ function BasisLine({ variant, range = true }: { variant: Variant; range?: boolea
         b.hi &&
         ` · ${t("mittlere Hälfte", "middle half")} ${eur(Math.round(b.lo / 1000) * 1000, { compact: true })} ${t("bis", "to")} ${eur(Math.round(b.hi / 1000) * 1000, { compact: true })}`}
     </>
+  );
+}
+
+/** A value from fewer than MIN_RECORDS sales (only the rarest variants get one): say how thin it is. */
+function ThinBasis({ variant }: { variant: Variant }) {
+  const b = marketBasis(variant.id);
+  if (!b || b.value === null || b.n >= MIN_RECORDS) return null;
+  const year = b.last?.slice(0, 4) ?? "";
+  return (
+    <p className="mt-2 text-[13px] text-muted">
+      {b.n === 1
+        ? t(
+            `Schätzung aus nur einem Verkauf seit 2015 (${year}), mit der Preisentwicklung der ${SEGMENT_LABEL[b.segment] ?? "Vergleichsmodelle"} auf heute fortgeschrieben. Entsprechend unsicher.`,
+            `Estimate from a single sale since 2015 (${year}), carried to today with the price trend of comparable cars. Treat it with caution.`,
+          )
+        : t(
+            `Schätzung aus nur ${num(b.n)} Verkäufen seit 2015, mit der Preisentwicklung der ${SEGMENT_LABEL[b.segment] ?? "Vergleichsmodelle"} auf heute fortgeschrieben. Entsprechend unsicher.`,
+            `Estimate from only ${num(b.n)} sales since 2015, carried to today with the price trend of comparable cars. Treat it with caution.`,
+          )}
+    </p>
   );
 }
 

@@ -6,7 +6,7 @@ P = "porsche-"
 # build years of each variant (from the catalog, src/data): a title's displacement or "997.2" decides only within them
 YEARS = {k: (v[0], v[1] or 9999) for k, v in json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "variant_years.json"))).items()}
 EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw", "replica", "tribute", "recreation", "re-creation",
-        "continuation", "kit car", "project", "conversion", "converted", "wide-body", "widebody", "rwb", "rauh", "ruf ",
+        "continuation", "kit car", " kit ", "project", "conversion", "converted", "wide-body", "widebody", "rwb", "rauh", "ruf ",
         "ruf-", " ruf", "gemballa", "techart", "strosek", "emory", "gunther", "theon", "tuthill", "everrati", "electric",
         "safari", "rally", "hillclimb", "kart", "junior", "scale", "model", "wheels", "engine", "transaxle", "gearbox",
         "literature", "owner's manual", "workshop manual", "manuals", "seats", "parts", "tractor", "diesel", "painting", "art car", "children", "pedal",
@@ -21,6 +21,9 @@ EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw
 SPECIAL = re.compile(r"prototype|\bimsa\b|\bscca\b|\bt/r\b|914/6 r\b|914/6 ['\"]?gt|\bm471\b|gt specification|carrera 4 leichtbau|\bctr\b"
                      r"|tag turbo|bandama|turbo gts|retro rod|magnum|rocket|club coupe|\b993 gt\b|\b993 club ?sport|gt3[- ]r\b|gt2[- ]?r\b|\bn[-/]gt\b"
                      r"|super 90 gt|super gt\b")
+# variants so rare that results before 2015 are kept as well (listed in the app; the market value still counts only
+# results since 2015, model.py)
+EARLY_RESULTS = {P + "911-gt1-911-gt1-strassenversion"}
 TRACK = ["race car", "racecar", "track car", "race-prepped", "race prepped", "racer", "track-prepped", "vintage race"]
 RACE_OK = ["race car", "racecar", "track car", "racer"]
 
@@ -57,7 +60,7 @@ def race(y, s, full):
     if re.search(r"\b917\s?k\b", s) and 1969 <= y <= 1971: return R + "904-bis-917-917-k"
     if re.search(r"\b956\b", s) and 1982 <= y <= 1985: return R + "956-bis-911-gt1-956"
     if re.search(r"\b962c?\b", s) and 1984 <= y <= 1993: return R + "956-bis-911-gt1-962"
-    if re.search(r"\bgt1\b", s) and 1996 <= y <= 1998 and not has(s, "strassen", "street", "road"): return R + "956-bis-911-gt1-911-gt1"
+    if re.search(r"\bgt1\b", s) and 1996 <= y <= 1998 and not has(s, "strassen", "straßen", "street", "road"): return R + "956-bis-911-gt1-911-gt1"
     if "rs spyder" in s and 2005 <= y <= 2011: return R + "rs-spyder-und-963-rs-spyder"
     if re.search(r"\b963\b", s) and y >= 2023: return R + "rs-spyder-und-963-963"
     if "abarth" in s and 1960 <= y <= 1962: return G + "356-bis-carrera-rsr-356-b-carrera-gtl-abarth"
@@ -268,6 +271,8 @@ def road(y, s, full=""):
     if "carrera gt" in s and 2004 <= y <= 2006: return (P + "carrera-gt-carrera-gt", "Roadster")
     if re.search(r"\b918\b", s) and 2013 <= y <= 2016:
         return (P + "918-918-spyder-weissach" if "weissach" in s else P + "918-918-spyder", "Roadster")
+    # the road version of the 911 GT1 (about 20 built for homologation); the race cars are in race() above
+    if re.search(r"\bgt1\b", s) and 1996 <= y <= 1998 and has(s, "strassen", "straßen", "street", "road"): return (P + "911-gt1-911-gt1-strassenversion", "Coupé")
     if re.search(r"\b959\b", s) and 1986 <= y <= 1993:
         if has(s, "speedster", "cabrio", "targa", "roadster"): return None
         if "sport" in s: return (P + "959-959-sport", "Coupé")
