@@ -57,7 +57,7 @@ export default function Auctions() {
   const [params, setParams] = useSearchParams();
   const [brand, setBrand] = useState("");
   const [source, setSource] = useState<Source>("Alle");
-  const [house, setHouse] = useState("");
+  const [house, setHouse] = useState(params.get("haus") ?? "");
   const [period, setPeriod] = useState<Period>("12M");
   const [status, setStatus] = useState<Status>("alle");
   const [priceMin, setPriceMin] = useState("");
@@ -67,14 +67,21 @@ export default function Auctions() {
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Sale | null>(null);
 
-  // Keep text search in sync when navigating here from the global search.
+  // Keep text search and house in sync when navigating here from the global search.
   const qParam = params.get("q");
+  const hausParam = params.get("haus");
   useEffect(() => {
     if (qParam !== null) {
       setText(qParam);
       setPeriod("5J");
     }
   }, [qParam]);
+  useEffect(() => {
+    if (hausParam !== null) {
+      setHouse(hausParam);
+      setPeriod("5J");
+    }
+  }, [hausParam]);
 
   useEffect(() => setPage(0), [brand, source, house, period, status, priceMin, priceMax, text, sort]);
 
@@ -157,7 +164,13 @@ export default function Auctions() {
 
   const pages = Math.max(1, Math.ceil(sorted.length / PAGE));
   const rows = sorted.slice(page * PAGE, page * PAGE + PAGE);
-  const houses = useMemo(() => [...new Set([...AUCTION_HOUSES.map((h) => h.name)])], []);
+  // every house with results, busiest first (not only the configured ones), so a house picked from the search is in the list
+  const houses = useMemo(() => {
+    const n = new Map<string, number>();
+    for (const s of getAllSales()) n.set(s.house, (n.get(s.house) ?? 0) + 1);
+    for (const h of AUCTION_HOUSES) if (!n.has(h.name)) n.set(h.name, 0);
+    return [...n.entries()].sort((a, b) => b[1] - a[1]).map(([h]) => h);
+  }, []);
 
   const toggleSort = (key: SortKey) =>
     setSort((s) => (s.key === key ? { key, dir: (s.dir * -1) as 1 | -1 } : { key, dir: key === "vehicle" || key === "id" || key === "house" ? 1 : -1 }));

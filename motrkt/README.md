@@ -87,8 +87,9 @@ das Abzeichen „Besitzer“. Autoren bearbeiten und löschen eigene Beiträge, 
 (`/pruefung` zeigt gemeldete Beiträge mit Begründung), Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen aus;
 die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen; Themen
 werden seitenweise (30) geladen. `/forum` zeigt die zuletzt bewegten Themen aller Modelle (Eintrag im Menü), Links
-öffnen das Thema auf der Modellseite (`?thema=<id>#forum`); die Suche findet Themen nach Titel und Inserate nach
-Titel, Anbieter oder Ort. Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`, `008_forum_reports.sql`.
+öffnen das Thema auf der Modellseite (`?thema=<id>#forum`); die Suche findet Themen nach Titel, Inserate nach
+Titel, Anbieter oder Ort, Händler (alle ihre Inserate auf Kaufen) und Auktionshäuser (ihre Ergebnisse auf
+Auktionen, `?haus=`). Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`, `008_forum_reports.sql`.
 
 ## Konfiguration (`.env`)
 

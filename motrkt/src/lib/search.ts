@@ -15,6 +15,8 @@ const KIND = {
   get listing() { return t("Inserat", "Listing"); },
   get vin() { return t("FIN", "VIN"); },
   get topic() { return t("Forum", "Forum"); },
+  get dealer() { return t("Händler", "Dealer"); },
+  get house() { return t("Auktionshaus", "Auction house"); },
 };
 
 type TopicHit = { id: string; variant: string; title: string; username: string };
@@ -63,6 +65,18 @@ function buildIndex(): Entry[] {
   for (const v of variants) {
     const title = variantTitle(v);
     out.push({ kind: KIND.variant, label: title, detail: yearsLabel(v.years), href: `/markt/${v.id}`, text: norm(`${title} ${v.name} ${v.tags.join(" ")}`) });
+  }
+  // Dealers with cars for sale (their listings on Buy) and auction houses (their results on Auctions)
+  const dealers = new Map<string, number>();
+  const platforms = new Set(["Classic Trader", "mobile.de"]); // marketplaces, not dealers (a dealer's own site is its name)
+  for (const l of getAllListings()) if (l.sellerType === "Händler" && !platforms.has(l.seller)) dealers.set(l.seller, (dealers.get(l.seller) ?? 0) + 1);
+  for (const [name, n] of dealers) {
+    out.push({ kind: KIND.dealer, label: name, detail: t(`${n} Inserat${n === 1 ? "" : "e"}`, `${n} listing${n === 1 ? "" : "s"}`), href: `/kaufen?suche=${encodeURIComponent(name)}`, text: norm(name) });
+  }
+  const houses = new Map<string, number>();
+  for (const s of getAllSales()) houses.set(s.house, (houses.get(s.house) ?? 0) + 1);
+  for (const [name, n] of houses) {
+    out.push({ kind: KIND.house, label: name, detail: t(`${n} Auktionsergebnisse`, `${n} auction results`), href: `/auktionen?haus=${encodeURIComponent(name)}`, text: norm(name) });
   }
   return out;
 }
