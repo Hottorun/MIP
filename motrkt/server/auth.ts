@@ -26,19 +26,22 @@ type User = { id: string; username: string; salt: string; hash: string };
 // Shared demo account (server/demo-account.json, password in README). The repository is public, so it is on in
 // development only; the production server enables it with MIP_DEMO_ACCOUNT=1. It is never written to the database.
 let demo: User | null = null;
-export function enableDemoAccount() {
+let demoAdmin = false;
+/** `admin: true` only from the Vite dev server (vite.config.ts): the demo password is public, so it never reviews in production. */
+export function enableDemoAccount(opts: { admin?: boolean } = {}) {
   demo = demoAccount as User;
+  demoAdmin = opts.admin === true;
 }
 
 /**
- * Reviewers of the users' car reports (server/userCars.ts): the usernames in MIP_ADMINS, comma-separated. In local
- * development (not on Vercel, not NODE_ENV=production) the demo account is a reviewer too, so the review page can be
- * tried; in production it never is, its password being public.
+ * Reviewers of the users' car reports (server/userCars.ts): the usernames in MIP_ADMINS, comma-separated. The demo
+ * account is a reviewer only where enableDemoAccount({ admin: true }) said so (npm run dev), never because MIP_ADMINS
+ * or NODE_ENV say so.
  */
 export function isAdmin(user: { id: string; username: string }) {
+  if (demo && demo.id === user.id) return demoAdmin;
   const names = (process.env.MIP_ADMINS ?? "").split(",").map((n) => n.trim().toLowerCase()).filter(Boolean);
-  if (names.includes(user.username.toLowerCase()) && !(demo && demo.id === user.id && process.env.VERCEL)) return true;
-  return Boolean(demo && demo.id === user.id && !process.env.VERCEL && process.env.NODE_ENV !== "production");
+  return names.includes(user.username.toLowerCase());
 }
 
 async function userByName(username: string): Promise<User | null> {
@@ -109,18 +112,29 @@ export async function currentUser(req: IncomingMessage): Promise<{ id: string; u
 // ------------------------------------------------------------------------------------------------ brute-force brake
 // In the database, not in memory: on Vercel many function instances answer requests side by side.
 const MAX_FAILS = 8;
-async function blocked(key: string) {
+// A name alone is blocked only after many more failures from any address: a global block at 8 would let anyone lock
+// a user (or a reviewer) out at will; this still caps password spraying from many addresses at 50 tries a quarter hour.
+const MAX_FAILS_NAME = 50;
+async function blocked(key: string, max = MAX_FAILS) {
   const [{ n }] = await db()<{ n: number }[]>`select count(*)::int as n from auth_failures where key = ${key} and at > now() - interval '15 minutes'`;
-  return n >= MAX_FAILS;
+  return n >= max;
 }
 async function fail(key: string) {
   await db()`delete from auth_failures where at < now() - interval '1 day'`;
   await db()`insert into auth_failures (key) values (${key})`;
 }
 const clearFailures = (key: string) => db()`delete from auth_failures where key = ${key}`;
-/** Client address; behind Vercel's proxy from the header Vercel sets (not spoofable there), else the socket. */
+/**
+ * Client address: behind Vercel's proxy from the header Vercel sets (not spoofable there); behind one's own reverse
+ * proxy (nginx, Caddy) only with MIP_TRUST_PROXY=1 from X-Forwarded-For, else the socket, so that one address cannot
+ * trip the brake for everyone.
+ */
 function clientIp(req: IncomingMessage) {
-  const fwd = process.env.VERCEL ? req.headers["x-vercel-forwarded-for"] ?? req.headers["x-forwarded-for"] : undefined;
+  const fwd = process.env.VERCEL
+    ? req.headers["x-vercel-forwarded-for"] ?? req.headers["x-forwarded-for"]
+    : process.env.MIP_TRUST_PROXY === "1"
+      ? req.headers["x-forwarded-for"]
+      : undefined;
   return (Array.isArray(fwd) ? fwd[0] : fwd)?.split(",")[0].trim() || req.socket.remoteAddress || "?";
 }
 
@@ -189,14 +203,16 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   }
 
   if (path === "/api/auth/login") {
-    const key = "login:" + username.toLowerCase();
-    if ((await blocked(key)) || (await blocked("ip:" + ip))) return sendJson(res, 429, { error: "too_many" });
+    const nameKey = "login:" + username.toLowerCase();
+    const key = nameKey + "@" + ip; // this name from this address
+    if ((await blocked(key)) || (await blocked("ip:" + ip)) || (await blocked(nameKey, MAX_FAILS_NAME))) return sendJson(res, 429, { error: "too_many" });
     const user = await userByName(username);
     // hash even for unknown names, so the answer time does not reveal which names exist
     const salt = user?.salt ?? "0000000000000000";
     const got = await hashPassword(password.slice(0, PW_MAX), salt);
     if (!user || !timingSafeEqual(got, Buffer.from(user.hash, "hex"))) {
       await fail(key);
+      await fail(nameKey);
       await fail("ip:" + ip);
       return sendJson(res, 401, { error: "wrong_credentials" });
     }
@@ -223,6 +239,7 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Cache-Control", "no-store");
     res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("Content-Security-Policy", LOGIN_CSP);
     res.end(LOGIN_PAGE);
     return true;
   }
@@ -245,8 +262,20 @@ function redirect(res: ServerResponse, to: string) {
   res.end();
   return true;
 }
-/** Only paths on this site ("/markt/…"), never "//other.site" or "https://…". */
-const safeNext = (n: string | null) => (n && /^\/(?![/\\])/.test(n) ? n : "/");
+/**
+ * Only paths on this site ("/markt/…"), never "//other.site", "https://…" or "/\t/other.site" (browsers drop tabs and
+ * newlines before parsing, so that one would also leave the site): the URL parser must keep the origin, and no
+ * whitespace, control characters or backslashes get through.
+ */
+export function safeNext(n: string | null) {
+  if (!n || !n.startsWith("/") || /[\s\\\u0000-\u001f]/.test(n)) return "/";
+  try {
+    const u = new URL(n, "https://mip.invalid");
+    return u.origin === "https://mip.invalid" ? u.pathname + u.search + u.hash : "/";
+  } catch {
+    return "/";
+  }
+}
 
 // ------------------------------------------------------------------------------------------------ sign-in page
 // Standalone page (no app bundle): the app and its data load only after sign-in.
@@ -255,9 +284,9 @@ const LOGIN_PAGE = `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-<link rel="icon" href="/favicon-32.png?v=2" type="image/png" sizes="32x32" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
+<link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png?v=3" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300..600&family=Libre+Caslon+Display&family=Libre+Caslon+Text&display=swap" rel="stylesheet" />
@@ -369,7 +398,7 @@ const LOGIN_PAGE = `<!doctype html>
       .then(function (x) {
         if (x.ok) {
           var next = new URLSearchParams(location.search).get("next") || "/";
-          location.replace(/^\\/(?![\\/\\\\])/.test(next) ? next : "/");
+          location.replace(/^\\/(?![\\/\\\\])/.test(next) && !/[\\s\\\\]/.test(next) ? next : "/");
         } else {
           $("err").textContent = T[lang][x.j.error] || T[lang].wrong_credentials;
           $("submit").disabled = false;
@@ -383,3 +412,17 @@ const LOGIN_PAGE = `<!doctype html>
 </script>
 </body>
 </html>`;
+
+// The page's one inline script is allowed by its hash; nothing else may run, load or frame it.
+const LOGIN_SCRIPT_HASH = createHash("sha256").update(LOGIN_PAGE.match(/<script>([\s\S]*?)<\/script>/)![1]).digest("base64");
+const LOGIN_CSP = [
+  "default-src 'none'",
+  `script-src 'sha256-${LOGIN_SCRIPT_HASH}'`,
+  "style-src 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src https://fonts.gstatic.com",
+  "img-src 'self'",
+  "connect-src 'self'",
+  "base-uri 'none'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");

@@ -5,6 +5,7 @@ import { readBuffer, readText } from "./body.ts";
 import { checkContract, type Entered } from "./contractCheck.ts";
 import { currentUser, isAdmin } from "./auth.ts";
 import { db } from "./db.ts";
+import { overLimit } from "./limits.ts";
 
 /**
  * "Mein Fahrzeug melden": users enter a car they bought or sold and upload the purchase contract
@@ -25,6 +26,16 @@ import { db } from "./db.ts";
 export const PREMIUM_MONTHS = 12;
 const MAX_CONTRACT = 4 * 1024 * 1024; // a Vercel function takes at most 4.5 MB per request
 const TYPES = new Set(["application/pdf", "image/jpeg", "image/png", "image/webp"]);
+/** The file must really be what the Content-Type says (first bytes), not just claim it. */
+function matchesType(type: string, b: Buffer) {
+  switch (type) {
+    case "application/pdf": return b.subarray(0, 5).toString("latin1") === "%PDF-";
+    case "image/jpeg": return b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff;
+    case "image/png": return b.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+    case "image/webp": return b.subarray(0, 4).toString("latin1") === "RIFF" && b.subarray(8, 12).toString("latin1") === "WEBP";
+    default: return false;
+  }
+}
 const VARIANTS = new Map((variantIds as [string, string][]).map(([id, name]) => [id, name]));
 const CURRENCIES = new Set(["EUR", "CHF", "GBP", "USD", "SEK", "DKK", "NOK", "CAD"]);
 const COUNTRY = /^[A-Z]{2}$/;
@@ -158,7 +169,15 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
         return sendJson(res, 413, { error: "size" });
       }
       if (file.length < 1000) return sendJson(res, 400, { error: "empty" });
-      const name = s(decodeURIComponent(String(req.headers["x-file-name"] ?? "")), 120) || "vertrag";
+      if (!matchesType(type, file)) return sendJson(res, 415, { error: "type" });
+      // each upload runs an AI check (paid): a budget per user and day, over the 10 reports a day
+      if (await overLimit("contract", user.id)) return sendJson(res, 429, { error: "too_many" });
+      let name = "vertrag";
+      try {
+        name = s(decodeURIComponent(String(req.headers["x-file-name"] ?? "")), 120) || name;
+      } catch {
+        return sendJson(res, 400, { error: "bad request" });
+      }
       await db()`update user_cars set contract = ${file}, contract_type = ${type}, contract_name = ${name}, contract_size = ${file.length},
                  status = 'pending', ai_check = null, ai_checked_at = null where id = ${own.id}`;
       await runCheck(own.id); // a few seconds; the reviewer can repeat it
@@ -192,6 +211,8 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
       res.setHeader("Content-Disposition", `inline; filename="${String(r.contract_name).replace(/[^\w.-]/g, "_")}"`);
       res.setHeader("Cache-Control", "no-store");
       res.setHeader("X-Content-Type-Options", "nosniff");
+      // an uploaded file is untrusted content: it renders in the reviewer's viewer with no script, origin or navigation
+      res.setHeader("Content-Security-Policy", "sandbox; default-src 'none'");
       return res.end(f.contract);
     }
     if (sub === "ki" && req.method === "POST") {

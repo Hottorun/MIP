@@ -11,6 +11,15 @@ if (!existsSync(process.env.MIP_DIST ?? join(process.cwd(), "dist"))) {
   process.exit(1);
 }
 
-createServer(handleRequest).listen(PORT, () => {
+// A rejected request handler must not take the whole server down (Node exits on unhandled rejections by default).
+process.on("unhandledRejection", (err) => console.error("unhandled", err));
+
+createServer((req, res) =>
+  handleRequest(req, res).catch((err) => {
+    console.error(err);
+    if (!res.headersSent) res.statusCode = 500;
+    res.end();
+  }),
+).listen(PORT, () => {
   console.log(`Carbay läuft auf http://localhost:${PORT}`);
 });

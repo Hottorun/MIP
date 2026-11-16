@@ -5,6 +5,8 @@ import { readText } from "./body.ts";
 import { handleUserCars } from "./userCars.ts";
 import { handleForum } from "./forum.ts";
 import { hasCredentials } from "./contractCheck.ts";
+import { currentUser } from "./auth.ts";
+import { overLimit } from "./limits.ts";
 
 // Load secrets from .env (ANTHROPIC_API_KEY, MOBILEDE_USERNAME, MOBILEDE_PASSWORD) without overriding the shell environment.
 try {
@@ -34,6 +36,7 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 function sendJson(res: ServerResponse, status: number, body: unknown) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
   res.end(JSON.stringify(body));
 }
 
@@ -78,6 +81,15 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
   if (!hasCredentials()) {
     return sendJson(res, 503, { error: "Kein Anthropic-API-Zugang konfiguriert", fallback: true });
   }
+  // every account may register, so each one gets a budget (server/limits.ts); the client falls back to local analysis
+  const user = await currentUser(req);
+  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  if (await overLimit("copilot", user.id)) {
+    return sendJson(res, 429, {
+      error: english ? "Hourly Co-Pilot limit reached – the local analysis answers meanwhile." : "Stundenlimit des Co-Piloten erreicht – solange antwortet die lokale Analyse.",
+      fallback: true,
+    });
+  }
 
   let started = false;
   const start = () => {
@@ -93,7 +105,7 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
     // Claude Haiku 5.5 has no server-side refusal fallback: a declined request ends with stop_reason "refusal" (below).
     const stream = getClient().messages.stream({
       model: MODEL,
-      max_tokens: 64_000,
+      max_tokens: 4_000, // answers are 80–220 words; the cap bounds the cost of one call
       output_config: { effort: "medium" },
       system: [
         { type: "text", text: SYSTEM_PROMPT },

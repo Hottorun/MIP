@@ -125,6 +125,11 @@ export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
+/** A link from listing or sale data as href: only http(s) URLs, never "javascript:" or other schemes. */
+export function safeUrl(url: string | null | undefined): string | undefined {
+  return url && /^https?:\/\/[^\s]+$/i.test(url) ? url : undefined;
+}
+
 export function hostOf(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");

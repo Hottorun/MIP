@@ -6,7 +6,7 @@ import type { Body, Variant } from "../../data/types";
 import { getSales } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import { outliersOf } from "../../data/real/model";
-import { date, km } from "../../lib/format";
+import { date, km, safeUrl } from "../../lib/format";
 import { unsoldPrice } from "../../lib/unsold";
 import { BAT, mixHouses } from "../../lib/houseMix";
 import { Section, Money } from "../ui";
@@ -70,7 +70,7 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
               <div className="min-w-0">
                 <div className="flex items-baseline gap-2 font-serif text-[16px]">
                   {s.url ? (
-                    <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 truncate hover:text-gold" title={linkTitle(s.url)}>
+                    <a href={safeUrl(s.url)} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 truncate hover:text-gold" title={linkTitle(s.url)}>
                       {s.house}
                       <ArrowUpRight className="size-3.5 shrink-0 self-center text-faint" strokeWidth={1.5} />
                     </a>
@@ -125,7 +125,7 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
         {houseSearchLinks(variant).map((l, i) => (
           <span key={l.house}>
             {i > 0 && " · "}
-            <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-0.5 text-ink hover:text-gold">
+            <a href={safeUrl(l.url)} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-0.5 text-ink hover:text-gold">
               {l.house}
               <ArrowUpRight className="size-3 shrink-0 self-center text-faint" strokeWidth={1.5} />
             </a>

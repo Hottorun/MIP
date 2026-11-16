@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createReadStream, existsSync, statSync } from "node:fs";
-import { extname, join, normalize } from "node:path";
+import { extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { handleApi } from "./api.ts";
 import { authGate, enableDemoAccount } from "./auth.ts";
@@ -32,7 +32,31 @@ const TYPES: Record<string, string> = {
 // the demo account's password is public (README): only on request in production
 if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) === "1") enableDemoAccount();
 
+// Browser protections for everything served here: no framing (clickjacking), no MIME sniffing, no referrer leaks of
+// listing URLs, and the content-security policy for the app: scripts only from here, styles also inline (Recharts,
+// Tailwind) and from Google Fonts, listing photos from any https host, fetches only to this origin.
+const APP_CSP = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' https: data: blob:",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");
+
+function securityHeaders(res: ServerResponse) {
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+}
+
 export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
+  securityHeaders(res);
   try {
     if (await authGate(req, res)) return; // sign-in page, auth API, or no session
   } catch (err) {
@@ -47,9 +71,16 @@ export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
       res.end();
     });
   }
-  const path = decodeURIComponent(new URL(req.url ?? "/", "http://localhost").pathname);
+  res.setHeader("Content-Security-Policy", APP_CSP);
+  let path: string;
+  try {
+    path = decodeURIComponent(new URL(req.url ?? "/", "http://localhost").pathname);
+  } catch {
+    res.statusCode = 400; // malformed percent-encoding such as "/%"
+    return res.end();
+  }
   let file = normalize(join(DIST, path));
-  if (!file.startsWith(DIST) || !existsSync(file) || statSync(file).isDirectory()) {
+  if (!file.startsWith(DIST + sep) || !existsSync(file) || statSync(file).isDirectory()) {
     file = join(DIST, "index.html"); // SPA fallback
   }
   res.setHeader("Content-Type", TYPES[extname(file)] ?? "application/octet-stream");

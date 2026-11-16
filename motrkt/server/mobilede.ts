@@ -1,4 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { currentUser } from "./auth.ts";
+import { overLimit } from "./limits.ts";
 
 /**
  * mobile.de Search API ("Ad-Integration") proxy — https://services.mobile.de/docs/search-api.html
@@ -8,7 +10,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 
 const BASE = process.env.MOBILEDE_BASE_URL ?? "https://services.mobile.de";
 const CACHE_MS = 20 * 60_000;
-const SAFE = /^[\p{L}\p{N} .\-/]{1,40}$/u;
+const SAFE = /^[\p{L}\p{N} .\-]{1,40}$/u; // make and model codes: letters, digits, space, dot, dash – never "/" or ".."
 
 export type MobileAd = {
   id: string;
@@ -88,6 +90,7 @@ function normalize(ad: Json): MobileAd {
 function send(res: ServerResponse, status: number, body: unknown) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
   res.end(JSON.stringify(body));
 }
 
@@ -105,6 +108,10 @@ export async function handleMobileDe(req: IncomingMessage, res: ServerResponse, 
   const to = Number(url.searchParams.get("to"));
   const page = Math.max(1, Math.min(20, Number(url.searchParams.get("page") ?? 1)));
   if (!SAFE.test(make) || (model && !SAFE.test(model))) return send(res, 400, { error: "Ungültige Marke/Modell" });
+  // the partner API has a quota: a budget per account and hour (server/limits.ts), well above one app start
+  const user = await currentUser(req);
+  if (!user) return send(res, 401, { error: "not signed in" });
+  if (await overLimit("mobilede", user.id)) return send(res, 429, { error: "Stundenlimit für mobile.de-Abfragen erreicht" });
 
   const q = new URLSearchParams({
     classification: `refdata/classes/Car/makes/${make}${model ? `/models/${model}` : ""}`,

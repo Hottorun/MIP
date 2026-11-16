@@ -14,7 +14,8 @@ export default defineConfig({
     {
       name: "mip-api",
       configureServer(server) {
-        if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) !== "0") enableDemoAccount();
+        // the demo account reviews car reports here only (its password is public), see server/auth.ts
+        if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) !== "0") enableDemoAccount({ admin: true });
         // sign-in first: without a session nothing of the app is served
         server.middlewares.use((req, res, next) => {
           authGate(req, res)

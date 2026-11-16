@@ -4,7 +4,7 @@ import type { Body, Variant } from "../../data/types";
 import { CHANNEL_ORDER, marketBasis, type Channel } from "../../data/real/model";
 import { asksFor, type Ask } from "../../data/real/asks";
 import { daysBetween, historyOf, TRACKING } from "../../data/real/listingHistory";
-import { date, km, num, pct } from "../../lib/format";
+import { date, km, num, pct, safeUrl } from "../../lib/format";
 import { Money, Section } from "../ui";
 import { isEn, t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -216,7 +216,7 @@ function AskRow({ a }: { a: Ask }) {
   return (
     <li className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-3.5">
       <div className="min-w-0">
-        <a href={a.url} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-baseline gap-1 font-serif text-[16px] hover:text-gold" title={t("Inserat öffnen", "Open listing")}>
+        <a href={safeUrl(a.url)} target="_blank" rel="noreferrer" className="inline-flex max-w-full items-baseline gap-1 font-serif text-[16px] hover:text-gold" title={t("Inserat öffnen", "Open listing")}>
           <span className="truncate">{a.title}</span>
           <ArrowUpRight className="size-3.5 shrink-0 self-center text-faint" strokeWidth={1.5} />
         </a>

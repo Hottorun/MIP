@@ -6,7 +6,7 @@ import type { Body, Variant } from "../../data/types";
 import { getMetrics } from "../../data/market";
 import { marketBasis, MIN_RECORDS, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
 import { useStore } from "../../state/store";
-import { cn, eur, fromDisplay, num, pct, liters } from "../../lib/format";
+import { cn, eur, fromDisplay, num, pct, liters, safeUrl } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
 import { PhotoCredit, fillsFrame, frameRatio } from "../CarImage";
@@ -412,7 +412,7 @@ function OfficialLink({ variant }: { variant: Variant }) {
   const label = l.kind === "premiere" ? t("Offizielle Pressebilder der Vorstellung", "Official press photos of the launch") : t("Offizielle Bilder beim Hersteller", "Official photos from the manufacturer");
   return (
     <p className="mt-6 border-t border-line pt-4 text-[14px]">
-      <a href={l.url} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 hover:text-gold" title={tr(l.title)}>
+      <a href={safeUrl(l.url)} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 hover:text-gold" title={tr(l.title)}>
         {label}
         <ArrowUpRight className="size-3.5 self-center text-faint" strokeWidth={1.5} />
       </a>

@@ -35,7 +35,9 @@ Das Demo-Konto ist bei `npm run dev` immer aktiv (abschalten mit `MIP_DEMO_ACCOU
 
 Konten und Sitzungen liegen in Postgres (`db/migrations/002_accounts.sql`). Gespeichert werden nur ein scrypt-Hash je
 Passwort und SHA-256-Werte der Sitzungs-Tokens. Nach 8 Fehlversuchen in 15 Minuten wird die Anmeldung für Name bzw.
-Adresse kurz gesperrt.
+Adresse kurz gesperrt (ein Name allein erst nach 50 Fehlversuchen von beliebigen Adressen, damit niemand fremde Konten
+mutwillig sperren kann). Je Konto gelten außerdem Budgets (`server/limits.ts`, Tabelle `db/migrations/006_rate_limits.sql`):
+60 Co-Pilot-Antworten und 600 mobile.de-Abfragen je Stunde, 10 Vertrags-Uploads je Tag.
 
 ## Eigenes Fahrzeug melden (Portfolio, `/portfolio#melden`)
 
@@ -58,8 +60,9 @@ Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontom
    dokumentierten Verkauf liest (Quelle „Carbay-Nutzer (Kaufvertrag geprüft)“). Danach gelten die üblichen Regeln
    (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
 
-Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Lokal mit `npm run dev` ist zusätzlich das Demo-Konto
-Prüfer, in Produktion nie. Tabelle: `db/migrations/004_user_cars.sql`.
+Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Nur der Vite-Entwicklungsserver (`npm run dev`) macht
+zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht über `MIP_ADMINS`, weil das Passwort
+öffentlich ist. Tabelle: `db/migrations/004_user_cars.sql`.
 
 ## Forum je Modell
 
@@ -78,6 +81,7 @@ Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`.
 | `DATABASE_URL` | Postgres für Konten, Sitzungen und Marktdaten (auf Vercel auch `POSTGRES_URL`) |
 | `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge mit Claude (ohne: lokaler Analysemodus, Verträge von Hand prüfen) |
 | `MIP_ADMINS` | Benutzernamen der Prüfer für gemeldete Fahrzeuge, kommagetrennt |
+| `MIP_TRUST_PROXY` | `1`, wenn `npm start` hinter einem eigenen Reverse-Proxy (nginx, Caddy) läuft: Client-Adresse für die Anmeldebremse aus `X-Forwarded-For`; auf Vercel nicht nötig |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |
 
 Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell nur Porsche).
