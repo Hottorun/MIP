@@ -104,7 +104,7 @@ export function extractPhotos(pageUrl: string, html: string): string[] {
       }
     }
   } else if (host === "www.mecum.com") {
-    const id = /\/lots\/(\d+)(?:\/|$)/.exec(pageUrl)?.[1];
+    const id = /\/lots\/(?:[A-Z]{2}\d{2}-)?(\d+)(?:\/|$)/.exec(pageUrl)?.[1];
     const seen = new Set<string>();
     for (const u of imageUrls(html)) {
       // older sales: .../auctions/fl15/fl0115-209939/..., newer ones: .../auctions/CA26/1176394/...

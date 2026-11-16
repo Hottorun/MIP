@@ -1,7 +1,7 @@
 /** Lot pages (not search or result lists) of the houses in our sales data; shared by server/lotPhotos.ts and the app. */
 export const LOT_PAGES: RegExp[] = [
   /^https:\/\/bringatrailer\.com\/listing\/[^/?#]+\/?$/,
-  /^https:\/\/www\.mecum\.com\/lots\/\d+\/[^/?#]+\/?$/,
+  /^https:\/\/www\.mecum\.com\/lots\/(?:[A-Z]{2}\d{2}-)?\d+\/[^/?#]+\/?$/,
   /^https:\/\/rmsothebys\.com\/(?:[a-z]{2}\/)?auctions\/[^/]+\/lots\/[^/?#]+\/?$/,
   /^https:\/\/www\.goodingco\.com\/lot\/[^/?#]+\/?$/,
   /^https:\/\/www\.iconicauctioneers\.com\/(?:online\/)?(?:[^/?#]+-)?recc?\d+-\d+[^/?#]*$/i,

@@ -20,7 +20,7 @@ import collections, datetime as dt, glob, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # lot pages (keep in step with src/lib/lotPages.ts); other links are result lists, searches or home pages
-LOT_PAGE = [r"^https://bringatrailer\.com/listing/", r"^https://www\.mecum\.com/lots/\d+/", r"^https://rmsothebys\.com/(?:[a-z]{2}/)?auctions/[^/]+/lots/[^/?#]+",
+LOT_PAGE = [r"^https://bringatrailer\.com/listing/", r"^https://www\.mecum\.com/lots/(?:[A-Z]{2}\d{2}-)?\d+/", r"^https://rmsothebys\.com/(?:[a-z]{2}/)?auctions/[^/]+/lots/[^/?#]+",
             r"^https://www\.goodingco\.com/lot/", r"^https://www\.iconicauctioneers\.com/(?:online/)?(?:[^/?#]+-)?recc?\d+-\d+", r"^https://cars\.bonhams\.com/auction/\d+/lot/",
             r"^https://www\.bonhams\.com/auction/\d+/lot/", r"^https://www\.broadarrowauctions\.com/vehicles/[a-z0-9_]+/", r"^https://www\.artcurial\.com/(?:en|fr)/sales/\d+/lots/",
             r"^https://www\.osenat\.com/lot/", r"^https://www\.aguttes\.com/lot/"]
