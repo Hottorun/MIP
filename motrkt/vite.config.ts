@@ -1,14 +1,93 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { brotliCompressSync, constants, gzipSync } from "node:zlib";
-import { defineConfig } from "vitest/config";
+import { defineConfig, type Plugin } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { handleApi } from "./server/api.ts";
 import { authGate, enableDemoAccount } from "./server/auth.ts";
 
+/**
+ * The market data files (src/data/real) are not bundled into the script: the app fetches them at start
+ * (src/data/real/load.ts) from the manifest in <meta name="mip-data">. In development they are served as they are
+ * (no cache); the build copies them to dist/data/<name>-<hash>.<ext> with brotli/gzip twins, so browsers keep them
+ * until the data changes, and code changes do not make anyone download the data again.
+ */
+const REAL = fileURLToPath(new URL("./src/data/real/", import.meta.url));
+const DATA_FILES = { model: "market-model.json", asks: "asks.json", history: "listing-history.json", sales: "sales.csv" } as const;
+
+function compress(file: string, data: Buffer) {
+  writeFileSync(file + ".br", brotliCompressSync(data, { params: { [constants.BROTLI_PARAM_QUALITY]: 11, [constants.BROTLI_PARAM_SIZE_HINT]: data.length } }));
+  writeFileSync(file + ".gz", gzipSync(data, { level: 9 }));
+}
+
+function dataPlugin(): Plugin {
+  let build = false;
+  const hashed = new Map<string, { out: string; data: Buffer }>();
+  const manifest = () => {
+    const m: Record<string, string> = {};
+    for (const [key, name] of Object.entries(DATA_FILES)) {
+      if (!build) {
+        m[key] = `/data/${name}`;
+        continue;
+      }
+      let h = hashed.get(key);
+      if (!h) {
+        const data = readFileSync(REAL + name);
+        const hash = createHash("sha256").update(data).digest("hex").slice(0, 12);
+        h = { out: name.replace(/(\.[a-z]+)$/, `-${hash}$1`), data };
+        hashed.set(key, h);
+      }
+      m[key] = `/data/${h.out}`;
+    }
+    try {
+      m.asOf = String(JSON.parse(readFileSync(REAL + DATA_FILES.model, "utf8")).asOf ?? "");
+    } catch {
+      /* no as-of */
+    }
+    return m;
+  };
+  return {
+    name: "mip-data",
+    configResolved(c) {
+      build = c.command === "build";
+    },
+    transformIndexHtml(_html, ctx) {
+      const tags = [{ tag: "meta", attrs: { name: "mip-data", content: JSON.stringify(manifest()) }, injectTo: "head" as const }];
+      // the app's code (src/bootstrap.tsx and what it imports) is loaded only after the data: fetch it alongside
+      const bundle = ctx.bundle ?? {};
+      const entry = Object.values(bundle).find((c) => c.type === "chunk" && c.name === "bootstrap");
+      if (entry && entry.type === "chunk") {
+        for (const file of [entry.fileName, ...entry.imports]) tags.push({ tag: "link", attrs: { rel: "modulepreload", crossorigin: "", href: `/${file}` } as never, injectTo: "head" as const });
+      }
+      return tags;
+    },
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const m = /^\/data\/([a-z-]+\.(json|csv))(\?.*)?$/.exec(req.url ?? "");
+        if (!m || !Object.values<string>(DATA_FILES).includes(m[1])) return next();
+        res.setHeader("Content-Type", m[2] === "json" ? "application/json" : "text/csv; charset=utf-8");
+        res.setHeader("Cache-Control", "no-cache");
+        res.end(readFileSync(REAL + m[1]));
+      });
+    },
+    writeBundle(options) {
+      const dir = join(options.dir ?? "dist", "data");
+      mkdirSync(dir, { recursive: true });
+      manifest();
+      for (const { out, data } of hashed.values()) {
+        const file = join(dir, out);
+        writeFileSync(file, data);
+        compress(file, data);
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  test: { include: ["src/**/*.test.ts", "server/**/*.test.ts"], environment: "node" },
+  test: { include: ["src/**/*.test.ts", "server/**/*.test.ts"], environment: "node", setupFiles: ["src/test/setup.ts"] },
   plugins: [
     react(),
     tailwindcss(),
@@ -29,9 +108,10 @@ export default defineConfig({
         });
       },
     },
+    dataPlugin(), // after mip-api: in development the data files sit behind the sign-in gate too
     {
-      // Brotli and gzip copies of every built script, style and SVG (file.br, file.gz) for server/app.ts: the main
-      // script is several MB with the market data in it, and a Vercel function may not answer with more than 4.5 MB.
+      // Brotli and gzip copies of every built script, style and SVG (file.br, file.gz) for server/app.ts: a Vercel
+      // function may not answer with more than 4.5 MB, and the copies spare the function the compression.
       name: "mip-precompress",
       apply: "build",
       writeBundle(options, bundle) {
@@ -40,8 +120,7 @@ export default defineConfig({
           const file = join(options.dir ?? "dist", name);
           const data = readFileSync(file);
           if (data.length < 1024) continue;
-          writeFileSync(file + ".br", brotliCompressSync(data, { params: { [constants.BROTLI_PARAM_QUALITY]: 11, [constants.BROTLI_PARAM_SIZE_HINT]: data.length } }));
-          writeFileSync(file + ".gz", gzipSync(data, { level: 9 }));
+          compress(file, data);
         }
       },
     },

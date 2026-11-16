@@ -1,4 +1,6 @@
-import data from "./listing-history.json";
+import { dataset } from "./dataset";
+
+const data = dataset().history;
 
 /**
  * Every listing followed over time (scripts/market/track.py, runs with the daily update): first and last day seen,

@@ -1,5 +1,7 @@
 import { isEn, locale } from "../i18n";
-import model from "../data/real/market-model.json";
+import { dataset } from "../data/real/dataset";
+
+const model = dataset().model;
 
 /**
  * Formatting helpers in the current language: German (de-DE) "€ 378.000", "+12,4 %", "14. Sep. 2025";

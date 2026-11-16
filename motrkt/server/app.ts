@@ -26,6 +26,7 @@ const TYPES: Record<string, string> = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".json": "application/json",
+  ".csv": "text/csv; charset=utf-8",
   ".woff2": "font/woff2",
 };
 
@@ -85,7 +86,8 @@ export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
   }
   res.setHeader("Content-Type", TYPES[extname(file)] ?? "application/octet-stream");
   // "private": everything here is behind the sign-in, so no shared cache (Vercel's CDN, proxies) may keep a copy
-  res.setHeader("Cache-Control", file.includes(`${DIST}/assets/`) ? "private, max-age=31536000, immutable" : "private, no-cache");
+  // assets/ and data/ carry a content hash in the name (vite.config.ts), so they may be kept for a year
+  res.setHeader("Cache-Control", file.includes(`${DIST}/assets/`) || file.includes(`${DIST}/data/`) ? "private, max-age=31536000, immutable" : "private, no-cache");
   // the compressed copy from the build (vite.config.ts): the main script is too large for a Vercel function uncompressed
   const accepts = String(req.headers["accept-encoding"] ?? "");
   const encoding = ["br", "gzip"].find((e) => accepts.includes(e) && existsSync(file + (e === "br" ? ".br" : ".gz")));

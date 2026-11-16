@@ -1,4 +1,6 @@
-import data from "./market-model.json";
+import { dataset } from "./dataset";
+
+const data = dataset().model;
 
 /**
  * Market model (scripts/market/model.py): German/European market value per variant from five kinds of evidence,

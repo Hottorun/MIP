@@ -6,7 +6,7 @@
   "regions": ["fra1"],
   "functions": {
     "api/server.ts": {
-      "includeFiles": "dist/{index.html,assets/**}",
+      "includeFiles": "dist/{index.html,assets/**,data/**}",
       "excludeFiles": "{dist/cars/**,public/**}"
     }
   },

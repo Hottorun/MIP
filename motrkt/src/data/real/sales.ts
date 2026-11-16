@@ -1,7 +1,9 @@
 import { hiddenVariantIds, variantById, variants, variantShortTitle, variantTitle } from "../db";
 import { inLang, t } from "../../i18n";
 import type { Body, Condition, Gearbox, SaleSource } from "../types";
-import bundledCsv from "./sales.csv?raw";
+import { dataset } from "./dataset";
+
+const bundledCsv = dataset().salesCsv;
 
 /**
  * Real transaction records imported from CSV (bundled file `sales.csv` and/or a browser upload kept in localStorage).

@@ -107,6 +107,12 @@ Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell nur Porsche).
 gebaute App. Die App liegt nur in der Funktion, nicht öffentlich im CDN; öffentlich ausgeliefert werden nur `public/`
 (Favicon, Fotos). Region Frankfurt (`fra1`).
 
+Die Marktdaten (`market-model.json`, `asks.json`, `listing-history.json`, `sales.csv`) stecken nicht im Skript: der
+Build legt sie mit Inhalts-Hash unter `dist/data/` ab (brotli/gzip daneben), `index.html` trägt das Manifest in
+`<meta name="mip-data">`, und `src/main.tsx` lädt die vier Dateien parallel zum Code, bevor die App startet
+(`src/data/real/load.ts`, `dataset.ts`). Browser behalten die Daten ein Jahr, bis sich der Hash ändert; Code-Updates
+laden sie nicht neu. Im Dev-Server kommen sie direkt aus `src/data/real`.
+
 1. Vercel-Projekt mit diesem Repository verbinden, **Root Directory `motrkt`**, Node.js 24.
 2. Postgres über den Vercel Marketplace anlegen (Neon oder Supabase, Region Frankfurt); setzt `DATABASE_URL` bzw.
    `POSTGRES_URL` im Projekt.

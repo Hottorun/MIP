@@ -1,4 +1,6 @@
-import data from "./asks.json";
+import { dataset } from "./dataset";
+
+const data = dataset().asks;
 
 /**
  * Asking prices of cars for sale in Europe that enter the market value (scripts/market/model.py): Classic Trader
