@@ -1,31 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="28 28 456 456" width="456" height="456" role="img" aria-label="Carbay">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Carbay">
 <title>Carbay</title>
-<defs>
-  <linearGradient id="bezel" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f4f2ee"/><stop offset=".45" stop-color="#9c9890"/><stop offset=".55" stop-color="#d9d6cf"/><stop offset="1" stop-color="#6f6b64"/>
-  </linearGradient>
-  <radialGradient id="face" cx=".5" cy=".42" r=".6">
-    <stop offset="0" stop-color="#1c1c1b"/><stop offset="1" stop-color="#050505"/>
-  </radialGradient>
-  <radialGradient id="hub" cx=".38" cy=".35" r=".7">
-    <stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#b9b5ad"/><stop offset="1" stop-color="#6f6b64"/>
-  </radialGradient>
-</defs>
-
-<circle cx="256" cy="256" r="226" fill="url(#bezel)"/>
-<circle cx="256" cy="256" r="212" fill="#0d0c0b"/>
-<circle cx="256" cy="256" r="206" fill="url(#face)"/>
-<path d="M439.71,285.10 A186,186 0 0 1 394.22,380.46" fill="none" stroke="#e0533d" stroke-width="22"/>
-<line x1="151.96" y1="349.68" x2="110.34" y2="387.15" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="117.72" y1="277.90" x2="62.41" y2="286.66" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="128.10" y1="199.06" x2="76.95" y2="176.28" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="179.75" y1="138.59" x2="149.25" y2="91.62" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="256.00" y1="116.00" x2="256.00" y2="60.00" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="332.25" y1="138.59" x2="362.75" y2="91.62" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="383.90" y1="199.06" x2="435.05" y2="176.28" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="394.28" y1="277.90" x2="449.59" y2="286.66" stroke="#5ed67f" stroke-width="16" stroke-linecap="butt"/>
-<line x1="360.04" y1="349.68" x2="401.66" y2="387.15" stroke="#e0533d" stroke-width="16" stroke-linecap="butt"/>
-<path d="M426.25,191.67 L251.76,244.77 L224.19,268.02 L260.24,267.23 Z" fill="#f2efe8" stroke="#00000055" stroke-width="1"/>
-<circle cx="256" cy="256" r="44" fill="url(#hub)"/><circle cx="256" cy="256" r="44" fill="none" stroke="#00000055" stroke-width="1.5"/>
-<path d="M71.82,188.96 A196,196 0 0 1 323.04,71.82 A260,260 0 0 0 71.82,188.96 Z" fill="#ffffff" opacity=".05"/>
+<rect width="512" height="512" rx="56" fill="#1f1d1a"/>
+<path transform="translate(66.48 389.61) scale(0.4235 -0.4235)" fill="#d6c49d" stroke="#d6c49d" stroke-width="33.06" stroke-linejoin="round" d="M805 184Q775 118 733.0 54.5Q691 -9 647 -48Q595 -96 522.0 -126.0Q449 -156 367 -156Q338 -156 307.5 -151.5Q277 -147 247 -137Q177 -114 131.5 -67.0Q86 -20 63.5 43.5Q41 107 41 179Q41 310 109 441Q145 512 198.5 574.5Q252 637 319.0 684.5Q386 732 463.0 759.5Q540 787 624 787Q734 787 794.0 739.5Q854 692 854 588Q854 536 832.5 485.0Q811 434 774.5 388.0Q738 342 693.0 304.5Q648 267 600 241Q563 222 522.5 211.5Q482 201 446 201Q403 201 370.5 214.0Q338 227 324 249Q308 275 308 311Q308 353 332.0 396.0Q356 439 401 476Q451 517 507.0 536.0Q563 555 616 555Q639 555 658.5 551.5Q678 548 694 543Q700 541 700 538Q700 535 691 532Q684 534 675.5 535.0Q667 536 658 536Q624 536 582.5 524.0Q541 512 501.5 492.0Q462 472 433 447Q381 403 359.0 365.5Q337 328 337 299Q337 267 362.0 249.0Q387 231 428 231Q463 231 506.5 245.0Q550 259 598 290Q679 341 737.0 417.0Q795 493 808 585Q810 595 810.5 602.0Q811 609 811 617Q811 665 789 698Q766 734 721.0 749.0Q676 764 614 764Q535 764 467.0 735.5Q399 707 343.5 658.5Q288 610 245.5 548.5Q203 487 174 422Q146 358 129.5 287.5Q113 217 113 150Q113 61 147.0 -11.5Q181 -84 257 -115Q280 -125 306.0 -129.0Q332 -133 357 -133Q411 -133 463.5 -117.0Q516 -101 562.0 -74.5Q608 -48 641 -16Q688 30 724.5 76.5Q761 123 793 193Q805 193 805 184Z"/>
 </svg>
