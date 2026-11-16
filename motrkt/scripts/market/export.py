@@ -1,7 +1,7 @@
 """Write src/data/real/sales.csv: scraped auction results + earlier hand-collected rows from other houses (re-checked)."""
 import json, sys, csv, re, collections, os, datetime
 S, OUT = sys.argv[1], sys.argv[2]
-sys.path.insert(0, S + "/tools")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # classify.py next to this script
 from classify import classify
 rows = json.load(open(S + "/web/sales_all.json"))
 AS_OF = os.environ.get("MIP_AS_OF") or datetime.date.today().isoformat()  # cut-off day: today unless set

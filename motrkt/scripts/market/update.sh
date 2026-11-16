@@ -6,8 +6,7 @@ set -e
 W=${1:?Arbeitsordner angeben}
 HERE=$(cd "$(dirname "$0")" && pwd)
 APP=$HERE/../../src/data/real
-mkdir -p "$W/web/fx" "$W/web/ucp" "$W/tools"
-cp "$HERE/classify.py" "$W/tools/classify.py"
+mkdir -p "$W/web/fx" "$W/web/ucp"
 cp "$HERE/sales_old.csv" "$W/web/sales_old.csv"  # frühere Verkäufe von Hand (Mecum, Barrett-Jackson, Presse …), gepflegt im Repo
 
 echo "1/6 Wechselkurse (EZB)"

@@ -1,6 +1,6 @@
 """Build sales rows (EUR) from Bring a Trailer, ultimatecarpage and the auction houses' own results."""
 import json, os, re, sys, csv, datetime as dt, collections, bisect, html
-sys.path.insert(0, sys.argv[1] + "/tools")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # classify.py next to this script (-I leaves the folder out)
 from classify import classify
 S = sys.argv[1]
 # links to the original lot pages (linkfetch.py); results without one keep the result list they were taken from
@@ -166,7 +166,6 @@ for key, house, prefix in HOUSES:
     out += own
 # --- Hammer Price app (hammerprice.csv next to this script, see hammerprice.py): sales and houses we cannot fetch,
 # and the highest bid of unsold lots
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # -I leaves the script folder out
 import hammerprice
 _hp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hammerprice.csv")
 if os.path.exists(_hp):
