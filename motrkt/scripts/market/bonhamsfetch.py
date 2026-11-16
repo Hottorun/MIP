@@ -115,7 +115,7 @@ try:
     while True:
         d = search("lots", q="porsche", query_by="title", per_page=PAGE, page=page,
                    filter_by="department.code:=MOT-CAR && status:[SOLD,BI] && hammerTime.timestamp:>=%d" % SINCE,
-                   sort_by="hammerTime.timestamp:desc", exclude_fields="catalogDesc,footnotes,image,styledDescription")
+                   sort_by="hammerTime.timestamp:desc", exclude_fields="catalogDesc,footnotes,styledDescription")
         for h in d["hits"]: lots[h["document"]["id"]] = h["document"]
         pages = (d["found"] + PAGE - 1) // PAGE
         print("list page", page, "of", pages, len(lots), "lots", flush=True)
@@ -153,6 +153,20 @@ try:
         date = local_date(x.get("hammerTime")) or local_date(x.get("auctionEndDate"))
         if c and date and date >= "2015-01-01": cands.append((x, title, chassis, date, sold, round(amt) if sold else None))
     print(len(cands), "auction results assigned to a variant", flush=True)
+
+    # every lot of the list with its lot page and main photo, for lotlinks.py (photos and lot links of the results
+    # taken from other sources); also copied to scripts/market/manual/bonhams-lose.json for runs where Bonhams is not
+    # reachable
+    index = []
+    for x in lots.values():
+        date = local_date(x.get("hammerTime")) or local_date(x.get("auctionEndDate"))
+        n = x.get("lotNo")
+        lot = (n.get("full") if isinstance(n, dict) else n) or x.get("lotId")
+        if not date or not lot: continue
+        index.append(dict(house="Bonhams", date=date, lot=str(lot), title=text(x.get("title") or "")[:120],
+                          url="https://www.bonhams.com/auction/%s/lot/%s/" % (x["auctionId"], x["lotId"]),
+                          image=((x.get("image") or {}).get("url") or None)))
+    save(index, os.path.join(DIR, "lots_index.json"))
 except Blocked as e:
     sys.exit("Bonhams answered the lot list with a bot challenge (%s); stopped, nothing written." % e)
 

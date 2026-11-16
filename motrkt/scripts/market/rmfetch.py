@@ -148,6 +148,12 @@ save([dict(house="RM Sotheby's", sale=it.get("header") or "", saleUrl="%s/auctio
 print(len(soon), "upcoming Porsche lots", flush=True)
 
 
+# every lot of the list with its lot page and photo, for lotlinks.py (photos and lot links of the results taken from
+# other sources, matched by sale code and lot number)
+save([dict(house="RM Sotheby's", code=code_of(it["link"]), date=sales.get(code_of(it["link"])), lot=str(it["lot"]), title=text(it["publicName"])[:120],
+           url=it["link"], image=it.get("crop") or None) for it in lots.values() if code_of(it["link"])], os.path.join(DIR, "lots_index.json"))
+
+
 # ------------------------------------------------------------------------------------------------ 3. lot pages
 def lot_details(h):
     """Chassis number and stated mileage (km, rounded to 100) from a lot page."""

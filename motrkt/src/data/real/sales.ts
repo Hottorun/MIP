@@ -33,6 +33,8 @@ export type RealSale = {
   color: string;
   vin: string;
   url?: string;
+  /** The house's main photo of the lot (scripts/market/lotlinks.py), where its lot list gives one. */
+  image?: string;
   conditionUnknown?: boolean;
   /** False when the record does not state the gearbox (then `gearbox` is only the variant's default). */
   gearboxKnown?: boolean;
@@ -67,6 +69,7 @@ const ALIASES: Record<string, string[]> = {
   vin: ["fin", "vin", "fahrgestellnummer", "chassis"],
   lot: ["los_id", "lot_id", "lot", "id"],
   url: ["url", "link", "quelle_url"],
+  image: ["bild", "image", "foto"],
   location: ["standort", "location", "verkaufsland"],
   currency: ["waehrung", "währung", "currency"],
   priceOriginal: ["preis_original", "price_original", "originalpreis"],
@@ -184,6 +187,7 @@ export function parseSalesCsv(text: string, origin = "CSV"): ParseResult {
       color: get("color") || "–",
       vin: get("vin") || "–",
       url: get("url") || undefined,
+      image: /^https:\/\//.test(get("image")) ? get("image").replace(/%3B/g, ";") : undefined,
       gearboxKnown: !!gearRaw,
       location: get("location").toUpperCase().slice(0, 2),
       currency: get("currency").toUpperCase().slice(0, 3),

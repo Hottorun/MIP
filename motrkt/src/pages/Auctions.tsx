@@ -12,6 +12,8 @@ import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, 
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
 import { unsoldPrice } from "../lib/unsold";
+import { LotGallery, LotThumb } from "../components/LotPhotos";
+import { useStickyState } from "../lib/sticky";
 
 type Source = "Alle" | "Auktion" | "Händler" | "Privat";
 type Period = "3M" | "12M" | "5J";
@@ -56,33 +58,34 @@ function sortValue(s: Sale, key: SortKey): number | string {
 
 export default function Auctions() {
   const [params, setParams] = useSearchParams();
-  const [brand, setBrand] = useState("");
-  const [source, setSource] = useState<Source>("Alle");
-  const [house, setHouse] = useState(params.get("haus") ?? "");
-  const [period, setPeriod] = useState<Period>("12M");
-  const [status, setStatus] = useState<Status>("alle");
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
-  const [text, setText] = useState(params.get("q") ?? "");
-  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "date", dir: -1 });
+  // filters stay as they were when the user comes back from a model page or the menu (src/lib/sticky.ts)
+  const [brand, setBrand] = useStickyState("auktionen.marke", "");
+  const [source, setSource] = useStickyState<Source>("auktionen.quelle", "Alle");
+  const [house, setHouse] = useStickyState("auktionen.haus", "");
+  const [period, setPeriod] = useStickyState<Period>("auktionen.zeitraum", "12M");
+  const [status, setStatus] = useStickyState<Status>("auktionen.status", "alle");
+  const [priceMin, setPriceMin] = useStickyState("auktionen.preis_von", "");
+  const [priceMax, setPriceMax] = useStickyState("auktionen.preis_bis", "");
+  const [text, setText] = useStickyState("auktionen.suche", "");
+  const [sort, setSort] = useStickyState<{ key: SortKey; dir: 1 | -1 }>("auktionen.sortierung", { key: "date", dir: -1 });
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Sale | null>(null);
 
-  // Keep text search and house in sync when navigating here from the global search.
+  // A search or house handed over in the link (global search, "Alle Ergebnisse" on a model) replaces the kept filter
+  // once; the parameters are then taken out of the URL, so going back to this page keeps what the user set since.
   const qParam = params.get("q");
   const hausParam = params.get("haus");
   useEffect(() => {
-    if (qParam !== null) {
-      setText(qParam);
-      setPeriod("5J");
-    }
-  }, [qParam]);
-  useEffect(() => {
-    if (hausParam !== null) {
-      setHouse(hausParam);
-      setPeriod("5J");
-    }
-  }, [hausParam]);
+    if (qParam === null && hausParam === null) return;
+    if (qParam !== null) setText(qParam);
+    if (hausParam !== null) setHouse(hausParam);
+    setPeriod("5J");
+    const next = new URLSearchParams(params);
+    next.delete("q");
+    next.delete("haus");
+    setParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qParam, hausParam]);
 
   useEffect(() => setPage(0), [brand, source, house, period, status, priceMin, priceMax, text, sort]);
 
@@ -184,10 +187,6 @@ export default function Auctions() {
     setPriceMin("");
     setPriceMax("");
     setText("");
-    if (params.has("q")) {
-      params.delete("q");
-      setParams(params, { replace: true });
-    }
   };
 
   return (
@@ -307,7 +306,12 @@ export default function Auctions() {
                   return (
                     <tr key={`${s.id}-${s.variantId}-${s.date}-${s.vin}`} onClick={() => setSelected(s)} tabIndex={0} role="button" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(s); } }}>
                       <td className="text-muted">{date(s.date)}</td>
-                      <td className="font-serif">{variantTitle(v, { brand: false })}</td>
+                      <td className="font-serif">
+                        <span className="flex items-center gap-3">
+                          <LotThumb url={s.url} house={s.house} image={s.image} small link={false} />
+                          {variantTitle(v, { brand: false })}
+                        </span>
+                      </td>
                       <td>
                         <span className="text-ink/90">{s.house}</span>
                         {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{tr(s.source)}</span>}
@@ -535,6 +539,7 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
         </>
       }
     >
+      <LotGallery url={sale.url} house={sale.house} image={sale.image} />
       <dl className="grid grid-cols-1 gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
         {rows.map(([k, val]) => (
           <div key={k} className="flex justify-between gap-3 border-b border-line/60 pb-1.5">

@@ -172,6 +172,9 @@ _hp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hammerprice.csv"
 if os.path.exists(_hp):
     def _eur(a, c, d): return to_eur(a, c, d) if c == "EUR" or c in fx else None
     out += hammerprice.load(_hp, classify, _eur, out, house_search)
+# --- lot links and photos for the rows that came without a lot page (lotlinks.py)
+import lotlinks
+out = lotlinks.apply(out, S)
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
 c = collections.Counter(o["variant"] for o in out if o["sold"])
 print(len(out), sum(c.values()))

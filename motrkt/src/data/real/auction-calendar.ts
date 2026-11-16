@@ -37,7 +37,6 @@ export const HOUSE_CALENDARS: { house: string; url: string; online?: boolean }[]
   { house: "Iconic Auctioneers", url: "https://www.iconicauctioneers.com/" },
   { house: "Artcurial", url: "https://www.artcurial.com/en" },
   { house: "Historics", url: "https://www.historics.co.uk/auctions/" },
-  { house: "Russo and Steele", url: "https://www.russoandsteele.com/" },
   { house: "Osenat", url: "https://www.osenat.com/" },
   { house: "Aguttes", url: "https://www.aguttes.com/ventes/prochaines-ventes" },
   { house: "COYS", url: "https://www.coys.co.uk/" },

@@ -23,7 +23,7 @@ for r in old[1:]:
     kept.append(d)
 json.dump({"kept": kept, "dropped": dropped}, open(S + "/web/old_review.json", "w"), ensure_ascii=False, indent=1)
 H = ["variant_id", "fahrzeug", "datum", "quelle", "haus", "preis_eur", "schaetzung_von", "schaetzung_bis", "verkauft", "zustand", "km", "kaeuferland", "herkunft",
-     "auslieferung", "farbe", "karosserie", "getriebe", "fin", "los_id", "url", "preis_original", "waehrung", "standort", "hoechstgebot_eur", "zuschlag_original"]
+     "auslieferung", "farbe", "karosserie", "getriebe", "fin", "los_id", "url", "preis_original", "waehrung", "standort", "hoechstgebot_eur", "zuschlag_original", "bild"]
 out = []
 for r in rows:
     gear = r["gear"] or ("Automatik" if r["year"] >= 1999 and r["src"] == "bat" and not re.search(r"\d-speed", r["title"].lower()) and False else "")
@@ -35,7 +35,9 @@ for r in rows:
                 r["km"] or "", "", "", "", "", r["body"], r["gear"], r["vin"].replace(";", ","), r["lot"], r["url"], r["orig"] or "", r["cur"] or "", r["loc"],
                 (unsold and r.get("bid")) or "",
                 # Bring a Trailer: preis_original includes the buyer's fee; the "Sold for" price shown on the site is kept here
-                r.get("hammer") or ""])
+                r.get("hammer") or "",
+                # the house's main photo of the lot where its list gives one (lotlinks.py); else the app reads the lot page
+                (r.get("image") or "").replace(";", "%3B")])
 # Earlier hand-collected rows are not carried over: the scrape covers those auctions, the rest (press reports) cannot be re-checked.
 out.sort(key=lambda x: (x[0], x[2]), reverse=False)
 with open(OUT, "w", newline="") as f:

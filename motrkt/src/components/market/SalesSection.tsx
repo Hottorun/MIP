@@ -10,6 +10,7 @@ import { date, km, safeUrl } from "../../lib/format";
 import { unsoldPrice } from "../../lib/unsold";
 import { BAT, mixHouses } from "../../lib/houseMix";
 import { Section, Money } from "../ui";
+import { LotThumb } from "../LotPhotos";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
@@ -66,7 +67,9 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
       ) : (
         <ul>
           {shown.map((s) => (
-            <li key={s.id + s.date} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 border-b border-line py-4">
+            <li key={s.id + s.date} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 border-b border-line py-4">
+              <div className="flex min-w-0 items-center gap-4">
+              <LotThumb url={s.url} house={s.house} image={s.image} />
               <div className="min-w-0">
                 <div className="flex items-baseline gap-2 font-serif text-[16px]">
                   {s.url ? (
@@ -94,6 +97,7 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
                     )}
                   </div>
                 )}
+              </div>
               </div>
               <div className={"text-right text-[18px]" + (outliers.has(s.id) ? " text-muted line-through decoration-1" : "")}>{s.price ? (
                   <Money value={s.price} sale={s} />

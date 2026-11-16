@@ -187,6 +187,20 @@ try:
         cands.append((h, a, title, date, status))
     save(soon, os.path.join(DIR, "upcoming_lots.json"))
     print(len(soon), "upcoming Porsche lots", flush=True)
+    # every car of the list with its lot page, for lotlinks.py (lot links and photos of the results taken from other
+    # sources, matched by day and lot number); the photos come from the lot page when the app shows the result
+    index = []
+    for h in lots.values():
+        if "Auto" not in {x.get("name") for x in tax(h, "lot_type")} or not h.get("permalink"): continue
+        a = (tax(h, "auction_tax") or [{}])[0]
+        run = ((tax(h, "run_date") or [{}])[0].get("name") or "")[:10]
+        date = run if re.match(r"\d{4}-\d\d-\d\d$", run) else day(a.get("start_timestamp"))
+        if not date: continue
+        title = re.sub(r"\s+", " ", html.unescape(h.get("post_title") or "")).strip()
+        if not re.match(r"\d{4} ", title) and h.get("lot_year"): title = "%s %s" % (h["lot_year"], title)
+        index.append(dict(house="Mecum", date=date, end=day(a.get("end_timestamp")), lot=str(h.get("lot_number_meta") or ""),
+                          title=title[:120], url=SITE + h["permalink"], image=None))
+    save(index, os.path.join(DIR, "lots_index.json"))
     print(len(cands), "auction results since 2015 assigned to a variant; left out:",
           ", ".join("%d %s" % (n, k) for k, n in sorted(skipped.items())), flush=True)
 

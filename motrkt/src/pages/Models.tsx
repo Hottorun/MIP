@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useStickyParams, useStickyState } from "../lib/sticky";
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowDown, ArrowRight, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
@@ -113,11 +114,13 @@ export default function Models() {
   const upcoming = upcomingBrandById.get(brandId);
   const effectiveBrand = brandId || (modelId ? modelById.get(modelId)?.brandId ?? "" : "");
 
-  const [query, setQuery] = useState("");
-  const [era, setEra] = useState("");
-  const [sort, setSort] = useState<SortKey>("series");
-  const [desc, setDesc] = useState(false);
-  const [view, setView] = useState<"grid" | "table">("grid");
+  // search, filters and view stay as they were when the user comes back from a model (src/lib/sticky.ts)
+  useStickyParams("modelle", params, setParams);
+  const [query, setQuery] = useStickyState("modelle.suche", "");
+  const [era, setEra] = useStickyState("modelle.epoche", "");
+  const [sort, setSort] = useStickyState<SortKey>("modelle.sortierung", "series");
+  const [desc, setDesc] = useStickyState("modelle.absteigend", false);
+  const [view, setView] = useStickyState<"grid" | "table">("modelle.ansicht", "grid");
   const [compare, setCompare] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
 

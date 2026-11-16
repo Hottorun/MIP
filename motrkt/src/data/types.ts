@@ -117,6 +117,7 @@ export type Sale = {
   vin: string;
   trend: number; // price vs. market value at that date, e.g. 0.059
   url?: string; // source link for imported real records
+  image?: string; // the house's main photo of the lot, where its lot list gives one (scripts/market/lotlinks.py)
   conditionUnknown?: boolean; // imported record without a stated condition (normalised as "2")
   highBid?: number | null; // highest bid of an unsold auction lot (Bring a Trailer, Hammer Price, the houses), EUR; enters the market value as a bid channel (EU_BID/US_BID)
   currency?: string; // currency the price was given in (USD, EUR, GBP …), "" when unknown

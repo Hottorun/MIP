@@ -59,3 +59,13 @@ Für einzelne Ergebnisse, die von Hand auf der Ergebnisseite des Auktionshauses 
 `sales.csv`, z. B. `UCP-468-147`), Zuschlag mit Aufgeld (`preis`, `waehrung`) und der direkte Link zum Los. Preis
 und Link des Hauses ersetzen dann die Angaben von ultimatecarpage. Leerer Preis: nur den Link ersetzen (z. B. nicht
 verkauft). Gilt für den nächsten Lauf von `build.py` bzw. `update.sh`.
+
+## Weitere Dateien in diesem Ordner
+
+- `auktionstermine.csv`: Termine kommender Auktionen von Häusern ohne Abrufskript (Historics, Barrett-Jackson …), für
+  die Liste „Kommende Auktionen“ (`upcoming.py`). Keine Preise, zählt nicht zum Marktwert.
+- `bonhams-lose.json`: Losliste von Bonhams (Datum, Losnummer, Link zur Losseite, Hauptfoto), geschrieben von
+  `bonhamsfetch.py` bei einem lokalen Lauf und hierher kopiert. `lotlinks.py` verknüpft damit Bonhams-Ergebnisse aus
+  anderen Quellen mit ihrer Losseite und ihrem Foto, auch wenn Bonhams die Abrufe vom GitHub-Server blockiert.
+  Auffrischen: `python3 -I bonhamsfetch.py ~/Documents/MIP-Marktdaten --lot-pages 0` und
+  `cp ~/Documents/MIP-Marktdaten/web/bonhams/lots_index.json manual/bonhams-lose.json`.

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useStickyParams } from "../lib/sticky";
 import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, RefreshCw, Search, Star, TrendingDown, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
@@ -64,6 +65,8 @@ export default function Buy() {
   const variantParam = params.get("variant");
   const variantFilter = variantParam ? variantById.get(variantParam) : undefined;
   const selectedId = params.get("inserat");
+  // the filters come back when the user returns from a listing or a model page (src/lib/sticky.ts)
+  useStickyParams("kaufen", params, setParams, ["inserat"]);
 
   // The filters live in the URL (like on the Models page): a filtered view can be shared, reloaded and gone back to.
   const get = (k: string) => params.get(k) ?? "";
