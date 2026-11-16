@@ -89,7 +89,7 @@ export default function Auctions() {
 
   useEffect(() => setPage(0), [brand, source, house, period, status, priceMin, priceMax, text, sort]);
 
-  // All filters except the period; restricted to the 5-year data window anyway.
+  // All filters except the period (all results since 2015).
   const base = useMemo(() => {
     const q = text.trim().toLowerCase();
     const tUpper = text.trim().toUpperCase();
@@ -196,10 +196,7 @@ export default function Auctions() {
           <div>
             <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Auktionen", "Auctions")}</h1>
             <p className="mt-1 text-[14px] text-muted">
-              {t(
-                `${num(getAllSales().length)} erfasste Verkäufe der letzten fünf Jahre`,
-                `${num(getAllSales().length)} recorded sales over the last five years`,
-              )}
+              {t(`${num(getAllSales().length)} erfasste Auktionsergebnisse seit 2015`, `${num(getAllSales().length)} recorded auction results since 2015`)}
             </p>
           </div>
           <Segmented
