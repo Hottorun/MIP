@@ -100,18 +100,18 @@ export async function handleMobileDe(req: IncomingMessage, res: ServerResponse, 
   if (url.pathname !== "/api/mobilede/search" || req.method !== "GET") return send(res, 404, { error: "Not found" });
 
   const auth = credentials();
-  if (!auth) return send(res, 503, { error: "mobile.de ist nicht konfiguriert (MOBILEDE_USERNAME / MOBILEDE_PASSWORD fehlen)", configured: false });
+  if (!auth) return send(res, 503, { error: "not_configured", configured: false });
 
   const make = url.searchParams.get("make") ?? "";
   const model = url.searchParams.get("model") ?? "";
   const from = Number(url.searchParams.get("from"));
   const to = Number(url.searchParams.get("to"));
   const page = Math.max(1, Math.min(20, Number(url.searchParams.get("page") ?? 1)));
-  if (!SAFE.test(make) || (model && !SAFE.test(model))) return send(res, 400, { error: "Ungültige Marke/Modell" });
+  if (!SAFE.test(make) || (model && !SAFE.test(model))) return send(res, 400, { error: "bad_query" });
   // the partner API has a quota: a budget per account and hour (server/limits.ts), well above one app start
   const user = await currentUser(req);
   if (!user) return send(res, 401, { error: "not signed in" });
-  if (await overLimit("mobilede", user.id)) return send(res, 429, { error: "Stundenlimit für mobile.de-Abfragen erreicht" });
+  if (await overLimit("mobilede", user.id)) return send(res, 429, { error: "too_many" });
 
   const q = new URLSearchParams({
     classification: `refdata/classes/Car/makes/${make}${model ? `/models/${model}` : ""}`,
@@ -132,8 +132,8 @@ export async function handleMobileDe(req: IncomingMessage, res: ServerResponse, 
       headers: { Authorization: `Basic ${auth}`, Accept: "application/vnd.de.mobile.api+json", "Accept-Language": "de" },
       signal: AbortSignal.timeout(20_000),
     });
-    if (r.status === 401 || r.status === 403) return send(res, 502, { error: "mobile.de hat die Zugangsdaten abgelehnt" });
-    if (!r.ok) return send(res, 502, { error: `mobile.de antwortet mit ${r.status}` });
+    if (r.status === 401 || r.status === 403) return send(res, 502, { error: "credentials_rejected" });
+    if (!r.ok) return send(res, 502, { error: "upstream_status", status: r.status });
     const data = (await r.json()) as Json;
     const body = {
       total: num(data.total) ?? 0,
@@ -145,6 +145,6 @@ export async function handleMobileDe(req: IncomingMessage, res: ServerResponse, 
     cache.set(target, { at: Date.now(), body });
     send(res, 200, body);
   } catch (e) {
-    send(res, 504, { error: e instanceof Error && e.name === "TimeoutError" ? "mobile.de antwortet nicht (Timeout)" : "mobile.de nicht erreichbar" });
+    send(res, 504, { error: e instanceof Error && e.name === "TimeoutError" ? "timeout" : "unreachable" });
   }
 }

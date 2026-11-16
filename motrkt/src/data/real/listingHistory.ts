@@ -42,6 +42,13 @@ export function historyOf(url: string): ListingHistory | undefined {
   return url ? D.listings[url] : undefined;
 }
 
+/** Change of the asking price since the first sighting (−0.08 = cut by 8 %); null while it never changed. */
+export function priceChangeOf(prices: [string, number][] | undefined): number | null {
+  if (!prices || prices.length < 2 || !prices[0][1]) return null;
+  const change = prices[prices.length - 1][1] / prices[0][1] - 1;
+  return Math.abs(change) < 0.005 ? null : change;
+}
+
 /** Whole days between two ISO days. */
 export function daysBetween(a: string, b: string): number {
   return Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { BadgeCheck, ChevronLeft, MessageSquare } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+import { BadgeCheck, ChevronLeft, Flag, MessageSquare } from "lucide-react";
 import type { Variant } from "../../data/types";
 import { variantTitle } from "../../data/db";
 import { cn, num } from "../../lib/format";
@@ -7,13 +8,16 @@ import { locale, t } from "../../i18n";
 import { Section, useConfirm } from "../ui";
 import { api } from "../../lib/userCars";
 
-/** Forum of one variant at the bottom of its page (server/forum.ts): topics, then one topic with its replies. */
+/**
+ * Forum of one variant at the bottom of its page (server/forum.ts): topics (a page at a time), then one topic with
+ * its replies. `?thema=<id>` in the URL opens that topic (links from the forum overview and the search).
+ */
 
-type Topic = { id: string; title: string; username: string; owner: boolean; createdAt: string; lastPostAt: string; posts: number; excerpt: string | null };
-type Post = { id: string; username: string; owner: boolean; createdAt: string; body: string | null; mine: boolean; canHide: boolean };
+export type Topic = { id: string; title: string; username: string; owner: boolean; createdAt: string; lastPostAt: string; posts: number; excerpt: string | null };
+type Post = { id: string; username: string; owner: boolean; createdAt: string; editedAt: string | null; body: string | null; mine: boolean; canHide: boolean; reported: boolean; reports?: number };
 type Thread = { topic: { id: string; title: string; username: string; createdAt: string }; posts: Post[]; admin: boolean };
 
-const when = (iso: string) =>
+export const when = (iso: string) =>
   new Date(iso).toLocaleString(locale(), { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 const ERR: Record<string, () => string> = {
@@ -37,18 +41,30 @@ function Author({ name, owner }: { name: string; owner: boolean }) {
 }
 
 export function Forum({ variant }: { variant: Variant }) {
+  const [params, setParams] = useSearchParams();
   const [topics, setTopics] = useState<Topic[] | null>(null);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(false);
-  const [open, setOpen] = useState<string | null>(null);
+  const open = params.get("thema");
   const [writing, setWriting] = useState(false);
+  const setOpen = (id: string | null) => {
+    const p = new URLSearchParams(params);
+    if (id) p.set("thema", id);
+    else p.delete("thema");
+    setParams(p, { replace: true });
+  };
 
-  const load = () =>
-    api<{ topics: Topic[] }>(`/api/forum/${variant.id}`)
-      .then((j) => (setTopics(j.topics), setError(false)))
+  const load = (offset = 0) =>
+    api<{ topics: Topic[]; hasMore: boolean }>(`/api/forum/${variant.id}?offset=${offset}`)
+      .then((j) => {
+        setTopics((prev) => (offset && prev ? [...prev, ...j.topics] : j.topics));
+        setHasMore(j.hasMore);
+        setError(false);
+      })
       .catch(() => setError(true));
   useEffect(() => {
     setTopics(null);
-    setOpen(null);
     setWriting(false);
     load();
   }, [variant.id]);
@@ -81,6 +97,7 @@ export function Forum({ variant }: { variant: Variant }) {
             />
           )}
           {error && <p className="text-[14px] text-down">{t("Das Forum konnte nicht geladen werden.", "The forum could not be loaded.")}</p>}
+          {!topics && !error && <p className="text-[14px] text-faint">{t("Themen werden geladen …", "Loading topics …")}</p>}
           {topics && !topics.length && !writing && (
             <p className="text-[14px] text-muted">
               {t("Noch keine Themen. Stellen Sie die erste Frage oder teilen Sie Ihre Erfahrung.", "No topics yet. Ask the first question or share your experience.")}
@@ -108,6 +125,21 @@ export function Forum({ variant }: { variant: Variant }) {
                 </li>
               ))}
             </ul>
+          )}
+          {hasMore && topics && (
+            <div className="mt-4 text-center">
+              <button
+                className="btn"
+                disabled={loadingMore}
+                onClick={async () => {
+                  setLoadingMore(true);
+                  await load(topics.length);
+                  setLoadingMore(false);
+                }}
+              >
+                {t("Weitere Themen", "More topics")}
+              </button>
+            </div>
           )}
         </>
       )}
@@ -171,12 +203,17 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
   const [reply, setReply] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
+  const [editing, setEditing] = useState<{ id: string; body: string } | null>(null);
+  const [reporting, setReporting] = useState<{ id: string; reason: string } | null>(null);
   const { confirm, dialog: confirmDialog } = useConfirm();
   const load = () =>
     api<Thread>(`/api/forum/thema/${id}`)
-      .then(setThread)
+      .then((x) => (setThread(x), setError(false)))
       .catch(() => setError(true));
   useEffect(() => {
+    setThread(null);
+    setEditing(null);
+    setReporting(null);
     load();
   }, [id]);
 
@@ -184,6 +221,27 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
     if (!(await confirm(t("Diesen Beitrag entfernen?", "Remove this post?"), { confirmLabel: t("Entfernen", "Remove") }))) return;
     await api(`/api/forum/beitrag/${postId}/ausblenden`, { method: "POST" }).catch(() => {});
     load();
+  }
+  async function saveEdit() {
+    if (!editing) return;
+    setBusy(true);
+    try {
+      await api(`/api/forum/beitrag/${editing.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ body: editing.body }) });
+      setEditing(null);
+      await load();
+    } catch (e) {
+      setErr(errText(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function sendReport() {
+    if (!reporting) return;
+    setBusy(true);
+    await api(`/api/forum/beitrag/${reporting.id}/melden`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reason: reporting.reason }) }).catch(() => {});
+    setReporting(null);
+    setBusy(false);
+    await load();
   }
 
   return (
@@ -193,6 +251,7 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
         <ChevronLeft className="size-4" /> {t("Alle Themen", "All topics")}
       </button>
       {error && <p className="text-[14px] text-down">{t("Das Thema konnte nicht geladen werden.", "The topic could not be loaded.")}</p>}
+      {!thread && !error && <p className="text-[14px] text-faint">{t("Wird geladen …", "Loading …")}</p>}
       {thread && (
         <>
           <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
@@ -216,17 +275,67 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
                 <div className="flex flex-wrap items-baseline justify-between gap-2 text-[12.5px] text-faint">
                   <span>
                     <Author name={p.username} owner={p.owner} /> · {when(p.createdAt)}
+                    {p.editedAt && <span title={when(p.editedAt)}> · {t("bearbeitet", "edited")}</span>}
+                    {thread.admin && !!p.reports && (
+                      <span className="ml-2 inline-flex items-center gap-1 text-down">
+                        <Flag className="size-3" /> {p.reports === 1 ? t("1 Meldung", "1 report") : t(`${p.reports} Meldungen`, `${p.reports} reports`)}
+                      </span>
+                    )}
                   </span>
-                  {p.canHide && (
-                    <button className="hover:text-down" onClick={() => hide(p.id)}>
-                      {p.mine ? t("Löschen", "Delete") : t("Ausblenden", "Hide")}
-                    </button>
-                  )}
+                  <span className="flex gap-3">
+                    {p.mine && p.body != null && (
+                      <button className="hover:text-ink" onClick={() => setEditing({ id: p.id, body: p.body! })}>
+                        {t("Bearbeiten", "Edit")}
+                      </button>
+                    )}
+                    {!p.mine && p.body != null && (
+                      p.reported ? (
+                        <span>{t("Gemeldet", "Reported")}</span>
+                      ) : (
+                        <button className="hover:text-down" onClick={() => setReporting({ id: p.id, reason: "" })}>
+                          {t("Melden", "Report")}
+                        </button>
+                      )
+                    )}
+                    {p.canHide && (
+                      <button className="hover:text-down" onClick={() => hide(p.id)}>
+                        {p.mine ? t("Löschen", "Delete") : t("Ausblenden", "Hide")}
+                      </button>
+                    )}
+                  </span>
                 </div>
-                {p.body == null ? (
+                {editing?.id === p.id ? (
+                  <div className="mt-2 space-y-2">
+                    <textarea className="input min-h-24" maxLength={5000} value={editing.body} onChange={(e) => setEditing({ id: p.id, body: e.target.value })} autoFocus />
+                    <div className="flex gap-2">
+                      <button className="btn btn-gold text-[13px]" onClick={saveEdit} disabled={busy || editing.body.trim().length < 2}>
+                        {t("Speichern", "Save")}
+                      </button>
+                      <button className="btn text-[13px]" onClick={() => setEditing(null)} disabled={busy}>
+                        {t("Abbrechen", "Cancel")}
+                      </button>
+                    </div>
+                  </div>
+                ) : p.body == null ? (
                   <p className="mt-1 text-[14px] text-faint italic">{t("Beitrag entfernt.", "Post removed.")}</p>
                 ) : (
                   <p className="mt-1 text-[15px] break-words whitespace-pre-wrap">{p.body}</p>
+                )}
+                {reporting?.id === p.id && (
+                  <div className="mt-2 flex flex-wrap items-end gap-2 rounded-[3px] border border-line bg-panel-2 p-3">
+                    <div className="min-w-0 flex-1">
+                      <label className="label" htmlFor={`report-${p.id}`}>
+                        {t("Was stimmt mit dem Beitrag nicht? (optional)", "What is wrong with this post? (optional)")}
+                      </label>
+                      <input id={`report-${p.id}`} className="input" maxLength={500} value={reporting.reason} onChange={(e) => setReporting({ id: p.id, reason: e.target.value })} autoFocus />
+                    </div>
+                    <button className="btn text-[13px]" onClick={sendReport} disabled={busy}>
+                      <Flag className="size-3.5" /> {t("An Prüfer melden", "Report to reviewers")}
+                    </button>
+                    <button className="btn btn-ghost text-[13px]" onClick={() => setReporting(null)}>
+                      {t("Abbrechen", "Cancel")}
+                    </button>
+                  </div>
                 )}
               </li>
             ))}

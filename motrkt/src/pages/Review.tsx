@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { variantById, variantTitle, variants } from "../data/db";
 import { getMetrics } from "../data/market";
 import { date, eur, num } from "../lib/format";
@@ -33,8 +34,10 @@ export default function Review() {
         </p>
       </div>
       {error === "load" && <p className="text-down">{t("Konnte nicht geladen werden.", "Could not be loaded.")}</p>}
+      {!data && !error && <p className="text-faint">{t("Wird geladen …", "Loading …")}</p>}
       {data && !data.open.length && <p className="text-muted">{t("Keine offenen Meldungen.", "No open reports.")}</p>}
       {data?.open.map((c) => <ReviewItem key={c.id} car={c} onDone={load} />)}
+      {data && <ReportedPosts />}
       {data && data.done.length > 0 && (
         <Card title={t("Zuletzt entschieden", "Recently decided")}>
           <ul className="divide-y divide-line text-[14px]">
@@ -57,6 +60,50 @@ export default function Review() {
   );
 }
 
+type Reported = { id: string; topic: string; variant: string; title: string; username: string; body: string; createdAt: string; reports: number; reasons: string[] };
+
+/** Forum posts other users reported (server/forum.ts /api/forum/meldungen): open the topic, or hide the post here. */
+function ReportedPosts() {
+  const [posts, setPosts] = useState<Reported[] | null>(null);
+  const load = () =>
+    api<{ posts: Reported[] }>("/api/forum/meldungen")
+      .then((j) => setPosts(j.posts))
+      .catch(() => setPosts([]));
+  useEffect(() => {
+    load();
+  }, []);
+  if (!posts?.length) return null;
+  return (
+    <Card title={t("Gemeldete Forumsbeiträge", "Reported forum posts")} sub={t(`${posts.length} offen`, `${posts.length} open`)}>
+      <ul className="divide-y divide-line text-[14px]">
+        {posts.map((p) => (
+          <li key={p.id} className="space-y-1 py-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <Link to={`/markt/${p.variant}?thema=${p.topic}#forum`} className="font-serif text-[16px] hover:underline">
+                {p.title}
+              </Link>
+              <span className="text-[12.5px] text-muted">
+                {p.username} · {date(new Date(p.createdAt).getTime())} · {p.reports === 1 ? t("1 Meldung", "1 report") : t(`${p.reports} Meldungen`, `${p.reports} reports`)}
+              </span>
+            </div>
+            <p className="line-clamp-3 whitespace-pre-wrap text-muted">{p.body}</p>
+            {p.reasons.length > 0 && <p className="text-[12.5px] text-faint">{t("Begründung", "Reason")}: {p.reasons.join(" · ")}</p>}
+            <button
+              className="text-[12.5px] text-faint hover:text-down"
+              onClick={async () => {
+                await api(`/api/forum/beitrag/${p.id}/ausblenden`, { method: "POST" }).catch(() => {});
+                load();
+              }}
+            >
+              {t("Beitrag ausblenden", "Hide post")}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
+}
+
 const VERDICT = {
   passt: { tone: "up" as const, de: "Vertrag passt", en: "Contract matches" },
   abweichungen: { tone: "warn" as const, de: "Abweichungen", en: "Mismatches" },
@@ -66,6 +113,7 @@ const VERDICT = {
 
 function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
   const [ai, setAi] = useState(car.ai_check);
+  const [variantQuery, setVariantQuery] = useState("");
   const [note, setNote] = useState("");
   const [fix, setFix] = useState({ variant_id: car.variant_id, price: "", sale_date: "", km: "", build_year: "" });
   const [busy, setBusy] = useState(false);
@@ -201,12 +249,21 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
           <div className="mt-4 grid grid-cols-2 gap-2">
             <div className="col-span-2">
               <label className="label">{t("Variante korrigieren", "Correct variant")}</label>
+              <input
+                className="input mb-1"
+                placeholder={t("Varianten filtern, z. B. 993 Turbo", "Filter variants, e.g. 993 Turbo")}
+                value={variantQuery}
+                onChange={(e) => setVariantQuery(e.target.value)}
+                aria-label={t("Varianten filtern", "Filter variants")}
+              />
               <select className="input" value={fix.variant_id} onChange={(e) => setFix({ ...fix, variant_id: e.target.value })}>
-                {variants.map((x) => (
-                  <option key={x.id} value={x.id}>
-                    {variantTitle(x)}
-                  </option>
-                ))}
+                {variants
+                  .filter((x) => x.id === fix.variant_id || variantQuery.trim().toLowerCase().split(/\s+/).every((w) => variantTitle(x).toLowerCase().includes(w)))
+                  .map((x) => (
+                    <option key={x.id} value={x.id}>
+                      {variantTitle(x)}
+                    </option>
+                  ))}
               </select>
             </div>
             {(

@@ -83,9 +83,12 @@ zeigt (Kaufen, Modellseite), nicht beim App-Start.
 
 Ganz unten auf jeder Modellseite (`/markt/:variante#forum`) tauschen sich angemeldete Nutzer in Themen aus: Thema mit
 erstem Beitrag eröffnen, antworten, lesen. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag gemeldet hat, trägt
-das Abzeichen „Besitzer“. Autoren löschen eigene Beiträge, Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen
-aus; die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen.
-Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`.
+das Abzeichen „Besitzer“. Autoren bearbeiten und löschen eigene Beiträge, andere melden Beiträge an die Prüfer
+(`/pruefung` zeigt gemeldete Beiträge mit Begründung), Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen aus;
+die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen; Themen
+werden seitenweise (30) geladen. `/forum` zeigt die zuletzt bewegten Themen aller Modelle (Eintrag im Menü), Links
+öffnen das Thema auf der Modellseite (`?thema=<id>#forum`); die Suche findet Themen nach Titel und Inserate nach
+Titel, Anbieter oder Ort. Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`, `008_forum_reports.sql`.
 
 ## Konfiguration (`.env`)
 
@@ -148,7 +151,9 @@ Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenver
 | `/auktionen` | Durchsuchbare Auktionsergebnisse (ID, FIN, Haus) |
 | `/portfolio` | Bestand, Wertentwicklung, Allokation, Watchlist, Preisalarme, CSV-Export |
 | `/insights` | Marktzyklus, Heatmap, Segmente, Rendite-Risiko-Streudiagramme |
-| `/kaufen` | Aktuelle Inserate (Classic Trader, Händlerseiten, optional mobile.de) mit Deal-Score gegenüber dem fairen Marktwert |
+| `/kaufen` | Aktuelle Inserate (Classic Trader, Händlerseiten, optional mobile.de) mit Deal-Score gegenüber dem fairen Marktwert, Preissenkungen aus der täglichen Erfassung (Filter „Preis gesenkt“, Preisverlauf im Inserat) |
+| `/forum` | Neueste Forumsthemen aller Modelle |
+| `/konto` | Passwort, Datenexport, Konto löschen |
 | `/ai` | Co-Pilot im Vollbild mit Prompt-Bibliothek |
 
 ## Daten

@@ -3,7 +3,7 @@ import type { Body, Condition, Gearbox, Listing, PricePoint, Sale, SaleSource, V
 import { rng, type Rng } from "../lib/random";
 import { realSalesFor } from "./real/sales";
 import { askPhotos, asksFor, type Ask } from "./real/asks";
-import { historyOf } from "./real/listingHistory";
+import { historyOf, priceChangeOf } from "./real/listingHistory";
 import { MODEL_AS_OF, MODEL_START, marketBasis, modelValueAt } from "./real/model";
 
 /** Synthetic but internally consistent market data, generated deterministically from the catalog. */
@@ -426,6 +426,8 @@ function askToListing(a: Ask, v: Variant): Listing {
     gearbox: onlyGearbox(v),
     vin: "–",
     listedAt: Date.parse(seen?.first ?? a.date),
+    priceHistory: seen?.prices,
+    priceChange: priceChangeOf(seen?.prices),
     matchingNumbers: null,
     serviceHistory: null,
     description: "",

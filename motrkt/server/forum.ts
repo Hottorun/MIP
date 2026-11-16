@@ -11,12 +11,16 @@ import { db } from "./db.ts";
  * verified owner. Authors remove their own posts, reviewers (MIP_ADMINS) hide posts and topics; rows stay in the
  * database (hidden_at), nothing is deleted.
  *
- *   GET  /api/forum/:variant                      topics, newest activity first
+ *   GET  /api/forum/neueste?limit=20              latest topics across all variants (forum overview, search)
+ *   GET  /api/forum/meldungen                     reviewers: reported posts
+ *   GET  /api/forum/:variant?offset=0             topics, newest activity first, PAGE at a time (hasMore)
  *   POST /api/forum/:variant                      { title, body } -> new topic with its first post
  *   GET  /api/forum/thema/:id                     the topic and its posts
  *   POST /api/forum/thema/:id                     { body } -> reply
  *   POST /api/forum/thema/:id/ausblenden          reviewers: hide the topic
+ *   PUT  /api/forum/beitrag/:id                   author: { body } -> edit the post
  *   POST /api/forum/beitrag/:id/ausblenden        author or reviewer: hide the post
+ *   POST /api/forum/beitrag/:id/melden            { reason } -> report the post to the reviewers
  */
 
 const VARIANTS = new Set((variantIds as [string, string][]).map(([id]) => id));
@@ -24,6 +28,8 @@ const TITLE = [3, 120] as const;
 const BODY = [2, 5000] as const;
 const MAX_POSTS_HOUR = 30;
 const MAX_TOPICS_HOUR = 5;
+const PAGE = 30;
+const REASON = [0, 500] as const;
 
 function sendJson(res: ServerResponse, status: number, body: unknown) {
   res.statusCode = status;
@@ -75,6 +81,30 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
   const admin = isAdmin(user);
   const [, , , a, b, c] = url.pathname.split("/"); // "", "api", "forum", a, b, c
 
+  // ---------------------------------------------------------------- latest topics everywhere
+  if (a === "neueste" && !b && req.method === "GET") {
+    const limit = Math.max(1, Math.min(200, Number(url.searchParams.get("limit")) || 20));
+    const topics = await db()<{ id: string; variant_id: string; username: string; title: string; created_at: Date; last_post_at: Date; posts: number; first: string | null }[]>`
+      select t.id, t.variant_id, t.username, t.title, t.created_at, t.last_post_at,
+             (select count(*)::int from forum_posts p where p.topic_id = t.id and p.hidden_at is null) as posts,
+             (select left(p.body, 220) from forum_posts p where p.topic_id = t.id and p.hidden_at is null order by p.created_at limit 1) as first
+      from forum_topics t where t.hidden_at is null order by t.last_post_at desc limit ${limit}`;
+    return sendJson(res, 200, {
+      topics: topics.map((x) => ({ id: x.id, variant: x.variant_id, title: x.title, username: x.username, createdAt: x.created_at, lastPostAt: x.last_post_at, posts: x.posts, excerpt: x.first })),
+    });
+  }
+
+  // ---------------------------------------------------------------- reported posts (reviewers)
+  if (a === "meldungen" && !b && req.method === "GET") {
+    if (!admin) return sendJson(res, 403, { error: "forbidden" });
+    const rows = await db()<{ id: string; topic_id: string; variant_id: string; title: string; username: string; body: string; created_at: Date; reports: number; reasons: string[] }[]>`
+      select p.id, p.topic_id, t.variant_id, t.title, p.username, left(p.body, 400) as body, p.created_at,
+             count(r.*)::int as reports, array_remove(array_agg(r.reason), null) as reasons
+      from forum_reports r join forum_posts p on p.id = r.post_id join forum_topics t on t.id = p.topic_id
+      where p.hidden_at is null group by p.id, t.id order by max(r.created_at) desc limit 100`;
+    return sendJson(res, 200, { posts: rows.map((r) => ({ id: r.id, topic: r.topic_id, variant: r.variant_id, title: r.title, username: r.username, body: r.body, createdAt: r.created_at, reports: r.reports, reasons: r.reasons })) });
+  }
+
   // ---------------------------------------------------------------- one topic
   if (a === "thema" && b) {
     const [topic] = await db()<{ id: string; variant_id: string; user_id: string; username: string; title: string; created_at: Date; hidden_at: Date | null }[]>`
@@ -88,8 +118,11 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
     if (c) return sendJson(res, 404, { error: "Not found" });
     if (req.method === "GET") {
       const owners = await verifiedOwners(topic.variant_id);
-      const posts = await db()<{ id: string; user_id: string; username: string; body: string; created_at: Date; hidden_at: Date | null }[]>`
-        select id, user_id, username, body, created_at, hidden_at from forum_posts where topic_id = ${topic.id} order by created_at`;
+      const posts = await db()<{ id: string; user_id: string; username: string; body: string; created_at: Date; edited_at: Date | null; hidden_at: Date | null; reports: number; reported: boolean }[]>`
+        select p.id, p.user_id, p.username, p.body, p.created_at, p.edited_at, p.hidden_at,
+               (select count(*)::int from forum_reports r where r.post_id = p.id) as reports,
+               exists(select 1 from forum_reports r where r.post_id = p.id and r.user_id = ${user.id}) as reported
+        from forum_posts p where p.topic_id = ${topic.id} order by p.created_at`;
       return sendJson(res, 200, {
         topic: { id: topic.id, variant: topic.variant_id, title: topic.title, username: topic.username, createdAt: topic.created_at, hidden: Boolean(topic.hidden_at) },
         posts: posts.map((p) => ({
@@ -97,10 +130,13 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
           username: p.username,
           owner: owners.has(p.user_id),
           createdAt: p.created_at,
+          editedAt: p.edited_at,
           // a removed post keeps its place in the thread, without its text
           body: p.hidden_at ? null : p.body,
           mine: p.user_id === user.id,
           canHide: !p.hidden_at && (admin || p.user_id === user.id),
+          reported: p.reported,
+          reports: admin ? p.reports : undefined,
         })),
         admin,
       });
@@ -121,29 +157,49 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
     return sendJson(res, 404, { error: "Not found" });
   }
 
-  // ---------------------------------------------------------------- hide a post
-  if (a === "beitrag" && b && c === "ausblenden" && req.method === "POST") {
+  // ---------------------------------------------------------------- one post: hide, edit, report
+  if (a === "beitrag" && b) {
     const [p] = await db()<{ id: string; user_id: string }[]>`select id, user_id from forum_posts where id = ${b} and hidden_at is null`;
     if (!p) return sendJson(res, 404, { error: "Not found" });
-    if (!admin && p.user_id !== user.id) return sendJson(res, 403, { error: "forbidden" });
-    await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username} where id = ${p.id}`;
-    return sendJson(res, 200, { ok: true });
+    if (c === "ausblenden" && req.method === "POST") {
+      if (!admin && p.user_id !== user.id) return sendJson(res, 403, { error: "forbidden" });
+      await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username} where id = ${p.id}`;
+      return sendJson(res, 200, { ok: true });
+    }
+    if (!c && req.method === "PUT") {
+      if (p.user_id !== user.id) return sendJson(res, 403, { error: "forbidden" });
+      const body = await readBody(req);
+      const t = body && text(body.body, BODY);
+      if (!t) return sendJson(res, 400, { error: "body" });
+      await db()`update forum_posts set body = ${t}, edited_at = now() where id = ${p.id}`;
+      return sendJson(res, 200, { ok: true });
+    }
+    if (c === "melden" && req.method === "POST") {
+      if (p.user_id === user.id) return sendJson(res, 400, { error: "own" });
+      const body = await readBody(req);
+      const reason = body ? text(body.reason, REASON) : "";
+      await db()`insert into forum_reports (post_id, user_id, reason) values (${p.id}, ${user.id}, ${reason || null}) on conflict do nothing`;
+      return sendJson(res, 200, { ok: true });
+    }
+    return sendJson(res, 404, { error: "Not found" });
   }
 
   // ---------------------------------------------------------------- topics of a variant
   if (a && !b && VARIANTS.has(a)) {
     if (req.method === "GET") {
       const owners = await verifiedOwners(a);
+      const offset = Math.max(0, Number(url.searchParams.get("offset")) || 0);
       const topics = await db()<{ id: string; user_id: string; username: string; title: string; created_at: Date; last_post_at: Date; posts: number; first: string | null }[]>`
         select t.id, t.user_id, t.username, t.title, t.created_at, t.last_post_at,
                (select count(*)::int from forum_posts p where p.topic_id = t.id and p.hidden_at is null) as posts,
                (select left(p.body, 220) from forum_posts p where p.topic_id = t.id and p.hidden_at is null order by p.created_at limit 1) as first
-        from forum_topics t where t.variant_id = ${a} and t.hidden_at is null order by t.last_post_at desc limit 100`;
+        from forum_topics t where t.variant_id = ${a} and t.hidden_at is null order by t.last_post_at desc limit ${PAGE + 1} offset ${offset}`;
       return sendJson(res, 200, {
-        topics: topics.map((x) => ({
+        topics: topics.slice(0, PAGE).map((x) => ({
           id: x.id, title: x.title, username: x.username, owner: owners.has(x.user_id), createdAt: x.created_at, lastPostAt: x.last_post_at,
           posts: x.posts, excerpt: x.first,
         })),
+        hasMore: topics.length > PAGE,
         admin,
       });
     }

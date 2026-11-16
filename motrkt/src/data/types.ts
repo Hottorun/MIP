@@ -143,6 +143,10 @@ export type Listing = {
   vin: string;
   /** First day the listing was seen online. */
   listedAt: number;
+  /** Asking price at the first sighting and at each change (listing currency), from the daily tracking; absent for live listings. */
+  priceHistory?: [string, number][];
+  /** Change of the asking price since the first sighting (−0.08 = cut by 8 %); null while the price never changed. */
+  priceChange?: number | null;
   matchingNumbers: boolean | null;
   serviceHistory: boolean | null;
   description: string;

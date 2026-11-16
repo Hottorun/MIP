@@ -4,7 +4,7 @@ import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info,
 import { useMe } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
-import { search, type SearchHit } from "../lib/search";
+import { prepareSearch, search, type SearchHit } from "../lib/search";
 import { cn, date, num, usdRate } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
@@ -25,6 +25,7 @@ const NAV_LEFT = [
 const NAV_RIGHT = [
   { to: "/insights", label: "Insights" },
   { to: "/ai", label: "Co-Pilot" },
+  { to: "/forum", label: "Forum" },
   { to: "/portfolio", label: "Portfolio" },
 ];
 
@@ -203,11 +204,15 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
+  const [tick, setTick] = useState(0); // bumps when the forum topics for the search arrive
   const input = useRef<HTMLInputElement>(null);
-  const hits = useMemo(() => search(q), [q]);
+  const hits = useMemo(() => search(q), [q, tick]);
   const ref = useClickOutside(true, onClose);
 
-  useEffect(() => input.current?.focus(), []);
+  useEffect(() => {
+    input.current?.focus();
+    prepareSearch(() => setTick((n) => n + 1));
+  }, []);
 
   const go = (hit: SearchHit) => {
     navigate(hit.href);
@@ -239,7 +244,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                 onClose();
               }
             }}
-            placeholder={t("Modell, Variante, FIN oder Auktions-ID", "Model, variant, VIN or auction ID")}
+            placeholder={t("Modell, Inserat, Forum, FIN oder Auktions-ID", "Model, listing, forum, VIN or auction ID")}
             className="min-w-0 flex-1 bg-transparent font-serif text-[22px] placeholder:text-faint focus:outline-none"
             aria-label={t("Suche", "Search")}
           />
@@ -461,6 +466,7 @@ function Footer() {
     { to: "/auktionen", label: t("Auktionen", "Auctions") },
     { to: "/kaufen", label: t("Kaufen", "Buy") },
     { to: "/insights", label: "Insights" },
+    { to: "/forum", label: "Forum" },
     { to: "/portfolio", label: "Portfolio" },
   ];
   return (

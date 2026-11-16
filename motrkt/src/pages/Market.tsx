@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { bodyChoices, getVariant, variantTitle } from "../data/db";
 import type { Body, Variant } from "../data/types";
 import { useStore } from "../state/store";
@@ -49,6 +49,15 @@ export default function Market() {
       document.title = appTitle();
     };
   }, [variant, setLastVariant]);
+
+  // "#forum" etc. in the address (links from the forum overview, the search): scroll there once the page is up;
+  // after the layout's own scroll to the top, hence the delay
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash || !variant) return;
+    const id = window.setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+    return () => window.clearTimeout(id);
+  }, [hash, variant]);
 
   if (!variant) {
     return (

@@ -14,7 +14,26 @@ const KIND = {
   get auction() { return t("Auktion", "Auction"); },
   get listing() { return t("Inserat", "Listing"); },
   get vin() { return t("FIN", "VIN"); },
+  get topic() { return t("Forum", "Forum"); },
 };
+
+type TopicHit = { id: string; variant: string; title: string; username: string };
+let topics: TopicHit[] = [];
+let topicsAt = 0;
+/** Fetches the latest forum topics for the search (once a minute at most); call when the search opens. `onReady` fires when new topics arrived. */
+export function prepareSearch(onReady?: () => void) {
+  if (Date.now() - topicsAt < 60_000) return;
+  topicsAt = Date.now();
+  fetch("/api/forum/neueste?limit=200", { credentials: "same-origin" })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j: { topics?: TopicHit[] } | null) => {
+      if (j?.topics) {
+        topics = j.topics;
+        onReady?.();
+      }
+    })
+    .catch(() => {});
+}
 
 const norm = (s: string) =>
   s
@@ -64,6 +83,24 @@ export function search(query: string, limit = 9): SearchHit[] {
   }
   scored.sort((a, b) => a[0] - b[0]);
   const hits: SearchHit[] = scored.slice(0, limit).map(([, e]) => e);
+
+  // Forum topics by title, listings by title, seller or city (three letters or more)
+  if (q.length >= 3) {
+    for (const x of topics) {
+      if (hits.length >= limit + 3) break;
+      if (!terms.every((w) => norm(x.title).includes(w))) continue;
+      const v = variantById.get(x.variant);
+      hits.push({ kind: KIND.topic, label: x.title, detail: `${v ? variantTitle(v) : x.variant} · ${x.username}`, href: `/markt/${x.variant}?thema=${x.id}#forum` });
+    }
+    let n = 0;
+    for (const l of getAllListings()) {
+      if (n >= 4) break;
+      const hay = norm(`${l.title} ${l.seller} ${l.city}`);
+      if (!terms.every((w) => hay.includes(w))) continue;
+      n++;
+      hits.push({ kind: KIND.listing, label: `${l.title} (${l.year})`, detail: `${eur(l.price)} · ${l.seller}`, href: `/kaufen?inserat=${l.id}` });
+    }
+  }
 
   // Auction / transaction IDs ("RMS-25-0412") and VINs (FIN) – exact-prefix lookups.
   const raw = query.trim().toUpperCase();

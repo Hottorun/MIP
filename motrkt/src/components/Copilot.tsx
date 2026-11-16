@@ -8,10 +8,14 @@ import { Pill } from "./ui";
 import { t } from "../i18n";
 
 let statusPromise: Promise<CopilotStatus> | null = null;
+let statusAt = 0;
 function useCopilotStatus() {
   const [status, setStatus] = useState<CopilotStatus | null>(null);
   useEffect(() => {
-    statusPromise ??= fetchCopilotStatus();
+    if (!statusPromise || Date.now() - statusAt > 60_000) {
+      statusPromise = fetchCopilotStatus();
+      statusAt = Date.now();
+    }
     let alive = true;
     statusPromise.then((s) => alive && setStatus(s));
     return () => {

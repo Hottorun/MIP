@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, RefreshCw, Search, Star, X } from "lucide-react";
+import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, RefreshCw, Search, Star, TrendingDown, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
@@ -21,6 +21,9 @@ const barSelect = "cursor-pointer bg-transparent text-ink focus:outline-none";
 const barInput = "bg-transparent tabular-nums placeholder:text-faint focus:outline-none";
 
 type Enriched = { l: Listing; v: Variant; value: number; condFactor: number; kmFactor: number; fair: number; deal: number | null };
+
+/** Asking price cut by at least 1 % since the listing was first tracked. */
+const isReduced = (l: Listing) => l.priceChange !== null && l.priceChange !== undefined && l.priceChange < -0.01;
 
 function mileageAdjustment(v: Variant, l: Listing) {
   if (l.mileage === null) return 1;
@@ -91,6 +94,7 @@ export default function Buy() {
   const setSeller = (v: SellerFilter) => setFilters({ anbieter: v });
   const savedOnly = get("gemerkt") === "1";
   const dealsOnly = get("deals") === "1";
+  const reducedOnly = get("gesenkt") === "1";
   const text = get("suche");
   const setText = (v: string) => setFilters({ suche: v });
   const sort = (get("sortierung") || "deal") as SortKey;
@@ -124,13 +128,14 @@ export default function Buy() {
       if (seller && l.sellerType !== seller) return false;
       if (savedOnly && !saved.has(l.id)) return false;
       if (dealsOnly && !(deal !== null && deal < -0.07)) return false;
+      if (reducedOnly && !isReduced(l)) return false;
       if (q) {
         const hay = `${variantTitle(v)} ${l.id} ${l.vin} ${l.city} ${tr(l.city)} ${l.seller} ${l.color} ${tr(l.color)}`.toLowerCase();
         if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
       }
       return true;
     });
-  }, [all, variantFilter, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, savedListings, text]);
+  }, [all, variantFilter, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, reducedOnly, savedListings, text]);
 
   const counts = useMemo(() => {
     const byModel = new Map<string, number>();
@@ -160,7 +165,7 @@ export default function Buy() {
     return out.sort(cmp[sort]);
   }, [base, brand, model, generation, sort]);
 
-  useEffect(() => setVisible(PAGE), [variantParam, brand, model, generation, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, text, sort]);
+  useEffect(() => setVisible(PAGE), [variantParam, brand, model, generation, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, reducedOnly, text, sort]);
 
   const selected = selectedId ? all.find((e) => e.l.id === selectedId) : undefined;
   const openListing = (id: string | null) => {
@@ -175,7 +180,7 @@ export default function Buy() {
     setParams(next, { replace: true });
   };
   const reset = () =>
-    setFilters({ marke: "", modell: "", generation: "", preis_von: "", preis_bis: "", jahr_von: "", jahr_bis: "", km_bis: "", anbieter: "", gemerkt: "", deals: "", suche: "", variant: "" });
+    setFilters({ marke: "", modell: "", generation: "", preis_von: "", preis_bis: "", jahr_von: "", jahr_bis: "", km_bis: "", anbieter: "", gemerkt: "", deals: "", gesenkt: "", suche: "", variant: "" });
 
   const topDeals = filtered.filter((e) => e.deal !== null && e.deal < -0.07).length;
   const digits = (s: string) => s.replace(/\D/g, "");
@@ -186,8 +191,9 @@ export default function Buy() {
   const modelLabel = (m: Model) => (brand || brands.length === 1 ? modelName(m) : `${brandById.get(m.brandId)!.name} ${modelName(m)}`);
   const brandTotal = brand ? base.filter((e) => e.v.brandId === brand).length : base.length;
   const extraFilters = [yearFrom, yearTo, maxKm, seller].filter(Boolean).length;
-  const anyFilter = Boolean(brand || model || priceMin || priceMax || extraFilters || savedOnly || dealsOnly || text || variantParam);
+  const anyFilter = Boolean(brand || model || priceMin || priceMax || extraFilters || savedOnly || dealsOnly || reducedOnly || text || variantParam);
   const marketDeals = all.filter((e) => e.deal !== null && e.deal < -0.07).length;
+  const marketReduced = all.filter((e) => isReduced(e.l)).length;
   const modelsListed = new Set(all.map((e) => e.v.modelId)).size;
   const divider = <span aria-hidden className="hidden h-5 w-px bg-line sm:block" />;
 
@@ -205,7 +211,7 @@ export default function Buy() {
           </p>
           <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} sourceLabel={showingLive ? t("Live von mobile.de", "Live from mobile.de") : t("Von Classic Trader und Händlerseiten", "From Classic Trader and dealer sites")} />
         </div>
-        <dl className="flex divide-x divide-line">
+        <dl className="flex divide-x divide-line overflow-x-auto">
           {[
             [t("Inserate", "Listings"), num(all.length)],
             [t("Unter Marktwert", "Below value"), num(marketDeals)],
@@ -304,6 +310,9 @@ export default function Buy() {
         <button className={cn("chip", dealsOnly && "chip-active")} onClick={() => setFilters({ deals: !dealsOnly })} aria-pressed={dealsOnly}>
           <span className={cn("size-1.5 rounded-full", dealsOnly ? "bg-bg" : "bg-up")} /> {t("Unter Marktwert", "Below market value")}
         </button>
+        <button className={cn("chip", reducedOnly && "chip-active")} onClick={() => setFilters({ gesenkt: !reducedOnly })} aria-pressed={reducedOnly} title={t("Inserate, deren Preis seit der ersten Erfassung gesenkt wurde", "Listings whose asking price was cut since first tracked")}>
+          <TrendingDown className="size-3.5" strokeWidth={1.5} /> {t("Preis gesenkt", "Price reduced")} <span className="tabular-nums opacity-70">{marketReduced}</span>
+        </button>
         <button className={cn("chip", savedOnly && "chip-active")} onClick={() => setFilters({ gemerkt: !savedOnly })} aria-pressed={savedOnly}>
           <Heart className="size-3.5" strokeWidth={1.5} fill={savedOnly ? "currentColor" : "none"} /> {t("Gemerkt", "Saved")} <span className="tabular-nums opacity-70">{savedListings.length}</span>
         </button>
@@ -385,7 +394,16 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
       <div className="relative aspect-[4/3] overflow-hidden rounded-[3px] bg-panel-3">
         <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-        {badge && <div className="absolute top-3 left-3">{badge}</div>}
+        {(badge || isReduced(l)) && (
+          <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
+            {badge}
+            {isReduced(l) && (
+              <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-up shadow-sm">
+                {t(`Preis ${pct(-l.priceChange!, { digits: 0, signed: false })} gesenkt`, `Price cut ${pct(-l.priceChange!, { digits: 0, signed: false })}`)}
+              </span>
+            )}
+          </div>
+        )}
         <span className="absolute bottom-3 left-3 text-[11px] text-white/0 transition-colors duration-500 group-hover:text-white/90 pointer-coarse:text-white/90">{l.source}</span>
         <button
           onClick={(ev) => {
@@ -452,6 +470,16 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
     [t("Standort", "Location"), `${flag(l.country)} ${l.city === "–" ? "" : `${tr(l.city)}, `}${tr(COUNTRY_NAMES[l.country] ?? l.country)}`],
     [t("Anbieter", "Seller"), `${tr(l.seller)} (${tr(l.sellerType)})`],
     [t("Online seit", "Online since"), t(`${date(l.listedAt)} · ${days === 1 ? "1 Tag" : `${days} Tagen`}`, `${date(l.listedAt)} · ${days === 1 ? "1 day" : `${days} days`}`)],
+    ...(l.priceHistory && l.priceHistory.length > 1
+      ? ([
+          [
+            t("Preisverlauf", "Price history"),
+            <span className={cn("tabular-nums", isReduced(l) ? "text-up" : "text-muted")}>
+              {l.priceHistory.map(([, p]) => num(p)).join(" → ")} {l.priceChange !== null && l.priceChange !== undefined && <span>({pct(l.priceChange, { digits: 0 })})</span>}
+            </span>,
+          ],
+        ] as [string, React.ReactNode][])
+      : []),
   ];
 
   return (

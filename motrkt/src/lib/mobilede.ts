@@ -169,13 +169,24 @@ export async function fetchMobileStatus(): Promise<boolean> {
   }
 }
 
+/** Error codes of /api/mobilede/search (server/mobilede.ts) in the interface language. */
+const ERR: Record<string, (b: { status?: number }) => string> = {
+  not_configured: () => t("mobile.de ist nicht konfiguriert", "mobile.de is not configured"),
+  bad_query: () => t("Ungültige Marke oder Modell", "Invalid make or model"),
+  too_many: () => t("Stundenlimit für mobile.de-Abfragen erreicht", "Hourly limit of mobile.de queries reached"),
+  credentials_rejected: () => t("mobile.de hat die Zugangsdaten abgelehnt", "mobile.de rejected the credentials"),
+  upstream_status: (b) => t(`mobile.de antwortet mit ${b.status}`, `mobile.de answers with ${b.status}`),
+  timeout: () => t("mobile.de antwortet nicht (Timeout)", "mobile.de does not answer (timeout)"),
+  unreachable: () => t("mobile.de nicht erreichbar", "mobile.de not reachable"),
+};
+
 export async function fetchGeneration(query: GenerationQuery, signal?: AbortSignal): Promise<Listing[]> {
   const out: Listing[] = [];
   for (let page = 1; page <= 3; page++) {
     const p = new URLSearchParams({ make: query.make, model: query.model, from: String(query.from), to: String(query.to), page: String(page) });
     const r = await fetch(`/api/mobilede/search?${p}`, { signal });
     const body = await r.json();
-    if (!r.ok) throw new Error(body.error ?? t(`mobile.de Fehler ${r.status}`, `mobile.de error ${r.status}`));
+    if (!r.ok) throw new Error((ERR[body.error] ?? (() => t(`mobile.de Fehler ${r.status}`, `mobile.de error ${r.status}`)))(body));
     out.push(...mapAds(query, body.ads as MobileAd[]));
     if (page >= (body.maxPages ?? 1)) break;
   }
