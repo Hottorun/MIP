@@ -51,8 +51,9 @@ function linkTitle(url: string) {
 
 export function RecentSales({ variant, body = null }: { variant: Variant; body?: Body | null }) {
   const [expanded, setExpanded] = useState(false);
-  const sales = getSales(variant.id).filter((s) => !body || s.body === body);
+  // sales left out of the market value for an extreme price gap (outliers of the model) are not listed either
   const outliers = outliersOf(variant.id);
+  const sales = getSales(variant.id).filter((s) => (!body || s.body === body) && !outliers.has(s.id));
   const shown = mixHouses(sales, expanded ? 15 : 6);
   const batHidden = sales.slice(0, shown.length).filter((s) => s.house === BAT).length > shown.filter((s) => s.house === BAT).length;
 
@@ -91,18 +92,9 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
                   {s.mileage ? `, ${km(s.mileage)}` : ""}
                   {s.url && linkNote(s.url) ? <span className="text-faint"> · {linkNote(s.url)}</span> : null}
                 </div>
-                {outliers.has(s.id) && (
-                  <div className="mt-0.5 text-[13px] text-ink/80">
-                    {t("Nicht im Marktwert", "Not in the market value")}:{" "}
-                    {t(
-                      `Preis ${Math.round(Math.abs(outliers.get(s.id)!) * 100)} % ${outliers.get(s.id)! > 0 ? "über" : "unter"} vergleichbaren Fahrzeugen (Sonderausführung, Zustand oder Einzelfall)`,
-                      `price ${Math.round(Math.abs(outliers.get(s.id)!) * 100)} % ${outliers.get(s.id)! > 0 ? "above" : "below"} comparable cars (special version, condition or one-off)`,
-                    )}
-                  </div>
-                )}
               </div>
               </div>
-              <div className={"text-right text-[18px]" + (outliers.has(s.id) ? " text-muted line-through decoration-1" : "")}>{s.price ? (
+              <div className="text-right text-[18px]">{s.price ? (
                   <Money value={s.price} sale={s} />
                 ) : (
                   <>
