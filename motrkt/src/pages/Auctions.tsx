@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Coins, ExternalLink, Gauge, Gavel, Scale, Search, X } from "lucide-react";
+import { Coins, ExternalLink, Gauge, Gavel, Scale, Search, X } from "lucide-react";
 import { brands, variantById, variantTitle, variants } from "../data/db";
 import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, WEEK, getAllSales } from "../data/generate";
 import { mean } from "../data/market";
 import { CALENDAR_AS_OF, HOUSE_CALENDARS, calendarSales, type CalendarSale } from "../data/real/auction-calendar";
 import type { Sale } from "../data/types";
-import { cn, date, eur, flag, fromDisplay, km, num, pct, saleAmount } from "../lib/format";
-import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, StatTile, axisProps, Money } from "../components/ui";
+import { date, eur, flag, fromDisplay, km, num, pct, saleAmount } from "../lib/format";
+import { BrandEmblem, ChartTooltipBox, Delta, DeltaBadge, Empty, Modal, Section, Segmented, StatTile, axisProps, Money } from "../components/ui";
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
 import { unsoldPrice } from "../lib/unsold";
@@ -21,6 +21,14 @@ type Status = "alle" | "verkauft" | "nicht";
 type SortKey = "date" | "id" | "vehicle" | "house" | "condition" | "mileage" | "price" | "estimate" | "trend";
 
 const PERIOD_WEEKS: Record<Period, number> = { "3M": 13, "12M": 52, "5J": 260 };
+/** Time range of the results archive; independent of the period of the key figures above. */
+type Range = "alle" | Period;
+const RANGE_LABEL: Record<Range, () => string> = {
+  alle: () => t("Seit 2015", "Since 2015"),
+  "5J": () => t("Letzte 5 Jahre", "Last 5 years"),
+  "12M": () => t("Letzte 12 Monate", "Last 12 months"),
+  "3M": () => t("Letzte 3 Monate", "Last 3 months"),
+};
 const PAGE = 25;
 
 let titleCache: Map<string, string> | null = null;
@@ -63,6 +71,7 @@ export default function Auctions() {
   const [source, setSource] = useStickyState<Source>("auktionen.quelle", "Alle");
   const [house, setHouse] = useStickyState("auktionen.haus", "");
   const [period, setPeriod] = useStickyState<Period>("auktionen.zeitraum", "12M");
+  const [range, setRange] = useStickyState<Range>("auktionen.ergebnisse.zeitraum", "alle");
   const [status, setStatus] = useStickyState<Status>("auktionen.status", "alle");
   const [priceMin, setPriceMin] = useStickyState("auktionen.preis_von", "");
   const [priceMax, setPriceMax] = useStickyState("auktionen.preis_bis", "");
@@ -79,7 +88,7 @@ export default function Auctions() {
     if (qParam === null && hausParam === null) return;
     if (qParam !== null) setText(qParam);
     if (hausParam !== null) setHouse(hausParam);
-    setPeriod("5J");
+    setRange("alle");
     const next = new URLSearchParams(params);
     next.delete("q");
     next.delete("haus");
@@ -87,15 +96,20 @@ export default function Auctions() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qParam, hausParam]);
 
-  useEffect(() => setPage(0), [brand, source, house, period, status, priceMin, priceMax, text, sort]);
+  useEffect(() => setPage(0), [brand, source, house, range, status, priceMin, priceMax, text, sort]);
+
+  // every house with results, busiest first (not only the configured ones), so a house picked from the search is in the list
+  const houses = useMemo(() => {
+    const n = new Map<string, number>();
+    for (const s of getAllSales()) n.set(s.house, (n.get(s.house) ?? 0) + 1);
+    for (const h of AUCTION_HOUSES) if (!n.has(h.name)) n.set(h.name, 0);
+    return [...n.entries()].sort((a, b) => b[1] - a[1]).map(([h]) => h);
+  }, []);
 
   // All filters except the period (all results since 2015).
-  const base = useMemo(() => {
-    const q = text.trim().toLowerCase();
-    const tUpper = text.trim().toUpperCase();
+  const pre = useMemo(() => {
     const min = fromDisplay(Number(priceMin) || 0);
     const max = fromDisplay(Number(priceMax) || Infinity);
-    const names = titles();
     return getAllSales().filter((s) => {
       if (brand && variantById.get(s.variantId)!.brandId !== brand) return false;
       if (source !== "Alle" && s.source !== source) return false;
@@ -106,28 +120,60 @@ export default function Auctions() {
         const p = s.price ?? s.estimateLow ?? 0;
         if (p < min || p > max) return false;
       }
-      if (q) {
-        if (!(s.id.startsWith(tUpper) || s.vin.startsWith(tUpper) || s.house.toLowerCase().includes(q) || names.get(s.variantId)!.toLowerCase().includes(q))) return false;
-      }
       return true;
     });
-  }, [brand, source, house, status, priceMin, priceMax, text]);
+  }, [brand, source, house, status, priceMin, priceMax]);
+
+  const base = useMemo(() => {
+    const tokens = searchTokens(text);
+    if (!tokens.length) return pre;
+    const tUpper = text.trim().toUpperCase();
+    const names = titles();
+    // a picked suggestion (or a typed full name) means exactly that variant, not "Turbo S" along with "Turbo"
+    const exact = variants.find((v) => names.get(v.id)!.toLowerCase() === text.trim().toLowerCase());
+    if (exact) return pre.filter((s) => s.variantId === exact.id);
+    return pre.filter((s) => {
+      const hay = `${names.get(s.variantId)} ${s.house}`.toLowerCase().replace(/[()]/g, " ");
+      return s.id.startsWith(tUpper) || (tUpper.length >= 5 && s.vin.startsWith(tUpper)) || tokens.every((tok) => hay.includes(tok));
+    });
+  }, [pre, text]);
+
+  const rangeFrom = range === "alle" ? -Infinity : AS_OF - PERIOD_WEEKS[range] * WEEK;
+
+  // what the current search could mean: matching variants (with their number of results) and auction houses
+  const suggestions = useMemo(() => {
+    const tokens = searchTokens(text);
+    if (!tokens.length || text.trim().length < 2) return { variants: [], houses: [] };
+    // counted under the other filters and the time range, so the number matches the list after picking
+    const count = new Map<string, number>();
+    for (const s of pre) if (s.date >= rangeFrom) count.set(s.variantId, (count.get(s.variantId) ?? 0) + 1);
+    const names = titles();
+    const vs = variants
+      .filter((v) => count.get(v.id) && tokens.every((tok) => names.get(v.id)!.toLowerCase().replace(/[()]/g, " ").includes(tok)))
+      .sort((a, b) => (count.get(b.id) ?? 0) - (count.get(a.id) ?? 0))
+      .slice(0, 6)
+      .map((v) => ({ id: v.id, title: names.get(v.id)!, n: count.get(v.id)! }));
+    const hs = houses.filter((h) => tokens.every((tok) => h.toLowerCase().includes(tok))).slice(0, 3);
+    return { variants: vs, houses: hs };
+  }, [text, houses, pre, rangeFrom]);
 
   const filtered = useMemo(() => {
     const from = AS_OF - PERIOD_WEEKS[period] * WEEK;
     return base.filter((s) => s.date >= from);
   }, [base, period]);
 
+  const results = useMemo(() => (range === "alle" ? base : base.filter((s) => s.date >= rangeFrom)), [base, range, rangeFrom]);
+
   const sorted = useMemo(() => {
-    if (sort.key === "date" && sort.dir === -1) return filtered; // already newest first
-    const arr = [...filtered];
+    if (sort.key === "date" && sort.dir === -1) return results; // already newest first
+    const arr = [...results];
     arr.sort((a, b) => {
       const x = sortValue(a, sort.key);
       const y = sortValue(b, sort.key);
       return (x < y ? -1 : x > y ? 1 : 0) * sort.dir;
     });
     return arr;
-  }, [filtered, sort]);
+  }, [results, sort]);
 
   const kpis = useMemo(() => {
     const auctions = filtered.filter((s) => s.source === "Auktion");
@@ -166,18 +212,16 @@ export default function Auctions() {
     return rows;
   }, [base]);
 
-  const pages = Math.max(1, Math.ceil(sorted.length / PAGE));
-  const rows = sorted.slice(page * PAGE, page * PAGE + PAGE);
-  // every house with results, busiest first (not only the configured ones), so a house picked from the search is in the list
-  const houses = useMemo(() => {
-    const n = new Map<string, number>();
-    for (const s of getAllSales()) n.set(s.house, (n.get(s.house) ?? 0) + 1);
-    for (const h of AUCTION_HOUSES) if (!n.has(h.name)) n.set(h.name, 0);
-    return [...n.entries()].sort((a, b) => b[1] - a[1]).map(([h]) => h);
-  }, []);
+  const shown = (page + 1) * PAGE;
+  const rows = sorted.slice(0, shown);
+  const active: { key: string; label: string; clear: () => void }[] = [];
+  if (text.trim()) active.push({ key: "q", label: `„${text.trim()}“`, clear: () => setText("") });
+  if (house) active.push({ key: "h", label: house, clear: () => setHouse("") });
+  if (status !== "alle") active.push({ key: "s", label: status === "verkauft" ? t("Verkauft", "Sold") : t("Nicht verkauft", "Not sold"), clear: () => setStatus("alle") });
+  if (priceMin || priceMax) active.push({ key: "p", label: `${priceMin ? eur(fromDisplay(Number(priceMin)), { compact: true }) : "0"} – ${priceMax ? eur(fromDisplay(Number(priceMax)), { compact: true }) : "∞"}`, clear: () => { setPriceMin(""); setPriceMax(""); } });
+  if (range !== "alle") active.push({ key: "r", label: RANGE_LABEL[range](), clear: () => setRange("alle") });
+  if (brand) active.push({ key: "b", label: brands.find((b) => b.id === brand)?.name ?? brand, clear: () => setBrand("") });
 
-  const toggleSort = (key: SortKey) =>
-    setSort((s) => (s.key === key ? { key, dir: (s.dir * -1) as 1 | -1 } : { key, dir: key === "vehicle" || key === "id" || key === "house" ? 1 : -1 }));
 
   const resetFilters = () => {
     setBrand("");
@@ -187,6 +231,7 @@ export default function Auctions() {
     setPriceMin("");
     setPriceMax("");
     setText("");
+    setRange("alle");
   };
 
   return (
@@ -228,135 +273,118 @@ export default function Auctions() {
 
       <UpcomingAuctions />
 
-      <Section title={t("Ergebnisse", "Results")} sub={t(`${num(sorted.length)} Verkäufe`, `${num(sorted.length)} sales`)}>
-        <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-8">
-          <div className="col-span-2">
-            <label className="label">{t("Suche", "Search")}</label>
-            <div className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-faint" />
-              <input className="input pl-8" value={text} onChange={(e) => setText(e.target.value)} placeholder={t("ID, FIN, Haus, Fahrzeug …", "ID, VIN, house, car …")} />
-            </div>
-          </div>
-          <div className={cn(brands.length < 2 && "hidden")}>
-            <label className="label">{t("Marke", "Brand")}</label>
-            <select className="input" value={brand} onChange={(e) => setBrand(e.target.value)}>
-              <option value="">{t("Alle Marken", "All brands")}</option>
-              {brands.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.name}
+      <Section
+        eyebrow={t("Archiv seit 2015", "Archive since 2015")}
+        title={t("Ergebnisse", "Results")}
+        sub={t("Suchen Sie nach Modell, Auktionshaus, Losnummer oder FIN", "Search by model, auction house, lot number or VIN")}
+      >
+        <div className="space-y-5">
+          <SearchBox
+            value={text}
+            onChange={setText}
+            suggestions={suggestions}
+            onPickVariant={(title) => setText(title)}
+            onPickHouse={(h) => {
+              setHouse(h);
+              setText("");
+            }}
+          />
+
+          <div className="-mx-4 flex items-center gap-x-3 gap-y-2.5 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&>*]:shrink-0">
+            <Segmented
+              options={[
+                { value: "alle" as const, label: t("Alle", "All") },
+                { value: "verkauft" as const, label: t("Verkauft", "Sold") },
+                { value: "nicht" as const, label: t("Nicht verkauft", "Not sold") },
+              ]}
+              value={status}
+              onChange={setStatus}
+            />
+            <select className="pill-select" value={range} onChange={(e) => setRange(e.target.value as Range)} aria-label={t("Zeitraum", "Period")}>
+              {(["alle", "5J", "12M", "3M"] as const).map((r) => (
+                <option key={r} value={r}>
+                  {RANGE_LABEL[r]()}
                 </option>
               ))}
             </select>
-          </div>
-          <div>
-            <label className="label">{t("Quelle", "Source")}</label>
-            <select className="input" value={source} onChange={(e) => setSource(e.target.value as Source)}>
-              {(["Alle", "Auktion", "Händler", "Privat"] as const).map((s) => (
-                <option key={s} value={s}>
-                  {s === "Alle" ? t("Alle", "All") : tr(s)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="label">{t("Auktionshaus", "Auction house")}</label>
-            <select className="input" value={house} onChange={(e) => setHouse(e.target.value)}>
-              <option value="">{t("Alle Häuser", "All houses")}</option>
+            <select className="pill-select" value={house} onChange={(e) => setHouse(e.target.value)} aria-label={t("Auktionshaus", "Auction house")}>
+              <option value="">{t("Alle Auktionshäuser", "All auction houses")}</option>
               {houses.map((h) => (
                 <option key={h}>{h}</option>
               ))}
             </select>
-          </div>
-          <div>
-            <label className="label">Status</label>
-            <select className="input" value={status} onChange={(e) => setStatus(e.target.value as Status)}>
-              <option value="alle">{t("Alle", "All")}</option>
-              <option value="verkauft">{t("Verkauft", "Sold")}</option>
-              <option value="nicht">{t("Nicht verkauft", "Not sold")}</option>
-            </select>
-          </div>
-          <div>
-            <label className="label">{t("Preis min (€)", "Price min ($)")}</label>
-            <input className="input" inputMode="numeric" value={priceMin} onChange={(e) => setPriceMin(e.target.value.replace(/\D/g, ""))} placeholder="0" />
-          </div>
-          <div>
-            <label className="label">{t("Preis max (€)", "Price max ($)")}</label>
-            <input className="input" inputMode="numeric" value={priceMax} onChange={(e) => setPriceMax(e.target.value.replace(/\D/g, ""))} placeholder="∞" />
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <button className="btn btn-ghost px-2 py-1 text-xs text-muted" onClick={resetFilters}>
-            <X className="size-3.5" /> {t("Filter zurücksetzen", "Reset filters")}
-          </button>
-        </div>
-
-        {rows.length === 0 ? (
-          <Empty>{t("Keine Transaktionen für diese Filter.", "No transactions match these filters.")}</Empty>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="table-base table-hover">
-              <thead>
-                <tr>
-                  <Th k="date" sort={sort} onSort={toggleSort}>{t("Datum", "Date")}</Th>
-                  <Th k="vehicle" sort={sort} onSort={toggleSort}>{t("Fahrzeug", "Car")}</Th>
-                  <Th k="house" sort={sort} onSort={toggleSort}>{t("Verkauft über", "Sold via")}</Th>
-                  <Th k="mileage" sort={sort} onSort={toggleSort} right>{t("Laufleistung", "Mileage")}</Th>
-                  <Th k="price" sort={sort} onSort={toggleSort} right>{t("Preis", "Price")}</Th>
-                  <Th k="trend" sort={sort} onSort={toggleSort} right>{t("Zum Marktwert", "Vs. market value")}</Th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((s) => {
-                  const v = variantById.get(s.variantId)!;
-                  return (
-                    <tr key={`${s.id}-${s.variantId}-${s.date}-${s.vin}`} onClick={() => setSelected(s)} tabIndex={0} role="button" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(s); } }}>
-                      <td className="text-muted">{date(s.date)}</td>
-                      <td className="font-serif">
-                        <span className="flex items-center gap-3">
-                          <LotThumb url={s.url} house={s.house} image={s.image} small link={false} />
-                          {variantTitle(v, { brand: false })}
-                        </span>
-                      </td>
-                      <td>
-                        <span className="text-ink/90">{s.house}</span>
-                        {s.source !== "Auktion" && <span className="ml-1.5 text-xs text-faint">{tr(s.source)}</span>}
-                      </td>
-                      <td className="text-right tabular-nums">{km(s.mileage)}</td>
-                      <td className="text-right">
-                        {s.price === null ? (
-                          <>
-                            <span className="font-sans text-[13px] text-faint italic">{t("nicht verkauft", "not sold")}</span>
-                            {unsoldPrice(s) && <span className="block font-sans text-[12px] text-faint">{unsoldPrice(s)}</span>}
-                          </>
-                        ) : (
-                          <Money value={s.price} sale={s} />
-                        )}
-                      </td>
-                      <td className="text-right">{s.price === null ? <span className="text-faint">–</span> : <Delta value={s.trend} arrow={false} />}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <div className="flex items-center justify-between text-xs text-muted">
-          <span>
-            {num(sorted.length ? page * PAGE + 1 : 0)}–{num(Math.min(sorted.length, (page + 1) * PAGE))} {t("von", "of")} {num(sorted.length)}
-          </span>
-          <div className="flex items-center gap-1.5">
-            <button className="btn px-2 py-1" disabled={page === 0} onClick={() => setPage((p) => p - 1)} aria-label={t("Vorherige Seite", "Previous page")}>
-              <ChevronLeft className="size-4" />
-            </button>
-            <span className="tabular-nums">
-              {t("Seite", "Page")} {page + 1} / {pages}
+            {brands.length > 1 && (
+              <select className="pill-select" value={brand} onChange={(e) => setBrand(e.target.value)} aria-label={t("Marke", "Brand")}>
+                <option value="">{t("Alle Marken", "All brands")}</option>
+                {brands.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name}
+                  </option>
+                ))}
+              </select>
+            )}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel py-0.5 pr-1 pl-3 text-[13px] text-muted">
+              {t("Preis", "Price")}
+              <input className="w-20 rounded-full bg-transparent px-2 py-1 text-ink tabular-nums placeholder:text-faint focus:bg-panel-2 focus:outline-none" inputMode="numeric" value={priceMin} onChange={(e) => setPriceMin(e.target.value.replace(/\D/g, ""))} placeholder={t("von €", "from $")} aria-label={t("Preis von", "Price from")} />
+              <span className="text-faint">–</span>
+              <input className="w-20 rounded-full bg-transparent px-2 py-1 text-ink tabular-nums placeholder:text-faint focus:bg-panel-2 focus:outline-none" inputMode="numeric" value={priceMax} onChange={(e) => setPriceMax(e.target.value.replace(/\D/g, ""))} placeholder={t("bis €", "to $")} aria-label={t("Preis bis", "Price to")} />
             </span>
-            <button className="btn px-2 py-1" disabled={page >= pages - 1} onClick={() => setPage((p) => p + 1)} aria-label={t("Nächste Seite", "Next page")}>
-              <ChevronRight className="size-4" />
-            </button>
           </div>
-        </div>
+
+          <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 border-b border-line pb-3">
+            <div className="flex w-full flex-wrap items-baseline gap-x-5 gap-y-2">
+            <p className="min-w-0 grow basis-[20rem] text-[14px] text-ink">
+              <strong className="font-serif text-[22px] font-normal tabular-nums">{num(sorted.length)}</strong> {t("Ergebnisse", "results")}
+            </p>
+              <label className="ml-auto inline-flex shrink-0 items-center gap-2 text-[13px] text-muted">
+                {t("Sortieren", "Sort")}
+                <select className="pill-select" value={`${sort.key}:${sort.dir}`} onChange={(e) => { const [key, dir] = e.target.value.split(":"); setSort({ key: key as SortKey, dir: Number(dir) as 1 | -1 }); }}>
+                  <option value="date:-1">{t("Neueste zuerst", "Newest first")}</option>
+                  <option value="date:1">{t("Älteste zuerst", "Oldest first")}</option>
+                  <option value="price:-1">{t("Höchster Preis", "Highest price")}</option>
+                  <option value="price:1">{t("Niedrigster Preis", "Lowest price")}</option>
+                  <option value="trend:-1">{t("Am weitesten über Marktwert", "Furthest above market value")}</option>
+                  <option value="trend:1">{t("Am weitesten unter Marktwert", "Furthest below market value")}</option>
+                  <option value="mileage:1">{t("Wenigste Kilometer", "Lowest mileage")}</option>
+                  <option value="vehicle:1">{t("Fahrzeug A–Z", "Car A–Z")}</option>
+                </select>
+              </label>
+            </div>
+            {active.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5">
+                {active.map((f) => (
+                  <button key={f.key} onClick={f.clear} className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-[12.5px] text-accent hover:bg-accent hover:text-bg">
+                    {f.label} <X className="size-3" />
+                  </button>
+                ))}
+                {active.length > 1 && (
+                  <button className="text-[12.5px] text-muted underline-offset-4 hover:text-ink hover:underline" onClick={resetFilters}>
+                    {t("Alle entfernen", "Clear all")}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+
+          {rows.length === 0 ? (
+            <Empty>{t("Keine Ergebnisse für diese Suche. Versuchen Sie es mit weniger Begriffen oder einem längeren Zeitraum.", "No results for this search. Try fewer words or a longer period.")}</Empty>
+          ) : (
+            <ul className="-mt-2">
+              {rows.map((s) => (
+                <ResultRow key={`${s.id}-${s.variantId}-${s.date}-${s.vin}`} sale={s} onOpen={() => setSelected(s)} />
+              ))}
+            </ul>
+          )}
+          {sorted.length > shown && (
+            <div className="flex flex-col items-center gap-2 pt-2">
+              <button className="btn" onClick={() => setPage((p) => p + 1)}>
+                {t(`Weitere ${Math.min(PAGE, sorted.length - shown)} anzeigen`, `Show ${Math.min(PAGE, sorted.length - shown)} more`)}
+              </button>
+              <span className="text-[12px] text-faint tabular-nums">
+                {num(shown)} {t("von", "of")} {num(sorted.length)}
+              </span>
+            </div>
+          )}
         </div>
       </Section>
 
@@ -477,16 +505,129 @@ function UpcomingAuctions() {
   );
 }
 
-function Th({ k, sort, onSort, children, right }: { k: SortKey; sort: { key: SortKey; dir: 1 | -1 }; onSort: (k: SortKey) => void; children: React.ReactNode; right?: boolean }) {
-  const active = sort.key === k;
-  const Icon = sort.dir === 1 ? ArrowUp : ArrowDown;
+/** Lower-case words of a search, brackets dropped, so "993 turbo" finds "911 (993) Turbo". */
+function searchTokens(text: string) {
+  return text.toLowerCase().replace(/[()]/g, " ").split(/\s+/).filter(Boolean);
+}
+
+/** The big search field with suggestions: matching variants (with their number of results) and auction houses. */
+function SearchBox({
+  value,
+  onChange,
+  suggestions,
+  onPickVariant,
+  onPickHouse,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  suggestions: { variants: { id: string; title: string; n: number }[]; houses: string[] };
+  onPickVariant: (title: string) => void;
+  onPickHouse: (house: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const any = suggestions.variants.length + suggestions.houses.length > 0;
+  const exact = suggestions.variants.length === 1 && suggestions.variants[0].title.toLowerCase() === value.trim().toLowerCase();
   return (
-    <th className={cn(right && "text-right")}>
-      <button onClick={() => onSort(k)} className={cn("inline-flex items-center gap-1 hover:text-ink", active && "text-accent")}>
-        {children}
-        {active && <Icon className="size-3" />}
+    <div className="relative">
+      <Search className="pointer-events-none absolute top-1/2 left-4 size-[18px] -translate-y-1/2 text-accent" strokeWidth={2} />
+      <input
+        className="h-13 w-full rounded-full border border-line-2 bg-panel pr-12 pl-11 text-[15.5px] text-ink shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-colors placeholder:text-faint focus:border-accent focus:outline-none"
+        value={value}
+        onChange={(e) => {
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
+        placeholder={t("z. B. 993 Turbo, Carrera RS, RM Sotheby's oder eine FIN", "e.g. 993 Turbo, Carrera RS, RM Sotheby's or a VIN")}
+        aria-label={t("Ergebnisse durchsuchen", "Search results")}
+        role="combobox"
+        aria-expanded={open && any && !exact}
+      />
+      {value && (
+        <button className="absolute top-1/2 right-3 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-muted hover:bg-panel-2 hover:text-ink" onClick={() => onChange("")} aria-label={t("Suche leeren", "Clear search")}>
+          <X className="size-4" />
+        </button>
+      )}
+      {open && any && !exact && (
+        <div className="absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-[6px] border border-line bg-panel py-1.5 shadow-lg" role="listbox">
+          {suggestions.variants.length > 0 && <div className="px-4 pt-1 pb-1 eyebrow text-faint">{t("Modelle", "Models")}</div>}
+          {suggestions.variants.map((v) => (
+            <button
+              key={v.id}
+              role="option"
+              aria-selected={false}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                onPickVariant(v.title);
+                setOpen(false);
+              }}
+              className="flex w-full items-center justify-between gap-4 px-4 py-2 text-left hover:bg-accent-soft"
+            >
+              <span className="truncate font-serif text-[15px]">{v.title}</span>
+              <span className="shrink-0 text-[12px] text-faint tabular-nums">
+                {num(v.n)} {t("Ergebnisse", "results")}
+              </span>
+            </button>
+          ))}
+          {suggestions.houses.length > 0 && <div className="mt-1 border-t border-line px-4 pt-2 pb-1 eyebrow text-faint">{t("Auktionshäuser", "Auction houses")}</div>}
+          {suggestions.houses.map((h) => (
+            <button
+              key={h}
+              role="option"
+              aria-selected={false}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                onPickHouse(h);
+                setOpen(false);
+              }}
+              className="flex w-full items-center gap-2 px-4 py-2 text-left text-[14px] hover:bg-accent-soft"
+            >
+              <Gavel className="size-3.5 text-faint" /> {h}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** One auction result: photo, car with date, house and mileage, then the price and how it compares with the market value. */
+function ResultRow({ sale: s, onOpen }: { sale: Sale; onOpen: () => void }) {
+  const v = variantById.get(s.variantId)!;
+  const unsold = s.price === null;
+  return (
+    <li className="border-b border-line/80">
+      <button onClick={onOpen} className="group grid w-full grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 rounded-[3px] px-2 py-3 text-left transition-colors hover:bg-panel sm:grid-cols-[4.5rem_minmax(0,1fr)_auto_6.5rem]">
+        <span className="relative flex h-12 w-16 items-center justify-center overflow-hidden rounded-[3px] bg-panel-2 sm:w-[4.5rem] [&>span]:!h-full [&>span]:!w-full">
+          <Gavel className="absolute size-4 text-line-2" aria-hidden />
+          <LotThumb url={s.url} house={s.house} image={s.image} small link={false} />
+        </span>
+        <span className="min-w-0">
+          <span className="block truncate font-serif text-[16px] leading-snug transition-colors group-hover:text-accent">{variantTitle(v, { brand: false })}</span>
+          <span className="mt-0.5 block truncate text-[12.5px] text-muted">
+            {date(s.date)} · {s.house}
+            {s.mileage ? ` · ${km(s.mileage)}` : ""}
+          </span>
+        </span>
+        <span className="text-right">
+          {unsold ? (
+            <>
+              <span className="inline-block rounded-full bg-panel-3 px-2 py-0.5 text-[11.5px] text-muted">{t("nicht verkauft", "not sold")}</span>
+              {unsoldPrice(s) && <span className="mt-1 block text-[12px] text-faint">{unsoldPrice(s)}</span>}
+            </>
+          ) : (
+            <span className="font-serif text-[18px] tabular-nums">
+              <Money value={s.price} sale={s} />
+            </span>
+          )}
+        </span>
+        <span className="col-start-3 row-start-2 text-right sm:col-start-4 sm:row-start-1">
+          {unsold ? <span className="text-[12px] text-faint">–</span> : <DeltaBadge value={s.trend} digits={0} />}
+        </span>
       </button>
-    </th>
+    </li>
   );
 }
 
