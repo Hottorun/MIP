@@ -4066,23 +4066,13 @@
  ],
  "porsche-911-f-modell-t-2-2": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/1970-1_Porsche_911T_%2811031414455%29.jpg/1920px-1970-1_Porsche_911T_%2811031414455%29.jpg",
-   "caption": "Porsche 911 T 2.2 (1970/71)",
-   "page": "https://commons.wikimedia.org/wiki/File:1970-1_Porsche_911T_(11031414455).jpg",
-   "author": "Andrew Bone",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "fit": "contain",
-   "ratio": 1.333
-  },
-  {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/1970-1_Porsche_911_T_%2811031423685%29.jpg/1920px-1970-1_Porsche_911_T_%2811031423685%29.jpg",
-   "caption": "Porsche 911 T 2.2 (1970/71)",
-   "page": "https://commons.wikimedia.org/wiki/File:1970-1_Porsche_911_T_(11031423685).jpg",
-   "author": "Andrew Bone",
-   "license": "CC BY 2.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-   "ratio": 1.333
+   "file": "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=250546&w=1920&h=1280&crop=0&public=1&cs=bf30aed77c48fc7e",
+   "caption": "911 S Coupé, 1970, Porsche AG",
+   "page": "https://newsroom.porsche.com/en/media-search.html",
+   "author": "© Porsche AG",
+   "license": "Pressefoto, Porsche Newsroom",
+   "exact": false,
+   "ratio": 1.335
   }
  ],
  "porsche-911-f-modell-e-2-2": [
