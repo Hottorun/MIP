@@ -48,8 +48,8 @@ from classify import body as body_of  # noqa: E402
 AS_OF = dt.date.fromisoformat(os.environ.get("MIP_AS_OF") or dt.date.today().isoformat())  # cut-off day: today unless set
 MIN_N = 3          # observations needed for a published value
 OWN_MIN = 12       # observations needed for an own price path
-BID_SHARE = 0.05   # highest bids of unsold lots together carry at most 5 % of a variant's level ...
-BID_MAX = math.log(1.02)   # ... and never move it by more than 2 %: a bid is a hint, not a price
+BID_SHARE = 0.08   # highest bids of unsold lots together carry at most 8 % of a variant's level ...
+BID_MAX = math.log(1.03)   # ... and never move it by more than 3 %: a bid is a hint, not a price
 RECENCY = 2.0      # e-folding time (years) of the recency weight in the level estimate
 OUT_K = 2.0        # a price farther than OUT_K x the scatter of its source from the variant's level is left out ...
 OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way,

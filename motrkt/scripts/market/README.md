@@ -133,7 +133,7 @@ werden dem richtigen Modell zugeordnet. Preise werden zum EZB-Kurs des Tages in 
    teilt sich den US-Anteil. Wird dasselbe Fahrzeug (Haus, Variante, Titel) binnen 400 Tagen erneut angeboten und
    liegt der spätere Preis bzw. das spätere Gebot höchstens 30 % entfernt, zählt nur der spätere Beleg. Gebote gehen
    nicht in den Zeitindex und nicht in den Verlauf der Variante ein und zählen nicht für die Mindestzahl. Sie
-   korrigieren den Wert nur schwach: zusammen höchstens 5 % Gewicht (`BID_SHARE`) und nie mehr als 2 % Änderung
+   korrigieren den Wert nur schwach: zusammen höchstens 8 % Gewicht (`BID_SHARE`) und nie mehr als 3 % Änderung
    (`BID_MAX`), wie viele Gebote es auch gibt.
 8. **Mindestens 3 Belege** (Verkäufe oder Angebote) für einen Marktwert. Darunter zeigt die App keinen Wert, keinen Verlauf und keine
    Empfehlung, sondern nur die Einzelbelege. Ausnahme sind die seltensten Varianten (`EARLY_RESULTS` in `classify.py`,
