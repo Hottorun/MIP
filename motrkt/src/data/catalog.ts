@@ -1,6 +1,7 @@
 import type { Brand, CarShape, ModelCategory, VariantSeed } from "./types";
 
-type GenerationDef = { name: string; years: [number, number | null]; shape: CarShape; variants: VariantSeed[] };
+/** `id` fixes the generation id where it must not follow from model and name (a generation moved to another model). */
+type GenerationDef = { name: string; id?: string; years: [number, number | null]; shape: CarShape; variants: VariantSeed[] };
 type ModelDef = { name: string; category: ModelCategory; featured?: boolean; generations: GenerationDef[] };
 type BrandDef = Omit<Brand, "id"> & { id: string; models: ModelDef[] };
 
@@ -749,6 +750,32 @@ export const CATALOG: BrandDef[] = [
               }),
             ],
           },
+          // 930 (911 Turbo, 1975-1989): its own type number, listed as a 911 generation. The id stays "porsche-930"
+          // (variant ids, sales, paints and links were made when the 930 was a model of its own).
+          {
+            name: "930",
+            id: "porsche-930",
+            years: [1975, 1989],
+            shape: "classic911",
+            variants: [
+              v("Turbo 3.0", [1975, 1977], 2850, 246_000, 0.071, 260, 3.0, 33_000, {
+                tags: ["Turbo"],
+                transmission: "4-Gang Schaltgetriebe",
+                color: "#741726",
+              }),
+              v("Turbo 3.3", [1978, 1989], 17300, 176_000, 0.062, 300, 3.3, 47_000, {
+                tags: ["Turbo"],
+                body: { Coupé: 0.82, Cabriolet: 0.1, Targa: 0.08 },
+                transmission: "4-/5-Gang Schaltgetriebe",
+                color: "#151619",
+              }),
+              v("Turbo 3.3 Flachbau", [1981, 1989], 948, 421_000, 0.083, 330, 3.3, 77_000, {
+                tags: ["Turbo"],
+                transmission: "4-/5-Gang Schaltgetriebe",
+                color: "#e9e8e1",
+              }),
+            ],
+          },
         ],
       },
       {
@@ -819,36 +846,6 @@ export const CATALOG: BrandDef[] = [
               v("912 E", [1976, 1976], 2092, 52_000, 0.046, 90, 2.0, 10_000, {
                 transmission: "5-Gang Schaltgetriebe",
                 color: "#b7babe",
-              }),
-            ],
-          },
-        ],
-      },
-      {
-        name: "930",
-        category: "heck",
-        featured: true,
-        generations: [
-          {
-            name: "930",
-            years: [1975, 1989],
-            shape: "classic911",
-            variants: [
-              v("Turbo 3.0", [1975, 1977], 2850, 246_000, 0.071, 260, 3.0, 33_000, {
-                tags: ["Turbo"],
-                transmission: "4-Gang Schaltgetriebe",
-                color: "#741726",
-              }),
-              v("Turbo 3.3", [1978, 1989], 17300, 176_000, 0.062, 300, 3.3, 47_000, {
-                tags: ["Turbo"],
-                body: { Coupé: 0.82, Cabriolet: 0.1, Targa: 0.08 },
-                transmission: "4-/5-Gang Schaltgetriebe",
-                color: "#151619",
-              }),
-              v("Turbo 3.3 Flachbau", [1981, 1989], 948, 421_000, 0.083, 330, 3.3, 77_000, {
-                tags: ["Turbo"],
-                transmission: "4-/5-Gang Schaltgetriebe",
-                color: "#e9e8e1",
               }),
             ],
           },

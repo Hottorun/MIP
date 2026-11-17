@@ -39,7 +39,6 @@ const MODELS: Record<string, string | null> = {
   "porsche-911": "911",
   "porsche-356": "356",
   "porsche-912": "912",
-  "porsche-930": "930",
   "porsche-918": "918",
   "porsche-carrera-gt": "Carrera GT",
   "porsche-959": "959",
@@ -48,6 +47,10 @@ const MODELS: Record<string, string | null> = {
   // mobile.de files the 718 under Boxster and Cayman: search by make + years, match "718" in the title.
   "porsche-718": null,
 };
+
+/** Generations that mobile.de files under a model code of their own (the 930 is a 911 generation here, "930" there). */
+const GEN_MODELS: Record<string, string> = { "porsche-930": "930" };
+const modelCode = (v: Variant): string | null | undefined => GEN_MODELS[v.generationId] ?? MODELS[v.modelId];
 
 const norm = (s: string) =>
   ` ${s
@@ -67,7 +70,7 @@ export function generationQueries(): GenerationQuery[] {
     const gen = generationById.get(v.generationId)!;
     const make = MAKES[v.brandId];
     // Models without a mobile.de model code are searched by make + years and filtered by keywords.
-    const model = MODELS[v.modelId] ?? "";
+    const model = modelCode(v) ?? "";
     const from = gen.years[0];
     const to = Math.min(new Date().getFullYear(), (gen.years[1] ?? new Date().getFullYear()) + 1);
     const key = `${make}|${model}|${from}|${to}`;
@@ -82,7 +85,7 @@ function matchScore(v: Variant, text: string): number | null {
   const gen = generationById.get(v.generationId)!;
   const generic = new Set([...words(model.name), ...words(gen.name), "coupe", "porsche"]);
   const required = words(v.name).filter((w) => !generic.has(w));
-  const hasModelCode = MODELS[v.modelId] !== null && MODELS[v.modelId] !== undefined;
+  const hasModelCode = modelCode(v) !== null && modelCode(v) !== undefined;
   if (!hasModelCode && !text.includes(norm(model.name.replace("-", " ")).trim()) && !words(model.name).every((w) => text.includes(` ${w} `))) return null;
   if (!required.every((w) => text.includes(` ${w} `))) return null;
   // Tokens that only appear in sibling variants (e.g. "rs" when looking for the plain Carrera) exclude the ad.
@@ -142,7 +145,7 @@ function toListing(ad: MobileAd, v: Variant): Listing | null {
 export function mapAds(query: GenerationQuery, ads: MobileAd[]): Listing[] {
   const candidates = variants.filter((v) => {
     const gen = generationById.get(v.generationId)!;
-    return MAKES[v.brandId] === query.make && (MODELS[v.modelId] ?? "") === query.model && gen.years[0] === query.from;
+    return MAKES[v.brandId] === query.make && (modelCode(v) ?? "") === query.model && gen.years[0] === query.from;
   });
   const out: Listing[] = [];
   for (const ad of ads) {

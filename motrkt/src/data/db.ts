@@ -186,7 +186,7 @@ function buildWeaknesses(brandId: string, seed: VariantSeed, modelName: string, 
     list.push(HINT.rustAir, HINT.engineEarly911, mfi ? HINT.mfi : HINT.tensioners);
     if (light) list.push(HINT.authentic);
     list.push(HINT.matching, HINT.original);
-  } else if (gen === "G-Modell" || modelName === "930") {
+  } else if (gen === "G-Modell" || gen === "930") {
     list.push(HINT.rustAir, HINT.engineStuds);
     if (mfi) list.push(HINT.mfi);
     else if (y < 1983) list.push(HINT.tensioners);
@@ -295,7 +295,7 @@ function build() {
       for (const m of b.models)
         for (const g of m.generations) {
           const modelId = `${b.id}-${slug(m.name)}`;
-          const genId = g.name === m.name ? modelId : `${modelId}-${slug(g.name)}`;
+          const genId = g.id ?? (g.name === m.name ? modelId : `${modelId}-${slug(g.name)}`);
           for (const s of g.variants) hiddenVariantIds.add(`${genId}-${slug(s.name)}`);
         }
       continue;
@@ -319,7 +319,7 @@ function build() {
       // Generations oldest first.
       const gensByYear = [...m.generations].sort((x, y) => x.years[0] - y.years[0]);
       for (const g of gensByYear) {
-        const genId = g.name === m.name ? model.id : `${model.id}-${slug(g.name)}`;
+        const genId = g.id ?? (g.name === m.name ? model.id : `${model.id}-${slug(g.name)}`);
         const gen: Generation = { id: genId, modelId: model.id, name: g.name, years: g.years, shape: g.shape, variantIds: [] };
         model.generationIds.push(genId);
         generations.push(gen);
