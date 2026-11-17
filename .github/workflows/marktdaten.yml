@@ -8,9 +8,16 @@
 # Secrets: DATABASE_URL (Postgres, optional), MIP_SEED_URL (optional).
 name: Marktdaten täglich
 
+# Startzeiten: GitHub startet geplante Läufe oft Stunden zu spät, besonders zur vollen Stunde. Deshalb mehrere Termine
+# zu einer ungeraden Minute ab kurz nach Mitternacht (Zeiten in UTC; MEZ = UTC+1, MESZ = UTC+2). Der erste, der
+# tatsächlich startet, holt die Daten; die späteren sehen den Commit „Marktdaten vom <heute>“ und beenden sich sofort.
 on:
   schedule:
-    - cron: "0 3 * * *" # 4 Uhr MEZ, 5 Uhr MESZ
+    - cron: "37 23 * * *" # 0:37 MEZ / 1:37 MESZ
+    - cron: "37 0 * * *" # 1:37 MEZ / 2:37 MESZ
+    - cron: "37 1 * * *" # 2:37 MEZ / 3:37 MESZ
+    - cron: "37 2 * * *" # 3:37 MEZ / 4:37 MESZ
+    - cron: "37 4 * * *" # 5:37 MEZ / 6:37 MESZ, Reserve
   workflow_dispatch:
 
 permissions:
@@ -21,7 +28,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # geplante Läufe: nichts tun, wenn ein früherer Termin heute schon Daten geholt hat (von Hand gestartet: immer)
+  heute:
+    runs-on: ubuntu-24.04
+    env:
+      TZ: Europe/Berlin
+    outputs:
+      erledigt: ${{ steps.check.outputs.erledigt }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 30
+      - name: Heute schon aktualisiert?
+        id: check
+        run: |
+          HEUTE="Marktdaten vom $(date +%d.%m.%Y)"
+          if [ "${{ github.event_name }}" = "schedule" ] && git log -30 --format=%s | grep -qx "$HEUTE"; then
+            echo "$HEUTE ist schon da, nichts zu tun."
+            echo "erledigt=1" >> "$GITHUB_OUTPUT"
+          fi
+
   update:
+    needs: heute
+    if: needs.heute.outputs.erledigt != '1'
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     env:
