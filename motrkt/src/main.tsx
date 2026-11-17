@@ -1,8 +1,10 @@
 import "./migrateStorage";
 import "./index.css";
+import { applyTheme, storedTheme } from "./lib/theme";
 import { watchGlobalErrors, reportError } from "./lib/report";
 import { loadDataset } from "./data/real/load";
 
+applyTheme(storedTheme());
 watchGlobalErrors();
 
 // The market data (a few MB, cached per content hash) and the app's code load side by side; the app's modules

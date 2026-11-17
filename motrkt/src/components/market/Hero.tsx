@@ -115,7 +115,8 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
           </button>
         </SpreadValue>
       ) : (
-      <div className="mt-8 border-t border-line pt-6">
+      <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+        <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
         <div className="text-[13px] text-muted">
           {picked.length
             ? t("Schätzwert mit Ausstattung", "Estimate with options")
@@ -242,7 +243,7 @@ function PickerLink({ to, active, children }: { to: string; active: boolean; chi
       aria-current={active ? "page" : undefined}
       className={cn(
         "rounded-[2px] border px-3 py-1.5 text-[13.5px] transition-colors",
-        active ? "border-ink bg-ink text-bg" : "border-line-2 text-ink hover:border-ink",
+        active ? "border-accent bg-accent text-bg" : "border-line-2 text-ink hover:border-accent hover:text-accent",
       )}
     >
       {children}
@@ -518,7 +519,8 @@ function SpreadValue({ variant, spread, value, change, label, children }: { vari
   const round = (v: number) => Math.round(v / 1000) * 1000;
   const early = variant.years[0] < EARLY_CLASSIC_BEFORE;
   return (
-    <div className="mt-8 border-t border-line pt-6">
+    <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+        <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
       <div className="text-[13px] text-muted">{label}</div>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <Money value={round(value)} className="text-[40px] leading-none" />
@@ -554,9 +556,9 @@ function RangeBar({ lo, hi, median }: { lo: number; hi: number; median: number }
   return (
     <div className="mt-6 max-w-md" aria-label={t(`Typische Spanne ${eur(lo)} bis ${eur(hi)}`, `Typical range ${eur(lo)} to ${eur(hi)}`)}>
       <div className="mb-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-muted">{t("Typische Spanne", "Typical range")}</div>
-      <div className="relative h-1.5 rounded-full bg-line">
-        <div className="absolute inset-y-0 rounded-full bg-gold/45" style={{ left: at(lo), right: `calc(100% - ${at(hi)})` }} />
-        <div className="absolute -top-1.5 h-[18px] w-0.5 -translate-x-1/2 rounded-full bg-ink" style={{ left: at(median) }} />
+      <div className="relative h-1.5 rounded-full bg-panel-3">
+        <div className="absolute inset-y-0 rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-gold))] opacity-80" style={{ left: at(lo), right: `calc(100% - ${at(hi)})` }} />
+        <div className="absolute -top-1.5 h-[18px] w-1 -translate-x-1/2 rounded-full bg-ink ring-2 ring-panel" style={{ left: at(median) }} />
       </div>
       <div className="relative mt-2 h-5 text-[13px]">
         <span className="money absolute -translate-x-1/2 whitespace-nowrap text-muted" style={{ left: at(lo) }}>{eur(lo)}</span>
@@ -616,7 +618,8 @@ function ThinBasis({ variant }: { variant: Variant }) {
 function NoValue({ variant }: { variant: Variant }) {
   const n = marketBasis(variant.id)?.n ?? 0;
   return (
-    <div className="mt-8 border-t border-line pt-6">
+    <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+        <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
       <div className="text-[13px] text-muted">{t("Marktwert Deutschland", "Market value, Germany")}</div>
       <div className="mt-1 font-serif text-[28px] leading-tight">{t("Keine belastbare Datenbasis", "Not enough data")}</div>
       <p className="mt-2 text-[13px] text-faint">
@@ -645,7 +648,7 @@ function BodySwitch({ variant, body, onBody }: { variant: Variant } & BodyProps)
           key={b ?? "all"}
           aria-pressed={body === b}
           onClick={() => onBody(b)}
-          className={cn("rounded-[2px] px-3.5 py-1.5 transition-colors", body === b ? "bg-ink text-bg" : "text-muted hover:text-ink")}
+          className={cn("rounded-[2px] px-3.5 py-1.5 transition-colors", body === b ? "bg-accent text-bg" : "text-muted hover:text-ink")}
         >
           {b ? tr(b) : t("Alle", "All")}
         </button>

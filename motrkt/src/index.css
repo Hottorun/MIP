@@ -22,9 +22,131 @@
   --color-warn: #946616;
   --color-rose: #8e3b4a;
 
+  /*
+   * Colour accents ("Petrol & Messing"): petrol is the house accent for links, active states and key figures,
+   * brass (gold) the second voice, cobalt and Indian red the third and fourth. Every accent has a soft tint for fills.
+   * Text on cream stays at >= 4.5:1; the dark theme redefines each token further down.
+   */
+  --color-accent: #0b6874;
+  --color-accent-2: #084f58;
+  --color-accent-soft: #e2eeee;
+  --color-gold-soft: #f3ead8;
+  --color-cobalt: #34509c;
+  --color-cobalt-soft: #e5e9f5;
+  --color-red: #a8322b;
+  --color-red-soft: #f6e3df;
+  --color-up-soft: #e3eedf;
+  --color-down-soft: #f6e2dd;
+  /* dark bands (top bar, stage, highlight tiles): stay dark in both themes */
+  --color-night: #10272b;
+  --color-night-2: #173a40;
+  --color-on-night: #f3efe6;
+  /* categorical chart series, validated for colour-vision deficiency on the panel surface (light and dark) */
+  --color-series-1: #00899e;
+  --color-series-2: #c0862a;
+  --color-series-3: #4a63b5;
+  --color-series-4: #c2453d;
+
   --font-sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
   --font-display: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+}
+
+/* Dark theme: follows the system unless the visitor picked a theme (data-theme on <html>). */
+@layer base {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --color-bg: #121412;
+      --color-panel: #1a1c1a;
+      --color-panel-2: #212422;
+      --color-panel-3: #2a2d2b;
+      --color-line: #2f3330;
+      --color-line-2: #4a4f4b;
+      --color-ink: #eeeae1;
+      --color-muted: #b4ada1;
+      --color-faint: #8d877d;
+      --color-gold: #d3ad66;
+      --color-gold-2: #e4c486;
+      --color-beige: #6f6047;
+      --color-up: #86c08a;
+      --color-down: #ee8a7a;
+      --color-warn: #e2ac52;
+      --color-rose: #e08a9a;
+      --color-accent: #5cc4cf;
+      --color-accent-2: #8ad8e0;
+      --color-accent-soft: #15333a;
+      --color-gold-soft: #33291a;
+      --color-cobalt: #93a8ec;
+      --color-cobalt-soft: #1f2741;
+      --color-red: #ee8a7a;
+      --color-red-soft: #3a201d;
+      --color-up-soft: #1d3220;
+      --color-down-soft: #3a201d;
+      --color-night: #0b1d20;
+      --color-night-2: #12333a;
+      --color-series-1: #1b9aa3;
+      --color-series-2: #b5802f;
+      --color-series-3: #6478cf;
+      --color-series-4: #d45a50;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-bg: #121412;
+    --color-panel: #1a1c1a;
+    --color-panel-2: #212422;
+    --color-panel-3: #2a2d2b;
+    --color-line: #2f3330;
+    --color-line-2: #4a4f4b;
+    --color-ink: #eeeae1;
+    --color-muted: #b4ada1;
+    --color-faint: #8d877d;
+    --color-gold: #d3ad66;
+    --color-gold-2: #e4c486;
+    --color-beige: #6f6047;
+    --color-up: #86c08a;
+    --color-down: #ee8a7a;
+    --color-warn: #e2ac52;
+    --color-rose: #e08a9a;
+    --color-accent: #5cc4cf;
+    --color-accent-2: #8ad8e0;
+    --color-accent-soft: #15333a;
+    --color-gold-soft: #33291a;
+    --color-cobalt: #93a8ec;
+    --color-cobalt-soft: #1f2741;
+    --color-red: #ee8a7a;
+    --color-red-soft: #3a201d;
+    --color-up-soft: #1d3220;
+    --color-down-soft: #3a201d;
+    --color-night: #0b1d20;
+    --color-night-2: #12333a;
+    --color-series-1: #1b9aa3;
+    --color-series-2: #b5802f;
+    --color-series-3: #6478cf;
+    --color-series-4: #d45a50;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+  /* elements drawn for one theme only (the wordmark) */
+  .theme-dark-only {
+    display: none;
+  }
+  :root[data-theme="dark"] .theme-dark-only {
+    display: revert;
+  }
+  :root[data-theme="dark"] .theme-light-only {
+    display: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-dark-only {
+      display: revert;
+    }
+    :root:not([data-theme="light"]) .theme-light-only {
+      display: none;
+    }
+  }
 }
 
 @layer base {
@@ -50,7 +172,7 @@
     letter-spacing: -0.015em;
   }
   ::selection {
-    background: color-mix(in srgb, var(--color-gold) 25%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 25%, transparent);
   }
   * {
     scrollbar-width: thin;
@@ -63,7 +185,7 @@
     cursor: default;
   }
   :focus-visible {
-    outline: 1.5px solid var(--color-ink);
+    outline: 1.5px solid var(--color-accent);
     outline-offset: 3px;
   }
   select {
@@ -85,13 +207,13 @@
     @apply inline-flex items-center gap-1.5 rounded-[3px] border border-line px-2.5 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
   }
   .chip-active {
-    @apply border-ink bg-ink text-bg hover:border-ink hover:text-bg;
+    @apply border-accent bg-accent text-bg hover:border-accent hover:text-bg;
   }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-[2px] border border-line-2 bg-transparent px-4 py-2 text-[14px] text-ink transition-colors hover:border-ink disabled:opacity-40;
   }
   .btn-gold {
-    @apply border-ink bg-ink text-bg hover:bg-gold-2 hover:border-gold-2;
+    @apply border-accent bg-accent text-bg hover:border-accent-2 hover:bg-accent-2;
   }
   .btn-ghost {
     @apply border-transparent hover:border-transparent hover:bg-panel-3;
@@ -103,7 +225,7 @@
     @apply mb-1 block text-[13px] text-muted;
   }
   .link {
-    @apply text-ink underline decoration-line-2 underline-offset-4 transition-colors hover:decoration-ink;
+    @apply text-accent underline decoration-accent/35 underline-offset-4 transition-colors hover:decoration-accent;
   }
   .table-base {
     @apply w-full text-left text-[14px];
@@ -125,6 +247,33 @@
   }
   .kpi-value {
     @apply font-serif text-[24px] leading-tight;
+  }
+  /* small caps label above a figure or section */
+  .eyebrow {
+    @apply text-[11.5px] font-semibold tracking-[0.14em] uppercase;
+  }
+  /* figure tile: a soft tinted card with a coloured top rule, used for key figures */
+  .stat-tile {
+    @apply relative overflow-hidden rounded-[4px] border border-line bg-panel px-5 pt-5 pb-4;
+  }
+  .stat-tile::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--tile-color, var(--color-accent));
+  }
+  .stat-tile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tile-color, var(--color-accent)) 9%, transparent) 0%, transparent 60%);
+  }
+  /* the dark petrol band used for the top bar and highlight panels */
+  .night-band {
+    background: linear-gradient(120deg, var(--color-night) 0%, var(--color-night-2) 100%);
+    color: var(--color-on-night);
   }
 }
 

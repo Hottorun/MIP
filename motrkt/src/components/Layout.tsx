@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Search, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck, Settings } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck, Settings } from "lucide-react";
 import { useMe } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
@@ -12,6 +12,7 @@ import { AS_OF } from "../data/generate";
 import { LogoMark, LogoWordmark } from "./LogoMark";
 import { MODEL_CHANNELS } from "../data/real/model";
 import { reportError } from "../lib/report";
+import { useTheme } from "../lib/theme";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
 const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL;
@@ -36,9 +37,10 @@ export function Layout() {
   }, [pathname]);
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="bg-ink px-4 py-2 text-center text-[12.5px] tracking-[0.02em] text-bg/85">
-        {t("Marktdaten vom", "Market data as of")} {date(AS_OF)}.
-        <span className="hidden sm:inline">
+      <div className="night-band px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
+        <span className="mr-2 inline-block size-1.5 -translate-y-px rounded-full bg-[#5cc4cf] align-middle shadow-[0_0_0_3px_rgba(92,196,207,0.22)]" aria-hidden />
+        <span className="text-on-night/90">{t("Marktdaten vom", "Market data as of")} {date(AS_OF)}.</span>
+        <span className="hidden text-on-night/65 sm:inline">
           {" "}
           {t(
             `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015.`,
@@ -115,7 +117,7 @@ function NavItem({ to, label }: { to: string; label: string }) {
   return (
     <NavLink
       to={to}
-      className={cn("border-b py-1 text-[14.5px] transition-colors", active ? "border-ink text-ink" : "border-transparent text-muted hover:text-ink")}
+      className={cn("border-b py-1 text-[14.5px] transition-colors", active ? "border-accent text-ink" : "border-transparent text-muted hover:text-accent")}
     >
       {label}
     </NavLink>
@@ -162,11 +164,12 @@ function Header() {
             ))}
           </nav>
           <div className="flex items-center gap-1">
-            <button className="p-2 text-ink transition-colors hover:text-gold" onClick={() => setSearchOpen(true)} aria-label={t("Suche öffnen", "Open search")}>
+            <button className="p-2 text-ink transition-colors hover:text-accent" onClick={() => setSearchOpen(true)} aria-label={t("Suche öffnen", "Open search")}>
               <Search className="size-[19px]" strokeWidth={1.5} />
             </button>
             <NotificationBell />
             <UserMenu />
+            <ThemeSwitch />
             <LangSwitch className="ml-1 hidden sm:flex" />
           </div>
         </div>
@@ -315,9 +318,9 @@ function NotificationBell() {
   const icon = { alert: AlertCircle, sale: TrendingUp };
   return (
     <div className="relative" ref={ref}>
-      <button className="relative p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label={t(`Benachrichtigungen (${unread} ungelesen)`, `Notifications (${unread} unread)`)}>
+      <button className="relative p-2 text-ink transition-colors hover:text-accent" onClick={() => setOpen((o) => !o)} aria-label={t(`Benachrichtigungen (${unread} ungelesen)`, `Notifications (${unread} unread)`)}>
         <Bell className="size-[19px]" strokeWidth={1.5} />
-        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-gold" />}
+        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red ring-2 ring-bg" />}
       </button>
       {open && (
         <div className={cn(dropdown, "w-[min(92vw,380px)] overflow-hidden")}>
@@ -349,7 +352,7 @@ function NotificationBell() {
                         <span className="block text-[13px] text-muted">{n.body}</span>
                         <span className="block text-[12px] text-faint">{date(n.time)}</span>
                       </span>
-                      {!read.has(n.id) && <span className="mt-2 size-1.5 shrink-0 rounded-full bg-gold" />}
+                      {!read.has(n.id) && <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" />}
                     </button>
                   </li>
                 );
@@ -380,7 +383,7 @@ function UserMenu() {
   const item = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[14px] hover:bg-panel-2";
   return (
     <div className="relative" ref={ref}>
-      <button className="p-2 text-ink transition-colors hover:text-gold" onClick={() => setOpen((o) => !o)} aria-label={t("Konto", "Account")}>
+      <button className="p-2 text-ink transition-colors hover:text-accent" onClick={() => setOpen((o) => !o)} aria-label={t("Konto", "Account")}>
         <User className="size-[19px]" strokeWidth={1.5} />
       </button>
       {open && (
@@ -431,6 +434,17 @@ function UserMenu() {
   );
 }
 
+/** Sun / moon: switches between the light and the dark theme (first click leaves the system setting). */
+function ThemeSwitch() {
+  const { dark, setTheme } = useTheme();
+  const label = dark ? t("Helle Darstellung", "Light theme") : t("Dunkle Darstellung", "Dark theme");
+  return (
+    <button className="p-2 text-ink transition-colors hover:text-accent" onClick={() => setTheme(dark ? "light" : "dark")} aria-label={label} title={label}>
+      {dark ? <Sun className="size-[19px]" strokeWidth={1.5} /> : <Moon className="size-[18px]" strokeWidth={1.5} />}
+    </button>
+  );
+}
+
 /** "DE | EN": switches the interface language; the choice is stored in the browser. */
 function LangSwitch({ className }: { className?: string }) {
   const { lang, setLang } = useLang();
@@ -470,11 +484,11 @@ function Footer() {
     { to: "/portfolio", label: "Portfolio" },
   ];
   return (
-    <footer className="mt-16 border-t border-line bg-panel-2">
+    <footer className="mt-16 border-t-[3px] border-accent/70 bg-panel-2">
       <div className="mx-auto grid max-w-[1360px] gap-12 px-5 pt-16 pb-12 sm:px-8 md:grid-cols-[1.2fr_1fr_1.3fr] md:gap-16">
         <div>
           <LogoWordmark height={60} />
-          <span className="mt-6 block h-px w-10 bg-gold" aria-hidden="true" />
+          <span className="mt-6 block h-[3px] w-14 rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-gold))]" aria-hidden="true" />
           <p className="mt-5 max-w-[16rem] font-serif text-[16px] leading-relaxed text-muted italic">
             {t("Marktwerte, Verkäufe und Angebote von Sportwagen, vom Klassiker bis zum Neuwagen.", "Market values, sales and listings of sports cars, from classics to new cars.")}
           </p>

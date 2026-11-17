@@ -42,17 +42,27 @@ export function Section({
   actions,
   children,
   className,
+  tone = "accent",
+  eyebrow,
 }: {
   title: ReactNode;
   sub?: ReactNode;
   actions?: ReactNode;
   children: ReactNode;
   className?: string;
+  /** colour of the short rule above the heading */
+  tone?: Tone;
+  /** small caps line above the heading */
+  eyebrow?: ReactNode;
 }) {
   return (
     <section className={cn("min-w-0", className)}>
       <header className="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
         <div className="min-w-0">
+          <div className="mb-3 flex items-center gap-3">
+            <span className="block h-[3px] w-9 rounded-full" style={{ background: TONE_COLOR[tone] }} aria-hidden />
+            {eyebrow && <span className="eyebrow" style={{ color: TONE_COLOR[tone] }}>{eyebrow}</span>}
+          </div>
           <h2 className="font-display text-[28px] leading-tight sm:text-[32px]">{title}</h2>
           {sub && <p className="mt-1 text-[14px] text-muted">{sub}</p>}
         </div>
@@ -74,15 +84,80 @@ export function Delta({ value, className, arrow = true, digits = 1 }: { value: n
   );
 }
 
-export function Pill({ children, tone = "neutral", className }: { children: ReactNode; tone?: "up" | "down" | "gold" | "neutral" | "warn"; className?: string }) {
+export function Pill({ children, tone = "neutral", className }: { children: ReactNode; tone?: "up" | "down" | "gold" | "neutral" | "warn" | "accent" | "cobalt" | "red"; className?: string }) {
   const tones = {
-    up: "text-up border-up/40",
-    down: "text-down border-down/40",
-    gold: "text-gold-2 border-gold/45",
-    warn: "text-warn border-warn/40",
-    neutral: "text-muted border-line-2",
+    up: "text-up border-up/30 bg-up-soft",
+    down: "text-down border-down/30 bg-down-soft",
+    gold: "text-gold-2 border-gold/35 bg-gold-soft",
+    warn: "text-warn border-warn/35 bg-gold-soft",
+    accent: "text-accent border-accent/30 bg-accent-soft",
+    cobalt: "text-cobalt border-cobalt/30 bg-cobalt-soft",
+    red: "text-red border-red/30 bg-red-soft",
+    neutral: "text-muted border-line-2 bg-panel/70",
   };
-  return <span className={cn("inline-flex items-center gap-1 rounded-[2px] border bg-panel/70 px-1.5 py-0.5 text-xs whitespace-nowrap", tones[tone], className)}>{children}</span>;
+  return <span className={cn("inline-flex items-center gap-1 rounded-[3px] border px-1.5 py-0.5 text-xs whitespace-nowrap", tones[tone], className)}>{children}</span>;
+}
+
+/** The colour families of the palette; each maps to a CSS token so light and dark themes swap in one place. */
+export type Tone = "accent" | "gold" | "cobalt" | "red" | "up" | "down" | "ink";
+export const TONE_COLOR: Record<Tone, string> = {
+  accent: "var(--color-accent)",
+  gold: "var(--color-gold)",
+  cobalt: "var(--color-cobalt)",
+  red: "var(--color-red)",
+  up: "var(--color-up)",
+  down: "var(--color-down)",
+  ink: "var(--color-ink)",
+};
+
+/** Signed percentage on a soft tinted chip: green up, red down, grey flat. */
+export function DeltaBadge({ value, className, digits = 1 }: { value: number; className?: string; digits?: number }) {
+  const tone = value > 0.0005 ? "bg-up-soft text-up" : value < -0.0005 ? "bg-down-soft text-down" : "bg-panel-3 text-muted";
+  const Icon = value > 0.0005 ? ArrowUpRight : value < -0.0005 ? ArrowDownRight : Minus;
+  return (
+    <span className={cn("inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[12.5px] font-medium tabular-nums", tone, className)}>
+      <Icon className="size-3.5 shrink-0" strokeWidth={2.2} />
+      {pct(value, { digits })}
+    </span>
+  );
+}
+
+/**
+ * A key figure: label, big value, an optional line underneath and an optional mini chart, on a card with a coloured
+ * top rule. The value stays in ink; colour only marks which family the figure belongs to.
+ */
+export function StatTile({
+  label,
+  value,
+  sub,
+  icon,
+  tone = "accent",
+  chart,
+  className,
+}: {
+  label: ReactNode;
+  value: ReactNode;
+  sub?: ReactNode;
+  icon?: ReactNode;
+  tone?: Tone;
+  chart?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("stat-tile flex min-w-0 flex-col", className)} style={{ ["--tile-color" as string]: TONE_COLOR[tone] }}>
+      <div className="relative z-[1] flex items-center gap-2">
+        {icon && (
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-full" style={{ color: TONE_COLOR[tone], background: `color-mix(in srgb, ${TONE_COLOR[tone]} 13%, transparent)` }}>
+            {icon}
+          </span>
+        )}
+        <span className="text-[13px] leading-tight text-muted">{label}</span>
+      </div>
+      <div className="relative z-[1] mt-3 font-serif text-[30px] leading-none text-ink">{value}</div>
+      {sub && <div className="relative z-[1] mt-2 text-[13px] leading-snug text-muted">{sub}</div>}
+      {chart && <div className="relative z-[1] mt-auto pt-3">{chart}</div>}
+    </div>
+  );
 }
 
 export function Sparkline({
@@ -180,7 +255,7 @@ export function Segmented<T extends string>({
 }) {
   const opts = (options as (T | { value: T; label: ReactNode })[]).map((o) => (typeof o === "string" ? { value: o, label: o } : o));
   return (
-    <div className={cn("inline-flex items-center gap-3", className)}>
+    <div className={cn("inline-flex items-center gap-0.5 rounded-full border border-line bg-panel p-0.5", className)}>
       {opts.map((o) => (
         <button
           key={o.value}
@@ -188,8 +263,8 @@ export function Segmented<T extends string>({
           aria-pressed={o.value === value}
           onClick={() => onChange(o.value)}
           className={cn(
-            "border-b py-0.5 text-[13px] transition-colors",
-            o.value === value ? "border-ink text-ink" : "border-transparent text-muted hover:text-ink",
+            "rounded-full px-3 py-1 text-[13px] transition-colors",
+            o.value === value ? "bg-accent text-bg" : "text-muted hover:bg-panel-2 hover:text-ink",
           )}
         >
           {o.label}
@@ -246,7 +321,7 @@ export function Modal({
   }, [open, onClose]);
   if (!open) return null;
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-ink/25 p-4 pt-[8vh] backdrop-blur-[2px]" onMouseDown={onClose}>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-[8vh] backdrop-blur-[2px]" onMouseDown={onClose}>
       <div
         ref={box}
         role="dialog"

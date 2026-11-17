@@ -4,7 +4,8 @@ import { AS_OF } from "../../data/generate";
 import { realSalesFor } from "../../data/real/sales";
 import { asksFor } from "../../data/real/asks";
 import { cn, flag, km, num, pct } from "../../lib/format";
-import { Section } from "../ui";
+import { Section, StatTile, type Tone } from "../ui";
+import { Gauge, Gavel, Route, Tag } from "lucide-react";
 import { locale, t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
@@ -23,11 +24,11 @@ const KM_BUCKETS = [
   { to: 150_000, de: "100–150.000", en: "100–150,000" },
   { to: Infinity, de: "über 150.000", en: "over 150,000" },
 ];
-// Earthy chart colours of the app (insights/palette.ts), lightest last.
-const C_NA = "#1f1d1a";
-const C_EU = "#8f6d33";
-const C_ASK = "#d6c49d";
-const BODY_COLORS = ["#1f1d1a", "#8f6d33", "#d6c49d", "#8b847a"];
+// Categorical chart colours of the app (CSS tokens, validated for colour-vision deficiency in light and dark).
+const C_NA = "var(--color-series-3)";
+const C_EU = "var(--color-series-1)";
+const C_ASK = "var(--color-series-2)";
+const BODY_COLORS = ["var(--color-series-1)", "var(--color-series-2)", "var(--color-series-3)", "var(--color-series-4)"];
 
 function median(xs: number[]): number {
   const s = [...xs].sort((a, b) => a - b);
@@ -104,6 +105,8 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
   const tiles = [
     s.km && {
       label: t("Kilometerstand, typisch", "Typical mileage"),
+      tone: "cobalt" as Tone,
+      icon: <Route className="size-4" strokeWidth={1.8} />,
       value: km(Math.round(s.km.median / 100) * 100),
       note: s.km.fromAsks
         ? t(`Median aus ${num(s.km.n)} Angeboten in Europa`, `Median of ${num(s.km.n)} listings in Europe`)
@@ -111,12 +114,16 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
     },
     s.sell && {
       label: t("Finden bei Auktionen einen Käufer", "Find a buyer at auction"),
+      tone: "up" as Tone,
+      icon: <Gauge className="size-4" strokeWidth={1.8} />,
       value: pct(s.sell.rate, { signed: false, digits: 0 }),
       note: t(`${num(s.sell.sold)} von ${num(s.sell.offered)} angebotenen Autos seit 2015`, `${num(s.sell.sold)} of ${num(s.sell.offered)} cars offered since 2015`),
       bar: s.sell.rate,
     },
     {
       label: t("Auktionen, letzte 12 Monate", "Auctions, last 12 months"),
+      tone: "gold" as Tone,
+      icon: <Gavel className="size-4" strokeWidth={1.8} />,
       value: num(s.last12.offered),
       note: s.last12.offered
         ? t(`davon ${num(s.last12.sold)} verkauft`, `${num(s.last12.sold)} of them sold`)
@@ -124,29 +131,36 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
     },
     s.onSale > 0 && {
       label: t("Aktuell angeboten", "For sale now"),
+      tone: "accent" as Tone,
+      icon: <Tag className="size-4" strokeWidth={1.8} />,
       value: num(s.onSale),
       note: t("Inserate in Europa, die wir täglich verfolgen", "Listings in Europe we follow daily"),
     },
-  ].filter(Boolean) as { label: string; value: string; note: string; bar?: number }[];
+  ].filter(Boolean) as { label: string; value: string; note: string; bar?: number; tone: Tone; icon: React.ReactNode }[];
 
   return (
     <Section title={t("Der Markt in Zahlen", "The market in numbers")} sub={body ? t(`Nur ${tr(body)}`, `${tr(body)} only`) : undefined}>
-      <dl className="grid grid-cols-2 gap-x-8 gap-y-8 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {tiles.map((x) => (
-          <div key={x.label} className="min-w-0">
-            <dt className="text-[13px] text-muted">{x.label}</dt>
-            <dd className="mt-1 font-serif text-[28px] leading-none whitespace-nowrap tabular-nums sm:text-[34px] lg:text-[40px]">{x.value}</dd>
-            {x.bar != null && (
-              <div className="mt-3 h-1 overflow-hidden bg-panel-3" aria-hidden="true">
-                <div className="h-full bg-gold" style={{ width: `${x.bar * 100}%` }} />
-              </div>
-            )}
-            <dd className="mt-2 text-[12.5px] leading-snug text-faint">{x.note}</dd>
-          </div>
+          <StatTile
+            key={x.label}
+            tone={x.tone}
+            icon={x.icon}
+            label={x.label}
+            value={<span className="whitespace-nowrap tabular-nums">{x.value}</span>}
+            sub={x.note}
+            chart={
+              x.bar != null ? (
+                <div className="h-1.5 overflow-hidden rounded-full bg-panel-3" aria-hidden="true">
+                  <div className="h-full rounded-full bg-up" style={{ width: `${x.bar * 100}%` }} />
+                </div>
+              ) : undefined
+            }
+          />
         ))}
-      </dl>
+      </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-x-12 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {s.km && s.km.n >= 8 && (
           <Card title={t("Wie viel sie gelaufen sind", "How far they have been driven")}>
             <MileageBars buckets={s.km.buckets} median={s.km.median} />
@@ -205,7 +219,7 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="min-w-0 border-t border-line pt-5">
+    <div className="min-w-0 rounded-[4px] border border-line bg-panel px-5 pt-5 pb-5">
       <h3 className="mb-5 font-serif text-[20px] leading-tight">{title}</h3>
       {children}
     </div>
@@ -223,7 +237,7 @@ function MileageBars({ buckets, median: med }: { buckets: { to: number; de: stri
           <div key={b.to} className="flex h-full flex-1 flex-col items-center justify-end gap-1.5">
             <span className="text-[12px] tabular-nums text-faint">{b.n || ""}</span>
             <div
-              className={cn("w-full rounded-t-[3px] transition-[height]", i === at ? "bg-gold" : "bg-gold/30")}
+              className={cn("w-full rounded-t-[3px] transition-[height]", i === at ? "bg-accent" : "bg-accent/30")}
               style={{ height: `${Math.max((b.n / max) * 100, b.n ? 4 : 1)}%` }}
             />
           </div>

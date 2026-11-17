@@ -1,11 +1,11 @@
 /** Distinct chart colours per brand (the emblem colours are too similar to tell apart in charts). */
 export const BRAND_CHART_COLORS: Record<string, string> = {
-  porsche: "#8f6d33",
+  porsche: "var(--color-series-1)",
 };
 
 export const SERIES_PALETTE = ["#8f6d33", "#1f1d1a", "#8b847a", "#c4a76a", "#5c4a33", "#b8a07a", "#4a453e", "#d6c49d", "#6e5326", "#a39a8c"];
 
-export const brandColor = (brandId: string) => BRAND_CHART_COLORS[brandId] ?? "#8b847a";
+export const brandColor = (brandId: string) => BRAND_CHART_COLORS[brandId] ?? "var(--color-faint)";
 
 /** Diverging red/green cell colour for a change ratio, saturating at ±`cap`. */
 export function divergingColor(ratio: number, cap = 0.06): string {

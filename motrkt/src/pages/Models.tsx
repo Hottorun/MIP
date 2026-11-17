@@ -30,7 +30,8 @@ const ERAS = [
   { id: "90s", label: "1990–2004", test: (y: number) => y >= 1990 && y < 2005 },
   { id: "modern", get label() { return t("Ab 2005", "From 2005"); }, test: (y: number) => y >= 2005 },
 ];
-const COMPARE_COLORS = ["#1f1d1a", "#8f6d33", "#8b847a", "#c4a76a"];
+// categorical series tokens (validated for colour-vision deficiency, light and dark)
+const COMPARE_COLORS = ["var(--color-series-1)", "var(--color-series-2)", "var(--color-series-3)", "var(--color-series-4)"];
 const MAX_COMPARE = 4;
 
 /** Section of the model list: one per generation for models with several (911: 964 … 992), else one per model. */

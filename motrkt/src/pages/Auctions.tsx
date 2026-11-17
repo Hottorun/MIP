@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, ExternalLink, Search, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight, Coins, ExternalLink, Gauge, Gavel, Scale, Search, X } from "lucide-react";
 import { brands, variantById, variantTitle, variants } from "../data/db";
 import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, WEEK, getAllSales } from "../data/generate";
 import { mean } from "../data/market";
 import { CALENDAR_AS_OF, HOUSE_CALENDARS, calendarSales, type CalendarSale } from "../data/real/auction-calendar";
 import type { Sale } from "../data/types";
 import { cn, date, eur, flag, fromDisplay, km, num, pct, saleAmount } from "../lib/format";
-import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, axisProps, Money } from "../components/ui";
+import { BrandEmblem, ChartTooltipBox, Delta, Empty, Modal, Section, Segmented, StatTile, axisProps, Money } from "../components/ui";
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
 import { unsoldPrice } from "../lib/unsold";
@@ -209,12 +209,22 @@ export default function Auctions() {
             onChange={setPeriod}
           />
         </div>
-        <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-line py-6 lg:grid-cols-4">
-          <Kpi label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
-          <Kpi label={t("Davon verkauft", "Of which sold")} value={pct(kpis.sellThrough, { signed: false, digits: 0 })} />
-          <Kpi label={t("Zuschlag gegenüber Schätzung", "Hammer price vs. estimate")} value={<Delta value={kpis.premium} arrow={false} />} />
-          <Kpi label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
-        </dl>
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatTile tone="cobalt" icon={<Gavel className="size-4" strokeWidth={1.8} />} label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
+          <StatTile
+            tone="up"
+            icon={<Gauge className="size-4" strokeWidth={1.8} />}
+            label={t("Davon verkauft", "Of which sold")}
+            value={pct(kpis.sellThrough, { signed: false, digits: 0 })}
+            chart={
+              <div className="h-1.5 overflow-hidden rounded-full bg-panel-3" aria-hidden="true">
+                <div className="h-full rounded-full bg-up" style={{ width: `${kpis.sellThrough * 100}%` }} />
+              </div>
+            }
+          />
+          <StatTile tone="accent" icon={<Scale className="size-4" strokeWidth={1.8} />} label={t("Zuschlag gegenüber Schätzung", "Hammer price vs. estimate")} value={<Delta value={kpis.premium} arrow={false} />} />
+          <StatTile tone="gold" icon={<Coins className="size-4" strokeWidth={1.8} />} label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
+        </div>
       </div>
 
       <UpcomingAuctions />
@@ -377,7 +387,7 @@ export default function Auctions() {
                 }}
               />
               <Bar yAxisId="lots" dataKey="lots" fill="var(--color-gold)" fillOpacity={0.55} radius={[3, 3, 0, 0]} />
-              <Line yAxisId="rate" dataKey="rate" stroke="var(--color-up)" strokeWidth={2} dot={false} connectNulls />
+              <Line yAxisId="rate" dataKey="rate" stroke="var(--color-series-1)" strokeWidth={2} dot={false} connectNulls />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -404,6 +414,8 @@ function UpcomingAuctions() {
 
   return (
     <Section
+      tone="cobalt"
+      eyebrow={t("Kalender", "Calendar")}
       title={t("Kommende Auktionen", "Upcoming auctions")}
       sub={t(
         `Termine der Häuser aus unserer Datenbank · täglich aktualisiert${CALENDAR_AS_OF ? `, Stand ${date(Date.parse(CALENDAR_AS_OF))}` : ""}`,
@@ -417,9 +429,9 @@ function UpcomingAuctions() {
           <ul className="divide-y divide-line overflow-hidden rounded-[3px] border border-line bg-panel">
             {visible.map((s) => (
               <li key={`${s.house}|${s.name}|${s.date}`} className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
-                <div className="w-12 shrink-0 text-center">
+                <div className="w-14 shrink-0 rounded-[3px] bg-cobalt-soft py-1.5 text-center text-cobalt">
                   <div className="font-serif text-[22px] leading-none">{fmt(s.date, { day: "numeric" })}</div>
-                  <div className="mt-1 text-[11px] tracking-[0.12em] text-gold uppercase">{fmt(s.date, { month: "short" })}</div>
+                  <div className="mt-1 text-[10.5px] font-semibold tracking-[0.12em] uppercase">{fmt(s.date, { month: "short" })}</div>
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[12px] text-muted">
@@ -456,7 +468,7 @@ function UpcomingAuctions() {
             {HOUSE_CALENDARS.map((h) => (
               <a key={h.house} href={h.url} target="_blank" rel="noreferrer" className="chip inline-flex items-center gap-1">
                 {h.house}
-                {h.online && <span className="text-gold">· {t("laufend online", "live online")}</span>}
+                {h.online && <span className="text-accent">· {t("laufend online", "live online")}</span>}
                 <ExternalLink className="size-3 text-faint" />
               </a>
             ))}
@@ -467,21 +479,12 @@ function UpcomingAuctions() {
   );
 }
 
-function Kpi({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div>
-      <dt className="kpi-label">{label}</dt>
-      <dd className="mt-1 font-serif text-[28px] leading-tight">{value}</dd>
-    </div>
-  );
-}
-
 function Th({ k, sort, onSort, children, right }: { k: SortKey; sort: { key: SortKey; dir: 1 | -1 }; onSort: (k: SortKey) => void; children: React.ReactNode; right?: boolean }) {
   const active = sort.key === k;
   const Icon = sort.dir === 1 ? ArrowUp : ArrowDown;
   return (
     <th className={cn(right && "text-right")}>
-      <button onClick={() => onSort(k)} className={cn("inline-flex items-center gap-1 hover:text-ink", active && "text-gold-2")}>
+      <button onClick={() => onSort(k)} className={cn("inline-flex items-center gap-1 hover:text-ink", active && "text-accent")}>
         {children}
         {active && <Icon className="size-3" />}
       </button>

@@ -6,7 +6,8 @@ import { AS_OF, WEEK, getSeries } from "../../data/generate";
 import { SEGMENT_LABEL, marketBasis } from "../../data/real/model";
 import { getMetrics, modelIndex, type RangeKey } from "../../data/market";
 import { date, eur, num, pct, trendClass } from "../../lib/format";
-import { ChartTooltipBox, Section, Segmented, axisProps } from "../ui";
+import { ChartTooltipBox, Section, Segmented, StatTile, axisProps, type Tone } from "../ui";
+import { Gavel, Percent, TrendingUp } from "lucide-react";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
@@ -73,28 +74,25 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
 
   const label = RANGE_OPTIONS.find((o) => o.value === range)!.label;
   const stats = [
-    { label: range === "Max" ? t("Seit Beginn der Daten", "Since the data begins") : t(`Veränderung über ${label}`, `Change over ${label}`), value: <span className={trendClass(change)}>{pct(change)}</span> },
-    { label: t("Pro Jahr, letzte 5 Jahre", "Per year, last 5 years"), value: pct(m.cagr5) },
-    { label: t("Verkäufe, letzte 12 Monate", "Sales, last 12 months"), value: num(m.sales12m) },
+    { label: range === "Max" ? t("Seit Beginn der Daten", "Since the data begins") : t(`Veränderung über ${label}`, `Change over ${label}`), value: <span className={trendClass(change)}>{pct(change)}</span>, tone: (change >= 0 ? "up" : "down") as Tone, icon: <TrendingUp className="size-4" strokeWidth={1.8} /> },
+    { label: t("Pro Jahr, letzte 5 Jahre", "Per year, last 5 years"), value: pct(m.cagr5), tone: "accent" as Tone, icon: <Percent className="size-4" strokeWidth={1.8} /> },
+    { label: t("Verkäufe, letzte 12 Monate", "Sales, last 12 months"), value: num(m.sales12m), tone: "gold" as Tone, icon: <Gavel className="size-4" strokeWidth={1.8} /> },
   ];
 
   return (
     <Section title={t("Wertentwicklung", "Value history")} actions={<Segmented options={RANGE_OPTIONS} value={range} onChange={setRange} />}>
-      <dl className="mb-8 grid grid-cols-1 gap-px overflow-hidden rounded-[3px] border border-line bg-line sm:grid-cols-3">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
-          <div key={s.label} className="flex items-baseline justify-between gap-4 bg-panel px-4 py-3 sm:block sm:px-5 sm:py-4">
-            <dt className="text-[13px] text-muted">{s.label}</dt>
-            <dd className="font-serif text-[21px] leading-tight sm:mt-1 sm:text-[26px]">{s.value}</dd>
-          </div>
+          <StatTile key={s.label} tone={s.tone} icon={s.icon} label={s.label} value={s.value} />
         ))}
-      </dl>
+      </div>
       <div className="h-[300px] sm:h-[340px]">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data} margin={{ top: 10, right: 4, bottom: 0, left: 0 }}>
             <defs>
               <linearGradient id="valueFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="var(--color-gold)" stopOpacity={0.22} />
-                <stop offset="1" stopColor="var(--color-gold)" stopOpacity={0} />
+                <stop offset="0" stopColor="var(--color-accent)" stopOpacity={0.28} />
+                <stop offset="1" stopColor="var(--color-accent)" stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis dataKey="t" type="number" scale="time" domain={["dataMin", "dataMax"]} ticks={ticks} tickFormatter={(t) => date(t, short ? "month" : "year")} {...axisProps} dy={8} />
@@ -108,7 +106,7 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
               }}
             />
             <Line type="monotone" dataKey="model" stroke="var(--color-faint)" strokeDasharray="3 4" strokeWidth={1} dot={false} isAnimationActive={false} />
-            <Area type="monotone" dataKey="price" stroke="var(--color-ink)" strokeWidth={1.75} fill="url(#valueFill)" isAnimationActive={false} />
+            <Area type="monotone" dataKey="price" stroke="var(--color-accent)" strokeWidth={2} fill="url(#valueFill)" isAnimationActive={false} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
