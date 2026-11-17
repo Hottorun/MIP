@@ -210,20 +210,19 @@ export default function Auctions() {
           />
         </div>
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatTile tone="cobalt" icon={<Gavel className="size-4" strokeWidth={1.8} />} label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
+          <StatTile icon={<Gavel className="size-4" strokeWidth={1.8} />} label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
           <StatTile
-            tone="up"
             icon={<Gauge className="size-4" strokeWidth={1.8} />}
             label={t("Davon verkauft", "Of which sold")}
             value={pct(kpis.sellThrough, { signed: false, digits: 0 })}
             chart={
               <div className="h-1.5 overflow-hidden rounded-full bg-panel-3" aria-hidden="true">
-                <div className="h-full rounded-full bg-up" style={{ width: `${kpis.sellThrough * 100}%` }} />
+                <div className="h-full rounded-full bg-accent" style={{ width: `${kpis.sellThrough * 100}%` }} />
               </div>
             }
           />
-          <StatTile tone="accent" icon={<Scale className="size-4" strokeWidth={1.8} />} label={t("Zuschlag gegenüber Schätzung", "Hammer price vs. estimate")} value={<Delta value={kpis.premium} arrow={false} />} />
-          <StatTile tone="gold" icon={<Coins className="size-4" strokeWidth={1.8} />} label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
+          <StatTile icon={<Scale className="size-4" strokeWidth={1.8} />} label={t("Zuschlag gegenüber Schätzung", "Hammer price vs. estimate")} value={<Delta value={kpis.premium} arrow={false} />} />
+          <StatTile icon={<Coins className="size-4" strokeWidth={1.8} />} label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
         </div>
       </div>
 
@@ -414,7 +413,6 @@ function UpcomingAuctions() {
 
   return (
     <Section
-      tone="cobalt"
       eyebrow={t("Kalender", "Calendar")}
       title={t("Kommende Auktionen", "Upcoming auctions")}
       sub={t(
@@ -429,7 +427,7 @@ function UpcomingAuctions() {
           <ul className="divide-y divide-line overflow-hidden rounded-[3px] border border-line bg-panel">
             {visible.map((s) => (
               <li key={`${s.house}|${s.name}|${s.date}`} className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
-                <div className="w-14 shrink-0 rounded-[3px] bg-cobalt-soft py-1.5 text-center text-cobalt">
+                <div className="w-14 shrink-0 rounded-[3px] bg-accent-soft py-1.5 text-center text-accent">
                   <div className="font-serif text-[22px] leading-none">{fmt(s.date, { day: "numeric" })}</div>
                   <div className="mt-1 text-[10.5px] font-semibold tracking-[0.12em] uppercase">{fmt(s.date, { month: "short" })}</div>
                 </div>

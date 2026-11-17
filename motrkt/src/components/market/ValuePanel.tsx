@@ -6,7 +6,7 @@ import { AS_OF, WEEK, getSeries } from "../../data/generate";
 import { SEGMENT_LABEL, marketBasis } from "../../data/real/model";
 import { getMetrics, modelIndex, type RangeKey } from "../../data/market";
 import { date, eur, num, pct, trendClass } from "../../lib/format";
-import { ChartTooltipBox, Section, Segmented, StatTile, axisProps, type Tone } from "../ui";
+import { ChartTooltipBox, Section, Segmented, StatTile, axisProps } from "../ui";
 import { Gavel, Percent, TrendingUp } from "lucide-react";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -74,16 +74,16 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
 
   const label = RANGE_OPTIONS.find((o) => o.value === range)!.label;
   const stats = [
-    { label: range === "Max" ? t("Seit Beginn der Daten", "Since the data begins") : t(`Veränderung über ${label}`, `Change over ${label}`), value: <span className={trendClass(change)}>{pct(change)}</span>, tone: (change >= 0 ? "up" : "down") as Tone, icon: <TrendingUp className="size-4" strokeWidth={1.8} /> },
-    { label: t("Pro Jahr, letzte 5 Jahre", "Per year, last 5 years"), value: pct(m.cagr5), tone: "accent" as Tone, icon: <Percent className="size-4" strokeWidth={1.8} /> },
-    { label: t("Verkäufe, letzte 12 Monate", "Sales, last 12 months"), value: num(m.sales12m), tone: "gold" as Tone, icon: <Gavel className="size-4" strokeWidth={1.8} /> },
+    { label: range === "Max" ? t("Seit Beginn der Daten", "Since the data begins") : t(`Veränderung über ${label}`, `Change over ${label}`), value: <span className={trendClass(change)}>{pct(change)}</span>, icon: <TrendingUp className="size-4" strokeWidth={1.8} /> },
+    { label: t("Pro Jahr, letzte 5 Jahre", "Per year, last 5 years"), value: pct(m.cagr5), icon: <Percent className="size-4" strokeWidth={1.8} /> },
+    { label: t("Verkäufe, letzte 12 Monate", "Sales, last 12 months"), value: num(m.sales12m), icon: <Gavel className="size-4" strokeWidth={1.8} /> },
   ];
 
   return (
     <Section title={t("Wertentwicklung", "Value history")} actions={<Segmented options={RANGE_OPTIONS} value={range} onChange={setRange} />}>
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
-          <StatTile key={s.label} tone={s.tone} icon={s.icon} label={s.label} value={s.value} />
+          <StatTile key={s.label} icon={s.icon} label={s.label} value={s.value} />
         ))}
       </div>
       <div className="h-[300px] sm:h-[340px]">

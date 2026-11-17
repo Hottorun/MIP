@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Area,
@@ -19,9 +20,8 @@ import {
 } from "../data/market";
 import type { Sale } from "../data/types";
 import { mixHouses } from "../lib/houseMix";
-import { cn, date, eur, flag, num } from "../lib/format";
-import { CalendarDays, Gavel, LineChart, Trophy } from "lucide-react";
-import { CALENDAR_AS_OF, calendarSales } from "../data/real/auction-calendar";
+import { cn, date, flag, num } from "../lib/format";
+import { CALENDAR_AS_OF, HOUSE_CALENDARS, calendarSales } from "../data/real/auction-calendar";
 import { locale } from "../i18n";
 import { CarImage } from "../components/CarImage";
 import { HeroSlideshow } from "../components/HeroSlideshow";
@@ -29,8 +29,6 @@ import {
   ChartTooltipBox,
   DeltaBadge,
   Section,
-  Sparkline,
-  StatTile,
   Segmented,
   axisProps,
   Money,
@@ -79,26 +77,12 @@ export default function Overview() {
     }
     return out.sort((a, b) => b.price! - a.price!).slice(0, 6);
   }, []);
-  // Sales of the last 30 days: how many, what they brought in, and the top hammer price.
-  const month = useMemo(() => {
-    const from = AS_OF - 30 * DAY;
-    let n = 0;
-    let sum = 0;
-    for (const s of getAllSales()) {
-      if (s.date < from) break;
-      if (s.price === null) continue;
-      n++;
-      sum += s.price;
-    }
-    return { n, sum };
-  }, []);
   const upcoming = useMemo(() => {
     const today = CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF;
     return calendarSales
       .filter((c) => Date.parse(c.end ?? c.date) >= today)
       .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
   }, []);
-  const spark = useMemo(() => sliceRange(index, "5J").map((p) => p.value), [index]);
   const recent = useMemo(() => {
     const out: Sale[] = [];
     for (const s of getAllSales()) {
@@ -135,15 +119,6 @@ export default function Overview() {
         </HeroSlideshow>
         <SalesTicker sales={recent} />
       </div>
-
-      <AtAGlance
-        indexValue={index[index.length - 1].value}
-        indexChange={indexChange}
-        spark={spark}
-        month={month}
-        top={notable[0]}
-        upcoming={upcoming}
-      />
 
       <Section
         eyebrow={t("Marktindex", "Market index")}
@@ -244,7 +219,6 @@ export default function Overview() {
       </Section>
 
       <Section
-        tone="up"
         eyebrow={t("Gewinner", "Winners")}
         title={t("Die größten Wertzuwächse", "Biggest gains")}
         sub={t("Veränderung des Marktwerts in den letzten 12 Monaten", "Change in market value over the last 12 months")}
@@ -288,7 +262,6 @@ export default function Overview() {
 
       <div className="grid gap-16 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-12">
         <Section
-          tone="gold"
           eyebrow={t("Top-Zuschläge", "Top hammer prices")}
           title={t("Bemerkenswerte Verkäufe", "Notable sales")}
           sub={t("Die höchsten Zuschläge der letzten 30 Tage", "The highest hammer prices of the last 30 days")}
@@ -311,14 +284,14 @@ export default function Overview() {
                   <li key={s.id + s.variantId}>
                     <Link
                       to={`/markt/${v.id}`}
-                      className="group relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-[4px] border border-line bg-panel px-4 py-3 transition-colors hover:border-gold/60"
+                      className="group relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-[4px] border border-line bg-panel px-4 py-3 transition-colors hover:border-accent/50"
                     >
                       <span
-                        className="absolute inset-y-0 left-0 bg-gold-soft"
+                        className="absolute inset-y-0 left-0 bg-accent-soft"
                         style={{ width: `${Math.max(8, share * 100)}%` }}
                         aria-hidden
                       />
-                      <span className={cn("relative font-serif text-[22px] leading-none tabular-nums", i === 0 ? "text-gold" : "text-faint")}>
+                      <span className={cn("relative font-serif text-[22px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>
                         {i + 1}
                       </span>
                       <div className="relative min-w-0">
@@ -339,7 +312,6 @@ export default function Overview() {
         </Section>
 
         <Section
-          tone="cobalt"
           eyebrow={t("Kalender", "Calendar")}
           title={t("Kommende Auktionen", "Upcoming auctions")}
           sub={t("Die nächsten Termine der Häuser", "The next dates of the houses")}
@@ -356,25 +328,34 @@ export default function Overview() {
           ) : (
             <ul className="space-y-2">
               {upcoming.slice(0, 6).map((c) => (
-                <li key={`${c.house}|${c.name}|${c.date}`} className="flex items-center gap-4 rounded-[4px] border border-line bg-panel px-3 py-2.5">
-                  <div className="flex w-12 shrink-0 flex-col items-center rounded-[3px] bg-cobalt-soft py-1.5 text-cobalt">
-                    <span className="font-serif text-[20px] leading-none">{new Date(c.date).toLocaleDateString(locale(), { day: "numeric", timeZone: "UTC" })}</span>
-                    <span className="mt-0.5 text-[10.5px] font-semibold tracking-[0.1em] uppercase">
-                      {new Date(c.date).toLocaleDateString(locale(), { month: "short", timeZone: "UTC" })}
-                    </span>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate font-serif text-[15.5px] leading-snug">{c.name}</div>
-                    <div className="truncate text-[12.5px] text-muted">
-                      {c.house}
-                      {c.country ? ` · ${flag(c.country)} ${c.place}` : c.place ? ` · ${c.place}` : ""}
+                <li key={`${c.house}|${c.name}|${c.date}`}>
+                  <a
+                    href={c.url ?? HOUSE_CALENDARS.find((h) => h.house === c.house)?.url ?? "/auktionen"}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={t("Zur Auktion", "View sale")}
+                    className="group flex items-center gap-4 rounded-[4px] border border-line bg-panel px-3 py-2.5 transition-colors hover:border-accent/50"
+                  >
+                    <div className="flex w-12 shrink-0 flex-col items-center rounded-[3px] bg-accent-soft py-1.5 text-accent">
+                      <span className="font-serif text-[20px] leading-none">{new Date(c.date).toLocaleDateString(locale(), { day: "numeric", timeZone: "UTC" })}</span>
+                      <span className="mt-0.5 text-[10.5px] font-semibold tracking-[0.1em] uppercase">
+                        {new Date(c.date).toLocaleDateString(locale(), { month: "short", timeZone: "UTC" })}
+                      </span>
                     </div>
-                  </div>
-                  {c.porsche ? (
-                    <span title={t("Porsche im Katalog", "Porsches in the catalogue")} className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[12px] font-medium text-accent tabular-nums">
-                      {c.porsche} Porsche
-                    </span>
-                  ) : null}
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate font-serif text-[15.5px] leading-snug">{c.name}</div>
+                      <div className="truncate text-[12.5px] text-muted">
+                        {c.house}
+                        {c.country ? ` · ${flag(c.country)} ${c.place}` : c.place ? ` · ${c.place}` : ""}
+                      </div>
+                    </div>
+                    {c.porsche ? (
+                      <span title={t("Porsche im Katalog", "Porsches in the catalogue")} className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[12px] font-medium text-accent tabular-nums">
+                        {c.porsche} Porsche
+                      </span>
+                    ) : null}
+                    <ExternalLink className="size-3.5 shrink-0 text-faint transition-colors group-hover:text-accent" aria-hidden />
+                  </a>
                 </li>
               ))}
             </ul>
@@ -382,76 +363,6 @@ export default function Overview() {
         </Section>
       </div>
     </div>
-  );
-}
-
-/** Four key figures under the stage: index, sales of the month, the top price and the next auctions. */
-function AtAGlance({
-  indexValue,
-  indexChange,
-  spark,
-  month,
-  top,
-  upcoming,
-}: {
-  indexValue: number;
-  indexChange: number;
-  spark: number[];
-  month: { n: number; sum: number };
-  top: Sale | undefined;
-  upcoming: { name: string; house: string; date: string }[];
-}) {
-  const next = upcoming[0];
-  const today = CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF;
-  const soon = upcoming.filter((c) => Date.parse(c.date) - today <= 30 * DAY).length;
-  const days = next ? Math.round((Date.parse(next.date) - today) / DAY) : 0;
-  const topV = top ? variantById.get(top.variantId) : undefined;
-  return (
-    <section aria-label={t("Auf einen Blick", "At a glance")} className="-mt-12">
-      <div className="mb-4 eyebrow text-accent">{t("Auf einen Blick", "At a glance")}</div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatTile
-          tone="accent"
-          icon={<LineChart className="size-4" strokeWidth={1.8} />}
-          label={t("Marktindex, 2015 = 100", "Market index, 2015 = 100")}
-          value={num(indexValue, 0)}
-          sub={
-            <span className="flex items-center gap-2">
-              <DeltaBadge value={indexChange} /> {t("in 12 Monaten", "in 12 months")}
-            </span>
-          }
-          chart={<Sparkline values={spark} width={260} height={36} color="var(--color-accent)" fill className="w-full" />}
-        />
-        <StatTile
-          tone="gold"
-          icon={<Gavel className="size-4" strokeWidth={1.8} />}
-          label={t("Verkäufe der letzten 30 Tage", "Sales in the last 30 days")}
-          value={num(month.n)}
-          sub={t(`Zuschläge zusammen ${eur(month.sum, { compact: true })}`, `Hammer prices together ${eur(month.sum, { compact: true })}`)}
-        />
-        <StatTile
-          tone="red"
-          icon={<Trophy className="size-4" strokeWidth={1.8} />}
-          label={t("Höchster Zuschlag, 30 Tage", "Top hammer price, 30 days")}
-          value={top ? <Money value={top.price} sale={top} /> : "–"}
-          sub={top && topV ? `${variantTitle(topV, { brand: false })} · ${top.house}` : undefined}
-        />
-        <StatTile
-          tone="cobalt"
-          icon={<CalendarDays className="size-4" strokeWidth={1.8} />}
-          label={t("Auktionen in den nächsten 30 Tagen", "Auctions in the next 30 days")}
-          value={num(soon)}
-          sub={
-            next
-              ? t(
-                  `Als Nächstes: ${next.name} (${next.house}), ${days <= 0 ? "läuft" : days === 1 ? "morgen" : `in ${days} Tagen`}`,
-                  `Next: ${next.name} (${next.house}), ${days <= 0 ? "running" : days === 1 ? "tomorrow" : `in ${days} days`}`,
-                )
-              : undefined
-          }
-        />
-      </div>
-    </section>
   );
 }
 

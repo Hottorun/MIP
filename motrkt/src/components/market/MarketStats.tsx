@@ -4,7 +4,7 @@ import { AS_OF } from "../../data/generate";
 import { realSalesFor } from "../../data/real/sales";
 import { asksFor } from "../../data/real/asks";
 import { cn, flag, km, num, pct } from "../../lib/format";
-import { Section, StatTile, type Tone } from "../ui";
+import { Section, StatTile } from "../ui";
 import { Gauge, Gavel, Route, Tag } from "lucide-react";
 import { locale, t } from "../../i18n";
 import { tr } from "../../i18n/terms";
@@ -105,7 +105,6 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
   const tiles = [
     s.km && {
       label: t("Kilometerstand, typisch", "Typical mileage"),
-      tone: "cobalt" as Tone,
       icon: <Route className="size-4" strokeWidth={1.8} />,
       value: km(Math.round(s.km.median / 100) * 100),
       note: s.km.fromAsks
@@ -114,7 +113,6 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
     },
     s.sell && {
       label: t("Finden bei Auktionen einen Käufer", "Find a buyer at auction"),
-      tone: "up" as Tone,
       icon: <Gauge className="size-4" strokeWidth={1.8} />,
       value: pct(s.sell.rate, { signed: false, digits: 0 }),
       note: t(`${num(s.sell.sold)} von ${num(s.sell.offered)} angebotenen Autos seit 2015`, `${num(s.sell.sold)} of ${num(s.sell.offered)} cars offered since 2015`),
@@ -122,7 +120,6 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
     },
     {
       label: t("Auktionen, letzte 12 Monate", "Auctions, last 12 months"),
-      tone: "gold" as Tone,
       icon: <Gavel className="size-4" strokeWidth={1.8} />,
       value: num(s.last12.offered),
       note: s.last12.offered
@@ -131,12 +128,11 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
     },
     s.onSale > 0 && {
       label: t("Aktuell angeboten", "For sale now"),
-      tone: "accent" as Tone,
       icon: <Tag className="size-4" strokeWidth={1.8} />,
       value: num(s.onSale),
       note: t("Inserate in Europa, die wir täglich verfolgen", "Listings in Europe we follow daily"),
     },
-  ].filter(Boolean) as { label: string; value: string; note: string; bar?: number; tone: Tone; icon: React.ReactNode }[];
+  ].filter(Boolean) as { label: string; value: string; note: string; bar?: number; icon: React.ReactNode }[];
 
   return (
     <Section title={t("Der Markt in Zahlen", "The market in numbers")} sub={body ? t(`Nur ${tr(body)}`, `${tr(body)} only`) : undefined}>
@@ -144,7 +140,6 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
         {tiles.map((x) => (
           <StatTile
             key={x.label}
-            tone={x.tone}
             icon={x.icon}
             label={x.label}
             value={<span className="whitespace-nowrap tabular-nums">{x.value}</span>}
@@ -152,7 +147,7 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
             chart={
               x.bar != null ? (
                 <div className="h-1.5 overflow-hidden rounded-full bg-panel-3" aria-hidden="true">
-                  <div className="h-full rounded-full bg-up" style={{ width: `${x.bar * 100}%` }} />
+                  <div className="h-full rounded-full bg-accent" style={{ width: `${x.bar * 100}%` }} />
                 </div>
               ) : undefined
             }
