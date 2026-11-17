@@ -123,8 +123,10 @@ werden dem richtigen Modell zugeordnet. Preise werden zum EZB-Kurs des Tages in 
 6. **Unplausible Preise raus**: Classic-Trader-Inserate, die laut Inserat Nachbau, Umbau, Rennwagen, Projekt-,
    Teile- oder Unfallfahrzeug sind (Merkmale `isReplica`/`isConverted`/`isRacingCar` und Titel/Beschreibung des
    Verkäufers, `ctparse.py`), gehen nicht ein. Danach fällt jeder Preis heraus, der weiter als 2 × die gemessene
-   Streuung seiner Quelle vom Niveau der Variante entfernt liegt, höchstens Faktor 2 in beide Richtungen
-   (`OUT_K`, `OUT_MAX`). Die App zeigt alle ausgeschlossenen Belege mit Grund.
+   Streuung seiner Quelle vom Niveau der Variante entfernt liegt, höchstens Faktor 2 (`OUT_K`, `OUT_MAX`). Nach oben
+   bleibt ein Preis in jedem Fall drin, solange er höchstens 125 % über dem Niveau vergleichbarer Fahrzeuge liegt
+   (`OUT_UP`; bei stark streuenden Varianten bis Faktor 3 wie bisher), damit Ausnahmefahrzeuge mit wenig Kilometern oder besonderer Herkunft in den Wert eingehen. Die
+   App zeigt alle ausgeschlossenen Belege mit Grund.
 7. **Höchstgebote unverkaufter Lose** (`EU_BID`, `US_BID`): Ein Gebot zeigt, was mindestens ein Käufer zu zahlen
    bereit war, liegt aber meist unter dem Preis, zu dem verkauft wird. Es geht als eigener Kanal ein; sein Abstand zu
    den Verkäufen wird wie bei den anderen Kanälen gemessen und abgezogen (je Klassiker/moderne Fahrzeuge), `US_BID`

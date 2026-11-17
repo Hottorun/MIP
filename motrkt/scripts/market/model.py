@@ -55,6 +55,9 @@ OUT_K = 2.0        # a price farther than OUT_K x the scatter of its source from
 OUT_MAX = 0.693    # ... and never more than a factor 2 (log 2) either way,
 OUT_WIDE = 1.099   # ... or a factor 3 (log 3) for variants whose own prices scatter widely (cheap and good cars, e.g. 944)
 OUT_MIN_N = 5      # below this many records only the factor-2 limit applies
+OUT_UP = math.log(2.25)   # upwards a price is always kept up to 125 % above the level of comparable cars (user,
+                          # 17.11.2026): exceptional cars (low mileage, provenance) sell far above the rest and belong
+                          # in the value; where the limits above allow more (widely scattered variants), they still apply
 STALE_DAYS = 90    # an asking price counts fully for this many days on offer ...
 STALE_HALF = 180   # ... then its weight halves every STALE_HALF days ...
 STALE_MIN = 0.25   # ... down to this share
@@ -514,14 +517,14 @@ for v, l in byv.items():
     # than OUT_K times the measured scatter of their source, or of the variant itself when its prices scatter more
     # (a market of cheap and good cars: judged by the source alone, the good cars would be cut and the level pulled
     # down). Two passes, so that one extreme price does not move the level the others are judged by. With few
-    # records only the hard limit applies (factor 2 either way).
+    # records only the hard limit applies (factor 2 either way). Upwards the limit is at least OUT_UP (+125 %).
     keep = list(zip(l, base))
     c0 = median(base)
     sdv = 1.4826 * median([abs(b - c0) for b in base]) if len(l) >= OWN_MIN else 0.0
     for _ in range(2):
         a = median([b for _, b in keep])
         lim = lambda s: min(OUT_K * max(SD[s["ch"]], sdv), max(OUT_MAX, min(OUT_WIDE, OUT_K * sdv))) if len(keep) >= OUT_MIN_N else OUT_MAX
-        keep = [(s, b) for s, b in zip(l, base) if abs(b - a) <= lim(s)]
+        keep = [(s, b) for s, b in zip(l, base) if abs(b - a) <= (max(OUT_UP, lim(s)) if b > a else lim(s))]
         if not keep: keep = list(zip(l, base)); break
     kept_ids = {id(s) for s, _ in keep}
     out_v = [{"id": s["lot"], "eur": s["eur"], "dev": round(math.exp(b - a) - 1, 3), "ch": s["ch"]} for s, b in zip(l, base) if id(s) not in kept_ids]
