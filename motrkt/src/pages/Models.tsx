@@ -5,7 +5,7 @@ import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, X
 import { ArrowDown, ArrowRight, ArrowUp, GitCompare, Search, Star, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { AS_OF, WEEK, getSeries } from "../data/generate";
-import { getMetrics, rebase } from "../data/market";
+import { fewRecordsMedian, getMetrics, rebase } from "../data/market";
 import type { ModelCategory, Variant } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, eurRange, num, pct } from "../lib/format";
@@ -406,7 +406,7 @@ export default function Models() {
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
                     <td className="text-right">
-                      {v.measured ? <ListValue v={v} value={m.value} /> : <span className="text-[13px] text-faint" title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>}
+                      {v.measured ? <ListValue v={v} value={m.value} /> : <FewValue v={v} />}
                     </td>
                     <td className="text-right">{v.measured ? <Delta value={m.change12m} /> : <span className="text-faint">–</span>}</td>
                     <td className="text-right tabular-nums">{v.measured ? pct(m.cagr5) : <span className="text-faint">–</span>}</td>
@@ -468,6 +468,22 @@ function ListValue({ v, value, compact, className }: { v: Variant; value: number
     <span className={cn("whitespace-nowrap", className)} title={t(`Typische Spanne ${eurRange(s.lo, s.hi)}`, `Typical range ${eurRange(s.lo, s.hi)}`)}>
       <span className="mr-1 text-[0.8em] text-muted">{t("ca.", "approx.")}</span>
       <Money value={value} compact={compact} />
+    </span>
+  );
+}
+
+/** Without a market value: the median hammer price of the few recorded sales, marked as such; "keine Daten" without any. */
+function FewValue({ v, compact, className }: { v: Variant; compact?: boolean; className?: string }) {
+  const mid = fewRecordsMedian(v.id);
+  if (!mid) return <span className={cn("text-[13px] text-faint", className)} title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>;
+  const tip = t(
+    `Kein Marktwert: Median aus ${mid.n === 1 ? "1 Verkauf" : `${mid.n} Verkäufen`} (${mid.from === mid.to ? mid.from : `${mid.from}–${mid.to}`})`,
+    `No market value: median of ${mid.n === 1 ? "1 sale" : `${mid.n} sales`} (${mid.from === mid.to ? mid.from : `${mid.from}–${mid.to}`})`,
+  );
+  return (
+    <span className={cn("whitespace-nowrap text-muted", className)} title={tip}>
+      <span className="mr-1 text-[0.8em] text-faint">≈</span>
+      <Money value={Math.round(mid.value / 1000) * 1000} compact={compact} />
     </span>
   );
 }
@@ -623,7 +639,7 @@ function VariantCard({
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
         <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false, gen: false })}</span>
-        {v.measured ? <ListValue v={v} value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
+        {v.measured ? <ListValue v={v} value={m.value} compact className="shrink-0 text-[16px]" /> : <FewValue v={v} compact className="shrink-0 text-[16px]" />}
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">
         <span>

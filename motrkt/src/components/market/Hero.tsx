@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 import { bodyChoices, bodyEffect, brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
 import type { Body, Variant } from "../../data/types";
-import { getMetrics } from "../../data/market";
+import { fewRecordsMedian, getMetrics } from "../../data/market";
 import { marketBasis, MIN_RECORDS, SEGMENT_LABEL, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
 import { useStore } from "../../state/store";
 import { cn, eur, fromDisplay, num, pct, liters, safeUrl } from "../../lib/format";
@@ -617,6 +617,29 @@ function ThinBasis({ variant }: { variant: Variant }) {
 /** Too few records for a market value: say so and point to the individual records instead of showing a number. */
 function NoValue({ variant }: { variant: Variant }) {
   const n = marketBasis(variant.id)?.n ?? 0;
+  const mid = fewRecordsMedian(variant.id);
+  const span = mid ? (mid.from === mid.to ? String(mid.from) : `${mid.from}–${mid.to}`) : "";
+  if (mid)
+    return (
+      <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+        <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
+        <div className="text-[13px] text-muted">
+          {mid.n === 1 ? t("Bisher erzielter Zuschlag", "Hammer price achieved so far") : t("Mittlerer Zuschlag", "Median hammer price")}
+        </div>
+        <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <Money value={Math.round(mid.value / 1000) * 1000} className="text-[40px] leading-none" />
+          <span className="text-[14px] text-muted">
+            {t(`aus ${mid.n === 1 ? "1 Verkauf" : `${num(mid.n)} Verkäufen`} (${span})`, `from ${mid.n === 1 ? "1 sale" : `${num(mid.n)} sales`} (${span})`)}
+          </span>
+        </div>
+        <p className="mt-3 text-[13px] text-faint">
+          {t(
+            `Kein Marktwert: Dafür braucht es mindestens ${MIN_RECORDS} Belege. Der Wert ist der Median der erfassten Zuschläge, ohne Bereinigung um Zeitpunkt, Zustand oder Ausstattung. Die Einzelbelege stehen unten.`,
+            `Not a market value: that needs at least ${MIN_RECORDS} records. This is the median of the recorded hammer prices, not adjusted for date, condition or options. The individual records are listed below.`,
+          )}
+        </p>
+      </div>
+    );
   return (
     <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
         <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />

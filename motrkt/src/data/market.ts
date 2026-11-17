@@ -372,3 +372,17 @@ export function modelName(id: string) {
 }
 
 export const allGenerations = generations;
+
+/**
+ * For variants without a market value (too few records): the median of the recorded hammer prices, with how many
+ * there are and the years they span. Not a market value: a rough orientation, shown as such.
+ */
+export function fewRecordsMedian(variantId: string): { value: number; n: number; from: number; to: number } | null {
+  const sold = getSales(variantId).filter((s) => s.price !== null);
+  if (!sold.length) return null;
+  const prices = sold.map((s) => s.price!).sort((a, b) => a - b);
+  const mid = prices.length / 2;
+  const value = prices.length % 2 ? prices[Math.floor(mid)] : (prices[mid - 1] + prices[mid]) / 2;
+  const years = sold.map((s) => new Date(s.date).getUTCFullYear());
+  return { value, n: sold.length, from: Math.min(...years), to: Math.max(...years) };
+}
