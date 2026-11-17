@@ -35,15 +35,38 @@ if [ -n "$DATABASE_URL" ] || grep -q '^DATABASE_URL=.' "$APP/.env" 2>/dev/null; 
 fi
 
 cd "$ROOT"
-git add motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json motrkt/src/data/real/auction-calendar.json
-if git diff --cached --quiet; then
-  echo "Keine neuen Daten."
-else
+DATA="motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json motrkt/src/data/real/auction-calendar.json"
+commit_data() {
+  git add $DATA
+  if git diff --cached --quiet; then return 1; fi
   git commit -q -m "Marktdaten vom $(date +%d.%m.%Y)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-  git log --oneline -1
-  if [ "$MIP_PUSH" = 1 ]; then
-    git pull -q --rebase && git push -q
-  fi
+}
+if ! commit_data; then
+  echo "Keine neuen Daten."
+  exit 0
+fi
+git log --oneline -1
+if [ "$MIP_PUSH" = 1 ]; then
+  # Another run (started by hand, or a second schedule) may have pushed data while this one was working. Both change
+  # the same data files, so the rebase would stop on a conflict. This run's data were computed later and win: put
+  # them on top of the remote state as a new commit. Up to three attempts, in case a push slips in between again.
+  for attempt in 1 2 3; do
+    if git pull -q --rebase; then
+      git push -q && exit 0
+      continue
+    fi
+    git rebase --abort
+    echo "Konflikt mit neueren Daten auf GitHub: die Daten dieses Laufs werden darübergesetzt (Versuch $attempt)."
+    T=$(mktemp -d)
+    for f in $DATA; do cp "$f" "$T/$(basename "$f")"; done
+    git reset -q --hard "@{u}"
+    for f in $DATA; do cp "$T/$(basename "$f")" "$f"; done
+    rm -rf "$T"
+    commit_data || { echo "Daten auf GitHub sind schon identisch."; exit 0; }
+    git push -q && exit 0
+  done
+  echo "Push nach drei Versuchen nicht gelungen."
+  exit 1
 fi
