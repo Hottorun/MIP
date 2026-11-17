@@ -35,8 +35,7 @@ export function TrendHeatmap() {
 
   return (
     <Card
-      title={t("Monat für Monat", "Month by month")}
-      sub={t("Wertveränderung je Monat über die letzten 12 Monate", "Change in value per month over the last 12 months")}
+      title={scope === "top" ? t("Die zwölf meistgehandelten Varianten", "The twelve most traded variants") : t(`Alle ${rows.length} Varianten`, `All ${rows.length} variants`)}
       actions={
         <>
           <Segmented
@@ -75,7 +74,7 @@ export function TrendHeatmap() {
           <tbody>
             {rows.map(({ v, m, cells }) => (
               <tr key={v.id} className="group cursor-pointer" onClick={() => navigate(`/markt/${v.id}`)}>
-                <td className="max-w-64 truncate pr-2 whitespace-nowrap group-hover:text-gold-2">
+                <td className="max-w-64 truncate pr-2 whitespace-nowrap group-hover:text-accent">
                   <span className="truncate font-serif text-[13.5px]">{variantTitle(v, { brand: false })}</span>
                 </td>
                 {cells.map((c, i) => (
