@@ -1,5 +1,5 @@
 import { generationById, modelById, variantById, variants, genName, modelName } from "./db";
-import { AS_OF, DAY } from "./generate";
+import { AS_OF, DAY, getSeries } from "./generate";
 import { changeOver, cagrOver, generationIndex, getMetrics, median } from "./market";
 import { realSales as realSalesByVariant, type RealSale } from "./real/sales";
 import { MODEL_OFFSETS, marketBasis, modelValueAt } from "./real/model";
@@ -57,6 +57,28 @@ function windowStats(from: number, to: number): Window {
 
 /** The last 12 months against the 12 months before. */
 export const auctionWindows = memo(() => ({ now: windowStats(AS_OF - YEAR, AS_OF), before: windowStats(AS_OF - 2 * YEAR, AS_OF - YEAR) }));
+
+export type MonthCount = { end: number; now: number; before: number };
+
+/**
+ * The last 12 months in 12 equal slices (oldest first): how many lots matched `keep` in each, and in the same slice a
+ * year earlier. The slices end at the data cut-off, so together they cover exactly the 12-month figures above.
+ */
+export function monthlyCounts(keep: (s: RealSale) => boolean): MonthCount[] {
+  const step = YEAR / 12;
+  const out: MonthCount[] = Array.from({ length: 12 }, (_, i) => ({ end: AS_OF - (11 - i) * step, now: 0, before: 0 }));
+  for (const s of realSales) {
+    const age = AS_OF - s.date;
+    if (age < 0 || age >= 2 * YEAR || !keep(s)) continue;
+    const k = Math.floor(age / step);
+    if (k < 12) out[11 - k].now++;
+    else out[23 - k].before++;
+  }
+  return out;
+}
+
+/** Auctioned lots per month over the last 12 months (all lots, as in auctionWindows). */
+export const monthlyLots = memo(() => monthlyCounts(() => true));
 
 export type HouseRow = { house: string; lots: number; sellThrough: number; online: boolean };
 
@@ -176,4 +198,75 @@ export const generationRows = memo((): GroupRow[] => {
     });
   }
   return rows;
+});
+
+// ------------------------------------------------------------------------------------------------ top sellers
+
+export type SellerRow = { id: string; sold: number; median: number; change12m: number };
+
+/** Variants with the most sold auction lots in the last 12 months, and their share of all sold lots. */
+export const topSellers = memo(() => {
+  const from = AS_OF - YEAR;
+  const prices = new Map<string, number[]>();
+  let total = 0;
+  for (const s of realSales) {
+    if (!sold(s) || s.date <= from || s.date > AS_OF || !variantById.get(s.variantId)?.measured) continue;
+    total++;
+    const list = prices.get(s.variantId) ?? [];
+    list.push(s.price!);
+    prices.set(s.variantId, list);
+  }
+  const rows: SellerRow[] = [...prices.entries()]
+    .map(([id, p]) => ({ id, sold: p.length, median: median(p), change12m: getMetrics(id).change12m }))
+    .sort((a, b) => b.sold - a.sold);
+  return { rows, total };
+});
+
+// ------------------------------------------------------------------------------------------------ hidden gems
+
+export type GemRow = {
+  id: string;
+  value: number;
+  /** market value relative to the long-term trend today, e.g. −0.12 = 12 % below */
+  gap: number;
+  change3m: number;
+  /** long-term trend growth per year */
+  trendPa: number;
+  sold24: number;
+  /** last five years, monthly: market value and trend */
+  spark: { value: number; trend: number }[];
+};
+
+/**
+ * Variants that look cheap against their own history: the market value lies at least 5 % below the long-term trend
+ * (least-squares fit of the log value over the whole series), the trend itself points up, the last three months
+ * were positive and at least six cars sold at auction in two years, so the reading rests on real prices.
+ */
+export const hiddenGems = memo((): GemRow[] => {
+  const from24 = AS_OF - 2 * YEAR;
+  const sold24 = new Map<string, number>();
+  for (const s of realSales) if (sold(s) && s.date >= from24) sold24.set(s.variantId, (sold24.get(s.variantId) ?? 0) + 1);
+  const out: GemRow[] = [];
+  for (const v of variants) {
+    if (!v.measured) continue;
+    const n = sold24.get(v.id) ?? 0;
+    if (n < 6) continue;
+    const series = getSeries(v.id);
+    if (series.length < 260) continue;
+    const xs = series.map((p) => p.t / YEAR);
+    const ys = series.map((p) => Math.log(p.value));
+    const xm = xs.reduce((a, b) => a + b, 0) / xs.length;
+    const ym = ys.reduce((a, b) => a + b, 0) / ys.length;
+    const b = xs.reduce((acc, x, i) => acc + (x - xm) * (ys[i] - ym), 0) / Math.max(1e-9, xs.reduce((acc, x) => acc + (x - xm) ** 2, 0));
+    const a = ym - b * xm;
+    const trendAt = (t: number) => Math.exp(a + (b * t) / YEAR);
+    const last = series[series.length - 1];
+    const gap = last.value / trendAt(last.t) - 1;
+    const m = getMetrics(v.id);
+    if (gap > -0.05 || b <= 0 || m.change3m <= 0) continue;
+    const recent = series.slice(-261);
+    const spark = recent.filter((_, i) => i % 4 === 0 || i === recent.length - 1).map((p) => ({ value: p.value, trend: trendAt(p.t) }));
+    out.push({ id: v.id, value: m.value, gap, change3m: m.change3m, trendPa: Math.exp(b) - 1, sold24: n, spark });
+  }
+  return out.sort((x, y) => x.gap - y.gap);
 });

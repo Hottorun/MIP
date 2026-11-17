@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, TrendingDown, TrendingUp } from "lucide-react";
 import {
@@ -21,10 +21,10 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
-import { brands, variants, variantTitle } from "../data/db";
-import { AS_OF, getSeries } from "../data/generate";
+import { brands, variantById, variants, variantTitle } from "../data/db";
+import { AS_OF, DAY, getSeries } from "../data/generate";
 import { brandIndex, changeOver, cycleData, getMetrics, marketIndex, rangeOptions, rebase, sliceRange, type RangeKey } from "../data/market";
-import { auctionCalendar, auctionWindows, auctionYears, bodyPremium, generationRows, houseStats, mileageBands, usPremium } from "../data/insights";
+import { auctionCalendar, auctionWindows, auctionYears, bodyPremium, generationRows, hiddenGems, houseStats, mileageBands, monthlyCounts, monthlyLots, topSellers, usPremium, type MonthCount } from "../data/insights";
 import { cn, date, eur, num, pct, trendClass } from "../lib/format";
 import { axisProps, Card, ChartTooltipBox, Delta, Section, Segmented, Sparkline } from "../components/ui";
 import { TrendHeatmap } from "../components/insights/TrendHeatmap";
@@ -42,6 +42,8 @@ const NAV = () => [
   { id: "ueberblick", label: t("Das Wichtigste", "Key points") },
   { id: "markt", label: t("Marktentwicklung", "Market trend") },
   { id: "gewinner", label: t("Gewinner und Verlierer", "Gainers and losers") },
+  { id: "geheimtipps", label: t("Geheimtipps", "Hidden gems") },
+  { id: "meistverkauft", label: t("Meistverkauft", "Best sellers") },
   { id: "modellreihen", label: t("Modellreihen", "Model lines") },
   { id: "auktionen", label: t("Auktionsmarkt", "Auction market") },
   { id: "preis", label: t("Preisfaktoren", "Price drivers") },
@@ -66,6 +68,12 @@ export default function Insights() {
         </Anchor>
         <Anchor id="gewinner">
           <Movers />
+        </Anchor>
+        <Anchor id="geheimtipps">
+          <HiddenGems />
+        </Anchor>
+        <Anchor id="meistverkauft">
+          <TopSellers />
         </Anchor>
         <Anchor id="modellreihen">
           <ModelLines />
@@ -186,7 +194,80 @@ function Kpi({ label, value, delta, note }: { label: string; value: ReactNode; d
 }
 
 /** Headline figure in the page head, with its history as a small line. */
-function HeroKpi({ label, value, delta, note, spark, sparkNote, className }: { label: string; value: ReactNode; delta?: ReactNode; note?: string; spark: number[]; sparkNote: string; className?: string }) {
+/**
+ * Small line chart that uses its full height, so rises and dips read clearly: a soft petrol area under the line,
+ * two hairlines for the highest and lowest value with their figures on the left, a dot at today. An optional
+ * dashed second line (the long-term trend) shares the scale.
+ */
+function MiniChart({ values, trend, format, height = 56, className }: { values: number[]; trend?: number[]; format: (v: number) => string; height?: number; className?: string }) {
+  const id = useId();
+  if (values.length < 2) return null;
+  const all = trend ? [...values, ...trend] : values;
+  const lo = Math.min(...all);
+  const hi = Math.max(...all);
+  const span = hi - lo || 1;
+  const H = 100;
+  const pad = 8;
+  const x = (i: number, n: number) => (i / (n - 1)) * 100;
+  const y = (v: number) => pad + (1 - (v - lo) / span) * (H - 2 * pad);
+  const line = (vs: number[]) => vs.map((v, i) => `${i ? "L" : "M"}${x(i, vs.length).toFixed(2)},${y(v).toFixed(2)}`).join(" ");
+  const endY = (y(values[values.length - 1]) / H) * 100;
+  return (
+    <div className={cn("relative", className)} style={{ height }}>
+      <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={ACCENT} stopOpacity={0.22} />
+            <stop offset="100%" stopColor={ACCENT} stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <line x1={0} x2={100} y1={pad} y2={pad} stroke="var(--color-line)" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+        <line x1={0} x2={100} y1={H - pad} y2={H - pad} stroke="var(--color-line)" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+        <path d={`${line(values)} L100,${H} L0,${H} Z`} fill={`url(#${id})`} />
+        {trend && <path d={line(trend)} fill="none" stroke="var(--color-faint)" strokeWidth={1.25} strokeDasharray="3 3" vectorEffect="non-scaling-stroke" />}
+        <path d={line(values)} fill="none" stroke={ACCENT} strokeWidth={1.75} strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      </svg>
+      <span className="absolute right-0 size-[7px] -translate-y-1/2 translate-x-1/2 rounded-full border-[1.5px] border-bg" style={{ top: `${endY}%`, background: ACCENT }} />
+      <span className="pointer-events-none absolute left-0 -translate-y-full pb-0.5 text-[10px] leading-none text-faint tabular-nums" style={{ top: `${pad}%` }}>
+        {format(hi)}
+      </span>
+      <span className="pointer-events-none absolute left-0 pt-0.5 text-[10px] leading-none text-faint tabular-nums" style={{ top: `${100 - pad}%` }}>
+        {format(lo)}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Twelve monthly bars for the last 12 months, the tallest labelled on the left. With `ghost`, a dark tick marks the
+ * same month a year earlier on each bar, so the change against the prior year is visible bar by bar.
+ */
+function MonthBars({ months, ghost = false, height = 60, className }: { months: MonthCount[]; ghost?: boolean; height?: number; className?: string }) {
+  const hi = Math.max(1, ...months.map((m) => (ghost ? Math.max(m.now, m.before) : m.now)));
+  const label = (end: number) => new Date(end - DAY).toLocaleString(locale(), { month: "short", timeZone: "UTC" });
+  return (
+    <div className={className}>
+      <div className="relative border-b border-line" style={{ height }}>
+        <span className="absolute inset-x-0 top-0 border-t border-line" aria-hidden />
+        <span className="pointer-events-none absolute left-0 -translate-y-full pb-0.5 text-[10px] leading-none text-faint tabular-nums">{num(hi)}</span>
+        <div className="absolute inset-0 flex items-end gap-[3px] pl-0">
+          {months.map((m) => (
+            <div key={m.end} className="relative h-full flex-1" title={`${label(m.end)}: ${num(m.now)}${ghost ? ` (${t("Vorjahr", "prior year")} ${num(m.before)})` : ""}`}>
+              <span className="absolute inset-x-[2px] bottom-0 rounded-t-[2px]" style={{ height: `${(m.now / hi) * 100}%`, background: ACCENT, opacity: 0.85 }} />
+              {ghost && <span className="absolute inset-x-0 h-0 border-t-2 border-ink/55" style={{ bottom: `${(m.before / hi) * 100}%` }} />}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-1 flex justify-between text-[10px] text-faint">
+        <span>{label(months[0].end)}</span>
+        <span>{label(months[months.length - 1].end)}</span>
+      </div>
+    </div>
+  );
+}
+
+function HeroKpi({ label, value, delta, note, chart, chartNote, className }: { label: string; value: ReactNode; delta?: ReactNode; note?: string; chart: ReactNode; chartNote: ReactNode; className?: string }) {
   return (
     <div className={cn("flex min-w-0 flex-col justify-between gap-4", className)}>
       <div>
@@ -199,8 +280,8 @@ function HeroKpi({ label, value, delta, note, spark, sparkNote, className }: { l
         )}
       </div>
       <dd>
-        <Sparkline values={spark} width={240} height={36} color={ACCENT} fill className="block h-[36px] w-full" />
-        <div className="mt-1 text-[11px] text-faint">{sparkNote}</div>
+        <div className="mt-3">{chart}</div>
+        <div className="mt-2 text-[11px] text-faint">{chartNote}</div>
       </dd>
     </div>
   );
@@ -252,11 +333,9 @@ function InsightsHero() {
   const { now, before } = auctionWindows();
   const idxSeries = marketIndex();
   const idx = changeOver(idxSeries, 52);
-  const years = auctionYears().filter((y) => y.lots >= 200);
-  const full = years.filter((y) => !y.partial);
-  const since = years[0]?.year;
   const measured = variants.filter((v) => v.measured).length;
   const lotsChange = now.lots / before.lots - 1;
+  const best = topSellers().rows[0];
   return (
     <header>
       <div className="eyebrow text-accent">{t(`Marktbericht · Stand ${date(AS_OF)}`, `Market report · as of ${date(AS_OF)}`)}</div>
@@ -273,20 +352,24 @@ function InsightsHero() {
           label={t("Marktindex, 12 Monate", "Market index, 12 months")}
           value={<span className={trendClass(idx)}>{pct(idx)}</span>}
           note={t("über alle bewerteten Varianten", "across all valued variants")}
-          spark={idxSeries.filter((_, i) => i % 4 === 0).map((p) => p.value)}
-          sparkNote={t(`Verlauf seit ${date(idxSeries[0].t, "year")}`, `Trend since ${date(idxSeries[0].t, "year")}`)}
+          chart={<MiniChart values={idxSeries.slice(-53).map((p) => p.value)} format={(v) => num(v, 1)} height={60} />}
+          chartNote={t("Indexverlauf der letzten 12 Monate, wöchentlich", "Index over the last 12 months, weekly")}
         />
         <HeroKpi
           className="md:border-l md:border-line md:px-8"
-          label={t("Verkaufsquote, 12 Monate", "Sell-through, 12 months")}
-          value={pct(now.sellThrough, { signed: false, digits: 0 })}
-          delta={
-            <span className={trendClass(now.sellThrough - before.sellThrough)}>
-              {now.sellThrough >= before.sellThrough ? "▲" : "▼"} {t(`von ${pct(before.sellThrough, { signed: false, digits: 0 })} im Vorjahr`, `from ${pct(before.sellThrough, { signed: false, digits: 0 })} a year earlier`)}
-            </span>
+          label={t("Meistverkaufte Variante, 12 Monate", "Best-selling variant, 12 months")}
+          value={
+            best ? (
+              <Link to={`/markt/${best.id}`} className="block text-[26px] leading-tight hover:text-accent sm:text-[28px]">
+                {variantTitle(variantById.get(best.id)!, { brand: false })}
+              </Link>
+            ) : (
+              "–"
+            )
           }
-          spark={years.map((y) => y.sellThrough)}
-          sparkNote={t(`je Jahr seit ${since}`, `per year since ${since}`)}
+          note={best ? t(`${best.sold} Verkäufe, Median ${eur(best.median, { compact: true })}`, `${best.sold} sales, median ${eur(best.median, { compact: true })}`) : undefined}
+          chart={best ? <MonthBars months={monthlyCounts((s) => s.variantId === best.id && s.price !== null)} /> : null}
+          chartNote={t("Verkäufe dieser Variante je Monat, letzte 12 Monate", "Sales of this variant per month, last 12 months")}
         />
         <HeroKpi
           className="md:border-l md:border-line md:pl-8"
@@ -294,8 +377,14 @@ function InsightsHero() {
           value={num(now.lots)}
           delta={<Delta value={lotsChange} arrow={false} digits={0} />}
           note={t("ggü. Vorjahr", "vs. prior year")}
-          spark={full.map((y) => y.lots)}
-          sparkNote={t(`je Jahr seit ${since}`, `per year since ${since}`)}
+          chart={<MonthBars months={monthlyLots()} ghost />}
+          chartNote={
+            <span className="inline-flex flex-wrap items-center gap-x-1.5">
+              {t("Je Monat, letzte 12 Monate;", "Per month, last 12 months;")}
+              <span className="inline-block h-0 w-3 border-t-2 border-ink/55" aria-hidden />
+              {t("Vorjahr", "prior year")}
+            </span>
+          }
         />
       </dl>
     </header>
@@ -311,8 +400,7 @@ function KeyFindings() {
     const bands = mileageBands();
     const low = bands.filter((b) => b.to !== null && b.to <= 30_000);
     const high = bands.filter((b) => b.from >= 100_000);
-    const cal = auctionCalendar();
-    const peakMonth = cal.months.indexOf(Math.max(...cal.months));
+    const gem = hiddenGems()[0];
     const out: { id: string; kicker: string; value: ReactNode; text: string }[] = [];
     if (top)
       out.push({
@@ -340,13 +428,16 @@ function KeyFindings() {
         ),
       });
     }
-    out.push({
-      id: "auktionen",
-      kicker: t("Auktionskalender", "Auction calendar"),
-      value: monthName(peakMonth, "long"),
-      text: t("Der Monat mit den meisten Saalauktionen, die beste Zeit für Auswahl und Bieter.", "The month with the most live auctions, the best time for choice and bidders."),
-    });
-    return out;
+    if (gem) {
+      const gv = variantById.get(gem.id)!;
+      out.push({
+        id: "geheimtipps",
+        kicker: t("Geheimtipp", "Hidden gem"),
+        value: <span className="text-accent">{pct(gem.gap, { digits: 0 })}</span>,
+        text: t(`${variantTitle(gv)} liegt so weit unter seinem langfristigen Trend und legt wieder zu.`, `${variantTitle(gv)} trades this far below its long-term trend and is rising again.`),
+      });
+    }
+    return out.sort((x, y) => chapter(x.id).localeCompare(chapter(y.id)));
   }, []);
   return (
     <Section eyebrow={chapterLabel("ueberblick")} title={t("Das Wichtigste in Kürze", "Key points at a glance")} sub={t("Vier Beobachtungen aus den aktuellen Daten, ein Klick führt zum Kapitel", "Four observations from the current data; click to jump to the chapter")}>
@@ -586,6 +677,129 @@ function Movers() {
           </>,
           <>
             <strong>{rising}</strong> of {total} variants are up {metric === "12m" ? "over 12 months" : "over five years"}, {total - rising} are down. The small lines show the value trend over the same period.
+          </>,
+        )}
+      </Takeaway>
+    </Section>
+  );
+}
+
+// ------------------------------------------------------------------------------------------------ hidden gems
+
+function HiddenGems() {
+  const [all, setAll] = useState(false);
+  const gems = hiddenGems();
+  if (!gems.length) return null;
+  const shown = all ? gems : gems.slice(0, 6);
+  const top = gems[0];
+  const topV = variantById.get(top.id)!;
+  return (
+    <Section
+      eyebrow={chapterLabel("geheimtipps")}
+      title={t("Geheimtipps", "Hidden gems")}
+      sub={t(
+        "Varianten, die unter ihrem langfristigen Wertetrend liegen, aber in den letzten drei Monaten wieder zulegen. Nur mit mindestens sechs Verkäufen in zwei Jahren.",
+        "Variants trading below their long-term value trend that have gained again over the last three months. Only with at least six sales in two years.",
+      )}
+      actions={
+        gems.length > 6 ? (
+          <button onClick={() => setAll((a) => !a)} className="text-[13px] text-muted underline-offset-4 hover:text-ink hover:underline">
+            {all ? t("Weniger anzeigen", "Show fewer") : t(`Alle ${gems.length} anzeigen`, `Show all ${gems.length}`)}
+          </button>
+        ) : undefined
+      }
+    >
+      <ol className="grid gap-x-10 lg:grid-cols-2">
+        {shown.map((g, i) => {
+          const v = variantById.get(g.id)!;
+          return (
+            <li key={g.id} className="border-t border-line first:border-t-0 lg:[&:nth-child(2)]:border-t-0">
+              <Link to={`/markt/${g.id}`} className="group grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 py-4 sm:grid-cols-[1.5rem_minmax(0,1fr)_170px_auto]">
+                <span className={cn("font-serif text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
+                <span className="min-w-0">
+                  <span className="block font-serif text-[16px] leading-snug transition-colors group-hover:text-accent sm:truncate">{variantTitle(v)}</span>
+                  <span className="text-[12.5px] text-muted tabular-nums">
+                    {eur(g.value, { compact: true })} · {t(`${g.sold24} Verkäufe in 2 Jahren`, `${g.sold24} sales in 2 years`)}
+                  </span>
+                </span>
+                <MiniChart values={g.spark.map((p) => p.value)} trend={g.spark.map((p) => p.trend)} format={(v) => eur(v, { compact: true })} height={48} className="my-2 hidden sm:block" />
+                <span className="text-right">
+                  <span className="block font-serif text-[20px] leading-none tabular-nums text-accent">{pct(g.gap, { digits: 0 })}</span>
+                  <span className="mt-1 block text-[11.5px] whitespace-nowrap text-muted">
+                    {t("unter Trend", "below trend")} · <span className="text-up">{pct(g.change3m)}</span> {t("3 Mon.", "3 mo.")}
+                  </span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mt-1 flex items-center gap-3 text-[11.5px] text-faint">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block h-[2px] w-5 rounded-full" style={{ background: ACCENT }} /> {t("Marktwert, 5 Jahre", "Market value, 5 years")}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="inline-block w-5 border-t-[1.5px] border-dashed border-faint" /> {t("langfristiger Trend", "long-term trend")}
+        </span>
+      </p>
+      <Takeaway>
+        {t(
+          <>
+            Am deutlichsten unter seinem Trend liegt der <strong>{variantTitle(topV)}</strong>: {pct(-top.gap, { signed: false, digits: 0 })} unter dem Wert, den sein langjähriger Anstieg von {pct(top.trendPa, { signed: false })} pro Jahr erwarten ließe, und seit drei Monaten wieder im Plus. Eine Garantie ist das nicht: Ein Abstand zum Trend kann sich auch über sinkende Trends schließen. Keine Anlageberatung.
+          </>,
+          <>
+            Furthest below its trend is the <strong>{variantTitle(topV)}</strong>: {pct(-top.gap, { signed: false, digits: 0 })} below the value its long-run rise of {pct(top.trendPa, { signed: false })} a year would suggest, and up again over three months. That is no guarantee: a gap can also close through a falling trend. Not investment advice.
+          </>,
+        )}
+      </Takeaway>
+    </Section>
+  );
+}
+
+// ------------------------------------------------------------------------------------------------ top sellers
+
+function TopSellers() {
+  const { rows, total } = topSellers();
+  if (!rows.length) return null;
+  const top = rows.slice(0, 10);
+  const share = top.reduce((a, r) => a + r.sold, 0) / total;
+  const first = variantById.get(top[0].id)!;
+  return (
+    <Section
+      eyebrow={chapterLabel("meistverkauft")}
+      title={t("Meistverkauft", "Best sellers")}
+      sub={t(`Die Varianten mit den meisten Zuschlägen in den letzten 12 Monaten, von ${num(total)} verkauften Fahrzeugen`, `The variants with the most sales over the last 12 months, out of ${num(total)} cars sold`)}
+    >
+      <ol>
+        {top.map((r, i) => {
+          const v = variantById.get(r.id)!;
+          return (
+            <li key={r.id} className="border-t border-line first:border-t-0">
+              <Link
+                to={`/markt/${r.id}`}
+                className="group grid grid-cols-[1.5rem_minmax(0,1fr)_3rem] items-center gap-x-4 gap-y-1.5 py-2.5 sm:grid-cols-[1.5rem_minmax(0,16rem)_minmax(0,1fr)_3rem_9rem]"
+              >
+                <span className={cn("font-serif text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
+                <span className="min-w-0 font-serif text-[15.5px] leading-snug transition-colors group-hover:text-accent sm:truncate">{variantTitle(v)}</span>
+                <span className="col-span-3 col-start-2 row-start-2 h-2 rounded-full bg-panel-2 sm:col-span-1 sm:col-start-3 sm:row-start-1">
+                  <span className="block h-full rounded-full" style={{ width: `${(r.sold / top[0].sold) * 100}%`, background: ACCENT, opacity: i === 0 ? 1 : 0.75 }} />
+                </span>
+                <span className="text-right font-serif text-[18px] tabular-nums sm:col-start-4">{r.sold}</span>
+                <span className="hidden text-right text-[12.5px] text-muted tabular-nums sm:block">
+                  {t("Median", "Median")} {eur(r.median, { compact: true })} · <span className={trendClass(r.change12m)}>{pct(r.change12m, { digits: 0 })}</span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+      <Takeaway>
+        {t(
+          <>
+            Der <strong>{variantTitle(first)}</strong> wechselte {top[0].sold} Mal den Besitzer, öfter als jede andere Variante. Die zehn meistverkauften Varianten machen zusammen <strong>{pct(share, { signed: false, digits: 0 })}</strong> aller Verkäufe aus. Wer hier sucht, findet die größte Auswahl und die verlässlichsten Preise.
+          </>,
+          <>
+            The <strong>{variantTitle(first)}</strong> changed hands {top[0].sold} times, more than any other variant. The ten best sellers together account for <strong>{pct(share, { signed: false, digits: 0 })}</strong> of all sales. Here buyers find the widest choice and the most reliable prices.
           </>,
         )}
       </Takeaway>
