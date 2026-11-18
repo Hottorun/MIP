@@ -12,11 +12,14 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 | --- | --- |
 | Betreiberangaben | `OPERATOR` in `src/legal.ts` ausfüllen (Name, Anschrift, E-Mail, Verantwortlicher). Bis dahin zeigen Impressum und Datenschutzerklärung einen Warnhinweis. |
 | Schlüssel für Verträge | `MIP_CONTRACT_KEY` in Vercel setzen (`openssl rand -base64 32`), für Production und Preview. Ohne ihn lehnt der Server auf Vercel jeden Vertrags-Upload ab. Den Schlüssel zusätzlich an einem zweiten sicheren Ort ablegen (Passwortmanager). |
-| Migrationen | `009_privacy.sql` und `010_row_level_security.sql` auf der Produktionsdatenbank ausführen (`npm run db:migrate`), vor dem Deploy. |
+| Migrationen | `009_privacy.sql`, `010_row_level_security.sql` und `011_appraisals.sql` auf der Produktionsdatenbank ausführen (`npm run db:migrate`), vor dem Deploy. |
+| Löschlauf prüfen | Nach `011_appraisals.sql` in Supabase nachsehen, dass der Lauf `mip-documents-expire` angelegt ist (`select jobname, schedule, active from cron.job`). Fehlt er (pg_cron nicht verfügbar), hängt die 24-Stunden-Löschung nur an Seitenaufrufen: dann pg_cron unter Database → Extensions einschalten und den `do`-Block aus der Migration noch einmal ausführen. |
+| Sicherungen | Prüfen, wie lange Supabase Sicherungen aufbewahrt (je nach Tarif 7 Tage oder länger, mit PITR bis zum eingestellten Zeitraum). In dieser Zeit steckt ein gelöschtes Dokument noch verschlüsselt in der Sicherung; die Datenschutzerklärung sagt das in Abschnitt 4 („Löschung“). Ohne Sicherungen den Satz streichen. |
+| Werbung mit „DSGVO-konform“ | **Steht jetzt auf der Seite** (Datenschutz-Band im Portfolio, `src/components/portfolio/UserCars.tsx`). Eine Zertifizierung ist dafür nicht nötig, aber die Aussage muss stimmen: **vor dem Deploy alle Punkte dieser Tabelle erledigen**, sonst ist sie irreführende Werbung (§ 5 UWG). Bewusst als Satz, nicht als Siegel: kein „zertifiziert“, „geprüft“ oder Prüfzeichen ohne echte Zertifizierung (Art. 42 DSGVO). |
 | AV-Vertrag Supabase | Im Supabase-Dashboard den Auftragsverarbeitungsvertrag (DPA) abschließen und ablegen. Dabei prüfen, dass das Projekt in `eu-central-1` (Frankfurt) liegt; die Datenschutzerklärung sagt das so. |
 | AV-Vertrag Vercel | Der DPA ist Teil der Vercel-Bedingungen; Fassung herunterladen und ablegen. Funktionsregion ist `fra1` (`vercel.json`). |
 | AV-Vertrag Anthropic | Der DPA ist Teil der Commercial Terms; Fassung ablegen. Prüfen, ob für das Konto „Zero Data Retention“ vereinbart werden kann, und die Erklärung dann um diesen Satz ergänzen. |
-| Prüfer | In `MIP_ADMINS` nur Personen eintragen, die auf Vertraulichkeit verpflichtet sind (kurze schriftliche Erklärung). Verträge nicht herunterladen, drucken oder weitergeben. |
+| Prüfer | In `MIP_ADMINS` nur Personen eintragen, die auf Vertraulichkeit verpflichtet sind (kurze schriftliche Erklärung). Verträge und Gutachten nicht herunterladen, drucken oder weitergeben. Täglich prüfen: ein Dokument wird 24 Stunden nach dem Hochladen gelöscht, danach muss der Nutzer es erneut hochladen. |
 | Datenschutzbeauftragter | Nach § 38 BDSG erst nötig, wenn in der Regel mindestens 20 Personen ständig mit automatisierter Verarbeitung befasst sind. Kurz festhalten, dass das nicht zutrifft. |
 | Folgenabschätzung | Eine Datenschutz-Folgenabschätzung (Art. 35) ist bei diesem Umfang voraussichtlich nicht nötig; die Einschätzung mit zwei Sätzen und Datum festhalten. |
 | Postfach | Die in `OPERATOR.email` genannte Adresse muss gelesen werden: Anfragen von Betroffenen sind binnen eines Monats zu beantworten. |
@@ -30,9 +33,9 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 | Schutz der Anmeldung | Hash aus Benutzername und IP-Adresse, Zeitpunkt | Nutzer, Angreifer | Passwortangriffe bremsen | Art. 6 (1) f | Supabase | 24 Stunden |
 | Gespeicherte App-Daten | Watchlist, Portfolio (Preis, Datum, Laufleistung, Zustand, Notiz), Alarme, gemerkte Inserate | Nutzer | Funktionen der App auf allen Geräten | Art. 6 (1) b | Vercel, Supabase | bei Löschung des Kontos |
 | Co-Pilot | Nachrichten des Nutzers, Portfolio und Watchlist als Kontext; kein Benutzername | Nutzer | Antworten auf Marktfragen | Art. 6 (1) b | Anthropic (USA, Standardvertragsklauseln) | bei uns keine Speicherung, Verlauf nur im Browser |
-| Fahrzeugmeldung | Fahrzeugdaten mit Fahrgestellnummer, Preis, Datum, Land, Art der Gegenseite, Notiz; Zeitpunkt und Fassung der Einwilligung; Prüfergebnis | Nutzer | Geprüfte Verkaufspreise für die Marktwerte, Premium als Dank | Art. 6 (1) a | Vercel, Supabase | ohne Vertrag 30 Tage; abgelehnt/abgelaufen 90 Tage nach Entscheidung; freigegeben bis zur Löschung durch den Nutzer oder des Kontos, danach nur anonymisiert (ohne Konto, Fahrgestellnummer, Notiz) |
-| Kaufvertrag | Datei (PDF/Foto), verschlüsselt; kann Namen, Anschriften, Unterschriften beider Seiten enthalten, soweit nicht geschwärzt | Nutzer, Vertragspartner | Echtheit der Meldung prüfen | Nutzer: Art. 6 (1) a. Vertragspartner: Art. 6 (1) f | Supabase (nur verschlüsselt); Anthropic nur mit gesonderter Einwilligung | mit der Entscheidung, spätestens nach 90 Tagen |
-| Marktmodell | Preis, Datum, Land, Laufleistung, Baujahr, Variante, Art der Gegenseite; ohne Fahrgestellnummer, ohne Nutzer | keine (anonymisiert) | Marktwertberechnung | entfällt | öffentlich in der App als Teil der Werte | bleibt anonymisiert bestehen, auch wenn der Nutzer die Meldung oder das Konto löscht |
+| Fahrzeugmeldung (Kaufvertrag oder Wertgutachten) | Fahrzeugdaten mit Fahrgestellnummer, Preis oder Gutachtenwert, Datum, Land, Art der Gegenseite oder Organisation des Gutachters, Notiz; Zeitpunkt und Fassung der Einwilligung; Prüfergebnis | Nutzer | Geprüfte Verkaufspreise für die Marktwerte, Gutachtenwerte als Vergleich, Premium als Dank | Art. 6 (1) a | Vercel, Supabase | ohne Dokument 30 Tage; abgelehnt/abgelaufen 90 Tage nach Entscheidung; freigegeben bis zur Löschung durch den Nutzer oder des Kontos, danach nur anonymisiert (ohne Konto, Fahrgestellnummer, Notiz, Gutachter) |
+| Kaufvertrag, Wertgutachten | Datei (PDF/Foto), verschlüsselt; kann Namen, Anschriften, Unterschriften beider Seiten bzw. des Gutachters enthalten, soweit nicht geschwärzt | Nutzer, Vertragspartner, Gutachter | Echtheit der Meldung prüfen | Nutzer: Art. 6 (1) a. Vertragspartner, Gutachter: Art. 6 (1) f | Supabase (nur verschlüsselt); Anthropic nur mit gesonderter Einwilligung (dort gelten dessen Fristen) | mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen; in Sicherungen des Anbieters verschlüsselt bis zu deren Ablauf |
+| Marktmodell | Preis, Datum, Land, Laufleistung, Baujahr, Variante, Art der Gegenseite; ohne Fahrgestellnummer, ohne Nutzer. Nur Meldungen mit Kaufvertrag; Gutachtenwerte gehen nicht ein | keine (anonymisiert) | Marktwertberechnung | entfällt | öffentlich in der App als Teil der Werte | bleibt anonymisiert bestehen, auch wenn der Nutzer die Meldung oder das Konto löscht |
 | Zugriffsprotokoll Verträge | Meldungs-ID, Prüfer, Aktion, Zeitpunkt | Prüfer | Nachweis, wer einen Vertrag geöffnet hat | Art. 6 (1) f | Supabase | ein Jahr |
 | Forum | Beiträge mit Benutzername und Zeit; Meldungen von Beiträgen mit Begründung | Nutzer | Austausch, Moderation | Art. 6 (1) b, Moderation f | Supabase | eigener Beitrag: Text bei Entfernen gelöscht. Bei Kontolöschung ohne Namen |
 | Nutzungszähler | Zähler je Konto für Co-Pilot, mobile.de, Uploads, Fehlermeldungen | Nutzer | Missbrauch und Kosten begrenzen | Art. 6 (1) f | Supabase | etwa 24 Stunden |
@@ -62,8 +65,11 @@ die Prüfung vor, ein Mensch entscheidet.
   (`scripts/db/export-user-cars.ts`).
 - **Missbrauchsschutz:** Sperre nach Fehlversuchen, Budgets je Konto (`server/limits.ts`), Prüfung von Dateityp und
   Größe beim Upload, Herkunftsprüfung bei ändernden Anfragen.
-- **Löschen ohne Zutun:** `sweepUserCars` in `server/userCars.ts` räumt nach den Fristen in `RETENTION` auf; der Lauf
-  hängt an den Aufrufen der Portfolio-Seite, weil es keinen Zeitplaner gibt.
+- **Löschen ohne Zutun:** Hochgeladene Dokumente löscht die Datenbank selbst: ein pg_cron-Lauf (`mip-documents-expire`,
+  alle 15 Minuten, `db/migrations/011_appraisals.sql`) entfernt jedes Dokument, das 23 Stunden alt ist, eine Stunde
+  vor dem zugesagten Tag. Ältere Dokumente gibt der Server auch vorher niemandem mehr heraus (Prüfer, KI). Dasselbe
+  und die übrigen Fristen in `RETENTION` erledigt `sweepUserCars` in `server/userCars.ts` bei Aufrufen der
+  Portfolio- und Prüfseite; ohne pg_cron (lokal) ist das der einzige Lauf.
 
 ## 4. Rechte der Betroffenen: wo sie im Produkt erfüllt werden
 

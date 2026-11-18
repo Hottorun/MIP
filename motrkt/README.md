@@ -38,12 +38,23 @@ Konten und Sitzungen liegen in Postgres (`db/migrations/002_accounts.sql`). Gesp
 Passwort und SHA-256-Werte der Sitzungs-Tokens. Nach 8 Fehlversuchen in 15 Minuten wird die Anmeldung für Name bzw.
 Adresse kurz gesperrt (ein Name allein erst nach 50 Fehlversuchen von beliebigen Adressen, damit niemand fremde Konten
 mutwillig sperren kann). Je Konto gelten außerdem Budgets (`server/limits.ts`, Tabelle `db/migrations/006_rate_limits.sql`):
-60 Co-Pilot-Antworten und 600 mobile.de-Abfragen je Stunde, 10 Vertrags-Uploads je Tag.
+60 Co-Pilot-Antworten und 600 mobile.de-Abfragen je Stunde, 10 Dokument-Uploads je Tag.
 
-## Eigenes Fahrzeug melden (Portfolio, `/portfolio#melden`)
+## Premium freischalten: Kaufvertrag oder Wertgutachten (Portfolio, `/portfolio#melden`)
 
-Nutzer tragen ein Auto ein, das sie selbst gekauft oder verkauft haben, und laden den Kaufvertrag hoch (PDF oder
-Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontomenü erreichbar (`/fahrzeug-melden` leitet dorthin).
+Nutzer belegen ein Auto mit einem Dokument (PDF oder Foto, höchstens 4 MB) und erhalten nach der Freigabe Premium.
+Zwei Wege, beide im Abschnitt „Premium freischalten“ auf der Portfolio-Seite (`src/components/portfolio/UserCars.tsx`,
+auch über das Kontomenü erreichbar, `/fahrzeug-melden` leitet dorthin; in der Bestandstabelle startet das Symbol
+neben „Bearbeiten“ das Formular mit den Angaben des Fahrzeugs):
+
+- **Kaufvertrag** (`kind = 'kaufvertrag'`): ein Auto, das der Nutzer gekauft oder verkauft hat. Der geprüfte Preis geht
+  in die Marktwerte ein.
+- **Wertgutachten** (`kind = 'gutachten'`): ein Auto im Besitz des Nutzers, bewertet von Classic Data, TÜV, DEKRA, GTÜ
+  oder einem Sachverständigen. Zusätzliche Felder: Organisation des Gutachters, Art des Werts (Marktwert,
+  Wiederbeschaffungs- oder Wiederherstellungswert), Zustandsnote. Ein Gutachtenwert ist kein Verkaufspreis:
+  `scripts/db/export-user-cars.ts` lässt ihn aus, das Marktmodell sieht ihn nicht.
+
+Der Ablauf ist für beide gleich; unten steht er für den Kaufvertrag.
 
 1. **Daten**: Variante, Bezeichnung, Baujahr, Fahrgestellnummer, Kilometerstand, Preis mit Währung, Vertragsdatum,
    Land, Gegenseite (privat, Händler, Auktion), dazu optional Karosserie, Getriebe, Lenkung, Farben, Zustandsnote,
@@ -58,7 +69,9 @@ Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontom
 3. **Prüfung** (`/pruefung`, nur für Prüfer): Angaben, Vertrag und KI-Ergebnis nebeneinander. Der Prüfer kann
    Variante, Preis, Datum, Kilometer und Baujahr nach dem Vertrag korrigieren, dann freigeben oder mit Begründung
    ablehnen. **Beide Entscheidungen löschen den Vertrag**; danach bleiben nur die geprüften Fahrzeugdaten. Jedes
-   Öffnen und jede Entscheidung steht mit Prüfer und Zeit in `contract_access`.
+   Öffnen und jede Entscheidung steht mit Prüfer und Zeit in `contract_access`. **Ohne Entscheidung wird das
+   Dokument 24 Stunden nach dem Hochladen gelöscht** (Status „Dokument gelöscht“, `expired`); der Nutzer lädt es dann
+   an derselben Meldung erneut hoch. Prüfer sollten also täglich hineinsehen; die Prüfseite zeigt die Restzeit.
 4. **Freigabe**: Der Nutzer erhält 12 Monate Premium (`users.premium_until`, verlängert sich bei jeder weiteren
    Freigabe). Ein Bezahlbereich existiert noch nicht, bis dahin sieht jeder alles.
 5. **Analyse**: Der tägliche Lauf (`daily.sh`) exportiert die freigegebenen Fahrzeuge aus Postgres
@@ -67,13 +80,14 @@ Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontom
    (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
 
 **Löschen:** Der Nutzer kann jede Meldung selbst löschen. Eine freigegebene wird dabei nur vom Konto gelöst (ohne FIN,
-Notizen und KI-Ergebnis) und bleibt anonym im Modell; das dafür gewährte Premium entfällt (es bleibt, was andere freigegebene Meldungen ergeben). Ohne Zutun räumt `sweepUserCars` auf (`RETENTION` in `server/userCars.ts`):
-Meldungen ohne Vertrag nach 30 Tagen, unentschiedene Verträge nach 90 Tagen (Status „abgelaufen“), abgelehnte und
-abgelaufene Meldungen 90 Tage nach der Entscheidung. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
+Notizen und KI-Ergebnis) und bleibt anonym im Modell; das dafür gewährte Premium entfällt (es bleibt, was andere freigegebene Meldungen ergeben). Ohne Zutun gelten die Fristen in `RETENTION` (`server/userCars.ts`):
+hochgeladene Dokumente 24 Stunden (auf Supabase löscht sie ein pg_cron-Lauf alle 15 Minuten, angelegt von
+`db/migrations/011_appraisals.sql`; `sweepUserCars` tut dasselbe bei Seitenaufrufen), Meldungen ohne Dokument nach
+30 Tagen, abgelehnte und abgelaufene Meldungen 90 Tage nach der Entscheidung. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
 
 Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Nur der Vite-Entwicklungsserver (`npm run dev`) macht
 zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht über `MIP_ADMINS`, weil das Passwort
-öffentlich ist. Tabelle: `db/migrations/004_user_cars.sql`.
+öffentlich ist. Tabelle: `db/migrations/004_user_cars.sql`, `011_appraisals.sql`.
 
 ## Konto, Impressum, Datenschutz
 
@@ -100,7 +114,7 @@ zeigt (Kaufen, Modellseite), nicht beim App-Start.
 ## Forum je Modell
 
 Ganz unten auf jeder Modellseite (`/markt/:variante#forum`) tauschen sich angemeldete Nutzer in Themen aus: Thema mit
-erstem Beitrag eröffnen, antworten, lesen. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag gemeldet hat, trägt
+erstem Beitrag eröffnen, antworten, lesen. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag oder Wertgutachten gemeldet hat, trägt
 das Abzeichen „Besitzer“. Autoren bearbeiten und löschen eigene Beiträge, andere melden Beiträge an die Prüfer
 (`/pruefung` zeigt gemeldete Beiträge mit Begründung), Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen aus;
 die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen; Themen
@@ -116,7 +130,7 @@ Auktionen, `?haus=`). Server: `server/forum.ts`, Tabellen: `db/migrations/005_fo
 | Variable | Zweck |
 |---|---|
 | `DATABASE_URL` | Postgres für Konten, Sitzungen und Marktdaten (auf Vercel auch `POSTGRES_URL`) |
-| `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge mit Claude (ohne: lokaler Analysemodus, Verträge von Hand prüfen) |
+| `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge und Wertgutachten mit Claude (ohne: lokaler Analysemodus, Dokumente von Hand prüfen) |
 | `MIP_ADMINS` | Benutzernamen der Prüfer für gemeldete Fahrzeuge, kommagetrennt |
 | `MIP_TRUST_PROXY` | `1`, wenn `npm start` hinter einem eigenen Reverse-Proxy (nginx, Caddy) läuft: Client-Adresse für die Anmeldebremse aus `X-Forwarded-For`; auf Vercel nicht nötig |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |

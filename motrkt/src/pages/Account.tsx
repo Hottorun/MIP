@@ -47,8 +47,8 @@ export default function Account() {
       <Card title={t("Meine Daten", "My data")} sub={t("Alles, was zu diesem Konto gespeichert ist, als JSON-Datei.", "Everything stored for this account, as a JSON file.")}>
         <p className="text-[14px] text-muted">
           {t(
-            "Kontodaten, Watchlist, Portfolio, Preisalarme, gemerkte Inserate, gemeldete Fahrzeuge mit Einwilligung und KI-Ergebnis (ohne Vertragsdateien), Forumsbeiträge und Ihre Meldungen von Beiträgen. Einzelne Fahrzeugmeldungen löschen Sie im Portfolio.",
-            "Account details, watchlist, portfolio, price alerts, saved listings, reported cars with consent and AI result (without contract files), forum posts and your reports of posts. Single car reports can be deleted in the portfolio.",
+            "Kontodaten, Watchlist, Portfolio, Preisalarme, gemerkte Inserate, gemeldete Fahrzeuge mit Einwilligung und KI-Ergebnis (ohne hochgeladene Dokumente), Forumsbeiträge und Ihre Meldungen von Beiträgen. Einzelne Fahrzeugmeldungen löschen Sie im Portfolio.",
+            "Account details, watchlist, portfolio, price alerts, saved listings, reported cars with consent and AI result (without uploaded documents), forum posts and your reports of posts. Single car reports can be deleted in the portfolio.",
           )}
         </p>
         <a href="/api/auth/export" download className={cn("btn mt-4", demo && "pointer-events-none opacity-50")}>
@@ -130,8 +130,8 @@ function DeleteCard({ disabled }: { disabled: boolean }) {
     setErr("");
     const ok = await confirm(
       t(
-        "Konto, Sitzungen, Watchlist, Portfolio, Alarme und alle nicht freigegebenen Fahrzeugmeldungen samt Verträgen werden gelöscht. Freigegebene Fahrzeuge (ohne Fahrgestellnummer und Notizen) und Forumsbeiträge bleiben ohne Bezug zum Konto erhalten; Forumsbeiträge lassen sich vorher im Forum löschen. Das lässt sich nicht rückgängig machen.",
-        "Account, sessions, watchlist, portfolio, alerts and all car reports that are not approved, with their contracts, will be deleted. Approved cars (without chassis number and notes) and forum posts remain, detached from the account; forum posts can be deleted in the forum first. This cannot be undone.",
+        "Konto, Sitzungen, Watchlist, Portfolio, Alarme und alle nicht freigegebenen Fahrzeugmeldungen samt Dokumenten werden gelöscht. Freigegebene Fahrzeuge (ohne Fahrgestellnummer und Notizen) und Forumsbeiträge bleiben ohne Bezug zum Konto erhalten; Forumsbeiträge lassen sich vorher im Forum löschen. Das lässt sich nicht rückgängig machen.",
+        "Account, sessions, watchlist, portfolio, alerts and all car reports that are not approved, with their documents, will be deleted. Approved cars (without chassis number and notes) and forum posts remain, detached from the account; forum posts can be deleted in the forum first. This cannot be undone.",
       ),
       { title: t("Konto endgültig löschen?", "Delete the account for good?"), confirmLabel: t("Endgültig löschen", "Delete for good") },
     );
