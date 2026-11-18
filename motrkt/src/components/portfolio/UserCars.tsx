@@ -1,22 +1,41 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { FileCheck2, ShieldCheck, Trash2, Upload } from "lucide-react";
-import { brands, generationById, modelName, models, variantById, variantTitle, yearsLabel } from "../../data/db";
+import { ArrowRight, Check, Crown, FileCheck2, FileSignature, FileText, Lock, ShieldCheck, Stamp, Trash2, Upload, X } from "lucide-react";
+import { variantById, variantTitle } from "../../data/db";
 import { getMetrics } from "../../data/market";
+import type { Holding } from "../../data/types";
 import { cn, date, eur, num } from "../../lib/format";
-import { isEn, t } from "../../i18n";
-import { Card, Pill, Section, useConfirm } from "../ui";
-import { ACCEPT, COUNTERPARTY, MAX_BYTES, STATUS_LABEL, STATUS_TONE, api, uploadContract, useMe, type UserCar } from "../../lib/userCars";
+import { isEn, locale, t } from "../../i18n";
+import { tr } from "../../i18n/terms";
+import { CarImage } from "../CarImage";
+import { VariantPicker } from "../VariantPicker";
+import { Pill, Section, useConfirm } from "../ui";
+import {
+  ACCEPT, COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, MAX_BYTES, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, uploadContract,
+  type Kind, type UserCar,
+} from "../../lib/userCars";
+
+/**
+ * "Premium freischalten" on the portfolio page (#melden): the user proves a car with a document and gets premium for
+ * it once a reviewer has approved it (server/userCars.ts). Two documents count: the purchase contract of a car bought
+ * or sold, and an appraisal (Wertgutachten) of a car the user owns. What happens to the document is said loudly
+ * (PrivacyBand), in the words of the privacy notice (src/legal.ts section 4).
+ */
 
 const COUNTRIES = ["DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "GB", "DK", "SE", "NO", "PL", "CZ", "US", "CA"];
 const CURRENCIES = ["EUR", "CHF", "GBP", "USD", "SEK", "DKK", "NOK", "CAD"];
+/** Who usually writes appraisals of classic cars in Germany; any other name can be typed. */
+const APPRAISERS = ["Classic Data", "Classic Analytics", "TÜV Süd Classic", "TÜV Rheinland", "TÜV Nord", "DEKRA", "GTÜ Classic", "KÜS", "FSP"];
 const today = () => new Date().toISOString().slice(0, 10);
 const parseNum = (s: string) => Number(isEn() ? s.replace(/[,\s]/g, "") : s.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
+/** "den Kaufvertrag" / "das Wertgutachten" and friends, where a sentence names the document. */
+const doc = (kind: Kind) =>
+  kind === "gutachten"
+    ? { the: t("das Wertgutachten", "the appraisal"), The: t("Das Wertgutachten", "The appraisal"), short: t("Gutachten", "appraisal") }
+    : { the: t("den Kaufvertrag", "the purchase contract"), The: t("Der Kaufvertrag", "The purchase contract"), short: t("Vertrag", "contract") };
 
 type Draft = {
   role: "kauf" | "verkauf";
-  brandId: string;
-  modelId: string;
   variant_id: string;
   title: string;
   build_year: string;
@@ -27,6 +46,8 @@ type Draft = {
   sale_date: string;
   country: string;
   counterparty: "privat" | "haendler" | "auktion";
+  appraiser: string;
+  value_basis: "marktwert" | "wiederbeschaffungswert" | "wiederherstellungswert";
   body: string;
   gearbox: string;
   steering: string;
@@ -38,84 +59,174 @@ type Draft = {
   notes: string;
 };
 
-function emptyDraft(): Draft {
-  const v = variantById.get("porsche-911-g-modell-carrera-3-2") ?? variantById.values().next().value!;
+/** An empty form, or one started from a car of the portfolio: what the holding knows is filled in, the rest stays open. */
+function startDraft(kind: Kind, from?: Holding): Draft {
+  const bought = from && kind === "kaufvertrag";
+  const day = from ? new Date(from.purchaseDate).toISOString().slice(0, 10) : "";
   return {
-    role: "kauf", brandId: v.brandId, modelId: v.modelId, variant_id: v.id, title: "", build_year: "", vin: "", km: "", price: "",
-    currency: "EUR", sale_date: "", country: "DE", counterparty: "privat", body: "", gearbox: "", steering: "links", color_ext: "",
-    color_int: "", condition: "", matching_numbers: "", accident_free: "", notes: "",
+    role: "kauf", variant_id: from?.variantId ?? "", title: "", build_year: "", vin: "", km: from?.mileage ? String(from.mileage) : "",
+    // a holding's purchase price is kept in euros, whatever currency the page shows
+    price: bought ? String(Math.round(from.purchasePrice)) : "", currency: "EUR", sale_date: bought && day >= "2000-01-01" ? day : "",
+    country: "DE", counterparty: "privat", appraiser: "", value_basis: "marktwert", body: "", gearbox: "", steering: "links",
+    color_ext: from?.color ? tr(from.color) : "", color_int: "", condition: from?.condition ?? "", matching_numbers: "", accident_free: "", notes: "",
   };
 }
 
-const FIELD_ERR: Record<string, () => string> = {
+const FIELD_ERR: Record<string, (kind: Kind) => string> = {
+  kind: () => t("Bitte Kaufvertrag oder Wertgutachten wählen.", "Please choose purchase contract or appraisal."),
   role: () => t("Bitte Kauf oder Verkauf wählen.", "Please choose bought or sold."),
-  variant_id: () => t("Bitte eine Variante wählen.", "Please choose a variant."),
+  variant_id: () => t("Bitte ein Fahrzeug wählen.", "Please choose a car."),
   build_year: () => t("Bitte ein gültiges Baujahr eingeben.", "Please enter a valid build year."),
-  vin: () => t("Bitte die Fahrgestellnummer (FIN) wie im Vertrag eingeben.", "Please enter the chassis number (VIN) as in the contract."),
+  vin: (k) => t(`Bitte die Fahrgestellnummer (FIN) wie im ${doc(k).short} eingeben.`, `Please enter the chassis number (VIN) as in the ${doc(k).short}.`),
   km: () => t("Bitte den Kilometerstand eingeben.", "Please enter the mileage."),
-  price: () => t("Bitte den Kaufpreis wie im Vertrag eingeben.", "Please enter the price as in the contract."),
+  price: (k) => (k === "gutachten" ? t("Bitte den Wert laut Gutachten eingeben.", "Please enter the value as in the appraisal.") : t("Bitte den Kaufpreis wie im Vertrag eingeben.", "Please enter the price as in the contract.")),
   currency: () => t("Bitte eine Währung wählen.", "Please choose a currency."),
-  sale_date: () => t("Bitte das Datum des Vertrags eingeben (nicht in der Zukunft).", "Please enter the contract date (not in the future)."),
+  sale_date: (k) => t(`Bitte das Datum des ${k === "gutachten" ? "Gutachtens" : "Vertrags"} eingeben (nicht in der Zukunft).`, `Please enter the ${doc(k).short} date (not in the future).`),
   country: () => t("Bitte ein Land wählen.", "Please choose a country."),
   counterparty: () => t("Bitte wählen.", "Please choose."),
+  appraiser: () => t("Bitte angeben, wer das Gutachten erstellt hat (z. B. Classic Data).", "Please state who wrote the appraisal (e.g. Classic Data)."),
+  value_basis: () => t("Bitte wählen, welchen Wert das Gutachten nennt.", "Please choose which value the appraisal states."),
   condition: () => t("Note 1 bis 5, z. B. 2+.", "Grade 1 to 5, e.g. 2+."),
   consent: () => t("Bitte bestätigen.", "Please confirm."),
-  file: () => t("Bitte den Kaufvertrag hochladen (PDF oder Foto, höchstens 4 MB).", "Please upload the purchase contract (PDF or photo, at most 4 MB)."),
+  file: (k) => t(`Bitte ${doc(k).the} hochladen (PDF oder Foto, höchstens 4 MB).`, `Please upload ${doc(k).the} (PDF or photo, at most 4 MB).`),
 };
 
 /** What went wrong with an upload, in words: the server's answer decides (server/userCars.ts). */
-const uploadError = (e: unknown) => {
+const uploadError = (e: unknown, kind: Kind) => {
   const { message, status } = e as { message?: string; status?: number };
   if (message === "storage") return t("Der Upload ist gerade nicht möglich. Ihre Angaben sind gespeichert; bitte versuchen Sie es später noch einmal.", "Uploads are not possible right now. Your details are saved; please try again later.");
   if (message === "demo") return t("Mit dem geteilten Demo-Konto lassen sich keine Fahrzeuge melden. Bitte legen Sie ein eigenes Konto an.", "The shared demo account cannot report cars. Please create your own account.");
-  if (status === 429) return t("Heute wurden schon viele Verträge hochgeladen. Bitte morgen weiter.", "Many contracts uploaded today already. Please continue tomorrow.");
-  return FIELD_ERR.file();
+  if (status === 429) return t("Heute wurden schon viele Dokumente hochgeladen. Bitte morgen weiter.", "Many documents uploaded today already. Please continue tomorrow.");
+  return FIELD_ERR.file(kind);
 };
 
-/** How the contract is protected, in the words of the privacy notice (src/legal.ts section 3). Shown next to the upload. */
-function ContractProtection() {
-  const points: [string, string][] = [
-    [t("Schwärzen erlaubt", "Redact what we do not need"), t("Namen, Anschriften, Unterschriften, Ausweis- und Bankdaten dürfen Sie unkenntlich machen. Lesbar bleiben müssen nur Fahrzeug, Fahrgestellnummer, Preis und Datum.", "You may black out names, addresses, signatures, ID and bank details. Only the car, chassis number, price and date must stay readable.")],
-    [t("Verschlüsselt gespeichert", "Stored encrypted"), t("Die Übertragung läuft über HTTPS. Der Vertrag wird vor dem Speichern mit AES-256 verschlüsselt, auf Servern in Frankfurt am Main.", "The transfer runs over HTTPS. The contract is encrypted with AES-256 before it is stored, on servers in Frankfurt am Main.")],
-    [t("Nur für die Prüfung", "For the review only"), t("Nur unsere Prüfer öffnen den Vertrag, jeder Zugriff wird protokolliert. Er wird nicht weitergegeben und nicht veröffentlicht.", "Only our reviewers open the contract, and every access is logged. It is not passed on and not published.")],
-    [t("Danach gelöscht", "Deleted afterwards"), t("Mit der Entscheidung der Prüfung löschen wir den Vertrag, spätestens nach 90 Tagen. In die Marktwerte gehen nur Preis, Datum und Fahrzeugdaten ein, ohne Namen und ohne Fahrgestellnummer.", "We delete the contract with the review decision, after 90 days at the latest. Only price, date and car details enter the market values, without names and without the chassis number.")],
-    [t("KI nur mit Ihrer Zustimmung", "AI only if you agree"), t("Die Vorprüfung durch KI (Anthropic, USA) läuft nur, wenn Sie sie erlauben. Ohne sie prüft ein Mensch von Hand.", "The AI pre-check (Anthropic, USA) runs only if you allow it. Without it a person checks by hand.")],
-    [t("Jederzeit löschbar", "Delete at any time"), t("Sie können jede Meldung hier selbst löschen. Nach der Freigabe bleiben nur Preis, Datum und Fahrzeugdaten anonym in der Marktanalyse.", "You can delete any report here yourself. After approval only price, date and car details stay in the market analysis, anonymously.")],
+/**
+ * How the document is protected, as the loudest thing in the section: a dark band with the three facts that matter
+ * (deleted after a day, encrypted, stored in Frankfurt) and what follows from them. `compact` is the narrow version
+ * that stays next to the form while it is being filled in.
+ */
+function PrivacyBand({ compact = false }: { compact?: boolean }) {
+  const figures: [string, string, string][] = [
+    [
+      t(`${DOCUMENT_HOURS} Std.`, `${DOCUMENT_HOURS} h`),
+      t("dann ist Ihr Dokument gelöscht", "then your document is deleted"),
+      t("Mit der Entscheidung der Prüfung, spätestens 24 Stunden nach dem Hochladen. Automatisch.", "With the review decision, 24 hours after the upload at the latest. Automatically."),
+    ],
+    ["AES-256", t("verschlüsselt gespeichert", "stored encrypted"), t("Übertragung per HTTPS, der Schlüssel liegt getrennt von der Datenbank.", "Transfer over HTTPS, the key is kept apart from the database.")],
+    ["Frankfurt", t("Serverstandort in der EU", "servers in the EU"), t("Anwendung und Datenbank laufen in Frankfurt am Main.", "Application and database run in Frankfurt am Main.")],
+  ];
+  const promises = [
+    t("Schwärzen erlaubt: Namen, Anschriften, Unterschriften und Bankdaten brauchen wir nicht.", "Redact freely: we do not need names, addresses, signatures or bank details."),
+    t("Nur unsere Prüfer öffnen das Dokument, und jeder Zugriff wird protokolliert.", "Only our reviewers open the document, and every access is logged."),
+    t("Keine Weitergabe, keine Veröffentlichung. Eine KI liest nur mit, wenn Sie es ausdrücklich erlauben.", "Never passed on, never published. An AI reads it only if you expressly allow it."),
+    t("Jede Einreichung können Sie jederzeit selbst löschen.", "You can delete any submission yourself at any time."),
   ];
   return (
-    <Card title={t("So schützen wir Ihren Kaufvertrag", "How we protect your contract")}>
-      <ul className="grid gap-x-6 gap-y-3 text-[14px] sm:grid-cols-2">
-        {points.map(([h, b]) => (
-          <li key={h} className="flex gap-2.5">
-            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-gold" strokeWidth={1.5} aria-hidden />
-            <div>
-              <div className="text-ink">{h}</div>
-              <div className="text-muted">{b}</div>
-            </div>
+    <aside className={cn("night-band rounded-[4px]", compact ? "p-6" : "p-6 sm:p-9")} aria-label={t("Datenschutz", "Data protection")}>
+      <div className={cn("flex gap-4", compact ? "flex-col" : "flex-col sm:flex-row sm:items-start sm:gap-6")}>
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/10">
+          <ShieldCheck className="size-6" strokeWidth={1.5} aria-hidden />
+        </span>
+        <div className="min-w-0">
+          {/* a plain statement, on purpose not a badge: a seal would suggest a certification (DATENSCHUTZ.md section 1) */}
+          <div className="eyebrow">
+            <span className="text-on-night/70">{t("Datenschutz", "Data protection")} · </span>
+            {t("DSGVO-konform", "GDPR compliant")}
+          </div>
+          <h3 className={cn("mt-1.5 font-display leading-[1.12]", compact ? "text-[26px]" : "text-[30px] sm:text-[38px]")}>
+            {t("Ihr Dokument bleibt vertraulich.", "Your document stays confidential.")}
+          </h3>
+          <p className={cn("mt-2 max-w-2xl text-on-night/80", compact ? "text-[14px]" : "text-[15.5px]")}>
+            {t(
+              "Wir verarbeiten Ihr Dokument DSGVO-konform: verschlüsselt gespeichert, nur zur Prüfung geöffnet und nach spätestens 24 Stunden gelöscht.",
+              "We process your document in compliance with the GDPR: stored encrypted, opened for the review only and deleted after 24 hours at the latest.",
+            )}
+          </p>
+        </div>
+      </div>
+
+      <dl className={cn("mt-7 grid gap-x-8 gap-y-6 border-t border-white/15 pt-6", !compact && "sm:grid-cols-3")}>
+        {figures.map(([figure, label, body]) => (
+          <div key={figure}>
+            <dt className={cn("font-display leading-none", compact ? "text-[32px]" : "text-[44px]")}>{figure}</dt>
+            <dd className="mt-2">
+              <span className="block text-[14.5px] font-semibold">{label}</span>
+              <span className="mt-0.5 block text-[13.5px] text-on-night/70">{body}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <ul className={cn("mt-7 grid gap-x-8 gap-y-2.5 border-t border-white/15 pt-6 text-[14px]", !compact && "sm:grid-cols-2")}>
+        {promises.map((p) => (
+          <li key={p} className="flex gap-2.5">
+            <Check className="mt-0.5 size-4 shrink-0 text-on-night/70" strokeWidth={2} aria-hidden />
+            <span className="text-on-night/90">{p}</span>
           </li>
         ))}
       </ul>
-      <p className="mt-4 text-[13px] text-muted">
-        {t("Alle Einzelheiten stehen in der ", "All details are in the ")}
-        <Link to="/datenschutz" className="link">
-          {t("Datenschutzerklärung", "privacy notice")}
+      <p className="mt-6 text-[13.5px]">
+        <Link to="/datenschutz" className="inline-flex items-center gap-1.5 underline decoration-white/40 underline-offset-4 hover:decoration-white">
+          {t("Alle Einzelheiten in der Datenschutzerklärung", "All details in the privacy notice")} <ArrowRight className="size-3.5" aria-hidden />
         </Link>
-        .
       </p>
-    </Card>
+    </aside>
   );
 }
 
-/** Report an own bought or sold car with its purchase contract, shown on the portfolio page (#melden). */
-export function UserCarsSection() {
-  const me = useMe();
+/** One of the two ways to premium, as a tile: what the document is, what must be readable in it, and the way in. */
+function KindTile({ kind, months, onStart }: { kind: Kind; months: number; onStart: () => void }) {
+  const appraisal = kind === "gutachten";
+  const Icon = appraisal ? Stamp : FileSignature;
+  const color = appraisal ? "var(--color-cobalt)" : "var(--color-gold)";
+  const needs = appraisal
+    ? [t("Wertgutachten als PDF oder Foto", "Appraisal as PDF or photo"), t("Fahrzeug, Fahrgestellnummer, Wert und Datum lesbar", "Car, chassis number, value and date readable"), t("Von Classic Data, TÜV, DEKRA, GTÜ oder einem Sachverständigen", "By Classic Data, TÜV, DEKRA, GTÜ or an independent expert")]
+    : [t("Kaufvertrag als PDF oder Foto", "Purchase contract as PDF or photo"), t("Fahrzeug, Fahrgestellnummer, Preis und Datum lesbar", "Car, chassis number, price and date readable"), t("Kauf oder Verkauf, privat, vom Händler oder aus einer Auktion", "Purchase or sale, private, dealer or auction")];
+  return (
+    <article className="stat-tile flex flex-col" style={{ ["--tile-color" as string]: color }}>
+      <div className="relative z-[1] flex items-center gap-2.5">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-full" style={{ color, background: `color-mix(in srgb, ${color} 13%, transparent)` }}>
+          <Icon className="size-[18px]" strokeWidth={1.6} aria-hidden />
+        </span>
+        <span className="eyebrow" style={{ color }}>
+          {appraisal ? t("Für Ihr Fahrzeug im Besitz", "For a car you own") : t("Gekauft oder verkauft", "Bought or sold")}
+        </span>
+      </div>
+      <h3 className="relative z-[1] mt-4 font-display text-[28px] leading-tight">{KIND_LABEL(kind)}</h3>
+      <p className="relative z-[1] mt-2 text-[14.5px] text-muted">
+        {appraisal
+          ? t("Ein Gutachten belegt Wert und Zustand Ihres Fahrzeugs. Wir prüfen es und stellen den Gutachtenwert unserem Marktwert gegenüber.", "An appraisal documents the value and condition of your car. We check it and set the appraised value against our market value.")
+          : t("Ihr Vertrag belegt einen echten Preis. Nach der Prüfung geht er anonym in unsere Marktwerte ein und macht sie für alle genauer.", "Your contract documents a real price. Once checked it enters our market values anonymously and makes them more accurate for everyone.")}
+      </p>
+      <ul className="relative z-[1] mt-4 space-y-1.5 text-[13.5px] text-muted">
+        {needs.map((n) => (
+          <li key={n} className="flex gap-2">
+            <Check className="mt-0.5 size-3.5 shrink-0" style={{ color }} strokeWidth={2.2} aria-hidden />
+            {n}
+          </li>
+        ))}
+      </ul>
+      <div className="relative z-[1] mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
+        <button className="btn btn-gold" onClick={onStart}>
+          {appraisal ? t("Gutachten einreichen", "Submit an appraisal") : t("Kaufvertrag einreichen", "Submit a contract")}
+        </button>
+        <span className="inline-flex items-center gap-1.5 text-[13.5px] text-ink">
+          <Crown className="size-4 text-gold" strokeWidth={1.6} aria-hidden />
+          {t(`${months} Monate Premium`, `${months} months of premium`)}
+        </span>
+      </div>
+    </article>
+  );
+}
+
+export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the portfolio to start the form from. */ prefill?: Holding; onPrefillClear?: () => void }) {
   const [cars, setCars] = useState<UserCar[] | null>(null);
   const [premiumUntil, setPremiumUntil] = useState<string | null>(null);
   const [months, setMonths] = useState(12);
   const [loadError, setLoadError] = useState(false);
-  const [formOpen, setFormOpen] = useState(false);
-  const [done, setDone] = useState(false);
-  const [partial, setPartial] = useState(false);
+  const [form, setForm] = useState<Kind | null>(null);
+  const [notice, setNotice] = useState<{ kind: Kind; partial: boolean } | null>(null);
+  const top = useRef<HTMLDivElement>(null);
 
   const load = () =>
     api<{ cars: UserCar[]; premiumUntil: string | null; premiumMonths: number }>("/api/fahrzeuge")
@@ -131,93 +242,110 @@ export function UserCarsSection() {
   }, []);
 
   const premium = premiumUntil && new Date(premiumUntil) > new Date();
+  const from = prefill && variantById.get(prefill.variantId);
+  const toTop = () => requestAnimationFrame(() => top.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  const start = (kind: Kind) => {
+    setForm(kind);
+    setNotice(null);
+    toTop();
+  };
+  const finish = (kind: Kind, partial: boolean) => {
+    setForm(null);
+    setNotice({ kind, partial });
+    onPrefillClear?.();
+    load();
+    toTop();
+  };
 
   return (
-    <Section title={t("Eigenes Fahrzeug melden", "Report my car")} sub={t("Mit Kaufvertrag, für Ihren kostenlosen Premium-Zugang", "With the purchase contract, for your free premium access")}>
-      <div id="melden" className="max-w-4xl scroll-mt-28 space-y-6">
-      <div>
-        <p className="max-w-2xl text-[15px] text-muted">
-          {t(
-            `Sie haben einen Porsche gekauft oder verkauft? Tragen Sie die Daten ein und laden Sie den Kaufvertrag hoch. Wir prüfen den Vertrag, und nach der Freigabe geht der Preis anonym in unsere Marktwerte ein. Als Dank erhalten Sie ${months} Monate Premium-Zugang kostenlos.`,
-            `Bought or sold a Porsche? Enter the details and upload the purchase contract. We check the contract, and once approved the price enters our market values anonymously. As a thank-you you get ${months} months of premium access free.`,
-          )}
-        </p>
-        {me && premium && (
-          <p className="mt-3">
-            <Pill tone="up">
-              {t("Premium bis", "Premium until")} {date(new Date(premiumUntil!).getTime())}
-            </Pill>
-          </p>
-        )}
-      </div>
-
-      <Card title={t("So läuft es ab", "How it works")}>
-        <ol className="grid gap-3 text-[14px] sm:grid-cols-3">
-          {[
-            [t("Daten eintragen", "Enter the details"), t("Fahrzeug, Fahrgestellnummer, Preis und Datum, genau wie im Vertrag.", "Car, chassis number, price and date, exactly as in the contract.")],
-            [t("Kaufvertrag hochladen", "Upload the contract"), t("PDF oder Foto, gern geschwärzt. Wir prüfen ihn und löschen ihn nach der Prüfung.", "PDF or photo, redacted if you like. We check it and delete it after the review.")],
-            [t("Freigabe", "Approval"), t(`Der Preis geht anonym in die Analyse ein, Sie erhalten ${months} Monate Premium.`, `The price enters the analysis anonymously, you get ${months} months of premium.`)],
-          ].map(([h, b], i) => (
-            <li key={h} className="border-l border-line pl-3">
-              <div className="font-serif text-[16px]">
-                {i + 1}. {h}
-              </div>
-              <div className="text-muted">{b}</div>
-            </li>
-          ))}
-        </ol>
-      </Card>
-
-      <ContractProtection />
-
-      {done && (
-        <div className="panel flex items-start gap-3 p-4 text-[14px]">
-          <FileCheck2 className="mt-0.5 size-5 shrink-0 text-up" strokeWidth={1.5} />
-          <div>
-            {t(
-              "Danke! Ihr Fahrzeug und der Kaufvertrag sind eingegangen. Wir prüfen sie und melden das Ergebnis hier.",
-              "Thank you! Your car and the contract have arrived. We will check them and show the result here.",
-            )}
+    <Section
+      tone="gold"
+      eyebrow="Premium"
+      title={t("Premium freischalten", "Unlock premium")}
+      sub={t(`Kaufvertrag oder Wertgutachten einreichen, ${months} Monate Premium erhalten`, `Submit a purchase contract or an appraisal, get ${months} months of premium`)}
+      actions={
+        premium ? (
+          <span className="inline-flex items-center gap-2 text-[14px]">
+            <Crown className="size-4 text-gold" strokeWidth={1.6} aria-hidden />
+            {t("Premium aktiv bis", "Premium active until")} <span className="font-serif text-[16px]">{date(new Date(premiumUntil!).getTime())}</span>
+          </span>
+        ) : undefined
+      }
+    >
+      <div id="melden" ref={top} className="scroll-mt-28 space-y-10">
+        {notice && (
+          <div className={cn("flex items-start gap-3 rounded-[3px] border p-4 text-[14.5px]", notice.partial ? "border-down/30 bg-down-soft" : "border-up/30 bg-up-soft")} role={notice.partial ? "alert" : "status"}>
+            <FileCheck2 className={cn("mt-0.5 size-5 shrink-0", notice.partial ? "text-down" : "text-up")} strokeWidth={1.5} aria-hidden />
+            <div>
+              {notice.partial
+                ? t(
+                    `Die Angaben sind gespeichert, aber ${doc(notice.kind).the} konnten wir nicht hochladen. Laden Sie das Dokument unten in der Liste erneut hoch.`,
+                    `The details are saved, but ${doc(notice.kind).the} could not be uploaded. Upload the document again from the list below.`,
+                  )
+                : t(
+                    `Danke! Ihre Angaben und ${doc(notice.kind).the} haben wir erhalten. Das Ergebnis der Prüfung sehen Sie unten; das Dokument löschen wir mit der Entscheidung, spätestens nach ${DOCUMENT_HOURS} Stunden.`,
+                    `Thank you! We have received your details and ${doc(notice.kind).the}. You will see the result of the review below; we delete the document with the decision, after ${DOCUMENT_HOURS} hours at the latest.`,
+                  )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {partial && (
-        <p className="panel p-4 text-[14px] text-down" role="alert">
-          {t(
-            "Die Daten sind gespeichert, aber der Kaufvertrag konnte nicht hochgeladen werden. Sie können ihn unten in der Liste erneut hochladen.",
-            "The details are saved, but the contract could not be uploaded. You can upload it again from the list below.",
+        {form ? (
+          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
+            <ReportForm key={form + (prefill?.id ?? "")} kind={form} from={prefill} months={months} onCancel={() => (setForm(null), onPrefillClear?.())} onDone={() => finish(form, false)} onPartial={() => finish(form, true)} />
+            <div className="lg:sticky lg:top-28">
+              <PrivacyBand compact />
+            </div>
+          </div>
+        ) : (
+          <>
+            {from && (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[3px] border border-accent/30 bg-accent-soft px-4 py-3 text-[14.5px]">
+                <span className="min-w-0 flex-1">
+                  {t("Für Ihr Portfolio-Fahrzeug", "For your portfolio car")} <span className="font-serif text-[16px]">{variantTitle(from)}</span>
+                  {t(": Womit möchten Sie es belegen? Die bekannten Angaben übernehmen wir.", ": which document do you have? We carry over what we know.")}
+                </span>
+                <button className="inline-flex items-center gap-1 text-[13px] text-muted hover:text-ink" onClick={onPrefillClear}>
+                  <X className="size-3.5" aria-hidden /> {t("Verwerfen", "Dismiss")}
+                </button>
+              </div>
+            )}
+            <div className="grid gap-6 md:grid-cols-2">
+              <KindTile kind="kaufvertrag" months={months} onStart={() => start("kaufvertrag")} />
+              <KindTile kind="gutachten" months={months} onStart={() => start("gutachten")} />
+            </div>
+            <ol className="grid gap-x-10 gap-y-5 sm:grid-cols-3">
+              {[
+                [t("Angaben eintragen", "Enter the details"), t("Fahrzeug, Fahrgestellnummer, Preis oder Wert und Datum, genau wie im Dokument.", "Car, chassis number, price or value and date, exactly as in the document.")],
+                [t("Dokument hochladen", "Upload the document"), t("PDF oder Foto, gern geschwärzt. Wir vergleichen es mit Ihren Angaben.", "PDF or photo, redacted if you like. We compare it with your details.")],
+                [t("Premium erhalten", "Get premium"), t(`Nach der Freigabe schalten wir ${months} Monate Premium frei. Jede weitere Freigabe verlängert.`, `Once approved we unlock ${months} months of premium. Every further approval extends it.`)],
+              ].map(([h, b], i) => (
+                <li key={h} className="flex gap-4">
+                  <span className="font-display text-[40px] leading-[0.9] text-accent" aria-hidden>
+                    {i + 1}
+                  </span>
+                  <div>
+                    <div className="font-serif text-[18px] leading-snug">{h}</div>
+                    <div className="mt-1 text-[14px] text-muted">{b}</div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <PrivacyBand />
+          </>
+        )}
+
+        <div>
+          <h3 className="flex items-baseline gap-2 border-b border-line pb-3 font-serif text-[21px]">
+            {t("Meine Einreichungen", "My submissions")}
+            {!!cars?.length && <span className="font-sans text-[13px] text-muted">{cars.length}</span>}
+          </h3>
+          {loadError && <p className="pt-4 text-[14px] text-down">{t("Einreichungen konnten nicht geladen werden.", "Submissions could not be loaded.")}</p>}
+          {cars && !cars.length && (
+            <p className="py-8 text-center font-serif text-[15px] text-muted italic">{t("Noch nichts eingereicht.", "Nothing submitted yet.")}</p>
           )}
-        </p>
-      )}
-
-      {formOpen ? (
-        <ReportForm
-          onCancel={() => setFormOpen(false)}
-          onDone={() => {
-            setFormOpen(false);
-            setDone(true);
-            load();
-          }}
-          onPartial={() => {
-            setFormOpen(false);
-            setPartial(true);
-            load();
-          }}
-        />
-      ) : (
-        <button className="btn btn-gold" onClick={() => (setFormOpen(true), setDone(false), setPartial(false))}>
-          {t("Fahrzeug melden", "Report a car")}
-        </button>
-      )}
-
-      <Card title={t("Meine Meldungen", "My reports")}>
-        {loadError && <p className="text-[14px] text-down">{t("Meldungen konnten nicht geladen werden.", "Reports could not be loaded.")}</p>}
-        {cars && !cars.length && <p className="text-[14px] text-muted">{t("Noch keine Meldungen.", "No reports yet.")}</p>}
-        <ul className="divide-y divide-line">
-          {cars?.map((c) => <CarRow key={c.id} car={c} onChange={load} />)}
-        </ul>
-      </Card>
+          <ul className="divide-y divide-line">{cars?.map((c) => <CarRow key={c.id} car={c} onChange={load} />)}</ul>
+        </div>
       </div>
     </Section>
   );
@@ -225,11 +353,15 @@ export function UserCarsSection() {
 
 function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
   const v = variantById.get(car.variant_id);
-  const value = v ? getMetrics(v.id).value : null;
+  const value = v?.measured ? getMetrics(v.id).value : null;
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
-  const open = car.status === "awaiting_contract" || car.status === "pending";
+  const appraisal = car.kind === "gutachten";
+  const d = doc(car.kind);
+  // an expired report lost its document after a day without a decision and takes a new one
+  const open = car.status === "awaiting_contract" || car.status === "pending" || car.status === "expired";
+  const deadline = car.status === "pending" && car.contract_at ? new Date(new Date(car.contract_at).getTime() + DOCUMENT_HOURS * 3_600_000) : null;
   const { confirm, dialog: confirmDialog } = useConfirm();
   const remove = async () => {
     setBusy(true);
@@ -243,50 +375,68 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
       setBusy(false);
     }
   };
+  const day = date(new Date(car.sale_date).getTime());
+  const facts = appraisal
+    ? [`${t("Gutachten vom", "Appraised")} ${day}`, `${num(Number(car.price))} ${car.currency} (${VALUE_BASIS_LABEL(car.value_basis)})`, car.appraiser, car.condition && `${t("Note", "grade")} ${car.condition}`]
+    : [`${car.role === "kauf" ? t("Gekauft", "Bought") : t("Verkauft", "Sold")} ${day}`, `${num(Number(car.price))} ${car.currency}`, COUNTERPARTY(car.counterparty)];
   return (
-    <li className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 py-3">
+    <li className="flex flex-wrap items-start gap-x-5 gap-y-3 py-5">
       {confirmDialog}
-      <div className="min-w-0">
-        <div className="font-serif text-[17px]">
+      {v && <CarImage variant={v} className="hidden aspect-[16/10] w-32 shrink-0 rounded-[2px] sm:block" label={variantTitle(v)} />}
+      <div className="min-w-0 flex-1 basis-64">
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+          <Pill tone={appraisal ? "cobalt" : "gold"}>{KIND_LABEL(car.kind)}</Pill>
+          <Pill tone={STATUS_TONE(car.status)}>{STATUS_LABEL(car.status, car.kind)}</Pill>
+        </div>
+        <div className="mt-1.5 font-serif text-[19px] leading-snug">
           {v ? (
-            <Link to={`/markt/${v.id}`} className="hover:underline">
+            <Link to={`/markt/${v.id}`} className="hover:underline hover:decoration-line-2 hover:underline-offset-4">
               {variantTitle(v)}
             </Link>
           ) : (
             car.title
           )}
         </div>
-        <div className="text-[13px] text-muted">
-          {car.role === "kauf" ? t("Gekauft", "Bought") : t("Verkauft", "Sold")} {date(new Date(car.sale_date).getTime())} ·{" "}
-          {num(Number(car.price))} {car.currency} · {car.build_year} · {num(car.km)} km · {COUNTERPARTY(car.counterparty)} · FIN {car.vin}
+        <div className="mt-0.5 text-[13.5px] text-muted">
+          {[...facts, car.build_year, `${num(car.km)} km`, `FIN ${car.vin}`].filter(Boolean).join(" · ")}
         </div>
         {car.status === "approved" && value != null && (
-          <div className="mt-1 text-[13px]">
-            {t("Marktwert dieser Variante heute", "Market value of this variant today")}: <span className="text-ink">{eur(value)}</span>
+          <div className="mt-1.5 text-[13.5px] text-muted">
+            {t("Marktwert dieser Variante heute", "Market value of this variant today")}: <span className="money text-ink">{eur(value)}</span>
           </div>
         )}
-        {car.review_note && <div className="mt-1 text-[13px] text-muted">{t("Hinweis der Prüfung", "Review note")}: {car.review_note}</div>}
+        {car.review_note && (
+          <div className="mt-1.5 text-[13.5px] text-muted">
+            {t("Hinweis der Prüfung", "Review note")}: {car.review_note}
+          </div>
+        )}
         {car.status === "expired" && (
-          <div className="mt-1 text-[13px] text-muted">
-            {t("Die Meldung wurde nicht rechtzeitig geprüft. Der Vertrag ist gelöscht; Sie können ihn erneut einreichen, indem Sie das Fahrzeug neu melden.", "The report was not reviewed in time. The contract is deleted; you can submit it again by reporting the car anew.")}
+          <div className="mt-1.5 max-w-xl text-[13.5px] text-muted">
+            {t(
+              `Wir bewahren kein Dokument länger als ${DOCUMENT_HOURS} Stunden auf. Die Prüfung war bis dahin nicht abgeschlossen, deshalb ist ${d.the} gelöscht. Ihre Angaben sind noch da: Laden Sie das Dokument einfach erneut hoch.`,
+              `We keep no document for longer than ${DOCUMENT_HOURS} hours. The review was not finished by then, so ${d.the} has been deleted. Your details are still here: simply upload the document again.`,
+            )}
           </div>
         )}
-        {car.contract_deleted_at && (
-          <div className="mt-1 text-[12px] text-faint">
-            {t("Kaufvertrag gelöscht am", "Contract deleted on")} {date(new Date(car.contract_deleted_at).getTime())}.
+        {deadline && (
+          <div className="mt-1.5 flex items-center gap-1.5 text-[12.5px] text-faint">
+            <Lock className="size-3.5 shrink-0" strokeWidth={1.6} aria-hidden />
+            {t("Verschlüsselt gespeichert. Wird gelöscht mit der Entscheidung, spätestens am", "Stored encrypted. Deleted with the decision, at the latest on")}{" "}
+            {deadline.toLocaleString(locale(), { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+            {car.ai_consent ? t(" · KI-Vorprüfung erlaubt", " · AI pre-check allowed") : t(" · ohne KI, Prüfung von Hand", " · no AI, checked by hand")}
           </div>
         )}
-        {car.status === "pending" && (
-          <div className="mt-1 text-[12px] text-faint">
-            {car.ai_consent ? t("KI-Vorprüfung erlaubt.", "AI pre-check allowed.") : t("Ohne KI: Prüfung von Hand.", "Without AI: checked by hand.")}
+        {car.contract_deleted_at && car.status !== "pending" && car.status !== "expired" && (
+          <div className="mt-1.5 flex items-center gap-1.5 text-[12.5px] text-faint">
+            <Trash2 className="size-3.5 shrink-0" strokeWidth={1.6} aria-hidden />
+            {d.The} {t("wurde gelöscht am", "was deleted on")} {date(new Date(car.contract_deleted_at).getTime())}.
           </div>
         )}
-        {err && <div className="mt-1 text-[13px] text-down">{err}</div>}
+        {err && <div className="mt-1.5 text-[13.5px] text-down" role="alert">{err}</div>}
       </div>
-      <div className="flex shrink-0 flex-col items-end gap-2">
-        <Pill tone={STATUS_TONE(car.status)}>{STATUS_LABEL(car.status)}</Pill>
+      <div className="flex shrink-0 flex-wrap items-center gap-2">
         {open && (
-          <div className="flex gap-2">
+          <>
             <input
               ref={fileRef}
               type="file"
@@ -301,51 +451,125 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
                   await uploadContract(car.id, f);
                   onChange();
                 } catch (x) {
-                  setErr(uploadError(x));
+                  setErr(uploadError(x, car.kind));
                 } finally {
                   setBusy(false);
                   e.target.value = ""; // the same file can be chosen again after an error
                 }
               }}
             />
-            <button className="btn text-[13px]" disabled={busy} onClick={() => fileRef.current?.click()}>
-              <Upload className="size-3.5" /> {car.status === "pending" ? t("Anderen Vertrag hochladen", "Upload another contract") : t("Vertrag hochladen", "Upload contract")}
+            <button className={cn("btn px-3 py-1.5 text-[13px]", car.status !== "pending" && "btn-gold")} disabled={busy} onClick={() => fileRef.current?.click()}>
+              <Upload className="size-3.5" aria-hidden />{" "}
+              {car.status === "pending" ? t("Anderes Dokument", "Another document") : car.status === "expired" ? t("Erneut hochladen", "Upload again") : t("Dokument hochladen", "Upload document")}
             </button>
-            <button
-              className="btn text-[13px]"
-              disabled={busy}
-              onClick={async () => {
-                if (!(await confirm(t("Meldung zurückziehen? Die Angaben und der Vertrag werden gelöscht.", "Withdraw this report? The details and the contract will be deleted."), { confirmLabel: t("Zurückziehen", "Withdraw") }))) return;
-                await remove();
-              }}
-            >
-              {t("Zurückziehen", "Withdraw")}
-            </button>
-          </div>
+          </>
         )}
-        {!open && (
-          <button
-            className="btn text-[13px]"
-            disabled={busy}
-            onClick={async () => {
-              const text =
-                car.status === "approved"
-                  ? t("Meldung aus Ihrem Konto entfernen? Fahrgestellnummer, Notizen und die Verbindung zu Ihrem Konto werden gelöscht. Preis, Datum und Fahrzeugdaten bleiben anonym in der Marktanalyse. Der für diese Meldung gewährte Premium-Zugang entfällt.", "Remove this report from your account? The chassis number, notes and the link to your account are deleted. Price, date and car details stay in the market analysis, anonymously. The premium access granted for this report ends.")
-                  : t("Meldung löschen? Alle Angaben dazu werden gelöscht.", "Delete this report? All its details will be deleted.");
-              if (!(await confirm(text, { confirmLabel: car.status === "approved" ? t("Entfernen", "Remove") : t("Löschen", "Delete") }))) return;
-              await remove();
-            }}
-          >
-            <Trash2 className="size-3.5" /> {car.status === "approved" ? t("Aus Konto entfernen", "Remove from account") : t("Löschen", "Delete")}
-          </button>
-        )}
+        <button
+          className="btn px-3 py-1.5 text-[13px]"
+          disabled={busy}
+          onClick={async () => {
+            const [text, label] =
+              car.status === "approved"
+                ? [
+                    t(
+                      "Einreichung aus Ihrem Konto entfernen? Fahrgestellnummer, Notizen und die Verbindung zu Ihrem Konto werden gelöscht. Preis oder Wert, Datum und Fahrzeugdaten bleiben anonym in der Marktanalyse. Der dafür gewährte Premium-Zugang entfällt.",
+                      "Remove this submission from your account? The chassis number, notes and the link to your account are deleted. Price or value, date and car details stay in the market analysis, anonymously. The premium access granted for it ends.",
+                    ),
+                    t("Entfernen", "Remove"),
+                  ]
+                : open
+                  ? [t("Einreichung zurückziehen? Die Angaben und das Dokument werden gelöscht.", "Withdraw this submission? The details and the document will be deleted."), t("Zurückziehen", "Withdraw")]
+                  : [t("Einreichung löschen? Alle Angaben dazu werden gelöscht.", "Delete this submission? All its details will be deleted."), t("Löschen", "Delete")];
+            if (await confirm(text, { confirmLabel: label })) await remove();
+          }}
+        >
+          <Trash2 className="size-3.5" aria-hidden /> {car.status === "approved" ? t("Aus Konto entfernen", "Remove from account") : open ? t("Zurückziehen", "Withdraw") : t("Löschen", "Delete")}
+        </button>
       </div>
     </li>
   );
 }
 
-function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onDone: () => void; onPartial: () => void }) {
-  const [d, setD] = useState<Draft>(emptyDraft);
+/** The document: drop it here or pick it. Shows the chosen file and, right at the upload, what happens to it. */
+function Dropzone({ kind, file, onFile, error }: { kind: Kind; file: File | null; onFile: (f: File | null) => void; error?: string }) {
+  const input = useRef<HTMLInputElement>(null);
+  const [over, setOver] = useState(false);
+  const size = file ? (file.size > 1_048_576 ? `${num(file.size / 1_048_576, 1)} MB` : `${Math.max(1, Math.round(file.size / 1024))} KB`) : "";
+  return (
+    <div>
+      <input ref={input} type="file" accept={ACCEPT} className="hidden" onChange={(e) => (onFile(e.target.files?.[0] ?? null), (e.target.value = ""))} />
+      {file ? (
+        <div className={cn("flex items-center gap-3 rounded-[3px] border bg-panel-2 px-4 py-3", error ? "border-down" : "border-line-2")}>
+          <FileText className="size-6 shrink-0 text-accent" strokeWidth={1.4} aria-hidden />
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-[14.5px] text-ink">{file.name}</div>
+            <div className="text-[12.5px] text-muted">
+              {size}
+              {file.size > MAX_BYTES && file.type.startsWith("image/") && t(" · wird vor dem Hochladen verkleinert", " · scaled down before the upload")}
+            </div>
+          </div>
+          <button type="button" className="btn px-3 py-1.5 text-[13px]" onClick={() => input.current?.click()}>
+            {t("Ersetzen", "Replace")}
+          </button>
+          <button type="button" className="btn btn-ghost p-1.5" aria-label={t("Datei entfernen", "Remove file")} onClick={() => onFile(null)}>
+            <X className="size-4" />
+          </button>
+        </div>
+      ) : (
+        <button
+          type="button"
+          className={cn(
+            "flex w-full flex-col items-center gap-2 rounded-[3px] border border-dashed px-4 py-8 text-center transition-colors",
+            over ? "border-accent bg-accent-soft" : error ? "border-down bg-panel" : "border-line-2 bg-panel hover:border-ink",
+          )}
+          onClick={() => input.current?.click()}
+          onDragOver={(e) => (e.preventDefault(), setOver(true))}
+          onDragLeave={() => setOver(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setOver(false);
+            onFile(e.dataTransfer.files?.[0] ?? null);
+          }}
+        >
+          <Upload className="size-6 text-accent" strokeWidth={1.4} aria-hidden />
+          <span className="font-serif text-[17px] text-ink">
+            {kind === "gutachten" ? t("Wertgutachten hierher ziehen oder auswählen", "Drop the appraisal here or choose it") : t("Kaufvertrag hierher ziehen oder auswählen", "Drop the contract here or choose it")}
+          </span>
+          <span className="text-[13px] text-muted">{t("PDF oder Foto (JPEG, PNG, WebP), höchstens 4 MB", "PDF or photo (JPEG, PNG, WebP), at most 4 MB")}</span>
+        </button>
+      )}
+      <p className="mt-2 flex items-start gap-2 text-[13px] text-muted">
+        <Lock className="mt-0.5 size-3.5 shrink-0 text-accent" strokeWidth={1.8} aria-hidden />
+        <span>
+          <strong className="font-semibold text-ink">{t(`Verschlüsselt gespeichert, nach spätestens ${DOCUMENT_HOURS} Stunden gelöscht.`, `Stored encrypted, deleted after ${DOCUMENT_HOURS} hours at the latest.`)}</strong>{" "}
+          {kind === "gutachten"
+            ? t("Namen, Anschriften, Kennzeichen und Unterschriften dürfen Sie schwärzen; Fahrzeug, Fahrgestellnummer, Wert, Datum und Gutachter müssen lesbar sein.", "You may black out names, addresses, number plates and signatures; the car, chassis number, value, date and appraiser must stay readable.")
+            : t("Namen, Anschriften, Unterschriften und Bankdaten dürfen Sie schwärzen; Fahrzeug, Fahrgestellnummer, Preis und Datum müssen lesbar sein.", "You may black out names, addresses, signatures and bank details; the car, chassis number, price and date must stay readable.")}
+        </span>
+      </p>
+      {error && <p className="mt-1 text-xs text-down">{error}</p>}
+    </div>
+  );
+}
+
+/** A numbered part of the form with its own heading. */
+function Step({ n, title, sub, children }: { n: number; title: string; sub?: string; children: ReactNode }) {
+  return (
+    <fieldset className="border-t border-line px-5 py-6 first:border-t-0 sm:px-7">
+      <legend className="sr-only">{title}</legend>
+      <div className="mb-4 flex items-baseline gap-3" aria-hidden>
+        <span className="font-display text-[26px] leading-none text-accent">{n}</span>
+        <span className="font-serif text-[19px]">{title}</span>
+        {sub && <span className="text-[13px] text-muted">{sub}</span>}
+      </div>
+      {children}
+    </fieldset>
+  );
+}
+
+function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind: Kind; from?: Holding; months: number; onCancel: () => void; onDone: () => void; onPartial: () => void }) {
+  const appraisal = kind === "gutachten";
+  const [d, setD] = useState<Draft>(() => startDraft(kind, from));
   const [file, setFile] = useState<File | null>(null);
   const [consent, setConsent] = useState(false);
   const [aiConsent, setAiConsent] = useState(false);
@@ -354,28 +578,24 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
   const [msg, setMsg] = useState("");
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setD((x) => ({ ...x, [k]: v }));
 
-  const brandModels = useMemo(() => models.filter((m) => m.brandId === d.brandId), [d.brandId]);
-  const modelVariants = useMemo(() => {
-    const m = models.find((x) => x.id === d.modelId);
-    return (m?.generationIds ?? []).flatMap((gid) => generationById.get(gid)!.variantIds.map((id) => variantById.get(id)!));
-  }, [d.modelId]);
-
   async function submit() {
     const e: Record<string, string> = {};
     const price = parseNum(d.price);
     const km = d.km.trim() === "" ? NaN : parseNum(d.km);
-    if (!variantById.has(d.variant_id)) e.variant_id = FIELD_ERR.variant_id();
-    if (!/^\d{4}$/.test(d.build_year)) e.build_year = FIELD_ERR.build_year();
-    if (d.vin.replace(/\s/g, "").length < 5) e.vin = FIELD_ERR.vin();
-    if (!Number.isFinite(km) || km < 0) e.km = FIELD_ERR.km();
-    if (!Number.isFinite(price) || price < 500) e.price = FIELD_ERR.price();
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(d.sale_date) || d.sale_date > today()) e.sale_date = FIELD_ERR.sale_date();
-    if (d.condition && !/^[1-5][+-]?$/.test(d.condition)) e.condition = FIELD_ERR.condition();
-    // checked before the report is saved: a file the server would turn down (HEIC, Word …) must not leave a report without a contract behind
-    if (!file || !ACCEPT.split(",").includes(file.type) || (file.size > MAX_BYTES && !file.type.startsWith("image/"))) e.file = FIELD_ERR.file();
-    if (!consent) e.consent = FIELD_ERR.consent();
+    const bad = (k: string) => (e[k] = FIELD_ERR[k](kind));
+    if (!variantById.has(d.variant_id)) bad("variant_id");
+    if (!/^\d{4}$/.test(d.build_year)) bad("build_year");
+    if (d.vin.replace(/\s/g, "").length < 5) bad("vin");
+    if (!Number.isFinite(km) || km < 0) bad("km");
+    if (!Number.isFinite(price) || price < 500) bad("price");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d.sale_date) || d.sale_date > today()) bad("sale_date");
+    if (appraisal && d.appraiser.trim().length < 2) bad("appraiser");
+    if (d.condition && !/^[1-5][+-]?$/.test(d.condition)) bad("condition");
+    // checked before the report is saved: a file the server would turn down (HEIC, Word …) must not leave a report without a document behind
+    if (!file || !ACCEPT.split(",").includes(file.type) || (file.size > MAX_BYTES && !file.type.startsWith("image/"))) bad("file");
+    if (!consent) bad("consent");
     setErrors(e);
-    if (Object.keys(e).length) return;
+    if (Object.keys(e).length) return setMsg(t("Bitte die markierten Felder prüfen.", "Please check the marked fields."));
     setBusy(true);
     setMsg("");
     const tri = (s: string) => (s === "ja" ? true : s === "nein" ? false : null);
@@ -385,27 +605,27 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...d, brandId: undefined, modelId: undefined, build_year: Number(d.build_year), km: Math.round(km), price,
+          ...d, kind, build_year: Number(d.build_year), km: Math.round(km), price, appraiser: d.appraiser.trim(),
           matching_numbers: tri(d.matching_numbers), accident_free: tri(d.accident_free), consent, ai_consent: aiConsent,
         }),
       }));
     } catch (err) {
       const fields = (err as { body?: { fields?: Record<string, string> } }).body?.fields ?? {};
-      setErrors(Object.fromEntries(Object.keys(fields).map((k) => [k, (FIELD_ERR[k] ?? FIELD_ERR.counterparty)()])));
+      setErrors(Object.fromEntries(Object.keys(fields).map((k) => [k, (FIELD_ERR[k] ?? FIELD_ERR.counterparty)(kind)])));
       const { status, message } = err as { status?: number; message?: string };
       setMsg(
         status === 429
-          ? t("Heute wurden schon viele Fahrzeuge gemeldet. Bitte morgen weiter.", "Many cars reported today already. Please continue tomorrow.")
+          ? t("Heute wurde schon viel eingereicht. Bitte morgen weiter.", "A lot was submitted today already. Please continue tomorrow.")
           : message === "demo"
-            ? uploadError(err)
+            ? uploadError(err, kind)
             : Object.keys(fields).length
               ? t("Bitte die markierten Felder prüfen.", "Please check the marked fields.")
-              : t("Die Meldung konnte nicht gespeichert werden. Bitte später noch einmal versuchen.", "The report could not be saved. Please try again later."),
+              : t("Die Einreichung konnte nicht gespeichert werden. Bitte später noch einmal versuchen.", "The submission could not be saved. Please try again later."),
       );
       setBusy(false);
       return;
     }
-    setMsg(t("Kaufvertrag wird hochgeladen …", "Uploading the contract …"));
+    setMsg(t("Dokument wird verschlüsselt hochgeladen …", "Uploading the document, encrypted …"));
     try {
       await uploadContract(id, file!);
       onDone();
@@ -416,6 +636,7 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
   }
 
   const err = (k: string) => errors[k] && <p className="mt-1 text-xs text-down">{errors[k]}</p>;
+  const field = (k: string) => cn("input", errors[k] && "border-down");
   const yn = (k: "matching_numbers" | "accident_free", label: string) => (
     <div>
       <label className="label">{label}</label>
@@ -426,210 +647,238 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
       </select>
     </div>
   );
+  const condition = (
+    <div>
+      <label className="label">{appraisal ? t("Zustandsnote laut Gutachten", "Condition grade in the appraisal") : t("Zustandsnote (1–5)", "Condition grade (1–5)")}</label>
+      <input className={field("condition")} maxLength={2} placeholder={t("z. B. 2+", "e.g. 2+")} value={d.condition} onChange={(e) => set("condition", e.target.value)} />
+      {err("condition")}
+    </div>
+  );
 
   return (
-    <Card title={t("Fahrzeug melden", "Report a car")}>
-      <form
-        className="grid grid-cols-1 gap-3 sm:grid-cols-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          submit();
-        }}
-      >
-        <div className="sm:col-span-2">
-          <label className="label">{t("Was haben Sie gemacht?", "What did you do?")}</label>
-          <div className="flex gap-2">
-            {(["kauf", "verkauf"] as const).map((r) => (
-              <button type="button" key={r} className={cn("chip", d.role === r && "chip-active")} onClick={() => set("role", r)}>
-                {r === "kauf" ? t("Ich habe das Auto gekauft", "I bought the car") : t("Ich habe das Auto verkauft", "I sold the car")}
-              </button>
-            ))}
+    <form
+      className="panel min-w-0"
+      noValidate
+      onSubmit={(e) => {
+        e.preventDefault();
+        submit();
+      }}
+    >
+      <header className="flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-5 sm:px-7">
+        <div>
+          <div className="eyebrow" style={{ color: appraisal ? "var(--color-cobalt)" : "var(--color-gold)" }}>
+            {t(`${months} Monate Premium nach der Freigabe`, `${months} months of premium once approved`)}
           </div>
+          <h3 className="mt-1 font-display text-[28px] leading-tight">{appraisal ? t("Wertgutachten einreichen", "Submit an appraisal") : t("Kaufvertrag einreichen", "Submit a purchase contract")}</h3>
         </div>
-        <div>
-          <label className="label">{t("Marke", "Brand")}</label>
-          <select
-            className="input"
-            value={d.brandId}
-            onChange={(e) => {
-              const m = models.find((x) => x.brandId === e.target.value)!;
-              setD((x) => ({ ...x, brandId: e.target.value, modelId: m.id, variant_id: generationById.get(m.generationIds[0])!.variantIds[0] }));
-            }}
-          >
-            {brands.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))}
-          </select>
+        <button type="button" className="btn btn-ghost px-3 py-1.5 text-[13px]" disabled={busy} onClick={onCancel}>
+          <X className="size-4" aria-hidden /> {t("Abbrechen", "Cancel")}
+        </button>
+      </header>
+
+      <Step n={1} title={t("Fahrzeug", "Car")}>
+        <VariantPicker value={d.variant_id} onChange={(id) => (set("variant_id", id), setErrors((x) => ({ ...x, variant_id: "" })))} error={errors.variant_id || undefined} />
+        {!appraisal && (
+          <div className="mt-4">
+            <span className="label">{t("Was haben Sie gemacht?", "What did you do?")}</span>
+            <div className="flex flex-wrap gap-2">
+              {(["kauf", "verkauf"] as const).map((r) => (
+                <button type="button" key={r} className={cn("chip px-3 py-1.5 text-[14px]", d.role === r && "chip-active")} aria-pressed={d.role === r} onClick={() => set("role", r)}>
+                  {r === "kauf" ? t("Ich habe das Auto gekauft", "I bought the car") : t("Ich habe das Auto verkauft", "I sold the car")}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </Step>
+
+      <Step n={2} title={appraisal ? t("Angaben laut Gutachten", "Details as in the appraisal") : t("Angaben laut Vertrag", "Details as in the contract")} sub={t("genau wie im Dokument", "exactly as in the document")}>
+        <div className="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
+          <div>
+            <label className="label">{appraisal ? t("Wert laut Gutachten", "Value as in the appraisal") : t("Kaufpreis laut Vertrag", "Price as in the contract")}</label>
+            <div className="flex gap-2">
+              <input className={field("price")} inputMode="decimal" value={d.price} onChange={(e) => set("price", e.target.value)} />
+              <select className="input w-24 shrink-0" aria-label={t("Währung", "Currency")} value={d.currency} onChange={(e) => set("currency", e.target.value)}>
+                {CURRENCIES.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            {err("price")}
+          </div>
+          <div>
+            <label className="label">{appraisal ? t("Datum des Gutachtens", "Appraisal date") : t("Datum des Kaufvertrags", "Contract date")}</label>
+            <input className={field("sale_date")} type="date" max={today()} value={d.sale_date} onChange={(e) => set("sale_date", e.target.value)} />
+            {err("sale_date")}
+          </div>
+          {appraisal && (
+            <>
+              <div>
+                <label className="label">{t("Art des Werts", "Kind of value")}</label>
+                <select className="input" value={d.value_basis} onChange={(e) => set("value_basis", e.target.value as Draft["value_basis"])}>
+                  {(["marktwert", "wiederbeschaffungswert", "wiederherstellungswert"] as const).map((b) => (
+                    <option key={b} value={b}>
+                      {VALUE_BASIS_LABEL(b)}
+                    </option>
+                  ))}
+                </select>
+                {err("value_basis")}
+              </div>
+              <div>
+                <label className="label">{t("Organisation des Gutachters", "Appraiser's organisation")}</label>
+                <input className={field("appraiser")} list="mip-appraisers" maxLength={80} placeholder={t("z. B. Classic Data", "e.g. Classic Data")} value={d.appraiser} onChange={(e) => set("appraiser", e.target.value)} />
+                <datalist id="mip-appraisers">
+                  {APPRAISERS.map((a) => (
+                    <option key={a} value={a} />
+                  ))}
+                  <option value={t("Freier Sachverständiger", "Independent expert")} />
+                </datalist>
+                <p className="mt-1 text-xs text-muted">{t("Kein Personenname nötig: bei freien Gutachtern genügt „Freier Sachverständiger“.", "No personal name needed: for independent appraisers “Independent expert” is enough.")}</p>
+                {err("appraiser")}
+              </div>
+              {condition}
+            </>
+          )}
+          <div>
+            <label className="label">{t("Fahrgestellnummer (FIN)", "Chassis number (VIN)")}</label>
+            <input className={cn(field("vin"), "uppercase")} value={d.vin} maxLength={30} autoCapitalize="characters" spellCheck={false} onChange={(e) => set("vin", e.target.value)} />
+            {err("vin")}
+          </div>
+          <div>
+            <label className="label">{t("Baujahr", "Build year")}</label>
+            <input className={field("build_year")} inputMode="numeric" maxLength={4} value={d.build_year} onChange={(e) => set("build_year", e.target.value)} />
+            {err("build_year")}
+          </div>
+          <div>
+            <label className="label">{appraisal ? t("Kilometerstand laut Gutachten", "Mileage in the appraisal (km)") : t("Kilometerstand", "Mileage (km)")}</label>
+            <input className={field("km")} inputMode="numeric" value={d.km} onChange={(e) => set("km", e.target.value)} />
+            {err("km")}
+          </div>
+          <div>
+            <label className="label">{appraisal ? t("Land des Gutachtens", "Country of the appraisal") : t("Land des Verkaufs", "Country of sale")}</label>
+            <select className="input" value={d.country} onChange={(e) => set("country", e.target.value)}>
+              {COUNTRIES.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          {!appraisal && (
+            <div>
+              <label className="label">{d.role === "kauf" ? t("Gekauft von", "Bought from") : t("Verkauft an", "Sold to")}</label>
+              <select className="input" value={d.counterparty} onChange={(e) => set("counterparty", e.target.value as Draft["counterparty"])}>
+                <option value="privat">{t("Privatperson", "Private person")}</option>
+                <option value="haendler">{t("Händler", "Dealer")}</option>
+                <option value="auktion">{t("Auktion", "Auction")}</option>
+              </select>
+            </div>
+          )}
         </div>
-        <div>
-          <label className="label">{t("Modell", "Model")}</label>
-          <select
-            className="input"
-            value={d.modelId}
-            onChange={(e) => {
-              const m = models.find((x) => x.id === e.target.value)!;
-              setD((x) => ({ ...x, modelId: m.id, variant_id: generationById.get(m.generationIds[0])!.variantIds[0] }));
-            }}
-          >
-            {brandModels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {modelName(m)}
-              </option>
-            ))}
-          </select>
+
+        <details className="group mt-5 rounded-[3px] border border-line bg-panel-2/60" open={Boolean(errors.condition && !appraisal) || undefined}>
+          <summary className="cursor-pointer list-none px-4 py-2.5 text-[14px] text-ink marker:hidden">
+            <span className="mr-2 inline-block text-accent transition-transform group-open:rotate-90" aria-hidden>
+              ›
+            </span>
+            {t("Weitere Angaben zum Fahrzeug", "More about the car")} <span className="text-muted">{t("(optional, machen den Beleg wertvoller)", "(optional, make the record more useful)")}</span>
+          </summary>
+          <div className="grid grid-cols-1 gap-x-4 gap-y-3 border-t border-line px-4 py-4 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className="label">{t("Bezeichnung im Dokument", "Name in the document")}</label>
+              <input className="input" value={d.title} maxLength={120} onChange={(e) => set("title", e.target.value)} placeholder={t("z. B. 911 Carrera 3.2 Coupé G50", "e.g. 911 Carrera 3.2 Coupé G50")} />
+            </div>
+            <div>
+              <label className="label">{t("Karosserie", "Body")}</label>
+              <select className="input" value={d.body} onChange={(e) => set("body", e.target.value)}>
+                <option value="">{t("Keine Angabe", "Not stated")}</option>
+                {["Coupé", "Targa", "Cabriolet", "Speedster", "Roadster"].map((b) => (
+                  <option key={b}>{b}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="label">{t("Getriebe", "Gearbox")}</label>
+              <select className="input" value={d.gearbox} onChange={(e) => set("gearbox", e.target.value)}>
+                <option value="">{t("Keine Angabe", "Not stated")}</option>
+                <option value="Manuell">{t("Schaltgetriebe", "Manual")}</option>
+                <option value="Automatik">{t("Automatik / PDK / Tiptronic", "Automatic / PDK / Tiptronic")}</option>
+              </select>
+            </div>
+            <div>
+              <label className="label">{t("Lenkung", "Steering")}</label>
+              <select className="input" value={d.steering} onChange={(e) => set("steering", e.target.value)}>
+                <option value="links">{t("Linkslenker", "Left-hand drive")}</option>
+                <option value="rechts">{t("Rechtslenker", "Right-hand drive")}</option>
+              </select>
+            </div>
+            {!appraisal && condition}
+            <div>
+              <label className="label">{t("Außenfarbe", "Exterior colour")}</label>
+              <input className="input" maxLength={60} value={d.color_ext} onChange={(e) => set("color_ext", e.target.value)} />
+            </div>
+            <div>
+              <label className="label">{t("Innenausstattung", "Interior")}</label>
+              <input className="input" maxLength={60} value={d.color_int} onChange={(e) => set("color_int", e.target.value)} />
+            </div>
+            {yn("matching_numbers", "Matching Numbers")}
+            {yn("accident_free", t("Unfallfrei", "Accident-free"))}
+            <div className="sm:col-span-2">
+              <label className="label">{t("Anmerkungen", "Notes")}</label>
+              <textarea className="input min-h-16" maxLength={2000} value={d.notes} onChange={(e) => set("notes", e.target.value)} placeholder={t("Historie, Restaurierung, Besonderheiten …", "History, restoration, special features …")} />
+            </div>
+          </div>
+        </details>
+      </Step>
+
+      <Step n={3} title={appraisal ? t("Wertgutachten", "Appraisal") : t("Kaufvertrag", "Purchase contract")}>
+        <Dropzone kind={kind} file={file} onFile={(f) => (setFile(f), setErrors((x) => ({ ...x, file: "" })))} error={errors.file || undefined} />
+      </Step>
+
+      <Step n={4} title={t("Einwilligung", "Consent")}>
+        <div className="space-y-3">
+          <label className={cn("flex items-start gap-3 rounded-[3px] border bg-panel-2/60 p-4 text-[13.5px] leading-relaxed", errors.consent ? "border-down" : "border-line")}>
+            <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" checked={consent} onChange={(e) => (setConsent(e.target.checked), setErrors((x) => ({ ...x, consent: "" })))} />
+            <span>
+              {appraisal
+                ? t(
+                    "Ich bestätige, dass die Angaben stimmen und das Gutachten mein Fahrzeug betrifft. Ich willige ein, dass Carbay meine Angaben und das Wertgutachten speichert, ein Prüfer von Carbay das Gutachten mit den Angaben vergleicht, das Gutachten mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen, gelöscht wird und Wert, Datum, Zustandsnote und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer als Vergleichswert in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Einreichung hier lösche; nach der Freigabe bleiben Wert, Datum und Fahrzeugdaten anonym in der Marktanalyse.",
+                    "I confirm that the details are correct and that the appraisal concerns my car. I consent to Carbay storing my details and the appraisal, a Carbay reviewer comparing the appraisal with the details, the appraisal being deleted with the decision, 24 hours after the upload at the latest, and value, date, condition grade and car details entering the market analysis as a reference value, without my name and without the chassis number. I can withdraw this consent at any time by deleting the submission here; after approval, value, date and car details stay in the market analysis, anonymously.",
+                  )
+                : t(
+                    "Ich bestätige, dass die Angaben stimmen und ich an diesem Kauf oder Verkauf beteiligt war. Ich willige ein, dass Carbay meine Angaben und den Kaufvertrag speichert, ein Prüfer von Carbay den Vertrag mit den Angaben vergleicht, der Vertrag mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen, gelöscht wird und Preis, Datum und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Einreichung hier lösche; nach der Freigabe bleiben Preis, Datum und Fahrzeugdaten anonym in der Marktanalyse.",
+                    "I confirm that the details are correct and that I was party to this purchase or sale. I consent to Carbay storing my details and the purchase contract, a Carbay reviewer comparing the contract with the details, the contract being deleted with the decision, 24 hours after the upload at the latest, and price, date and car details entering the market analysis without my name and without the chassis number. I can withdraw this consent at any time by deleting the submission here; after approval, price, date and car details stay in the market analysis, anonymously.",
+                  )}{" "}
+              <Link to="/datenschutz" className="link">
+                {t("Datenschutzerklärung", "Privacy notice")}
+              </Link>
+            </span>
+          </label>
+          {err("consent")}
+          <label className="flex items-start gap-3 rounded-[3px] border border-line p-4 text-[13.5px] leading-relaxed">
+            <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" checked={aiConsent} onChange={(e) => setAiConsent(e.target.checked)} />
+            <span>
+              <span className="text-ink">{t("Optional: schnellere Prüfung mit KI.", "Optional: faster review with AI.")}</span>{" "}
+              {t(
+                `Ich willige ein, dass ${appraisal ? "das Gutachten" : "der Vertrag"} zur Vorprüfung an den KI-Dienst von Anthropic (USA) übermittelt wird. Anthropic verwendet das Dokument nicht zum Training seiner Modelle. Für die dorthin übermittelte Kopie gelten die Aufbewahrungsfristen von Anthropic. Ohne dieses Häkchen verlässt das Dokument unseren Server nicht und ein Mensch prüft von Hand; das kann länger dauern.`,
+                `I consent to the ${doc(kind).short} being sent to Anthropic's AI service (USA) for a pre-check. Anthropic does not use the document to train its models. The copy sent there is subject to Anthropic's retention periods. Without this tick the document does not leave our server and a person checks by hand, which can take longer.`,
+              )}
+            </span>
+          </label>
         </div>
-        <div className="sm:col-span-2">
-          <label className="label">{t("Variante", "Variant")}</label>
-          <select className="input" value={d.variant_id} onChange={(e) => set("variant_id", e.target.value)}>
-            {modelVariants.map((v) => (
-              <option key={v.id} value={v.id}>
-                {variantTitle(v, { brand: false })} ({yearsLabel(v.years)})
-              </option>
-            ))}
-          </select>
-          {err("variant_id")}
-        </div>
-        <div className="sm:col-span-2">
-          <label className="label">{t("Bezeichnung im Vertrag (optional)", "Name in the contract (optional)")}</label>
-          <input className="input" value={d.title} maxLength={120} onChange={(e) => set("title", e.target.value)} placeholder={t("z. B. 911 Carrera 3.2 Coupé G50", "e.g. 911 Carrera 3.2 Coupé G50")} />
-        </div>
-        <div>
-          <label className="label">{t("Baujahr", "Build year")}</label>
-          <input className="input" inputMode="numeric" maxLength={4} value={d.build_year} onChange={(e) => set("build_year", e.target.value)} />
-          {err("build_year")}
-        </div>
-        <div>
-          <label className="label">{t("Fahrgestellnummer (FIN)", "Chassis number (VIN)")}</label>
-          <input className="input uppercase" value={d.vin} maxLength={30} autoCapitalize="characters" spellCheck={false} onChange={(e) => set("vin", e.target.value)} />
-          {err("vin")}
-        </div>
-        <div>
-          <label className="label">{t("Kilometerstand", "Mileage (km)")}</label>
-          <input className="input" inputMode="numeric" value={d.km} onChange={(e) => set("km", e.target.value)} />
-          {err("km")}
-        </div>
-        <div>
-          <label className="label">{t("Datum des Kaufvertrags", "Contract date")}</label>
-          <input className="input" type="date" max={today()} value={d.sale_date} onChange={(e) => set("sale_date", e.target.value)} />
-          {err("sale_date")}
-        </div>
-        <div>
-          <label className="label">{t("Kaufpreis laut Vertrag", "Price as in the contract")}</label>
-          <input className="input" inputMode="decimal" value={d.price} onChange={(e) => set("price", e.target.value)} />
-          {err("price")}
-        </div>
-        <div>
-          <label className="label">{t("Währung", "Currency")}</label>
-          <select className="input" value={d.currency} onChange={(e) => set("currency", e.target.value)}>
-            {CURRENCIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="label">{t("Land des Verkaufs", "Country of sale")}</label>
-          <select className="input" value={d.country} onChange={(e) => set("country", e.target.value)}>
-            {COUNTRIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="label">{d.role === "kauf" ? t("Gekauft von", "Bought from") : t("Verkauft an", "Sold to")}</label>
-          <select className="input" value={d.counterparty} onChange={(e) => set("counterparty", e.target.value as Draft["counterparty"])}>
-            <option value="privat">{t("Privatperson", "Private person")}</option>
-            <option value="haendler">{t("Händler", "Dealer")}</option>
-            <option value="auktion">{t("Auktion", "Auction")}</option>
-          </select>
-        </div>
-        <div>
-          <label className="label">{t("Karosserie", "Body")}</label>
-          <select className="input" value={d.body} onChange={(e) => set("body", e.target.value)}>
-            <option value="">{t("Keine Angabe", "Not stated")}</option>
-            {["Coupé", "Targa", "Cabriolet", "Speedster", "Roadster"].map((b) => (
-              <option key={b}>{b}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="label">{t("Getriebe", "Gearbox")}</label>
-          <select className="input" value={d.gearbox} onChange={(e) => set("gearbox", e.target.value)}>
-            <option value="">{t("Keine Angabe", "Not stated")}</option>
-            <option value="Manuell">{t("Schaltgetriebe", "Manual")}</option>
-            <option value="Automatik">{t("Automatik / PDK / Tiptronic", "Automatic / PDK / Tiptronic")}</option>
-          </select>
-        </div>
-        <div>
-          <label className="label">{t("Lenkung", "Steering")}</label>
-          <select className="input" value={d.steering} onChange={(e) => set("steering", e.target.value)}>
-            <option value="links">{t("Linkslenker", "Left-hand drive")}</option>
-            <option value="rechts">{t("Rechtslenker", "Right-hand drive")}</option>
-          </select>
-        </div>
-        <div>
-          <label className="label">{t("Zustandsnote (1–5)", "Condition grade (1–5)")}</label>
-          <input className="input" maxLength={2} placeholder={t("z. B. 2+", "e.g. 2+")} value={d.condition} onChange={(e) => set("condition", e.target.value)} />
-          {err("condition")}
-        </div>
-        <div>
-          <label className="label">{t("Außenfarbe", "Exterior colour")}</label>
-          <input className="input" maxLength={60} value={d.color_ext} onChange={(e) => set("color_ext", e.target.value)} />
-        </div>
-        <div>
-          <label className="label">{t("Innenausstattung", "Interior")}</label>
-          <input className="input" maxLength={60} value={d.color_int} onChange={(e) => set("color_int", e.target.value)} />
-        </div>
-        {yn("matching_numbers", "Matching Numbers")}
-        {yn("accident_free", t("Unfallfrei", "Accident-free"))}
-        <div className="sm:col-span-2">
-          <label className="label">{t("Anmerkungen (optional)", "Notes (optional)")}</label>
-          <textarea className="input min-h-16" maxLength={2000} value={d.notes} onChange={(e) => set("notes", e.target.value)} placeholder={t("Historie, Restaurierung, Besonderheiten …", "History, restoration, special features …")} />
-        </div>
-        <div className="sm:col-span-2">
-          <label className="label">{t("Kaufvertrag", "Purchase contract")}</label>
-          <input className="input" type="file" accept={ACCEPT} onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
-          <p className="mt-1 text-xs text-muted">
-            {t(
-              "PDF oder Foto (JPEG, PNG), höchstens 4 MB. Namen, Anschriften, Unterschriften und Bankdaten dürfen Sie schwärzen; Fahrzeug, Fahrgestellnummer, Preis und Datum müssen lesbar sein. Der Vertrag wird verschlüsselt gespeichert, nur zur Prüfung verwendet und danach gelöscht.",
-              "PDF or photo (JPEG, PNG), at most 4 MB. You may black out names, addresses, signatures and bank details; the car, chassis number, price and date must stay readable. The contract is stored encrypted, used for the review only and deleted afterwards.",
-            )}
-          </p>
-          {err("file")}
-        </div>
-        <label className="flex items-start gap-2 text-[13.5px] sm:col-span-2">
-          <input type="checkbox" className="mt-1" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-          <span>
-            {t(
-              "Ich bestätige, dass die Angaben stimmen und ich an diesem Kauf oder Verkauf beteiligt war. Ich willige ein, dass Carbay meine Angaben und den Kaufvertrag speichert, ein Prüfer von Carbay den Vertrag mit den Angaben vergleicht, der Vertrag danach gelöscht wird und Preis, Datum und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Meldung hier lösche; nach der Freigabe bleiben Preis, Datum und Fahrzeugdaten anonym in der Marktanalyse.",
-              "I confirm that the details are correct and that I was party to this purchase or sale. I consent to Carbay storing my details and the purchase contract, a Carbay reviewer comparing the contract with the details, the contract being deleted afterwards, and price, date and car details entering the market analysis without my name and without the chassis number. I can withdraw this consent at any time by deleting the report here; after approval, price, date and car details stay in the market analysis, anonymously.",
-            )}{" "}
-            <Link to="/datenschutz" className="link">
-              {t("Datenschutzerklärung", "Privacy notice")}
-            </Link>
+      </Step>
+
+      <footer className="flex flex-wrap items-center gap-3 border-t border-line px-5 py-5 sm:px-7">
+        <button type="submit" className="btn btn-gold px-5" disabled={busy}>
+          {busy ? t("Wird gesendet …", "Sending …") : appraisal ? t("Gutachten einreichen", "Submit appraisal") : t("Kaufvertrag einreichen", "Submit contract")}
+        </button>
+        <button type="button" className="btn" disabled={busy} onClick={onCancel}>
+          {t("Abbrechen", "Cancel")}
+        </button>
+        {msg && (
+          <span className={cn("text-[13.5px]", busy ? "text-muted" : "text-down")} role="status">
+            {msg}
           </span>
-        </label>
-        {err("consent")}
-        <label className="flex items-start gap-2 text-[13.5px] sm:col-span-2">
-          <input type="checkbox" className="mt-1" checked={aiConsent} onChange={(e) => setAiConsent(e.target.checked)} />
-          <span>
-            {t(
-              "Optional: Ich willige ein, dass der Vertrag zur schnelleren Vorprüfung an den KI-Dienst von Anthropic (USA) übermittelt wird. Anthropic verwendet ihn nicht zum Training seiner Modelle. Ohne dieses Häkchen prüft ein Mensch von Hand; das kann länger dauern.",
-              "Optional: I consent to the contract being sent to Anthropic's AI service (USA) for a faster pre-check. Anthropic does not use it to train its models. Without this tick a person checks by hand, which can take longer.",
-            )}
-          </span>
-        </label>
-        <div className="flex flex-wrap items-center gap-3 sm:col-span-2">
-          <button type="submit" className="btn btn-gold" disabled={busy}>
-            {busy ? t("Wird gesendet …", "Sending …") : t("Fahrzeug melden", "Report car")}
-          </button>
-          <button type="button" className="btn" disabled={busy} onClick={onCancel}>
-            {t("Abbrechen", "Cancel")}
-          </button>
-          {msg && <span className="text-[13px] text-muted">{msg}</span>}
-        </div>
-      </form>
-    </Card>
+        )}
+      </footer>
+    </form>
   );
 }

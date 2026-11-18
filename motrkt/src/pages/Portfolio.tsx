@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Pencil, Trash2 } from "lucide-react";
+import { FileCheck2, Pencil, Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
 import { getMetrics, holdingMeasured, holdingValue, portfolioSeries, rangeOptions, sliceRange, type RangeKey } from "../data/market";
@@ -31,6 +31,8 @@ export default function Portfolio() {
   const [range, setRange] = useState<RangeKey>("5J");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Holding | undefined>();
+  // a holding the user wants to prove with a contract or an appraisal: the section below starts its form from it
+  const [proving, setProving] = useState<Holding | undefined>();
 
   const rows = useMemo(
     () =>
@@ -215,6 +217,17 @@ export default function Portfolio() {
                         <td className="text-right">
                           <button
                             className="btn btn-ghost p-1.5"
+                            aria-label={t("Mit Kaufvertrag oder Wertgutachten belegen", "Prove with a contract or an appraisal")}
+                            title={t("Mit Kaufvertrag oder Wertgutachten belegen und Premium erhalten", "Prove with a contract or an appraisal and get premium")}
+                            onClick={() => {
+                              setProving(r.h);
+                              document.getElementById("melden")?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                          >
+                            <FileCheck2 className="size-3.5" strokeWidth={1.5} />
+                          </button>
+                          <button
+                            className="btn btn-ghost p-1.5"
                             aria-label={t("Bearbeiten", "Edit")}
                             onClick={() => {
                               setEditing(r.h);
@@ -245,7 +258,7 @@ export default function Portfolio() {
         </>
       )}
 
-      <UserCarsSection />
+      <UserCarsSection prefill={proving} onPrefillClear={() => setProving(undefined)} />
 
       <WatchlistSection />
 

@@ -26,6 +26,20 @@ describe("parseReport (car report form)", () => {
     expect(parseReport({ ...valid, ai_consent: "yes" }, "2026-11-16").report.ai_consent).toBe(false);
     expect(parseReport({ ...valid, ai_consent: true }, "2026-11-16").report.ai_consent).toBe(true);
   });
+  it("is a purchase contract unless the form says appraisal", () => {
+    expect(parseReport(valid, "2026-11-16").report.kind).toBe("kaufvertrag");
+    expect(parseReport({ ...valid, kind: "leasing" }, "2026-11-16").errors).toEqual({ kind: "kind" });
+  });
+  it("takes an appraisal without role and counterparty, with appraiser and kind of value", () => {
+    const appraisal = { ...valid, kind: "gutachten", role: undefined, counterparty: undefined, appraiser: " Classic Data ", value_basis: "marktwert", condition: "2+" };
+    const { report, errors } = parseReport(appraisal, "2026-11-16");
+    expect(errors).toEqual({});
+    expect(report).toMatchObject({ kind: "gutachten", role: null, counterparty: null, appraiser: "Classic Data", value_basis: "marktwert", price: 350000 });
+    expect(parseReport({ ...appraisal, appraiser: "", value_basis: "schrottwert" }, "2026-11-16").errors).toEqual({ appraiser: "appraiser", value_basis: "value_basis" });
+  });
+  it("keeps appraisal fields out of a purchase contract", () => {
+    expect(parseReport({ ...valid, appraiser: "Classic Data", value_basis: "marktwert" }, "2026-11-16").report).toMatchObject({ appraiser: null, value_basis: null });
+  });
   it("normalises the chassis number and trims text", () => {
     const { report } = parseReport({ ...valid, vin: " wp0 zzz 96 ", notes: "  hello  " }, "2026-11-16");
     expect(report.vin).toBe("WP0ZZZ96");

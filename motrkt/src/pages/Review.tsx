@@ -5,7 +5,7 @@ import { getMetrics } from "../data/market";
 import { date, eur, num } from "../lib/format";
 import { isEn, t } from "../i18n";
 import { Card, Pill } from "../components/ui";
-import { COUNTERPARTY, STATUS_LABEL, STATUS_TONE, api, useMe, type ReviewCar } from "../lib/userCars";
+import { COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, useMe, type ReviewCar } from "../lib/userCars";
 
 /** Amounts as typed: "350.000" / "350000,50" in German, "350,000" / "350000.50" in English. */
 const parseNum = (s: string) => Number(isEn() ? s.replace(/[,\s]/g, "") : s.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
@@ -19,7 +19,7 @@ const DECIDE_ERR: Record<string, () => string> = {
   "Not found": () => t("Diese Meldung gibt es nicht mehr (vom Nutzer gelöscht).", "This report no longer exists (deleted by the user)."),
 };
 
-/** Reviewers (MIP_ADMINS): check the users' car reports against their contracts, then approve or reject. */
+/** Reviewers (MIP_ADMINS): check the users' car reports against their contracts or appraisals, then approve or reject. */
 export default function Review() {
   const me = useMe();
   const [data, setData] = useState<{ open: ReviewCar[]; done: ReviewCar[] } | null>(null);
@@ -40,8 +40,8 @@ export default function Review() {
         <h1 className="font-display text-[34px] leading-tight">{t("Prüfung der Nutzerfahrzeuge", "Review of user cars")}</h1>
         <p className="mt-1 text-[14px] text-muted">
           {t(
-            "Angaben mit dem Kaufvertrag vergleichen. Freigeben übernimmt das Fahrzeug in die nächste Marktwert-Berechnung (nachts) und schaltet dem Nutzer Premium frei. Beide Entscheidungen löschen den Vertrag. Jedes Öffnen eines Vertrags wird mit Ihrem Namen protokolliert; Verträge bitte nicht speichern, drucken oder weitergeben.",
-            "Compare the entries with the contract. Approving adds the car to the next market value run (nightly) and gives the user premium. Both decisions delete the contract. Every time a contract is opened it is logged with your name; please do not save, print or pass on contracts.",
+            `Angaben mit dem Kaufvertrag oder Wertgutachten vergleichen. Freigeben schaltet dem Nutzer Premium frei; ein Kaufpreis geht in die nächste Marktwert-Berechnung (nachts) ein, ein Gutachtenwert nicht. Beide Entscheidungen löschen das Dokument, und ohne Entscheidung wird es ${DOCUMENT_HOURS} Stunden nach dem Hochladen gelöscht: dann muss der Nutzer es erneut hochladen. Jedes Öffnen wird mit Ihrem Namen protokolliert; Dokumente bitte nicht speichern, drucken oder weitergeben.`,
+            `Compare the entries with the purchase contract or appraisal. Approving gives the user premium; a purchase price enters the next market value run (nightly), an appraised value does not. Both decisions delete the document, and without a decision it is deleted ${DOCUMENT_HOURS} hours after the upload: the user then has to upload it again. Every opening is logged with your name; please do not save, print or pass on documents.`,
           )}
         </p>
       </div>
@@ -61,7 +61,8 @@ export default function Review() {
                 </span>
                 <span className="flex items-center gap-2 text-muted">
                   {c.reviewer} {c.reviewed_at && date(new Date(c.reviewed_at).getTime())}
-                  <Pill tone={STATUS_TONE(c.status)}>{STATUS_LABEL(c.status)}</Pill>
+                  <Pill tone={c.kind === "gutachten" ? "cobalt" : "gold"}>{KIND_LABEL(c.kind)}</Pill>
+                  <Pill tone={STATUS_TONE(c.status)}>{STATUS_LABEL(c.status, c.kind)}</Pill>
                 </span>
               </li>
             ))}
@@ -121,6 +122,7 @@ const VERDICT = {
   abweichungen: { tone: "warn" as const, de: "Abweichungen", en: "Mismatches" },
   unklar: { tone: "warn" as const, de: "Unklar", en: "Unclear" },
   kein_vertrag: { tone: "down" as const, de: "Kein Kaufvertrag", en: "Not a purchase contract" },
+  kein_gutachten: { tone: "down" as const, de: "Kein Wertgutachten", en: "Not an appraisal" },
 };
 
 function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
@@ -134,6 +136,9 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
   const value = v ? getMetrics(v.id).value : null;
   const ratio = value ? Number(car.price) / value : null;
   const contractUrl = `/api/pruefung/${car.id}/vertrag`;
+  const appraisal = car.kind === "gutachten";
+  // the document is deleted an hour before the promised day is over (server/userCars.ts): what is left to decide
+  const hoursLeft = car.contract_at ? (new Date(car.contract_at).getTime() + (DOCUMENT_HOURS - 1) * 3_600_000 - Date.now()) / 3_600_000 : null;
 
   async function decide(decision: "approve" | "reject") {
     if (decision === "reject" && !note.trim()) return setMsg(t("Bitte einen Grund für die Ablehnung angeben (der Nutzer sieht ihn).", "Please give a reason (the user sees it)."));
@@ -175,18 +180,30 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
     <Card
       title={v ? variantTitle(v) : car.title}
       sub={`${car.username ?? "?"} · ${t("eingereicht", "submitted")} ${date(new Date(car.created_at).getTime())}`}
+      actions={
+        <>
+          <Pill tone={appraisal ? "cobalt" : "gold"}>{KIND_LABEL(car.kind)}</Pill>
+          {hoursLeft != null && (
+            <Pill tone={hoursLeft < 6 ? "down" : "neutral"}>
+              {hoursLeft <= 0
+                ? t("Dokument wird gelöscht", "Document is being deleted")
+                : t(`Dokument noch ${hoursLeft < 1 ? "unter 1" : Math.floor(hoursLeft)} Std.`, `Document for ${hoursLeft < 1 ? "under 1" : Math.floor(hoursLeft)} h more`)}
+            </Pill>
+          )}
+        </>
+      }
     >
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="text-[14px]">
-          {row(t("Rolle", "Role"), car.role === "kauf" ? t("hat gekauft", "bought") : t("hat verkauft", "sold"))}
+          {!appraisal && row(t("Rolle", "Role"), car.role === "kauf" ? t("hat gekauft", "bought") : t("hat verkauft", "sold"))}
           {row(t("Bezeichnung", "Name"), car.title)}
           {row(t("Baujahr", "Build year"), car.build_year)}
           {row("FIN", <span className="font-mono">{car.vin}</span>)}
           {row(t("Kilometer", "Mileage"), `${num(car.km)} km`)}
-          {row(t("Preis", "Price"), `${num(Number(car.price))} ${car.currency}`)}
-          {row(t("Vertragsdatum", "Contract date"), date(new Date(car.sale_date).getTime()))}
+          {row(appraisal ? VALUE_BASIS_LABEL(car.value_basis) : t("Preis", "Price"), `${num(Number(car.price))} ${car.currency}`)}
+          {row(appraisal ? t("Datum des Gutachtens", "Appraisal date") : t("Vertragsdatum", "Contract date"), date(new Date(car.sale_date).getTime()))}
           {row(t("Land", "Country"), car.country)}
-          {row(t("Gegenseite", "Counterparty"), COUNTERPARTY(car.counterparty))}
+          {appraisal ? row(t("Gutachter", "Appraiser"), car.appraiser ?? "–") : row(t("Gegenseite", "Counterparty"), COUNTERPARTY(car.counterparty))}
           {row(
             t("Weitere Angaben", "Other details"),
             [car.body, car.gearbox, car.steering === "rechts" ? "RHD" : null, car.color_ext, car.color_int, car.condition && `Note ${car.condition}`,
@@ -207,7 +224,7 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
             )}
           <div className="mt-3 flex gap-3">
             <a className="btn text-[13px]" href={contractUrl} target="_blank" rel="noreferrer">
-              {t("Kaufvertrag öffnen", "Open contract")}
+              {appraisal ? t("Wertgutachten öffnen", "Open appraisal") : t("Kaufvertrag öffnen", "Open contract")}
             </a>
             <span className="self-center text-[12px] text-faint">
               {car.contract_name} · {car.contract_size ? `${Math.round(car.contract_size / 1024)} KB` : ""}
@@ -236,7 +253,7 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
           </div>
           {!car.ai_consent && (
             <p className="text-muted">
-              {t("Der Nutzer hat die KI-Vorprüfung nicht erlaubt: bitte von Hand mit dem Vertrag vergleichen.", "The user did not allow the AI pre-check: please compare with the contract by hand.")}
+              {t("Der Nutzer hat die KI-Vorprüfung nicht erlaubt: bitte von Hand mit dem Dokument vergleichen.", "The user did not allow the AI pre-check: please compare with the document by hand.")}
             </p>
           )}
           {car.ai_consent && !ai && <p className="text-muted">{t("Noch keine Vorprüfung.", "No pre-check yet.")}</p>}
@@ -249,7 +266,7 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
                 <ul className="list-disc pl-5 text-down">
                   {ai.mismatches.map((m, i) => (
                     <li key={i}>
-                      {m.field}: {t("angegeben", "entered")} {m.entered}, {t("Vertrag", "contract")} {m.contract}
+                      {m.field}: {t("angegeben", "entered")} {m.entered}, {appraisal ? t("Gutachten", "appraisal") : t("Vertrag", "contract")} {m.contract}
                       {m.comment && <span className="text-muted"> – {m.comment}</span>}
                     </li>
                   ))}
@@ -264,7 +281,7 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
               )}
               {ai.extracted && (
                 <details className="text-[13px]">
-                  <summary className="cursor-pointer text-muted">{t("Aus dem Vertrag gelesen", "Read from the contract")}</summary>
+                  <summary className="cursor-pointer text-muted">{appraisal ? t("Aus dem Gutachten gelesen", "Read from the appraisal") : t("Aus dem Vertrag gelesen", "Read from the contract")}</summary>
                   {Object.entries(ai.extracted).map(([k, x]) => (
                     <div key={k} className="flex justify-between gap-3">
                       <span className="text-muted">{k}</span>
@@ -298,7 +315,7 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
             </div>
             {(
               [
-                ["price", t("Preis laut Vertrag", "Price per contract")],
+                ["price", appraisal ? t("Wert laut Gutachten", "Value per appraisal") : t("Preis laut Vertrag", "Price per contract")],
                 ["sale_date", t("Datum (JJJJ-MM-TT)", "Date (YYYY-MM-DD)")],
                 ["km", "km"],
                 ["build_year", t("Baujahr", "Build year")],

@@ -7,7 +7,7 @@ import { db } from "./db.ts";
 
 /**
  * Forum per variant (db/migrations/005_forum.sql), shown at the bottom of each model page. Signed-in users read and
- * write; a user whose own car of this variant was approved with its purchase contract (user_cars) is marked as a
+ * write; a user whose own car of this variant was approved with its contract or appraisal (user_cars) is marked as a
  * verified owner. Authors remove their own posts, reviewers (MIP_ADMINS) hide posts and topics; rows stay in the
  * database (hidden_at), nothing is deleted.
  *
@@ -50,7 +50,7 @@ function text(v: unknown, [min, max]: readonly [number, number]) {
   return s.length >= min && s.length <= max ? s : null;
 }
 
-/** Users with an approved car of this variant (purchase contract checked). */
+/** Users with an approved car of this variant (purchase contract or appraisal checked). */
 async function verifiedOwners(variant: string): Promise<Set<string>> {
   const [{ ok }] = await db()<{ ok: boolean }[]>`select to_regclass('user_cars') is not null as ok`;
   if (!ok) return new Set();

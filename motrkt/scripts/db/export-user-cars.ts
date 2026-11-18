@@ -3,7 +3,8 @@ import { connect } from "./client.ts";
 
 /**
  * Approved car reports of users (table user_cars, server/userCars.ts) as a semicolon file for model.py, in the format of
- * scripts/market/manual/*.csv (art = Verkauf). Only what the model needs: no chassis number, no user.
+ * scripts/market/manual/*.csv (art = Verkauf). Only what the model needs: no chassis number, no user. Only reports
+ * with a purchase contract: an appraisal (kind = 'gutachten') states an opinion, not a price paid, and is left out.
  *
  *   tsx scripts/db/export-user-cars.ts OUT.csv
  *
@@ -20,7 +21,7 @@ const [{ ok }] = await sql<{ ok: boolean }[]>`select to_regclass('user_cars') is
 const rows = ok
   ? await sql<{ id: string; sale_date: Date; title: string; build_year: number; price: string; currency: string; km: number; country: string; variant_id: string; counterparty: string }[]>`
       select id, sale_date, title, build_year, price, currency, km, country, variant_id, counterparty
-      from user_cars where status = 'approved' order by sale_date`
+      from user_cars where status = 'approved' and kind = 'kaufvertrag' order by sale_date`
   : [];
 const clean = (v: unknown) => String(v ?? "").replace(/[;\n\r]/g, ",");
 const lines = rows.map((r) =>

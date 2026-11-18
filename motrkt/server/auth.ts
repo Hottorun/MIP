@@ -273,7 +273,7 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   const sql = db();
   const [account] = await sql`select username, created_at, premium_until from users where id = ${user.id}`;
   const [state] = await sql`select state, updated_at from user_state where user_id = ${user.id}`;
-  const cars = await sql`select id, status, created_at, role, variant_id, title, build_year, vin, km, price, currency, sale_date, country, counterparty,
+  const cars = await sql`select id, status, created_at, kind, appraiser, value_basis, contract_at, role, variant_id, title, build_year, vin, km, price, currency, sale_date, country, counterparty,
                                 body, gearbox, steering, color_ext, color_int, condition, matching_numbers, accident_free, notes, contract_name,
                                 contract_type, contract_size, contract_deleted_at, reviewed_at, review_note, consent_at, consent_version,
                                 ai_consent, ai_check, ai_checked_at
@@ -314,7 +314,7 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
     await tx`delete from sessions where user_id = ${user.id}`;
     await tx`delete from user_state where user_id = ${user.id}`;
     await tx`delete from user_cars where user_id = ${user.id} and status <> 'approved'`;
-    await tx`update user_cars set user_id = ${gone}, vin = '', notes = null, contract = null, contract_name = null, ai_check = null,
+    await tx`update user_cars set user_id = ${gone}, vin = '', notes = null, appraiser = null, contract = null, contract_name = null, ai_check = null,
              contract_deleted_at = coalesce(contract_deleted_at, now()) where user_id = ${user.id}`;
     await tx`delete from forum_reports where user_id = ${user.id}`;
     await tx`delete from rate_events where key like ${"%:" + user.id}`;

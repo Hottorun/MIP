@@ -5,11 +5,21 @@ import { t } from "../i18n";
 
 export type CarStatus = "awaiting_contract" | "pending" | "approved" | "rejected" | "expired";
 
+/** What a report rests on: a purchase contract (car bought or sold) or an appraisal of a car the user owns. */
+export type Kind = "kaufvertrag" | "gutachten";
+export type ValueBasis = "marktwert" | "wiederbeschaffungswert" | "wiederherstellungswert";
+
 export type UserCar = {
   id: string;
   status: CarStatus;
   created_at: string;
-  role: "kauf" | "verkauf";
+  kind: Kind;
+  /** Appraisals only: who wrote it and what the value stands for. `price` is then the appraised value, `sale_date` its date. */
+  appraiser: string | null;
+  value_basis: ValueBasis | null;
+  /** When the document was uploaded; it is deleted DOCUMENT_HOURS later at the latest. */
+  contract_at: string | null;
+  role: "kauf" | "verkauf" | null;
   variant_id: string;
   title: string;
   build_year: number;
@@ -19,7 +29,7 @@ export type UserCar = {
   currency: string;
   sale_date: string;
   country: string;
-  counterparty: "privat" | "haendler" | "auktion";
+  counterparty: "privat" | "haendler" | "auktion" | null;
   body: string | null;
   gearbox: string | null;
   steering: string | null;
@@ -42,11 +52,12 @@ export type UserCar = {
 export type AiCheck = {
   error?: string;
   is_vehicle_purchase_contract?: boolean;
+  is_vehicle_appraisal?: boolean;
   legible?: boolean;
   extracted?: Record<string, string | number | boolean | null>;
   mismatches?: { field: string; entered: string; contract: string; comment: string }[];
   concerns?: string[];
-  verdict?: "passt" | "abweichungen" | "unklar" | "kein_vertrag";
+  verdict?: "passt" | "abweichungen" | "unklar" | "kein_vertrag" | "kein_gutachten";
   summary?: string;
 };
 
@@ -77,25 +88,32 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   return j as T;
 }
 
-export const STATUS_LABEL = (s: CarStatus) =>
+/** An uploaded document is deleted this long after the upload at the latest (RETENTION.documentHours, server/userCars.ts). */
+export const DOCUMENT_HOURS = 24;
+
+export const KIND_LABEL = (k: Kind) => (k === "gutachten" ? t("Wertgutachten", "Appraisal") : t("Kaufvertrag", "Purchase contract"));
+export const VALUE_BASIS_LABEL = (b: string | null) =>
+  b === "wiederbeschaffungswert" ? t("Wiederbeschaffungswert", "Replacement value") : b === "wiederherstellungswert" ? t("Wiederherstellungswert", "Rebuild value") : t("Marktwert", "Market value");
+
+export const STATUS_LABEL = (s: CarStatus, kind: Kind = "kaufvertrag") =>
   ({
-    awaiting_contract: t("Kaufvertrag fehlt", "Contract missing"),
+    awaiting_contract: kind === "gutachten" ? t("Gutachten fehlt", "Appraisal missing") : t("Kaufvertrag fehlt", "Contract missing"),
     pending: t("Wird geprüft", "Under review"),
-    approved: t("Geprüft und übernommen", "Verified and included"),
+    approved: kind === "gutachten" ? t("Geprüft", "Verified") : t("Geprüft und übernommen", "Verified and included"),
     rejected: t("Abgelehnt", "Rejected"),
-    expired: t("Abgelaufen", "Expired"),
+    expired: t("Dokument gelöscht", "Document deleted"),
   })[s] ?? s;
 
 export const STATUS_TONE = (s: CarStatus): "up" | "down" | "gold" | "neutral" | "warn" =>
-  s === "approved" ? "up" : s === "rejected" ? "down" : s === "pending" ? "gold" : s === "awaiting_contract" ? "warn" : "neutral";
+  s === "approved" ? "up" : s === "rejected" ? "down" : s === "pending" ? "gold" : "warn";
 
-export const COUNTERPARTY = (c: string) =>
+export const COUNTERPARTY = (c: string | null) =>
   c === "haendler" ? t("Händler", "Dealer") : c === "auktion" ? t("Auktionshaus", "Auction house") : t("Privat", "Private");
 
 export const ACCEPT = "application/pdf,image/jpeg,image/png,image/webp";
 export const MAX_BYTES = 4 * 1024 * 1024;
 
-/** Uploads the contract; photos above the limit are scaled down in the browser first. */
+/** Uploads the document (contract or appraisal); photos above the limit are scaled down in the browser first. */
 export async function uploadContract(id: string, file: File) {
   let body: Blob = file;
   let type = file.type;

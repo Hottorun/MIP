@@ -32,7 +32,7 @@ function Author({ name, owner }: { name: string; owner: boolean }) {
     <span className="inline-flex items-center gap-1 text-ink">
       {name}
       {owner && (
-        <span className="inline-flex items-center gap-0.5 text-[12px] text-up" title={t("Besitzt diese Variante, Kaufvertrag geprüft", "Owns this variant, purchase contract checked")}>
+        <span className="inline-flex items-center gap-0.5 text-[12px] text-up" title={t("Besitzt diese Variante, Kaufvertrag oder Wertgutachten geprüft", "Owns this variant, purchase contract or appraisal checked")}>
           <BadgeCheck className="size-3.5" strokeWidth={1.6} /> {t("Besitzer", "Owner")}
         </span>
       )}
