@@ -47,19 +47,29 @@ Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontom
 
 1. **Daten**: Variante, Bezeichnung, Baujahr, Fahrgestellnummer, Kilometerstand, Preis mit Währung, Vertragsdatum,
    Land, Gegenseite (privat, Händler, Auktion), dazu optional Karosserie, Getriebe, Lenkung, Farben, Zustandsnote,
-   Matching Numbers, Unfallfreiheit und Anmerkungen. Der Nutzer bestätigt die Angaben und die Verwendung.
-2. **KI-Vorprüfung** (`server/contractCheck.ts`, läuft nach dem Upload im Hintergrund): Claude liest den Vertrag und vergleicht ihn mit den Angaben
+   Matching Numbers, Unfallfreiheit und Anmerkungen. Der Nutzer willigt in Speicherung, Prüfung und Verwendung ein;
+   Zeitpunkt und Fassung des Textes werden gespeichert (`consent_at`, `consent_version`). Der Vertrag darf geschwärzt
+   sein, solange Fahrzeug, FIN, Preis und Datum lesbar bleiben, und wird verschlüsselt gespeichert
+   (`server/contractVault.ts`, AES-256-GCM, Schlüssel `MIP_CONTRACT_KEY`).
+2. **KI-Vorprüfung** (`server/contractCheck.ts`, läuft nach dem Upload im Hintergrund), nur wenn der Nutzer das
+   zusätzliche Häkchen gesetzt hat (`ai_consent`): Claude liest den Vertrag und vergleicht ihn mit den Angaben
    (Fahrzeug, FIN, Preis, Datum, Kilometer, Verkäufer). Ergebnis: passt, Abweichungen, unklar oder kein Kaufvertrag,
-   dazu Auffälligkeiten. Braucht `ANTHROPIC_API_KEY`; ohne prüft der Prüfer von Hand.
+   dazu Auffälligkeiten. Braucht `ANTHROPIC_API_KEY`; ohne Häkchen oder ohne Schlüssel prüft der Prüfer von Hand.
 3. **Prüfung** (`/pruefung`, nur für Prüfer): Angaben, Vertrag und KI-Ergebnis nebeneinander. Der Prüfer kann
    Variante, Preis, Datum, Kilometer und Baujahr nach dem Vertrag korrigieren, dann freigeben oder mit Begründung
-   ablehnen. **Beide Entscheidungen löschen den Vertrag**; danach bleiben nur die geprüften Fahrzeugdaten.
+   ablehnen. **Beide Entscheidungen löschen den Vertrag**; danach bleiben nur die geprüften Fahrzeugdaten. Jedes
+   Öffnen und jede Entscheidung steht mit Prüfer und Zeit in `contract_access`.
 4. **Freigabe**: Der Nutzer erhält 12 Monate Premium (`users.premium_until`, verlängert sich bei jeder weiteren
    Freigabe). Ein Bezahlbereich existiert noch nicht, bis dahin sieht jeder alles.
 5. **Analyse**: Der tägliche Lauf (`daily.sh`) exportiert die freigegebenen Fahrzeuge aus Postgres
    (`scripts/db/export-user-cars.ts`) ohne FIN und ohne Nutzer in eine temporäre Datei, die `model.py` wie einen
    dokumentierten Verkauf liest (Quelle „Carbay-Nutzer (Kaufvertrag geprüft)“). Danach gelten die üblichen Regeln
    (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
+
+**Löschen:** Der Nutzer kann jede Meldung selbst löschen, auch eine freigegebene (sie fällt dann beim nächsten Lauf
+aus dem Modell; Premium bleibt). Ohne Zutun räumt `sweepUserCars` auf (`RETENTION` in `server/userCars.ts`):
+Meldungen ohne Vertrag nach 30 Tagen, unentschiedene Verträge nach 90 Tagen (Status „abgelaufen“), abgelehnte und
+abgelaufene Meldungen 90 Tage nach der Entscheidung. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
 
 Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Nur der Vite-Entwicklungsserver (`npm run dev`) macht
 zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht über `MIP_ADMINS`, weil das Passwort
@@ -68,9 +78,17 @@ zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht �
 ## Konto, Impressum, Datenschutz
 
 Unter `/konto` ändern Nutzer ihr Passwort (andere Browser werden abgemeldet), laden alle zu ihrem Konto gespeicherten
-Daten als JSON herunter und löschen ihr Konto (Sitzungen, gespeicherte Daten und offene Meldungen samt Verträgen
-werden gelöscht; geprüfte Fahrzeuge ohne FIN und Forumsbeiträge bleiben ohne Kontobezug). Das Demo-Konto kann nichts
-davon. Impressum und Datenschutzerklärung (`/impressum`, `/datenschutz`) zeigen die Texte aus `src/legal.ts`; ohne
+Daten als JSON herunter und löschen ihr Konto (Sitzungen, gespeicherte Daten, Zähler und alle nicht freigegebenen
+Meldungen samt Verträgen werden gelöscht; freigegebene Fahrzeuge ohne FIN und Forumsbeiträge bleiben ohne
+Kontobezug). Das Demo-Konto kann nichts davon. Beim Abmelden löscht die App ihre Kopie der Kontodaten aus dem
+Browser, damit der Nächste am selben Gerät sie weder sieht noch in sein Konto übernimmt.
+
+**Datenschutz:** [`DATENSCHUTZ.md`](DATENSCHUTZ.md) hält fest, was verarbeitet wird (Verzeichnis nach Art. 30 DSGVO),
+welche Schutzmaßnahmen der Code umsetzt und was der Betreiber noch selbst erledigen muss (Schlüssel, AV-Verträge,
+Betreiberangaben). Die App lädt nichts von Dritten nach außer Fotos von Inseraten und Auktionslosen: keine Analyse,
+keine Werbung, Schriften aus `public/fonts` statt von Google Fonts, ein einziges notwendiges Cookie und deshalb kein
+Cookie-Banner. Auf Supabase ist für alle Tabellen Row Level Security eingeschaltet
+(`db/migrations/010_row_level_security.sql`); **neue Tabellen brauchen dieselbe Zeile.** Impressum und Datenschutzerklärung (`/impressum`, `/datenschutz`) zeigen die Texte aus `src/legal.ts`; ohne
 Sitzung liefert sie der Server als eigene Seiten (`server/legalPages.ts`), damit sie von der Anmeldeseite aus
 erreichbar sind. **Vor der Veröffentlichung `OPERATOR` in `src/legal.ts` ausfüllen** – solange Angaben fehlen,
 zeigen beide Seiten einen Warnhinweis.

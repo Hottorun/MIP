@@ -83,7 +83,7 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
 
   // ---------------------------------------------------------------- latest topics everywhere
   if (a === "neueste" && !b && req.method === "GET") {
-    const limit = Math.max(1, Math.min(200, Number(url.searchParams.get("limit")) || 20));
+    const limit = Math.max(1, Math.min(200, Math.floor(Number(url.searchParams.get("limit"))) || 20));
     const topics = await db()<{ id: string; variant_id: string; username: string; title: string; created_at: Date; last_post_at: Date; posts: number; first: string | null }[]>`
       select t.id, t.variant_id, t.username, t.title, t.created_at, t.last_post_at,
              (select count(*)::int from forum_posts p where p.topic_id = t.id and p.hidden_at is null) as posts,
@@ -163,7 +163,9 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
     if (!p) return sendJson(res, 404, { error: "Not found" });
     if (c === "ausblenden" && req.method === "POST") {
       if (!admin && p.user_id !== user.id) return sendJson(res, 403, { error: "forbidden" });
-      await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username} where id = ${p.id}`;
+      // the author's own removal erases the text (right to erasure); a reviewer hiding someone else's post keeps it
+      if (p.user_id === user.id) await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username}, body = '' where id = ${p.id}`;
+      else await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username} where id = ${p.id}`;
       return sendJson(res, 200, { ok: true });
     }
     if (!c && req.method === "PUT") {
@@ -188,7 +190,7 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
   if (a && !b && VARIANTS.has(a)) {
     if (req.method === "GET") {
       const owners = await verifiedOwners(a);
-      const offset = Math.max(0, Number(url.searchParams.get("offset")) || 0);
+      const offset = Math.max(0, Math.floor(Number(url.searchParams.get("offset"))) || 0);
       const topics = await db()<{ id: string; user_id: string; username: string; title: string; created_at: Date; last_post_at: Date; posts: number; first: string | null }[]>`
         select t.id, t.user_id, t.username, t.title, t.created_at, t.last_post_at,
                (select count(*)::int from forum_posts p where p.topic_id = t.id and p.hidden_at is null) as posts,

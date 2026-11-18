@@ -3,7 +3,7 @@ import { t } from "../i18n";
 
 /** Client side of "Mein Fahrzeug melden" (server/userCars.ts). */
 
-export type CarStatus = "awaiting_contract" | "pending" | "approved" | "rejected" | "withdrawn";
+export type CarStatus = "awaiting_contract" | "pending" | "approved" | "rejected" | "expired";
 
 export type UserCar = {
   id: string;
@@ -35,6 +35,8 @@ export type UserCar = {
   contract_deleted_at: string | null;
   reviewed_at: string | null;
   review_note: string | null;
+  /** The user allowed the AI pre-check by Anthropic for this report. */
+  ai_consent: boolean;
 };
 
 export type AiCheck = {
@@ -81,8 +83,8 @@ export const STATUS_LABEL = (s: CarStatus) =>
     pending: t("Wird geprüft", "Under review"),
     approved: t("Geprüft und übernommen", "Verified and included"),
     rejected: t("Abgelehnt", "Rejected"),
-    withdrawn: t("Zurückgezogen", "Withdrawn"),
-  })[s];
+    expired: t("Abgelaufen", "Expired"),
+  })[s] ?? s;
 
 export const STATUS_TONE = (s: CarStatus): "up" | "down" | "gold" | "neutral" | "warn" =>
   s === "approved" ? "up" : s === "rejected" ? "down" : s === "pending" ? "gold" : s === "awaiting_contract" ? "warn" : "neutral";

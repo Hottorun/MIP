@@ -3,9 +3,21 @@ import { Link } from "react-router-dom";
 import { variantById, variantTitle, variants } from "../data/db";
 import { getMetrics } from "../data/market";
 import { date, eur, num } from "../lib/format";
-import { t } from "../i18n";
+import { isEn, t } from "../i18n";
 import { Card, Pill } from "../components/ui";
 import { COUNTERPARTY, STATUS_LABEL, STATUS_TONE, api, useMe, type ReviewCar } from "../lib/userCars";
+
+/** Amounts as typed: "350.000" / "350000,50" in German, "350,000" / "350000.50" in English. */
+const parseNum = (s: string) => Number(isEn() ? s.replace(/[,\s]/g, "") : s.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
+
+const DECIDE_ERR: Record<string, () => string> = {
+  price: () => t("Preis: bitte eine Zahl zwischen 500 und 100 Mio. eingeben.", "Price: please enter a number between 500 and 100 million."),
+  km: () => t("Kilometer: bitte eine Zahl zwischen 0 und 2 Mio. eingeben.", "Mileage: please enter a number between 0 and 2 million."),
+  build_year: () => t("Baujahr: bitte ein Jahr ab 1948 eingeben.", "Build year: please enter a year from 1948."),
+  sale_date: () => t("Datum: bitte als JJJJ-MM-TT eingeben, nicht in der Zukunft.", "Date: please enter as YYYY-MM-DD, not in the future."),
+  decided: () => t("Diese Meldung wurde inzwischen entschieden oder gelöscht.", "This report has been decided or deleted in the meantime."),
+  "Not found": () => t("Diese Meldung gibt es nicht mehr (vom Nutzer gelöscht).", "This report no longer exists (deleted by the user)."),
+};
 
 /** Reviewers (MIP_ADMINS): check the users' car reports against their contracts, then approve or reject. */
 export default function Review() {
@@ -28,8 +40,8 @@ export default function Review() {
         <h1 className="font-display text-[34px] leading-tight">{t("Prüfung der Nutzerfahrzeuge", "Review of user cars")}</h1>
         <p className="mt-1 text-[14px] text-muted">
           {t(
-            "Angaben mit dem Kaufvertrag vergleichen. Freigeben übernimmt das Fahrzeug in die nächste Marktwert-Berechnung (nachts) und schaltet dem Nutzer Premium frei. Beide Entscheidungen löschen den Vertrag.",
-            "Compare the entries with the contract. Approving adds the car to the next market value run (nightly) and gives the user premium. Both decisions delete the contract.",
+            "Angaben mit dem Kaufvertrag vergleichen. Freigeben übernimmt das Fahrzeug in die nächste Marktwert-Berechnung (nachts) und schaltet dem Nutzer Premium frei. Beide Entscheidungen löschen den Vertrag. Jedes Öffnen eines Vertrags wird mit Ihrem Namen protokolliert; Verträge bitte nicht speichern, drucken oder weitergeben.",
+            "Compare the entries with the contract. Approving adds the car to the next market value run (nightly) and gives the user premium. Both decisions delete the contract. Every time a contract is opened it is logged with your name; please do not save, print or pass on contracts.",
           )}
         </p>
       </div>
@@ -125,9 +137,17 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
 
   async function decide(decision: "approve" | "reject") {
     if (decision === "reject" && !note.trim()) return setMsg(t("Bitte einen Grund für die Ablehnung angeben (der Nutzer sieht ihn).", "Please give a reason (the user sees it)."));
-    const corrections: Record<string, string> = {};
+    const corrections: Record<string, string | number> = {};
     if (fix.variant_id !== car.variant_id) corrections.variant_id = fix.variant_id;
-    for (const k of ["price", "sale_date", "km", "build_year"] as const) if (fix[k].trim()) corrections[k] = fix[k].trim();
+    // numbers as the reviewer's language writes them: "350.000" sent as it is would reach the server as 350
+    for (const k of ["price", "km", "build_year"] as const) {
+      if (!fix[k].trim()) continue;
+      const n = parseNum(fix[k]);
+      if (!Number.isFinite(n)) return setMsg(DECIDE_ERR[k]());
+      corrections[k] = n;
+    }
+    if (fix.sale_date.trim()) corrections.sale_date = fix.sale_date.trim();
+    setMsg("");
     setBusy(true);
     try {
       await api(`/api/pruefung/${car.id}`, {
@@ -137,8 +157,10 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
       });
       onDone();
     } catch (e) {
-      setMsg(t("Fehler: ", "Error: ") + (e as Error).message);
+      const code = (e as Error).message;
+      setMsg(DECIDE_ERR[code]?.() ?? t("Fehler: ", "Error: ") + code);
       setBusy(false);
+      if (code === "decided" || code === "Not found") onDone();
     }
   }
 
@@ -196,20 +218,28 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
         <div className="text-[14px]">
           <div className="mb-2 flex items-center justify-between gap-2">
             <span className="label !mb-0">{t("KI-Vorprüfung", "AI pre-check")}</span>
-            <button
-              className="btn text-[12px]"
-              disabled={busy}
-              onClick={async () => {
-                setBusy(true);
-                const r = await api<{ ai_check: ReviewCar["ai_check"] }>(`/api/pruefung/${car.id}/ki`, { method: "POST" }).catch(() => null);
-                if (r) setAi(r.ai_check);
-                setBusy(false);
-              }}
-            >
-              {t("Erneut prüfen", "Check again")}
-            </button>
+            {car.ai_consent && (
+              <button
+                className="btn text-[12px]"
+                disabled={busy}
+                onClick={async () => {
+                  setBusy(true);
+                  const r = await api<{ ai_check: ReviewCar["ai_check"] }>(`/api/pruefung/${car.id}/ki`, { method: "POST" }).catch(() => null);
+                  if (r) setAi(r.ai_check);
+                  else setMsg(t("Die KI-Vorprüfung konnte nicht gestartet werden.", "The AI pre-check could not be started."));
+                  setBusy(false);
+                }}
+              >
+                {t("Erneut prüfen", "Check again")}
+              </button>
+            )}
           </div>
-          {!ai && <p className="text-muted">{t("Noch keine Vorprüfung.", "No pre-check yet.")}</p>}
+          {!car.ai_consent && (
+            <p className="text-muted">
+              {t("Der Nutzer hat die KI-Vorprüfung nicht erlaubt: bitte von Hand mit dem Vertrag vergleichen.", "The user did not allow the AI pre-check: please compare with the contract by hand.")}
+            </p>
+          )}
+          {car.ai_consent && !ai && <p className="text-muted">{t("Noch keine Vorprüfung.", "No pre-check yet.")}</p>}
           {ai?.error && <p className="text-down">{ai.error}</p>}
           {ai?.verdict && (
             <div className="space-y-2">

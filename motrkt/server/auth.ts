@@ -119,15 +119,17 @@ const MAX_FAILS = 8;
 // A name alone is blocked only after many more failures from any address: a global block at 8 would let anyone lock
 // a user (or a reviewer) out at will; this still caps password spraying from many addresses at 50 tries a quarter hour.
 const MAX_FAILS_NAME = 50;
+// The counters are kept under a hash of the key, so the table holds no readable names or IP addresses.
+const failKey = (key: string) => sha("auth-failure:" + key);
 async function blocked(key: string, max = MAX_FAILS) {
-  const [{ n }] = await db()<{ n: number }[]>`select count(*)::int as n from auth_failures where key = ${key} and at > now() - interval '15 minutes'`;
+  const [{ n }] = await db()<{ n: number }[]>`select count(*)::int as n from auth_failures where key = ${failKey(key)} and at > now() - interval '15 minutes'`;
   return n >= max;
 }
 async function fail(key: string) {
   await db()`delete from auth_failures where at < now() - interval '1 day'`;
-  await db()`insert into auth_failures (key) values (${key})`;
+  await db()`insert into auth_failures (key) values (${failKey(key)})`;
 }
-const clearFailures = (key: string) => db()`delete from auth_failures where key = ${key}`;
+const clearFailures = (key: string) => db()`delete from auth_failures where key = ${failKey(key)}`;
 /**
  * Client address: behind Vercel's proxy from the header Vercel sets (not spoofable there); behind one's own reverse
  * proxy (nginx, Caddy) only with MIP_TRUST_PROXY=1 from X-Forwarded-For, else the socket, so that one address cannot
@@ -273,22 +275,24 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   const [state] = await sql`select state, updated_at from user_state where user_id = ${user.id}`;
   const cars = await sql`select id, status, created_at, role, variant_id, title, build_year, vin, km, price, currency, sale_date, country, counterparty,
                                 body, gearbox, steering, color_ext, color_int, condition, matching_numbers, accident_free, notes, contract_name,
-                                contract_type, contract_size, contract_deleted_at, reviewed_at, review_note
+                                contract_type, contract_size, contract_deleted_at, reviewed_at, review_note, consent_at, consent_version,
+                                ai_consent, ai_check, ai_checked_at
                          from user_cars where user_id = ${user.id} order by created_at`;
+  const reports = await sql`select post_id, reason, created_at from forum_reports where user_id = ${user.id} order by created_at`;
   const topics = await sql`select id, variant_id, title, created_at, hidden_at from forum_topics where user_id = ${user.id} order by created_at`;
-  const posts = await sql`select id, topic_id, body, created_at, hidden_at from forum_posts where user_id = ${user.id} order by created_at`;
+  const posts = await sql`select id, topic_id, body, created_at, edited_at, hidden_at from forum_posts where user_id = ${user.id} order by created_at`;
   const sessions = await sql`select expires_at from sessions where user_id = ${user.id}`;
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Content-Disposition", `attachment; filename="carbay-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
   res.setHeader("Cache-Control", "no-store");
-  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, forum: { topics, posts }, sessions }, null, 2));
+  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, forum: { topics, posts, reports }, sessions }, null, 2));
 }
 
 /**
- * Deletes the account: sessions, stored state, open car reports with their contracts. Decided reports (approved
- * ones are part of the market model, anonymously) and forum posts stay, detached from the account: no user id, chassis
- * number, notes or author name any more.
+ * Deletes the account: sessions, stored state, request counters, reports of forum posts and every car report that is
+ * not approved, with its contract. Approved cars are part of the market model and stay, detached from the account (no
+ * user id, chassis number, notes or AI check); so do forum posts, without the author's name.
  */
 async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
   const user = await currentUser(req);
@@ -309,9 +313,11 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
   await db().begin(async (tx) => {
     await tx`delete from sessions where user_id = ${user.id}`;
     await tx`delete from user_state where user_id = ${user.id}`;
-    await tx`delete from user_cars where user_id = ${user.id} and status not in ('approved', 'rejected')`;
-    await tx`update user_cars set user_id = ${gone}, vin = '', notes = null, contract = null, contract_name = null,
+    await tx`delete from user_cars where user_id = ${user.id} and status <> 'approved'`;
+    await tx`update user_cars set user_id = ${gone}, vin = '', notes = null, contract = null, contract_name = null, ai_check = null,
              contract_deleted_at = coalesce(contract_deleted_at, now()) where user_id = ${user.id}`;
+    await tx`delete from forum_reports where user_id = ${user.id}`;
+    await tx`delete from rate_events where key like ${"%:" + user.id}`;
     await tx`update forum_topics set user_id = ${gone}, username = '[gelöscht]' where user_id = ${user.id}`;
     await tx`update forum_posts set user_id = ${gone}, username = '[gelöscht]' where user_id = ${user.id}`;
     await tx`delete from users where id = ${user.id}`;
@@ -322,6 +328,8 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
 
 // ------------------------------------------------------------------------------------------------ gate
 const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-touch-icon.png", "/brand/carbay-wordmark.svg"]);
+// the typefaces are served from this site (public/fonts), not from Google; the sign-in page needs them too
+const isOpen = (path: string) => OPEN.has(path) || /^\/fonts\/[\w.-]+\.(woff2|txt)$/.test(path);
 
 /** Handles the request if it must not reach the app (sign-in page, auth API, or no session). Returns true then. */
 export async function authGate(req: IncomingMessage, res: ServerResponse): Promise<boolean> {
@@ -340,7 +348,7 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     res.end(LOGIN_PAGE);
     return true;
   }
-  if (OPEN.has(url.pathname)) return false;
+  if (isOpen(url.pathname)) return false;
   // Impressum and privacy notice must be reachable without an account; signed in, the app renders the same texts
   if ((url.pathname === "/impressum" || url.pathname === "/datenschutz") && !(await currentUser(req))) {
     sendLegalPage(res, url.pathname.slice(1) as "impressum" | "datenschutz", url.searchParams.get("lang"));
@@ -389,12 +397,14 @@ const LOGIN_PAGE = `<!doctype html>
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
 <link rel="icon" href="/favicon-32.png?v=3" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300..600&family=Libre+Caslon+Display&family=Libre+Caslon+Text&display=swap" rel="stylesheet" />
+<link rel="preload" href="/fonts/jost-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 <meta name="theme-color" content="#efe7d7" />
 <title>Anmelden – Carbay</title>
 <style>
+  @font-face { font-family:"Jost"; font-style:normal; font-weight:300 600; font-display:swap; src:url(/fonts/jost-latin-ext-wght-normal.woff2) format("woff2");
+    unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family:"Jost"; font-style:normal; font-weight:300 600; font-display:swap; src:url(/fonts/jost-latin-wght-normal.woff2) format("woff2");
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   :root { --bg:#efe7d7; --panel:#f7f2e8; --line:#dccfb8; --line2:#c6b699; --ink:#3a2a1d; --muted:#78624d; --faint:#a38f77; --gold:#8b6232; --down:#9a3b2c; }
   * { box-sizing: border-box; }
   body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px;
@@ -420,6 +430,7 @@ const LOGIN_PAGE = `<!doctype html>
   .lang button { background:none; border:0; font:inherit; color:var(--faint); cursor:pointer; padding:2px 4px; }
   .lang button[aria-pressed="true"] { color:var(--ink); }
   .legal { text-align:center; margin-top:14px; font-size:12px; } .legal a { color:var(--faint); text-decoration:none; margin:0 6px; } .legal a:hover { color:var(--ink); }
+  .note { font-size:12.5px; line-height:1.45; color:var(--muted); margin:14px 0 0; } .note a { color:inherit; }
 </style>
 </head>
 <body>
@@ -445,6 +456,7 @@ const LOGIN_PAGE = `<!doctype html>
       </div>
       <button class="submit" id="submit" type="submit"></button>
       <p class="err" id="err" role="alert"></p>
+      <p class="note" id="note" hidden><span data-de="Für das Konto speichern wir nur Benutzernamen und einen Hash des Passworts, keine E-Mail-Adresse. Details in der " data-en="For the account we store only the username and a hash of the password, no email address. Details in the "></span><a href="/datenschutz" data-de="Datenschutzerklärung" data-en="privacy notice"></a>.</p>
     </form>
   </div>
   <div class="lang"><button type="button" data-lang="de">DE</button> | <button type="button" data-lang="en">EN</button></div>
@@ -479,6 +491,7 @@ const LOGIN_PAGE = `<!doctype html>
     $("tab-login").setAttribute("aria-selected", String(!reg));
     $("tab-register").setAttribute("aria-selected", String(reg));
     $("repeat-wrap").hidden = !reg;
+    $("note").hidden = !reg;
     $("password").autocomplete = reg ? "new-password" : "current-password";
     $("uhint").textContent = reg ? T[lang].uhint : "";
     $("phint").textContent = reg ? T[lang].phint : "";
@@ -522,8 +535,8 @@ const LOGIN_SCRIPT_HASH = createHash("sha256").update(LOGIN_PAGE.match(/<script>
 const LOGIN_CSP = [
   "default-src 'none'",
   `script-src 'sha256-${LOGIN_SCRIPT_HASH}'`,
-  "style-src 'unsafe-inline' https://fonts.googleapis.com",
-  "font-src https://fonts.gstatic.com",
+  "style-src 'unsafe-inline'",
+  "font-src 'self'",
   "img-src 'self'",
   "connect-src 'self'",
   "base-uri 'none'",

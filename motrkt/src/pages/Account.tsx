@@ -47,8 +47,8 @@ export default function Account() {
       <Card title={t("Meine Daten", "My data")} sub={t("Alles, was zu diesem Konto gespeichert ist, als JSON-Datei.", "Everything stored for this account, as a JSON file.")}>
         <p className="text-[14px] text-muted">
           {t(
-            "Kontodaten, Watchlist, Portfolio, Preisalarme, gemerkte Inserate, gemeldete Fahrzeuge (ohne Vertragsdateien) und Forumsbeiträge.",
-            "Account details, watchlist, portfolio, price alerts, saved listings, reported cars (without contract files) and forum posts.",
+            "Kontodaten, Watchlist, Portfolio, Preisalarme, gemerkte Inserate, gemeldete Fahrzeuge mit Einwilligung und KI-Ergebnis (ohne Vertragsdateien), Forumsbeiträge und Ihre Meldungen von Beiträgen. Einzelne Fahrzeugmeldungen löschen Sie im Portfolio.",
+            "Account details, watchlist, portfolio, price alerts, saved listings, reported cars with consent and AI result (without contract files), forum posts and your reports of posts. Single car reports can be deleted in the portfolio.",
           )}
         </p>
         <a href="/api/auth/export" download className={cn("btn mt-4", demo && "pointer-events-none opacity-50")}>
@@ -130,8 +130,8 @@ function DeleteCard({ disabled }: { disabled: boolean }) {
     setErr("");
     const ok = await confirm(
       t(
-        "Konto, Sitzungen, Watchlist, Portfolio, Alarme und offene Fahrzeugmeldungen samt Verträgen werden gelöscht. Geprüfte Fahrzeuge und Forumsbeiträge bleiben ohne Bezug zum Konto erhalten. Das lässt sich nicht rückgängig machen.",
-        "Account, sessions, watchlist, portfolio, alerts and open car reports with their contracts will be deleted. Reviewed cars and forum posts remain, detached from the account. This cannot be undone.",
+        "Konto, Sitzungen, Watchlist, Portfolio, Alarme und alle nicht freigegebenen Fahrzeugmeldungen samt Verträgen werden gelöscht. Freigegebene Fahrzeuge (ohne Fahrgestellnummer und Notizen) und Forumsbeiträge bleiben ohne Bezug zum Konto erhalten; wer das nicht möchte, löscht sie vorher im Portfolio bzw. im Forum. Das lässt sich nicht rückgängig machen.",
+        "Account, sessions, watchlist, portfolio, alerts and all car reports that are not approved, with their contracts, will be deleted. Approved cars (without chassis number and notes) and forum posts remain, detached from the account; to avoid that, delete them in the portfolio or the forum first. This cannot be undone.",
       ),
       { title: t("Konto endgültig löschen?", "Delete the account for good?"), confirmLabel: t("Endgültig löschen", "Delete for good") },
     );
@@ -140,7 +140,8 @@ function DeleteCard({ disabled }: { disabled: boolean }) {
     try {
       await api("/api/auth/delete", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password }) });
       try {
-        localStorage.removeItem("mip:v1");
+        for (const k of Object.keys(localStorage)) if (k !== "mip-lang" && k !== "mip-theme") localStorage.removeItem(k);
+        sessionStorage.clear();
       } catch {
         /* storage blocked */
       }

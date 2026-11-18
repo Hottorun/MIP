@@ -32,7 +32,19 @@ type HiddenItems = Pick<Persisted, "watchlist" | "portfolio" | "alerts">;
  * Split stored data into what the current catalog shows and items of brands switched off in src/config.ts.
  * Hidden items are written back unchanged on every save, so nothing is lost when a brand is re-enabled.
  */
-function partition(stored: Persisted): { visible: Persisted; hidden: HiddenItems } {
+function partition(raw: Persisted): { visible: Persisted; hidden: HiddenItems } {
+  // a hand-edited or older copy (browser or server) may hold null or another type where a list belongs
+  const list = <T,>(v: T[] | unknown): T[] => (Array.isArray(v) ? v : []);
+  const stored: Persisted = {
+    ...raw,
+    watchlist: list<string>(raw.watchlist),
+    alerts: list<PriceAlert>(raw.alerts),
+    portfolio: list<Holding>(raw.portfolio),
+    savedListings: list<string>(raw.savedListings),
+    readNotifications: list<string>(raw.readNotifications),
+    chat: list<ChatMessage>(raw.chat),
+    lastVariantId: typeof raw.lastVariantId === "string" ? raw.lastVariantId : DEFAULT_VARIANT_ID,
+  };
   // Former variants (e.g. GT3 Touring) live on as an option of another variant.
   const state: Persisted = {
     ...stored,
@@ -78,6 +90,23 @@ function toStored(state: Persisted): Persisted {
 }
 
 const SYNC_URL = "/api/zustand";
+const OWNER_KEY = "mip:owner";
+
+/**
+ * Notes whose account the browser's copy belongs to (the tag from /api/zustand). True when the copy was left by
+ * another account, e.g. a session that ran out without signing out: it must then be neither shown nor uploaded.
+ * A copy from before the tag existed counts as the current account's.
+ */
+function leftByAnotherAccount(owner: unknown): boolean {
+  if (typeof owner !== "string" || !owner) return false;
+  try {
+    const before = localStorage.getItem(OWNER_KEY);
+    localStorage.setItem(OWNER_KEY, owner);
+    return before !== null && before !== owner;
+  } catch {
+    return false;
+  }
+}
 const SYNC_DELAY = 800;
 
 function useStoreValue() {
@@ -109,15 +138,22 @@ function useStoreValue() {
     let live = true;
     fetch(SYNC_URL, { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j: { state: Partial<Persisted> | null; sync: boolean } | null) => {
-        if (!live || !j?.sync) {
+      .then((j: { state: Partial<Persisted> | null; sync: boolean; owner?: string } | null) => {
+        if (!live) return void (sync.current = "off");
+        const foreign = leftByAnotherAccount(j?.owner);
+        const empty = () => {
+          hiddenItems = { watchlist: [], portfolio: [], alerts: [] };
+          return { ...DEFAULT_STATE };
+        };
+        if (!j?.sync) {
           sync.current = "off";
+          if (foreign) setState(empty);
           return;
         }
         if (j.state) {
           // the server copy replaces lists and the last variant; the chat stays as it is in this browser
           setState((s) => {
-            const { visible, hidden } = partition({ ...DEFAULT_STATE, ...j.state, chat: s.chat });
+            const { visible, hidden } = partition({ ...DEFAULT_STATE, ...j.state, chat: foreign ? [] : s.chat });
             hiddenItems = hidden;
             return visible;
           });
@@ -125,7 +161,7 @@ function useStoreValue() {
           window.setTimeout(() => (sync.current = "on"), 0);
         } else {
           sync.current = "on";
-          setState((s) => ({ ...s })); // first upload of what this browser has
+          setState((s) => (foreign ? empty() : { ...s })); // first upload of what this browser has, if it is this account's
         }
       })
       .catch(() => (sync.current = "off"));

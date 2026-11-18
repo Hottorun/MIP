@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { createHash } from "node:crypto";
 import { readText } from "./body.ts";
 import { currentUser, isDemo } from "./auth.ts";
 import { db } from "./db.ts";
@@ -7,7 +8,8 @@ import { db } from "./db.ts";
  * The user's app state (db/migrations/007_user_state.sql): watchlist, portfolio, alerts, saved listings, read
  * notifications and the last opened variant as one JSON document, last write wins.
  *
- *   GET /api/zustand   -> { state: {...} | null, sync: boolean }   (sync false: shared demo account, browser only)
+ *   GET /api/zustand   -> { state: {...} | null, sync: boolean, owner }   (sync false: shared demo account, browser only)
+ *                         owner: a tag for the account (not its name), so the browser can tell whose copy it holds
  *   PUT /api/zustand   <- the document (JSON, at most 200 kB)      -> { ok: true }
  */
 
@@ -45,11 +47,12 @@ export function cleanState(raw: unknown): Record<string, unknown> | null {
 export async function handleUserState(req: IncomingMessage, res: ServerResponse) {
   const user = await currentUser(req);
   if (!user) return sendJson(res, 401, { error: "not signed in" });
-  if (isDemo(user)) return sendJson(res, req.method === "GET" ? 200 : 403, { state: null, sync: false });
+  const owner = createHash("sha256").update("state-owner:" + user.id).digest("hex").slice(0, 16);
+  if (isDemo(user)) return sendJson(res, req.method === "GET" ? 200 : 403, { state: null, sync: false, owner });
 
   if (req.method === "GET") {
     const [row] = await db()<{ state: unknown }[]>`select state from user_state where user_id = ${user.id}`;
-    return sendJson(res, 200, { state: row?.state ?? null, sync: true });
+    return sendJson(res, 200, { state: row?.state ?? null, sync: true, owner });
   }
   if (req.method === "PUT") {
     if (!sameOrigin(req)) return sendJson(res, 403, { error: "origin" });

@@ -118,7 +118,9 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
       ],
       messages,
     });
-    req.on("close", () => {
+    // the response's "close", not the request's: the request closes as soon as its body is read, long before the
+    // answer is done, so a listener there never sees the visitor leaving and the paid generation runs on
+    res.on("close", () => {
       if (!res.writableEnded) stream.abort();
     });
 
@@ -171,7 +173,8 @@ async function handleClientError(req: IncomingMessage, res: ServerResponse) {
   const s = (v: unknown, n: number) => (typeof v === "string" ? v.slice(0, n) : "");
   console.error(
     "client error",
-    JSON.stringify({ user: user.username, kind: s(body.kind, 40), message: s(body.message, 500), page: s(body.page, 300), stack: s(body.stack, 2000), ua: s(req.headers["user-agent"], 200), at: new Date().toISOString() }),
+    // no username: the log needs the error, not who ran into it
+    JSON.stringify({ kind: s(body.kind, 40), message: s(body.message, 500), page: s(body.page, 300), stack: s(body.stack, 2000), ua: s(req.headers["user-agent"], 200), at: new Date().toISOString() }),
   );
   res.statusCode = 204;
   res.end();

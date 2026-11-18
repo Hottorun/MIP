@@ -17,6 +17,15 @@ describe("parseReport (car report form)", () => {
     const { errors } = parseReport({ ...valid, role: "x", variant_id: "nope", build_year: 1900, vin: "!!", km: -1, price: 1, currency: "XXX", sale_date: "2099-01-01", country: "Deutschland", counterparty: "freund", consent: false }, "2026-11-16");
     expect(Object.keys(errors).sort()).toEqual(["build_year", "consent", "counterparty", "country", "currency", "km", "price", "role", "sale_date", "variant_id", "vin"]);
   });
+  it("rejects a day that does not exist", () => {
+    expect(parseReport({ ...valid, sale_date: "2024-02-31" }, "2026-11-16").errors).toEqual({ sale_date: "date" });
+    expect(parseReport({ ...valid, sale_date: "2024-02-29" }, "2026-11-16").errors).toEqual({});
+  });
+  it("allows the AI pre-check only when the box was ticked", () => {
+    expect(parseReport(valid, "2026-11-16").report.ai_consent).toBe(false);
+    expect(parseReport({ ...valid, ai_consent: "yes" }, "2026-11-16").report.ai_consent).toBe(false);
+    expect(parseReport({ ...valid, ai_consent: true }, "2026-11-16").report.ai_consent).toBe(true);
+  });
   it("normalises the chassis number and trims text", () => {
     const { report } = parseReport({ ...valid, vin: " wp0 zzz 96 ", notes: "  hello  " }, "2026-11-16");
     expect(report.vin).toBe("WP0ZZZ96");
