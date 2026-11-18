@@ -1,5 +1,5 @@
 {
- "asOf": "2026-11-17",
+ "asOf": "2026-11-18",
  "sales": [
   {
    "house": "Gooding & Company",
@@ -35,6 +35,17 @@
    "online": false
   },
   {
+   "house": "Aguttes",
+   "name": "Automobiles de collection | La Vente d'Automne",
+   "date": "2026-11-29",
+   "end": null,
+   "place": "",
+   "country": "FR",
+   "url": "https://www.aguttes.com/catalogue/172906bc-bd74-4a47-92b2-8fa0cd7ebcf3",
+   "porsche": 13,
+   "online": false
+  },
+  {
    "house": "Mecum",
    "name": "Kansas City 2026",
    "date": "2026-12-03",
@@ -64,7 +75,7 @@
    "place": "",
    "country": "US",
    "url": "https://www.mecum.com/auctions/kissimmee-2027/",
-   "porsche": 23,
+   "porsche": 25,
    "online": false
   },
   {
