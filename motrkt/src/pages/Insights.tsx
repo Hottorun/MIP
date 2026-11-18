@@ -28,7 +28,7 @@ import { auctionCalendar, auctionWindows, auctionYears, bodyPremium, generationR
 import { cn, date, eur, num, pct, trendClass } from "../lib/format";
 import { axisProps, Card, ChartTooltipBox, Delta, Section, Segmented, Sparkline } from "../components/ui";
 import { TrendHeatmap } from "../components/insights/TrendHeatmap";
-import { Lock, Locked } from "../components/premium/Locked";
+import { Lock, Locked, useLock } from "../components/premium/Locked";
 import { PremiumBanner } from "../components/premium/Upgrade";
 import { usePlan } from "../lib/plan";
 import { brandColor, yearTicks } from "../components/insights/palette";
@@ -709,7 +709,10 @@ function Movers() {
 function HiddenGems() {
   const [all, setAll] = useState(false);
   const gems = hiddenGems();
-  if (!gems.length) return null;
+  // with the lite data (no value histories, src/lib/plan.tsx) there is nothing to find: the chapter keeps its
+  // heading in the locked preview all the same
+  const lock = useLock();
+  if (!gems.length) return lock ? <Section eyebrow={chapterLabel("geheimtipps")} title={t("Geheimtipps", "Hidden gems")} sub={t("Varianten, die unter ihrem langfristigen Wertetrend liegen, aber wieder zulegen.", "Variants trading below their long-term value trend that are gaining again.")}><div className="h-40 rounded-[4px] bg-panel-2" /></Section> : null;
   const shown = all ? gems : gems.slice(0, 6);
   const top = gems[0];
   const topV = variantById.get(top.id)!;

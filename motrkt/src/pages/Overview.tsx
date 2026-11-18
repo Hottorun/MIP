@@ -16,7 +16,7 @@ import {
   getMetrics,
   marketIndex,
   sliceRange,
-  topMovers,
+  homeWinners,
 } from "../data/market";
 import type { Sale } from "../data/types";
 import { mixHouses } from "../lib/houseMix";
@@ -60,16 +60,7 @@ export default function Overview() {
     [chartData, range],
   );
 
-  const winners = useMemo(
-    () =>
-      topMovers(
-        variants
-          .filter((v) => v.measured && v.marketPhotos.length > 0)
-          .map((v) => v.id),
-        4,
-      ).winners,
-    [],
-  );
+  const winners = useMemo(() => homeWinners(), []);
   const notable = useMemo(() => {
     const from = AS_OF - 30 * DAY;
     const out: Sale[] = [];

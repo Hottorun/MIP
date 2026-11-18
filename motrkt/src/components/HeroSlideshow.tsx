@@ -12,6 +12,8 @@ import type { Photo } from "../data/real";
 import type { Variant } from "../data/types";
 import { cn, num } from "../lib/format";
 import { Delta, Money } from "./ui";
+import { LockedValue } from "./premium/Locked";
+import { usePlan } from "../lib/plan";
 import { PhotoCredit } from "./CarImage";
 import { t } from "../i18n";
 import { photoCaption } from "../i18n/terms";
@@ -53,6 +55,7 @@ function useReducedMotion() {
 }
 
 export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
+  const lite = !usePlan().premium; // the 12-month change is premium (src/lib/plan.tsx)
   const slides = useMemo<Slide[]>(
     () =>
       SLIDES.flatMap((s) => {
@@ -197,7 +200,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                 className="mt-1 block text-[30px] leading-tight sm:text-[34px]"
               />
               <div className="mt-0.5 text-[13px]">
-                <Delta value={metrics.change12m} className="hero-delta" />{" "}
+                {lite ? <LockedValue reason="history" className="!text-white/80 [&>span]:!text-white" /> : <Delta value={metrics.change12m} className="hero-delta" />}{" "}
                 <span className="text-white/60">{t("in 12 Monaten", "in 12 months")}</span>
               </div>
             </div>

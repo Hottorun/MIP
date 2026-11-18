@@ -68,6 +68,8 @@ type Raw = {
   bias: Record<Channel, number>;
   offsetPairs: Record<string, { pairs: Record<string, [number, number]>; own: boolean }>;
   minN: number;
+  /** Only in the lite copy of the model (scripts/data/lite.ts), see LITE below. */
+  lite?: { index: [number, number][]; winners: { id: string; change: number }[] };
 };
 
 const raw = data as unknown as Raw;
@@ -116,6 +118,13 @@ export const SEGMENT_LABEL: Record<string, string> = {
   COLLECT: "Klassiker und Rennwagen gesamt",
   MODERN: "Moderne Porsche gesamt",
 };
+
+/**
+ * Set when the browser was given the lite copy of the data (an account without premium, src/lib/plan.tsx): the
+ * variants then carry their value but no history, and the sales no prices. What the lite version still shows of
+ * the market as a whole comes ready-made from here: the overall index and the biggest gains of the start page.
+ */
+export const LITE = raw.lite ?? null;
 
 export const MODEL_AS_OF = Date.parse(`${raw.asOf}T00:00:00Z`);
 export const MODEL_SALES_TOTAL = raw.total;

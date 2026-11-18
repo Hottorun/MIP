@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { useStore } from "../state/store";
 import { t } from "../i18n";
 import type { UserCar } from "./userCars";
+import { LITE } from "../data/real/model";
 
 /**
  * Lite and premium. Every account starts as lite: catalogue, market value of each variant, listings, portfolio, forum
@@ -9,8 +10,9 @@ import type { UserCar } from "./userCars";
  * auction archive, Insights and the Co-Pilot. Premium is earned with a purchase contract or an appraisal
  * (server/userCars.ts); reviewers always have it.
  *
- * The market data ships with the app, so the locks on the pages are presentation; the Co-Pilot is locked on the
- * server as well (server/api.ts).
+ * The locks on the pages are presentation; what makes them hold is the data. A lite account's browser gets the lite
+ * copies of the market data (scripts/data/lite.ts: no value histories, no sale prices), the server refuses it the
+ * full files (server/auth.ts) and the Co-Pilot (server/api.ts).
  */
 
 /** What the user was looking at when the upgrade dialog opened: it picks the headline. */
@@ -42,6 +44,7 @@ type Plan = {
 
 const CACHE_KEY = "mip:plan";
 const PREVIEW_KEY = "mip:lite-preview";
+const RELOAD_KEY = "mip:premium-reload";
 const RECHECK_MS = 60_000;
 
 const read = (store: () => Storage, key: string) => {
@@ -93,6 +96,13 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       write(() => localStorage, CACHE_KEY, acc.premium ? "premium" : "lite");
       if (known.current === false && acc.premium) toast(t("Premium ist freigeschaltet. Viel Freude damit!", "Premium is unlocked. Enjoy!"));
       known.current = acc.premium;
+      // Premium, but the browser holds the lite data (it was loaded before the approval): load the app again with the
+      // full data. Once only, so a server that still refuses the full files cannot send the page in circles.
+      if (acc.premium && LITE && read(() => sessionStorage, RELOAD_KEY) !== "1") {
+        write(() => sessionStorage, RELOAD_KEY, "1");
+        window.setTimeout(() => window.location.reload(), 1800);
+      }
+      if (!LITE) write(() => sessionStorage, RELOAD_KEY, null);
       if (acc.premium) return;
       // a lite user's submissions: the floating button and the dialog show where the review stands
       const f = await fetch("/api/fahrzeuge", { credentials: "same-origin" });
