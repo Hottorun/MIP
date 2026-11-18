@@ -9,6 +9,8 @@ import { useStore } from "../../state/store";
 import { cn, eur, fromDisplay, num, pct, liters, safeUrl } from "../../lib/format";
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
+import { Locked, LockedValue } from "../premium/Locked";
+import { usePlan } from "../../lib/plan";
 import { PhotoCredit, fillsFrame, frameRatio } from "../CarImage";
 import { isEn, t } from "../../i18n";
 import { paintName, tr, photoCaption } from "../../i18n/terms";
@@ -52,6 +54,8 @@ export function Hero({ variant, picked, body, onBody }: { variant: Variant; pick
 
 function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: string[] } & BodyProps) {
   const { watchlist, toggleWatch, alerts, toast } = useStore();
+  // lite (src/lib/plan.tsx): the value itself is free; its trend, its range and the profile below are premium
+  const lite = !usePlan().premium;
   const [alertOpen, setAlertOpen] = useState(false);
   const brand = brandById.get(variant.brandId)!;
   const model = modelById.get(variant.modelId)!;
@@ -124,7 +128,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
       {!variant.measured ? (
         <NoValue variant={variant} />
       ) : spread && !picked.length ? (
-        <SpreadValue variant={variant} spread={spread} value={m.value * (eff?.factor ?? 1)} change={m.change12m} label={body && eff ? t(`Marktwert ${tr(body)}`, `Market value, ${tr(body)}`) : t("Marktwert Deutschland", "Market value, Germany")}>
+        <SpreadValue lite={lite} variant={variant} spread={spread} value={m.value * (eff?.factor ?? 1)} change={m.change12m} label={body && eff ? t(`Marktwert ${tr(body)}`, `Market value, ${tr(body)}`) : t("Marktwert Deutschland", "Market value, Germany")}>
           <BasisLine variant={variant} range={false} />{" · "}
           <button
             onClick={() => document.getElementById("belege")?.scrollIntoView({ behavior: "smooth" })}
@@ -158,11 +162,11 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
             </span>
           ) : (
             <span className="text-[14px]">
-              <Delta value={m.change12m} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
+              {lite ? <LockedValue reason="history" /> : <Delta value={m.change12m} arrow={false} />} <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
             </span>
           )}
         </div>
-        {range && !picked.length && <RangeBar lo={Math.round(range.lo / 1000) * 1000} hi={Math.round(range.hi / 1000) * 1000} median={Math.round((m.value * factor) / 1000) * 1000} />}
+        {range && !picked.length && !lite && <RangeBar lo={Math.round(range.lo / 1000) * 1000} hi={Math.round(range.hi / 1000) * 1000} median={Math.round((m.value * factor) / 1000) * 1000} />}
         {body && (
           <p className="mt-2 text-[13px] text-muted">
             {eff
@@ -179,7 +183,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
         <ThinBasis variant={variant} />
         <p className="mt-2 text-[13px] text-faint">
           {picked.length ? `${t("Median ohne Optionen", "Median without options")} ${eur(Math.round(m.value / 1000) * 1000)}. ` : ""}
-          <BasisLine variant={variant} range={!range || picked.length > 0} />{" · "}
+          <BasisLine variant={variant} range={!lite && (!range || picked.length > 0)} />{" · "}
           <button
             onClick={() => document.getElementById("belege")?.scrollIntoView({ behavior: "smooth" })}
             className="text-muted underline decoration-line-2 underline-offset-2 hover:text-ink"
@@ -202,16 +206,18 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
       </div>
       )}
 
-      <p className="mt-8 font-serif text-[16px] leading-[1.7] text-ink/90">{m.thesis}</p>
+      <Locked reason="profile" teaser={t("Kurzprofil, Produktion, Motor und Neupreis", "Profile, production, engine and original price")} height={210} className="mt-8">
+        <p className={cn("font-serif text-[16px] leading-[1.7] text-ink/90", !lite && "mt-8")}>{m.thesis}</p>
 
-      <dl className="mt-8 border-t border-line text-[14px]">
-        {facts.map(([k, v]) => (
-          <div key={k} className="flex items-baseline justify-between gap-4 border-b border-line py-2.5">
-            <dt className="text-muted">{k}</dt>
-            <dd className="text-right">{v}</dd>
-          </div>
-        ))}
-      </dl>
+        <dl className="mt-8 border-t border-line text-[14px]">
+          {facts.map(([k, v]) => (
+            <div key={k} className="flex items-baseline justify-between gap-4 border-b border-line py-2.5">
+              <dt className="text-muted">{k}</dt>
+              <dd className="text-right">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </Locked>
 
       {siblings.length > 1 && (
         <Picker label={t("Varianten", "Variants")}>
@@ -524,7 +530,7 @@ function AlertModal({ open, onClose, variant }: { open: boolean; onClose: () => 
  * Value of an uncertain variant (early classics, widely scattered records): the median as usual, then a bar with the
  * typical range (middle half of the records) and where the median sits in it, with a word on why the range matters here.
  */
-function SpreadValue({ variant, spread, value, change, label, children }: { variant: Variant; spread: { lo: number; hi: number }; value: number; change: number; label: string; children: React.ReactNode }) {
+function SpreadValue({ variant, spread, value, change, label, lite, children }: { variant: Variant; spread: { lo: number; hi: number }; value: number; change: number; label: string; /** lite version: the value alone */ lite?: boolean; children: React.ReactNode }) {
   const round = (v: number) => Math.round(v / 1000) * 1000;
   const early = variant.years[0] < EARLY_CLASSIC_BEFORE;
   return (
@@ -534,21 +540,33 @@ function SpreadValue({ variant, spread, value, change, label, children }: { vari
       <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <Money value={round(value)} className="text-[40px] leading-none" />
         <span className="text-[14px]">
-          <Delta value={change} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
+          {lite ? <LockedValue reason="history" /> : <Delta value={change} arrow={false} />} <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
         </span>
       </div>
-      <RangeBar lo={round(spread.lo)} hi={round(spread.hi)} median={round(value)} />
-      <p className="mt-3 max-w-md text-[13px] leading-relaxed text-muted">
-        {early
-          ? t(
-              "Bei frühen Klassikern bestimmen Zustand, Originalität und Historie den Preis stärker als bei jüngeren Autos. Die Spanne zeigt die mittlere Hälfte der belegten Preise; ein gutes Exemplar kann darüber, ein Projekt deutlich darunter liegen.",
-              "With early classics, condition, originality and history move the price far more than on younger cars. The range shows the middle half of the recorded prices; a fine example can sit above it, a project well below.",
-            )
-          : t(
-              "Die belegten Preise dieser Variante streuen deutlich, oder es gibt noch wenige Belege. Die Spanne zeigt die mittlere Hälfte der Preise; Ausstattung, Laufleistung und Zustand entscheiden, wo ein Auto darin liegt.",
-              "The recorded prices of this variant scatter noticeably, or there are few records so far. The range shows the middle half of the prices; specification, mileage and condition decide where a car sits in it.",
-            )}
-      </p>
+      {lite ? (
+        // the range is premium; that the prices scatter is said all the same, so the one number is not taken for more than it is
+        <p className="mt-3 max-w-md text-[13px] leading-relaxed text-muted">
+          {t(
+            "Die belegten Preise dieser Variante streuen deutlich. Die typische Spanne sehen Sie mit Premium.",
+            "The recorded prices of this variant scatter noticeably. Premium shows the typical range.",
+          )}
+        </p>
+      ) : (
+        <>
+          <RangeBar lo={round(spread.lo)} hi={round(spread.hi)} median={round(value)} />
+          <p className="mt-3 max-w-md text-[13px] leading-relaxed text-muted">
+            {early
+              ? t(
+                  "Bei frühen Klassikern bestimmen Zustand, Originalität und Historie den Preis stärker als bei jüngeren Autos. Die Spanne zeigt die mittlere Hälfte der belegten Preise; ein gutes Exemplar kann darüber, ein Projekt deutlich darunter liegen.",
+                  "With early classics, condition, originality and history move the price far more than on younger cars. The range shows the middle half of the recorded prices; a fine example can sit above it, a project well below.",
+                )
+              : t(
+                  "Die belegten Preise dieser Variante streuen deutlich, oder es gibt noch wenige Belege. Die Spanne zeigt die mittlere Hälfte der Preise; Ausstattung, Laufleistung und Zustand entscheiden, wo ein Auto darin liegt.",
+                  "The recorded prices of this variant scatter noticeably, or there are few records so far. The range shows the middle half of the prices; specification, mileage and condition decide where a car sits in it.",
+                )}
+          </p>
+        </>
+      )}
       <p className="mt-2 text-[13px] text-faint">{children}</p>
     </div>
   );

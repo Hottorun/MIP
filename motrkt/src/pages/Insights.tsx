@@ -28,6 +28,9 @@ import { auctionCalendar, auctionWindows, auctionYears, bodyPremium, generationR
 import { cn, date, eur, num, pct, trendClass } from "../lib/format";
 import { axisProps, Card, ChartTooltipBox, Delta, Section, Segmented, Sparkline } from "../components/ui";
 import { TrendHeatmap } from "../components/insights/TrendHeatmap";
+import { Lock, Locked } from "../components/premium/Locked";
+import { PremiumBanner } from "../components/premium/Upgrade";
+import { usePlan } from "../lib/plan";
 import { brandColor, yearTicks } from "../components/insights/palette";
 import { locale, t } from "../i18n";
 
@@ -55,7 +58,10 @@ const NAV = () => [
 const chapter = (id: string) => String(NAV().findIndex((n) => n.id === id) + 1).padStart(2, "0");
 
 export default function Insights() {
+  // lite (src/lib/plan.tsx): the report is premium as a whole. Title, chapter bar and every chapter heading stay, so
+  // the page reads as its own table of contents; the chapters themselves are blurred.
   return (
+    <Lock reason="insights" height={230}>
     <div>
       <InsightsHero />
       <SectionNav />
@@ -106,6 +112,7 @@ export default function Insights() {
         </Anchor>
       </div>
     </div>
+    </Lock>
   );
 }
 
@@ -336,6 +343,7 @@ function InsightsHero() {
   const measured = variants.filter((v) => v.measured).length;
   const lotsChange = now.lots / before.lots - 1;
   const best = topSellers().rows[0];
+  const { premium } = usePlan();
   return (
     <header>
       <div className="eyebrow text-accent">{t(`Marktbericht · Stand ${date(AS_OF)}`, `Market report · as of ${date(AS_OF)}`)}</div>
@@ -346,7 +354,18 @@ function InsightsHero() {
           `Value trends, auction activity and what drives prices, computed from ${measured} valued variants and every recorded auction result.`,
         )}
       </p>
-      <dl className="mt-8 grid gap-7 border-t border-line pt-6 md:grid-cols-3 md:gap-0">
+      {!premium && (
+        <div className="mt-7">
+          <PremiumBanner reason="insights" title={t(`${NAV().length} Kapitel zum Markt, aus allen erfassten Verkäufen`, `${NAV().length} chapters on the market, from every recorded sale`)}>
+            {t(
+              "Welche Varianten gewinnen, welche unterschätzt sind, was Laufleistung und Karosserie am Preis ändern und wann Auktionen am besten laufen.",
+              "Which variants are gaining, which are underrated, what mileage and body style do to the price and when auctions perform best.",
+            )}
+          </PremiumBanner>
+        </div>
+      )}
+      <Locked reason="insights" teaser={t("Marktindex, meistverkaufte Variante und Auktionsvolumen der letzten 12 Monate", "Market index, best-selling variant and auction volume of the last 12 months")} height={200} className="mt-8">
+      <dl className={cn("grid gap-7 border-t border-line pt-6 md:grid-cols-3 md:gap-0", premium && "mt-8")}>
         <HeroKpi
           className="md:pr-8"
           label={t("Marktindex, 12 Monate", "Market index, 12 months")}
@@ -387,6 +406,7 @@ function InsightsHero() {
           }
         />
       </dl>
+      </Locked>
     </header>
   );
 }

@@ -12,6 +12,8 @@ import { cn, date, eur, eurRange, num, pct } from "../lib/format";
 import { valueSpread } from "../data/real/model";
 import { CarImage } from "../components/CarImage";
 import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps, Money } from "../components/ui";
+import { LockedValue } from "../components/premium/Locked";
+import { usePlan } from "../lib/plan";
 import { t } from "../i18n";
 import { tr } from "../i18n/terms";
 import { UPCOMING_BRANDS, upcomingBrandById, type UpcomingBrand } from "../data/upcoming";
@@ -168,7 +170,12 @@ export default function Models() {
 
   const brandModels = models.filter((m) => !effectiveBrand || m.brandId === effectiveBrand);
 
+  // lite (src/lib/plan.tsx): the catalogue with every market value is free; trend, return, assessment and the
+  // side-by-side comparison are premium
+  const plan = usePlan();
+  const lite = !plan.premium;
   const toggleCompare = (id: string) => {
+    if (lite) return plan.openUpgrade("compare");
     setCompare((c) => {
       if (c.includes(id)) return c.filter((x) => x !== id);
       if (c.length >= MAX_COMPARE) {
@@ -410,9 +417,9 @@ export default function Models() {
                     <td className="text-right">
                       {v.measured ? <ListValue v={v} value={m.value} /> : <FewValue v={v} />}
                     </td>
-                    <td className="text-right">{v.measured ? <Delta value={m.change12m} /> : <span className="text-faint">–</span>}</td>
-                    <td className="text-right tabular-nums">{v.measured ? pct(m.cagr5) : <span className="text-faint">–</span>}</td>
-                    <td>{v.measured ? <RecPill code={m.recommendation.code} label={m.recommendation.label} /> : null}</td>
+                    <td className="text-right">{!v.measured ? <span className="text-faint">–</span> : lite ? <LockedValue reason="history" /> : <Delta value={m.change12m} />}</td>
+                    <td className="text-right tabular-nums">{!v.measured ? <span className="text-faint">–</span> : lite ? <LockedValue reason="history" /> : pct(m.cagr5)}</td>
+                    <td>{!v.measured ? null : lite ? <LockedValue reason="assessment" sample={t("Halten", "Hold")} /> : <RecPill code={m.recommendation.code} label={m.recommendation.label} />}</td>
                     <td onClick={(e) => e.stopPropagation()}>
                       <input type="checkbox" className="accent-[var(--color-gold)]" checked={compare.includes(v.id)} onChange={() => toggleCompare(v.id)} aria-label={t("Vergleichen", "Compare")} />
                     </td>
@@ -613,6 +620,7 @@ function VariantCard({
   onCompare: () => void;
   onOpen: () => void;
 }) {
+  const lite = !usePlan().premium;
   const m = getMetrics(v.id);
   return (
     <div
@@ -647,7 +655,7 @@ function VariantCard({
         <span>
           {yearsLabel(v.years)}, {v.hp} PS
         </span>
-        {v.measured && <Delta value={m.change12m} arrow={false} />}
+        {v.measured && (lite ? <LockedValue reason="history" /> : <Delta value={m.change12m} arrow={false} />)}
       </div>
       <button
         className={cn("mt-2 text-[13px] transition-colors", compared ? "text-ink underline underline-offset-4" : "text-faint hover:text-ink")}
