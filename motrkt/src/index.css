@@ -92,14 +92,15 @@
   --color-rose: #8e3b4a;
 
   /*
-   * Colour accents: slate blue (#7180ac) is the house accent for links, active states and key figures,
+   * Colour accents: deep petrol (#16363c) is the house accent for links, active states and key figures,
    * brass (gold) the second voice, cobalt and Indian red the third and fourth. Every accent has a soft tint for fills.
-   * The accent itself is about 3.5:1 on cream (accent-2 is the darker shade at 5:1); the other text colours stay at
-   * >= 4.5:1. The dark theme redefines each token further down.
+   * The accent is about 12:1 on cream (accent-2 is the darker shade for hover); the other text colours stay at
+   * >= 4.5:1. The dark theme redefines each token further down: there the accent is a light tint of the same hue,
+   * because #16363c itself would vanish on a dark surface, and #16363c becomes the soft fill.
    */
-  --color-accent: #7180ac;
-  --color-accent-2: #586594;
-  --color-accent-soft: #e9ecf5;
+  --color-accent: #16363c;
+  --color-accent-2: #0e2529;
+  --color-accent-soft: #e0ebeb;
   --color-gold-soft: #f3ead8;
   --color-cobalt: #34509c;
   --color-cobalt-soft: #e5e9f5;
@@ -143,9 +144,9 @@
       --color-down: #ee8a7a;
       --color-warn: #e2ac52;
       --color-rose: #e08a9a;
-      --color-accent: #98a5cf;
-      --color-accent-2: #b7c0e0;
-      --color-accent-soft: #1f2437;
+      --color-accent: #8abdc7;
+      --color-accent-2: #b0d6dd;
+      --color-accent-soft: #16363c;
       --color-gold-soft: #33291a;
       --color-cobalt: #93a8ec;
       --color-cobalt-soft: #1f2741;
@@ -179,9 +180,9 @@
     --color-down: #ee8a7a;
     --color-warn: #e2ac52;
     --color-rose: #e08a9a;
-    --color-accent: #98a5cf;
-    --color-accent-2: #b7c0e0;
-    --color-accent-soft: #1f2437;
+    --color-accent: #8abdc7;
+    --color-accent-2: #b0d6dd;
+    --color-accent-soft: #16363c;
     --color-gold-soft: #33291a;
     --color-cobalt: #93a8ec;
     --color-cobalt-soft: #1f2741;
@@ -351,6 +352,10 @@
   .night-band {
     background: linear-gradient(120deg, var(--color-night) 0%, var(--color-night-2) 100%);
     color: var(--color-on-night);
+    /* the band is the accent's own colour, so anything accented on it (focus rings included) takes the light tint */
+    --color-accent: #8abdc7;
+    --color-accent-2: #b0d6dd;
+    --color-accent-soft: #16363c;
   }
 }
 
