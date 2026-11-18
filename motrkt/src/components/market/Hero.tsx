@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
-import { bodyChoices, bodyEffect, brandById, generationById, genName, modelById, modelName, optionFactor, variantById, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
+import { bodyChoices, bodyEffect, brandById, generationById, genName, modelById, modelName, optionFactor, variantName, variantShortTitle, variantTitle, yearsLabel, productionLabel } from "../../data/db";
 import type { Body, Variant } from "../../data/types";
 import { fewRecordsMedian, getMetrics } from "../../data/market";
 import { marketBasis, MIN_RECORDS, SEGMENT_LABEL, valueRange, valueSpread, EARLY_CLASSIC_BEFORE } from "../../data/real/model";
@@ -68,8 +68,6 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
   const watched = watchlist.includes(variant.id);
   const alertCount = alerts.filter((a) => a.variantId === variant.id).length;
   const lineage = gen.name !== model.name ? `${brand.name} ${modelName(model)} (${genName(gen)})` : `${brand.name} ${modelName(model)}`;
-  const siblings = gen.variantIds.map((id) => variantById.get(id)!);
-  const generations = model.generationIds.map((id) => generationById.get(id)!);
 
   const facts: [string, React.ReactNode][] = [
     [t("Produktion", "Production"), productionLabel(variant)],
@@ -206,7 +204,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
       </div>
       )}
 
-      <Locked reason="profile" teaser={t("Kurzprofil, Produktion, Motor und Neupreis", "Profile, production, engine and original price")} height={210} className="mt-8">
+      <Locked reason="profile" height={210} className="mt-8">
         <p className={cn("font-serif text-[16px] leading-[1.7] text-ink/90", !lite && "mt-8")}>{m.thesis}</p>
 
         <dl className="mt-8 border-t border-line text-[14px]">
@@ -219,50 +217,8 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
         </dl>
       </Locked>
 
-      {siblings.length > 1 && (
-        <Picker label={t("Varianten", "Variants")}>
-          {siblings.map((s) => (
-            <PickerLink key={s.id} to={`/markt/${s.id}`} active={s.id === variant.id}>
-              {variantName(s)}
-            </PickerLink>
-          ))}
-        </Picker>
-      )}
-      {generations.length > 1 && (
-        <Picker label={t("Generationen", "Generations")}>
-          {generations.map((g) => (
-            <PickerLink key={g.id} to={`/markt/${g.variantIds[0]}`} active={g.id === gen.id}>
-              {genName(g)}
-            </PickerLink>
-          ))}
-        </Picker>
-      )}
       <AlertModal open={alertOpen} onClose={() => setAlertOpen(false)} variant={variant} />
     </div>
-  );
-}
-
-function Picker({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="mt-7">
-      <div className="mb-2.5 text-[13px] text-muted">{label}</div>
-      <div className="flex flex-wrap gap-1.5">{children}</div>
-    </div>
-  );
-}
-
-function PickerLink({ to, active, children }: { to: string; active: boolean; children: React.ReactNode }) {
-  return (
-    <Link
-      to={to}
-      aria-current={active ? "page" : undefined}
-      className={cn(
-        "rounded-[2px] border px-3 py-1.5 text-[13.5px] transition-colors",
-        active ? "border-accent-fill bg-accent-fill text-on-accent" : "border-line-2 text-ink hover:border-accent hover:text-accent",
-      )}
-    >
-      {children}
-    </Link>
   );
 }
 

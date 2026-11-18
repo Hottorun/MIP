@@ -119,7 +119,7 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
       t("so verarbeiten wir Ihr Dokument", "how we process your document"),
       t("Nur mit Ihrer Einwilligung, nur für die Prüfung und verschlüsselt gespeichert.", "Only with your consent, only for the review, and stored encrypted."),
     ],
-    ["Frankfurt", t("Serverstandort in der EU", "servers in the EU"), t("Anwendung und Datenbank laufen in Frankfurt am Main.", "Application and database run in Frankfurt am Main.")],
+    ["Frankfurt, DE", t("Serverstandort in der EU", "servers in the EU"), t("Anwendung und Datenbank laufen in Frankfurt am Main.", "Application and database run in Frankfurt am Main.")],
   ];
   const promises = [
     t("Schwärzen erlaubt: Namen, Anschriften, Unterschriften und Bankdaten brauchen wir nicht.", "Redact freely: we do not need names, addresses, signatures or bank details."),

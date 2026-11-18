@@ -72,12 +72,9 @@ const SUGGESTION_ICONS = [TrendingUp, GitCompare, ShieldAlert, BarChart2];
 export function Copilot({
   focusVariantId,
   mode = "card",
-  prompt,
 }: {
   focusVariantId?: string;
   mode?: "card" | "full";
-  /** Send a prompt from outside (e.g. a prompt library). Change `nonce` to send the same text again. */
-  prompt?: { text: string; nonce: number };
 }) {
   const { chat, setChat, portfolio, watchlist, toast } = useStore();
   const status = useCopilotStatus();
@@ -128,13 +125,6 @@ export function Copilot({
       abort.current = null;
     }
   }
-
-  const lastPrompt = useRef<number | null>(null);
-  useEffect(() => {
-    if (!prompt || prompt.nonce === lastPrompt.current) return;
-    lastPrompt.current = prompt.nonce;
-    void send(prompt.text);
-  }, [prompt?.nonce]); // send() is recreated every render; only a new nonce should trigger it
 
   const items = mode === "card" ? chat.slice(-2) : chat;
   const sugg = suggestions(focusVariantId);

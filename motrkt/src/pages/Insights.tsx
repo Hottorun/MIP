@@ -364,7 +364,7 @@ function InsightsHero() {
           </PremiumBanner>
         </div>
       )}
-      <Locked reason="insights" teaser={t("Marktindex, meistverkaufte Variante und Auktionsvolumen der letzten 12 Monate", "Market index, best-selling variant and auction volume of the last 12 months")} height={200} className="mt-8">
+      <Locked reason="insights" height={200} className="mt-8">
       <dl className={cn("grid gap-7 border-t border-line pt-6 md:grid-cols-3 md:gap-0", premium && "mt-8")}>
         <HeroKpi
           className="md:pr-8"

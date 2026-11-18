@@ -33,8 +33,7 @@ import {
   axisProps,
   Money,
 } from "../components/ui";
-import { Lock, LockedValue } from "../components/premium/Locked";
-import { usePlan } from "../lib/plan";
+import { Lock } from "../components/premium/Locked";
 import { yearTicks } from "../components/insights/palette";
 import { t } from "../i18n";
 
@@ -256,7 +255,7 @@ export default function Overview() {
       </Section>
 
       <div className="grid gap-16 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-12">
-        <Lock reason="auctions" teaser={t("Die Top-Zuschläge des Monats, mit Preis und Auktionshaus", "The month's top hammer prices, with price and auction house")} height={260}>
+        <Lock reason="auctions" height={260}>
         <Section
           eyebrow={t("Top-Zuschläge", "Top hammer prices")}
           title={t("Bemerkenswerte Verkäufe", "Notable sales")}
@@ -385,10 +384,8 @@ function IndexRange({ data }: { data: { value: number }[] }) {
   );
 }
 
-/** Endless band of the latest hammer prices under the stage; pauses on hover, scrolls by hand with reduced motion. */
-/** Lite (src/lib/plan.tsx): which cars sold and where is free, the prices are premium. */
+/** Endless band of the cars sold last (names only) under the stage; pauses on hover, scrolls by hand with reduced motion. */
 function SalesTicker({ sales }: { sales: Sale[] }) {
-  const lite = !usePlan().premium;
   if (!sales.length) return null;
   const items = (copy: number) =>
     sales.map((s) => {
@@ -406,10 +403,6 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
           >
             {variantTitle(v, { brand: false })}
           </Link>
-          {lite ? <LockedValue reason="sales" sample="000.000 €" className="text-[15px]" /> : <Money value={s.price} sale={s} className="text-[15px]" />}
-          <span className="text-[12.5px] text-muted">
-            {s.house}, {date(s.date)}
-          </span>
           <span className="pl-4 text-gold/60" aria-hidden>
             ◆
           </span>
@@ -428,7 +421,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
       >
         <ul
           className="ticker-track flex w-max"
-          style={{ ["--ticker-duration" as string]: `${sales.length * 5}s` }}
+          style={{ ["--ticker-duration" as string]: `${sales.length * 2.5}s` }}
         >
           {items(0)}
           {items(1)}
