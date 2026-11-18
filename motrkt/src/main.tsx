@@ -10,7 +10,15 @@ watchGlobalErrors();
 // The market data (a few MB, cached per content hash) and the app's code load side by side; the app's modules
 // evaluate only once the data is there (they read it at import time), so the import below comes after loadDataset.
 const root = document.getElementById("root")!;
-const en = (localStorage.getItem("mip-lang") ?? navigator.language).startsWith("en");
+const en = (() => {
+  try {
+    const saved = localStorage.getItem("mip-lang");
+    if (saved === "de" || saved === "en") return saved === "en";
+  } catch {
+    // storage blocked: fall back to the browser language (as src/i18n does)
+  }
+  return !navigator.language.toLowerCase().startsWith("de");
+})();
 root.innerHTML = `<div class="flex min-h-screen flex-col items-center justify-center gap-4 font-serif text-muted italic"><img src="/brand/carbay-mark.svg" alt="" width="56" height="56" class="animate-pulse" /><span>${en ? "One moment …" : "Einen Moment …"}</span></div>`;
 
 loadDataset()

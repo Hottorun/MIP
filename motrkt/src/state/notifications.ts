@@ -41,7 +41,8 @@ export function useNotifications() {
     }
     for (const id of watchlist) {
       const v = variantById.get(id);
-      if (!v) continue;
+      // without a market value there is nothing to compare a sale against ("vs. market value" would use the placeholder curve)
+      if (!v?.measured) continue;
       for (const s of getSales(id)) {
         if (s.date < AS_OF - 28 * DAY) break;
         if (s.price === null || Math.abs(s.trend) < 0.05) continue;

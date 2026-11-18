@@ -291,6 +291,10 @@ export function Modal({
 }) {
   const box = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  // onClose is usually a new arrow on every render: keep it in a ref so a parent re-render (e.g. typing into a field
+  // whose state lives in the parent) does not re-run the effect and pull focus back to the first element
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
   useEffect(() => {
     if (!open) return;
     // focus moves into the dialog, stays there (Tab cycles), and returns to the opener when it closes
@@ -300,7 +304,7 @@ export function Modal({
     const first = focusable().find((el) => !el.hasAttribute("data-close")) ?? box.current;
     first?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") return onClose();
+      if (e.key === "Escape") return closeRef.current();
       if (e.key !== "Tab" || !box.current) return;
       const els = focusable();
       if (!els.length) return e.preventDefault();
@@ -318,7 +322,7 @@ export function Modal({
       window.removeEventListener("keydown", onKey);
       opener?.focus?.({ preventScroll: true });
     };
-  }, [open, onClose]);
+  }, [open]);
   if (!open) return null;
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-[8vh] backdrop-blur-[2px]" onMouseDown={onClose}>

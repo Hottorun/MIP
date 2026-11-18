@@ -170,7 +170,14 @@ export default function Buy() {
 
   useEffect(() => setVisible(PAGE), [variantParam, brand, model, generation, priceMin, priceMax, yearFrom, yearTo, maxKm, seller, savedOnly, dealsOnly, reducedOnly, text, sort]);
 
-  const selected = selectedId ? all.find((e) => e.l.id === selectedId) : undefined;
+  // A listing linked from the search or a model page may come from the other source than the one shown (Classic Trader
+  // while mobile.de live is on): look it up there too instead of reporting it as gone.
+  const selected = useMemo(() => {
+    if (!selectedId) return undefined;
+    const hit = all.find((e) => e.l.id === selectedId);
+    if (hit || !showingLive) return hit;
+    return enrich(getAllListings().filter((l) => l.id === selectedId))[0];
+  }, [all, selectedId, showingLive]);
   const openListing = (id: string | null) => {
     const next = new URLSearchParams(params);
     if (id) next.set("inserat", id);
@@ -531,7 +538,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
             <>
               <div className="flex snap-x gap-1 overflow-x-auto">
                 {l.images.map((src, k) => (
-                  <ListingPhoto key={src} src={src} alt={`${l.title}, ${t("Foto", "photo")} ${k + 1}`} className="aspect-[4/3] h-56 shrink-0 snap-start" />
+                  <ListingPhoto key={`${k}:${src}`} src={src} alt={`${l.title}, ${t("Foto", "photo")} ${k + 1}`} className="aspect-[4/3] h-56 shrink-0 snap-start" />
                 ))}
               </div>
               <p className="px-3 py-1.5 text-[11px] text-faint">{t(`Fotos des inserierten Fahrzeugs, von ${l.source}.`, `Photos of the listed car, from ${l.source}.`)}</p>

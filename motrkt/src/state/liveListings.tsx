@@ -46,7 +46,8 @@ export function LiveListingsProvider({ children }: { children: ReactNode }) {
           else failures.push(r.reason instanceof Error ? r.reason.message : String(r.reason));
         }
         if (controller.signal.aborted) return;
-        setListings([...results]);
+        // one ad can come back from two overlapping generation queries: keep ids unique (list keys, counts)
+        setListings([...new Map(results.map((l) => [l.id, l])).values()]);
       }
       const unique = [...new Map(results.map((l) => [l.id, l])).values()].sort((a, b) => b.listedAt - a.listedAt);
       setListings(unique);

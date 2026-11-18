@@ -106,7 +106,7 @@ export async function handleMobileDe(req: IncomingMessage, res: ServerResponse, 
   const model = url.searchParams.get("model") ?? "";
   const from = Number(url.searchParams.get("from"));
   const to = Number(url.searchParams.get("to"));
-  const page = Math.max(1, Math.min(20, Number(url.searchParams.get("page") ?? 1)));
+  const page = Math.max(1, Math.min(20, Math.floor(Number(url.searchParams.get("page"))) || 1));
   if (!SAFE.test(make) || (model && !SAFE.test(model))) return send(res, 400, { error: "bad_query" });
   // the partner API has a quota: a budget per account and hour (server/limits.ts), well above one app start
   const user = await currentUser(req);
@@ -142,6 +142,8 @@ export async function handleMobileDe(req: IncomingMessage, res: ServerResponse, 
       ads: (Array.isArray(data.ads) ? (data.ads as Json[]) : []).map(normalize),
       warnings: Array.isArray(data.errors) ? data.errors : [],
     };
+    // keep the cache bounded: drop the oldest entry once it holds many distinct searches
+    if (cache.size >= 500) cache.delete(cache.keys().next().value!);
     cache.set(target, { at: Date.now(), body });
     send(res, 200, body);
   } catch (e) {

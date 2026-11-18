@@ -94,7 +94,8 @@ export function Copilot({
 
   async function send(text: string) {
     const content = text.trim();
-    if (!content || busy) return;
+    // the ref, not `busy`: a second submit before the re-render would otherwise start a parallel stream
+    if (!content || busy || abort.current) return;
     const userMsg: ChatMessage = { id: uid(), role: "user", content };
     const history = [...chat, userMsg];
     setChat(history);

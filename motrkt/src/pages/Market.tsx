@@ -52,7 +52,7 @@ export default function Market() {
 
   // "#forum" etc. in the address (links from the forum overview, the search): scroll there once the page is up;
   // after the layout's own scroll to the top, hence the delay
-  const { hash } = useLocation();
+  const { hash, search } = useLocation();
   useEffect(() => {
     if (!hash || !variant) return;
     const id = window.setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
@@ -74,7 +74,8 @@ export default function Market() {
   }
 
   // Old link of a former variant (e.g. GT3 Touring) → the variant it now belongs to.
-  if (variantId !== variant.id) return <Navigate to={`/markt/${variant.id}`} replace />;
+  // Keeps ?thema=… and #forum of a forum link.
+  if (variantId !== variant.id) return <Navigate to={`/markt/${variant.id}${search}${hash}`} replace />;
 
   return <MarketPage key={variant.id} variant={variant} />;
 }

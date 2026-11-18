@@ -54,6 +54,9 @@ async function streamFromServer(turns: CopilotTurn[], context: string, onDelta: 
     if (done) break;
     onDelta(decoder.decode(value, { stream: true }));
   }
+  // flush a multi-byte character split across the last chunk
+  const tail = decoder.decode();
+  if (tail) onDelta(tail);
 }
 
 async function streamLocal(text: string, onDelta: (t: string) => void, signal: AbortSignal) {
@@ -262,7 +265,16 @@ export function localAnswer(question: string, focusVariantId: string | undefined
     );
   }
 
-  if (has(" vergleich", " vs ", " versus", " gegenuber", " oder ", " compar")) {
+  // Without enough records there is no market value (the page shows none either): do not quote the placeholder curve.
+  if (!v.measured) {
+    const weak = v.weaknesses.map((w) => `- ${tr(w)}`).join("\n");
+    return t(
+      `**${variantTitle(v)}**\nFür diese Variante gibt es zu wenige belegte Verkäufe für einen Marktwert, Ausblick oder Vergleich.\n\n**Typische Schwachstellen**\n${weak}${note}`,
+      `**${variantTitle(v)}**\nThere are too few recorded sales of this variant for a market value, outlook or comparison.\n\n**Typical weak spots**\n${weak}${note}`,
+    );
+  }
+
+  if (has(" vergleich", " vs ", " vs. ", " versus", " gegenuber", " oder ", " compar")) {
     const others = mentioned.length >= 2 ? mentioned.slice(0, 3) : [focusId, ...variants.filter((o) => o.generationId === v.generationId && o.id !== focusId).sort((a, b) => getMetrics(b.id).value - getMetrics(a.id).value).slice(0, 1).map((o) => o.id)];
     const lines = others.map((id) => {
       const x = getMetrics(id);
@@ -331,7 +343,7 @@ ${weak}
 
 **Drivers**
 - Historical return ${pct(m.cagr5)} p.a. (5Y), momentum ${momentum.toLowerCase()} (${pct(m.change3m)} in 3M)
-- Seltenheit ${m.rarityScore}/100 with ${num(v.production)} built
+- Rarity ${m.rarityScore}/100 with ${num(v.production)} built
 
 **Risks**
 - Volatility ${pct(m.vol1y, { signed: false })}; last drawdown down to ${pct(m.maxDD5)}
@@ -367,7 +379,7 @@ ${weak}
 Ich kann außerdem einen **Preis-Ausblick**, einen **Variantenvergleich**, eine **Risikoanalyse** konkreter Angebote oder eine **Zusammenfassung der Auktionen** liefern.${note}`,
     `**${variantTitle(v)} – quick analysis**
 - Market value ${eur(m.value)} (${pct(m.change12m)} in 12M), return p.a. 5Y ${pct(m.cagr5)}
-- Seltenheit ${m.rarityScore}/100, liquidity ${m.liquidity}/100, momentum ${momentum}
+- Rarity ${m.rarityScore}/100, liquidity ${m.liquidity}/100, momentum ${momentum}
 - Assessment: **${rec}** – ${m.thesis}
 
 I can also provide a **price outlook**, a **variant comparison**, a **risk analysis** of specific listings or a **summary of recent auctions**.${note}`,

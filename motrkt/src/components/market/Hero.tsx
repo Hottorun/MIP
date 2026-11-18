@@ -95,6 +95,25 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
     ]);
   }
 
+  // Watch and price alert: in the plain value box and under the range box of a scattered variant alike
+  const actions = (
+    <div className="mt-6 grid grid-cols-2 gap-2">
+      <button
+        className={cn("btn", !watched && "btn-gold")}
+        aria-pressed={watched}
+        onClick={() => {
+          toggleWatch(variant.id);
+          toast(watched ? t("Nicht mehr beobachtet", "No longer watched") : t("Wird beobachtet", "Now watching"));
+        }}
+      >
+        {watched ? t("Wird beobachtet", "Watching") : t("Beobachten", "Watch")}
+      </button>
+      <button className="btn" onClick={() => setAlertOpen(true)}>
+        {alertCount ? `${t("Preisalarm", "Price alert")} (${alertCount})` : t("Preisalarm", "Price alert")}
+      </button>
+    </div>
+  );
+
   return (
     <div className="lg:sticky lg:top-[112px] lg:self-start">
       <p className="text-[14px] text-muted">{lineage}</p>
@@ -114,7 +133,11 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
             {t("Belege ansehen", "See the evidence")}
           </button>
         </SpreadValue>
-      ) : (
+      ) : null}
+      {variant.measured && spread && !picked.length ? (
+        actions
+      ) : null}
+      {!variant.measured || (spread && !picked.length) ? null : (
       <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
         <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
         <div className="text-[13px] text-muted">
@@ -175,21 +198,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
             </>
           )}
         </p>
-        <div className="mt-6 grid grid-cols-2 gap-2">
-          <button
-            className={cn("btn", !watched && "btn-gold")}
-            aria-pressed={watched}
-            onClick={() => {
-              toggleWatch(variant.id);
-              toast(watched ? t("Nicht mehr beobachtet", "No longer watched") : t("Wird beobachtet", "Now watching"));
-            }}
-          >
-            {watched ? t("Wird beobachtet", "Watching") : t("Beobachten", "Watch")}
-          </button>
-          <button className="btn" onClick={() => setAlertOpen(true)}>
-            {alertCount ? `${t("Preisalarm", "Price alert")} (${alertCount})` : t("Preisalarm", "Price alert")}
-          </button>
-        </div>
+        {actions}
       </div>
       )}
 
@@ -550,7 +559,8 @@ function SpreadValue({ variant, spread, value, change, label, children }: { vari
  * The track runs a little past both ends, so the band reads as a part of the market, not all of it.
  */
 function RangeBar({ lo, hi, median }: { lo: number; hi: number; median: number }) {
-  const pad = (hi - lo) * 0.35;
+  // all records at one price: give the track some width instead of dividing by zero
+  const pad = (hi - lo) * 0.35 || Math.max(hi * 0.1, 1000);
   const min = lo - pad, max = hi + pad;
   const at = (v: number) => `${((v - min) / (max - min)) * 100}%`;
   return (
@@ -579,6 +589,7 @@ function BasisLine({ variant, range = true }: { variant: Variant; range?: boolea
     c.EU_BID + c.US_BID > 0 &&
       t(`${num(c.EU_BID + c.US_BID)} ${c.EU_BID + c.US_BID === 1 ? "Höchstgebot" : "Höchstgeboten"} unverkaufter Lose`, `${num(c.EU_BID + c.US_BID)} high ${c.EU_BID + c.US_BID === 1 ? "bid" : "bids"} of unsold lots`),
   ].filter(Boolean) as string[];
+  if (!parts.length) return null;
   const us = c.US_AUC + c.US_ONL + c.US_BID > 0;
   const list =
     (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${t("und", "and")} ${parts.at(-1)}` : parts[0]) +

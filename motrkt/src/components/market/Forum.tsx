@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BadgeCheck, ChevronLeft, Flag, MessageSquare } from "lucide-react";
 import type { Variant } from "../../data/types";
@@ -58,7 +58,8 @@ export function Forum({ variant }: { variant: Variant }) {
   const load = (offset = 0) =>
     api<{ topics: Topic[]; hasMore: boolean }>(`/api/forum/${variant.id}?offset=${offset}`)
       .then((j) => {
-        setTopics((prev) => (offset && prev ? [...prev, ...j.topics] : j.topics));
+        // topics move up when someone posts: the next page can repeat one already shown
+        setTopics((prev) => (offset && prev ? [...prev, ...j.topics.filter((x) => !prev.some((o) => o.id === x.id))] : j.topics));
         setHasMore(j.hasMore);
         setError(false);
       })
@@ -206,10 +207,13 @@ function ThreadView({ id, onBack }: { id: string; onBack: () => void }) {
   const [editing, setEditing] = useState<{ id: string; body: string } | null>(null);
   const [reporting, setReporting] = useState<{ id: string; reason: string } | null>(null);
   const { confirm, dialog: confirmDialog } = useConfirm();
+  // another topic opened (?thema= changed) while this one was loading: drop the late answer
+  const current = useRef(id);
+  current.current = id;
   const load = () =>
     api<Thread>(`/api/forum/thema/${id}`)
-      .then((x) => (setThread(x), setError(false)))
-      .catch(() => setError(true));
+      .then((x) => current.current === id && (setThread(x), setError(false)))
+      .catch(() => current.current === id && setError(true));
   useEffect(() => {
     setThread(null);
     setEditing(null);

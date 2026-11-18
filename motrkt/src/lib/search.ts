@@ -124,7 +124,8 @@ export function search(query: string, limit = 9): SearchHit[] {
       if (s.id.startsWith(raw)) {
         const v = variantById.get(s.variantId)!;
         hits.push({ kind: KIND.auction, label: `${s.id} · ${variantTitle(v)}`, detail: `${s.house} · ${s.price ? eur(s.price) : t("nicht verkauft", "not sold")}`, href: `/auktionen?q=${encodeURIComponent(s.id)}` });
-      } else if (s.vin.startsWith(raw)) {
+      } else if (s.vin.startsWith(raw) && !hits.some((h) => h.kind === KIND.vin && h.label === s.vin)) {
+        // a car sold more than once: one VIN hit is enough (the auction search lists all its sales)
         const v = variantById.get(s.variantId)!;
         hits.push({ kind: KIND.vin, label: `${s.vin}`, detail: `${variantTitle(v)} · ${t("Verkauf", "Sale")} ${s.id}`, href: `/auktionen?q=${encodeURIComponent(s.vin)}` });
       }

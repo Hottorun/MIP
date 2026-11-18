@@ -186,13 +186,13 @@ export function reasonText(r: string): string {
 /** Time online, price changes and whether the listing has gone offline, from the daily tracking. */
 function HistoryLine({ a }: { a: Ask }) {
   const h = historyOf(a.url);
-  if (!h) return null;
+  if (!h || !h.prices.length) return null;
   const end = h.status === "gone" && h.goneOn ? h.goneOn : TRACKING.asOf;
   const d = daysBetween(h.first, end);
   const online = d < 1 ? t("seit heute erfasst", "tracked since today") : d === 1 ? t("seit 1 Tag erfasst", "tracked for 1 day") : t(`seit ${d} Tagen erfasst`, `tracked for ${d} days`);
   const p0 = h.prices[0][1];
   const p1 = h.prices[h.prices.length - 1][1];
-  const change = h.prices.length > 1 ? p1 / p0 - 1 : 0;
+  const change = h.prices.length > 1 && p0 > 0 ? p1 / p0 - 1 : 0;
   return (
     <div className="mt-0.5 text-[13px] text-muted">
       {h.status === "gone" ? (

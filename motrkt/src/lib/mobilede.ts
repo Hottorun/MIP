@@ -69,6 +69,7 @@ export function generationQueries(): GenerationQuery[] {
   for (const v of variants) {
     const gen = generationById.get(v.generationId)!;
     const make = MAKES[v.brandId];
+    if (!make) continue; // brand without a mobile.de make code
     // Models without a mobile.de model code are searched by make + years and filtered by keywords.
     const model = modelCode(v) ?? "";
     const from = gen.years[0];
@@ -128,7 +129,7 @@ function toListing(ad: MobileAd, v: Variant): Listing | null {
     body: Object.keys(v.body)[0] as Listing["body"],
     gearbox,
     vin: ad.vin ?? "–",
-    listedAt: ad.created ? Date.parse(ad.created) : Date.now(),
+    listedAt: (ad.created && Date.parse(ad.created)) || Date.now(), // unparsable date: NaN would break sorting
     matchingNumbers: null,
     serviceHistory: ad.fullServiceHistory,
     description: ad.description ?? "",
@@ -188,9 +189,10 @@ export async function fetchGeneration(query: GenerationQuery, signal?: AbortSign
   for (let page = 1; page <= 3; page++) {
     const p = new URLSearchParams({ make: query.make, model: query.model, from: String(query.from), to: String(query.to), page: String(page) });
     const r = await fetch(`/api/mobilede/search?${p}`, { signal });
-    const body = await r.json();
+    // a proxy error page is not JSON: report the status instead of a parse error
+    const body = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error((ERR[body.error] ?? (() => t(`mobile.de Fehler ${r.status}`, `mobile.de error ${r.status}`)))(body));
-    out.push(...mapAds(query, body.ads as MobileAd[]));
+    out.push(...mapAds(query, Array.isArray(body.ads) ? (body.ads as MobileAd[]) : []));
     if (page >= (body.maxPages ?? 1)) break;
   }
   return out;

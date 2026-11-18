@@ -45,8 +45,10 @@ function ValueChart({ variant, body }: { variant: Variant; body: Body | null }) 
 
   const data = useMemo(() => {
     const s = getSeries(variant.id);
+    if (!s.length) return [];
     const from = Math.max(s[0].t, AS_OF - RANGE_WEEKS[range]! * WEEK);
     const pts = s.filter((p) => p.t >= from);
+    if (!pts.length) return [];
     const md = new Map(modelIndex(model.id).map((p) => [p.t, p.value]));
     const m0 = md.get(pts[0].t);
     // Model index rebased onto the variant's starting price so both lines share one euro axis.

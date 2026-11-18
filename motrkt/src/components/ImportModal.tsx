@@ -5,11 +5,13 @@ import { variantById, variantShortTitle } from "../data/db";
 import { Modal } from "./ui";
 import { num } from "../lib/format";
 import { t } from "../i18n";
+import { useStore } from "../state/store";
 
 export function ImportModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [text, setText] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
   const [result, setResult] = useState<ParseResult | null>(null);
+  const { toast } = useStore();
   const stored = (() => {
     try {
       return localStorage.getItem(IMPORT_STORAGE_KEY);
@@ -41,7 +43,11 @@ export function ImportModal({ open, onClose }: { open: boolean; onClose: () => v
             <button
               className="btn mr-auto text-down"
               onClick={() => {
-                localStorage.removeItem(IMPORT_STORAGE_KEY);
+                try {
+                  localStorage.removeItem(IMPORT_STORAGE_KEY);
+                } catch {
+                  /* storage blocked: nothing stored to remove */
+                }
                 location.reload();
               }}
             >
@@ -55,7 +61,12 @@ export function ImportModal({ open, onClose }: { open: boolean; onClose: () => v
             className="btn btn-gold"
             disabled={!text || !result || result.rows.length === 0}
             onClick={() => {
-              localStorage.setItem(IMPORT_STORAGE_KEY, text!);
+              try {
+                localStorage.setItem(IMPORT_STORAGE_KEY, text!);
+              } catch {
+                // a large file exceeds the browser's storage quota (or storage is blocked): say so instead of failing silently
+                return toast(t("Die Datei ist zu groß für den Browser-Speicher.", "The file is too large for the browser's storage."), "error");
+              }
               location.reload();
             }}
           >
@@ -118,8 +129,8 @@ export function ImportModal({ open, onClose }: { open: boolean; onClose: () => v
             )}
             {result.errors.length > 0 && (
               <ul className="max-h-40 overflow-y-auto rounded-lg border border-down/30 bg-down/5 p-2 text-xs text-down">
-                {result.errors.slice(0, 50).map((e) => (
-                  <li key={e}>{e}</li>
+                {result.errors.slice(0, 50).map((e, i) => (
+                  <li key={i}>{e}</li>
                 ))}
               </ul>
             )}
