@@ -252,7 +252,7 @@ function PickerLink({ to, active, children }: { to: string; active: boolean; chi
       aria-current={active ? "page" : undefined}
       className={cn(
         "rounded-[2px] border px-3 py-1.5 text-[13.5px] transition-colors",
-        active ? "border-accent bg-accent text-bg" : "border-line-2 text-ink hover:border-accent hover:text-accent",
+        active ? "border-accent-fill bg-accent-fill text-on-accent" : "border-line-2 text-ink hover:border-accent hover:text-accent",
       )}
     >
       {children}
@@ -683,7 +683,7 @@ function BodySwitch({ variant, body, onBody }: { variant: Variant } & BodyProps)
           key={b ?? "all"}
           aria-pressed={body === b}
           onClick={() => onBody(b)}
-          className={cn("rounded-[2px] px-3.5 py-1.5 transition-colors", body === b ? "bg-accent text-bg" : "text-muted hover:text-ink")}
+          className={cn("rounded-[2px] px-3.5 py-1.5 transition-colors", body === b ? "bg-accent-fill text-on-accent" : "text-muted hover:text-ink")}
         >
           {b ? tr(b) : t("Alle", "All")}
         </button>
