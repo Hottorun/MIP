@@ -130,8 +130,8 @@ function DeleteCard({ disabled }: { disabled: boolean }) {
     setErr("");
     const ok = await confirm(
       t(
-        "Konto, Sitzungen, Watchlist, Portfolio, Alarme und alle nicht freigegebenen Fahrzeugmeldungen samt Verträgen werden gelöscht. Freigegebene Fahrzeuge (ohne Fahrgestellnummer und Notizen) und Forumsbeiträge bleiben ohne Bezug zum Konto erhalten; wer das nicht möchte, löscht sie vorher im Portfolio bzw. im Forum. Das lässt sich nicht rückgängig machen.",
-        "Account, sessions, watchlist, portfolio, alerts and all car reports that are not approved, with their contracts, will be deleted. Approved cars (without chassis number and notes) and forum posts remain, detached from the account; to avoid that, delete them in the portfolio or the forum first. This cannot be undone.",
+        "Konto, Sitzungen, Watchlist, Portfolio, Alarme und alle nicht freigegebenen Fahrzeugmeldungen samt Verträgen werden gelöscht. Freigegebene Fahrzeuge (ohne Fahrgestellnummer und Notizen) und Forumsbeiträge bleiben ohne Bezug zum Konto erhalten; Forumsbeiträge lassen sich vorher im Forum löschen. Das lässt sich nicht rückgängig machen.",
+        "Account, sessions, watchlist, portfolio, alerts and all car reports that are not approved, with their contracts, will be deleted. Approved cars (without chassis number and notes) and forum posts remain, detached from the account; forum posts can be deleted in the forum first. This cannot be undone.",
       ),
       { title: t("Konto endgültig löschen?", "Delete the account for good?"), confirmLabel: t("Endgültig löschen", "Delete for good") },
     );

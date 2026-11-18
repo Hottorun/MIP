@@ -80,7 +80,7 @@ function ContractProtection() {
     [t("Nur für die Prüfung", "For the review only"), t("Nur unsere Prüfer öffnen den Vertrag, jeder Zugriff wird protokolliert. Er wird nicht weitergegeben und nicht veröffentlicht.", "Only our reviewers open the contract, and every access is logged. It is not passed on and not published.")],
     [t("Danach gelöscht", "Deleted afterwards"), t("Mit der Entscheidung der Prüfung löschen wir den Vertrag, spätestens nach 90 Tagen. In die Marktwerte gehen nur Preis, Datum und Fahrzeugdaten ein, ohne Namen und ohne Fahrgestellnummer.", "We delete the contract with the review decision, after 90 days at the latest. Only price, date and car details enter the market values, without names and without the chassis number.")],
     [t("KI nur mit Ihrer Zustimmung", "AI only if you agree"), t("Die Vorprüfung durch KI (Anthropic, USA) läuft nur, wenn Sie sie erlauben. Ohne sie prüft ein Mensch von Hand.", "The AI pre-check (Anthropic, USA) runs only if you allow it. Without it a person checks by hand.")],
-    [t("Jederzeit löschbar", "Delete at any time"), t("Sie können jede Meldung hier selbst löschen, auch nach der Freigabe. Das Fahrzeug verlässt dann die Marktanalyse.", "You can delete any report here yourself, also after approval. The car then leaves the market analysis.")],
+    [t("Jederzeit löschbar", "Delete at any time"), t("Sie können jede Meldung hier selbst löschen. Nach der Freigabe bleiben nur Preis, Datum und Fahrzeugdaten anonym in der Marktanalyse.", "You can delete any report here yourself. After approval only price, date and car details stay in the market analysis, anonymously.")],
   ];
   return (
     <Card title={t("So schützen wir Ihren Kaufvertrag", "How we protect your contract")}>
@@ -330,13 +330,13 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
             onClick={async () => {
               const text =
                 car.status === "approved"
-                  ? t("Meldung löschen? Die Angaben werden gelöscht, und das Fahrzeug wird beim nächsten Lauf aus der Marktanalyse entfernt. Ihr Premium-Zugang bleibt bestehen.", "Delete this report? The details are deleted and the car is removed from the market analysis on the next run. Your premium access stays.")
+                  ? t("Meldung aus Ihrem Konto entfernen? Fahrgestellnummer, Notizen und die Verbindung zu Ihrem Konto werden gelöscht. Preis, Datum und Fahrzeugdaten bleiben anonym in der Marktanalyse. Ihr Premium-Zugang bleibt bestehen.", "Remove this report from your account? The chassis number, notes and the link to your account are deleted. Price, date and car details stay in the market analysis, anonymously. Your premium access stays.")
                   : t("Meldung löschen? Alle Angaben dazu werden gelöscht.", "Delete this report? All its details will be deleted.");
-              if (!(await confirm(text, { confirmLabel: t("Löschen", "Delete") }))) return;
+              if (!(await confirm(text, { confirmLabel: car.status === "approved" ? t("Entfernen", "Remove") : t("Löschen", "Delete") }))) return;
               await remove();
             }}
           >
-            <Trash2 className="size-3.5" /> {t("Löschen", "Delete")}
+            <Trash2 className="size-3.5" /> {car.status === "approved" ? t("Aus Konto entfernen", "Remove from account") : t("Löschen", "Delete")}
           </button>
         )}
       </div>
@@ -602,8 +602,8 @@ function ReportForm({ onCancel, onDone, onPartial }: { onCancel: () => void; onD
           <input type="checkbox" className="mt-1" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
           <span>
             {t(
-              "Ich bestätige, dass die Angaben stimmen und ich an diesem Kauf oder Verkauf beteiligt war. Ich willige ein, dass Carbay meine Angaben und den Kaufvertrag speichert, ein Prüfer von Carbay den Vertrag mit den Angaben vergleicht, der Vertrag danach gelöscht wird und Preis, Datum und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Meldung hier lösche.",
-              "I confirm that the details are correct and that I was party to this purchase or sale. I consent to Carbay storing my details and the purchase contract, a Carbay reviewer comparing the contract with the details, the contract being deleted afterwards, and price, date and car details entering the market analysis without my name and without the chassis number. I can withdraw this consent at any time by deleting the report here.",
+              "Ich bestätige, dass die Angaben stimmen und ich an diesem Kauf oder Verkauf beteiligt war. Ich willige ein, dass Carbay meine Angaben und den Kaufvertrag speichert, ein Prüfer von Carbay den Vertrag mit den Angaben vergleicht, der Vertrag danach gelöscht wird und Preis, Datum und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Meldung hier lösche; nach der Freigabe bleiben Preis, Datum und Fahrzeugdaten anonym in der Marktanalyse.",
+              "I confirm that the details are correct and that I was party to this purchase or sale. I consent to Carbay storing my details and the purchase contract, a Carbay reviewer comparing the contract with the details, the contract being deleted afterwards, and price, date and car details entering the market analysis without my name and without the chassis number. I can withdraw this consent at any time by deleting the report here; after approval, price, date and car details stay in the market analysis, anonymously.",
             )}{" "}
             <Link to="/datenschutz" className="link">
               {t("Datenschutzerklärung", "Privacy notice")}

@@ -22,8 +22,8 @@ import { overLimit } from "./limits.ts";
  *   GET    /api/fahrzeuge                     the user's own reports
  *   POST   /api/fahrzeuge                     new report (JSON) -> { id }
  *   PUT    /api/fahrzeuge/:id/vertrag         the contract (PDF, JPEG, PNG or WebP as the raw body, at most 4 MB)
- *   DELETE /api/fahrzeuge/:id                 delete a report with its contract (open: withdraw; approved: the car
- *                                             leaves the market model on the next run)
+ *   DELETE /api/fahrzeuge/:id                 delete a report with its contract; an approved one is detached from the
+ *                                             account instead and stays in the market model without chassis number
  *   GET    /api/pruefung                      reviewers: open reports and the latest decisions
  *   GET    /api/pruefung/:id/vertrag          reviewers: the contract
  *   POST   /api/pruefung/:id/ki               reviewers: run the AI check again
@@ -32,7 +32,7 @@ import { overLimit } from "./limits.ts";
 
 export const PREMIUM_MONTHS = 12;
 /** The wording of the consent in the form (src/components/portfolio/UserCars.tsx); change it together with that text. */
-export const CONSENT_VERSION = "2026-11-17";
+export const CONSENT_VERSION = "2026-11-18";
 // Retention: how long a report may sit before it is removed without anyone asking.
 export const RETENTION = {
   awaitingDays: 30, // entered, but no contract uploaded: the report is deleted
@@ -240,9 +240,13 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
       return sendJson(res, 200, { ok: true });
     }
     if (!sub && req.method === "DELETE") {
-      // Withdrawing the consent: the report goes with its contract and everything entered, whatever its state. An
-      // approved car leaves the market model on the next daily run (scripts/db/export-user-cars.ts reads this table).
-      await db()`delete from user_cars where id = ${own.id}`;
+      // Withdrawing the consent. An approved car earned premium and is part of the market values, so it stays, but
+      // without anything that leads to a person: no account, no chassis number, no notes (what deleting the account
+      // does too, server/auth.ts). Every other report goes with its contract and everything entered.
+      if (own.status === "approved") {
+        await db()`update user_cars set user_id = ${"removed:" + randomUUID()}, vin = '', notes = null, contract = null, contract_name = null,
+                   ai_check = null, contract_deleted_at = coalesce(contract_deleted_at, now()) where id = ${own.id}`;
+      } else await db()`delete from user_cars where id = ${own.id}`;
       return sendJson(res, 200, { ok: true });
     }
     return sendJson(res, 404, { error: "Not found" });

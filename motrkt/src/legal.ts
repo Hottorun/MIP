@@ -52,7 +52,7 @@ export const IMPRESSUM: LegalSection[] = [
 ];
 
 /** Date of the privacy notice's wording, shown at its end. Change it with every change to DATENSCHUTZ. */
-export const PRIVACY_AS_OF: [string, string] = ["17. November 2026", "17 November 2026"];
+export const PRIVACY_AS_OF: [string, string] = ["18. November 2026", "18 November 2026"];
 
 /**
  * The privacy notice. Every sentence describes what the code does: when a storage period (server/userCars.ts
@@ -147,8 +147,8 @@ export const DATENSCHUTZ: LegalSection[] = [
         "What remains: after approval, price, date, country, mileage, build year and variant enter the market value calculation without the chassis number and without reference to your account. The report itself (with the chassis number) stays visible in your account, so that the same car is not counted twice, until you delete it or your account.",
       ],
       [
-        "Widerruf: Sie können jede Meldung im Portfolio selbst löschen, vor und nach der Prüfung. Damit sind die Angaben und ein noch vorhandener Vertrag gelöscht; ein freigegebenes Fahrzeug wird beim nächsten täglichen Lauf aus der Marktanalyse entfernt. Ein gewährter Premium-Zugang bleibt bestehen.",
-        "Withdrawal: you can delete any report in the portfolio yourself, before and after the review. This deletes the details and any contract still stored; an approved car is removed from the market analysis on the next daily run. Premium access already granted stays.",
+        "Widerruf: Sie können jede Meldung im Portfolio selbst löschen, vor und nach der Prüfung. Vor der Freigabe sind damit alle Angaben und der Vertrag gelöscht. Nach der Freigabe löschen wir Fahrgestellnummer, Notizen, KI-Ergebnis und die Verbindung zu Ihrem Konto; Preis, Datum und Fahrzeugdaten bleiben ohne Bezug zu Ihrer Person in der Marktanalyse. Ein gewährter Premium-Zugang bleibt bestehen.",
+        "Withdrawal: you can delete any report in the portfolio yourself, before and after the review. Before approval this deletes all details and the contract. After approval we delete the chassis number, notes, AI result and the link to your account; price, date and car details stay in the market analysis without reference to you. Premium access already granted stays.",
       ],
       [
         "Daten der Gegenseite: Ein Kaufvertrag nennt auch Ihren Vertragspartner. Diese Angaben benötigen wir nicht und werten sie nicht aus; soweit sie nicht geschwärzt sind, verarbeiten wir sie nur zur Echtheitsprüfung und löschen sie mit dem Vertrag (Art. 6 Abs. 1 lit. f DSGVO). Die KI ist angewiesen, keine Namen, Anschriften oder Bankdaten wiederzugeben.",
@@ -218,13 +218,13 @@ export const DATENSCHUTZ: LegalSection[] = [
       ["Kontodaten, Watchlist, Portfolio und Alarme: bis Sie Ihr Konto löschen.", "Account data, watchlist, portfolio and alerts: until you delete your account."],
       ["Sitzungen: ein Jahr nach dem letzten Besuch, oder bis Sie sich abmelden.", "Sessions: one year after the last visit, or until you sign out."],
       ["Kaufverträge: bis zur Entscheidung des Prüfers, höchstens 90 Tage.", "Purchase contracts: until the reviewer's decision, 90 days at most."],
-      ["Fahrzeugmeldungen: ohne Vertrag 30 Tage; abgelehnt oder abgelaufen 90 Tage nach der Entscheidung; freigegeben, bis Sie die Meldung oder Ihr Konto löschen.", "Car reports: without a contract 30 days; rejected or expired 90 days after the decision; approved until you delete the report or your account."],
+      ["Fahrzeugmeldungen: ohne Vertrag 30 Tage; abgelehnt oder abgelaufen 90 Tage nach der Entscheidung; freigegeben, bis Sie die Meldung oder Ihr Konto löschen (danach nur noch anonyme Preisdaten).", "Car reports: without a contract 30 days; rejected or expired 90 days after the decision; approved until you delete the report or your account (after that only anonymous price data)."],
       ["Protokoll der Zugriffe auf Verträge: ein Jahr.", "Log of accesses to contracts: one year."],
       ["Zähler für Anmeldeversuche und Anfragen: etwa 24 Stunden.", "Counters for sign-in attempts and requests: about 24 hours."],
       ["Protokolle des Hosting-Anbieters: nach dessen Fristen.", "The hosting provider's logs: according to its retention periods."],
       [
-        "Bei Löschung des Kontos löschen wir Sitzungen, gespeicherte Daten, Zähler, Ihre Meldungen von Forumsbeiträgen und alle nicht freigegebenen Fahrzeugmeldungen samt Verträgen. Freigegebene Fahrzeugdaten (ohne Fahrgestellnummer, Notizen und KI-Ergebnis) und Forumsbeiträge (ohne Ihren Benutzernamen) bleiben ohne Bezug zu Ihrer Person erhalten; beides können Sie vorher selbst löschen.",
-        "When an account is deleted we delete sessions, stored data, counters, your reports of forum posts and all car reports that are not approved, with their contracts. Approved car data (without chassis number, notes and AI result) and forum posts (without your username) remain without reference to you; you can delete both yourself beforehand.",
+        "Bei Löschung des Kontos löschen wir Sitzungen, gespeicherte Daten, Zähler, Ihre Meldungen von Forumsbeiträgen und alle nicht freigegebenen Fahrzeugmeldungen samt Verträgen. Freigegebene Fahrzeugdaten (ohne Fahrgestellnummer, Notizen und KI-Ergebnis) und Forumsbeiträge (ohne Ihren Benutzernamen) bleiben ohne Bezug zu Ihrer Person erhalten; Forumsbeiträge können Sie vorher selbst löschen.",
+        "When an account is deleted we delete sessions, stored data, counters, your reports of forum posts and all car reports that are not approved, with their contracts. Approved car data (without chassis number, notes and AI result) and forum posts (without your username) remain without reference to you; you can delete forum posts yourself beforehand.",
       ],
     ],
   },
