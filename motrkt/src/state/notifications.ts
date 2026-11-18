@@ -5,6 +5,7 @@ import { AS_OF, DAY, getSales } from "../data/generate";
 import { getMetrics } from "../data/market";
 import { eur, pct } from "../lib/format";
 import { t } from "../i18n";
+import { usePlan } from "../lib/plan";
 
 export type Notification = {
   id: string;
@@ -18,6 +19,8 @@ export type Notification = {
 /** Notifications derived from the user's alerts and watchlist against the market data. */
 export function useNotifications() {
   const { alerts, watchlist, readNotifications } = useStore();
+  // lite (src/lib/plan.tsx): that a watched car sold is news for everyone, the price is premium
+  const lite = !usePlan().premium;
   return useMemo(() => {
     const items: Notification[] = [];
     for (const a of alerts) {
@@ -45,12 +48,15 @@ export function useNotifications() {
       if (!v?.measured) continue;
       for (const s of getSales(id)) {
         if (s.date < AS_OF - 28 * DAY) break;
-        if (s.price === null || Math.abs(s.trend) < 0.05) continue;
+        // with the lite data there is no price to judge the sale by: every sale of a watched car is reported
+        if (s.price === null || (!lite && Math.abs(s.trend) < 0.05)) continue;
         items.push({
           id: `sale:${s.id}:${s.variantId}`,
           kind: "sale",
-          title: `${s.trend > 0 ? t("Überdurchschnittlicher Verkauf", "Strong sale") : t("Schwacher Verkauf", "Weak sale")}: ${variantShortTitle(v)}`,
-          body: t(`${eur(s.price)} bei ${s.house} (${pct(s.trend)} ggü. Marktwert)`, `${eur(s.price)} at ${s.house} (${pct(s.trend)} vs. market value)`),
+          title: `${lite ? t("Verkauft", "Sold") : s.trend > 0 ? t("Überdurchschnittlicher Verkauf", "Strong sale") : t("Schwacher Verkauf", "Weak sale")}: ${variantShortTitle(v)}`,
+          body: lite
+            ? t(`Bei ${s.house}. Preis und Abstand zum Marktwert mit Premium.`, `At ${s.house}. Price and gap to the market value with premium.`)
+            : t(`${eur(s.price)} bei ${s.house} (${pct(s.trend)} ggü. Marktwert)`, `${eur(s.price)} at ${s.house} (${pct(s.trend)} vs. market value)`),
           time: s.date,
           href: `/markt/${v.id}`,
         });
@@ -60,5 +66,5 @@ export function useNotifications() {
     const read = new Set(readNotifications);
     const unread = items.filter((n) => !read.has(n.id)).length;
     return { items: items.slice(0, 30), unread, read };
-  }, [alerts, watchlist, readNotifications]);
+  }, [alerts, watchlist, readNotifications, lite]);
 }

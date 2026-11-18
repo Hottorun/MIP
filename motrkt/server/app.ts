@@ -3,7 +3,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { handleApi } from "./api.ts";
-import { authGate, enableDemoAccount } from "./auth.ts";
+import { authGate, enableDemoAccount, mayRead } from "./auth.ts";
 
 /**
  * The production request handler: sign-in gate, APIs and the built app from dist/. Used by the local server
@@ -81,6 +81,18 @@ export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
     path = decodeURIComponent(new URL(req.url ?? "/", "http://localhost").pathname);
   } catch {
     res.statusCode = 400; // malformed percent-encoding such as "/%"
+    return res.end();
+  }
+  // the full market data is for premium accounts; a lite account loads the lite copies (src/data/real/load.ts)
+  try {
+    if (!(await mayRead(req, path))) {
+      res.statusCode = 403;
+      res.setHeader("Cache-Control", "private, no-store");
+      return res.end();
+    }
+  } catch (err) {
+    console.error(err);
+    res.statusCode = 500;
     return res.end();
   }
   let file = normalize(join(DIST, path));

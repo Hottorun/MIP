@@ -48,6 +48,31 @@ export function isAdmin(user: { id: string; username: string }) {
   return names.includes(user.username.toLowerCase());
 }
 
+/** Premium runs while premium_until lies in the future (server/userCars.ts sets it); reviewers always have it. */
+export const premiumActive = (premiumUntil: Date | string | null | undefined, admin = false, now = Date.now()) =>
+  admin || (premiumUntil != null && new Date(premiumUntil).getTime() > now);
+
+/** Whether the account has premium right now: what the paid features on the server ask (the Co-Pilot, server/api.ts). */
+export async function isPremium(user: { id: string; username: string }): Promise<boolean> {
+  if (isAdmin(user) || isDemo(user)) return true; // the demo account shows the whole product (and is not in the database)
+  const [p] = await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${user.id}`;
+  return premiumActive(p?.premium_until);
+}
+
+/**
+ * The full market model and the auction archive (vite.config.ts writes them to /data/, hashed in production). An
+ * account without premium gets the lite copies instead (scripts/data/lite.ts: "market-model.lite…", "sales.lite…"),
+ * so what the lite version does not show never reaches its browser.
+ */
+export const PREMIUM_DATA = /^\/data\/(market-model|sales)(-[0-9a-f]{6,})?\.(json|csv)$/;
+
+/** Whether this request may read `path`: everything but the premium data files is open to any signed-in account. */
+export async function mayRead(req: IncomingMessage, path: string): Promise<boolean> {
+  if (!PREMIUM_DATA.test(path)) return true;
+  const user = await currentUser(req);
+  return Boolean(user && (await isPremium(user)));
+}
+
 async function userByName(username: string): Promise<User | null> {
   if (demo && demo.username.toLowerCase() === username.toLowerCase()) return demo;
   const [u] = await db()<User[]>`select id, username, salt, hash from users where lower(username) = lower(${username})`;
@@ -169,8 +194,10 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   if (path === "/api/auth/me" && req.method === "GET") {
     const u = await currentUser(req);
     if (!u) return sendJson(res, 401, { error: "not signed in" });
-    const [p] = await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${u.id}`;
-    return sendJson(res, 200, { username: u.username, admin: isAdmin(u), premiumUntil: p?.premium_until ?? null });
+    // the demo account is not in the database
+    const [p] = isDemo(u) ? [] : await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${u.id}`;
+    const admin = isAdmin(u);
+    return sendJson(res, 200, { username: u.username, admin, demo: isDemo(u), premiumUntil: p?.premium_until ?? null, premium: isDemo(u) || premiumActive(p?.premium_until, admin) });
   }
   if (path === "/api/auth/export" && req.method === "GET") return exportAccount(req, res);
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });

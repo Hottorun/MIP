@@ -8,10 +8,13 @@ import { cn, eur, fromDisplay } from "../../lib/format";
 import { CarImage } from "../CarImage";
 import { Delta, Empty, Modal, Pill, Section, Segmented, Money } from "../ui";
 import { isEn, t } from "../../i18n";
+import { LockedValue } from "../premium/Locked";
+import { usePlan } from "../../lib/plan";
 
 export function WatchlistSection() {
   const { watchlist, toggleWatch, alerts, removeAlert, toast } = useStore();
   const [alertFor, setAlertFor] = useState<string | null>(null);
+  const lite = !usePlan().premium; // the 12-month change is premium (src/lib/plan.tsx)
   const watched = watchlist.flatMap((id) => {
     const v = variantById.get(id);
     return v ? [v] : [];
@@ -41,7 +44,7 @@ export function WatchlistSection() {
                     <span>
                       {v.measured ? (
                         <>
-                          <Delta value={m.change12m} arrow={false} /> <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
+                          {lite ? <LockedValue reason="history" /> : <Delta value={m.change12m} arrow={false} />} <span className="text-muted">{t("in 12 Monaten", "in 12 months")}</span>
                         </>
                       ) : (
                         <span className="text-faint">{t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}</span>

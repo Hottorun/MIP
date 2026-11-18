@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { usePlan } from "../lib/plan";
+import { Lock, Locked } from "../components/premium/Locked";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Coins, ExternalLink, Gauge, Gavel, Scale, Search, X } from "lucide-react";
 import { brands, variantById, variantTitle, variants } from "../data/db";
@@ -79,6 +81,8 @@ export default function Auctions() {
   const [sort, setSort] = useStickyState<{ key: SortKey; dir: 1 | -1 }>("auktionen.sortierung", { key: "date", dir: -1 });
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<Sale | null>(null);
+  // lite (src/lib/plan.tsx): the calendar of coming auctions is free and comes first; figures and archive are premium
+  const { premium } = usePlan();
 
   // A search or house handed over in the link (global search, "Alle Ergebnisse" on a model) replaces the kept filter
   // once; the parameters are then taken out of the URL, so going back to this page keeps what the user set since.
@@ -248,16 +252,24 @@ export default function Auctions() {
               {t(`${num(getAllSales().length)} erfasste Auktionsergebnisse seit 2015`, `${num(getAllSales().length)} recorded auction results since 2015`)}
             </p>
           </div>
-          <Segmented
-            options={[
-              { value: "3M" as const, label: t("3 Monate", "3 months") },
-              { value: "12M" as const, label: t("12 Monate", "12 months") },
-              { value: "5J" as const, label: t("5 Jahre", "5 years") },
-            ]}
-            value={period}
-            onChange={setPeriod}
-          />
+          {premium && (
+            <Segmented
+              options={[
+                { value: "3M" as const, label: t("3 Monate", "3 months") },
+                { value: "12M" as const, label: t("12 Monate", "12 months") },
+                { value: "5J" as const, label: t("5 Jahre", "5 years") },
+              ]}
+              value={period}
+              onChange={setPeriod}
+            />
+          )}
         </div>
+        {!premium && (
+          <div className="mt-12">
+            <UpcomingAuctions />
+          </div>
+        )}
+        <Locked reason="auctions" teaser={t("Verkaufsquote, Zuschlag gegenüber Schätzung und Umsatz der letzten 12 Monate", "Sell-through rate, hammer price vs. estimate and turnover of the last 12 months")} height={170} className={premium ? undefined : "mt-16"}>
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatTile icon={<Gavel className="size-4" strokeWidth={1.8} />} label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
           <StatTile
@@ -273,10 +285,19 @@ export default function Auctions() {
           <StatTile icon={<Scale className="size-4" strokeWidth={1.8} />} label={t("Zuschlag gegenüber Schätzung", "Hammer price vs. estimate")} value={<Delta value={kpis.premium} arrow={false} />} />
           <StatTile icon={<Coins className="size-4" strokeWidth={1.8} />} label={t("Umsatz", "Turnover")} value={<Money value={kpis.revenue} compact />} />
         </div>
+        </Locked>
       </div>
 
-      <UpcomingAuctions />
+      {premium && <UpcomingAuctions />}
 
+      <Lock
+        reason="auctions"
+        teaser={t(
+          `${num(getAllSales().length)} Ergebnisse seit 2015, durchsuchbar nach Modell, Haus, Losnummer und FIN`,
+          `${num(getAllSales().length)} results since 2015, searchable by model, house, lot number and VIN`,
+        )}
+        height={340}
+      >
       <Section
         eyebrow={t("Archiv seit 2015", "Archive since 2015")}
         title={t("Ergebnisse", "Results")}
@@ -357,7 +378,7 @@ export default function Auctions() {
             {active.length > 0 && (
               <div className="flex flex-wrap items-center gap-1.5">
                 {active.map((f) => (
-                  <button key={f.key} onClick={f.clear} className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-[12.5px] text-accent hover:bg-accent hover:text-bg">
+                  <button key={f.key} onClick={f.clear} className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-[12.5px] text-accent hover:bg-accent-fill hover:text-on-accent">
                     {f.label} <X className="size-3" />
                   </button>
                 ))}
@@ -391,7 +412,9 @@ export default function Auctions() {
           )}
         </div>
       </Section>
+      </Lock>
 
+      <Lock reason="auctions" teaser={t("Angebotene Lose und Verkaufsquote, Monat für Monat", "Lots offered and sell-through rate, month by month")} height={200}>
       <Section title={t("Volumen und Verkaufsquote", "Volume and sell-through rate")} sub={t("Letzte 24 Monate, mit den gewählten Filtern", "Last 24 months, with the selected filters")}>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
@@ -423,6 +446,7 @@ export default function Auctions() {
           </ResponsiveContainer>
         </div>
       </Section>
+      </Lock>
 
       <SaleModal sale={selected} onClose={() => setSelected(null)} />
     </div>

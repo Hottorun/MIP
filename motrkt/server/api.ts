@@ -7,7 +7,7 @@ import { handleForum } from "./forum.ts";
 import { handleLotPhotos } from "./lotPhotos.ts";
 import { handleUserState } from "./userState.ts";
 import { hasCredentials } from "./contractCheck.ts";
-import { currentUser } from "./auth.ts";
+import { currentUser, isPremium } from "./auth.ts";
 import { overLimit } from "./limits.ts";
 
 // Load secrets from .env (ANTHROPIC_API_KEY, MOBILEDE_USERNAME, MOBILEDE_PASSWORD) without overriding the shell environment.
@@ -86,6 +86,10 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
   // every account may register, so each one gets a budget (server/limits.ts); the client falls back to local analysis
   const user = await currentUser(req);
   if (!user) return sendJson(res, 401, { error: "not signed in" });
+  // the Co-Pilot is part of premium (src/lib/plan.tsx); the page is locked in the app, this is the lock that counts
+  if (!(await isPremium(user))) {
+    return sendJson(res, 403, { error: english ? "The Co-Pilot is part of Carbay Premium." : "Der Co-Pilot gehört zu Carbay Premium.", premium: false });
+  }
   if (await overLimit("copilot", user.id)) {
     return sendJson(res, 429, {
       error: english ? "Hourly Co-Pilot limit reached – the local analysis answers meanwhile." : "Stundenlimit des Co-Piloten erreicht – solange antwortet die lokale Analyse.",

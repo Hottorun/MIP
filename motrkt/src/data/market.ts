@@ -3,6 +3,7 @@ import { AS_OF, CONDITION_FACTOR, CONDITION_SCORE, WEEK, WEEKS, SERIES_START, ge
 import type { Holding, PricePoint, Sale, Variant } from "./types";
 import { t } from "../i18n";
 import { num } from "../lib/format";
+import { LITE } from "./real/model";
 
 /** Derived market metrics, indices and recommendations. */
 
@@ -104,7 +105,16 @@ export const modelIndex = (modelId: string) =>
   buildIndex(`model:${modelId}`, variants.filter((v) => v.modelId === modelId).map((v) => v.id));
 export const brandIndex = (brandId: string) =>
   buildIndex(`brand:${brandId}`, variants.filter((v) => v.brandId === brandId).map((v) => v.id));
-export const marketIndex = () => buildIndex("market", variants.map((v) => v.id));
+/** The overall index. With the lite data (no value histories in the browser) it comes ready-made with the model. */
+export const marketIndex = (): PricePoint[] => (LITE ? liteIndex() : buildIndex("market", variants.map((v) => v.id)));
+let liteIndexCache: PricePoint[] | null = null;
+const liteIndex = () => (liteIndexCache ??= LITE!.index.map(([t, value]) => ({ t, value, volume: 0 })));
+
+/** The start page's biggest gains over 12 months, among valued variants with a photo. */
+export function homeWinners(): { id: string; change: number }[] {
+  if (LITE) return LITE.winners.filter((w) => variantById.has(w.id));
+  return topMovers(variants.filter((v) => v.measured && v.marketPhotos.length > 0).map((v) => v.id), 4).winners;
+}
 
 /** Rebase several series to 100 at the first common point of the range, for comparison charts. */
 export function rebase(series: PricePoint[], from: number): { t: number; value: number }[] {

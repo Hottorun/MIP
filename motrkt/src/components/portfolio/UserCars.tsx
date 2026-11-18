@@ -10,6 +10,7 @@ import { tr } from "../../i18n/terms";
 import { CarImage } from "../CarImage";
 import { VariantPicker } from "../VariantPicker";
 import { Pill, Section, useConfirm } from "../ui";
+import { usePlan } from "../../lib/plan";
 import {
   ACCEPT, COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, MAX_BYTES, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, uploadContract,
   type Kind, type UserCar,
@@ -230,9 +231,12 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
   const [notice, setNotice] = useState<{ kind: Kind; partial: boolean } | null>(null);
   const top = useRef<HTMLDivElement>(null);
 
-  const load = () =>
+  const { refresh } = usePlan();
+  // `changed`: after a submission, upload or deletion, so the premium button and the locks follow at once
+  const load = (changed = false) =>
     api<{ cars: UserCar[]; premiumUntil: string | null; premiumMonths: number }>("/api/fahrzeuge")
       .then((j) => {
+        if (changed) refresh();
         setCars(j.cars);
         setPremiumUntil(j.premiumUntil);
         setMonths(j.premiumMonths);
@@ -255,7 +259,7 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
     setForm(null);
     setNotice({ kind, partial });
     onPrefillClear?.();
-    load();
+    load(true);
     toTop();
   };
 
@@ -346,7 +350,7 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
           {cars && !cars.length && (
             <p className="py-8 text-center font-serif text-[15px] text-muted italic">{t("Noch nichts eingereicht.", "Nothing submitted yet.")}</p>
           )}
-          <ul className="divide-y divide-line">{cars?.map((c) => <CarRow key={c.id} car={c} onChange={load} />)}</ul>
+          <ul className="divide-y divide-line">{cars?.map((c) => <CarRow key={c.id} car={c} onChange={() => load(true)} />)}</ul>
         </div>
       </div>
     </Section>

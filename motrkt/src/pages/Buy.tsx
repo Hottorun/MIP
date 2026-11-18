@@ -11,6 +11,8 @@ import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters, safeUr
 import { useStore } from "../state/store";
 import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
+import { LockedValue } from "../components/premium/Locked";
+import { usePlan } from "../lib/plan";
 import { locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
 
@@ -448,6 +450,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
   const d = dealLabel(e.deal);
   const watched = watchlist.includes(v.id);
   const m = getMetrics(v.id);
+  const lite = !usePlan().premium; // the value's history is premium (src/lib/plan.tsx)
   const spark = getSeries(v.id).slice(-52).map((p) => p.value);
   const similar = all
     .filter((o) => o.v.id === v.id && o.l.id !== l.id)
@@ -595,9 +598,9 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 <>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted">{t("Marktwert 12 Monate", "Market value 12 months")}</span>
-                    <Delta value={m.change12m} />
+                    {lite ? <LockedValue reason="history" /> : <Delta value={m.change12m} />}
                   </div>
-                  <Sparkline values={spark} width={260} height={48} className="mt-1 w-full" />
+                  {!lite && <Sparkline values={spark} width={260} height={48} className="mt-1 w-full" />}
                 </>
               )}
               <Link to={`/markt/${v.id}`} onClick={onClose} className="mt-1 inline-flex items-center gap-1 text-xs text-gold hover:underline">

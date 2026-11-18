@@ -103,7 +103,7 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
                   aria-hidden
                   className={cn(
                     "flex size-[18px] shrink-0 items-center justify-center rounded-[3px] border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-gold/50",
-                    on ? "border-accent bg-accent text-bg" : "border-line-2",
+                    on ? "border-accent-fill bg-accent-fill text-on-accent" : "border-line-2",
                   )}
                 >
                   {on && <Check className="size-3" strokeWidth={3} />}

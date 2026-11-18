@@ -9,6 +9,8 @@ import type { Holding } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, km, pct, trendClass } from "../lib/format";
 import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money, useConfirm } from "../components/ui";
+import { Lock, LockedValue } from "../components/premium/Locked";
+import { usePlan } from "../lib/plan";
 import { HoldingForm } from "../components/portfolio/HoldingForm";
 import { WatchlistSection } from "../components/portfolio/Watchlist";
 import { UserCarsSection } from "../components/portfolio/UserCars";
@@ -40,6 +42,8 @@ export default function Portfolio() {
     [portfolio],
   );
 
+  // lite (src/lib/plan.tsx): today's value and the gain since purchase are free, the history is premium
+  const lite = !usePlan().premium;
   const total = rows.reduce((s, r) => s + r.value, 0);
   const cost = rows.reduce((s, r) => s + r.h.purchasePrice, 0);
   const measuredTotal = rows.reduce((s, r) => s + (r.measured ? r.value : 0), 0);
@@ -74,7 +78,7 @@ export default function Portfolio() {
         <dl className="mt-8 grid grid-cols-1 gap-6 border-y border-line py-6 sm:grid-cols-3">
           <Kpi label={t(`Wert von ${rows.length} Fahrzeugen`, `Value of ${rows.length} cars`)} value={<Money value={total} />} />
           <Kpi label={t(`Gewinn seit Kauf, Einstand ${eur(cost, { compact: true })}`, `Gain since purchase, cost ${eur(cost, { compact: true })}`)} value={<Money value={total - cost} />} tone={total - cost} />
-          <Kpi label={t("Veränderung in 12 Monaten", "Change in 12 months")} value={pct(perf12)} tone={perf12} />
+          <Kpi label={t("Veränderung in 12 Monaten", "Change in 12 months")} value={lite ? <LockedValue reason="history" /> : pct(perf12)} tone={lite ? undefined : perf12} />
         </dl>
         {unmeasured > 0 && (
           <p className="mt-3 text-[12.5px] text-faint">
@@ -95,6 +99,7 @@ export default function Portfolio() {
         </Empty>
       ) : (
         <>
+          <Lock reason="history" teaser={t("So hat sich der Wert Ihrer Sammlung entwickelt", "How the value of your collection has developed")} height={240}>
           <Section
             title={t("Wertentwicklung", "Value history")}
             sub={t("Marktwert gegenüber dem Einstand", "Market value against cost")}
@@ -169,6 +174,7 @@ export default function Portfolio() {
               </LegendKey>
             </ul>
           </Section>
+          </Lock>
 
           <Section title={t("Bestand", "Holdings")} sub={t(`${rows.length} Fahrzeuge`, `${rows.length} cars`)}>
             <div className="overflow-x-auto">
@@ -205,7 +211,7 @@ export default function Portfolio() {
                           {r.measured ? <Money value={r.value} /> : <span className="text-[13px] text-faint" title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>}
                         </td>
                         <td className={cn("text-right tabular-nums", r.gain !== null && trendClass(r.gain))}>{r.gain === null ? <span className="text-faint">–</span> : pct(r.gain)}</td>
-                        <td className="text-right">{r.measured ? <Delta value={r.m.change12m} arrow={false} /> : <span className="text-faint">–</span>}</td>
+                        <td className="text-right">{!r.measured ? <span className="text-faint">–</span> : lite ? <LockedValue reason="history" /> : <Delta value={r.m.change12m} arrow={false} />}</td>
                         <td className="text-right">
                           <button
                             className="btn btn-ghost p-1.5"

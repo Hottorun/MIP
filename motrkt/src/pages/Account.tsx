@@ -6,6 +6,8 @@ import { useStore } from "../state/store";
 import { Card, useConfirm } from "../components/ui";
 import { cn, date } from "../lib/format";
 import { t } from "../i18n";
+import { usePlan } from "../lib/plan";
+import { Crown } from "lucide-react";
 
 const ERR: Record<string, () => string> = {
   wrong_password: () => t("Das aktuelle Passwort stimmt nicht.", "The current password is not correct."),
@@ -20,6 +22,7 @@ export default function Account() {
   const me = useMe();
   const { portfolio, watchlist, alerts } = useStore();
   const demo = me?.username.toLowerCase() === "demo";
+  const plan = usePlan();
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
@@ -29,12 +32,48 @@ export default function Account() {
           {t(
             `${portfolio.length} Fahrzeuge im Portfolio, ${watchlist.length} beobachtet, ${alerts.length} Preisalarme.`,
             `${portfolio.length} cars in the portfolio, ${watchlist.length} watched, ${alerts.length} price alerts.`,
-          )}{" "}
-          {me?.premiumUntil
-            ? t(`Premium bis ${date(Date.parse(me.premiumUntil))}.`, `Premium until ${date(Date.parse(me.premiumUntil))}.`)
-            : t("Kein Premium.", "No premium.")}
+          )}
         </p>
       </div>
+
+      <Card title={t("Ihr Zugang", "Your plan")}>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 font-serif text-[20px]">
+              {plan.premium && <Crown className="size-4 text-gold" strokeWidth={1.7} aria-hidden />}
+              {plan.premium ? "Premium" : "Lite"}
+            </div>
+            <p className="mt-1 text-[14px] text-muted">
+              {plan.premium
+                ? me?.premiumUntil && Date.parse(me.premiumUntil) > Date.now()
+                  ? t(`Aktiv bis ${date(Date.parse(me.premiumUntil))}. Jeder weitere geprüfte Beleg verlängert um ${plan.months} Monate.`, `Active until ${date(Date.parse(me.premiumUntil))}. Every further verified document adds ${plan.months} months.`)
+                  : demo
+                    ? t("Das Demo-Konto zeigt Carbay mit allen Premium-Funktionen.", "The demo account shows Carbay with every premium feature.")
+                    : t("Als Prüfer haben Sie Premium dauerhaft.", "As a reviewer you have premium permanently.")
+                : t(
+                    "Marktwerte, Angebote, Portfolio, Forum und der Auktionskalender. Premium öffnet Wertverläufe, Verkäufe, das Auktionsarchiv, Insights und den Co-Pilot.",
+                    "Market values, listings, portfolio, forum and the auction calendar. Premium opens value histories, sales, the auction archive, Insights and the Co-Pilot.",
+                  )}
+            </p>
+          </div>
+          {!plan.premium && (
+            <button className="premium-cta sm:w-auto" onClick={() => plan.openUpgrade("general")}>
+              {t("Premium freischalten", "Unlock premium")}
+            </button>
+          )}
+        </div>
+        {me?.admin && (
+          <label className="mt-4 flex cursor-pointer items-start gap-2.5 border-t border-line pt-4 text-[14px]">
+            <input type="checkbox" className="mt-1 accent-[var(--color-gold)]" checked={plan.preview} onChange={(e) => plan.setPreview(e.target.checked)} />
+            <span>
+              {t("Lite-Ansicht testen", "Preview the lite version")}
+              <span className="block text-[13px] text-muted">
+                {t("Zeigt die App wie für ein Konto ohne Premium, nur in diesem Browser-Tab.", "Shows the app as an account without premium sees it, in this browser tab only.")}
+              </span>
+            </span>
+          </label>
+        )}
+      </Card>
 
       {demo && (
         <p className="rounded-[3px] border border-line bg-panel-2 px-4 py-3 text-[14px] text-muted">

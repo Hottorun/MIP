@@ -81,7 +81,8 @@ function buildIndex(): Entry[] {
   return out;
 }
 
-export function search(query: string, limit = 9): SearchHit[] {
+/** `lite`: no hammer prices in the hits (the auction archive is premium, src/lib/plan.tsx). */
+export function search(query: string, limit = 9, lite = false): SearchHit[] {
   const q = norm(query);
   if (q.length < 2) return [];
   if (!index || indexLang !== getLang()) {
@@ -123,7 +124,7 @@ export function search(query: string, limit = 9): SearchHit[] {
       if (hits.length >= limit + 4) break;
       if (s.id.startsWith(raw)) {
         const v = variantById.get(s.variantId)!;
-        hits.push({ kind: KIND.auction, label: `${s.id} · ${variantTitle(v)}`, detail: `${s.house} · ${s.price ? eur(s.price) : t("nicht verkauft", "not sold")}`, href: `/auktionen?q=${encodeURIComponent(s.id)}` });
+        hits.push({ kind: KIND.auction, label: `${s.id} · ${variantTitle(v)}`, detail: lite ? s.house : `${s.house} · ${s.price ? eur(s.price) : t("nicht verkauft", "not sold")}`, href: `/auktionen?q=${encodeURIComponent(s.id)}` });
       } else if (s.vin.startsWith(raw) && !hits.some((h) => h.kind === KIND.vin && h.label === s.vin)) {
         // a car sold more than once: one VIN hit is enough (the auction search lists all its sales)
         const v = variantById.get(s.variantId)!;
