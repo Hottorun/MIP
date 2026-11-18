@@ -48,6 +48,18 @@ export function isAdmin(user: { id: string; username: string }) {
   return names.includes(user.username.toLowerCase());
 }
 
+/** Premium runs while premium_until lies in the future (server/userCars.ts sets it); reviewers always have it. */
+export const premiumActive = (premiumUntil: Date | string | null | undefined, admin = false, now = Date.now()) =>
+  admin || (premiumUntil != null && new Date(premiumUntil).getTime() > now);
+
+/** Whether the account has premium right now: what the paid features on the server ask (the Co-Pilot, server/api.ts). */
+export async function isPremium(user: { id: string; username: string }): Promise<boolean> {
+  if (isAdmin(user)) return true;
+  if (isDemo(user)) return false; // never in the database
+  const [p] = await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${user.id}`;
+  return premiumActive(p?.premium_until);
+}
+
 async function userByName(username: string): Promise<User | null> {
   if (demo && demo.username.toLowerCase() === username.toLowerCase()) return demo;
   const [u] = await db()<User[]>`select id, username, salt, hash from users where lower(username) = lower(${username})`;
@@ -169,8 +181,10 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   if (path === "/api/auth/me" && req.method === "GET") {
     const u = await currentUser(req);
     if (!u) return sendJson(res, 401, { error: "not signed in" });
-    const [p] = await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${u.id}`;
-    return sendJson(res, 200, { username: u.username, admin: isAdmin(u), premiumUntil: p?.premium_until ?? null });
+    // the demo account is not in the database
+    const [p] = isDemo(u) ? [] : await db()<{ premium_until: Date | null }[]>`select premium_until from users where id = ${u.id}`;
+    const admin = isAdmin(u);
+    return sendJson(res, 200, { username: u.username, admin, demo: isDemo(u), premiumUntil: p?.premium_until ?? null, premium: premiumActive(p?.premium_until, admin) });
   }
   if (path === "/api/auth/export" && req.method === "GET") return exportAccount(req, res);
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });
