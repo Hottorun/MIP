@@ -133,7 +133,18 @@ export default function Portfolio() {
                   <Line type="monotone" dataKey="before" stroke="var(--color-ink)" strokeOpacity={0.5} strokeDasharray="1 5" strokeLinecap="round" dot={false} activeDot={{ r: 3 }} strokeWidth={1.75} isAnimationActive={false} />
                   <Line type="stepAfter" dataKey="cost" stroke="var(--color-faint)" strokeDasharray="3 4" dot={false} strokeWidth={1} isAnimationActive={false} />
                   {/* bought within the last week: one owned point, which neither curve can draw as a line */}
-                  {owned.length === 1 && <ReferenceDot x={owned[0].t} y={owned[0].cost!} r={3.5} fill="var(--color-bg)" stroke="var(--color-faint)" strokeWidth={1.5} ifOverflow="extendDomain" />}
+                  {owned.length === 1 && (
+                    <ReferenceDot
+                      x={owned[0].t}
+                      y={owned[0].cost!}
+                      r={3.5}
+                      fill="var(--color-bg)"
+                      stroke="var(--color-faint)"
+                      strokeWidth={1.5}
+                      ifOverflow="extendDomain"
+                      label={{ value: t("Einstand", "Cost"), position: "left", offset: 10, fill: "var(--color-faint)", fontSize: 12 }}
+                    />
+                  )}
                   {purchase && <ReferenceDot x={purchase.t} y={purchase.value!} r={4} fill="var(--color-ink)" stroke="var(--color-bg)" strokeWidth={2} ifOverflow="extendDomain" />}
                 </ComposedChart>
               </ResponsiveContainer>
