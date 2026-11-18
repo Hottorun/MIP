@@ -43,7 +43,6 @@ function promptGroups(name: string, sibling: string | undefined) {
 export default function AiPage() {
   const { lastVariantId } = useStore();
   const [focus, setFocus] = useState(lastVariantId);
-  const [prompt, setPrompt] = useState<{ text: string; nonce: number }>();
 
   const v = variantById.get(focus) ?? variantById.get(lastVariantId)!;
   const sibling = useMemo(
@@ -65,8 +64,8 @@ export default function AiPage() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <section className="panel flex min-h-[520px] flex-col p-5" style={{ height: "calc(100vh - 220px)" }}>
-          <Copilot mode="full" focusVariantId={v.id} prompt={prompt} />
+        <section className="panel flex h-[420px] max-h-[calc(100vh-220px)] min-h-[300px] flex-col self-start p-5">
+          <Copilot mode="full" focusVariantId={v.id} />
         </section>
 
         <div className="space-y-4">
@@ -85,27 +84,6 @@ export default function AiPage() {
               ))}
             </select>
             <p className="mt-2 text-xs text-muted">{t("Der Co-Pilot bezieht Fragen ohne konkrete Fahrzeugnennung auf dieses Fahrzeug.", "Questions that don’t name a specific car refer to this one.")}</p>
-          </Card>
-
-          <Card title={t("Vorschläge", "Suggestions")}>
-            <div className="space-y-3">
-              {groups.map((g) => (
-                <div key={g.title}>
-                  <div className="mb-1.5 text-[13px] text-muted">{g.title}</div>
-                  <div className="flex flex-col gap-1">
-                    {g.prompts.map((p) => (
-                      <button
-                        key={p}
-                        onClick={() => setPrompt({ text: p, nonce: Date.now() })}
-                        className="border-b border-line py-1.5 text-left text-[13.5px] text-ink/90 transition-colors hover:text-gold"
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
           </Card>
         </div>
       </div>
