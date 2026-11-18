@@ -31,6 +31,15 @@ import { overLimit } from "./limits.ts";
  */
 
 export const PREMIUM_MONTHS = 12;
+
+/** Until when premium runs for approvals at these times (ascending): each adds PREMIUM_MONTHS to what is still running. */
+export function premiumFrom(approvals: Date[]): Date | null {
+  return approvals.reduce<Date | null>((until, at) => {
+    const next = new Date(until && until > at ? until : at);
+    next.setUTCMonth(next.getUTCMonth() + PREMIUM_MONTHS);
+    return next;
+  }, null);
+}
 /** The wording of the consent in the form (src/components/portfolio/UserCars.tsx); change it together with that text. */
 export const CONSENT_VERSION = "2026-11-18";
 // Retention: how long a report may sit before it is removed without anyone asking.
@@ -240,12 +249,21 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
       return sendJson(res, 200, { ok: true });
     }
     if (!sub && req.method === "DELETE") {
-      // Withdrawing the consent. An approved car earned premium and is part of the market values, so it stays, but
-      // without anything that leads to a person: no account, no chassis number, no notes (what deleting the account
-      // does too, server/auth.ts). Every other report goes with its contract and everything entered.
+      // Withdrawing the consent. An approved car is part of the market values, so it stays, but without anything that
+      // leads to a person: no account, no chassis number, no notes (what deleting the account does too,
+      // server/auth.ts). The premium it earned goes with it: what is left is what the user's other approved cars
+      // give, none without any. Every other report goes with its contract and everything entered.
       if (own.status === "approved") {
-        await db()`update user_cars set user_id = ${"removed:" + randomUUID()}, vin = '', notes = null, contract = null, contract_name = null,
-                   ai_check = null, contract_deleted_at = coalesce(contract_deleted_at, now()) where id = ${own.id}`;
+        await db().begin(async (tx) => {
+          await tx`select 1 from users where id = ${user.id} for update`;
+          const done = await tx`update user_cars set user_id = ${"removed:" + randomUUID()}, vin = '', notes = null, contract = null,
+                                contract_name = null, ai_check = null, contract_deleted_at = coalesce(contract_deleted_at, now())
+                                where id = ${own.id} and user_id = ${user.id} and status = 'approved'`;
+          if (!done.count) return;
+          const rest = await tx<{ at: Date }[]>`select coalesce(reviewed_at, created_at) as at from user_cars
+                                                where user_id = ${user.id} and status = 'approved' order by 1`;
+          await tx`update users set premium_until = ${premiumFrom(rest.map((r) => r.at))} where id = ${user.id}`;
+        });
       } else await db()`delete from user_cars where id = ${own.id}`;
       return sendJson(res, 200, { ok: true });
     }

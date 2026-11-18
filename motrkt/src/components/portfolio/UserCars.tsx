@@ -330,7 +330,7 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
             onClick={async () => {
               const text =
                 car.status === "approved"
-                  ? t("Meldung aus Ihrem Konto entfernen? Fahrgestellnummer, Notizen und die Verbindung zu Ihrem Konto werden gelöscht. Preis, Datum und Fahrzeugdaten bleiben anonym in der Marktanalyse. Ihr Premium-Zugang bleibt bestehen.", "Remove this report from your account? The chassis number, notes and the link to your account are deleted. Price, date and car details stay in the market analysis, anonymously. Your premium access stays.")
+                  ? t("Meldung aus Ihrem Konto entfernen? Fahrgestellnummer, Notizen und die Verbindung zu Ihrem Konto werden gelöscht. Preis, Datum und Fahrzeugdaten bleiben anonym in der Marktanalyse. Der für diese Meldung gewährte Premium-Zugang entfällt.", "Remove this report from your account? The chassis number, notes and the link to your account are deleted. Price, date and car details stay in the market analysis, anonymously. The premium access granted for this report ends.")
                   : t("Meldung löschen? Alle Angaben dazu werden gelöscht.", "Delete this report? All its details will be deleted.");
               if (!(await confirm(text, { confirmLabel: car.status === "approved" ? t("Entfernen", "Remove") : t("Löschen", "Delete") }))) return;
               await remove();

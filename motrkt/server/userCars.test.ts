@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseReport } from "./userCars.ts";
+import { parseReport, premiumFrom } from "./userCars.ts";
 
 const valid = {
   role: "kauf", variant_id: "porsche-911-964-carrera-rs", build_year: 1992, vin: "WP0ZZZ96ZNS490123", km: 48000, price: 350000,
@@ -30,5 +30,17 @@ describe("parseReport (car report form)", () => {
     const { report } = parseReport({ ...valid, vin: " wp0 zzz 96 ", notes: "  hello  " }, "2026-11-16");
     expect(report.vin).toBe("WP0ZZZ96");
     expect(report.notes).toBe("hello");
+  });
+});
+
+describe("premiumFrom (premium left after a report is removed)", () => {
+  const d = (iso: string) => new Date(iso + "T00:00:00Z");
+  it("is none without an approved car and twelve months from one approval", () => {
+    expect(premiumFrom([])).toBeNull();
+    expect(premiumFrom([d("2026-03-10")])).toEqual(d("2027-03-10"));
+  });
+  it("adds to premium still running and starts again after a gap", () => {
+    expect(premiumFrom([d("2026-03-10"), d("2026-06-01")])).toEqual(d("2028-03-10"));
+    expect(premiumFrom([d("2024-01-01"), d("2026-06-01")])).toEqual(d("2027-06-01"));
   });
 });

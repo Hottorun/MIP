@@ -67,7 +67,7 @@ Foto, höchstens 4 MB). Abschnitt auf der Portfolio-Seite, auch über das Kontom
    (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
 
 **Löschen:** Der Nutzer kann jede Meldung selbst löschen. Eine freigegebene wird dabei nur vom Konto gelöst (ohne FIN,
-Notizen und KI-Ergebnis) und bleibt anonym im Modell; Premium bleibt. Ohne Zutun räumt `sweepUserCars` auf (`RETENTION` in `server/userCars.ts`):
+Notizen und KI-Ergebnis) und bleibt anonym im Modell; das dafür gewährte Premium entfällt (es bleibt, was andere freigegebene Meldungen ergeben). Ohne Zutun räumt `sweepUserCars` auf (`RETENTION` in `server/userCars.ts`):
 Meldungen ohne Vertrag nach 30 Tagen, unentschiedene Verträge nach 90 Tagen (Status „abgelaufen“), abgelehnte und
 abgelaufene Meldungen 90 Tage nach der Entscheidung. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
 
