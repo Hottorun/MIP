@@ -92,13 +92,14 @@
   --color-rose: #8e3b4a;
 
   /*
-   * Colour accents ("Petrol & Messing"): petrol is the house accent for links, active states and key figures,
+   * Colour accents: slate blue (#7180ac) is the house accent for links, active states and key figures,
    * brass (gold) the second voice, cobalt and Indian red the third and fourth. Every accent has a soft tint for fills.
-   * Text on cream stays at >= 4.5:1; the dark theme redefines each token further down.
+   * The accent itself is about 3.5:1 on cream (accent-2 is the darker shade at 5:1); the other text colours stay at
+   * >= 4.5:1. The dark theme redefines each token further down.
    */
-  --color-accent: #0b6874;
-  --color-accent-2: #084f58;
-  --color-accent-soft: #e2eeee;
+  --color-accent: #7180ac;
+  --color-accent-2: #586594;
+  --color-accent-soft: #e9ecf5;
   --color-gold-soft: #f3ead8;
   --color-cobalt: #34509c;
   --color-cobalt-soft: #e5e9f5;
@@ -142,9 +143,9 @@
       --color-down: #ee8a7a;
       --color-warn: #e2ac52;
       --color-rose: #e08a9a;
-      --color-accent: #5cc4cf;
-      --color-accent-2: #8ad8e0;
-      --color-accent-soft: #15333a;
+      --color-accent: #98a5cf;
+      --color-accent-2: #b7c0e0;
+      --color-accent-soft: #1f2437;
       --color-gold-soft: #33291a;
       --color-cobalt: #93a8ec;
       --color-cobalt-soft: #1f2741;
@@ -178,9 +179,9 @@
     --color-down: #ee8a7a;
     --color-warn: #e2ac52;
     --color-rose: #e08a9a;
-    --color-accent: #5cc4cf;
-    --color-accent-2: #8ad8e0;
-    --color-accent-soft: #15333a;
+    --color-accent: #98a5cf;
+    --color-accent-2: #b7c0e0;
+    --color-accent-soft: #1f2437;
     --color-gold-soft: #33291a;
     --color-cobalt: #93a8ec;
     --color-cobalt-soft: #1f2741;
