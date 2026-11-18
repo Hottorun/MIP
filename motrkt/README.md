@@ -113,15 +113,23 @@ zeigt (Kaufen, Modellseite), nicht beim App-Start.
 
 ## Forum je Modell
 
-Ganz unten auf jeder Modellseite (`/markt/:variante#forum`) tauschen sich angemeldete Nutzer in Themen aus: Thema mit
-erstem Beitrag eröffnen, antworten, lesen. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag oder Wertgutachten gemeldet hat, trägt
-das Abzeichen „Besitzer“. Autoren bearbeiten und löschen eigene Beiträge, andere melden Beiträge an die Prüfer
+Ganz unten auf jeder Modellseite (`/markt/:variante#forum`) tauschen sich angemeldete Nutzer in Themen aus. Jedes
+Thema liegt in einer Kategorie (Kaufberatung, Technik und Wartung, Markt und Preise, Historie und Originalität, Teile
+und Zubehör, Erfahrungen, Allgemein) und ist eine Frage oder eine Diskussion; bei einer Frage markiert der Autor
+(oder ein Prüfer) die Antwort, die sie geklärt hat. Die Themenliste lässt sich durchsuchen (Titel und Beiträge,
+Fundstelle hervorgehoben), über die Bereiche links nach Kategorie filtern (mit Anzahl je Bereich), über Reiter nach
+Status (offene Fragen, geklärt, von Besitzern, eigene) und sortieren (zuletzt aktiv, neueste, meiste Antworten);
+„Ganze Baureihe zeigen“ nimmt die Themen der Schwestervarianten hinzu. Übersicht, einzelnes Thema und das Formular
+für ein neues Thema teilen sich denselben Aufbau: schmale Spalte zur Orientierung, daneben der Inhalt. Autor und Prüfer ordnen ein Thema
+nachträglich anders ein. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag oder Wertgutachten gemeldet hat,
+trägt das Abzeichen „Besitzer“. Autoren bearbeiten und löschen eigene Beiträge, andere melden Beiträge an die Prüfer
 (`/pruefung` zeigt gemeldete Beiträge mit Begründung), Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen aus;
 die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen; Themen
-werden seitenweise (30) geladen. `/forum` zeigt die zuletzt bewegten Themen aller Modelle (Eintrag im Menü), Links
-öffnen das Thema auf der Modellseite (`?thema=<id>#forum`); die Suche findet Themen nach Titel, Inserate nach
+werden seitenweise (30) geladen. Eine eigene Forumsseite gibt es nicht mehr (`/forum` leitet zum Katalog); die
+Suche im Kopf findet Themen nach Titel und öffnet sie auf der Modellseite (`?thema=<id>#forum`), dazu Inserate nach
 Titel, Anbieter oder Ort, Händler (alle ihre Inserate auf Kaufen) und Auktionshäuser (ihre Ergebnisse auf
-Auktionen, `?haus=`). Server: `server/forum.ts`, Tabellen: `db/migrations/005_forum.sql`, `008_forum_reports.sql`.
+Auktionen, `?haus=`). Server: `server/forum.ts`, gemeinsame Kennungen: `src/lib/forumShared.ts`, Tabellen:
+`db/migrations/005_forum.sql`, `008_forum_reports.sql`, `012_forum_structure.sql`.
 
 ## Konfiguration (`.env`)
 
@@ -182,10 +190,9 @@ Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenver
 | `/markt/:variante` | Detailansicht einer Variante (Wertentwicklung, Seltenheit, Optionen, Verkäufe, Empfehlung, Co-Pilot, Forum) |
 | `/modelle` | Katalog mit Filtern, Tabellenansicht und Vergleich (bis 4 Varianten) |
 | `/auktionen` | Durchsuchbare Auktionsergebnisse (ID, FIN, Haus) |
-| `/portfolio` | Bestand, Wertentwicklung, Allokation, Watchlist, Preisalarme, CSV-Export |
+| `/portfolio` | Bestand, Wertentwicklung (vor dem ersten Kauf: Marktwert der Fahrzeuge, gepunktet), Watchlist, Fahrzeug belegen; erreichbar über das Kontomenü |
 | `/insights` | Marktzyklus, Heatmap, Segmente, Rendite-Risiko-Streudiagramme |
 | `/kaufen` | Aktuelle Inserate (Classic Trader, Händlerseiten, optional mobile.de) mit Deal-Score gegenüber dem fairen Marktwert, Preissenkungen aus der täglichen Erfassung (Filter „Preis gesenkt“, Preisverlauf im Inserat) |
-| `/forum` | Neueste Forumsthemen aller Modelle |
 | `/konto` | Passwort, Datenexport, Konto löschen |
 | `/ai` | Co-Pilot im Vollbild mit Prompt-Bibliothek |
 

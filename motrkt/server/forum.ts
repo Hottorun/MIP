@@ -78,6 +78,13 @@ async function verifiedOwners(variants: string[]): Promise<Set<string>> {
 /** "%word%" for ilike, with the pattern characters of the word itself escaped. */
 const like = (word: string) => `%${word.replace(/[\\%_]/g, "\\$&")}%`;
 
+/** The beginning of a post for the topic list, cut at a word and marked when the post goes on. */
+function excerptStart(body: string | null) {
+  if (!body || body.length <= EXCERPT) return body;
+  const cut = body.slice(0, EXCERPT);
+  return cut.slice(0, Math.max(cut.lastIndexOf(" "), EXCERPT - 40)).trimEnd() + " …";
+}
+
 /** The part of a post around the first search word found in it; its beginning when none is. */
 function excerptAround(body: string, terms: string[]) {
   const low = body.toLowerCase();
@@ -294,7 +301,7 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
           select x.*, (count(*) over ())::int as total from (
             select t.id, t.variant_id, t.user_id, t.username, t.title, t.category, t.kind, t.solved_post_id is not null as solved, t.created_at, t.last_post_at,
                    (select count(*)::int ${visiblePosts}) as posts,
-                   (select left(p.body, ${EXCERPT}) ${visiblePosts} order by p.created_at, p.id limit 1) as first,
+                   (select left(p.body, ${EXCERPT + 1}) ${visiblePosts} order by p.created_at, p.id limit 1) as first,
                    (select p.username ${visiblePosts} order by p.created_at desc, p.id desc limit 1) as last_username,
                    ${terms.length ? sql`(select p.body ${visiblePosts} and p.body ilike any(${terms.map(like)}::text[]) order by p.created_at, p.id limit 1)` : sql`null::text`} as hit
             ${filtered} ${category ? sql`and t.category = ${category}` : sql``}
@@ -308,7 +315,7 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
           username: x.username, owner: owners.has(ownerKey(x.variant_id, x.user_id)), mine: x.user_id === user.id,
           createdAt: x.created_at, lastPostAt: x.last_post_at, lastUsername: x.last_username, posts: x.posts,
           // while searching: the passage that was found, not the beginning of the topic
-          excerpt: x.hit ? excerptAround(x.hit, terms) : x.first,
+          excerpt: x.hit ? excerptAround(x.hit, terms) : excerptStart(x.first),
         })),
         hasMore: topics.length > PAGE,
         total: topics[0]?.total ?? 0,
