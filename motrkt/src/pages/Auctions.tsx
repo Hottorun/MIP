@@ -378,7 +378,7 @@ export default function Auctions() {
             {active.length > 0 && (
               <div className="flex flex-wrap items-center gap-1.5">
                 {active.map((f) => (
-                  <button key={f.key} onClick={f.clear} className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-[12.5px] text-accent hover:bg-accent hover:text-bg">
+                  <button key={f.key} onClick={f.clear} className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2.5 py-0.5 text-[12.5px] text-accent hover:bg-accent-fill hover:text-on-accent">
                     {f.label} <X className="size-3" />
                   </button>
                 ))}

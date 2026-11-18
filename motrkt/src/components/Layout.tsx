@@ -47,7 +47,7 @@ export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
       <div className="night-band px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
-        <span className="mr-2 inline-block size-1.5 -translate-y-px rounded-full bg-accent align-middle shadow-[0_0_0_3px_rgba(138,189,199,0.22)]" aria-hidden />
+        <span className="mr-2 inline-block size-1.5 -translate-y-px rounded-full bg-accent align-middle shadow-[0_0_0_3px_rgba(71,167,184,0.25)]" aria-hidden />
         <span className="text-on-night/90">{t("Marktdaten vom", "Market data as of")} {date(AS_OF)}.</span>
         <span className="hidden text-on-night/65 sm:inline">
           {" "}

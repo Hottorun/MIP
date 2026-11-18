@@ -95,15 +95,20 @@
    * Colour accents: deep petrol (#16363c) is the house accent for links, active states and key figures,
    * brass (gold) the second voice, cobalt and Indian red the third and fourth. Every accent has a soft tint for fills.
    * The accent is about 12:1 on cream (accent-2 is the darker shade for hover); the other text colours stay at
-   * >= 4.5:1. The dark theme redefines each token further down: there the accent is a light tint of the same hue,
-   * because #16363c itself would vanish on a dark surface, and #16363c becomes the soft fill.
+   * >= 4.5:1. The dark theme redefines each token further down: text, lines and marks take a mid petrol of the same
+   * hue there, because #16363c itself would vanish on a dark surface.
+   * accent-fill is the filled state (buttons, active pills) with on-accent as its label colour: it is #16363c in both
+   * themes, as is the soft fill of the dark theme. Cobalt is kept as a token name but is the same petrol.
    */
   --color-accent: #16363c;
   --color-accent-2: #0e2529;
   --color-accent-soft: #e0ebeb;
+  --color-accent-fill: #16363c;
+  --color-accent-fill-2: #0e2529;
+  --color-on-accent: #f6f4ef;
   --color-gold-soft: #f3ead8;
-  --color-cobalt: #34509c;
-  --color-cobalt-soft: #e5e9f5;
+  --color-cobalt: #16363c;
+  --color-cobalt-soft: #e0ebeb;
   --color-red: #a8322b;
   --color-red-soft: #f6e3df;
   --color-up-soft: #e3eedf;
@@ -144,12 +149,15 @@
       --color-down: #ee8a7a;
       --color-warn: #e2ac52;
       --color-rose: #e08a9a;
-      --color-accent: #8abdc7;
-      --color-accent-2: #b0d6dd;
+      --color-accent: #47a7b8;
+      --color-accent-2: #7fc0cc;
       --color-accent-soft: #16363c;
+      --color-accent-fill: #16363c;
+      --color-accent-fill-2: #1e4a52;
+      --color-on-accent: #eeeae1;
       --color-gold-soft: #33291a;
-      --color-cobalt: #93a8ec;
-      --color-cobalt-soft: #1f2741;
+      --color-cobalt: #47a7b8;
+      --color-cobalt-soft: #16363c;
       --color-red: #ee8a7a;
       --color-red-soft: #3a201d;
       --color-up-soft: #1d3220;
@@ -180,12 +188,15 @@
     --color-down: #ee8a7a;
     --color-warn: #e2ac52;
     --color-rose: #e08a9a;
-    --color-accent: #8abdc7;
-    --color-accent-2: #b0d6dd;
+    --color-accent: #47a7b8;
+    --color-accent-2: #7fc0cc;
     --color-accent-soft: #16363c;
+    --color-accent-fill: #16363c;
+    --color-accent-fill-2: #1e4a52;
+    --color-on-accent: #eeeae1;
     --color-gold-soft: #33291a;
-    --color-cobalt: #93a8ec;
-    --color-cobalt-soft: #1f2741;
+    --color-cobalt: #47a7b8;
+    --color-cobalt-soft: #16363c;
     --color-red: #ee8a7a;
     --color-red-soft: #3a201d;
     --color-up-soft: #1d3220;
@@ -278,13 +289,13 @@
     @apply inline-flex items-center gap-1.5 rounded-[3px] border border-line px-2.5 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
   }
   .chip-active {
-    @apply border-accent bg-accent text-bg hover:border-accent hover:text-bg;
+    @apply border-accent-fill bg-accent-fill text-on-accent hover:border-accent-fill hover:text-on-accent;
   }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-[2px] border border-line-2 bg-transparent px-4 py-2 text-[14px] text-ink transition-colors hover:border-ink disabled:opacity-40;
   }
   .btn-gold {
-    @apply border-accent bg-accent text-bg hover:border-accent-2 hover:bg-accent-2;
+    @apply border-accent-fill bg-accent-fill text-on-accent hover:border-accent-fill-2 hover:bg-accent-fill-2;
   }
   .btn-ghost {
     @apply border-transparent hover:border-transparent hover:bg-panel-3;
@@ -352,10 +363,13 @@
   .night-band {
     background: linear-gradient(120deg, var(--color-night) 0%, var(--color-night-2) 100%);
     color: var(--color-on-night);
-    /* the band is the accent's own colour, so anything accented on it (focus rings included) takes the light tint */
-    --color-accent: #8abdc7;
-    --color-accent-2: #b0d6dd;
+    /* the band is the accent's own colour, so anything accented on it (focus rings included) takes the lighter petrol */
+    --color-accent: #47a7b8;
+    --color-accent-2: #7fc0cc;
     --color-accent-soft: #16363c;
+    --color-accent-fill: #47a7b8;
+    --color-accent-fill-2: #7fc0cc;
+    --color-on-accent: #10272b;
   }
 }
 
