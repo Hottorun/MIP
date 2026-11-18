@@ -14,7 +14,6 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Credits = lazy(() => import("./pages/Credits"));
 const Review = lazy(() => import("./pages/Review"));
 const Account = lazy(() => import("./pages/Account"));
-const ForumPage = lazy(() => import("./pages/ForumPage"));
 const Impressum = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Impressum })));
 const Datenschutz = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Datenschutz })));
 
@@ -40,7 +39,8 @@ export function App() {
         <Route path="fahrzeug-melden" element={<Navigate to="/portfolio#melden" replace />} />
         <Route path="pruefung" element={<Review />} />
         <Route path="konto" element={<Account />} />
-        <Route path="forum" element={<ForumPage />} />
+        {/* the forum lives at the bottom of each model page; old links to the former overview land in the catalogue */}
+        <Route path="forum" element={<Navigate to="/modelle" replace />} />
         <Route path="impressum" element={<Impressum />} />
         <Route path="datenschutz" element={<Datenschutz />} />
         <Route path="*" element={<NotFound />} />

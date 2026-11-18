@@ -327,27 +327,51 @@ export function holdingSeries(h: Holding): PricePoint[] {
     .map((p) => ({ ...p, value: holdingMeasured(h) ? p.value * CONDITION_FACTOR[h.condition] : h.purchasePrice }));
 }
 
-/** Weekly total portfolio value: purchase price is booked until the holding is in the series. */
-export function portfolioSeries(holdings: Holding[]): PricePoint[] {
+export type PortfolioPoint = { t: number; value: number | null; cost: number | null; before: number | null };
+
+/**
+ * Weekly portfolio value for the chart. From the first purchase on: the holdings owned that week at market value
+ * (`value`; the purchase price where a variant has no market value) against what was paid for them (`cost`). Before
+ * the first purchase: what the cars of that purchase were worth on the market (`before`), so a collection started
+ * today still shows a curve instead of an empty chart. A purchase after the last weekly point counts from that point.
+ */
+export function portfolioHistory(holdings: Holding[]): PortfolioPoint[] {
   if (!holdings.length) return [];
-  const start = Math.min(...holdings.map((h) => h.purchaseDate));
-  const out: PricePoint[] = [];
-  for (let t = SERIES_START; t <= AS_OF; t += WEEK) {
-    if (t < start) continue;
-    let total = 0;
-    for (const h of holdings) {
-      if (h.purchaseDate > t) continue;
-      if (!holdingMeasured(h)) {
-        total += h.purchasePrice;
-        continue;
+  const weeks: number[] = [];
+  for (let t = SERIES_START; t <= AS_OF; t += WEEK) weeks.push(t);
+  const lastT = weeks[weeks.length - 1];
+  const bought = (h: Holding) => Math.min(h.purchaseDate, lastT);
+  const start = Math.min(...holdings.map(bought));
+  const firstT = weeks.find((t) => t >= start) ?? lastT;
+  const first = holdings.filter((h) => bought(h) <= firstT);
+  /** Market value of the holding that week; null where its series has no point. */
+  const worth = (h: Holding, t: number): number | null => {
+    if (!holdingMeasured(h)) return h.purchasePrice;
+    const s = getSeries(h.variantId);
+    const idx = Math.floor((t - s[0].t) / WEEK);
+    return idx >= 0 && idx < s.length ? s[idx].value * CONDITION_FACTOR[h.condition] : null;
+  };
+  // without a market value there is no history to show, only the purchase price
+  const hasHistory = first.some(holdingMeasured);
+  return weeks.map((t) => {
+    if (t < firstT) {
+      let before: number | null = hasHistory ? 0 : null;
+      for (const h of first) {
+        const w = worth(h, t);
+        before = before === null || w === null ? null : before + w;
       }
-      const s = getSeries(h.variantId);
-      const idx = Math.floor((t - s[0].t) / WEEK);
-      total += idx >= 0 && idx < s.length ? s[idx].value * CONDITION_FACTOR[h.condition] : h.purchasePrice;
+      return { t, value: null, cost: null, before };
     }
-    out.push({ t, value: total, volume: 0 });
-  }
-  return out;
+    let value = 0;
+    let cost = 0;
+    for (const h of holdings) {
+      if (bought(h) > t) continue;
+      value += worth(h, t) ?? h.purchasePrice;
+      cost += h.purchasePrice;
+    }
+    // the dotted line ends in the first owned point, so both curves meet
+    return { t, value, cost, before: t === firstT && hasHistory ? value : null };
+  });
 }
 
 // ---------------------------------------------------------------------------------------------

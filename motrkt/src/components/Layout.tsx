@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck, Settings } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck, Settings, Briefcase } from "lucide-react";
 import { useMe } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
@@ -26,8 +26,6 @@ const NAV_LEFT = [
 const NAV_RIGHT = [
   { to: "/insights", label: "Insights" },
   { to: "/ai", label: "Co-Pilot" },
-  { to: "/forum", label: "Forum" },
-  { to: "/portfolio", label: "Portfolio" },
 ];
 
 export function Layout() {
@@ -158,7 +156,7 @@ function Header() {
         </div>
         <Wordmark />
         <div className="flex items-center justify-end gap-7">
-          <nav className="hidden items-center gap-7 xl:flex" aria-label={t("Weitere Bereiche", "More sections")}>
+          <nav className="hidden items-center gap-7 lg:flex" aria-label={t("Weitere Bereiche", "More sections")}>
             {NAV_RIGHT.map((n) => (
               <NavItem key={n.to} to={n.to} label={n.label} />
             ))}
@@ -186,15 +184,6 @@ function Header() {
           <div className="mt-4 flex items-center justify-between border-t border-line pt-3 sm:hidden">
             <span className="text-[13px] text-muted">{t("Sprache", "Language")}</span>
             <LangSwitch />
-          </div>
-        </nav>
-      )}
-      {!menuOpen && (
-        <nav className="hidden border-t border-line px-5 py-2.5 sm:px-8 lg:block xl:hidden" aria-label={t("Weitere Bereiche", "More sections")}>
-          <div className="mx-auto flex max-w-[1360px] justify-end gap-7">
-            {NAV_RIGHT.map((n) => (
-              <NavItem key={n.to} to={n.to} label={n.label} />
-            ))}
           </div>
         </nav>
       )}
@@ -407,7 +396,7 @@ function UserMenu() {
           </div>
           <div className="my-1 border-t border-line" />
           <Link to="/portfolio" className={item} onClick={() => setOpen(false)}>
-            {t("Mein Portfolio", "My portfolio")}
+            <Briefcase className="size-3.5 text-muted" /> Portfolio
           </Link>
           <Link to="/portfolio#melden" className={item} onClick={() => setOpen(false)}>
             <FileCheck2 className="size-3.5 text-muted" /> {t("Premium freischalten", "Unlock premium")}
@@ -488,7 +477,7 @@ function Footer() {
     { to: "/auktionen", label: t("Auktionen", "Auctions") },
     { to: "/kaufen", label: t("Kaufen", "Buy") },
     { to: "/insights", label: "Insights" },
-    { to: "/forum", label: "Forum" },
+    { to: "/ai", label: "Co-Pilot" },
     { to: "/portfolio", label: "Portfolio" },
   ];
   return (
