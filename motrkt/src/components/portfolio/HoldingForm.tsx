@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { brands, generationById, modelName, models, paintsFor, paintsForVariant, variantById, variantTitle, yearsLabel } from "../../data/db";
+import { paintsForVariant, variantById } from "../../data/db";
 import { AS_OF, CONDITIONS, launchTime } from "../../data/generate";
 import { getMetrics } from "../../data/market";
 import type { Condition, Holding } from "../../data/types";
-import { eur, fromDisplay, toDisplay } from "../../lib/format";
+import { fromDisplay, toDisplay } from "../../lib/format";
 import { Modal } from "../ui";
+import { VariantPicker } from "../VariantPicker";
 import { isEn, t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
 type Draft = {
-  brandId: string;
-  modelId: string;
+  /** "" until a car is chosen (new holding) */
   variantId: string;
   purchasePrice: string;
   purchaseDate: string;
@@ -28,17 +28,21 @@ const fromInput = (s: string) => {
 /** Amounts as typed: "250.000" / "250,5" in German, "250,000" / "250.5" in English. */
 const parseNum = (s: string) => Number(isEn() ? s.replace(/[,\s]/g, "") : s.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
 
+/** Today's market value as a starting point for the purchase price, rounded to thousands; "" without a market value. */
+const suggestedPrice = (variantId: string) => {
+  const v = variantById.get(variantId);
+  return v?.measured ? String(Math.round(toDisplay(Math.round(getMetrics(v.id).value / 1000) * 1000))) : "";
+};
+
+/** A new holding starts without a car: the picker is the first step, the details follow once one is chosen. */
 function draftFrom(h?: Holding): Draft {
-  const v = variantById.get(h?.variantId ?? "porsche-911-964-carrera-rs")!;
   return {
-    brandId: v.brandId,
-    modelId: v.modelId,
-    variantId: v.id,
-    purchasePrice: h ? String(Math.round(toDisplay(h.purchasePrice))) : v.measured ? String(Math.round(toDisplay(Math.round(getMetrics(v.id).value / 1000) * 1000))) : "",
+    variantId: h?.variantId ?? "",
+    purchasePrice: h ? String(Math.round(toDisplay(h.purchasePrice))) : "",
     purchaseDate: toInput(h?.purchaseDate ?? AS_OF),
     mileage: h ? String(h.mileage) : "",
     condition: h?.condition ?? "2+",
-    color: h?.color ?? paintsForVariant(v)[0].name,
+    color: h?.color ?? "",
     note: h?.note ?? "",
   };
 }
@@ -64,35 +68,36 @@ export function HoldingForm({
     }
   }, [open, holding]);
 
-  const brandModels = useMemo(() => models.filter((m) => m.brandId === d.brandId), [d.brandId]);
-  const modelVariants = useMemo(() => {
-    const m = models.find((x) => x.id === d.modelId);
-    return (m?.generationIds ?? []).flatMap((gid) => generationById.get(gid)!.variantIds.map((id) => variantById.get(id)!));
-  }, [d.modelId]);
   const variant = variantById.get(d.variantId);
   // Period colours of the chosen variant; a colour already on the holding stays selectable.
   const paints = useMemo(() => {
-    const list = variant ? paintsForVariant(variant) : paintsFor(d.brandId);
+    const list = variant ? paintsForVariant(variant) : [];
     return d.color && !list.some((p) => p.name === d.color) ? [...list, { name: d.color, hex: "#8b847a" }] : list;
-  }, [variant, d.brandId, d.color]);
+  }, [variant, d.color]);
 
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setD((x) => ({ ...x, [k]: v }));
 
-  const pickBrand = (brandId: string) => {
-    const m = models.find((x) => x.brandId === brandId)!;
-    const vid = generationById.get(m.generationIds[0])!.variantIds[0];
-    setD((x) => ({ ...x, brandId, modelId: m.id, variantId: vid, color: paintsFor(brandId)[0].name }));
-  };
-  const pickModel = (modelId: string) => {
-    const m = models.find((x) => x.id === modelId)!;
-    setD((x) => ({ ...x, modelId, variantId: generationById.get(m.generationIds[0])!.variantIds[0] }));
+  /** Another car: its first period colour, and its market value as the price unless the user typed their own. */
+  const pickVariant = (variantId: string) => {
+    const v = variantById.get(variantId)!;
+    setErrors((e) => ({ ...e, variantId: "" }));
+    setD((x) => {
+      const paintsOf = paintsForVariant(v);
+      const untouched = x.purchasePrice.trim() === "" || x.purchasePrice === suggestedPrice(x.variantId);
+      return {
+        ...x,
+        variantId,
+        color: paintsOf.some((p) => p.name === x.color) ? x.color : paintsOf[0].name,
+        purchasePrice: untouched && !holding ? suggestedPrice(variantId) : x.purchasePrice,
+      };
+    });
   };
 
   function submit() {
     const e: Record<string, string> = {};
     const price = fromDisplay(parseNum(d.purchasePrice));
     const mileage = d.mileage.trim() === "" ? 0 : parseNum(d.mileage);
-    if (!variant) e.variantId = t("Bitte eine Variante wählen.", "Please choose a variant.");
+    if (!variant) e.variantId = t("Bitte zuerst ein Fahrzeug wählen.", "Please choose a car first.");
     if (!Number.isFinite(price) || price <= 0) e.purchasePrice = t("Bitte einen gültigen Kaufpreis eingeben.", "Please enter a valid purchase price.");
     else if (price > 50_000_000) e.purchasePrice = t("Kaufpreis unplausibel hoch.", "Purchase price implausibly high.");
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d.purchaseDate)) e.purchaseDate = t("Bitte ein Datum wählen.", "Please choose a date.");
@@ -121,13 +126,14 @@ export function HoldingForm({
     <Modal
       open={open}
       onClose={onClose}
+      wide
       title={holding ? t("Fahrzeug bearbeiten", "Edit car") : t("Fahrzeug hinzufügen", "Add car")}
       footer={
         <>
           <button className="btn" onClick={onClose}>
             {t("Abbrechen", "Cancel")}
           </button>
-          <button className="btn btn-gold" onClick={submit}>
+          <button className="btn btn-gold" onClick={submit} disabled={!variant}>
             {holding ? t("Speichern", "Save") : t("Hinzufügen", "Add")}
           </button>
         </>
@@ -140,43 +146,22 @@ export function HoldingForm({
           submit();
         }}
       >
-        <div>
-          <label className="label">{t("Marke", "Brand")}</label>
-          <select className="input" value={d.brandId} onChange={(e) => pickBrand(e.target.value)}>
-            {brands.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="label">{t("Modell", "Model")}</label>
-          <select className="input" value={d.modelId} onChange={(e) => pickModel(e.target.value)}>
-            {brandModels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {modelName(m)}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="col-span-2">
-          <label className="label">{t("Variante", "Variant")}</label>
-          <select className="input" value={d.variantId} onChange={(e) => set("variantId", e.target.value)}>
-            {modelVariants.map((v) => (
-              <option key={v.id} value={v.id}>
-                {variantTitle(v, { brand: false })} ({yearsLabel(v.years)})
-              </option>
-            ))}
-          </select>
-          {variant && (
+          <label className="label">{t("Fahrzeug", "Car")}</label>
+          <VariantPicker value={d.variantId} onChange={pickVariant} error={errors.variantId || undefined} autoFocus={!holding} />
+          {variant && !variant.measured && (
             <p className="mt-1 text-xs text-muted">
-              {t("Aktueller Marktwert (Median)", "Current market value (median)")}:{" "}
-              {variant.measured ? eur(getMetrics(variant.id).value) : t("keine Daten, das Fahrzeug zählt mit dem Kaufpreis", "no data, the car counts at purchase price")}
+              {t("Für diese Variante gibt es noch keinen Marktwert; das Fahrzeug zählt mit dem Kaufpreis.", "This variant has no market value yet; the car counts at purchase price.")}
             </p>
           )}
-          {err("variantId")}
         </div>
+        {!variant && (
+          <p className="col-span-2 py-2 text-center font-serif text-[15px] text-muted italic">
+            {t("Wählen Sie Ihr Fahrzeug, dann folgen Kaufpreis, Datum und Zustand.", "Choose your car; purchase price, date and condition follow.")}
+          </p>
+        )}
+        {variant && (
+          <>
         <div>
           <label className="label">{t("Kaufpreis (€)", "Purchase price ($)")}</label>
           <input className="input" inputMode="numeric" value={d.purchasePrice} onChange={(e) => set("purchasePrice", e.target.value)} />
@@ -222,6 +207,8 @@ export function HoldingForm({
           <label className="label">{t("Notiz", "Note")}</label>
           <textarea className="input min-h-16" value={d.note} onChange={(e) => set("note", e.target.value)} placeholder={t("Historie, Besonderheiten …", "History, special features …")} />
         </div>
+          </>
+        )}
         <button type="submit" className="hidden" />
       </form>
     </Modal>
