@@ -23,7 +23,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LOT_PAGE = [r"^https://bringatrailer\.com/listing/", r"^https://www\.mecum\.com/lots/(?:[A-Z]{2}\d{2}-)?\d+/", r"^https://rmsothebys\.com/(?:[a-z]{2}/)?auctions/[^/]+/lots/[^/?#]+",
             r"^https://www\.goodingco\.com/lot/", r"^https://www\.iconicauctioneers\.com/(?:online/)?(?:[^/?#]+-)?recc?\d+-\d+", r"^https://cars\.bonhams\.com/auction/\d+/lot/",
             r"^https://www\.bonhams\.com/auction/\d+/lot/", r"^https://www\.broadarrowauctions\.com/vehicles/[a-z0-9_]+/", r"^https://www\.artcurial\.com/(?:en|fr)/sales/\d+/lots/",
-            r"^https://www\.osenat\.com/lot/", r"^https://www\.aguttes\.com/lot/"]
+            r"^https://www\.osenat\.com/lot/", r"^https://www\.aguttes\.com/lot/",
+            r"^https://www\.barrett-jackson\.com/[^/?#]+/docket/vehicle/", r"^https://www\.pcarmarket\.com/results/",
+            r"^https://www\.gaaclassiccars\.com/vehicles/\d+/"]
 ICONIC_STORE = "https://am-s3-bucket-assets.s3.eu-west-2.amazonaws.com/silverstone/prod/"
 
 

@@ -10,6 +10,9 @@ export const LOT_PAGES: RegExp[] = [
   /^https:\/\/www\.artcurial\.com\/(?:en|fr)\/sales\/\d+\/lots\/[^/?#]+\/?$/,
   /^https:\/\/www\.osenat\.com\/lot\/\d+\/[^/?#]+$/,
   /^https:\/\/www\.aguttes\.com\/lot\/[^?#]+$/,
+  /^https:\/\/www\.barrett-jackson\.com\/[^/?#]+\/docket\/vehicle\/[^/?#]+$/,
+  /^https:\/\/www\.pcarmarket\.com\/results\/[^/?#]+$/,
+  /^https:\/\/www\.gaaclassiccars\.com\/vehicles\/\d+\/[^/?#]+$/,
 ];
 
 export const isLotPage = (url: string) => LOT_PAGES.some((r) => r.test(url));

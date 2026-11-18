@@ -30,7 +30,7 @@ Wie ein Eintrag zählt, ergibt sich aus `land` und `art`:
 | land | `Verkauf` / `Auktion` | `Angebot` |
 | --- | --- | --- |
 | Europa (`DE`, `AT`, `CH`, `NL`, `GB`, `FR`, `IT` …) | wie Auktionsergebnisse in Europa (`EU_AUC`, Bezugsgröße) | Angebote Europa (`EU_ASK`) |
-| `US`, `CA` | Auktionen USA (`US_AUC`); Bring a Trailer, Cars & Bids, PCARMARKET: Online-Auktionen USA (`US_ONL`) | Angebote USA (`US_ASK`) |
+| `US`, `CA` | Auktionen USA (`US_AUC`); Bring a Trailer, Cars & Bids: Online-Auktionen USA (`US_ONL`); PCARMARKET: eigener Kanal (`US_PCM`) | Angebote USA (`US_ASK`) |
 | andere Länder | werden noch nicht verwendet (beim Lauf von `model.py` gemeldet) | ebenso |
 
 Jeder Kanal bekommt seinen eigenen, gemessenen Abstand zu den Auktionsergebnissen in Europa; alle US-Kanäle zusammen

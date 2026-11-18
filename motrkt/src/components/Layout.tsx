@@ -15,7 +15,7 @@ import { reportError } from "../lib/report";
 import { useTheme } from "../lib/theme";
 
 // What the market values rest on: auction results (Europe and US) and asking prices.
-const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL;
+const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL + (MODEL_CHANNELS.US_PCM ?? 0);
 
 const NAV_LEFT = [
   { to: "/", get label() { return t("Start", "Home"); } },

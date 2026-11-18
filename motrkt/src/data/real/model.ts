@@ -8,7 +8,8 @@ const data = dataset().model;
  *  - EU_AUC  auction results and documented sales in Europe (the reference scale: what buyers in Europe actually paid)
  *  - EU_ASK  asking prices of cars for sale in Europe (Classic Trader; hand-recorded listings)
  *  - US_AUC  live auction results in North America (RM Sotheby's, Gooding, Broad Arrow …; hand-recorded US sales)
- *  - US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids, PCARMARKET)
+ *  - US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids)
+ *  - US_PCM  PCARMARKET: its prices sit below Bring a Trailer's, so the model measures its own gap
  *  - US_ASK  asking prices of dealers in the USA and Canada (hand-recorded)
  *  - EU_BID  highest bids of unsold auction lots in Europe (Hammer Price, the houses' own results)
  *  - US_BID  highest bids of unsold auction lots in North America (incl. Bring a Trailer)
@@ -48,11 +49,11 @@ type RawEntry = {
   out?: { id: string; eur: number; dev: number; ch: Channel }[];
 };
 
-export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC" | "US_ONL" | "US_ASK" | "EU_BID" | "US_BID";
+export type Channel = "EU_AUC" | "EU_ASK" | "US_AUC" | "US_ONL" | "US_PCM" | "US_ASK" | "EU_BID" | "US_BID";
 
 /** Display order of the channels: European evidence first. */
-export const CHANNEL_ORDER: Channel[] = ["EU_AUC", "EU_ASK", "EU_BID", "US_AUC", "US_ONL", "US_ASK", "US_BID"];
-const NO_CHANNELS: Record<Channel, number> = { EU_AUC: 0, EU_ASK: 0, US_AUC: 0, US_ONL: 0, US_ASK: 0, EU_BID: 0, US_BID: 0 };
+export const CHANNEL_ORDER: Channel[] = ["EU_AUC", "EU_ASK", "EU_BID", "US_AUC", "US_ONL", "US_PCM", "US_ASK", "US_BID"];
+const NO_CHANNELS: Record<Channel, number> = { EU_AUC: 0, EU_ASK: 0, US_AUC: 0, US_ONL: 0, US_PCM: 0, US_ASK: 0, EU_BID: 0, US_BID: 0 };
 
 type Raw = {
   asOf: string;

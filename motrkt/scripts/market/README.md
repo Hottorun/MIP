@@ -49,7 +49,10 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 | `EU_ASK` Angebote Europa | Classic Trader (Händler und privat, Linkslenker, Standort Europa) | `ctfetch.py` + `ctparse.py` |
 | `EU_ASK` / `EU_AUC` | von Hand: mobile.de, Elferspot, Kleinanzeigen, Händler und Auktionshäuser in Europa | `manual/*.csv`, siehe `manual/README.md` |
 | `US_AUC` Auktionen USA | RM Sotheby's, Gooding, Broad Arrow … (Saalauktionen, Verkäufe in USD); von Hand: Verkäufe und Auktionsergebnisse von US-/kanadischen Händlern und Häusern | `rmfetch.py`, `goodingfetch.py`, `ucpfetch.sh`, `manual/*.csv` |
-| `US_ONL` Online-Auktionen USA | Bring a Trailer (von Hand auch Cars & Bids, PCARMARKET): eigene Quelle mit eigenem Abstand, damit die größte Plattform den Abstand der Saalauktionen nicht verwischt | `batfetch.py` |
+| `US_AUC` Barrett-Jackson | alle Porsche-Lose seit 2015 mit Lotseite, Fahrgestellnummer und Laufleistung aus der Ergebnissuche der Website (rund 5 Abrufe je Lauf). Lose mit Mindestpreis bleiben weg: die Seite führt auch unverkaufte als „Sold“ zum Höchstgebot plus 10 %; sie kommen weiter aus Hammer Price | `barrettfetch.py` |
+| `US_AUC` GAA Classic Cars | alle Porsche-Lose der Ergebnisseiten (seit 2016) mit Lotseite und Fahrgestellnummer, unverkaufte mit Höchstgebot; ein Abruf alle 10 Sekunden (Crawl-delay der Seite), täglich 4 Listenseiten. GAA nennt den Zuschlag ohne Aufgeld, `build.py` schlägt es auf (7 %, ab 2023 8 %). Der Tag einiger Auktionen 2016–2022 ist aus GAAs üblichem Kalender geschätzt (bis etwa eine Woche daneben) | `gaafetch.py` |
+| `US_PCM` PCARMARKET | alle beendeten Porsche-Auktionen seit März 2019 (ältere führt die Seite nicht), verkauft und unverkauft mit Höchstgebot; Fahrgestellnummer und Laufleistung von der Auktionsseite, je Lauf höchstens 600 neue. Eigener Kanal mit eigenem Abstand: PCARMARKET verkauft dieselben Varianten rund 7 % unter Bring a Trailer (315 Varianten-Jahre verglichen, November 2026). Gewicht gedeckelt wie bei Bring a Trailer | `pcarfetch.py` |
+| `US_ONL` Online-Auktionen USA | Bring a Trailer (von Hand auch Cars & Bids): eigene Quelle mit eigenem Abstand, damit die größte Plattform den Abstand der Saalauktionen nicht verwischt | `batfetch.py` |
 | `US_ASK` Angebote USA | von Hand: Angebote von US-/kanadischen Händlern | `manual/*.csv` |
 | alle Auktionskanäle | Hammer Price (App, mit schriftlicher Erlaubnis von Hand ausgelesen, Baujahre 1948–2026): Verkäufe und Höchstgebote vieler Häuser, auch solcher, die wir nicht abrufen können (Mecum vor 2023, Barrett-Jackson, Historics, COYS …). Ein Los, das wir schon vom Haus haben (gleiches Haus, Datum ±14 Tage, gleiche Losnummer und gleiches Baujahr bzw. Variante, oder bei Verkäufen Variante und Preis auf 2 % gleich), wird nicht doppelt gezählt; die Daten des Hauses gelten, Hammer Price ergänzt nur das Höchstgebot. Verkäufe in Japan und Saudi-Arabien stehen in der Liste, gehen aber nicht in den Marktwert ein. Nennt die App nur „911“, „911 Targa“ o. ä., ordnet `by_year` nach Baujahr zu, wo nur ein Serienmodell in Frage kommt (1978–1983 911 SC, 1984–1988 Carrera 3.2, 1986–1988 924 S); der Titel bleibt wie in der App. Jede Korrektur (Währung, Datum, Preis 0) steht in der Spalte `hinweis` | `hammerprice.csv` + `hammerprice.py` (in `build.py`) |
 | `EU_BID` / `US_BID` Höchstgebote | Höchstgebote unverkaufter Lose (Hammer Price, Bring a Trailer) | wie oben |
@@ -58,15 +61,22 @@ Angebotspreis, kein US-Preis, keine Schätzung aus Katalogwerten.
 Nicht automatisch abrufbar (geprüft am 10. November 2026): mobile.de (Such- und Inseratsseiten per robots.txt gesperrt;
 für die offizielle Search API braucht es Zugangsdaten von mobile.de, der Client liegt schon in `server/mobilede.ts`),
 Kleinanzeigen (Nutzungsbedingungen verbieten Crawler ohne schriftliche Zustimmung), Elferspot, Classic Driver, Dyler,
-Cars & Bids (Bot-Schutz), Catawiki, Car & Classic, Coys (sperren Abrufe), AutoScout24, Collecting Cars, PCARMARKET,
-Dorotheum, Aguttes, H&H, Mecum, Hemmings (sperren KI-Crawler ausdrücklich), Barrett-Jackson (nur Google erlaubt).
-Diese Sperren werden nicht umgangen.
+Cars & Bids (Bot-Schutz), Catawiki, Car & Classic, Coys (sperren Abrufe), AutoScout24, Collecting Cars,
+Dorotheum, Hemmings (sperren KI-Crawler ausdrücklich).
+Diese Sperren werden nicht umgangen. Häuser, deren robots.txt Abrufe ausschließt, rufen wir nur mit ihrer Zustimmung
+ab (im Kopf des jeweiligen Abrufskripts vermerkt): Mecum, Aguttes, seit 18. November 2026 Barrett-Jackson,
+PCARMARKET und GAA Classic Cars. Auch mit Zustimmung nicht abrufbar (geprüft am 18. November 2026), weil die Seiten jede Anfrage mit einer
+Bot-Abfrage beantworten: Historics Auctioneers (JavaScript-Rätsel), Kruse Auctions (früher Worldwide Auctioneers,
+Cloudflare) und H&H (Cloudflare). Dafür müsste das Haus unseren Abruf freischalten oder die Ergebnisse als Datei
+liefern; bis dahin kommen sie aus Hammer Price.
 
 **Preise immer mit Aufgeld**, also was der Käufer zahlt – so veröffentlichen es die Häuser (RM Sotheby's, Bonhams,
 Gooding, Broad Arrow, Mecum, Iconic, Artcurial, Aguttes; Osenat ab 2017, davor aus den Verkaufsbedingungen
 aufgeschlagen) und so führt es Hammer Price mit „Include Buyer Premiums“. Bring a Trailer zeigt bei „Sold for“ den
 Zuschlag ohne Käufergebühr; `build.py` schlägt sie auf (5 %, mindestens 250, höchstens 5.000, ab 2024 7.500; Verkäufe
-in EUR/GBP mit denselben Zahlen). Der Zuschlag von der Seite bleibt in `sales.csv` als `zuschlag_original` erhalten.
+in EUR/GBP mit denselben Zahlen). PCARMARKET zeigt ebenfalls das Gebot ohne Gebühr; `build.py` schlägt sie auf (5 %,
+mindestens 500, höchstens 5.000 USD, für Auktionen nach dem 27. Juni 2025 7.500). Barrett-Jackson veröffentlicht mit
+Aufgeld (Zuschlag × 1,10). GAA Classic Cars nennt den Zuschlag; `build.py` schlägt 7 % auf, ab 2023 8 %. Der Zuschlag von der Seite bleibt in `sales.csv` als `zuschlag_original` erhalten.
 Höchstgebote unverkaufter Lose bleiben ohne Aufgeld; ihr Abstand wird als eigener Kanal gemessen.
 
 Jeder Titel wird per `classify.py` genau einer Variante zugeordnet oder verworfen (Umbauten, Replikas, Teile, nicht
