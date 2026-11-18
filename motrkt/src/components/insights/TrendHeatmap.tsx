@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { variants, variantTitle } from "../../data/db";
 import { AS_OF, getSeries } from "../../data/generate";
 import { getMetrics, monthlyChanges } from "../../data/market";
@@ -20,7 +20,8 @@ export function TrendHeatmap() {
     () =>
       Array.from({ length: 12 }, (_, k) => {
         const d = new Date(AS_OF);
-        return date(new Date(d.getFullYear(), d.getMonth() - (11 - k), 15).getTime(), "month");
+        // UTC throughout: AS_OF is UTC midnight, local months would shift a month west of Greenwich
+        return date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() - (11 - k), 15), "month");
       }),
     [],
   );
@@ -41,7 +42,7 @@ export function TrendHeatmap() {
           <Segmented
             options={[
               { value: "top", label: t("Meistgehandelt", "Most traded") },
-              { value: "all", label: `${t("Alle", "All")} (${variants.length})` },
+              { value: "all", label: `${t("Alle", "All")} (${variants.filter((v) => v.measured).length})` },
             ]}
             value={scope}
             onChange={setScope}
@@ -75,7 +76,9 @@ export function TrendHeatmap() {
             {rows.map(({ v, m, cells }) => (
               <tr key={v.id} className="group cursor-pointer" onClick={() => navigate(`/markt/${v.id}`)}>
                 <td className="max-w-64 truncate pr-2 whitespace-nowrap group-hover:text-accent">
-                  <span className="truncate font-serif text-[13.5px]">{variantTitle(v, { brand: false })}</span>
+                  <Link to={`/markt/${v.id}`} onClick={(e) => e.stopPropagation()} className="truncate font-serif text-[13.5px]">
+                    {variantTitle(v, { brand: false })}
+                  </Link>
                 </td>
                 {cells.map((c, i) => (
                   <td

@@ -167,7 +167,10 @@ export default function Auctions() {
   const sorted = useMemo(() => {
     if (sort.key === "date" && sort.dir === -1) return results; // already newest first
     const arr = [...results];
+    const byPrice = sort.key === "price" || sort.key === "trend";
     arr.sort((a, b) => {
+      // unsold lots have no price: keep them after the sold ones in either direction
+      if (byPrice && (a.price === null) !== (b.price === null)) return a.price === null ? 1 : -1;
       const x = sortValue(a, sort.key);
       const y = sortValue(b, sort.key);
       return (x < y ? -1 : x > y ? 1 : 0) * sort.dir;
@@ -178,7 +181,8 @@ export default function Auctions() {
   const kpis = useMemo(() => {
     const auctions = filtered.filter((s) => s.source === "Auktion");
     const sold = auctions.filter((s) => s.price !== null);
-    const premiums = sold.map((s) => s.price! / ((s.estimateLow! + s.estimateHigh!) / 2) - 1);
+    // only lots with an estimate (Bring a Trailer has none), else the mean turns NaN
+    const premiums = sold.filter((s) => s.estimateLow && s.estimateHigh).map((s) => s.price! / ((s.estimateLow! + s.estimateHigh!) / 2) - 1);
     const revenue = filtered.reduce((sum, s) => sum + (s.price ?? 0), 0);
     return {
       lots: auctions.length,
@@ -428,9 +432,12 @@ export default function Auctions() {
 /** Coming auctions of the houses in our data, with a link to each sale; refreshed by the daily update. */
 function UpcomingAuctions() {
   const [expanded, setExpanded] = useState(false);
-  const sales = calendarSales;
+  // today's date (UTC midnight, like the ISO dates), never before the calendar's date: sales that are over drop out
+  // and the countdown stays right when the page is opened days after the last update
+  const now = new Date();
+  const today = Math.max(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()), CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF);
+  const sales = calendarSales.filter((s) => Date.parse(s.end ?? s.date) >= today);
   const visible = expanded ? sales : sales.slice(0, 8);
-  const today = CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF;
   const fmt = (iso: string, o: Intl.DateTimeFormatOptions) => new Date(iso).toLocaleDateString(locale(), { ...o, timeZone: "UTC" });
   const inDays = (iso: string) => {
     const d = Math.round((Date.parse(iso) - today) / 86_400_000);
@@ -646,7 +653,7 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
     [t("Transaktions-ID", "Transaction ID"), <span className="font-mono">{sale.id}</span>],
     [t("FIN", "VIN"), <span className="font-mono">{sale.vin}</span>],
     [t("Preis", "Price"), sale.price === null ? <span className="text-down">{t("nicht verkauft", "not sold")}</span> : <Money value={sale.price} sale={sale} className="text-[17px]" />],
-    [t("Schätzung", "Estimate"), sale.estimateLow ? `${eur(sale.estimateLow, { rounded: true })} – ${eur(sale.estimateHigh, { rounded: true })}` : "–"],
+    [t("Schätzung", "Estimate"), sale.estimateLow && sale.estimateHigh ? `${eur(sale.estimateLow, { rounded: true })} – ${eur(sale.estimateHigh, { rounded: true })}` : "–"],
     ...(sale.price === null && sale.highBid ? [[t("Höchstgebot (kein Verkauf)", "High bid (not sold)"), saleAmount(sale.highBid, sale, { rounded: true })] as [string, React.ReactNode]] : []),
     [t("Zuschlag vs. Schätzung", "Hammer price vs. estimate"), mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
     [t("vs. Marktwert (damals)", "Vs. market value (at the time)"), sale.price === null ? "–" : <Delta value={sale.trend} />],

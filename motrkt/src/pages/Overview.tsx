@@ -78,7 +78,9 @@ export default function Overview() {
     return out.sort((a, b) => b.price! - a.price!).slice(0, 6);
   }, []);
   const upcoming = useMemo(() => {
-    const today = CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF;
+    // today's date (UTC midnight, like the ISO dates), so sales that are over drop out even between data updates
+    const now = new Date();
+    const today = Math.max(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()), CALENDAR_AS_OF ? Date.parse(CALENDAR_AS_OF) : AS_OF);
     return calendarSales
       .filter((c) => Date.parse(c.end ?? c.date) >= today)
       .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
@@ -351,7 +353,7 @@ export default function Overview() {
                     </div>
                     {c.porsche ? (
                       <span title={t("Porsche im Katalog", "Porsches in the catalogue")} className="shrink-0 rounded-full bg-accent-soft px-2 py-0.5 text-[12px] font-medium text-accent tabular-nums">
-                        {c.porsche} Porsche
+                        {t(`${c.porsche} Porsche`, c.porsche === 1 ? "1 Porsche" : `${c.porsche} Porsches`)}
                       </span>
                     ) : null}
                     <ExternalLink className="size-3.5 shrink-0 text-faint transition-colors group-hover:text-accent" aria-hidden />

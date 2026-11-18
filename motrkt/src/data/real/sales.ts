@@ -1,4 +1,4 @@
-import { hiddenVariantIds, variantById, variants, variantShortTitle, variantTitle } from "../db";
+import { hiddenVariantIds, resolveVariantId, variantById, variants, variantShortTitle, variantTitle } from "../db";
 import { inLang, t } from "../../i18n";
 import type { Body, Condition, Gearbox, SaleSource } from "../types";
 import { dataset } from "./dataset";
@@ -109,7 +109,8 @@ const norm = (s: string) =>
 
 let titleIndex: Map<string, string> | null = null;
 function matchVariant(id: string, title: string): string | null {
-  if (id && variantById.has(id.trim())) return id.trim();
+  // former ids (VARIANT_ALIASES) still match, e.g. in an import saved before a variant was split
+  if (id && variantById.has(resolveVariantId(id.trim()))) return resolveVariantId(id.trim());
   if (!title) return null;
   // Titles in both languages ("F-Modell" / "F-Model").
   titleIndex ??= new Map(

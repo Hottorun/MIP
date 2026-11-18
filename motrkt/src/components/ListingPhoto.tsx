@@ -8,8 +8,9 @@ import { t } from "../i18n";
  * longer loads (listing taken down), a plain "no photo" area: never a model photo or a drawing standing in for the car.
  */
 export function ListingPhoto({ src, alt, className, small }: { src?: string; alt: string; className?: string; small?: boolean }) {
-  const [failed, setFailed] = useState(false);
-  if (!src || failed) return <NoPhoto className={className} small={small} />;
+  // remembers which address failed, so a new photo in the same slot is tried again
+  const [failed, setFailed] = useState<string | null>(null);
+  if (!src || failed === src) return <NoPhoto className={className} small={small} />;
   return (
     <img
       src={src}
@@ -17,7 +18,7 @@ export function ListingPhoto({ src, alt, className, small }: { src?: string; alt
       loading="lazy"
       decoding="async"
       referrerPolicy="no-referrer"
-      onError={() => setFailed(true)}
+      onError={() => setFailed(src)}
       className={cn("bg-panel-3 object-cover", className)}
     />
   );

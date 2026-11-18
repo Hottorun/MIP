@@ -73,10 +73,10 @@ export default function Credits() {
                     {t("Foto", "Photo")}: {p.author || t("unbekannt", "unknown")} ·{" "}
                     {p.licenseUrl ? (
                       <a href={p.licenseUrl} target="_blank" rel="noreferrer" className="text-gold hover:underline">
-                        {p.license}
+                        {tr(p.license)}
                       </a>
                     ) : (
-                      p.license
+                      tr(p.license)
                     )}
                   </div>
                   {p.page && (

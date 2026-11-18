@@ -150,6 +150,8 @@ export default function Models() {
     return list.sort((a, b) => {
       const x = sortValue(a, sort);
       const y = sortValue(b, sort);
+      // unmeasured variants (-Infinity) stay at the end in either direction; two of them would compare as NaN
+      if (x === -Infinity || y === -Infinity) return x === y ? 0 : x === -Infinity ? 1 : -1;
       const c = typeof x === "string" ? x.localeCompare(y as string) : (x as number) - (y as number);
       return desc ? -c : c;
     });
@@ -396,7 +398,7 @@ export default function Models() {
                 ...s.items.map((v) => {
                 const m = getMetrics(v.id);
                 return (
-                  <tr key={v.id} onClick={() => navigate(`/markt/${v.id}`)} tabIndex={0} role="link" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); navigate(`/markt/${v.id}`); } }}>
+                  <tr key={v.id} onClick={() => navigate(`/markt/${v.id}`)} tabIndex={0} role="link" onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); navigate(`/markt/${v.id}`); } }}>
                     <td onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => toggleWatch(v.id)} aria-label="Watchlist" className={watchlist.includes(v.id) ? "text-gold" : "text-faint hover:text-ink"}>
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
@@ -617,7 +619,7 @@ function VariantCard({
       role="link"
       tabIndex={0}
       onClick={onOpen}
-      onKeyDown={(e) => e.key === "Enter" && onOpen()}
+      onKeyDown={(e) => e.key === "Enter" && e.target === e.currentTarget && onOpen()}
       className="group cursor-pointer"
     >
       <div className="relative overflow-hidden">
@@ -692,7 +694,7 @@ function CompareView({ ids }: { ids: string[] }) {
     { label: t("Stückzahl", "Units"), get: (v) => num(v.production) },
     { label: t("Leistung", "Power"), get: (v) => `${v.hp} PS` },
     { label: t("Neupreis", "List price"), get: (v) => `${eur(v.newPrice)} (${v.newPriceYear})` },
-    { label: t("Einschätzung", "Assessment"), get: (v) => <RecPill code={getMetrics(v.id).recommendation.code} label={getMetrics(v.id).recommendation.label} /> },
+    { label: t("Einschätzung", "Assessment"), get: (v) => (v.measured ? <RecPill code={getMetrics(v.id).recommendation.code} label={getMetrics(v.id).recommendation.label} /> : "–") },
   ];
   const vs = ids.map((id) => variantById.get(id)!);
 

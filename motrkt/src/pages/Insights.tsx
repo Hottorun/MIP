@@ -498,7 +498,7 @@ function MarketTrend() {
       />
     ) : null;
   return (
-    <Section eyebrow={chapterLabel("markt")} title={t("Marktentwicklung", "Market trend")} sub={t("Gesamtindex aller bewerteten Varianten, gewichtet nach Marktwert", "Overall index of all valued variants, weighted by market value")}>
+    <Section eyebrow={chapterLabel("markt")} title={t("Marktentwicklung", "Market trend")} sub={t("Gesamtindex aller bewerteten Varianten, gleich gewichtet", "Overall index of all valued variants, equally weighted")}>
       <Card
         title={
           <span className="flex items-baseline gap-3">
