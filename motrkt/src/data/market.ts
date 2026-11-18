@@ -351,8 +351,8 @@ export function portfolioHistory(holdings: Holding[]): PortfolioPoint[] {
     const idx = Math.floor((t - s[0].t) / WEEK);
     return idx >= 0 && idx < s.length ? s[idx].value * CONDITION_FACTOR[h.condition] : null;
   };
-  // without a market value there is no history to show, only the purchase price
-  const hasHistory = first.some(holdingMeasured);
+  // without a market value, or bought before the series starts, there is no earlier history to show
+  const hasHistory = firstT > weeks[0] && first.some(holdingMeasured);
   return weeks.map((t) => {
     if (t < firstT) {
       let before: number | null = hasHistory ? 0 : null;
