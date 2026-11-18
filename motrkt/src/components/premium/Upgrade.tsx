@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, Check, Clock, Crown, FileUp, ShieldCheck, X } from "lucide-react";
 import { usePlan, type LockReason, type UnlockStep } from "../../lib/plan";
 import { DOCUMENT_HOURS } from "../../lib/userCars";
-import { signOut } from "../../lib/session";
 import { getAllSales } from "../../data/generate";
 import { variants } from "../../data/db";
 import { cn, num } from "../../lib/format";
@@ -65,7 +64,7 @@ const HEADLINE: Record<LockReason, () => string> = {
 };
 
 export function UpgradeDialog() {
-  const { upgrade, closeUpgrade, months, step, account, preview, setPreview } = usePlan();
+  const { upgrade, closeUpgrade, months, step, preview, setPreview } = usePlan();
   const navigate = useNavigate();
   const go = () => {
     closeUpgrade();
@@ -166,20 +165,9 @@ export function UpgradeDialog() {
             })}
           </ol>
 
-          {account?.demo && !account.admin ? (
-            <div className="mt-7 space-y-3">
-              <p className="rounded-[3px] border border-line bg-panel-2 px-4 py-3 text-[13.5px] text-muted">
-                {t("Das Demo-Konto wird geteilt und kann kein Fahrzeug einreichen. Mit einem eigenen Konto schalten Sie Premium frei.", "The demo account is shared and cannot submit a car. Unlock premium with an account of your own.")}
-              </p>
-              <button className="premium-cta" onClick={signOut}>
-                {t("Eigenes Konto anlegen", "Create my own account")} <ArrowRight className="size-4" aria-hidden />
-              </button>
-            </div>
-          ) : (
-            <button className="premium-cta mt-7" onClick={go}>
-              {cta} <ArrowRight className="size-4" aria-hidden />
-            </button>
-          )}
+          <button className="premium-cta mt-7" onClick={go}>
+            {cta} <ArrowRight className="size-4" aria-hidden />
+          </button>
           <p className="mt-3 flex gap-2 text-[12.5px] leading-relaxed text-faint">
             <ShieldCheck className="mt-0.5 size-3.5 shrink-0" strokeWidth={1.7} aria-hidden />
             <span>

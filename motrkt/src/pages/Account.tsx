@@ -47,7 +47,9 @@ export default function Account() {
               {plan.premium
                 ? me?.premiumUntil && Date.parse(me.premiumUntil) > Date.now()
                   ? t(`Aktiv bis ${date(Date.parse(me.premiumUntil))}. Jeder weitere geprüfte Beleg verlängert um ${plan.months} Monate.`, `Active until ${date(Date.parse(me.premiumUntil))}. Every further verified document adds ${plan.months} months.`)
-                  : t("Als Prüfer haben Sie Premium dauerhaft.", "As a reviewer you have premium permanently.")
+                  : demo
+                    ? t("Das Demo-Konto zeigt Carbay mit allen Premium-Funktionen.", "The demo account shows Carbay with every premium feature.")
+                    : t("Als Prüfer haben Sie Premium dauerhaft.", "As a reviewer you have premium permanently.")
                 : t(
                     "Marktwerte, Angebote, Portfolio, Forum und der Auktionskalender. Premium öffnet Wertverläufe, Verkäufe, das Auktionsarchiv, Insights und den Co-Pilot.",
                     "Market values, listings, portfolio, forum and the auction calendar. Premium opens value histories, sales, the auction archive, Insights and the Co-Pilot.",
