@@ -525,6 +525,17 @@ const LOGIN_PAGE = `<!doctype html>
   };
   render();
   $("username").focus();
+  // Demo link (QR code): /anmelden#demo=<password> signs in as the shared demo account. The part after # never
+  // reaches the server or its logs, and it is taken out of the address before signing in.
+  var demo = /^#demo=(.+)$/.exec(location.hash);
+  if (demo) {
+    try {
+      history.replaceState(null, "", location.pathname + location.search);
+      $("username").value = "demo";
+      $("password").value = decodeURIComponent(demo[1]);
+      $("form").onsubmit({ preventDefault: function () {} });
+    } catch (e) {}
+  }
 })();
 </script>
 </body>
