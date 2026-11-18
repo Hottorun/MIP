@@ -497,3 +497,189 @@ body {
     display: none;
   }
 }
+
+/*
+ * Lite and premium (src/lib/plan.tsx). A locked block shows its real content blurred, cut short and faded out, under
+ * a card that says what is behind it; the floating button and the dialog's main button are the one place where the
+ * brass of the palette meets the dark band, so "premium" reads the same wherever it appears.
+ */
+.lock-clip {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 58%, transparent 100%);
+}
+.lock-blur {
+  filter: blur(9px) saturate(1.15);
+  opacity: 0.92;
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.3s;
+}
+.lock:hover .lock-blur {
+  filter: blur(7px) saturate(1.2);
+}
+.lock-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  max-width: 27rem;
+  padding: 0.875rem 1.125rem 0.875rem 0.875rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 38%, var(--color-line));
+  background: color-mix(in srgb, var(--color-panel) 94%, transparent);
+  box-shadow:
+    0 18px 40px -22px rgba(20, 20, 20, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  backdrop-filter: blur(6px);
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+:root[data-theme="dark"] .lock-card {
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .lock-card {
+    box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.8);
+  }
+}
+.lock:hover .lock-card,
+.lock button:focus-visible .lock-card {
+  transform: translateY(-2px);
+  border-color: var(--color-gold);
+  box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--color-gold) 70%, transparent);
+}
+
+.premium-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1.125rem 0.5rem 0.5rem;
+  border-radius: 999px;
+  color: var(--color-on-night);
+  background: linear-gradient(120deg, #10272b 0%, #1b4850 100%);
+  box-shadow:
+    0 0 0 1px rgba(228, 196, 134, 0.6),
+    0 16px 36px -14px rgba(8, 24, 27, 0.75),
+    0 2px 6px rgba(8, 24, 27, 0.3);
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.25s;
+  animation: fab-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s backwards;
+}
+/* a band of light that crosses the button every few seconds */
+.premium-fab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 236, 196, 0.26) 50%, transparent 62%);
+  transform: translateX(-120%);
+  animation: fab-sheen 6s ease-in-out 1.6s infinite;
+}
+.premium-fab:hover,
+.premium-fab:focus-visible {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(240, 214, 160, 0.95),
+    0 22px 44px -14px rgba(8, 24, 27, 0.8),
+    0 0 30px -4px rgba(211, 173, 102, 0.55);
+}
+.premium-fab:active {
+  transform: translateY(0);
+}
+.premium-fab-icon {
+  display: grid;
+  place-items: center;
+  width: 2.375rem;
+  height: 2.375rem;
+  border-radius: 999px;
+  color: #10272b;
+  background: linear-gradient(140deg, #f0d9a6 0%, #c79a4b 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+@media (max-width: 480px) {
+  .premium-fab {
+    right: 0.875rem;
+    bottom: 0.875rem;
+  }
+}
+@keyframes fab-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+}
+@keyframes fab-sheen {
+  0%,
+  72% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* the main button of the upgrade dialog and the premium teaser pages */
+.premium-cta {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.25rem;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #10272b;
+  background: linear-gradient(140deg, #f0d9a6 0%, #c79a4b 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 10px 24px -12px rgba(143, 109, 51, 0.8);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    filter 0.2s;
+}
+.premium-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.45) 50%, transparent 62%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+.premium-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 14px 28px -12px rgba(143, 109, 51, 0.95);
+}
+.premium-cta:hover::before {
+  transform: translateX(120%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .premium-fab,
+  .premium-fab::before {
+    animation: none;
+  }
+  .premium-cta::before {
+    display: none;
+  }
+  .lock-card,
+  .lock-blur {
+    transition: none;
+  }
+}

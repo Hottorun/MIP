@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowUpRight, Minus, X } from "lucide-react";
 import { amount, cn, curSign, num, ownUsd, pct, trendClass } from "../lib/format";
 import { brandById } from "../data/db";
 import { t } from "../i18n";
+import { LockedBody, PremiumTag, useLock } from "./premium/Locked";
 
 export function Card({
   title,
@@ -55,6 +56,8 @@ export function Section({
   /** small caps line above the heading */
   eyebrow?: ReactNode;
 }) {
+  // inside a <Lock> of the lite version: the heading stays, the body is blurred, the controls give way to the mark
+  const lock = useLock();
   return (
     <section className={cn("min-w-0", className)}>
       <header className="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
@@ -66,9 +69,9 @@ export function Section({
           <h2 className="font-display text-[28px] leading-tight sm:text-[32px]">{title}</h2>
           {sub && <p className="mt-1 text-[14px] text-muted">{sub}</p>}
         </div>
-        {actions && <div className="flex shrink-0 flex-wrap items-center gap-3">{actions}</div>}
+        {lock ? <PremiumTag className="mb-1" /> : actions && <div className="flex shrink-0 flex-wrap items-center gap-3">{actions}</div>}
       </header>
-      {children}
+      {lock ? <LockedBody {...lock}>{children}</LockedBody> : children}
     </section>
   );
 }
@@ -281,6 +284,7 @@ export function Modal({
   children,
   footer,
   wide,
+  bare,
 }: {
   open: boolean;
   onClose: () => void;
@@ -288,6 +292,8 @@ export function Modal({
   children: ReactNode;
   footer?: ReactNode;
   wide?: boolean;
+  /** no header and no padding: the content lays out the whole box (and brings its own close button, marked data-close) */
+  bare?: boolean;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const titleId = useId();
@@ -330,19 +336,30 @@ export function Modal({
         ref={box}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
+        aria-labelledby={bare ? undefined : titleId}
+        aria-label={bare && typeof title === "string" ? title : undefined}
         tabIndex={-1}
-        className={cn("animate-fade-in w-full rounded-[3px] border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(20,20,20,0.22)] focus:outline-none", wide ? "max-w-3xl" : "max-w-lg")}
+        className={cn(
+          "animate-fade-in w-full border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(20,20,20,0.22)] focus:outline-none",
+          bare ? "max-w-[900px] overflow-hidden rounded-[8px]" : "rounded-[3px]",
+          !bare && (wide ? "max-w-3xl" : "max-w-lg"),
+        )}
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between border-b border-line px-6 py-4">
-          <h2 id={titleId} className="font-serif text-xl">{title}</h2>
-          <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label={t("Schließen", "Close")} data-close>
-            <X className="size-4" />
-          </button>
-        </header>
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-5">{children}</div>
-        {footer && <footer className="flex justify-end gap-2 border-t border-line px-6 py-4">{footer}</footer>}
+        {bare ? (
+          children
+        ) : (
+          <>
+            <header className="flex items-center justify-between border-b border-line px-6 py-4">
+              <h2 id={titleId} className="font-serif text-xl">{title}</h2>
+              <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label={t("Schließen", "Close")} data-close>
+                <X className="size-4" />
+              </button>
+            </header>
+            <div className="max-h-[70vh] overflow-y-auto px-6 py-5">{children}</div>
+            {footer && <footer className="flex justify-end gap-2 border-t border-line px-6 py-4">{footer}</footer>}
+          </>
+        )}
       </div>
     </div>,
     document.body,

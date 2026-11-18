@@ -5,6 +5,7 @@ import { StoreProvider } from "./state/store";
 import { LiveListingsProvider } from "./state/liveListings";
 import { App } from "./App";
 import { LangProvider } from "./i18n";
+import { PlanProvider } from "./lib/plan";
 
 /** Renders the app. Imported by main.tsx only after the market data is loaded (src/data/real/dataset.ts). */
 export function start(root: HTMLElement) {
@@ -14,9 +15,12 @@ export function start(root: HTMLElement) {
       <BrowserRouter>
         <StoreProvider>
           <LiveListingsProvider>
-            <LangProvider>
-              <App />
-            </LangProvider>
+            {/* outside the language provider, which remounts everything below it on a language switch */}
+            <PlanProvider>
+              <LangProvider>
+                <App />
+              </LangProvider>
+            </PlanProvider>
           </LiveListingsProvider>
         </StoreProvider>
       </BrowserRouter>

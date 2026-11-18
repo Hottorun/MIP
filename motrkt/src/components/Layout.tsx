@@ -1,7 +1,10 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, FileCheck2, ShieldCheck, Settings, Briefcase } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock } from "lucide-react";
 import { useMe } from "../lib/userCars";
+import { usePlan } from "../lib/plan";
+import { signOut } from "../lib/session";
+import { PremiumFab, UpgradeDialog } from "./premium/Upgrade";
 import { useStore } from "../state/store";
 import { useNotifications } from "../state/notifications";
 import { prepareSearch, search, type SearchHit } from "../lib/search";
@@ -23,16 +26,24 @@ const NAV_LEFT = [
   { to: "/auktionen", get label() { return t("Auktionen", "Auctions"); } },
   { to: "/kaufen", get label() { return t("Kaufen", "Buy"); } },
 ];
+// premium: locked for a lite user (src/lib/plan.tsx); the entries stay in the menu and lead to a preview of the page
 const NAV_RIGHT = [
-  { to: "/insights", label: "Insights" },
-  { to: "/ai", label: "Co-Pilot" },
+  { to: "/insights", label: "Insights", premium: true },
+  { to: "/ai", label: "Co-Pilot", premium: true },
 ];
 
 export function Layout() {
   const { pathname } = useLocation();
+  const { ready, premium } = usePlan();
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [pathname]);
+  const wait = (
+    <div className="flex flex-col items-center gap-4 py-24 font-serif text-muted italic">
+      <LogoMark size={56} className="animate-pulse" />
+      {t("Einen Moment …", "One moment …")}
+    </div>
+  );
   return (
     <div className="flex min-h-screen flex-col">
       <div className="night-band px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
@@ -49,22 +60,22 @@ export function Layout() {
       <Header />
       <main className="flex-1">
         <div className="mx-auto max-w-[1360px] px-5 py-8 sm:px-8 lg:py-12">
-          <Suspense
-            fallback={
-              <div className="flex flex-col items-center gap-4 py-24 font-serif text-muted italic">
-                <LogoMark size={56} className="animate-pulse" />
-                {t("Einen Moment …", "One moment …")}
-              </div>
-            }
-          >
-            <PageErrorBoundary key={pathname}>
-              <Outlet />
-            </PageErrorBoundary>
-          </Suspense>
+          {/* the pages wait for the plan (first visit only, later ones start from the cached answer): no lock flashes up for a premium user, no data for a lite one */}
+          {ready ? (
+            <Suspense fallback={wait}>
+              <PageErrorBoundary key={pathname}>
+                <Outlet />
+              </PageErrorBoundary>
+            </Suspense>
+          ) : (
+            wait
+          )}
         </div>
       </main>
       <Footer />
-      <Toasts />
+      <PremiumFab />
+      <UpgradeDialog />
+      <Toasts raised={ready && !premium} />
     </div>
   );
 }
@@ -109,15 +120,24 @@ function Wordmark({ className }: { className?: string }) {
   );
 }
 
-function NavItem({ to, label }: { to: string; label: string }) {
+function NavItem({ to, label, premium }: { to: string; label: string; premium?: boolean }) {
   const { pathname } = useLocation();
+  const plan = usePlan();
   const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
+  const locked = premium && plan.ready && !plan.premium;
   return (
     <NavLink
       to={to}
-      className={cn("border-b py-1 text-[14.5px] transition-colors", active ? "border-accent text-ink" : "border-transparent text-muted hover:text-accent")}
+      title={locked ? t("Teil von Premium", "Part of premium") : undefined}
+      className={cn("inline-flex items-center gap-1.5 border-b py-1 text-[14.5px] transition-colors", active ? "border-accent text-ink" : "border-transparent text-muted hover:text-accent")}
     >
       {label}
+      {locked && (
+        <>
+          <Lock className="size-3 text-gold" strokeWidth={2} aria-hidden />
+          <span className="sr-only">{t("(Premium)", "(premium)")}</span>
+        </>
+      )}
     </NavLink>
   );
 }
@@ -158,7 +178,7 @@ function Header() {
         <div className="flex items-center justify-end gap-7">
           <nav className="hidden items-center gap-7 lg:flex" aria-label={t("Weitere Bereiche", "More sections")}>
             {NAV_RIGHT.map((n) => (
-              <NavItem key={n.to} to={n.to} label={n.label} />
+              <NavItem key={n.to} {...n} />
             ))}
           </nav>
           <div className="flex items-center gap-1">
@@ -177,7 +197,7 @@ function Header() {
           <ul className="grid grid-cols-2 gap-x-6 gap-y-3 font-serif text-lg sm:grid-cols-4">
             {[...NAV_LEFT, ...NAV_RIGHT].map((n) => (
               <li key={n.to}>
-                <NavItem to={n.to} label={n.label} />
+                <NavItem {...n} />
               </li>
             ))}
           </ul>
@@ -198,7 +218,8 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   const [active, setActive] = useState(0);
   const [tick, setTick] = useState(0); // bumps when the forum topics for the search arrive
   const input = useRef<HTMLInputElement>(null);
-  const hits = useMemo(() => search(q), [q, tick]);
+  const lite = !usePlan().premium;
+  const hits = useMemo(() => search(q, 9, lite), [q, tick, lite]);
   const ref = useClickOutside(true, onClose);
 
   useEffect(() => {
@@ -354,28 +375,13 @@ function NotificationBell() {
   );
 }
 
-async function signOut() {
-  try {
-    await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
-  } finally {
-    // Nothing of this account stays in the browser: the next person to sign in here would otherwise see the cached
-    // portfolio, watchlist and chat, and the store would upload them into their account. Language and theme stay.
-    try {
-      for (const k of Object.keys(localStorage)) if (k !== "mip-lang" && k !== "mip-theme") localStorage.removeItem(k);
-      sessionStorage.clear();
-    } catch {
-      /* storage blocked */
-    }
-    window.location.replace("/anmelden");
-  }
-}
-
 function UserMenu() {
   const [open, setOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const { portfolio, watchlist, alerts } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
   const me = useMe();
+  const plan = usePlan();
   const username = me?.username ?? null;
   const item = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[14px] hover:bg-panel-2";
   return (
@@ -386,7 +392,14 @@ function UserMenu() {
       {open && (
         <div className={cn(dropdown, "w-64 py-2")}>
           <div className="px-3 pt-1 pb-2">
-            <div className="truncate font-serif text-[16px]">{username ?? t("Konto", "Account")}</div>
+            <div className="flex items-center gap-2">
+              <span className="truncate font-serif text-[16px]">{username ?? t("Konto", "Account")}</span>
+              {plan.ready && (
+                <span className={cn("shrink-0 rounded-full px-2 py-px text-[10.5px] font-semibold tracking-[0.1em] uppercase", plan.premium ? "bg-gold-soft text-gold-2" : "bg-panel-3 text-muted")}>
+                  {plan.premium ? "Premium" : "Lite"}
+                </span>
+              )}
+            </div>
             <div className="text-[13px] text-muted">
               {t(
                 `${portfolio.length} Fahrzeuge, ${watchlist.length} beobachtet, ${alerts.length} Alarme`,
@@ -398,9 +411,21 @@ function UserMenu() {
           <Link to="/portfolio" className={item} onClick={() => setOpen(false)}>
             <Briefcase className="size-3.5 text-muted" /> Portfolio
           </Link>
-          <Link to="/portfolio#melden" className={item} onClick={() => setOpen(false)}>
-            <FileCheck2 className="size-3.5 text-muted" /> {t("Premium freischalten", "Unlock premium")}
-          </Link>
+          {plan.premium ? (
+            <Link to="/portfolio#melden" className={item} onClick={() => setOpen(false)}>
+              <Crown className="size-3.5 text-gold" /> {t("Premium verlängern", "Extend premium")}
+            </Link>
+          ) : (
+            <button
+              className={cn(item, "font-medium text-gold-2")}
+              onClick={() => {
+                setOpen(false);
+                plan.openUpgrade("general");
+              }}
+            >
+              <Crown className="size-3.5 text-gold" /> {t("Premium freischalten", "Unlock premium")}
+            </button>
+          )}
           {me?.admin && (
             <Link to="/pruefung" className={item} onClick={() => setOpen(false)}>
               <ShieldCheck className="size-3.5 text-muted" /> {t("Prüfung", "Review")}
@@ -535,11 +560,12 @@ function Footer() {
   );
 }
 
-function Toasts() {
+/** `raised`: above the floating premium button of a lite user. */
+function Toasts({ raised }: { raised?: boolean }) {
   const { toasts, dismissToast } = useStore();
   const icons = { success: CheckCircle2, error: AlertCircle, info: Info };
   return (
-    <div className="pointer-events-none fixed right-5 bottom-5 z-[60] flex flex-col gap-2">
+    <div className={cn("pointer-events-none fixed right-5 z-[60] flex flex-col gap-2", raised ? "bottom-24" : "bottom-5")}>
       {toasts.map((item) => {
         const Icon = icons[item.tone];
         return (
