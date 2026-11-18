@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Area, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, ComposedChart, Line, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { FileCheck2, Pencil, Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
-import { getMetrics, holdingMeasured, holdingValue, portfolioSeries, rangeOptions, sliceRange, type RangeKey } from "../data/market";
+import { getMetrics, holdingMeasured, holdingValue, portfolioHistory, rangeOptions, sliceRange, type RangeKey } from "../data/market";
 import type { Holding } from "../data/types";
 import { useStore } from "../state/store";
 import { cn, date, eur, km, pct, trendClass } from "../lib/format";
@@ -15,11 +15,6 @@ import { UserCarsSection } from "../components/portfolio/UserCars";
 import { yearTicks } from "../components/insights/palette";
 import { t } from "../i18n";
 import { tr } from "../i18n/terms";
-
-function csvCell(v: string | number) {
-  const s = String(v);
-  return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-}
 
 export default function Portfolio() {
   const { portfolio, addHolding, updateHolding, removeHolding, toast } = useStore();
@@ -51,49 +46,13 @@ export default function Portfolio() {
   const perf12 = measuredTotal ? rows.reduce((s, r) => s + (r.measured ? r.m.change12m * r.value : 0), 0) / measuredTotal : 0;
   const unmeasured = rows.filter((r) => !r.measured).length;
 
-  const chartData = useMemo(() => {
-    const series = sliceRange(portfolioSeries(portfolio), range);
-    return series.map((p) => ({
-      t: p.t,
-      value: p.value,
-      cost: portfolio.filter((h) => h.purchaseDate <= p.t).reduce((s, h) => s + h.purchasePrice, 0),
-    }));
-  }, [portfolio, range]);
+  // the cars' market value before the first purchase (dotted), then the owned collection against its cost
+  const chartData = useMemo(() => sliceRange(portfolioHistory(portfolio), range), [portfolio, range]);
+  const owned = chartData.filter((p) => p.value !== null);
+  const hasBefore = chartData.some((p) => p.value === null && p.before !== null);
+  const purchase = hasBefore ? owned[0] : undefined;
 
   const short = range === "1M" || range === "6M" || range === "1J";
-
-  function exportCsv() {
-    const header = t(
-      ["Fahrzeug", "Variante-ID", "Zustand", "km", "Farbe", "Kaufdatum", "Kaufpreis EUR", "Marktwert EUR", "Gewinn %", "12M %", "Gewicht %", "Notiz"],
-      ["Car", "Variant ID", "Condition", "km", "Colour", "Purchase date", "Purchase price EUR", "Market value EUR", "Gain %", "12M %", "Weight %", "Note"],
-    );
-    const lines = rows.map((r) =>
-      [
-        variantTitle(r.v),
-        r.v.id,
-        r.h.condition,
-        r.h.mileage,
-        tr(r.h.color),
-        new Date(r.h.purchaseDate).toISOString().slice(0, 10),
-        r.h.purchasePrice,
-        r.measured ? Math.round(r.value) : "",
-        r.gain === null ? "" : (r.gain * 100).toFixed(1),
-        r.measured ? (r.m.change12m * 100).toFixed(1) : "",
-        ((r.value / total) * 100).toFixed(1),
-        tr(r.h.note),
-      ]
-        .map(csvCell)
-        .join(";"),
-    );
-    const blob = new Blob(["﻿" + [header.join(";"), ...lines].join("\n")], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `mip-portfolio-${new Date(AS_OF).toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast(t("Portfolio als CSV exportiert", "Portfolio exported as CSV"));
-  }
 
   const openAdd = () => {
     setEditing(undefined);
@@ -108,14 +67,9 @@ export default function Portfolio() {
             <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
             <p className="mt-1 text-[14px] text-muted">{t("Ihre Sammlung, bewertet zum aktuellen Marktwert nach Zustand.", "Your collection, valued at today's market value for its condition.")}</p>
           </div>
-          <div className="flex gap-2">
-            <button className="btn" onClick={exportCsv} disabled={!rows.length}>
-              {t("Als CSV exportieren", "Export as CSV")}
-            </button>
-            <button className="btn btn-gold" onClick={openAdd}>
-              {t("Fahrzeug hinzufügen", "Add car")}
-            </button>
-          </div>
+          <button className="btn btn-gold" onClick={openAdd}>
+            {t("Fahrzeug hinzufügen", "Add car")}
+          </button>
         </div>
         <dl className="mt-8 grid grid-cols-1 gap-6 border-y border-line py-6 sm:grid-cols-3">
           <Kpi label={t(`Wert von ${rows.length} Fahrzeugen`, `Value of ${rows.length} cars`)} value={<Money value={total} />} />
@@ -143,7 +97,7 @@ export default function Portfolio() {
         <>
           <Section
             title={t("Wertentwicklung", "Value history")}
-            sub={t("Marktwert gegenüber dem Einstand (gestrichelt)", "Market value against cost (dashed)")}
+            sub={t("Marktwert gegenüber dem Einstand", "Market value against cost")}
             actions={<Segmented options={rangeOptions()} value={range} onChange={setRange} />}
           >
             <div className="h-80">
@@ -163,19 +117,46 @@ export default function Portfolio() {
                       active && payload?.length ? (
                         <ChartTooltipBox
                           title={date(Number(label))}
-                          rows={[
-                            { label: t("Marktwert", "Market value"), value: eur(Number(payload[0]?.payload.value)) },
-                            { label: t("Einstand", "Cost"), value: eur(Number(payload[0]?.payload.cost)) },
-                          ]}
+                          rows={
+                            payload[0]?.payload.value === null
+                              ? [{ label: t("Marktwert vor dem Kauf", "Market value before purchase"), value: eur(Number(payload[0]?.payload.before)) }]
+                              : [
+                                  { label: t("Marktwert", "Market value"), value: eur(Number(payload[0]?.payload.value)) },
+                                  { label: t("Einstand", "Cost"), value: eur(Number(payload[0]?.payload.cost)) },
+                                ]
+                          }
                         />
                       ) : null
                     }
                   />
                   <Area type="monotone" dataKey="value" stroke="var(--color-ink)" strokeWidth={1.75} fill="url(#pf-fill)" isAnimationActive={false} />
+                  <Line type="monotone" dataKey="before" stroke="var(--color-ink)" strokeOpacity={0.5} strokeDasharray="1 5" strokeLinecap="round" dot={false} activeDot={{ r: 3 }} strokeWidth={1.75} isAnimationActive={false} />
                   <Line type="stepAfter" dataKey="cost" stroke="var(--color-faint)" strokeDasharray="3 4" dot={false} strokeWidth={1} isAnimationActive={false} />
+                  {/* bought within the last week: one owned point, which neither curve can draw as a line */}
+                  {owned.length === 1 && <ReferenceDot x={owned[0].t} y={owned[0].cost!} r={3.5} fill="var(--color-bg)" stroke="var(--color-faint)" strokeWidth={1.5} ifOverflow="extendDomain" />}
+                  {purchase && <ReferenceDot x={purchase.t} y={purchase.value!} r={4} fill="var(--color-ink)" stroke="var(--color-bg)" strokeWidth={2} ifOverflow="extendDomain" />}
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-1.5 text-[12.5px] text-muted">
+              <LegendKey label={t("Marktwert seit dem Kauf", "Market value since purchase")}>
+                <span className="block h-[2px] w-6 bg-ink" />
+              </LegendKey>
+              {hasBefore && (
+                <LegendKey
+                  label={
+                    portfolio.length === 1
+                      ? t("Marktwert vor dem Kauf", "Market value before purchase")
+                      : t("Marktwert vor dem ersten Kauf", "Market value before the first purchase")
+                  }
+                >
+                  <span className="block w-6 border-t-2 border-dotted border-ink/50" />
+                </LegendKey>
+              )}
+              <LegendKey label={t("Einstand", "Cost")}>
+                <span className="block w-6 border-t border-dashed border-faint" />
+              </LegendKey>
+            </ul>
           </Section>
 
           <Section title={t("Bestand", "Holdings")} sub={t(`${rows.length} Fahrzeuge`, `${rows.length} cars`)}>
@@ -280,6 +261,15 @@ export default function Portfolio() {
         }}
       />
     </div>
+  );
+}
+
+function LegendKey({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <li className="flex items-center gap-2">
+      {children}
+      {label}
+    </li>
   );
 }
 

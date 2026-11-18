@@ -15,7 +15,11 @@ EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw
         "dp ", "koenig", "b&b", "rennsport", "rsr-", "rs-style", "ev ", "engineless", "hot rod", "dragster", "shooting brake",
         "lightweight-", "evocation", "hommage", "homage", "custom", "bespoke", "speedster-", "rothsport", "magnus", "lanzante",
         "nardone", "kaege", "paul stephens", "alfaholics", "cars & coffee", "simulator", "sculpture", "documents", "sign ", "turbocharged", "supercharged", "swapped", "tool kit", "toolkit", "tool roll",
-        "body", "frame", "hardtop for", "top for", "fuchs", "bbs", "bumper", "wing", "hood", "door", "steering", "instrument"]
+        "body", "frame", "hardtop for", "top for", "fuchs", "bbs", "bumper", "wing", "hood", "door", "steering", "instrument",
+        # rebuilt or written-off cars (online platforms put this in front of the title: "Rebuilt-Title 2007 Porsche …")
+        "rebuilt", "rebuild", "rebodied", "re-bodied", "reconstruct", "clone", "damaged", "branded title", "flood",
+        # engine swaps and tuner builds as online platforms title them ("… 6-Speed LS3 V8", "… w/ Upgrades", "… Street Build")
+        "upgrade", "lotec", " ls3", "ls-swap", "ls swap", " build"]
 # one-offs and factory specials that share a name with a series model but are a different car (prototypes, factory
 # GT and race versions, lightweights, limited club editions, coachbuilt or tuned cars): left out of the series variant
 SPECIAL = re.compile(r"prototype|\bimsa\b|\bscca\b|\bt/r\b|914/6 r\b|914/6 ['\"]?gt|\bm471\b|gt specification|carrera 4 leichtbau|\bctr\b"
@@ -44,7 +48,8 @@ def race(y, s, full):
     R = P + "rennsportwagen-"; G = P + "gt-rennwagen-"; C = P + "cup-und-clubsport-"
     if has(full, "replica", "recreation", "re-creation", "dp ", "continuation", "tribute", "junior", "kart", "children", "scale", "model", "painting", "evocation", "-style", "style ",
            "tool", " kit", "engine", "manual", "experience", "w/ ", "conversion", "gemballa", "rs america", "turbocharged",
-           "powered", "modified", "slantnose", "slant nose", "gearbox", "transaxle", "parts", "literature", "wheels", "poster", "sign ", "bodywork", "simulator", "sculpture"):
+           "powered", "modified", "slantnose", "slant nose", "gearbox", "transaxle", "parts", "literature", "wheels", "poster", "sign ", "bodywork", "simulator", "sculpture",
+           "backdat", "custom", "outlaw", "restomod", " build", "rebuilt", "rebodied", "re-bodied", "clone"):
         return None
     if re.search(r"\b550\s?a\b|\b550a\b", s) and 1955 <= y <= 1958: return R + "550-bis-rs-60-550-a-spyder"
     if re.search(r"\b550\b", s) and "spyder" in s and 1953 <= y <= 1956 and not has(s, "boxster"): return R + "550-bis-rs-60-550-spyder"

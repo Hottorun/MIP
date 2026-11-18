@@ -124,13 +124,25 @@ for o in out:
         o["orig"], o["cur"] = int(float(k["preis"])), (k.get("waehrung") or o["cur"]).strip()
         o["eur"] = round(to_eur(o["orig"], o["cur"], o["date"])); o["sold"] = True
 # --- Results straight from the auction houses (rmfetch.py, bonhamsfetch.py, goodingfetch.py, broadarrowfetch.py,
-# artcurialfetch.py, mecumfetch.py, iconicfetch.py, aguttesfetch.py, osenatfetch.py; each writes WORK/web/<key>/<key>.json):
+# artcurialfetch.py, mecumfetch.py, iconicfetch.py, aguttesfetch.py, osenatfetch.py, barrettfetch.py, pcarfetch.py,
+# gaafetch.py; each writes WORK/web/<key>/<key>.json):
 # direct lot links, chassis numbers and stated mileage. These
 # rows replace the same lots taken from ultimatecarpage: same chassis number within 7 days, or without one the same
 # variant within 7 days at a price within 2 %. ultimatecarpage rows a house's own data does not cover are kept.
 HOUSES = [("rm", "RM Sotheby's", "RM"), ("bonhams", "Bonhams", "BON"), ("gooding", "Gooding & Company", "GOO"),
           ("broadarrow", "Broad Arrow", "BA"), ("artcurial", "Artcurial", "ART"), ("mecum", "Mecum", "MEC"),
-          ("iconic", "Iconic Auctioneers", "ICO"), ("aguttes", "Aguttes", "AGU"), ("osenat", "Osenat", "OSE")]
+          ("iconic", "Iconic Auctioneers", "ICO"), ("aguttes", "Aguttes", "AGU"), ("osenat", "Osenat", "OSE"),
+          ("barrett", "Barrett-Jackson", "BJ"), ("pcar", "PCARMARKET", "PCAR"), ("gaa", "GAA Classic Cars", "GAA")]
+def gaa_premium(hammer, date):
+    """GAA Classic Cars publishes the hammer price. Its buyer's premium, from the lots Hammer Price lists with premium:
+    7 % in 2017-2019 (27 of 27 lots agree), 8 % in 2023-2026 (32 of 38; four cheap lots paid 11-13 %, a minimum fee we
+    do not know). No lots to compare for 2020-2022: taken as 7 % (at most 1 % off)."""
+    return round(hammer * (0.08 if date >= "2023-01-01" else 0.07))
+def pcar_fee(bid, date):
+    """PCARMARKET's buyer's fee on top of the winning bid it shows: 5 %, at least 500, at most 5,000 USD (7,500 for
+    auctions closed after 27 June 2025; from its FAQ). Added like Bring a Trailer's (bat_fee), so that every sold price
+    is what the buyer paid."""
+    return int(min(max(round(bid * 0.05), 500), 7500 if date > "2025-06-27" else 5000))
 # VINs and chassis numbers never use the letter O; some catalogues print "WPO…" for "WP0…"
 def chassis_key(c): return re.sub(r"[^A-Z0-9]", "", (c or "").upper()).replace("O", "0")
 def day(d): return dt.date.fromisoformat(d).toordinal()
@@ -142,12 +154,21 @@ for key, house, prefix in HOUSES:
         c = classify(x["title"])
         if not c or (x["sold"] and (not x["amt"] or (x["cur"] != "EUR" and x["cur"] not in fx))): continue
         vid, body, gear, year = c
-        lot = "%s-%s-%s" % (prefix, str(x["code"]).upper(), x["lot"])
+        # an online platform has no sales: its lots carry the platform's code, which is the prefix already
+        lot = "%s-%s" % (prefix, x["lot"]) if str(x["code"]).upper() == prefix else "%s-%s-%s" % (prefix, str(x["code"]).upper(), x["lot"])
         if lot in ids: continue
         ids.add(lot)
-        own.append(dict(variant=vid, title=x["title"], date=x["date"], house=house, eur=round(to_eur(x["amt"], x["cur"], x["date"])) if x["sold"] else None,
-                        bid=None, sold=x["sold"], orig=x["amt"] if x["sold"] else None, cur=x["cur"] if x["sold"] else None, km=x["km"], loc=x["country"],
+        amt = x["amt"]
+        if key == "pcar" and x["sold"]: amt += pcar_fee(amt, x["date"])   # price paid; the bid of an unsold lot stays as bid
+        if key == "gaa" and x["sold"]: amt += gaa_premium(amt, x["date"])
+        own.append(dict(variant=vid, title=x["title"], date=x["date"], house=house, eur=round(to_eur(amt, x["cur"], x["date"])) if x["sold"] else None,
+                        bid=None, sold=x["sold"], orig=amt if x["sold"] else None, cur=x["cur"] if x["sold"] else None, km=x["km"], loc=x["country"],
                         body=body, gear=gear, vin=x["chassis"], lot=lot, url=x["url"], year=year, src=key, event=x["sale"]))
+        if key in ("pcar", "gaa") and x["sold"]: own[-1]["hammer"] = x["amt"]   # the price as the site shows it
+        # the highest bid of an unsold lot where the house's list gives it (PCARMARKET): its own channel in the model
+        b = x.get("bid")
+        if not x["sold"] and b and (x["cur"] == "EUR" or x["cur"] in fx):
+            own[-1].update(bid=round(to_eur(b, x["cur"], x["date"])), bidCur=x["cur"], orig=b, cur=x["cur"])
         # the house's estimate, for unsold lots only: shown in the app, never part of the market value
         e = x.get("est")
         if not x["sold"] and e and (e[2] == "EUR" or e[2] in fx):

@@ -34,7 +34,7 @@ for r in rows:
                 (unsold and r.get("estLow")) or "", (unsold and r.get("estHigh")) or "", "ja" if r["sold"] else "nein", "",
                 r["km"] or "", "", "", "", "", r["body"], r["gear"], r["vin"].replace(";", ","), r["lot"], r["url"], r["orig"] or "", r["cur"] or "", r["loc"],
                 (unsold and r.get("bid")) or "",
-                # Bring a Trailer: preis_original includes the buyer's fee; the "Sold for" price shown on the site is kept here
+                # Bring a Trailer, PCARMARKET: preis_original includes the buyer's fee; the price shown on the site is kept here
                 r.get("hammer") or "",
                 # the house's main photo of the lot where its list gives one (lotlinks.py); else the app reads the lot page
                 (r.get("image") or "").replace(";", "%3B")])

@@ -15,14 +15,15 @@ HOUSE = {"Gooding & Co.": "Gooding & Company", "Broad Arrow Auctions": "Broad Ar
          "Iconic Auctioneers formerly known as Silverstone Auctions": "Iconic Auctioneers", "H & H Classics": "H&H",
          "Silverstone Auctions": "Iconic Auctioneers", "Keno Brothers": "Keno Auctions", "RM Auctions": "RM Sotheby's"}
 SAME = {"Silverstone Auctions": "Iconic Auctioneers"}   # one house, two names
-SKIP_HOUSE = {"Bring a Trailer"}                         # fetched directly, every lot
+SKIP_HOUSE = {"Bring a Trailer", "PCARMARKET"}           # fetched directly, every lot
 CODE = lambda h: re.sub(r"[^A-Z0-9]", "", h.upper())[:6]
 
 
 def lotn(x):
     x = str(x or "").strip().lower()
     x = x.rsplit("-", 1)[-1] if "-" in x else x
-    return re.sub(r"^[a-z]+", "", x)
+    # GAA writes "ST0120.1" (run day, leading zeros) for the lot Hammer Price lists as "120.1"
+    return re.sub(r"^[a-z]*0*(?=\d)", "", x)
 
 
 def by_year(m, y):
@@ -51,7 +52,7 @@ def load(path, classify, to_eur, out, url_of):
         if r["status"] not in ("SOLD", "HIGH BID") or not r["preis"] or not r["waehrung"] or not r["datum"]:
             st["ohne Beleg (geschätzt, zurückgezogen, ohne Preis oder Datum)"] += 1; continue
         house = HOUSE.get(r["haus"], r["haus"])
-        if house in SKIP_HOUSE: st["Bring a Trailer (direkt abgerufen)"] += 1; continue
+        if house in SKIP_HOUSE: st["Bring a Trailer, PCARMARKET (direkt abgerufen)"] += 1; continue
         if r["modell"].startswith("["): st["andere Marke, Nachbau oder Umbau"] += 1; continue
         # spellings of the app the classifier does not know: "Boxter", "911R", a bare "930" (the 930 is the Turbo)
         m_ = re.sub(r"\bBoxter\b", "Boxster", r["modell"]); m_ = re.sub(r"\b911R\b", "911 R", m_); m_ = re.sub(r"^930$", "930 Turbo", m_)

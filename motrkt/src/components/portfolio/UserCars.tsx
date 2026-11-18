@@ -102,7 +102,7 @@ const uploadError = (e: unknown, kind: Kind) => {
 
 /**
  * How the document is protected, as the loudest thing in the section: a dark band with the three facts that matter
- * (deleted after a day, encrypted, stored in Frankfurt) and what follows from them. `compact` is the narrow version
+ * (deleted after a day, handled GDPR compliant and encrypted, stored in Frankfurt) and what follows from them. `compact` is the narrow version
  * that stays next to the form while it is being filled in.
  */
 function PrivacyBand({ compact = false }: { compact?: boolean }) {
@@ -112,7 +112,12 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
       t("dann ist Ihr Dokument gelöscht", "then your document is deleted"),
       t("Mit der Entscheidung der Prüfung, spätestens 24 Stunden nach dem Hochladen. Automatisch.", "With the review decision, 24 hours after the upload at the latest. Automatically."),
     ],
-    ["AES-256", t("verschlüsselt gespeichert", "stored encrypted"), t("Übertragung per HTTPS, der Schlüssel liegt getrennt von der Datenbank.", "Transfer over HTTPS, the key is kept apart from the database.")],
+    // deliberately plain text like its two neighbours, not a seal or badge: a seal would suggest a certification (DATENSCHUTZ.md section 1)
+    [
+      t("DSGVO-konform", "GDPR compliant"),
+      t("so verarbeiten wir Ihr Dokument", "how we process your document"),
+      t("Nur mit Ihrer Einwilligung, nur für die Prüfung und verschlüsselt gespeichert.", "Only with your consent, only for the review, and stored encrypted."),
+    ],
     ["Frankfurt", t("Serverstandort in der EU", "servers in the EU"), t("Anwendung und Datenbank laufen in Frankfurt am Main.", "Application and database run in Frankfurt am Main.")],
   ];
   const promises = [
@@ -128,27 +133,24 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
           <ShieldCheck className="size-6" strokeWidth={1.5} aria-hidden />
         </span>
         <div className="min-w-0">
-          {/* a plain statement, on purpose not a badge: a seal would suggest a certification (DATENSCHUTZ.md section 1) */}
-          <div className="eyebrow">
-            <span className="text-on-night/70">{t("Datenschutz", "Data protection")} · </span>
-            {t("DSGVO-konform", "GDPR compliant")}
-          </div>
+          <div className="eyebrow text-on-night/70">{t("Datenschutz", "Data protection")}</div>
           <h3 className={cn("mt-1.5 font-display leading-[1.12]", compact ? "text-[26px]" : "text-[30px] sm:text-[38px]")}>
             {t("Ihr Dokument bleibt vertraulich.", "Your document stays confidential.")}
           </h3>
           <p className={cn("mt-2 max-w-2xl text-on-night/80", compact ? "text-[14px]" : "text-[15.5px]")}>
             {t(
-              "Wir verarbeiten Ihr Dokument DSGVO-konform: verschlüsselt gespeichert, nur zur Prüfung geöffnet und nach spätestens 24 Stunden gelöscht.",
-              "We process your document in compliance with the GDPR: stored encrypted, opened for the review only and deleted after 24 hours at the latest.",
+              "Verschlüsselt gespeichert, nur zur Prüfung geöffnet und nach spätestens 24 Stunden gelöscht.",
+              "Stored encrypted, opened for the review only and deleted after 24 hours at the latest.",
             )}
           </p>
         </div>
       </div>
 
-      <dl className={cn("mt-7 grid gap-x-8 gap-y-6 border-t border-white/15 pt-6", !compact && "sm:grid-cols-3")}>
+      {/* the longest figure ("DSGVO-konform") is about seven em wide: three columns only from lg, the full 44px only from xl and a touch smaller on the narrowest phones, so it never wraps or runs into its neighbour */}
+      <dl className={cn("mt-7 grid gap-x-8 gap-y-6 border-t border-white/15 pt-6", !compact && "lg:grid-cols-3")}>
         {figures.map(([figure, label, body]) => (
           <div key={figure}>
-            <dt className={cn("font-display leading-none", compact ? "text-[32px]" : "text-[44px]")}>{figure}</dt>
+            <dt className={cn("font-display text-[30px] leading-none min-[360px]:text-[32px]", !compact && "sm:text-[36px] xl:text-[44px]")}>{figure}</dt>
             <dd className="mt-2">
               <span className="block text-[14.5px] font-semibold">{label}</span>
               <span className="mt-0.5 block text-[13.5px] text-on-night/70">{body}</span>
@@ -555,7 +557,7 @@ function Dropzone({ kind, file, onFile, error }: { kind: Kind; file: File | null
 /** A numbered part of the form with its own heading. */
 function Step({ n, title, sub, children }: { n: number; title: string; sub?: string; children: ReactNode }) {
   return (
-    <fieldset className="border-t border-line px-5 py-6 first:border-t-0 sm:px-7">
+    <fieldset className="min-w-0 border-t border-line px-5 py-6 first:border-t-0 sm:px-7">
       <legend className="sr-only">{title}</legend>
       <div className="mb-4 flex items-baseline gap-3" aria-hidden>
         <span className="font-display text-[26px] leading-none text-accent">{n}</span>

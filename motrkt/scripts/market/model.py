@@ -8,8 +8,9 @@ Evidence, each price converted to EUR at the ECB rate of its day:
           EUR, GBP or CHF; hand-recorded sales and auction results of European dealers and houses)
   US_AUC  live auction results in North America (RM Sotheby's, Gooding, Broad Arrow, Mecum, … sold in USD; hand-recorded
           sales and auction results from the USA and Canada)
-  US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids, PCARMARKET): one platform with most of the
+  US_ONL  online auctions in North America (Bring a Trailer, Cars & Bids): one platform with most of the
           records, so it is kept apart and gets its own measured offset
+  US_PCM  PCARMARKET, the second online platform: its prices sit below Bring a Trailer's, so it has its own offset too
   EU_ASK  asking prices in Europe (Classic Trader; hand-recorded listings from mobile.de, Elferspot, Kleinanzeigen and
           dealers in scripts/market/manual/), left-hand drive only
   US_ASK  hand-recorded asking prices of dealers in the USA and Canada
@@ -31,7 +32,7 @@ Indirect evidence (US prices, asking prices) is further capped by its measured b
 term of at least US_TAU (the US market as a whole may sit apart from Europe for a given variant), so however many US
 records there are, together they cannot outweigh the European evidence beyond that limit.
 Bring a Trailer, the largest single source, counts no more than the auction house with the most weight for the
-variant, and at least like a house with BAT_FLOOR sales.
+variant, and at least like a house with BAT_FLOOR sales; the same cap holds for PCARMARKET.
 A value is published only with at least MIN_N observations; otherwise the variant shows its individual records only.
 An asking price counts fully while the car has been on offer up to STALE_DAYS; a car still unsold after that is likely
 priced above the market, so its weight halves every STALE_HALF days beyond, down to STALE_MIN. A listing that has gone
@@ -74,16 +75,24 @@ EUROPE = {"DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "PT", "GB", "IE"
 EU_CUR = {"EUR", "GBP", "CHF", "SEK", "DKK", "NOK"}
 NORTH_AMERICA = {"US", "CA"}
 US_ONLINE = {"bring a trailer", "cars & bids", "cars and bids", "pcarmarket"}
-CHANNELS = ["EU_AUC", "US_AUC", "US_ONL", "EU_ASK", "US_ASK", "EU_BID", "US_BID"]
+CHANNELS = ["EU_AUC", "US_AUC", "US_ONL", "US_PCM", "EU_ASK", "US_ASK", "EU_BID", "US_BID"]
 ASK = {"EU_ASK", "US_ASK"}                 # asking prices: offset shared by the families, not used for the time index
 BID = {"EU_BID", "US_BID"}                 # highest bids of unsold lots: not used for the time index, not counted for MIN_N
-US = {"US_AUC", "US_ONL", "US_ASK", "US_BID"}  # North American channels: one shared bias term
+US = {"US_AUC", "US_ONL", "US_PCM", "US_ASK", "US_BID"}  # North American channels: one shared bias term
 US_TAU = 0.12      # at least 12 % (SD, log scale) between a variant's US and European level, whatever the data suggest
 TAU_DEFAULT = 0.04 # bias variance (0.2 SD) of a channel with too few comparisons to measure it
 
 
+def online(house):
+    """A North American online platform: priced in USD and bought by its US audience wherever the car stands."""
+    return (house or "").strip().lower() in US_ONLINE
+
+
 def us_channel(house):
-    return "US_ONL" if (house or "").strip().lower() in US_ONLINE else "US_AUC"
+    # PCARMARKET sells the same variants about 7 % below Bring a Trailer (315 variant-years compared, November 2026), so
+    # it is measured as a channel of its own instead of shifting Bring a Trailer's offset
+    if (house or "").strip().lower() == "pcarmarket": return "US_PCM"
+    return "US_ONL" if online(house) else "US_AUC"
 
 
 def tf(d):
@@ -163,12 +172,12 @@ obs = []
 for s in json.load(open(S + "/web/sales_all.json")):
     if s.get("nomodel") or not ("2015-01-01" <= s["date"] <= AS_OF.isoformat()): continue
     if s["sold"] and s["eur"] and s["eur"] > 500:
-        ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer") else us_channel(s["house"])
+        ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and not online(s["house"])) else us_channel(s["house"])
         obs.append(dict(variant=s["variant"], date=s["date"], eur=s["eur"], ch=ch, house=s["house"], lot=s["lot"], body=s.get("body"), src="auction",
                         title=s.get("title") or ""))
     elif not s["sold"] and (s.get("bid") or 0) > 500:
         cur = s.get("bidCur") or s.get("cur")
-        eu = cur in EU_CUR or ((s.get("loc") or "") in EUROPE and s["house"] != "Bring a Trailer")
+        eu = cur in EU_CUR or ((s.get("loc") or "") in EUROPE and not online(s["house"]))
         obs.append(dict(variant=s["variant"], date=s["date"], eur=s["bid"], ch="EU_BID" if eu else "US_BID", house=s["house"], lot=s["lot"],
                         body=s.get("body"), src="bid", title=s.get("title") or ""))
 # the same car offered again and again (Mecum often re-runs a car that did not sell): a bid counts only if the car does
@@ -216,7 +225,7 @@ for a in latest.values():
 # hand-recorded listings, sales and auction results (mobile.de, Elferspot, Kleinanzeigen, dealers and auction houses in
 # Europe and North America): scripts/market/manual/*.csv. Routed by country (land) and kind (art):
 #   Europe:        Verkauf / Auktion -> EU_AUC,   Angebot -> EU_ASK
-#   USA / Canada:  Verkauf / Auktion -> US_AUC (US_ONL for Bring a Trailer, Cars & Bids, PCARMARKET),   Angebot -> US_ASK
+#   USA / Canada:  Verkauf / Auktion -> US_AUC (US_ONL for Bring a Trailer and Cars & Bids, US_PCM for PCARMARKET),   Angebot -> US_ASK
 # Other countries are listed in the console and not used (no reference for their price level yet).
 other_land = collections.Counter()
 # the dealers' own photos of these cars (dealerphotos.py): {listing url: [image url, ...]}
@@ -539,19 +548,24 @@ for v, l in byv.items():
     hn = collections.defaultdict(collections.Counter)
     for s, _ in keep:
         if s["ch"] not in ASK: hn[s["house"]][s["ch"]] += 1
-    nb = hn.pop(BAT, None)
-    fb = 1.0
-    if nb and hn:
-        cap = max(max(sum(hprec(c, k) for c, k in cnt.items()) for cnt in hn.values()), hprec("US_ONL", BAT_FLOOR))
+    # The same holds for every online platform (PCARMARKET): each is capped against the auction houses, not against
+    # another platform, so two platforms cannot lift each other's limit.
+    onl = {h: hn.pop(h) for h in [h for h in hn if online(h)]}
+    fon = {}
+    for h, nb in onl.items():
+        fon[h] = 1.0
+        if not hn: continue
+        cap = max(max(sum(hprec(c, k) for c, k in cnt.items()) for cnt in hn.values()), hprec(us_channel(h), BAT_FLOOR))
         pb = lambda f: sum(hprec(c, f * k) for c, k in nb.items())
         if pb(1.0) > cap:
             lo, hi = 0.0, 1.0
             for _ in range(40):
                 mid = (lo + hi) / 2
                 lo, hi = (mid, hi) if pb(mid) <= cap else (lo, mid)
-            fb = lo
+            fon[h] = lo
+    fb = fon.get(BAT, 1.0)
     BATF.append(fb)
-    wb = lambda s: (fb if s["house"] == BAT else 1.0) * s.get("w", 1.0)   # also the weight of long-unsold asking prices
+    wb = lambda s: fon.get(s["house"], 1.0) * s.get("w", 1.0)   # also the weight of long-unsold asking prices
     # level per channel (recency-weighted only for large samples), then combined by precision
     mc, prec = {}, {}
     for c in CHANNELS:

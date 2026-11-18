@@ -3,7 +3,7 @@
 usage: python3 -I upcoming.py WORK OUT
 
 Two sources, no request of its own:
-1. The fetchers (rmfetch, goodingfetch, mecumfetch, aguttesfetch, osenatfetch) write the Porsche lots of sales that are
+1. The fetchers (rmfetch, goodingfetch, mecumfetch, aguttesfetch, osenatfetch, barrettfetch, gaafetch) write the Porsche lots of sales that are
    not over yet to WORK/web/<house>/upcoming_lots.json while they read the house's lot list anyway. They are grouped
    into sales here: name, first and last day, link to the sale, number of Porsche lots that classify.py assigns.
 2. scripts/market/manual/auktionstermine.csv: dates of houses without a fetcher (Historics, Barrett-Jackson, ...),
@@ -22,7 +22,8 @@ MANUAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "manual", "auk
 # link for a sale whose fetcher gives no sale page
 HOUSE_URL = {"Gooding & Company": "https://www.goodingco.com/", "RM Sotheby's": "https://rmsothebys.com/upcoming/",
              "Mecum": "https://www.mecum.com/auctions/", "Aguttes": "https://www.aguttes.com/ventes/prochaines-ventes",
-             "Osenat": "https://www.osenat.com/"}
+             "Osenat": "https://www.osenat.com/", "Barrett-Jackson": "https://www.barrett-jackson.com/",
+             "GAA Classic Cars": "https://www.gaaclassiccars.com/vehicles"}
 
 sales = {}
 for p in sorted(glob.glob(os.path.join(W, "web", "*", "upcoming_lots.json"))):

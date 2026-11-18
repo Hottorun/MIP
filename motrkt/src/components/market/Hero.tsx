@@ -582,15 +582,16 @@ function BasisLine({ variant, range = true }: { variant: Variant; range?: boolea
   const b = marketBasis(variant.id);
   if (!b) return null;
   const c = b.channels;
+  const online = c.US_ONL + (c.US_PCM ?? 0); // Bring a Trailer and PCARMARKET (a model file from before PCARMARKET has no US_PCM)
   const parts = [
     c.EU_AUC && t(`${num(c.EU_AUC)} ${c.EU_AUC === 1 ? "Auktionsergebnis" : "Auktionsergebnissen"} in Europa`, `${num(c.EU_AUC)} European auction ${c.EU_AUC === 1 ? "result" : "results"}`),
     c.US_AUC && t(`${num(c.US_AUC)} US-${c.US_AUC === 1 ? "Auktion" : "Auktionen"}`, `${num(c.US_AUC)} US ${c.US_AUC === 1 ? "auction" : "auctions"}`),
-    c.US_ONL && t(`${num(c.US_ONL)} US-Online-${c.US_ONL === 1 ? "Auktion" : "Auktionen"}`, `${num(c.US_ONL)} US online ${c.US_ONL === 1 ? "auction" : "auctions"}`),
+    online > 0 && t(`${num(online)} US-Online-${online === 1 ? "Auktion" : "Auktionen"}`, `${num(online)} US online ${online === 1 ? "auction" : "auctions"}`),
     c.EU_BID + c.US_BID > 0 &&
       t(`${num(c.EU_BID + c.US_BID)} ${c.EU_BID + c.US_BID === 1 ? "Höchstgebot" : "Höchstgeboten"} unverkaufter Lose`, `${num(c.EU_BID + c.US_BID)} high ${c.EU_BID + c.US_BID === 1 ? "bid" : "bids"} of unsold lots`),
   ].filter(Boolean) as string[];
   if (!parts.length) return null;
-  const us = c.US_AUC + c.US_ONL + c.US_BID > 0;
+  const us = c.US_AUC + online + c.US_BID > 0;
   const list =
     (parts.length > 1 ? `${parts.slice(0, -1).join(", ")} ${t("und", "and")} ${parts.at(-1)}` : parts[0]) +
     (us ? t(" (US-Preise bereinigt)", " (US prices adjusted)") : "");
