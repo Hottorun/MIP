@@ -256,7 +256,7 @@ export default function Overview() {
       </Section>
 
       <div className="grid gap-16 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-12">
-        <Lock reason="auctions" teaser={t("Die Top-Zuschläge des Monats, mit Preis und Auktionshaus", "The month's top hammer prices, with price and auction house")} height={260}>
+        <Lock reason="auctions" height={260}>
         <Section
           eyebrow={t("Top-Zuschläge", "Top hammer prices")}
           title={t("Bemerkenswerte Verkäufe", "Notable sales")}

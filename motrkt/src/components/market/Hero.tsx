@@ -206,7 +206,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
       </div>
       )}
 
-      <Locked reason="profile" teaser={t("Kurzprofil, Produktion, Motor und Neupreis", "Profile, production, engine and original price")} height={210} className="mt-8">
+      <Locked reason="profile" height={210} className="mt-8">
         <p className={cn("font-serif text-[16px] leading-[1.7] text-ink/90", !lite && "mt-8")}>{m.thesis}</p>
 
         <dl className="mt-8 border-t border-line text-[14px]">

@@ -14,9 +14,6 @@ import { Forum } from "../components/market/Forum";
 import { SectionNav, type NavItem } from "../components/market/SectionNav";
 import { appTitle, t } from "../i18n";
 import { Lock } from "../components/premium/Locked";
-import { getSales } from "../data/generate";
-import { marketBasis } from "../data/real/model";
-import { num } from "../lib/format";
 
 const NAV: NavItem[] = [
   { id: "wert", label: () => t("Wertentwicklung", "Value history") },
@@ -100,59 +97,42 @@ function MarketPage({ variant }: { variant: Variant }) {
       },
       { replace: true, preventScrollReset: true },
     );
-  // Lite (src/lib/plan.tsx): the market value in the hero is free. Each analysis below keeps its heading and says in
-  // one line what is behind the blur, with this car's own numbers where there are any. The listings and the forum
-  // stay open: they are the free parts of the app (Buy, community) and the reason to come back to this page.
-  const nSales = getSales(variant.id).length;
-  const nRecords = marketBasis(variant.id)?.n ?? 0;
+  // Lite (src/lib/plan.tsx): the market value in the hero is free. Each analysis below keeps its heading over a
+  // blurred preview. The listings and the forum stay open: they are the free parts of the app (Buy, community) and
+  // the reason to come back to this page.
   return (
     <div className="space-y-20">
       <Hero variant={variant} picked={picked} body={body} onBody={setBody} />
       <SectionNav items={NAV} deps={`${variant.id}-${body}`} />
       <div id="wert">
-        <Lock reason="history" teaser={t("Der Wertverlauf seit 2015, Woche für Woche", "The value history since 2015, week by week")}>
+        <Lock reason="history">
           <ValuePanel variant={variant} body={body} />
         </Lock>
       </div>
       <Band id="zahlen">
-        <Lock reason="figures" teaser={t("Laufleistungen, Märkte und Karosserien dieser Variante", "Mileages, markets and body styles of this variant")} height={240}>
+        <Lock reason="figures" height={240}>
           <MarketStats variant={variant} body={body} />
         </Lock>
       </Band>
       <div className="grid grid-cols-1 gap-x-16 gap-y-20 lg:grid-cols-2">
         <div id="verkaeufe" className="min-w-0">
-          <Lock
-            reason="sales"
-            teaser={
-              nSales > 1
-                ? t(`${num(nSales)} Verkäufe mit Preis, Laufleistung und Auktionshaus`, `${num(nSales)} sales with price, mileage and auction house`)
-                : t("Verkäufe mit Preis, Laufleistung und Auktionshaus", "Sales with price, mileage and auction house")
-            }
-          >
+          <Lock reason="sales">
             <RecentSales variant={variant} body={body} />
           </Lock>
         </div>
         <div id="einschaetzung" className="min-w-0">
-          <Lock reason="assessment" teaser={t("Kaufen, halten oder beobachten? Unsere Einschätzung", "Buy, hold or watch? Our assessment")}>
+          <Lock reason="assessment">
             <Assessment variant={variant} />
           </Lock>
         </div>
       </div>
       <Band id="nachweis">
-        <Lock
-          reason="evidence"
-          teaser={
-            nRecords > 1
-              ? t(`Die ${num(nRecords)} Belege hinter dem Marktwert, jeder einzeln`, `The ${num(nRecords)} records behind the market value, one by one`)
-              : t("Die Belege hinter dem Marktwert, jeder einzeln", "The records behind the market value, one by one")
-          }
-          height={240}
-        >
+        <Lock reason="evidence" height={240}>
           <Evidence variant={variant} body={body} />
         </Lock>
       </Band>
       <div id="daten">
-        <Lock reason="options" teaser={t("Technische Daten und was jede Option am Wert ändert", "Specifications and what each option adds to the value")} height={240}>
+        <Lock reason="options" height={240}>
           <Details variant={variant} picked={picked} onPick={setPicked} />
         </Lock>
       </div>

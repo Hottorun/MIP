@@ -5,12 +5,12 @@ import { cn } from "../../lib/format";
 import { t } from "../../i18n";
 
 /**
- * The locks of the lite version (src/lib/plan.tsx). A locked block keeps its heading and shows its content blurred
- * and cut short, with one line on what is behind it: the user sees that the data exists and how much of it, not the
+ * The locks of the lite version (src/lib/plan.tsx). A locked block keeps its heading and shows its content softly
+ * blurred, cut short and dissolving into the page, under one small pill: the user sees that the data exists, not the
  * data itself. A click anywhere on the block opens the upgrade dialog.
  */
 
-type LockInfo = { reason: LockReason; teaser?: ReactNode; height?: number };
+type LockInfo = { reason: LockReason; height?: number };
 
 const LockContext = createContext<LockInfo | null>(null);
 /** Set inside <Lock> for a lite user: <Section> (components/ui.tsx) then blurs its body. */
@@ -34,28 +34,21 @@ export function Locked({ children, className, ...info }: LockInfo & { children: 
   );
 }
 
-export function LockedBody({ children, reason, teaser, height = 280, className }: LockInfo & { children: ReactNode; className?: string }) {
+export function LockedBody({ children, reason, height = 280, className }: LockInfo & { children: ReactNode; className?: string }) {
   const { openUpgrade } = usePlan();
   return (
-    <div className={cn("lock group/lock relative min-h-[132px]", className)}>
-      {/* the content is real, so the teaser looks like the page it stands for; it takes no focus, clicks or screen reader */}
+    <div className={cn("lock group/lock relative min-h-[96px]", className)}>
+      {/* the content is real, so the preview looks like the page it stands for; it takes no focus, clicks or screen reader */}
       <div className="lock-clip" style={{ maxHeight: height }} inert aria-hidden>
         <div className="lock-blur">
           <LockContext.Provider value={null}>{children}</LockContext.Provider>
         </div>
       </div>
-      <button type="button" onClick={() => openUpgrade(reason)} className="absolute inset-0 grid cursor-pointer place-items-center p-4 text-left">
-        <span className="lock-card">
-          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-gold-soft text-gold-2">
-            <LockIcon className="size-4" strokeWidth={1.8} aria-hidden />
-          </span>
-          <span className="min-w-0">
-            {teaser && <span className="block font-serif text-[16px] leading-snug text-ink">{teaser}</span>}
-            <span className={cn("inline-flex items-center gap-1 text-[13px] font-medium text-accent-2", teaser ? "mt-1" : undefined)}>
-              {t("Mit Premium freischalten", "Unlock with premium")}
-              <ArrowRight className="size-3.5 transition-transform group-hover/lock:translate-x-0.5" aria-hidden />
-            </span>
-          </span>
+      <button type="button" onClick={() => openUpgrade(reason)} className="absolute inset-0 grid cursor-pointer place-items-center p-4">
+        <span className="lock-pill">
+          <LockIcon className="size-3.5 shrink-0 text-gold-2" strokeWidth={1.8} aria-hidden />
+          {t("Mit Premium freischalten", "Unlock with premium")}
+          <ArrowRight className="size-3.5 shrink-0 text-muted transition-transform group-hover/lock:translate-x-0.5" aria-hidden />
         </span>
       </button>
     </div>

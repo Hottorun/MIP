@@ -139,7 +139,7 @@ function CopilotPreview({ groups }: { groups: ReturnType<typeof promptGroups> })
           <div className="flex justify-end">
             <div className="max-w-[85%] rounded-xl rounded-br-sm bg-gold/15 px-3 py-1.5 text-[13.5px] text-ink">{groups[0].prompts[1]}</div>
           </div>
-          <LockedBody reason="copilot" teaser={t("Die Antwort, mit Zahlen aus den Marktdaten", "The answer, with figures from the market data")} height={300} className="mt-3">
+          <LockedBody reason="copilot" height={300} className="mt-3">
             <div className="rounded-xl rounded-bl-sm border border-line bg-panel-2 px-4 py-4">
               <div className="space-y-2.5">
                 {lines.map((w, i) => (w ? <div key={i} className="h-3 rounded-full bg-ink/25" style={{ width: `${w}%` }} /> : <div key={i} className="h-2" />))}

@@ -99,7 +99,7 @@ export default function Portfolio() {
         </Empty>
       ) : (
         <>
-          <Lock reason="history" teaser={t("So hat sich der Wert Ihrer Sammlung entwickelt", "How the value of your collection has developed")} height={240}>
+          <Lock reason="history" height={240}>
           <Section
             title={t("Wertentwicklung", "Value history")}
             sub={t("Marktwert gegenüber dem Einstand", "Market value against cost")}

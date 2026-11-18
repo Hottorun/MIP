@@ -269,7 +269,7 @@ export default function Auctions() {
             <UpcomingAuctions />
           </div>
         )}
-        <Locked reason="auctions" teaser={t("Verkaufsquote, Zuschlag gegenüber Schätzung und Umsatz der letzten 12 Monate", "Sell-through rate, hammer price vs. estimate and turnover of the last 12 months")} height={170} className={premium ? undefined : "mt-16"}>
+        <Locked reason="auctions" height={170} className={premium ? undefined : "mt-16"}>
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatTile icon={<Gavel className="size-4" strokeWidth={1.8} />} label={t("Angebotene Lose", "Lots offered")} value={num(kpis.lots)} />
           <StatTile
@@ -290,14 +290,7 @@ export default function Auctions() {
 
       {premium && <UpcomingAuctions />}
 
-      <Lock
-        reason="auctions"
-        teaser={t(
-          `${num(getAllSales().length)} Ergebnisse seit 2015, durchsuchbar nach Modell, Haus, Losnummer und FIN`,
-          `${num(getAllSales().length)} results since 2015, searchable by model, house, lot number and VIN`,
-        )}
-        height={340}
-      >
+      <Lock reason="auctions" height={340}>
       <Section
         eyebrow={t("Archiv seit 2015", "Archive since 2015")}
         title={t("Ergebnisse", "Results")}
@@ -414,7 +407,7 @@ export default function Auctions() {
       </Section>
       </Lock>
 
-      <Lock reason="auctions" teaser={t("Angebotene Lose und Verkaufsquote, Monat für Monat", "Lots offered and sell-through rate, month by month")} height={200}>
+      <Lock reason="auctions" height={200}>
       <Section title={t("Volumen und Verkaufsquote", "Volume and sell-through rate")} sub={t("Letzte 24 Monate, mit den gewählten Filtern", "Last 24 months, with the selected filters")}>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
