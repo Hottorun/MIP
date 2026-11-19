@@ -108,6 +108,8 @@
   --color-menu: #16363c;
   --color-menu-2: #1f4c55;
   --color-menu-head: var(--color-bg);
+  --color-menu-line: #c9a35e;
+  --color-nav: var(--color-accent);
   --color-on-accent: #f6f4ef;
   --color-gold-soft: #f3ead8;
   --color-cobalt: #16363c;
@@ -160,6 +162,8 @@
       --color-menu: #172427;
       --color-menu-2: #1a2b2f;
       --color-menu-head: #172427;
+      --color-menu-line: rgb(211 173 102 / 0.35);
+      --color-nav: #d3ad66;
       --color-on-accent: #eeeae1;
       --color-gold-soft: #33291a;
       --color-cobalt: #47a7b8;
@@ -202,6 +206,8 @@
     --color-menu: #172427;
     --color-menu-2: #1a2b2f;
     --color-menu-head: #172427;
+    --color-menu-line: rgb(211 173 102 / 0.35);
+    --color-nav: #d3ad66;
     --color-on-accent: #eeeae1;
     --color-gold-soft: #33291a;
     --color-cobalt: #47a7b8;

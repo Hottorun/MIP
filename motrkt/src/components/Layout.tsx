@@ -127,7 +127,7 @@ function useNavState(to: string, premium?: boolean) {
   return { active: to === "/" ? pathname === "/" : pathname.startsWith(to), locked: !!premium && plan.ready && !plan.premium };
 }
 
-/** Desktop header: quiet tabs; the current one sits on a soft accent pill. */
+/** Desktop header: tabs in petrol (gold of the logo in the dark theme); the current one sits on a soft accent pill. */
 function NavItem({ to, label, premium }: NavEntry) {
   const { active, locked } = useNavState(to, premium);
   return (
@@ -136,7 +136,7 @@ function NavItem({ to, label, premium }: NavEntry) {
       title={locked ? t("Teil von Premium", "Part of premium") : undefined}
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[14.5px] font-medium tracking-[0.01em] transition-colors",
-        active ? "bg-accent-soft text-accent" : "text-ink/65 hover:text-ink",
+        active ? "bg-accent-soft text-nav" : "text-nav/70 hover:text-nav",
       )}
     >
       {label}
@@ -160,7 +160,7 @@ function MenuRow({ to, label, premium, index }: NavEntry & { index: number }) {
     <NavLink to={to} aria-current={active ? "page" : undefined} className="group relative flex items-baseline gap-4 py-3.5">
       {active && <span className="absolute top-1/2 -left-5 h-7 w-[3px] -translate-y-1/2 rounded-r-full bg-[#d3ad66] sm:-left-8" aria-hidden />}
       <span className={cn("w-5 shrink-0 text-[10.5px] font-medium tracking-[0.2em] tabular-nums", active ? "text-[#d3ad66]" : "text-white/30")}>{String(index + 1).padStart(2, "0")}</span>
-      <span className={cn("flex-1 font-serif text-[25px] leading-none transition-colors", active ? "text-[#e4c486]" : "text-white group-hover:text-[#e4c486]")}>{label}</span>
+      <span className={cn("flex-1 font-serif text-[25px] leading-none transition-colors", active ? "text-[#f1dcae]" : "text-[#d3ad66] group-hover:text-[#ecd29c]")}>{label}</span>
       {locked ? (
         <span className="inline-flex shrink-0 items-center gap-1 self-center rounded-full border border-[#d3ad66]/45 px-2 py-0.5 text-[9.5px] font-semibold tracking-[0.16em] text-[#e4c486] uppercase">
           <Lock className="size-2.5" strokeWidth={2.25} aria-hidden /> Premium
@@ -228,7 +228,7 @@ function Header() {
       </div>
       {menuOpen && (
         <nav
-          className="animate-fade-in relative overflow-hidden bg-linear-to-b from-menu to-menu-2 border-t border-[#d3ad66]/35 px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
+          className="animate-fade-in relative overflow-hidden bg-linear-to-b from-menu to-menu-2 border-t border-menu-line px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
           aria-label="Navigation"
         >
           <div className="theme-light-only pointer-events-none absolute -right-24 -bottom-32 size-80 rounded-full bg-[#d3ad66]/[0.09] blur-3xl" aria-hidden />

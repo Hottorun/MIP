@@ -4,12 +4,12 @@ const WORDMARK_RATIO = 411.6 / 198.4;
 
 export function LogoWordmark({ height = 44, light = false, className }: { height?: number; light?: boolean; className?: string }) {
   const w = Math.round(height * WORDMARK_RATIO);
-  if (light) return <img src="/brand/carbay-wordmark-light.svg" alt="Carbay" width={w} height={height} className={className} />;
+  if (light) return <img src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width={w} height={height} className={className} />;
   // dark ink on the light theme, the light wordmark on the dark theme (switched in index.css)
   return (
     <>
-      <img src="/brand/carbay-wordmark.svg" alt="Carbay" width={w} height={height} className={`theme-light-only ${className ?? ""}`} />
-      <img src="/brand/carbay-wordmark-light.svg" alt="Carbay" width={w} height={height} className={`theme-dark-only ${className ?? ""}`} />
+      <img src="/brand/carbay-wordmark.svg?v=2" alt="Carbay" width={w} height={height} className={`theme-light-only ${className ?? ""}`} />
+      <img src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width={w} height={height} className={`theme-dark-only ${className ?? ""}`} />
     </>
   );
 }
