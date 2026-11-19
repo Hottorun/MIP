@@ -6,7 +6,8 @@ Arbeitsverzeichnis mit den Rohdaten (nicht im Repo). Alles in einem Schritt: `sh
 
 Täglich: `sh daily.sh` holt neue Daten, rechnet mit **heute** als Stichtag (abweichend: `MIP_AS_OF=JJJJ-MM-TT`), prüft
 die App und mit `check.py`, dass die Daten nicht geschrumpft sind (Verkäufe mindestens 95 %, Angebote 60 %, Varianten
-mit Wert 90 % des letzten Stands; sonst Abbruch ohne Änderung), lädt sie in Postgres (falls `DATABASE_URL` gesetzt) und
+mit Wert 90 % des letzten Stands) und mit `test_zuordnung.py`, dass jedes Ergebnis zu seiner Variante passt (sonst
+Abbruch ohne Änderung), lädt sie in Postgres (falls `DATABASE_URL` gesetzt) und
 committet die Datendateien. Die App liest den Stichtag aus `market-model.json`, das Datum „Marktdaten vom …“ stimmt
 also immer mit den Daten überein. Händlerbestände in `manual/haendler.csv` werden dabei nicht automatisch erneuert.
 
@@ -90,6 +91,29 @@ sonst gilt das Baujahr. „Turbo“ im Titel einer Variante ohne Turbo, Boxster 
 Tuner-Motoren werden verworfen. Schreibweisen wie „Carrera 2S“, „Carrera 4 S“, „Turbo 'S'“, „Boxster 3.2 S“, „GT4RS“
 werden dem richtigen Modell zugeordnet. Preise werden zum EZB-Kurs des Tages in EUR umgerechnet.
 
+Aggregatoren wie Hammer Price kürzen Titel („718 SPYDER“ für einen Spyder RS, „GT4“ für einen GT4 RS). Deshalb reichen
+die Baujahrfenster der Basisvarianten nicht in die Jahre, in denen es nur noch die Sportversion gab (718 Spyder und
+GT4 bis 2023, Spyder RS ab 2023, GT4 RS ab 2021); Weissach-Pakete ohne „RS“ werden verworfen.
+
+### Zuordnung prüfen (`audit.py`)
+
+Nach `classify.py` und `lotlinks.py` prüft `build.py` jedes Ergebnis gegen seine Variante:
+
+1. `manual/zuordnung-korrekturen.csv` (siehe `manual/README.md`): von Hand belegte Verschiebungen zu einer anderen
+   Variante oder Ausblendungen, je Los oder je FIN.
+2. Titel: Renn- und Sonderversionen, die sonst bei der Serienvariante landen (Clubsport, Cup, Gruppe/FIA,
+   „Specification“, Black Edition, Limited Edition, Rothmans, Heritage Design, Vorserie, Manthey- und Shark-Werks-Umbauten,
+   GT3-Pakete, Turbo Speedster, RS 60 außerhalb des Boxster 987.2 …), und Karosserien, die es bei der Variante nicht gibt
+   (`variant_bodies.json`, aus dem Katalog).
+3. FIN: Typschlüssel (Stelle 7–8, z. B. 96 = 964, 99 = 993–992, 98 = Boxster/Cayman/718), Modelljahr (Stelle 10, ab 1990,
+   ein Jahr Spielraum um die Bauzeit) und bei US-FINs Karosserie (Stelle 4) und Modelllinie (Stelle 5, z. B. beim 718
+   C = Spyder/GT4, E = Spyder RS/GT4 RS; beim 986 B = Boxster S).
+
+Was widerspricht, wird **ausgeblendet, nicht gelöscht**: Es zählt nicht zum Marktwert und steht nicht in `sales.csv`,
+sondern mit Grund in `src/data/real/sales-ausgeblendet.csv`. Dieselbe Titelprüfung gilt in `model.py` für Angebote
+(`excluded`). `variant_bodies.json` und `variant_years.json` nach Katalogänderungen neu schreiben:
+`npx tsx scripts/market/catalog.mts`.
+
 ## Modell (`model.py`)
 
     log p = a_v + f_g(t) + δ_c,k + λ_v(t)·d_v(t) + e
@@ -158,3 +182,9 @@ werden in der App unter „Belege für den Marktwert“ angezeigt.
 
 `report.py WORK src/data/real/market-model.json` und `show.py WORK <variante> [n]` für die Einzelverkäufe einer
 Variante.
+
+Zuordnung: `python3 -I test_zuordnung.py` (Fallbeispiele für `classify.py` und `audit.py`, dazu `sales.csv`: kein
+Widerspruch zur Variante, jede Zeile so zugeordnet wie ihr Titel, sofern nicht von Hand korrigiert) und
+`python3 -I audit.py ../../src/data/real/sales.csv` (listet Widersprüche). Läuft in der CI und in `daily.sh`; in der App
+prüft `src/data/real/variantMatch.test.ts` (`npm test`) die typischen Verwechslungen (Spyder/Spyder RS, GT3/GT3 RS,
+Turbo/Turbo S, Cayman/Cayman S, GTS) und dass die Katalogdateien aktuell sind.

@@ -15,6 +15,7 @@ import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
 import { LockedValue } from "../components/premium/Locked";
 import { usePlan } from "../lib/plan";
+import { hasWords } from "../lib/words";
 import { locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
 
@@ -140,8 +141,7 @@ export default function Buy() {
       if (dealsOnly && !(deal !== null && deal < -0.07)) return false;
       if (reducedOnly && !isReduced(l)) return false;
       if (q) {
-        const hay = `${variantTitle(v)} ${l.id} ${l.vin} ${l.city} ${tr(l.city)} ${l.seller} ${l.color} ${tr(l.color)}`.toLowerCase();
-        if (!q.split(/\s+/).every((w) => hay.includes(w))) return false;
+        if (!hasWords(`${variantTitle(v)} ${l.id} ${l.vin} ${l.city} ${tr(l.city)} ${l.seller} ${l.color} ${tr(l.color)}`, q)) return false;
       }
       return true;
     });

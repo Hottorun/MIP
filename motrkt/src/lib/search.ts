@@ -3,6 +3,7 @@ import { tr } from "../i18n/terms";
 import { getAllSales } from "../data/generate";
 import { shopListings } from "../data/shop";
 import { eur } from "./format";
+import { hasWords } from "./words";
 import { getLang, t } from "../i18n";
 
 export type SearchHit = { kind: string; label: string; detail: string; href: string };
@@ -93,7 +94,7 @@ export function search(query: string, limit = 9, lite = false): SearchHit[] {
   const terms = q.split(" ");
   const scored: [number, Entry][] = [];
   for (const e of index) {
-    if (!terms.every((t) => e.text.includes(t))) continue;
+    if (!hasWords(e.text, terms)) continue;
     const score = (e.text.startsWith(q) ? 0 : 10) + e.text.length / 100 + (e.kind === KIND.variant ? 1 : 0);
     scored.push([score, e]);
   }
@@ -104,15 +105,14 @@ export function search(query: string, limit = 9, lite = false): SearchHit[] {
   if (q.length >= 3) {
     for (const x of topics) {
       if (hits.length >= limit + 3) break;
-      if (!terms.every((w) => norm(x.title).includes(w))) continue;
+      if (!hasWords(x.title, terms)) continue;
       const v = variantById.get(x.variant);
       hits.push({ kind: KIND.topic, label: x.title, detail: `${v ? variantTitle(v) : x.variant} · ${x.username}`, href: `/markt/${x.variant}?thema=${x.id}#forum` });
     }
     let n = 0;
     for (const l of shopListings()) {
       if (n >= 4) break;
-      const hay = norm(`${l.title} ${l.seller} ${l.city}`);
-      if (!terms.every((w) => hay.includes(w))) continue;
+      if (!hasWords(`${l.title} ${l.seller} ${l.city}`, terms)) continue;
       n++;
       hits.push({ kind: KIND.listing, label: `${l.title} (${l.year})`, detail: `${l.onRequest ? t("Preis auf Anfrage", "Price on request") : eur(l.price)} · ${l.seller}`, href: `/kaufen?inserat=${l.id}` });
     }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { variantById, variantTitle, variants } from "../data/db";
 import { getMetrics } from "../data/market";
 import { date, eur, num } from "../lib/format";
+import { hasWords } from "../lib/words";
 import { isEn, t } from "../i18n";
 import { Card, Pill } from "../components/ui";
 import { COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, useMe, type ReviewCar } from "../lib/userCars";
@@ -305,7 +306,7 @@ function ReviewItem({ car, onDone }: { car: ReviewCar; onDone: () => void }) {
               />
               <select className="input" value={fix.variant_id} onChange={(e) => setFix({ ...fix, variant_id: e.target.value })}>
                 {variants
-                  .filter((x) => x.id === fix.variant_id || variantQuery.trim().toLowerCase().split(/\s+/).every((w) => variantTitle(x).toLowerCase().includes(w)))
+                  .filter((x) => x.id === fix.variant_id || hasWords(variantTitle(x), variantQuery))
                   .map((x) => (
                     <option key={x.id} value={x.id}>
                       {variantTitle(x)}

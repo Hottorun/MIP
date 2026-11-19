@@ -170,7 +170,8 @@ obs = []
 # auction results: sold prices, and the highest bid of unsold lots (own channels EU_BID / US_BID). Sales outside Europe
 # and North America (nomodel: Japan, Saudi Arabia in the Hammer Price data) are listed in the app but not used.
 for s in json.load(open(S + "/web/sales_all.json")):
-    if s.get("nomodel") or not ("2015-01-01" <= s["date"] <= AS_OF.isoformat()): continue
+    # hidden: contradicts its variant (audit.py), listed in sales-ausgeblendet.csv but never part of a value
+    if s.get("nomodel") or s.get("hidden") or not ("2015-01-01" <= s["date"] <= AS_OF.isoformat()): continue
     if s["sold"] and s["eur"] and s["eur"] > 500:
         ch = "EU_AUC" if (s.get("cur") in EU_CUR or (s.get("loc") or "") in EUROPE and not online(s["house"])) else us_channel(s["house"])
         obs.append(dict(variant=s["variant"], date=s["date"], eur=s["eur"], ch=ch, house=s["house"], lot=s["lot"], body=s.get("body"), src="auction",
@@ -272,6 +273,14 @@ for a in sorted(asks, key=lambda a: (a["date"], str(a["id"]).zfill(12)), reverse
     uniq.append(a)
 print("asks", len(asks), "after removing duplicate cars", len(uniq))
 asks = uniq
+
+# listings whose title names a different car than the variant (special and race versions, conversions; audit.py, as
+# for the auction results) are shown with the reason but do not enter the value
+import audit  # noqa: E402
+for a in asks:
+    if not a.get("excluded"):
+        why = audit.check(a["variant"], a.get("title") or "", year=a.get("year"))
+        if why: a["excluded"] = why[0]
 
 # listings that are no genuine complete car of the variant (replica, conversion, project, accident damage; see
 # ctparse.py) are shown in the app but do not enter the value

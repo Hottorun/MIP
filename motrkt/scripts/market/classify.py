@@ -444,11 +444,15 @@ def mid(y, s, b):
         return None
     def r(v): return (P + v, "Roadster" if "boxster" in s or "spyder" in s else "Coupé")
     is718 = "718" in s or y >= 2017
+    # The 718 GT4 and Spyder were built until 2023; from 2023 on the GT4 RS and Spyder RS followed. Aggregators
+    # shorten their titles ("2024 718 SPYDER", "2024 718 Cayman GT4 Weissach Package" for an RS), so the plain
+    # versions take no later years, and a Weissach package (only offered on the RS) never makes a plain GT4 or Spyder.
     if "cayman" in s:
-        if "gt4 rs" in s: return r("718-718-cayman-gt4-rs") if y >= 2022 else None
+        if "gt4 rs" in s: return r("718-718-cayman-gt4-rs") if y >= 2021 else None
         if "gt4" in s:
+            if "weissach" in s: return None
             if y in (2015, 2016): return r("cayman-981-cayman-gt4")
-            if 2020 <= y <= 2025: return r("718-718-cayman-gt4")
+            if 2019 <= y <= 2023: return r("718-718-cayman-gt4")
             return None
         if "gts" in s:
             if y in (2015, 2016): return r("cayman-981-cayman-gts")
@@ -467,12 +471,13 @@ def mid(y, s, b):
             if 2014 <= y <= 2016: return r("cayman-981-cayman")
             if 2017 <= y <= 2025: return r("718-718-cayman")
         return None
-    if "spyder rs" in s: return r("718-718-spyder-rs") if y >= 2024 else None
+    if "spyder rs" in s: return r("718-718-spyder-rs") if y >= 2023 else None
+    if "spyder" in s and "weissach" in s: return None
     if "spyder" in s and "boxster" in s and 2010 <= y <= 2012: return r("boxster-987-2-boxster-spyder")
     if "spyder" in s and ("boxster" in s or "718" in s):
         if y == 2016: return r("boxster-981-boxster-spyder")
-        if 2020 <= y <= 2024 and "718" in s: return r("718-718-spyder")
-    if "spyder" in s and "718" in s and 2020 <= y <= 2024: return r("718-718-spyder")
+        if 2019 <= y <= 2023 and "718" in s: return r("718-718-spyder")
+    if "spyder" in s and "718" in s and 2019 <= y <= 2023: return r("718-718-spyder")
     if "boxster" in s:
         if "550" in s and y == 2004: return r("boxster-986-boxster-s-50-jahre-550-spyder")
         if has(s, "rs 60", "rs60") and y == 2008: return r("boxster-987-1-boxster-rs-60-spyder")
@@ -521,6 +526,8 @@ def classify(title, note=""):
     s = re.sub(r"\b(boxster|cayman)( \(?98[67](\.[12])?\)?)? [23]\.\d ?s\b", r"\1 s", s)   # "Boxster 3.4 S" is the Boxster S
     s = re.sub(r"\bcarrera 2 ?s\b", "carrera s", s)                    # "Carrera 2S" (993, 997) is the Carrera S
     s = re.sub(r"\bcarrera 4 s\b", "carrera 4s", s)
+    s = re.sub(r"\b(carrera|targa) s4\b", r"\1 4s", s)                 # "Targa S4" is the Targa 4S
+    s = s.replace("club sport", "clubsport")                             # "GT2 RS Club Sport" is the GT2 RS Clubsport
     s = re.sub(r"\bturbo ['\"]s['\"]", "turbo s", s)                   # "Turbo 'S'"
     if re.search(r"exclusive|edition|anniversary|endurance|outlaw|prepared|competition|race|rally|recreation|modified|spec|specification|by ", note) and not re.search(r"50(th)? (years|jahre|anniversary)", note): return None
     v = race(y, s, full)

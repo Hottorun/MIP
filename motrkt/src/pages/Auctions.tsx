@@ -4,7 +4,7 @@ import { usePlan } from "../lib/plan";
 import { Lock, Locked } from "../components/premium/Locked";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Coins, ExternalLink, Gauge, Gavel, Scale, Search, X } from "lucide-react";
-import { brands, variantById, variantTitle, variants } from "../data/db";
+import { brands, variantById, variantShortTitle, variantTitle, variants } from "../data/db";
 import { AS_OF, AUCTION_HOUSES, CONDITION_SCORE, COUNTRY_NAMES, WEEK, getAllSales } from "../data/generate";
 import { mean } from "../data/market";
 import { CALENDAR_AS_OF, HOUSE_CALENDARS, calendarSales, type CalendarSale } from "../data/real/auction-calendar";
@@ -16,6 +16,7 @@ import { tr } from "../i18n/terms";
 import { unsoldPrice } from "../lib/unsold";
 import { LotGallery, LotThumb } from "../components/LotPhotos";
 import { useStickyState } from "../lib/sticky";
+import { hasWords } from "../lib/words";
 
 type Source = "Alle" | "Auktion" | "Händler" | "Privat";
 type Period = "3M" | "12M" | "5J";
@@ -133,12 +134,13 @@ export default function Auctions() {
     if (!tokens.length) return pre;
     const tUpper = text.trim().toUpperCase();
     const names = titles();
-    // a picked suggestion (or a typed full name) means exactly that variant, not "Turbo S" along with "Turbo"
-    const exact = variants.find((v) => names.get(v.id)!.toLowerCase() === text.trim().toLowerCase());
+    // a picked suggestion, a typed full name or "Alle Ergebnisse" on a model (its short name, e.g. "718 Spyder RS")
+    // means exactly that variant, not "Turbo S" along with "Turbo"
+    const q = text.trim().toLowerCase();
+    const exact = variants.find((v) => [names.get(v.id)!, variantTitle(v, { brand: false }), variantShortTitle(v)].some((n) => n.toLowerCase() === q));
     if (exact) return pre.filter((s) => s.variantId === exact.id);
     return pre.filter((s) => {
-      const hay = `${names.get(s.variantId)} ${s.house}`.toLowerCase().replace(/[()]/g, " ");
-      return s.id.startsWith(tUpper) || (tUpper.length >= 5 && s.vin.startsWith(tUpper)) || tokens.every((tok) => hay.includes(tok));
+      return s.id.startsWith(tUpper) || (tUpper.length >= 5 && s.vin.startsWith(tUpper)) || hasWords(`${names.get(s.variantId)} ${s.house}`, tokens);
     });
   }, [pre, text]);
 
@@ -153,11 +155,11 @@ export default function Auctions() {
     for (const s of pre) if (s.date >= rangeFrom) count.set(s.variantId, (count.get(s.variantId) ?? 0) + 1);
     const names = titles();
     const vs = variants
-      .filter((v) => count.get(v.id) && tokens.every((tok) => names.get(v.id)!.toLowerCase().replace(/[()]/g, " ").includes(tok)))
+      .filter((v) => count.get(v.id) && hasWords(names.get(v.id)!, tokens))
       .sort((a, b) => (count.get(b.id) ?? 0) - (count.get(a.id) ?? 0))
       .slice(0, 6)
       .map((v) => ({ id: v.id, title: names.get(v.id)!, n: count.get(v.id)! }));
-    const hs = houses.filter((h) => tokens.every((tok) => h.toLowerCase().includes(tok))).slice(0, 3);
+    const hs = houses.filter((h) => hasWords(h, tokens)).slice(0, 3);
     return { variants: vs, houses: hs };
   }, [text, houses, pre, rangeFrom]);
 

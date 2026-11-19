@@ -195,6 +195,11 @@ if os.path.exists(_hp):
 # --- lot links and photos for the rows that came without a lot page (lotlinks.py)
 import lotlinks
 out = lotlinks.apply(out, S)
+# --- results that contradict their variant (chassis number, special and race versions, see audit.py): moved where
+# manual/zuordnung-korrekturen.csv decides it, otherwise hidden with the reason (kept in the file, not in the value)
+import audit
+_moved, _hidden = audit.apply(out)
+print("assignment check: %d moved by hand, %d hidden (contradiction with the variant)" % (_moved, _hidden))
 json.dump(out, open(S + "/web/sales_all.json", "w"), ensure_ascii=False)
-c = collections.Counter(o["variant"] for o in out if o["sold"])
+c = collections.Counter(o["variant"] for o in out if o["sold"] and not o.get("hidden"))
 print(len(out), sum(c.values()))

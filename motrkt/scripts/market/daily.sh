@@ -1,6 +1,6 @@
 #!/bin/sh
 # Daily refresh: pull new results and listings, recompute the model with today as cut-off, check the app still
-# builds and the data did not shrink (check.py), then commit the new data (pushes only with MIP_PUSH=1).
+# builds, the data did not shrink (check.py) and every result fits its variant (test_zuordnung.py), then commit the new data (pushes only with MIP_PUSH=1).
 #   sh scripts/market/daily.sh [WORK]     (default WORK: ~/Documents/MIP-Marktdaten)
 # Runs every morning on GitHub Actions (.github/workflows/marktdaten.yml) with MIP_PUSH=1.
 set -e
@@ -23,10 +23,10 @@ fi
 [ -f "$UC/usercars.csv" ] && export MIP_USER_CARS="$UC/usercars.csv"
 sh "$HERE/update.sh" "$W" >> "$LOG" 2>&1
 (cd "$APP" && npx tsc --noEmit -p .) >> "$LOG" 2>&1
-if ! python3 -I "$HERE/check.py" >> "$LOG" 2>&1; then
-  tail -4 "$LOG"
-  git -C "$APP" checkout -- src/data/real/market-model.json src/data/real/asks.json src/data/real/sales.csv src/data/real/listing-history.json src/data/real/auction-calendar.json
-  echo "Abbruch: neue Daten deutlich kleiner als die alten (siehe Log), nichts übernommen."
+if ! python3 -I "$HERE/check.py" >> "$LOG" 2>&1 || ! python3 -I "$HERE/test_zuordnung.py" >> "$LOG" 2>&1; then
+  tail -12 "$LOG"
+  git -C "$APP" checkout -- src/data/real/market-model.json src/data/real/asks.json src/data/real/sales.csv src/data/real/sales-ausgeblendet.csv src/data/real/listing-history.json src/data/real/auction-calendar.json
+  echo "Abbruch: neue Daten deutlich kleiner als die alten oder Ergebnisse falschen Varianten zugeordnet (siehe Log), nichts übernommen."
   exit 1
 fi
 # load the new data into Postgres when a database is configured (DATABASE_URL in the environment or .env)
@@ -35,7 +35,7 @@ if [ -n "$DATABASE_URL" ] || grep -q '^DATABASE_URL=.' "$APP/.env" 2>/dev/null; 
 fi
 
 cd "$ROOT"
-DATA="motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/listing-history.json motrkt/src/data/real/auction-calendar.json"
+DATA="motrkt/src/data/real/market-model.json motrkt/src/data/real/asks.json motrkt/src/data/real/sales.csv motrkt/src/data/real/sales-ausgeblendet.csv motrkt/src/data/real/listing-history.json motrkt/src/data/real/auction-calendar.json"
 commit_data() {
   git add $DATA
   if git diff --cached --quiet; then return 1; fi

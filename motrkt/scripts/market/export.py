@@ -24,23 +24,29 @@ for r in old[1:]:
 json.dump({"kept": kept, "dropped": dropped}, open(S + "/web/old_review.json", "w"), ensure_ascii=False, indent=1)
 H = ["variant_id", "fahrzeug", "datum", "quelle", "haus", "preis_eur", "schaetzung_von", "schaetzung_bis", "verkauft", "zustand", "km", "kaeuferland", "herkunft",
      "auslieferung", "farbe", "karosserie", "getriebe", "fin", "los_id", "url", "preis_original", "waehrung", "standort", "hoechstgebot_eur", "zuschlag_original", "bild"]
-out = []
+out, hid = [], []
 for r in rows:
     gear = r["gear"] or ("Automatik" if r["year"] >= 1999 and r["src"] == "bat" and not re.search(r"\d-speed", r["title"].lower()) and False else "")
     # unsold lots: the house's estimate (schaetzung_von/_bis) and the highest bid (Bring a Trailer, Hammer Price), both
     # in EUR; the model reads the bid as its own channel (EU_BID/US_BID), the estimate is shown in the app only
     unsold = not r["sold"]
-    out.append([r["variant"], r["title"].replace(";", ","), r["date"], "Auktion", r["house"], r["eur"] or "",
+    (hid if r.get("hidden") else out).append([r["variant"], r["title"].replace(";", ","), r["date"], "Auktion", r["house"], r["eur"] or "",
                 (unsold and r.get("estLow")) or "", (unsold and r.get("estHigh")) or "", "ja" if r["sold"] else "nein", "",
                 r["km"] or "", "", "", "", "", r["body"], r["gear"], r["vin"].replace(";", ","), r["lot"], r["url"], r["orig"] or "", r["cur"] or "", r["loc"],
                 (unsold and r.get("bid")) or "",
                 # Bring a Trailer, PCARMARKET: preis_original includes the buyer's fee; the price shown on the site is kept here
                 r.get("hammer") or "",
                 # the house's main photo of the lot where its list gives one (lotlinks.py); else the app reads the lot page
-                (r.get("image") or "").replace(";", "%3B")])
+                (r.get("image") or "").replace(";", "%3B")] + ([r["hidden"].replace(";", ",")] if r.get("hidden") else []))
 # Earlier hand-collected rows are not carried over: the scrape covers those auctions, the rest (press reports) cannot be re-checked.
 out.sort(key=lambda x: (x[0], x[2]), reverse=False)
 with open(OUT, "w", newline="") as f:
     f.write(";".join(H) + "\n")
     for r in out: f.write(";".join(str(x) for x in r) + "\n")
-print(len(out), "rows;", len(kept), "kept old;", len(dropped), "dropped old")
+# results that contradict their variant (audit.py): not in sales.csv, so neither the app nor the database counts them,
+# but kept with the reason in sales-ausgeblendet.csv next to it (variant_id = the variant they were assigned to)
+hid.sort(key=lambda x: (x[0], x[2]))
+with open(os.path.join(os.path.dirname(os.path.abspath(OUT)), "sales-ausgeblendet.csv"), "w", newline="") as f:
+    f.write(";".join(H + ["grund"]) + "\n")
+    for r in hid: f.write(";".join(str(x) for x in r) + "\n")
+print(len(out), "rows;", len(hid), "hidden (sales-ausgeblendet.csv);", len(kept), "kept old;", len(dropped), "dropped old")

@@ -60,6 +60,15 @@ Für einzelne Ergebnisse, die von Hand auf der Ergebnisseite des Auktionshauses 
 und Link des Hauses ersetzen dann die Angaben von ultimatecarpage. Leerer Preis: nur den Link ersetzen (z. B. nicht
 verkauft). Gilt für den nächsten Lauf von `build.py` bzw. `update.sh`.
 
+## Ergebnisse einer anderen Variante zuordnen oder ausblenden (`zuordnung-korrekturen.csv`)
+
+Für Ergebnisse, deren Titel zu einer falschen Variante führt, die Fahrgestellnummer (FIN) oder eine andere Quelle aber
+belegt, welches Modell es ist: `los_id` (wie in `sales.csv`) **oder** `fin` (gilt dann für alle Lose dieses Fahrzeugs),
+`variante_neu` (Varianten-ID aus dem Katalog; leer = ausblenden), `grund` (Begründung, ohne `;`) und `geprueft` (Datum).
+Ausgeblendete Ergebnisse werden nicht gelöscht: Sie stehen mit Grund in `src/data/real/sales-ausgeblendet.csv`. Eine
+Zeile hier löschen macht die Entscheidung rückgängig. Gilt für den nächsten Lauf von `build.py` bzw. `update.sh`; was
+der Variante dann noch widerspricht (`audit.py`), wird trotzdem ausgeblendet.
+
 ## Weitere Dateien in diesem Ordner
 
 - `auktionstermine.csv`: Termine kommender Auktionen von Häusern ohne Abrufskript (Historics, Barrett-Jackson …), für
