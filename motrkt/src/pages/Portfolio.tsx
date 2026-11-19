@@ -64,7 +64,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="space-y-20">
+    <div className={rows.length ? "space-y-20" : "space-y-12"}>
       <div>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -91,7 +91,7 @@ export default function Portfolio() {
       </div>
 
       {rows.length === 0 ? (
-        <Empty className="py-16">
+        <Empty className="py-12">
           {t("Noch keine Fahrzeuge im Portfolio.", "No cars in the portfolio yet.")}{" "}
           <button className="not-italic underline underline-offset-4 hover:text-ink" onClick={openAdd}>
             {t("Erstes Fahrzeug hinzufügen", "Add your first car")}
