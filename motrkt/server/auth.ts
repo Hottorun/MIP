@@ -416,8 +416,13 @@ export function safeNext(n: string | null) {
 
 // ------------------------------------------------------------------------------------------------ sign-in page
 // Standalone page (no app bundle): the app and its data load only after sign-in.
-/** Porsche press photo of the 993 Turbo S, also on the home page (src/data/real/launch.json). */
-const LOGIN_PHOTO = "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=256119&w=1920&h=1280&crop=0&public=1&cs=4f14ffed9872f291";
+/**
+ * Porsche press photo (Porsche AG): Carrera GT in front of the Porsche plant in Leipzig, from the Carrera GT gallery
+ * (src/data/real/launch.json). The press database renders it at 3840 px for wide screens, 1920 px for phones.
+ */
+const LOGIN_PHOTO_BASE = "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=308076&crop=0&public=1&cs=885d64d0f5789296";
+const LOGIN_PHOTO = LOGIN_PHOTO_BASE + "&w=3840&h=2560";
+const LOGIN_PHOTO_SMALL = LOGIN_PHOTO_BASE + "&w=1920&h=1280";
 const LOGIN_PAGE = `<!doctype html>
 <html lang="de">
 <head>
@@ -436,11 +441,10 @@ const LOGIN_PAGE = `<!doctype html>
     unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   @font-face { font-family:"Source Serif 4"; font-style:italic; font-weight:200 900; font-display:swap; src:url(/fonts/source-serif-4-latin-opsz-italic.woff2) format("woff2");
     unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-  /* the app's colours (src/index.css). Wide screens: the form on the left, the 993 Turbo S photo of the home page on the
-     right at full height, petrol towards the bottom under the claim. Narrow screens: photo head, form below. */
+  /* the app's colours (src/index.css). Wide screens: the photo across the whole page (Porsche tower above, Carrera GT
+     below), the claim on the left over a petrol veil, the form card on the right. Narrow screens: photo head, form below. */
   :root { --bg:#f6f4ef; --panel:#fcfbf8; --field:#ffffff; --line:#e0dbd2; --line2:#c6bfb3; --ink:#1f1d1a; --muted:#5e5952; --faint:#8b847a;
-          --accent:#16363c; --accent2:#0e2529; --on-accent:#f6f4ef; --night:16 39 43; --gold:#d3ad66; --gold-line:#c9a35e; --on-night:#f3efe6; --down:#a33a2b;
-          --mark:url(/brand/carbay-wordmark.svg); }
+          --accent:#16363c; --accent2:#0e2529; --on-accent:#f6f4ef; --night:16 39 43; --gold:#d3ad66; --gold-line:#c9a35e; --on-night:#f3efe6; --down:#a33a2b; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) { --bg:#121412; --panel:#161816; --field:#212422; --line:#2f3330; --line2:#4a4f4b; --ink:#eeeae1; --muted:#b4ada1; --faint:#8d877d;
           --accent:#729da4; --accent2:#9dbcc0; --on-accent:#121412; --night:23 36 39; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
@@ -449,16 +453,28 @@ const LOGIN_PAGE = `<!doctype html>
           --accent:#729da4; --accent2:#9dbcc0; --on-accent:#121412; --night:23 36 39; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
   * { box-sizing: border-box; }
   html, body { height:100%; }
-  body { margin:0; background:var(--panel); color:var(--ink); font:15px/1.5 "Instrument Sans","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-  .stage { min-height:100%; display:grid; grid-template-columns:minmax(420px, 40%) minmax(0,1fr); }
-  .side { display:flex; flex-direction:column; padding:36px clamp(28px,4.5vw,64px) 24px; background:var(--panel); }
-  .logo { margin:0; line-height:0; }
-  .logo img { height:50px; width:auto; }
-  .logo .dark { display:none; }
-  .form { width:100%; max-width:380px; margin:auto 0; padding:40px 0; }
-  .form h2 { margin:0 0 6px; font:400 34px/1.15 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; }
-  .form .sub { margin:0 0 26px; font-size:14px; color:var(--muted); }
-  .tabs { display:flex; gap:6px; padding:4px; margin:0 0 24px; background:var(--bg); border:1px solid var(--line); border-radius:999px; }
+  body { margin:0; background:#10272b; color:var(--ink); font:15px/1.5 "Instrument Sans","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  .stage { position:relative; min-height:100%; display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:48px; align-items:start;
+           padding:clamp(28px,5vh,56px) clamp(28px,4.5vw,72px) 72px; background:#10272b url(${LOGIN_PHOTO}) 50% 100% / cover no-repeat; }
+  .stage::before { content:""; position:absolute; inset:0; pointer-events:none;
+                   background:linear-gradient(90deg, rgb(var(--night) / .9) 0%, rgb(var(--night) / .62) 30%, rgb(var(--night) / .08) 58%, transparent 100%),
+                              linear-gradient(0deg, rgb(var(--night) / .55) 0%, transparent 22%); }
+  .stage > * { position:relative; }
+  .intro { color:var(--on-night); max-width:520px; }
+  .logo { margin:0 0 30px; line-height:0; }
+  .logo img { height:64px; width:auto; }
+  .rule { width:56px; height:1px; background:var(--gold); margin:0 0 22px; }
+  .claim { margin:0 0 12px; font:400 50px/1.06 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; color:#fbf8f1; text-shadow:0 1px 18px rgb(0 0 0 / .25); }
+  .tag { margin:0 0 26px; font:italic 18px/1.45 "Source Serif 4","Iowan Old Style",Georgia,serif; color:rgb(243 239 230 / .8); }
+  .facts { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:14px; color:rgb(243 239 230 / .88); }
+  .facts li { display:flex; align-items:center; gap:10px; }
+  .facts li::before { content:""; width:16px; height:1px; background:var(--gold); flex:none; }
+  .credit { position:absolute; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .55); }
+  .card { background:var(--panel); color:var(--ink); border-top:2px solid var(--gold-line); box-shadow:0 30px 80px -24px rgb(0 0 0 / .6); }
+  .form { padding:30px 30px 22px; }
+  .form h2 { margin:0 0 4px; font:400 28px/1.15 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; }
+  .form .sub { margin:0 0 22px; font-size:13.5px; color:var(--muted); }
+  .tabs { display:flex; gap:6px; padding:4px; margin:0 0 22px; background:var(--bg); border:1px solid var(--line); border-radius:999px; }
   .tabs button { flex:1; background:none; border:0; border-radius:999px; padding:7px 0; font:inherit; font-size:14px; font-weight:500; color:var(--muted); cursor:pointer; transition:background .15s,color .15s; }
   .tabs button[aria-selected="true"] { background:var(--accent); color:var(--on-accent); }
   label { display:block; font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
@@ -470,41 +486,40 @@ const LOGIN_PAGE = `<!doctype html>
   .submit:disabled { opacity:.6; cursor:default; }
   .err { color:var(--down); font-size:14px; margin:12px 0 0; min-height:1.2em; }
   .note { font-size:12.5px; line-height:1.45; color:var(--muted); margin:14px 0 0; } .note a { color:inherit; }
-  .foot { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:12px; color:var(--faint); }
+  .foot { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 30px; border-top:1px solid var(--line); font-size:12px; color:var(--faint); }
   .lang button { background:none; border:0; font:inherit; letter-spacing:.08em; color:var(--faint); cursor:pointer; padding:2px 4px; }
   .lang button[aria-pressed="true"] { color:var(--ink); font-weight:600; }
   .legal a { color:var(--faint); text-decoration:none; margin-left:14px; } .legal a:hover { color:var(--ink); }
-  .visual { position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; padding:48px clamp(28px,5vw,72px) 56px; color:var(--on-night);
-            background:#10272b url(${LOGIN_PHOTO}) 88% 50% / cover no-repeat; border-left:2px solid var(--gold-line); }
-  .visual::before { content:""; position:absolute; inset:0; pointer-events:none;
-                    background:linear-gradient(0deg, rgb(var(--night) / .97) 0%, rgb(var(--night) / .78) 30%, rgb(var(--night) / .15) 62%, rgb(var(--night) / .35) 100%); }
-  .visual > * { position:relative; }
-  .rule { width:56px; height:1px; background:var(--gold); margin:0 0 22px; }
-  .claim { margin:0 0 12px; max-width:560px; font:400 46px/1.07 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; color:#fbf8f1; }
-  .tag { margin:0 0 26px; font:italic 18px/1.45 "Source Serif 4","Iowan Old Style",Georgia,serif; color:rgb(243 239 230 / .75); }
-  .facts { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px 28px; font-size:14px; color:rgb(243 239 230 / .85); }
-  .facts li { display:flex; align-items:center; gap:10px; }
-  .facts li::before { content:""; width:16px; height:1px; background:var(--gold); flex:none; }
-  .credit { position:absolute; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .45); }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .logo .light { display:none; } :root:not([data-theme="light"]) .logo .dark { display:inline; } }
-  :root[data-theme="dark"] .logo .light { display:none; } :root[data-theme="dark"] .logo .dark { display:inline; }
   @media (max-width: 900px) {
-    .stage { position:relative; display:flex; flex-direction:column-reverse; }
-    .visual { min-height:340px; padding:28px 22px 30px; border-left:0; border-bottom:2px solid var(--gold-line); background-position:80% 50%; }
-    .claim { font-size:30px; } .tag { font-size:15.5px; margin-bottom:0; } .facts, .rule { display:none; }
-    .visual::before { background:linear-gradient(0deg, rgb(var(--night) / .95) 0%, rgb(var(--night) / .55) 38%, rgb(var(--night) / .2) 65%, rgb(var(--night) / .7) 100%); }
-    .credit { right:12px; bottom:8px; }
-    .side { padding:24px 22px 22px; }
-    .logo { position:absolute; top:22px; left:22px; z-index:2; } .logo .light { display:none !important; } .logo .dark { display:inline !important; } .logo img { height:42px; }
-    .form { max-width:none; padding:26px 0 30px; margin:0; }
-    .form h2 { font-size:28px; }
+    body { background:var(--bg); }
+    .stage { display:block; padding:0; background:var(--bg); }
+    .stage::before { display:none; }
+    .intro { max-width:none; padding:0 22px 52px; background:rgb(var(--night)); }
+    .intro::before { content:""; display:block; margin:0 -22px 22px; aspect-ratio:16 / 9;
+                     background:linear-gradient(0deg, rgb(var(--night)) 0%, transparent 35%), linear-gradient(180deg, rgb(var(--night) / .75) 0%, transparent 32%), url(${LOGIN_PHOTO_SMALL}) 50% 50% / cover no-repeat; }
+    .logo { position:absolute; top:18px; left:22px; margin:0; } .logo img { height:40px; }
+    .rule, .facts { display:none; }
+    .claim { font-size:30px; text-shadow:none; } .tag { font-size:15.5px; margin:0; }
+    .credit { top:calc(56.25vw - 22px); bottom:auto; right:12px; }
+    .card { margin:-30px 14px 28px; }
+    .form { padding:24px 22px 20px; } .foot { padding:12px 22px; }
   }
 </style>
 </head>
 <body>
 <main class="stage">
-  <section class="side">
-    <h1 class="logo"><img class="light" src="/brand/carbay-wordmark.svg?v=2" alt="Carbay" width="104" height="50" /><img class="dark" src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width="104" height="50" /></h1>
+  <section class="intro">
+    <h1 class="logo"><img src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width="133" height="64" /></h1>
+    <div class="rule"></div>
+    <p class="claim" data-de="Was Ihre Leidenschaft heute wert ist." data-en="What your passion is worth today."></p>
+    <p class="tag" data-de="Marktintelligenz für Sportwagen" data-en="Market intelligence for sports cars"></p>
+    <ul class="facts">
+      <li data-de="Marktwerte aus echten Verkäufen" data-en="Market values from real sales"></li>
+      <li data-de="Täglich aktualisiert" data-en="Updated daily"></li>
+      <li data-de="Marktdaten seit 2015" data-en="Market data since 2015"></li>
+    </ul>
+  </section>
+  <section class="card">
     <div class="form">
       <h2 id="title"></h2>
       <p class="sub" id="sub"></p>
@@ -534,17 +549,7 @@ const LOGIN_PAGE = `<!doctype html>
       <span class="legal"><a href="/impressum">Impressum</a><a href="/datenschutz" data-de="Datenschutz" data-en="Privacy"></a></span>
     </div>
   </section>
-  <section class="visual">
-    <div class="rule"></div>
-    <p class="claim" data-de="Was Ihre Leidenschaft heute wert ist." data-en="What your passion is worth today."></p>
-    <p class="tag" data-de="Marktintelligenz für Sportwagen" data-en="Market intelligence for sports cars"></p>
-    <ul class="facts">
-      <li data-de="Marktwerte aus echten Verkäufen" data-en="Market values from real sales"></li>
-      <li data-de="Täglich aktualisiert" data-en="Updated daily"></li>
-      <li data-de="Marktdaten seit 2015" data-en="Market data since 2015"></li>
-    </ul>
-    <p class="credit" data-de="Foto: Porsche AG" data-en="Photo: Porsche AG"></p>
-  </section>
+  <p class="credit" data-de="Foto: Porsche AG" data-en="Photo: Porsche AG"></p>
 </main>
 <script>
 (function () {
