@@ -35,8 +35,8 @@ export const IMPRESSUM: LegalSection[] = [
         "Market values, forecasts, assessments and Co-Pilot answers are computed evaluations of publicly reported auction results and listings. They are not investment, legal or purchase advice and do not replace an inspection of the individual car. We give no guarantee for accuracy, completeness or timeliness.",
       ],
       [
-        "Inserate stammen von Classic Trader, Händlerseiten und mobile.de und werden unverändert verlinkt; für deren Inhalte sind die jeweiligen Anbieter verantwortlich. Forumsbeiträge geben die Meinung ihrer Verfasser wieder; Hinweise auf rechtswidrige Inhalte nehmen wir unter der oben genannten E-Mail-Adresse entgegen und entfernen solche Inhalte umgehend.",
-        "Listings come from Classic Trader, dealer sites and mobile.de and are linked unchanged; their providers are responsible for their content. Forum posts reflect their authors' opinions; reports of unlawful content can be sent to the email address above and such content is removed promptly.",
+        "Inserate stammen von Händlern und Online-Plattformen und werden unverändert verlinkt; für deren Inhalte sind die jeweiligen Anbieter verantwortlich. Forumsbeiträge geben die Meinung ihrer Verfasser wieder; Hinweise auf rechtswidrige Inhalte nehmen wir unter der oben genannten E-Mail-Adresse entgegen und entfernen solche Inhalte umgehend.",
+        "Listings come from dealers and online platforms and are linked unchanged; their providers are responsible for their content. Forum posts reflect their authors' opinions; reports of unlawful content can be sent to the email address above and such content is removed promptly.",
       ],
     ],
   },
