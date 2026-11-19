@@ -378,7 +378,6 @@ function NotificationBell() {
 function UserMenu() {
   const [open, setOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
-  const { portfolio, watchlist, alerts } = useStore();
   const ref = useClickOutside(open, () => setOpen(false));
   const me = useMe();
   const plan = usePlan();
@@ -398,12 +397,6 @@ function UserMenu() {
                 <span className={cn("shrink-0 rounded-full px-2 py-px text-[10.5px] font-semibold tracking-[0.1em] uppercase", plan.premium ? "bg-gold-soft text-gold-2" : "bg-panel-3 text-muted")}>
                   {plan.premium ? "Premium" : "Lite"}
                 </span>
-              )}
-            </div>
-            <div className="text-[13px] text-muted">
-              {t(
-                `${portfolio.length} Fahrzeuge, ${watchlist.length} beobachtet, ${alerts.length} Alarme`,
-                `${portfolio.length} cars, ${watchlist.length} watched, ${alerts.length} alerts`,
               )}
             </div>
           </div>
