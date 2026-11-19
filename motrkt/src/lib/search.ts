@@ -1,6 +1,7 @@
 import { brands, generations, genName, modelById, modelName, models, variantById, variantTitle, variants, yearsLabel } from "../data/db";
 import { tr } from "../i18n/terms";
-import { getAllListings, getAllSales } from "../data/generate";
+import { getAllSales } from "../data/generate";
+import { shopListings } from "../data/shop";
 import { eur } from "./format";
 import { getLang, t } from "../i18n";
 
@@ -69,7 +70,7 @@ function buildIndex(): Entry[] {
   // Dealers with cars for sale (their listings on Buy) and auction houses (their results on Auctions)
   const dealers = new Map<string, number>();
   const platforms = new Set(["Classic Trader", "mobile.de"]); // marketplaces, not dealers (a dealer's own site is its name)
-  for (const l of getAllListings()) if (l.sellerType === "Händler" && !platforms.has(l.seller)) dealers.set(l.seller, (dealers.get(l.seller) ?? 0) + 1);
+  for (const l of shopListings()) if (l.sellerType === "Händler" && !platforms.has(l.seller)) dealers.set(l.seller, (dealers.get(l.seller) ?? 0) + 1);
   for (const [name, n] of dealers) {
     out.push({ kind: KIND.dealer, label: name, detail: t(`${n} Inserat${n === 1 ? "" : "e"}`, `${n} listing${n === 1 ? "" : "s"}`), href: `/kaufen?suche=${encodeURIComponent(name)}`, text: norm(name) });
   }
@@ -108,12 +109,12 @@ export function search(query: string, limit = 9, lite = false): SearchHit[] {
       hits.push({ kind: KIND.topic, label: x.title, detail: `${v ? variantTitle(v) : x.variant} · ${x.username}`, href: `/markt/${x.variant}?thema=${x.id}#forum` });
     }
     let n = 0;
-    for (const l of getAllListings()) {
+    for (const l of shopListings()) {
       if (n >= 4) break;
       const hay = norm(`${l.title} ${l.seller} ${l.city}`);
       if (!terms.every((w) => hay.includes(w))) continue;
       n++;
-      hits.push({ kind: KIND.listing, label: `${l.title} (${l.year})`, detail: `${eur(l.price)} · ${l.seller}`, href: `/kaufen?inserat=${l.id}` });
+      hits.push({ kind: KIND.listing, label: `${l.title} (${l.year})`, detail: `${l.onRequest ? t("Preis auf Anfrage", "Price on request") : eur(l.price)} · ${l.seller}`, href: `/kaufen?inserat=${l.id}` });
     }
   }
 
@@ -131,10 +132,10 @@ export function search(query: string, limit = 9, lite = false): SearchHit[] {
         hits.push({ kind: KIND.vin, label: `${s.vin}`, detail: `${variantTitle(v)} · ${t("Verkauf", "Sale")} ${s.id}`, href: `/auktionen?q=${encodeURIComponent(s.vin)}` });
       }
     }
-    for (const l of getAllListings()) {
+    for (const l of shopListings()) {
       if (hits.length >= limit + 6) break;
       if (l.id.toUpperCase().startsWith(raw) || l.vin.startsWith(raw)) {
-        hits.push({ kind: KIND.listing, label: `${l.id} · ${l.title}`, detail: `${eur(l.price)} · ${tr(l.city)}`, href: `/kaufen?inserat=${l.id}` });
+        hits.push({ kind: KIND.listing, label: `${l.id} · ${l.title}`, detail: `${l.onRequest ? t("Preis auf Anfrage", "Price on request") : eur(l.price)} · ${tr(l.city)}`, href: `/kaufen?inserat=${l.id}` });
       }
     }
   }

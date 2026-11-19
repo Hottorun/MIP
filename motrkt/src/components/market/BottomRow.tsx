@@ -1,23 +1,25 @@
 import { Link } from "react-router-dom";
 import { variantTitle } from "../../data/db";
 import type { Body, Variant } from "../../data/types";
-import { COUNTRY_NAMES, getListings } from "../../data/generate";
+import { COUNTRY_NAMES } from "../../data/generate";
+import { SHOP_DEALERS, shopListingsFor } from "../../data/shop";
+import { AskPrice } from "../AskPrice";
 import { useLiveListings } from "../../state/liveListings";
 import { km } from "../../lib/format";
 import { ListingPhoto } from "../ListingPhoto";
-import { Section, Money } from "../ui";
+import { Section } from "../ui";
 import { t } from "../../i18n";
 import { tr } from "../../i18n/terms";
 
 export function Listings({ variant, body = null }: { variant: Variant; body?: Body | null }) {
   const live = useLiveListings();
   const liveForVariant = live.listings.filter((l) => l.variantId === variant.id);
-  const listings = (liveForVariant.length ? liveForVariant : getListings(variant.id)).filter((l) => !body || l.body === body);
+  const listings = (liveForVariant.length ? liveForVariant : shopListingsFor(variant.id)).filter((l) => !body || l.body === body);
   if (listings.length === 0) return null;
   return (
     <Section
       title={t("Aktuell angeboten", "Currently for sale")}
-      sub={liveForVariant.length ? t("Live von mobile.de", "Live from mobile.de") : t("Classic Trader und Händlerseiten", "Classic Trader and dealer sites")}
+      sub={liveForVariant.length ? t("Live von mobile.de", "Live from mobile.de") : t(`Bei ${SHOP_DEALERS.join(" und ")}`, `At ${SHOP_DEALERS.join(" and ")}`)}
       actions={
         <Link to={`/kaufen?variant=${variant.id}`} className="link text-[14px]">
           {t(`Alle ${listings.length} Angebote`, `All ${listings.length} listings`)}
@@ -35,7 +37,7 @@ export function Listings({ variant, body = null }: { variant: Variant; body?: Bo
                 <span className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
                   {variantTitle(variant, { brand: false })}
                 </span>
-                <Money value={l.price} className="shrink-0 text-[16px]" />
+                <AskPrice l={l} className="shrink-0 text-[16px]" />
               </div>
               <div className="mt-0.5 text-[13px] text-muted">
                 {l.year}, {km(l.mileage)}, {l.city === "–" ? tr(COUNTRY_NAMES[l.country] ?? l.country) : tr(l.city)}

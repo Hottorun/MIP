@@ -3,9 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useStickyParams } from "../lib/sticky";
 import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, RefreshCw, Search, Star, TrendingDown, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
-import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
+import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
-import { onRequestListings } from "../data/real/onRequest";
+import { shopListings } from "../data/shop";
+import { AskPrice } from "../components/AskPrice";
 import { getMetrics } from "../data/market";
 import type { Listing, Model, Variant } from "../data/types";
 import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters, safeUrl } from "../lib/format";
@@ -51,12 +52,6 @@ function enrich(list: Listing[]): Enriched[] {
 
 /** Sort key for the price orders: listings without a price ("auf Anfrage") go last either way. */
 const priceRank = (l: Listing, dir: 1 | -1) => (l.onRequest ? dir * Number.MAX_VALUE : l.price);
-
-/** The asking price, or "Preis auf Anfrage" where the dealer states none. */
-function AskPrice({ l, className }: { l: Listing; className?: string }) {
-  if (l.onRequest) return <span className={cn("font-serif italic text-muted", className)}>{t("Preis auf Anfrage", "Price on request")}</span>;
-  return <Money value={l.price} className={className} />;
-}
 
 /** Sort key for "best price": listings without an assessment go last. */
 const dealRank = (e: Enriched) => e.deal ?? Number.MAX_VALUE;
@@ -122,7 +117,7 @@ export default function Buy() {
   const setPreferLive = (v: boolean) => setFilters({ quelle: v ? "" : "demo" });
   const liveAvailable = live.listings.length > 0;
   const showingLive = preferLive && liveAvailable;
-  const source = showingLive ? live.listings : buyListings();
+  const source = showingLive ? live.listings : shopListings();
   const all = useMemo(() => enrich(source), [source]);
   const brandModels = models.filter((m) => !brand || m.brandId === brand);
 
@@ -188,7 +183,7 @@ export default function Buy() {
     if (!selectedId) return undefined;
     const hit = all.find((e) => e.l.id === selectedId);
     if (hit || !showingLive) return hit;
-    return enrich(buyListings().filter((l) => l.id === selectedId))[0];
+    return enrich(shopListings().filter((l) => l.id === selectedId))[0];
   }, [all, selectedId, showingLive]);
   const openListing = (id: string | null) => {
     const next = new URLSearchParams(params);
@@ -739,14 +734,6 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
       <span className="tabular-nums">{value}</span>
     </div>
   );
-}
-
-/** Dealers whose listings the buy page shows; the other sources stay in the data (model pages, market comparison) but are hidden here. */
-const BUY_SOURCES = new Set(["Karero", "Janzen Klassik"]);
-let buyCache: Listing[] | undefined;
-function buyListings(): Listing[] {
-  buyCache ??= [...getAllListings().filter((l) => BUY_SOURCES.has(l.source)), ...onRequestListings()];
-  return buyCache;
 }
 
 function SourceBar({

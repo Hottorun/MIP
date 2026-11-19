@@ -2,7 +2,8 @@ import { asksFor } from "../data/real/asks";
 import { brands, generationById, variantById, variantName, variantShortTitle, variantTitle, variants, yearsLabel } from "../data/db";
 import { getLang, t } from "../i18n";
 import { tr } from "../i18n/terms";
-import { AS_OF, getListings, getSales } from "../data/generate";
+import { AS_OF, getSales } from "../data/generate";
+import { shopListingsFor } from "../data/shop";
 import { brandIndex, changeOver, getMetrics, holdingValue, inflationFactor, topMovers } from "../data/market";
 import type { Holding } from "../data/types";
 import { date, eur, km, num, pct, liters } from "./format";
@@ -293,8 +294,9 @@ export function localAnswer(question: string, focusVariantId: string | undefined
   }
 
   if (has(" risiko", " risk", " angebot", " inserat", " schwachstell", " prufen", " worauf", " listing", " offer", " weakness", " inspect")) {
-    const listings = getListings(focusId);
+    const listings = shopListingsFor(focusId);
     const scored = listings
+      .filter((l) => !l.onRequest)
       .map((l) => ({ l, gap: l.price / m.value - 1 }))
       .sort((a, b) => a.gap - b.gap);
     const cheap = scored[0];

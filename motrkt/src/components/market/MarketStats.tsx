@@ -3,6 +3,7 @@ import type { Body, Variant } from "../../data/types";
 import { AS_OF } from "../../data/generate";
 import { realSalesFor } from "../../data/real/sales";
 import { asksFor } from "../../data/real/asks";
+import { SHOP_DEALERS, shopListingsFor } from "../../data/shop";
 import { cn, flag, km, num, pct } from "../../lib/format";
 import { Section, StatTile } from "../ui";
 import { Gauge, Gavel, Route, Tag } from "lucide-react";
@@ -67,7 +68,6 @@ function useStats(variant: Variant, body: Body | null) {
     const offered = sales.length;
     const sold = sales.filter((s) => s.price != null).length;
     const last12 = sales.filter((s) => s.date > AS_OF - YEAR);
-    const recentAsks = asks.filter((a) => Date.parse(a.date) > AS_OF - 14 * 86_400_000);
 
     // Where it trades: auction venue (or currency when the venue is unknown) and the countries of European listings.
     const regionOf = (s: (typeof sales)[number]) => (s.location ? (NA.has(s.location) ? "na" : "eu") : s.currency === "USD" || s.currency === "CAD" ? "na" : s.currency ? "eu" : null);
@@ -88,7 +88,7 @@ function useStats(variant: Variant, body: Body | null) {
       km: kms.length ? { median: median(kms), n: kms.length, fromAsks: kmFromAsks, buckets, perYear: perYear.length >= 5 ? median(perYear) : null } : null,
       sell: offered >= 10 ? { rate: sold / offered, sold, offered } : null,
       last12: { offered: last12.length, sold: last12.filter((s) => s.price != null).length },
-      onSale: recentAsks.length,
+      onSale: shopListingsFor(variant.id).filter((l) => !body || l.body === body).length,
       where,
       countries,
       bodies: bodies.length >= 2 && allBodies.length >= 10 ? { rows: bodies, total: allBodies.length } : null,
@@ -130,7 +130,7 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
       label: t("Aktuell angeboten", "For sale now"),
       icon: <Tag className="size-4" strokeWidth={1.8} />,
       value: num(s.onSale),
-      note: t("Inserate in Europa, die wir täglich verfolgen", "Listings in Europe we follow daily"),
+      note: t(`Bei ${SHOP_DEALERS.join(" und ")}, auf der Kaufen-Seite`, `At ${SHOP_DEALERS.join(" and ")}, on the buy page`),
     },
   ].filter(Boolean) as { label: string; value: string; note: string; bar?: number; icon: React.ReactNode }[];
 
