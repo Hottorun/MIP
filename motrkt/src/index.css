@@ -109,6 +109,7 @@
   --color-menu-2: #1f4c55;
   --color-menu-head: var(--color-bg);
   --color-menu-line: #c9a35e;
+  --color-band-line: transparent;
   --color-nav: var(--color-accent);
   --color-on-accent: #f6f4ef;
   --color-gold-soft: #f3ead8;
@@ -163,6 +164,7 @@
       --color-menu-2: #1a2b2f;
       --color-menu-head: #172427;
       --color-menu-line: rgb(211 173 102 / 0.35);
+      --color-band-line: rgb(211 173 102 / 0.35);
       --color-nav: #d3ad66;
       --color-on-accent: #eeeae1;
       --color-gold-soft: #33291a;
@@ -207,6 +209,7 @@
     --color-menu-2: #1a2b2f;
     --color-menu-head: #172427;
     --color-menu-line: rgb(211 173 102 / 0.35);
+    --color-band-line: rgb(211 173 102 / 0.35);
     --color-nav: #d3ad66;
     --color-on-accent: #eeeae1;
     --color-gold-soft: #33291a;

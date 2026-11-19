@@ -47,7 +47,7 @@ export function Layout() {
   );
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="night-band px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
+      <div className="night-band border-b border-band-line px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
         <span className="mr-2 inline-block size-1.5 -translate-y-px rounded-full bg-accent align-middle shadow-[0_0_0_3px_rgba(71,167,184,0.25)]" aria-hidden />
         <span className="text-on-night/90">{t("Marktdaten vom", "Market data as of")} {date(AS_OF)}.</span>
         <span className="hidden text-on-night/65 sm:inline">
@@ -196,7 +196,7 @@ function Header() {
   }, []);
 
   return (
-    <header className={cn("sticky top-0 z-30 border-b backdrop-blur-sm transition-colors", menuOpen ? "border-transparent bg-menu-head" : "border-line bg-bg/95")}>
+    <header className={cn("sticky top-0 z-30 border-b backdrop-blur-sm transition-colors", menuOpen ? "border-transparent bg-menu-head" : "border-line bg-menu-head/95")}>
       <div className="mx-auto grid h-[72px] max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-5 sm:px-8">
         <div className="flex items-center gap-7">
           <button className="-ml-1 p-1 text-ink lg:hidden" onClick={() => setMenuOpen((o) => !o)} aria-label={t("Menü", "Menu")} aria-expanded={menuOpen}>
