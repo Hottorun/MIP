@@ -452,13 +452,23 @@
   }
 }
 
+/* Windows that are wide but not tall (a laptop with the browser's bars, a window dragged flat). The front-page stage
+   (components/HeroSlideshow.tsx) is as tall as the window leaves room for, and with these it tightens its type and
+   spacing, so headline, buttons, the featured car and the slide bar all stay on the first screen. */
+@custom-variant short (@media (min-width: 640px) and (max-height: 850px));
+@custom-variant flat (@media (min-width: 640px) and (max-height: 700px));
+@custom-variant squat (@media (min-width: 640px) and (max-height: 610px));
+
 /* Front page stage */
 body {
   overflow-x: clip;
 }
+/* A band across the whole window, out of the centred page column. --page-w is the window's width without the
+   scrollbar (src/main.tsx keeps it current); 100vw alone includes the scrollbar, so where scrollbars take up room
+   (Windows, or macOS with a mouse) the band would run under it and sit a few pixels off the page's grid. */
 .hero-bleed {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: var(--page-w, 100vw);
+  margin-left: calc(50% - var(--page-w, 100vw) / 2);
 }
 @keyframes hero-progress {
   from {

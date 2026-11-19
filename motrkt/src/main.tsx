@@ -7,6 +7,12 @@ import { loadDataset } from "./data/real/load";
 applyTheme(storedTheme());
 watchGlobalErrors();
 
+// The width of the page without the scrollbar, for bands that span the whole window (.hero-bleed, src/index.css).
+// It changes with the window and when a scrollbar comes or goes.
+const pageWidth = () => document.documentElement.style.setProperty("--page-w", `${document.documentElement.clientWidth}px`);
+pageWidth();
+new ResizeObserver(pageWidth).observe(document.documentElement);
+
 // The market data (a few MB, cached per content hash) and the app's code load side by side; the app's modules
 // evaluate only once the data is there (they read it at import time), so the import below comes after loadDataset.
 const root = document.getElementById("root")!;

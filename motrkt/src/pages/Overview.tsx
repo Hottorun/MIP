@@ -91,13 +91,13 @@ export default function Overview() {
     <div className="space-y-24">
       <div>
         <HeroSlideshow>
-          <p className="mt-5 max-w-md font-serif text-[16px] leading-relaxed text-white/80 sm:text-[17px]">
+          <p className="mt-5 max-w-md font-serif text-[16px] leading-relaxed text-white/80 sm:text-[17px] short:mt-3 short:text-[16px] flat:mt-2 flat:max-w-lg flat:text-[15px] squat:hidden">
             {t(
               `Marktwerte aus belegten Verkäufen, Auktionsergebnisse und aktuelle Angebote für ${variants.length} Varianten von ${brands.map((b) => b.name).join(" und ")}.`,
               `Market values from recorded sales, auction results and current listings for ${variants.length} ${brands.map((b) => b.name).join(" and ")} variants.`,
             )}
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap gap-3 short:mt-5 flat:mt-4">
             <Link
               to="/modelle"
               className="btn border-white bg-white text-[#1f1d1a] hover:border-white/85 hover:bg-white/85"

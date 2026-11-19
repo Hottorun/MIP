@@ -742,6 +742,31 @@ const LOGIN_PAGE = `<!doctype html>
   .lang button { background:none; border:0; font:inherit; letter-spacing:.08em; color:var(--faint); cursor:pointer; padding:2px 4px; }
   .lang button[aria-pressed="true"] { color:var(--ink); font-weight:600; }
   .legal a { color:var(--faint); text-decoration:none; margin-left:14px; } .legal a:hover { color:var(--ink); }
+  /* Wide but not tall windows (a laptop, a window dragged flat): the card tightens so that all of it, down to the
+     button and the links below it, is on the screen without scrolling. First with less air between the fields; in a
+     flatter window "create account" also sets its four fields in two columns on a wider card. */
+  @media (min-width: 901px) and (max-height: 960px) {
+    .stage { padding-top:clamp(14px,3vh,28px); padding-bottom:clamp(14px,3vh,28px); }
+    .logo { margin-bottom:22px; } .logo img { height:52px; }
+    .claim { font-size:42px; } .tag { margin-bottom:20px; font-size:17px; } .guest { margin-top:24px; }
+    .form { padding:22px 28px 14px; }
+    .form h2 { font-size:25px; } .form .sub { margin-bottom:14px; }
+    .tabs { margin-bottom:16px; } .tabs button { padding:6px 0; }
+    label { margin-bottom:4px; }
+    input { padding:8px 12px; }
+    .hint { margin-bottom:10px; font-size:12px; }
+    .pwrow .linkbtn { margin-bottom:10px; }
+    .submit { margin-top:4px; padding:11px; }
+    .err, .ok { margin-top:8px; }
+    .note { padding-top:10px; }
+    .foot { padding:9px 28px; }
+  }
+  @media (min-width: 1024px) and (max-height: 760px) {
+    .stage { grid-template-columns:minmax(0,1fr) 540px; }
+    .claim { font-size:36px; }
+    #form[data-mode="register"] { display:grid; grid-template-columns:1fr 1fr; column-gap:16px; align-content:start; }
+    #form[data-mode="register"] > :not(#row-user):not(#row-email):not(#row-pw):not(#repeat-wrap) { grid-column:1 / -1; }
+  }
   @media (max-width: 900px) {
     body { background:var(--bg); }
     .photo { display:none; }
@@ -869,6 +894,7 @@ const LOGIN_PAGE = `<!doctype html>
     document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = el.getAttribute("data-" + lang); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     var reg = mode === "register", login = mode === "login", forgot = mode === "forgot", reset = mode === "reset";
+    $("form").setAttribute("data-mode", mode); // the layout of the fields in a flat window follows it (styles above)
     document.querySelector(".tabs").hidden = !(login || reg);
     $("tab-login").setAttribute("aria-selected", String(login));
     $("tab-register").setAttribute("aria-selected", String(reg));
@@ -892,20 +918,28 @@ const LOGIN_PAGE = `<!doctype html>
     $("err").textContent = "";
     $("ok").hidden = true;
   }
-  // The card keeps the height of the tallest mode (create account), so switching tabs moves nothing.
+  // The card keeps the height of the taller of its two tabs (create account, except in a flat window, where its
+  // fields stand in two columns), so switching tabs moves nothing.
   var card = document.querySelector(".card");
   function lock() {
     var keep = mode, keepErr = $("err").textContent, keepOk = $("ok").hidden;
     card.style.minHeight = "";
     mode = "register"; render();
     var h = card.offsetHeight;
+    mode = "login"; render();
+    h = Math.max(h, card.offsetHeight);
     mode = keep; render();
     $("err").textContent = keepErr;
     $("ok").hidden = keepOk;
     card.style.minHeight = h + "px";
   }
-  var lastW = 0;
-  window.addEventListener("resize", function () { if (window.innerWidth !== lastW) { lastW = window.innerWidth; lock(); } });
+  // again whenever the window changes: its width always, its height in the wide layout (on a phone the height
+  // changes with every keyboard and address bar, and the layout there does not depend on it)
+  var lastW = 0, lastH = 0;
+  window.addEventListener("resize", function () {
+    if (window.innerWidth === lastW && (window.innerWidth <= 900 || window.innerHeight === lastH)) return;
+    lastW = window.innerWidth; lastH = window.innerHeight; lock();
+  });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(lock);
   function go(m) { mode = m; render(); (m === "reset" ? $("password") : $("username")).focus(); }
   $("tab-login").onclick = $("to-login").onclick = function () { go("login"); };

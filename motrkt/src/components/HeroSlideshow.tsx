@@ -105,7 +105,8 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
     >
       <div
         ref={stage}
-        className="relative sm:flex sm:min-h-[max(560px,min(86vh,820px))] sm:flex-col"
+        // as tall as the window leaves under the header (109px) and above the ticker (63px), within sensible bounds
+        className="relative sm:flex sm:min-h-[clamp(400px,calc(100svh-172px),820px)] sm:flex-col"
         onPointerDown={(e) => (swipe.current = { x: e.clientX, y: e.clientY })}
         onPointerUp={(e) => {
           const s = swipe.current;
@@ -150,17 +151,17 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-2/3 bg-[linear-gradient(0deg,#141414_0%,rgba(20,20,20,0.35)_45%,rgba(20,20,20,0)_100%)] sm:bg-[linear-gradient(0deg,rgba(16,16,16,0.88)_0%,rgba(16,16,16,0.32)_45%,rgba(16,16,16,0)_100%)]" />
           <PhotoCredit
             photo={current.photo}
-            className="absolute top-3 right-4 z-[3] max-w-[70%] text-right text-[10.5px] text-white/55 sm:top-auto sm:right-8 sm:bottom-[118px] sm:max-w-[50%]"
+            className="absolute top-3 right-4 z-[3] max-w-[70%] text-right text-[10.5px] text-white/55 sm:top-auto sm:right-8 sm:bottom-[118px] sm:max-w-[50%] short:bottom-[92px] flat:bottom-[80px]"
           />
         </div>
 
-        <div className="relative z-[3] mx-auto -mt-20 flex w-full max-w-[1360px] flex-col px-5 pb-6 sm:mt-0 sm:flex-1 sm:justify-end sm:px-8 sm:pt-16 sm:pb-40">
+        <div className="relative z-[3] mx-auto -mt-20 flex w-full max-w-[1360px] flex-col px-5 pb-6 sm:mt-0 sm:flex-1 sm:justify-end sm:px-8 sm:pt-16 sm:pb-40 short:pt-10 short:pb-28 flat:pt-6 flat:pb-24">
           <div className="max-w-xl">
-            <p className="mb-4 flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-[#d3ad66]">
+            <p className="mb-4 flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.22em] text-[#d3ad66] short:mb-3 flat:mb-2">
               <span className="h-px w-8 bg-[#d3ad66]" aria-hidden />
               {t("Marktdaten seit 2015", "Market data since 2015")}
             </p>
-            <h1 className="font-display text-[40px] leading-[1.04] sm:text-[60px]">
+            <h1 className="font-display text-[40px] leading-[1.04] sm:text-[60px] short:text-[48px] flat:text-[40px]">
               {t("Was Ihre Leidenschaft heute wert ist.", "What your passion is worth today.")}
             </h1>
             {children}
@@ -168,7 +169,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
 
           <div
             key={current.v.id}
-            className="mt-10 grid max-w-xl gap-x-10 gap-y-4 border-t border-white/20 pt-5 sm:grid-cols-[minmax(0,1fr)_auto]"
+            className="mt-10 grid max-w-xl gap-x-10 gap-y-4 border-t border-white/20 pt-5 sm:grid-cols-[minmax(0,1fr)_auto] short:mt-6 short:pt-4 flat:mt-4 flat:pt-3"
             aria-live="polite"
           >
             <div className="min-w-0">
