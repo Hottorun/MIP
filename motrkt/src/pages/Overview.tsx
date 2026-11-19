@@ -312,11 +312,6 @@ export default function Overview() {
           eyebrow={t("Kalender", "Calendar")}
           title={t("Kommende Auktionen", "Upcoming auctions")}
           sub={t("Die nächsten Termine der Häuser", "The next dates of the houses")}
-          actions={
-            <Link to="/auktionen" className="link text-[14px]">
-              {t("Kalender", "Calendar")}
-            </Link>
-          }
         >
           {upcoming.length === 0 ? (
             <p className="py-8 font-serif text-muted italic">
