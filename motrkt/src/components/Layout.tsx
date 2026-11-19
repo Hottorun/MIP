@@ -196,7 +196,7 @@ function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-bg/95 backdrop-blur-sm">
+    <header className={cn("sticky top-0 z-30 border-b backdrop-blur-sm transition-colors", menuOpen ? "border-transparent bg-menu-head" : "border-line bg-bg/95")}>
       <div className="mx-auto grid h-[72px] max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-5 sm:px-8">
         <div className="flex items-center gap-7">
           <button className="-ml-1 p-1 text-ink lg:hidden" onClick={() => setMenuOpen((o) => !o)} aria-label={t("Menü", "Menu")} aria-expanded={menuOpen}>
@@ -228,18 +228,19 @@ function Header() {
       </div>
       {menuOpen && (
         <nav
-          className="animate-fade-in relative overflow-hidden bg-gradient-to-b from-accent-fill to-[#0b2024] px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
+          className="animate-fade-in relative overflow-hidden bg-linear-to-b from-menu to-menu-2 border-t border-[#d3ad66]/35 px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
           aria-label="Navigation"
         >
-          <div className="pointer-events-none absolute -top-28 -right-20 size-64 rounded-full bg-[#d3ad66]/[0.07] blur-3xl" aria-hidden />
-          <ul className="relative grid divide-y divide-white/[0.08] md:grid-flow-col md:grid-cols-2 md:grid-rows-3 md:gap-x-10">
+          <div className="theme-light-only pointer-events-none absolute -right-24 -bottom-32 size-80 rounded-full bg-[#d3ad66]/[0.09] blur-3xl" aria-hidden />
+          <div className="theme-light-only pointer-events-none absolute -bottom-24 -left-24 size-72 rounded-full bg-[#5fb3c2]/[0.08] blur-3xl" aria-hidden />
+          <ul className="relative grid md:grid-flow-col md:grid-cols-2 md:grid-rows-3 md:gap-x-10">
             {[...NAV_LEFT, ...NAV_RIGHT].map((n, i) => (
-              <li key={n.to}>
+              <li key={n.to} className="border-b border-white/[0.08]">
                 <MenuRow {...n} index={i} />
               </li>
             ))}
           </ul>
-          <div className="relative mt-2 flex items-center justify-between border-t border-white/10 pt-3 sm:hidden">
+          <div className="relative flex items-center justify-between pt-3.5 sm:hidden">
             <span className="font-serif text-[13px] text-white/40 italic">Carbay</span>
             <LangSwitch />
           </div>
