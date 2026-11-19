@@ -63,22 +63,51 @@ export type AiCheck = {
 
 export type ReviewCar = UserCar & { ai_check: AiCheck | null; ai_checked_at: string | null; reviewer: string | null; username: string | null };
 
-export type Me = { username: string; admin: boolean; premiumUntil: string | null };
+export type Me = {
+  username: string;
+  admin: boolean;
+  demo: boolean;
+  premiumUntil: string | null;
+  /** the account's address (null: an account from before email was required, src/components/EmailGate.tsx) */
+  email: string | null;
+  emailVerified: boolean;
+  /** a new address waiting for its confirmation link */
+  pendingEmail: string | null;
+};
 
 /** The signed-in user (name, reviewer or not, premium until), from /api/auth/me. */
-export function useMe() {
+export function useMe(): Me | null {
+  return useMeReload()[0];
+}
+
+/** useMe plus a function that asks the server again (after the email address changed). */
+export function useMeReload(): [Me | null, () => void] {
   const [me, setMe] = useState<Me | null>(null);
+  const [n, setN] = useState(0);
   useEffect(() => {
     let live = true;
     fetch("/api/auth/me", { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j) => live && j && setMe({ username: j.username, admin: Boolean(j.admin), premiumUntil: j.premiumUntil ?? null }))
+      .then(
+        (j) =>
+          live &&
+          j &&
+          setMe({
+            username: j.username,
+            admin: Boolean(j.admin),
+            demo: Boolean(j.demo),
+            premiumUntil: j.premiumUntil ?? null,
+            email: j.email ?? null,
+            emailVerified: Boolean(j.emailVerified),
+            pendingEmail: j.pendingEmail ?? null,
+          }),
+      )
       .catch(() => {});
     return () => {
       live = false;
     };
-  }, []);
-  return me;
+  }, [n]);
+  return [me, () => setN((x) => x + 1)];
 }
 
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {

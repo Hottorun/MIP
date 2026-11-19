@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Download, KeyRound, Trash2 } from "lucide-react";
-import { api, useMe } from "../lib/userCars";
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { CheckCircle2, Download, KeyRound, Mail, Trash2 } from "lucide-react";
+import { api, useMeReload, type Me } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { Card, useConfirm } from "../components/ui";
 import { cn, date } from "../lib/format";
-import { t } from "../i18n";
+import { getLang, t } from "../i18n";
 import { usePlan } from "../lib/plan";
 import { Crown } from "lucide-react";
 
@@ -14,12 +14,16 @@ const ERR: Record<string, () => string> = {
   password_length: () => t("Das neue Passwort braucht 8 bis 200 Zeichen.", "The new password needs 8 to 200 characters."),
   password_is_username: () => t("Das Passwort darf nicht der Benutzername sein.", "The password must not be the username."),
   demo: () => t("Das Demo-Konto wird geteilt und kann nicht geändert werden.", "The demo account is shared and cannot be changed."),
+  email_invalid: () => t("Bitte eine gültige E-Mail-Adresse eingeben.", "Please enter a valid email address."),
+  email_taken: () => t("Diese E-Mail-Adresse gehört schon zu einem anderen Konto.", "This email address already belongs to another account."),
+  too_many: () => t("Zu viele Versuche. Bitte in 15 Minuten erneut versuchen.", "Too many attempts. Please try again in 15 minutes."),
+  mail_failed: () => t("Die E-Mail konnte nicht verschickt werden. Bitte später noch einmal versuchen.", "The email could not be sent. Please try again later."),
 };
 const errText = (e: unknown) => (ERR[(e as Error).message] ?? (() => t("Das hat nicht geklappt. Bitte später noch einmal versuchen.", "That did not work. Please try again later.")))();
 
-/** The signed-in account: password, data export and deletion (server/auth.ts). */
+/** The signed-in account: email address, password, data export and deletion (server/auth.ts). */
 export default function Account() {
-  const me = useMe();
+  const [me, reloadMe] = useMeReload();
   const { portfolio, watchlist, alerts } = useStore();
   const demo = me?.username.toLowerCase() === "demo";
   const plan = usePlan();
@@ -81,6 +85,8 @@ export default function Account() {
         </p>
       )}
 
+      <EmailCard me={me} disabled={demo} reload={reloadMe} />
+
       <PasswordCard disabled={demo} />
 
       <Card title={t("Meine Daten", "My data")} sub={t("Alles, was zu diesem Konto gespeichert ist, als JSON-Datei.", "Everything stored for this account, as a JSON file.")}>
@@ -107,6 +113,100 @@ export default function Account() {
         </Link>
       </p>
     </div>
+  );
+}
+
+const json = (body: unknown): RequestInit => ({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+
+/** The account's email address: shown with its state, changed with the password, confirmed by the link in the mail. */
+function EmailCard({ me, disabled, reload }: { me: Me | null; disabled: boolean; reload: () => void }) {
+  const { toast } = useStore();
+  const [params, setParams] = useSearchParams();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  // back from the link in the confirmation mail (/api/auth/verify)
+  const back = params.get("email");
+  const shown = useRef(false); // once, also under React's double effects in development
+  useEffect(() => {
+    if (!back || shown.current) return;
+    shown.current = true;
+    if (back === "bestaetigt") toast(t("E-Mail-Adresse bestätigt.", "Email address confirmed."));
+    else toast(t("Der Bestätigungslink ist abgelaufen oder wurde schon benutzt.", "The confirmation link has expired or was already used."), "error");
+    params.delete("email");
+    setParams(params, { replace: true });
+  }, [back, params, setParams, toast]);
+
+  const change = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErr("");
+    setBusy(true);
+    try {
+      await api("/api/auth/email", json({ email: email.trim(), password, lang: getLang() }));
+      setEmail("");
+      setPassword("");
+      toast(t("Bestätigungslink verschickt. Die neue Adresse gilt, sobald Sie ihn öffnen.", "Confirmation link sent. The new address takes effect once you open it."));
+      reload();
+    } catch (x) {
+      setErr(errText(x));
+    } finally {
+      setBusy(false);
+    }
+  };
+  const resend = async () => {
+    setErr("");
+    try {
+      await api("/api/auth/resend", json({ lang: getLang() }));
+      toast(t("Bestätigungslink erneut verschickt.", "Confirmation link sent again."));
+    } catch (x) {
+      setErr(errText(x));
+    }
+  };
+  return (
+    <Card title={t("E-Mail-Adresse", "Email address")} sub={t("Nur für Ihr Konto, etwa zum Zurücksetzen des Passworts; nie für Werbung.", "For your account only, e.g. to reset the password; never for advertising.")}>
+      {!disabled && (
+        <div className="mb-5 text-[14px]">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="font-medium">{me?.email ?? "–"}</span>
+            {me?.email &&
+              (me.emailVerified ? (
+                <span className="inline-flex items-center gap-1 text-[13px] text-up">
+                  <CheckCircle2 className="size-3.5" aria-hidden /> {t("bestätigt", "confirmed")}
+                </span>
+              ) : (
+                <span className="text-[13px] text-warn">{t("noch nicht bestätigt", "not confirmed yet")}</span>
+              ))}
+          </div>
+          {me?.pendingEmail && (
+            <p className="mt-1 text-[13px] text-muted">
+              {t(`Wechsel zu ${me.pendingEmail}: wartet auf die Bestätigung.`, `Change to ${me.pendingEmail}: waiting for confirmation.`)}
+            </p>
+          )}
+          {(me?.pendingEmail || (me?.email && !me.emailVerified)) && (
+            <button type="button" className="link mt-1 text-[13px]" onClick={resend}>
+              {t("Bestätigungslink erneut senden", "Send the confirmation link again")}
+            </button>
+          )}
+        </div>
+      )}
+      <form onSubmit={change} className="grid max-w-md gap-3">
+        <div>
+          <label className="label" htmlFor="email-next">{t("Neue E-Mail-Adresse", "New email address")}</label>
+          <input id="email-next" className="input" type="email" autoComplete="email" maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} required disabled={disabled} />
+        </div>
+        <div>
+          <label className="label" htmlFor="email-pw">{t("Passwort zur Bestätigung", "Password to confirm")}</label>
+          <input id="email-pw" className="input" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={disabled} />
+        </div>
+        {err && <p className="text-[13px] text-down">{err}</p>}
+        <div>
+          <button className="btn" type="submit" disabled={busy || disabled || !email.trim() || !password}>
+            <Mail className="size-4" /> {t("Adresse ändern", "Change address")}
+          </button>
+        </div>
+      </form>
+    </Card>
   );
 }
 

@@ -11,6 +11,7 @@ import { prepareSearch, search, type SearchHit } from "../lib/search";
 import { cn, date, num, usdRate } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
+import { EmailGate } from "./EmailGate";
 import { AS_OF } from "../data/generate";
 import { LogoMark, LogoWordmark } from "./LogoMark";
 import { MODEL_CHANNELS } from "../data/real/model";
@@ -76,6 +77,7 @@ export function Layout() {
       <Footer />
       <PremiumFab />
       <UpgradeDialog />
+      <EmailGate />
       <Toasts raised={ready && !premium} />
     </div>
   );

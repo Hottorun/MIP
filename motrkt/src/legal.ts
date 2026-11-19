@@ -52,7 +52,7 @@ export const IMPRESSUM: LegalSection[] = [
 ];
 
 /** Date of the privacy notice's wording, shown at its end. Change it with every change to DATENSCHUTZ. */
-export const PRIVACY_AS_OF: [string, string] = ["18. November 2026", "18 November 2026"];
+export const PRIVACY_AS_OF: [string, string] = ["19. November 2026", "19 November 2026"];
 
 /**
  * The privacy notice. Every sentence describes what the code does: when a storage period (server/userCars.ts
@@ -64,8 +64,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     list: true,
     paragraphs: [
       [
-        "Für ein Konto genügen ein Benutzername und ein Passwort. Wir fragen weder nach Ihrem Namen noch nach einer E-Mail-Adresse.",
-        "An account needs only a username and a password. We ask for neither your name nor an email address.",
+        "Für ein Konto brauchen wir einen Benutzernamen, ein Passwort und eine E-Mail-Adresse, nicht Ihren Namen. Die E-Mail-Adresse nutzen wir nur für Ihr Konto (Bestätigung der Adresse, Zurücksetzen des Passworts), nicht für Werbung.",
+        "An account needs a username, a password and an email address, not your name. We use the email address for your account only (confirming the address, resetting the password), never for advertising.",
       ],
       [
         "Wir setzen keine Analyse- oder Werbedienste, keine Tracking-Cookies und keine eingebundenen Inhalte sozialer Netzwerke ein. Schriften liefern wir von unserem eigenen Server aus.",
@@ -89,8 +89,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     heading: ["3. Welche Daten wir verarbeiten", "3. What data we process"],
     paragraphs: [
       [
-        "Konto: Benutzername, ein Hash des Passworts (niemals das Passwort selbst), Zeitpunkt der Registrierung und ggf. das Ablaufdatum eines Premium-Zugangs. Für die Anmeldung setzen wir ein notwendiges Sitzungs-Cookie (mip_sid), das ein Jahr gilt und bei jedem Besuch verlängert wird; gespeichert wird nur ein Hash des Sitzungsschlüssels. Fehlgeschlagene Anmeldeversuche zählen wir 24 Stunden lang unter einem Hash aus Benutzername und IP-Adresse, um Angriffe auf Passwörter zu bremsen; die IP-Adresse selbst speichern wir dabei nicht.",
-        "Account: username, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
+        "Konto: Benutzername, E-Mail-Adresse und der Zeitpunkt ihrer Bestätigung, ein Hash des Passworts (niemals das Passwort selbst), Zeitpunkt der Registrierung und ggf. das Ablaufdatum eines Premium-Zugangs. An die E-Mail-Adresse schicken wir nur Nachrichten zum Konto: einen Link zur Bestätigung der Adresse (48 Stunden gültig) und, wenn Sie es anfordern, einen Link zum Zurücksetzen des Passworts (eine Stunde gültig); von diesen Links speichern wir nur einen Hash. Für die Anmeldung setzen wir ein notwendiges Sitzungs-Cookie (mip_sid), das ein Jahr gilt und bei jedem Besuch verlängert wird; gespeichert wird nur ein Hash des Sitzungsschlüssels. Fehlgeschlagene Anmeldeversuche zählen wir 24 Stunden lang unter einem Hash aus Benutzername und IP-Adresse, um Angriffe auf Passwörter zu bremsen; die IP-Adresse selbst speichern wir dabei nicht.",
+        "Account: username, email address and the time it was confirmed, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. We send only account messages to the email address: a link to confirm the address (valid for 48 hours) and, if you request it, a link to reset the password (valid for one hour); of these links we store only a hash. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
       ],
       [
         "Nutzung der App: Watchlist, Portfolio (Fahrzeuge mit Kaufpreis, Kaufdatum, Laufleistung, Zustand, Farbe, Notiz), Preisalarme, gemerkte Inserate, gelesene Benachrichtigungen und die zuletzt geöffnete Variante speichern wir je Konto auf dem Server, damit sie auf allen Geräten verfügbar sind; der Browser hält eine Kopie, die beim Abmelden gelöscht wird. Zur Begrenzung der Nutzung von Co-Pilot, mobile.de-Abfragen und Uploads zählen wir Anfragen je Konto für etwa 24 Stunden.",
@@ -193,6 +193,10 @@ export const DATENSCHUTZ: LegalSection[] = [
         "Database: Supabase, Inc. (Postgres database in the Frankfurt region), holding accounts, sessions, stored data, car reports, encrypted contracts and appraisals, and forum posts. A data processing agreement with standard contractual clauses is in place with Supabase.",
       ],
       [
+        "E-Mail-Versand: Brevo (Sendinblue SAS, Paris, Frankreich) verschickt die Nachrichten zum Konto. Brevo erhält dafür Ihre E-Mail-Adresse, Ihren Benutzernamen und den Inhalt der Nachricht. Mit Brevo besteht ein Vertrag zur Auftragsverarbeitung; die Daten werden in der EU verarbeitet.",
+        "Email delivery: Brevo (Sendinblue SAS, Paris, France) sends the account messages. For this Brevo receives your email address, your username and the content of the message. A data processing agreement is in place with Brevo; the data is processed in the EU.",
+      ],
+      [
         "KI-Dienste: Anthropic, PBC, San Francisco, USA. An Anthropic übermitteln wir die Nachrichten, die Sie dem Co-Piloten schreiben, zusammen mit Marktdaten und, falls vorhanden, Ihrem Portfolio und Ihrer Watchlist, sowie hochgeladene Kaufverträge und Wertgutachten mit Ihren Fahrzeugangaben, wenn Sie in die KI-Vorprüfung eingewilligt haben. Ihr Benutzername wird nicht übermittelt. Anthropic verwendet Daten aus diesen Anfragen nicht zum Training seiner Modelle. Die Übermittlung in die USA ist durch Standardvertragsklauseln abgesichert.",
         "AI services: Anthropic, PBC, San Francisco, USA. We send Anthropic the messages you write to the Co-Pilot together with market data and, where present, your portfolio and watchlist, and uploaded purchase contracts and appraisals with your car details if you have consented to the AI pre-check. Your username is not transmitted. Anthropic does not use data from these requests to train its models. The transfer to the USA is safeguarded by standard contractual clauses.",
       ],
@@ -221,14 +225,15 @@ export const DATENSCHUTZ: LegalSection[] = [
     paragraphs: [
       ["Kontodaten, Watchlist, Portfolio und Alarme: bis Sie Ihr Konto löschen.", "Account data, watchlist, portfolio and alerts: until you delete your account."],
       ["Sitzungen: ein Jahr nach dem letzten Besuch, oder bis Sie sich abmelden.", "Sessions: one year after the last visit, or until you sign out."],
+      ["Links zur Bestätigung der E-Mail-Adresse und zum Zurücksetzen des Passworts: bis sie benutzt werden, höchstens 48 Stunden bzw. eine Stunde. Versandprotokolle bei Brevo: nach dessen Fristen.", "Links to confirm the email address and to reset the password: until used, 48 hours or one hour at most. Delivery logs at Brevo: according to its retention periods."],
       ["Kaufverträge und Wertgutachten: bis zur Entscheidung des Prüfers, höchstens 24 Stunden nach dem Hochladen.", "Purchase contracts and appraisals: until the reviewer's decision, 24 hours after the upload at most."],
       ["Fahrzeugmeldungen: ohne Dokument 30 Tage; abgelehnt oder abgelaufen 90 Tage nach der Entscheidung; freigegeben, bis Sie die Meldung oder Ihr Konto löschen (danach nur noch anonyme Preisdaten).", "Car reports: without a document 30 days; rejected or expired 90 days after the decision; approved until you delete the report or your account (after that only anonymous price data)."],
       ["Protokoll der Zugriffe auf Verträge und Gutachten: ein Jahr.", "Log of accesses to contracts and appraisals: one year."],
       ["Zähler für Anmeldeversuche und Anfragen: etwa 24 Stunden.", "Counters for sign-in attempts and requests: about 24 hours."],
       ["Protokolle des Hosting-Anbieters: nach dessen Fristen.", "The hosting provider's logs: according to its retention periods."],
       [
-        "Bei Löschung des Kontos löschen wir Sitzungen, gespeicherte Daten, Zähler, Ihre Meldungen von Forumsbeiträgen und alle nicht freigegebenen Fahrzeugmeldungen samt Dokumenten. Freigegebene Fahrzeugdaten (ohne Fahrgestellnummer, Notizen und KI-Ergebnis) und Forumsbeiträge (ohne Ihren Benutzernamen) bleiben ohne Bezug zu Ihrer Person erhalten; Forumsbeiträge können Sie vorher selbst löschen.",
-        "When an account is deleted we delete sessions, stored data, counters, your reports of forum posts and all car reports that are not approved, with their documents. Approved car data (without chassis number, notes and AI result) and forum posts (without your username) remain without reference to you; you can delete forum posts yourself beforehand.",
+        "Bei Löschung des Kontos löschen wir E-Mail-Adresse, Sitzungen, gespeicherte Daten, Zähler, Ihre Meldungen von Forumsbeiträgen und alle nicht freigegebenen Fahrzeugmeldungen samt Dokumenten. Freigegebene Fahrzeugdaten (ohne Fahrgestellnummer, Notizen und KI-Ergebnis) und Forumsbeiträge (ohne Ihren Benutzernamen) bleiben ohne Bezug zu Ihrer Person erhalten; Forumsbeiträge können Sie vorher selbst löschen.",
+        "When an account is deleted we delete the email address, sessions, stored data, counters, your reports of forum posts and all car reports that are not approved, with their documents. Approved car data (without chassis number, notes and AI result) and forum posts (without your username) remain without reference to you; you can delete forum posts yourself beforehand.",
       ],
     ],
   },

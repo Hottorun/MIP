@@ -18,6 +18,9 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 | Werbung mit „DSGVO-konform“ | **Steht jetzt auf der Seite** (Datenschutz-Band im Portfolio, `src/components/portfolio/UserCars.tsx`). Eine Zertifizierung ist dafür nicht nötig, aber die Aussage muss stimmen: **vor dem Deploy alle Punkte dieser Tabelle erledigen**, sonst ist sie irreführende Werbung (§ 5 UWG). Bewusst als Satz, nicht als Siegel: kein „zertifiziert“, „geprüft“ oder Prüfzeichen ohne echte Zertifizierung (Art. 42 DSGVO). |
 | AV-Vertrag Supabase | Im Supabase-Dashboard den Auftragsverarbeitungsvertrag (DPA) abschließen und ablegen. Dabei prüfen, dass das Projekt in `eu-central-1` (Frankfurt) liegt; die Datenschutzerklärung sagt das so. |
 | AV-Vertrag Vercel | Der DPA ist Teil der Vercel-Bedingungen; Fassung herunterladen und ablegen. Funktionsregion ist `fra1` (`vercel.json`). |
+| E-Mail (Brevo) | Konto bei Brevo anlegen, Absenderadresse (z. B. `konto@carbay.app`) und Domain verifizieren (SPF, DKIM, DMARC), API-Schlüssel erzeugen. In Vercel für Production und Preview setzen: `BREVO_API_KEY`, `MAIL_FROM`, optional `MAIL_FROM_NAME` (Standard „Carbay“) und `MIP_PUBLIC_URL=https://carbay.app`. Ohne Schlüssel verschickt der Server auf Vercel keine Mails (Registrierung geht trotzdem, der Link lässt sich unter „Konto“ erneut senden). |
+| AV-Vertrag Brevo | Den Auftragsverarbeitungsvertrag von Brevo abschließen und ablegen. Die Liste der Unterauftragsverarbeiter prüfen: Die Datenschutzerklärung sagt „in der EU verarbeitet“; stimmt das für den Transaktionsversand nicht, den Satz anpassen. Im Brevo-Konto Öffnungs- und Klick-Tracking für Transaktionsmails ausschalten (die Erklärung erwähnt kein Tracking). |
+| Migration E-Mail | `013_email.sql` auf der Produktionsdatenbank ausführen (`npm run db:migrate`), **vor dem Deploy**: ohne die Spalte `email` schlagen Registrierung und Anmeldung fehl. |
 | AV-Vertrag Anthropic | Der DPA ist Teil der Commercial Terms; Fassung ablegen. Prüfen, ob für das Konto „Zero Data Retention“ vereinbart werden kann, und die Erklärung dann um diesen Satz ergänzen. |
 | Prüfer | In `MIP_ADMINS` nur Personen eintragen, die auf Vertraulichkeit verpflichtet sind (kurze schriftliche Erklärung). Verträge und Gutachten nicht herunterladen, drucken oder weitergeben. Täglich prüfen: ein Dokument wird 24 Stunden nach dem Hochladen gelöscht, danach muss der Nutzer es erneut hochladen. |
 | Datenschutzbeauftragter | Nach § 38 BDSG erst nötig, wenn in der Regel mindestens 20 Personen ständig mit automatisierter Verarbeitung befasst sind. Kurz festhalten, dass das nicht zutrifft. |
@@ -29,7 +32,8 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 
 | Tätigkeit | Daten | Betroffene | Zweck | Rechtsgrundlage | Empfänger | Löschung |
 | --- | --- | --- | --- | --- | --- | --- |
-| Konto und Anmeldung | Benutzername, Passwort-Hash (scrypt), Registrierungszeit, Premium bis, Hash des Sitzungsschlüssels | Nutzer | Zugang zur App | Art. 6 (1) b | Vercel, Supabase | Konto: bei Löschung durch den Nutzer. Sitzung: ein Jahr nach dem letzten Besuch oder beim Abmelden |
+| Konto und Anmeldung | Benutzername, E-Mail-Adresse mit Bestätigungszeit, Passwort-Hash (scrypt), Registrierungszeit, Premium bis, Hash des Sitzungsschlüssels | Nutzer | Zugang zur App | Art. 6 (1) b | Vercel, Supabase | Konto: bei Löschung durch den Nutzer. Sitzung: ein Jahr nach dem letzten Besuch oder beim Abmelden |
+| E-Mails zum Konto | E-Mail-Adresse, Benutzername, Link zur Bestätigung (48 h) oder zum Zurücksetzen des Passworts (1 h); gespeichert nur der Hash des Links (`email_tokens`) | Nutzer | Adresse bestätigen, Passwort zurücksetzen | Art. 6 (1) b | Brevo (Sendinblue SAS, Frankreich), Vercel, Supabase | Link: bei Benutzung oder Ablauf; Versandprotokoll nach den Fristen von Brevo |
 | Schutz der Anmeldung | Hash aus Benutzername und IP-Adresse, Zeitpunkt | Nutzer, Angreifer | Passwortangriffe bremsen | Art. 6 (1) f | Supabase | 24 Stunden |
 | Gespeicherte App-Daten | Watchlist, Portfolio (Preis, Datum, Laufleistung, Zustand, Notiz), Alarme, gemerkte Inserate | Nutzer | Funktionen der App auf allen Geräten | Art. 6 (1) b | Vercel, Supabase | bei Löschung des Kontos |
 | Co-Pilot | Nachrichten des Nutzers, Portfolio und Watchlist als Kontext; kein Benutzername | Nutzer | Antworten auf Marktfragen | Art. 6 (1) b | Anthropic (USA, Standardvertragsklauseln) | bei uns keine Speicherung, Verlauf nur im Browser |
@@ -52,6 +56,10 @@ die Prüfung vor, ein Mensch entscheidet.
   Meldung gebunden (`server/contractVault.ts`). Ein Abzug der Datenbank enthält keinen lesbaren Vertrag.
 - **Passwörter und Sitzungen:** scrypt-Hash mit Salt je Konto; vom Sitzungsschlüssel nur SHA-256; Cookie `HttpOnly`,
   `Secure`, `SameSite=Lax` (`server/auth.ts`).
+- **Links per E-Mail:** nur SHA-256 gespeichert, einmal gültig, Zurücksetzen eine Stunde; Links zeigen immer auf
+  `MIP_PUBLIC_URL`, nie auf den Host der Anfrage; der Link zum Zurücksetzen trägt den Schlüssel hinter `#` (landet in
+  keinem Server-Protokoll); „Passwort vergessen“ antwortet immer gleich und verrät nicht, welche Konten es gibt; nach
+  dem Zurücksetzen sind alle Geräte abgemeldet.
 - **Zugang:** ohne Sitzung nur Anmeldeseite, Impressum, Datenschutzerklärung. Verträge öffnen nur Prüfer
   (`MIP_ADMINS`), jeder Zugriff landet in `contract_access`. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
 - **Datenbank:** Row Level Security auf allen Tabellen, damit die Data-API von Supabase nichts herausgibt
@@ -60,7 +68,7 @@ die Prüfung vor, ein Mensch entscheidet.
   `Referrer-Policy: same-origin`, hochgeladene Dateien werden dem Prüfer in einer Sandbox ohne Skripte gezeigt.
 - **Keine Dritten im Browser:** keine Analyse, keine Werbung, Schriften aus `public/fonts`. Fotos von Inseraten und
   Auktionslosen lädt der Browser beim Anbieter, ohne Referrer.
-- **Datensparsamkeit:** Konto ohne E-Mail und Namen; Schwärzen des Vertrags ausdrücklich erlaubt; Anmeldezähler nur
+- **Datensparsamkeit:** Konto ohne Namen, E-Mail-Adresse nur für Nachrichten zum Konto (keine Werbung, kein Tracking); Schwärzen des Vertrags ausdrücklich erlaubt; Anmeldezähler nur
   als Hash; Fehlerprotokoll ohne Benutzernamen; Export ins Marktmodell ohne Fahrgestellnummer und Nutzer
   (`scripts/db/export-user-cars.ts`).
 - **Missbrauchsschutz:** Sperre nach Fehlversuchen, Budgets je Konto (`server/limits.ts`), Prüfung von Dateityp und
@@ -91,8 +99,8 @@ Benutzernamen), binnen eines Monats antworten, Anfrage und Antwort ablegen.
    sie erneut hoch.
 2. Feststellen, was betroffen ist: Runtime-Logs bei Vercel, Logs bei Supabase, Tabelle `contract_access`.
 3. Binnen 72 Stunden nach Bekanntwerden an die zuständige Aufsichtsbehörde melden, sofern ein Risiko für Betroffene
-   nicht ausgeschlossen ist. Bei hohem Risiko auch die Betroffenen informieren; mangels E-Mail-Adressen über einen
-   Hinweis in der App.
+   nicht ausgeschlossen ist. Bei hohem Risiko auch die Betroffenen informieren: per E-Mail an die hinterlegten
+   Adressen und mit einem Hinweis in der App.
 4. Vorfall, Folgen und Maßnahmen schriftlich festhalten, auch wenn keine Meldung nötig war.
 
 ## 6. Bei Änderungen am Code

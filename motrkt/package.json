@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:migrate": "tsx scripts/db/migrate.ts",
+    "db:migrate:prod": "tsx scripts/db/migrate.ts --prod",
     "db:import": "tsx scripts/db/import.ts"
   },
   "dependencies": {

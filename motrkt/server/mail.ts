@@ -1,0 +1,53 @@
+/**
+ * Account emails (confirm the address, reset the password) through Brevo's transactional API (EU provider, data
+ * processing agreement, see DATENSCHUTZ.md). Configuration: BREVO_API_KEY, MAIL_FROM (an address verified as sender
+ * at Brevo), MAIL_FROM_NAME (default "Carbay"). Without a key the mail is not sent: in development it is printed to
+ * the console so the links can be tried, in production sendMail throws.
+ */
+
+export type Mail = { to: string; subject: string; text: string; html: string };
+
+export function mailConfigured() {
+  return Boolean(process.env.BREVO_API_KEY && process.env.MAIL_FROM);
+}
+
+export async function sendMail(mail: Mail): Promise<void> {
+  const key = process.env.BREVO_API_KEY;
+  const from = process.env.MAIL_FROM;
+  if (!key || !from) {
+    if (process.env.VERCEL || process.env.NODE_ENV === "production") throw new Error("mail not configured (BREVO_API_KEY, MAIL_FROM)");
+    console.log(`\n[mail – not sent, no BREVO_API_KEY] to ${mail.to}: ${mail.subject}\n${mail.text}\n`);
+    return;
+  }
+  const r = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: { "api-key": key, "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({
+      sender: { name: process.env.MAIL_FROM_NAME || "Carbay", email: from },
+      to: [{ email: mail.to }],
+      subject: mail.subject,
+      textContent: mail.text,
+      htmlContent: mail.html,
+    }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!r.ok) throw new Error(`brevo ${r.status}: ${(await r.text()).slice(0, 200)}`);
+}
+
+const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+/** A plain account mail: greeting, one paragraph, one button, a closing line. Text and HTML say the same. */
+export function accountMail(o: { to: string; subject: string; hello: string; body: string; button: string; link: string; after: string }): Mail {
+  const text = `${o.hello}\n\n${o.body}\n\n${o.link}\n\n${o.after}\n\nCarbay`;
+  const html = `<!doctype html><html><body style="margin:0;background:#f6f4ef;font-family:Helvetica,Arial,sans-serif;color:#1f1d1a">
+<div style="max-width:520px;margin:0 auto;padding:32px 24px">
+<div style="font-family:Georgia,serif;font-style:italic;font-size:26px;color:#16363c;margin-bottom:24px">Carbay</div>
+<div style="background:#fcfbf8;border-top:2px solid #c9a35e;padding:28px 26px">
+<p style="margin:0 0 14px;font-size:15px">${esc(o.hello)}</p>
+<p style="margin:0 0 22px;font-size:15px;line-height:1.5">${esc(o.body)}</p>
+<p style="margin:0 0 22px"><a href="${esc(o.link)}" style="display:inline-block;background:#16363c;color:#f6f4ef;text-decoration:none;padding:12px 22px;border-radius:4px;font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase">${esc(o.button)}</a></p>
+<p style="margin:0 0 6px;font-size:12.5px;color:#5e5952;word-break:break-all">${esc(o.link)}</p>
+<p style="margin:18px 0 0;font-size:13px;color:#5e5952;line-height:1.5">${esc(o.after)}</p>
+</div></div></body></html>`;
+  return { to: o.to, subject: o.subject, text, html };
+}
