@@ -1,8 +1,8 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight, LogIn, UserPlus } from "lucide-react";
 import { useMe } from "../lib/userCars";
-import { usePlan } from "../lib/plan";
+import { signInHref, usePlan } from "../lib/plan";
 import { signOut } from "../lib/session";
 import { PremiumFab, UpgradeDialog } from "./premium/Upgrade";
 import { useStore } from "../state/store";
@@ -222,6 +222,7 @@ function Header() {
               <Search className="size-[19px]" strokeWidth={1.5} />
             </button>
             <NotificationBell />
+            <GuestSignIn />
             <UserMenu />
             <ThemeSwitch />
             <LangSwitch className="ml-1 hidden sm:flex" />
@@ -429,7 +430,22 @@ function UserMenu() {
       <button className="p-2 text-ink transition-colors hover:text-accent" onClick={() => setOpen((o) => !o)} aria-label={t("Konto", "Account")}>
         <User className="size-[19px]" strokeWidth={1.5} />
       </button>
-      {open && (
+      {open && plan.guest && (
+        <div className={cn(dropdown, "w-64 py-2")}>
+          <div className="px-3 pt-1 pb-2">
+            <div className="font-serif text-[16px]">{t("Ohne Konto", "No account")}</div>
+            <p className="mt-0.5 text-[13px] leading-snug text-muted">{t("Mit kostenlosem Konto behalten Sie Watchlist, Portfolio und Preisalarme.", "A free account keeps your watchlist, portfolio and price alerts.")}</p>
+          </div>
+          <div className="my-1 border-t border-line" />
+          <a href={signInHref(false)} className={item}>
+            <LogIn className="size-3.5 text-muted" /> {t("Anmelden", "Sign in")}
+          </a>
+          <a href={signInHref(true)} className={cn(item, "font-medium text-gold-2")}>
+            <UserPlus className="size-3.5 text-gold" /> {t("Kostenlos Konto anlegen", "Create a free account")}
+          </a>
+        </div>
+      )}
+      {open && !plan.guest && (
         <div className={cn(dropdown, "w-64 py-2")}>
           <div className="px-3 pt-1 pb-2">
             <div className="flex items-center gap-2">
@@ -487,6 +503,17 @@ function UserMenu() {
       )}
       <ImportModal open={importOpen} onClose={() => setImportOpen(false)} />
     </div>
+  );
+}
+
+/** "Anmelden" in the header for a guest, next to the account icon (whose menu also offers creating an account). */
+function GuestSignIn() {
+  const { guest } = usePlan();
+  if (!guest) return null;
+  return (
+    <a href={signInHref(false)} className="mr-1 hidden rounded-[4px] border border-line-2 px-3 py-1.5 text-[13.5px] font-medium whitespace-nowrap text-ink transition-colors hover:border-accent hover:text-accent md:inline-flex">
+      {t("Anmelden", "Sign in")}
+    </a>
   );
 }
 

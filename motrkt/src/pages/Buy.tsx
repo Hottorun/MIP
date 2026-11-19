@@ -14,7 +14,7 @@ import { useStore } from "../state/store";
 import { ListingPhoto, NoPhoto } from "../components/ListingPhoto";
 import { BrandEmblem, Delta, Empty, Modal, Pill, Sparkline, Money } from "../components/ui";
 import { LockedValue } from "../components/premium/Locked";
-import { usePlan } from "../lib/plan";
+import { useNeedsAccount, usePlan } from "../lib/plan";
 import { hasWords } from "../lib/words";
 import { locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
@@ -70,6 +70,7 @@ function dealLabel(deal: number | null): { label: string; tone: "up" | "neutral"
 export default function Buy() {
   const [params, setParams] = useSearchParams();
   const { savedListings, toggleSavedListing } = useStore();
+  const needsAccount = useNeedsAccount(); // a guest saves nothing
   const variantParam = params.get("variant");
   const variantFilter = variantParam ? variantById.get(variantParam) : undefined;
   const selectedId = params.get("inserat");
@@ -365,7 +366,7 @@ export default function Buy() {
       ) : (
         <div className="grid grid-cols-1 gap-x-7 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.slice(0, visible).map((e) => (
-            <ListingCard key={e.l.id} e={e} saved={savedListings.includes(e.l.id)} onSave={() => toggleSavedListing(e.l.id)} onOpen={() => openListing(e.l.id)} />
+            <ListingCard key={e.l.id} e={e} saved={savedListings.includes(e.l.id)} onSave={() => needsAccount("saved", () => toggleSavedListing(e.l.id))} onOpen={() => openListing(e.l.id)} />
           ))}
         </div>
       )}
@@ -451,6 +452,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
 function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[]; onClose: () => void; onOpen: (id: string) => void }) {
   const { l, v } = e;
   const { watchlist, toggleWatch, addHolding, toast } = useStore();
+  const needsAccount = useNeedsAccount(); // watchlist and portfolio are for accounts
   const [added, setAdded] = useState(false);
   const d = l.onRequest ? { label: t("Preis auf Anfrage", "Price on request"), tone: "neutral" as const } : dealLabel(e.deal);
   const watched = watchlist.includes(v.id);
@@ -514,26 +516,30 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
         <>
           <button
             className={cn("btn", watched && "btn-gold")}
-            onClick={() => {
-              toggleWatch(v.id);
-              toast(
-                watched
-                  ? t(`${variantShortTitle(v)} von der Watchlist entfernt`, `${variantShortTitle(v)} removed from the watchlist`)
-                  : t(`${variantShortTitle(v)} zur Watchlist hinzugefügt`, `${variantShortTitle(v)} added to the watchlist`),
-                watched ? "info" : "success",
-              );
-            }}
+            onClick={() =>
+              needsAccount("watchlist", () => {
+                toggleWatch(v.id);
+                toast(
+                  watched
+                    ? t(`${variantShortTitle(v)} von der Watchlist entfernt`, `${variantShortTitle(v)} removed from the watchlist`)
+                    : t(`${variantShortTitle(v)} zur Watchlist hinzugefügt`, `${variantShortTitle(v)} added to the watchlist`),
+                  watched ? "info" : "success",
+                );
+              })
+            }
           >
             <Star className="size-4" fill={watched ? "currentColor" : "none"} /> {watched ? t("Auf der Watchlist", "On the watchlist") : t("Zur Watchlist", "Add to watchlist")}
           </button>
           {!l.onRequest && <button
             className="btn"
             disabled={added}
-            onClick={() => {
-              addHolding({ variantId: v.id, purchasePrice: l.price, purchaseDate: AS_OF, mileage: l.mileage ?? 0, condition: l.condition, color: l.color, note: t(`Gekauft über Inserat ${l.id} (${l.seller})`, `Bought via listing ${l.id} (${tr(l.seller)})`) });
-              setAdded(true);
-              toast(t(`${variantShortTitle(v)} ins Portfolio übernommen`, `${variantShortTitle(v)} added to the portfolio`));
-            }}
+            onClick={() =>
+              needsAccount("portfolio", () => {
+                addHolding({ variantId: v.id, purchasePrice: l.price, purchaseDate: AS_OF, mileage: l.mileage ?? 0, condition: l.condition, color: l.color, note: t(`Gekauft über Inserat ${l.id} (${l.seller})`, `Bought via listing ${l.id} (${tr(l.seller)})`) });
+                setAdded(true);
+                toast(t(`${variantShortTitle(v)} ins Portfolio übernommen`, `${variantShortTitle(v)} added to the portfolio`));
+              })
+            }
           >
             <Briefcase className="size-4" /> {added ? t("Im Portfolio", "In portfolio") : t("Als gekauft ins Portfolio", "Add to portfolio as bought")}
           </button>}

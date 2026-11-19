@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Area, ComposedChart, Line, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { FileCheck2, Pencil, Trash2 } from "lucide-react";
+import { ArrowRight, Bell, Briefcase, FileCheck2, Pencil, Star, Trash2 } from "lucide-react";
 import { variantById, variantTitle } from "../data/db";
 import { AS_OF } from "../data/generate";
 import { getMetrics, holdingMeasured, holdingValue, portfolioHistory, rangeOptions, sliceRange, type RangeKey } from "../data/market";
@@ -10,7 +10,7 @@ import { useStore } from "../state/store";
 import { cn, date, eur, km, pct, trendClass } from "../lib/format";
 import { axisProps, ChartTooltipBox, Delta, Empty, Section, Segmented, Money, useConfirm } from "../components/ui";
 import { Lock, LockedValue } from "../components/premium/Locked";
-import { usePlan } from "../lib/plan";
+import { signInHref, usePlan } from "../lib/plan";
 import { HoldingForm } from "../components/portfolio/HoldingForm";
 import { WatchlistSection } from "../components/portfolio/Watchlist";
 import { UserCarsSection } from "../components/portfolio/UserCars";
@@ -19,6 +19,55 @@ import { t } from "../i18n";
 import { tr } from "../i18n/terms";
 
 export default function Portfolio() {
+  // the portfolio, the watchlist and the car reports belong to an account: a guest sees what they would get
+  return usePlan().guest ? <GuestPortfolio /> : <PortfolioPage />;
+}
+
+function GuestPortfolio() {
+  const points: [typeof Briefcase, string, string][] = [
+    [Briefcase, t("Ihre Sammlung bewertet", "Your collection, valued"), t("Jedes Fahrzeug zum heutigen Marktwert nach Zustand, mit Gewinn seit dem Kauf.", "Every car at today's market value for its condition, with the gain since purchase.")],
+    [Star, t("Watchlist", "Watchlist"), t("Die Varianten, die Sie im Blick behalten wollen, auf einer Seite.", "The variants you want to keep an eye on, on one page.")],
+    [Bell, t("Preisalarme", "Price alerts"), t("Wir melden, wenn ein Marktwert über oder unter Ihre Schwelle geht.", "We tell you when a market value crosses your threshold.")],
+  ];
+  return (
+    <div className="space-y-10">
+      <div>
+        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
+        <p className="mt-1 text-[14px] text-muted">{t("Ihre Sammlung, bewertet zum aktuellen Marktwert nach Zustand.", "Your collection, valued at today's market value for its condition.")}</p>
+      </div>
+      <div className="grid gap-8 border-y border-line py-10 md:grid-cols-[1.2fr_1fr] md:items-center">
+        <ul className="space-y-6">
+          {points.map(([Icon, head, body]) => (
+            <li key={head} className="flex gap-4">
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-gold-soft text-gold-2">
+                <Icon className="size-[18px]" strokeWidth={1.6} aria-hidden />
+              </span>
+              <div>
+                <div className="font-serif text-[18px] leading-snug">{head}</div>
+                <p className="mt-0.5 text-[14px] leading-relaxed text-muted">{body}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="rounded-[6px] border border-line bg-panel px-6 py-7 text-center sm:px-8">
+          <div className="font-serif text-[22px] leading-snug">{t("Mit kostenlosem Konto", "With a free account")}</div>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">{t("In einer Minute angelegt, ohne Abo und ohne Zahlungsdaten.", "Set up in a minute, no subscription and no payment details.")}</p>
+          <a className="btn btn-gold mt-6 w-full justify-center" href={signInHref(true)}>
+            {t("Kostenlos Konto anlegen", "Create a free account")} <ArrowRight className="size-4" aria-hidden />
+          </a>
+          <p className="mt-4 text-[13.5px] text-muted">
+            {t("Schon dabei?", "Already a member?")}{" "}
+            <a className="font-medium text-accent underline-offset-4 hover:underline" href={signInHref(false)}>
+              {t("Anmelden", "Sign in")}
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PortfolioPage() {
   const { portfolio, addHolding, updateHolding, removeHolding, toast } = useStore();
   const { confirm, dialog: confirmDialog } = useConfirm();
   const { hash } = useLocation();

@@ -8,8 +8,9 @@ import { sendLegalPage } from "./legalPages.ts";
 import { accountMail, sendMail } from "./mail.ts";
 
 /**
- * Accounts with username and password. Without a valid session the server hands out nothing but the sign-in page
- * (/anmelden) and /api/auth/*: the app, its data and the other APIs stay closed.
+ * Accounts with username and password. Without a session a visitor is a guest: the app and the lite market data are
+ * open (like the lite version of an account), the full data stays premium (mayRead), and every API that keeps
+ * something per account (state, portfolio, forum writing, Co-Pilot, uploads) checks for an account itself.
  *
  * Storage: Postgres (db/migrations/002_accounts.sql) – a scrypt hash + salt per user (never the password) and only the
  * SHA-256 of each session token. Every account has an email address (db/migrations/013_email.sql), used only to confirm
@@ -596,7 +597,7 @@ const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-to
 // the typefaces are served from this site (public/fonts), not from Google; the sign-in page needs them too
 const isOpen = (path: string) => OPEN.has(path) || /^\/fonts\/[\w.-]+\.(woff2|txt)$/.test(path);
 
-/** Handles the request if it must not reach the app (sign-in page, auth API, or no session). Returns true then. */
+/** Handles the request if it must not reach the app (sign-in page, auth API, legal pages for guests). Returns true then. */
 export async function authGate(req: IncomingMessage, res: ServerResponse): Promise<boolean> {
   const url = new URL(req.url ?? "/", "http://localhost");
   if (url.pathname.startsWith("/api/auth/")) {
@@ -620,15 +621,9 @@ export async function authGate(req: IncomingMessage, res: ServerResponse): Promi
     sendLegalPage(res, url.pathname.slice(1) as "impressum" | "datenschutz", url.searchParams.get("lang"));
     return true;
   }
-  if (await currentUser(req)) {
-    if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) await renewSession(req, res);
-    return false;
-  }
-  if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html")) {
-    return redirect(res, "/anmelden" + (url.pathname !== "/" ? "?next=" + encodeURIComponent(url.pathname + url.search) : ""));
-  }
-  sendJson(res, 401, { error: "not signed in" });
-  return true;
+  if (req.method === "GET" && (req.headers.accept ?? "").includes("text/html") && (await currentUser(req))) await renewSession(req, res);
+  // guests go on to the app as well: the lite data is open, the APIs answer 401 where an account is needed
+  return false;
 }
 
 function redirect(res: ServerResponse, to: string) {
@@ -654,7 +649,8 @@ export function safeNext(n: string | null) {
 }
 
 // ------------------------------------------------------------------------------------------------ sign-in page
-// Standalone page (no app bundle): the app and its data load only after sign-in.
+// Standalone page (no app bundle), so it stays small and its script can be pinned by hash. Guests reach the app from
+// here without an account ("Ohne Konto ansehen").
 /**
  * Porsche press photo (Porsche AG): Carrera GT in front of the Porsche plant in Leipzig, from the Carrera GT gallery
  * (src/data/real/launch.json). The press database renders it at 3840 px for wide screens, 1920 px for phones.
@@ -711,6 +707,8 @@ const LOGIN_PAGE = `<!doctype html>
   .facts { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:14px; color:rgb(243 239 230 / .88); }
   .facts li { display:flex; align-items:center; gap:10px; }
   .facts li::before { content:""; width:16px; height:1px; background:var(--gold); flex:none; }
+  .guest { display:inline-flex; align-items:center; gap:10px; margin-top:32px; padding:11px 20px; border:1px solid var(--gold); border-radius:4px; color:#fbf8f1; text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.02em; transition:background .15s; }
+  .guest:hover { background:rgb(201 163 94 / .2); }
   .credit { position:fixed; margin:0; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .55); }
   .card { display:flex; flex-direction:column; background:var(--panel); color:var(--ink); border-top:2px solid var(--gold-line); box-shadow:0 30px 80px -24px rgb(0 0 0 / .6); }
   .form { flex:1; display:flex; flex-direction:column; padding:30px 30px 22px; }
@@ -747,6 +745,7 @@ const LOGIN_PAGE = `<!doctype html>
     .logo { position:absolute; top:18px; left:22px; margin:0; } .logo img { height:40px; }
     .rule, .facts { display:none; }
     .claim { font-size:30px; text-shadow:none; } .tag { font-size:15.5px; margin:0; }
+    .guest { margin-top:20px; padding:9px 16px; font-size:13.5px; }
     .credit { position:absolute; top:calc(56.25vw - 22px); bottom:auto; right:12px; }
     .card { margin:-30px 14px 28px; }
     .form { padding:24px 22px 20px; } .foot { padding:12px 22px; }
@@ -766,6 +765,7 @@ const LOGIN_PAGE = `<!doctype html>
       <li data-de="Täglich aktualisiert" data-en="Updated daily"></li>
       <li data-de="Marktdaten seit 2015" data-en="Market data since 2015"></li>
     </ul>
+    <a class="guest" id="guest" href="/"><span data-de="Ohne Konto ansehen" data-en="Look around without an account"></span><span aria-hidden="true">→</span></a>
   </section>
   <section class="card">
     <div class="form">
@@ -817,7 +817,9 @@ const LOGIN_PAGE = `<!doctype html>
   var lang = "de";
   try { lang = (localStorage.getItem("mip-lang") || localStorage.getItem("motrkt-lang")) === "en" ? "en" : "de"; } catch (e) {}
   // /passwort-neu#<token> is the link from the reset mail; the token is taken out of the address at once
-  var mode = location.pathname === "/passwort-neu" ? "reset" : "login";
+  var query = new URLSearchParams(location.search);
+  // /anmelden?neu opens on "create account" (the app's buttons for guests link there)
+  var mode = location.pathname === "/passwort-neu" ? "reset" : query.has("neu") ? "register" : "login";
   var resetToken = mode === "reset" ? location.hash.slice(1) : "";
   if (mode === "reset") { try { history.replaceState(null, "", location.pathname); } catch (e) {} }
   var T = {
@@ -917,10 +919,13 @@ const LOGIN_PAGE = `<!doctype html>
       })
       .catch(function () { $("err").textContent = T[lang].network; $("submit").disabled = false; });
   }
-  function enter(to) {
-    var next = to || new URLSearchParams(location.search).get("next") || "/";
-    location.replace(/^\\/(?![\\/\\\\])/.test(next) && !/[\\s\\\\]/.test(next) ? next : "/");
+  function target(to) {
+    var next = to || query.get("next") || "/";
+    return /^\\/(?![\\/\\\\])/.test(next) && !/[\\s\\\\]/.test(next) ? next : "/";
   }
+  function enter(to) { location.replace(target(to)); }
+  // back to the page the guest came from, without an account (the account pages would only send them here again)
+  $("guest").href = /^\\/(konto|pruefung)([\\/?#]|$)/.test(target()) ? "/" : target();
   $("form").onsubmit = function (e) {
     e.preventDefault();
     var u = $("username").value.trim(), p = $("password").value, p2 = $("password2").value, em = $("email").value.trim();

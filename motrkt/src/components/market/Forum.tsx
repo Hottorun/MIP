@@ -7,6 +7,7 @@ import { cn, num } from "../../lib/format";
 import { locale, t } from "../../i18n";
 import { Section, useConfirm } from "../ui";
 import { api } from "../../lib/userCars";
+import { signInHref, useNeedsAccount, usePlan } from "../../lib/plan";
 import { FORUM_CATEGORIES, FORUM_SORTS, type ForumCategory, type ForumKind, type ForumSort, type ForumStatus } from "../../lib/forumShared";
 
 /**
@@ -119,10 +120,13 @@ function Marked({ text, terms }: { text: string; terms: string[] }) {
   );
 }
 
+/** A guest gets no usernames from the server (server/forum.ts), only "": the author shows as a member. */
+const shownName = (name: string) => name || t("Mitglied", "Member");
+
 function Author({ name, owner }: { name: string; owner: boolean }) {
   return (
     <span className="inline-flex items-center gap-1.5">
-      <span className="text-ink">{name}</span>
+      <span className="text-ink">{shownName(name)}</span>
       {owner && (
         <span className="inline-flex items-center gap-0.5 text-[12px] text-up" title={t("Besitzt diese Variante, Kaufvertrag oder Wertgutachten geprüft", "Owns this variant, purchase contract or appraisal checked")}>
           <BadgeCheck className="size-3.5" strokeWidth={1.6} /> {t("Besitzer", "Owner")}
@@ -136,7 +140,7 @@ function Author({ name, owner }: { name: string; owner: boolean }) {
 function Avatar({ name, dim }: { name: string; dim?: boolean }) {
   return (
     <span aria-hidden className={cn("flex size-9 shrink-0 items-center justify-center rounded-full bg-panel-3 font-serif text-[16px] text-muted uppercase", dim && "opacity-50")}>
-      {name.replace(/[^\p{L}\p{N}]/gu, "").charAt(0) || "?"}
+      {shownName(name).replace(/[^\p{L}\p{N}]/gu, "").charAt(0) || "?"}
     </span>
   );
 }
@@ -242,10 +246,12 @@ export function Forum({ variant }: { variant: Variant }) {
     setCategory(null);
     setStatus("alle");
   };
-  const startWriting = (c: ForumCategory | null = category) => {
-    setWriting(c ?? "allgemein");
-    toTop();
-  };
+  const needsAccount = useNeedsAccount(); // guests read; writing needs an account
+  const startWriting = (c: ForumCategory | null = category) =>
+    needsAccount("forum", () => {
+      setWriting(c ?? "allgemein");
+      toTop();
+    });
   const name = variantTitle(variant);
 
   return (
@@ -719,6 +725,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
   const [err, setErr] = useState("");
   const [editing, setEditing] = useState<{ id: string; body: string } | null>(null);
   const [reporting, setReporting] = useState<{ id: string; reason: string } | null>(null);
+  const { guest } = usePlan(); // a guest reads, without reply form and report buttons
   const [filing, setFiling] = useState(false);
   const { confirm, dialog: confirmDialog } = useConfirm();
   // another topic opened (?thema= changed) while this one was loading: drop the late answer
@@ -846,6 +853,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                 </button>
               )}
               {!p.mine &&
+                !guest &&
                 (p.reported ? (
                   <span>{t("Gemeldet", "Reported")}</span>
                 ) : (
@@ -982,7 +990,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                 className="mt-4 inline-flex items-center gap-2 rounded-full bg-up-soft px-3.5 py-1.5 text-[13.5px] text-up hover:underline"
                 onClick={() => document.getElementById(`beitrag-${solution.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
               >
-                <Check className="size-4" strokeWidth={2} /> {t(`Zur Lösung von ${solution.username}`, `Go to the solution by ${solution.username}`)}
+                <Check className="size-4" strokeWidth={2} /> {solution.username ? t(`Zur Lösung von ${solution.username}`, `Go to the solution by ${solution.username}`) : t("Zur Lösung", "Go to the solution")}
               </button>
             )}
 
@@ -998,6 +1006,20 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
               </ol>
             )}
 
+            {guest ? (
+              <div className={cn("mt-8 rounded-[4px] border border-dashed border-line-2 px-6 py-7 text-center", answers.length > 0 && "mt-10")}>
+                <div className="font-serif text-[18px]">{t("Antworten Sie mit kostenlosem Konto.", "Reply with a free account.")}</div>
+                <p className="mx-auto mt-1.5 max-w-md text-[14px] text-muted">{t("Lesen geht ohne Konto. Zum Schreiben melden Sie sich an, dann sehen Sie auch, wer geschrieben hat.", "Reading works without an account. To write, sign in; you then also see who wrote.")}</p>
+                <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                  <a className="btn btn-gold" href={signInHref(true)}>
+                    {t("Konto anlegen", "Create an account")}
+                  </a>
+                  <a className="btn" href={signInHref(false)}>
+                    {t("Anmelden", "Sign in")}
+                  </a>
+                </div>
+              </div>
+            ) : (
             <form
               className={cn("mt-8", answers.length > 0 && "border-t border-line pt-8")}
               onSubmit={async (e) => {
@@ -1033,6 +1055,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                 {err && <span className="text-[13.5px] text-down">{err}</span>}
               </div>
             </form>
+            )}
           </>
         )}
       </div>

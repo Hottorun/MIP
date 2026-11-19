@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check, Clock, Crown, FileUp, ShieldCheck, X } from "lucide-react";
-import { usePlan, type LockReason, type UnlockStep } from "../../lib/plan";
+import { ArrowRight, Check, Clock, Crown, FileUp, ShieldCheck, UserPlus, X } from "lucide-react";
+import { signInHref, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
 import { DOCUMENT_HOURS } from "../../lib/userCars";
 import { getAllSales } from "../../data/generate";
 import { variants } from "../../data/db";
@@ -19,8 +19,21 @@ const UNLOCK_PATH = "/portfolio#melden";
 
 /** Always in the corner for a lite user; shows the next step once a submission is under way. */
 export function PremiumFab() {
-  const { ready, premium, step, openUpgrade } = usePlan();
+  const { ready, guest, premium, step, openUpgrade } = usePlan();
   if (!ready || premium) return null;
+  if (guest)
+    return (
+      <button type="button" className="premium-fab group" onClick={() => openUpgrade("account")} aria-haspopup="dialog">
+        <span className="premium-fab-icon">
+          <UserPlus className="size-[18px]" strokeWidth={1.9} aria-hidden />
+        </span>
+        <span className="text-left leading-tight">
+          <span className="block text-[10px] font-semibold tracking-[0.16em] text-[#e4c486] uppercase">{t("Kostenlos", "Free")}</span>
+          <span className="block font-serif text-[16px]">{t("Konto anlegen", "Create an account")}</span>
+        </span>
+        <ArrowRight className="size-4 text-[#e4c486] transition-transform group-hover:translate-x-0.5" aria-hidden />
+      </button>
+    );
   const copy: Record<UnlockStep, [string, string]> = {
     start: ["Carbay Premium", t("Jetzt freischalten", "Unlock now")],
     upload: [t("Premium · Schritt 2 von 3", "Premium · step 2 of 3"), t("Dokument hochladen", "Upload the document")],
@@ -61,9 +74,102 @@ const HEADLINE: Record<LockReason, () => string> = {
   insights: () => t("Der Marktbericht, Kapitel für Kapitel.", "The market report, chapter by chapter."),
   copilot: () => t("Fragen Sie die Daten.", "Ask the data."),
   compare: () => t("Varianten Seite an Seite vergleichen.", "Compare variants side by side."),
+  account: () => t("Ihr Carbay, mit kostenlosem Konto.", "Your Carbay, with a free account."),
+  watchlist: () => t("Behalten Sie Ihre Favoriten im Blick.", "Keep an eye on your favourites."),
+  alerts: () => t("Wir melden uns, wenn der Preis passt.", "We let you know when the price is right."),
+  portfolio: () => t("Was Ihre Sammlung heute wert ist.", "What your collection is worth today."),
+  saved: () => t("Merken Sie sich interessante Angebote.", "Save the listings that interest you."),
+  forum: () => t("Reden Sie mit.", "Join the conversation."),
 };
 
+const ACCOUNT_REASONS = new Set<LockReason>(["account", "watchlist", "alerts", "portfolio", "saved", "forum"] satisfies AccountReason[]);
+
 export function UpgradeDialog() {
+  const { guest } = usePlan();
+  return guest ? <AccountDialog /> : <PremiumDialog />;
+}
+
+/**
+ * The guest version: whatever they tried (keep a car on the watchlist, write in the forum, or a premium block), the
+ * first step is a free account. Leads to the sign-in page and back to this page afterwards.
+ */
+function AccountDialog() {
+  const { upgrade, closeUpgrade, months } = usePlan();
+  const premiumReason = !ACCOUNT_REASONS.has(upgrade.reason);
+  const free = [
+    t("Watchlist und Preisalarme für jede Variante", "Watchlist and price alerts for every variant"),
+    t("Portfolio: der heutige Wert Ihrer Fahrzeuge", "Portfolio: what your cars are worth today"),
+    t("Angebote merken und im Forum mitschreiben", "Save listings and write in the forum"),
+    t(`Premium freischalten: ${months} Monate für einen Beleg, ohne Abo`, `Unlock premium: ${months} months for one document, no subscription`),
+  ];
+  return (
+    <Modal open={upgrade.open} onClose={closeUpgrade} title={t("Kostenloses Konto", "Free account")} bare>
+      <div className="grid max-h-[86vh] overflow-y-auto md:grid-cols-[1.05fr_1fr]">
+        <div className="night-band relative flex flex-col overflow-hidden px-7 py-8 sm:px-9 sm:py-10">
+          <span className="pointer-events-none absolute -top-24 -right-24 size-64 rounded-full bg-[radial-gradient(circle,rgba(228,196,134,0.22),transparent_65%)]" aria-hidden />
+          <div className="relative flex-1">
+            <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] text-[#e4c486] uppercase">
+              {premiumReason ? <Crown className="size-4" strokeWidth={1.7} aria-hidden /> : <UserPlus className="size-4" strokeWidth={1.7} aria-hidden />}
+              {premiumReason ? "Carbay Premium" : t("Kostenloses Konto", "Free account")}
+            </div>
+            <h2 className="mt-4 font-display text-[30px] leading-[1.12] text-on-night sm:text-[34px]">{HEADLINE[upgrade.reason]()}</h2>
+            <p className="mt-3 text-[14.5px] leading-relaxed text-on-night/75">
+              {premiumReason
+                ? t(
+                    "Premium beginnt mit einem kostenlosen Konto. Danach schalten Sie es mit einem Kaufvertrag oder Wertgutachten frei.",
+                    "Premium starts with a free account. You then unlock it with a purchase contract or an appraisal.",
+                  )
+                : t("Ohne Konto sehen Sie den Marktwert. Mit Konto behalten Sie, was Sie interessiert.", "Without an account you see the market value. With one you keep what interests you.")}
+            </p>
+            <ul className="mt-7 space-y-3.5">
+              {free.map((b) => (
+                <li key={b} className="flex gap-3 text-[14.5px] leading-snug text-on-night/90">
+                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#e4c486]/15 text-[#e4c486]">
+                    <Check className="size-3" strokeWidth={2.6} aria-hidden />
+                  </span>
+                  {b}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="relative flex flex-col px-7 py-8 sm:px-9 sm:py-10">
+          <button className="btn btn-ghost absolute top-3 right-3 p-1.5" onClick={closeUpgrade} aria-label={t("Schließen", "Close")} data-close>
+            <X className="size-4" />
+          </button>
+          <div className="eyebrow text-gold">{t("In einer Minute startklar", "Ready in a minute")}</div>
+          <div className="mt-3 flex items-baseline gap-3">
+            <span className="font-display text-[44px] leading-none">{t("0 €", "€0")}</span>
+            <span className="text-[14px] text-muted">{t("ohne Abo", "no subscription")}</span>
+          </div>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">
+            {t(
+              "Benutzername, Passwort und E-Mail-Adresse genügen. Die E-Mail-Adresse nutzen wir nur für Ihr Konto, nie für Werbung.",
+              "A username, a password and an email address are all it takes. We use the email address for your account only, never for advertising.",
+            )}
+          </p>
+          <a className="premium-cta mt-7" href={signInHref(true)}>
+            {t("Kostenlos Konto anlegen", "Create a free account")} <ArrowRight className="size-4" aria-hidden />
+          </a>
+          <p className="mt-4 text-center text-[13.5px] text-muted">
+            {t("Schon dabei?", "Already a member?")}{" "}
+            <a className="font-medium text-accent underline-offset-4 hover:underline" href={signInHref(false)}>
+              {t("Anmelden", "Sign in")}
+            </a>
+          </p>
+          <div className="mt-auto border-t border-line pt-4 text-[13px]">
+            <button className="text-muted underline-offset-4 hover:text-ink hover:underline" onClick={closeUpgrade}>
+              {t("Weiter ohne Konto", "Continue without an account")}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+function PremiumDialog() {
   const { upgrade, closeUpgrade, months, step, preview, setPreview } = usePlan();
   const navigate = useNavigate();
   const go = () => {

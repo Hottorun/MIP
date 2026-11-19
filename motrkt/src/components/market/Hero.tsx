@@ -10,7 +10,7 @@ import { cn, eur, fromDisplay, num, pct, liters, safeUrl } from "../../lib/forma
 import { CarArt, GALLERY } from "../CarArt";
 import { Delta, Modal, Pill, Money } from "../ui";
 import { Locked, LockedValue } from "../premium/Locked";
-import { usePlan } from "../../lib/plan";
+import { useNeedsAccount, usePlan } from "../../lib/plan";
 import { PhotoCredit, fillsFrame, frameRatio } from "../CarImage";
 import { isEn, t } from "../../i18n";
 import { paintName, tr, photoCaption } from "../../i18n/terms";
@@ -56,6 +56,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
   const { watchlist, toggleWatch, alerts, toast } = useStore();
   // lite (src/lib/plan.tsx): the value itself is free; its trend, its range and the profile below are premium
   const lite = !usePlan().premium;
+  const needsAccount = useNeedsAccount(); // a guest keeps no watchlist and no alerts
   const [alertOpen, setAlertOpen] = useState(false);
   const brand = brandById.get(variant.brandId)!;
   const model = modelById.get(variant.modelId)!;
@@ -103,14 +104,16 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
       <button
         className={cn("btn", !watched && "btn-gold")}
         aria-pressed={watched}
-        onClick={() => {
-          toggleWatch(variant.id);
-          toast(watched ? t("Nicht mehr beobachtet", "No longer watched") : t("Wird beobachtet", "Now watching"));
-        }}
+        onClick={() =>
+          needsAccount("watchlist", () => {
+            toggleWatch(variant.id);
+            toast(watched ? t("Nicht mehr beobachtet", "No longer watched") : t("Wird beobachtet", "Now watching"));
+          })
+        }
       >
         {watched ? t("Wird beobachtet", "Watching") : t("Beobachten", "Watch")}
       </button>
-      <button className="btn" onClick={() => setAlertOpen(true)}>
+      <button className="btn" onClick={() => needsAccount("alerts", () => setAlertOpen(true))}>
         {alertCount ? `${t("Preisalarm", "Price alert")} (${alertCount})` : t("Preisalarm", "Price alert")}
       </button>
     </div>

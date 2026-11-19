@@ -41,7 +41,7 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 | Kaufvertrag, Wertgutachten | Datei (PDF/Foto), verschlüsselt; kann Namen, Anschriften, Unterschriften beider Seiten bzw. des Gutachters enthalten, soweit nicht geschwärzt | Nutzer, Vertragspartner, Gutachter | Echtheit der Meldung prüfen | Nutzer: Art. 6 (1) a. Vertragspartner, Gutachter: Art. 6 (1) f | Supabase (nur verschlüsselt); Anthropic nur mit gesonderter Einwilligung (dort gelten dessen Fristen) | mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen; in Sicherungen des Anbieters verschlüsselt bis zu deren Ablauf |
 | Marktmodell | Preis, Datum, Land, Laufleistung, Baujahr, Variante, Art der Gegenseite; ohne Fahrgestellnummer, ohne Nutzer. Nur Meldungen mit Kaufvertrag; Gutachtenwerte gehen nicht ein | keine (anonymisiert) | Marktwertberechnung | entfällt | öffentlich in der App als Teil der Werte | bleibt anonymisiert bestehen, auch wenn der Nutzer die Meldung oder das Konto löscht |
 | Zugriffsprotokoll Verträge | Meldungs-ID, Prüfer, Aktion, Zeitpunkt | Prüfer | Nachweis, wer einen Vertrag geöffnet hat | Art. 6 (1) f | Supabase | ein Jahr |
-| Forum | Beiträge mit Benutzername und Zeit; Meldungen von Beiträgen mit Begründung | Nutzer | Austausch, Moderation | Art. 6 (1) b, Moderation f | Supabase | eigener Beitrag: Text bei Entfernen gelöscht. Bei Kontolöschung ohne Namen |
+| Forum | Beiträge mit Benutzername und Zeit; Meldungen von Beiträgen mit Begründung. Angemeldete sehen Beiträge mit Namen, Gäste ohne Namen („Mitglied“) | Nutzer | Austausch, Moderation | Art. 6 (1) b, Moderation f | Supabase | eigener Beitrag: Text bei Entfernen gelöscht. Bei Kontolöschung ohne Namen |
 | Nutzungszähler | Zähler je Konto für Co-Pilot, mobile.de, Uploads, Fehlermeldungen | Nutzer | Missbrauch und Kosten begrenzen | Art. 6 (1) f | Supabase | etwa 24 Stunden |
 | Fehlerprotokoll | Fehlermeldung, Seite, Browserkennung; kein Benutzername | Nutzer | Fehler finden | Art. 6 (1) f | Vercel (Runtime-Logs) | nach den Fristen von Vercel |
 | Server-Protokolle | IP-Adresse, Zeit, Adresse, Browser | Besucher | Betrieb, Sicherheit | Art. 6 (1) f | Vercel | nach den Fristen von Vercel |
@@ -60,7 +60,9 @@ die Prüfung vor, ein Mensch entscheidet.
   `MIP_PUBLIC_URL`, nie auf den Host der Anfrage; der Link zum Zurücksetzen trägt den Schlüssel hinter `#` (landet in
   keinem Server-Protokoll); „Passwort vergessen“ antwortet immer gleich und verrät nicht, welche Konten es gibt; nach
   dem Zurücksetzen sind alle Geräte abgemeldet.
-- **Zugang:** ohne Sitzung nur Anmeldeseite, Impressum, Datenschutzerklärung. Verträge öffnen nur Prüfer
+- **Zugang:** ohne Sitzung (Gast) die App mit den Lite-Marktdaten und das Forum zum Lesen ohne Benutzernamen; kein
+  Cookie, nichts pro Besucher gespeichert. Konto-Daten, Speichern, Schreiben, Co-Pilot und die vollständigen
+  Marktdaten nur mit Konto (`authGate`, `mayRead`, je API die Prüfung auf `currentUser`). Verträge öffnen nur Prüfer
   (`MIP_ADMINS`), jeder Zugriff landet in `contract_access`. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
 - **Datenbank:** Row Level Security auf allen Tabellen, damit die Data-API von Supabase nichts herausgibt
   (`db/migrations/010_row_level_security.sql`); die App greift direkt als Eigentümer zu.

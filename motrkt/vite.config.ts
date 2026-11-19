@@ -124,7 +124,7 @@ export default defineConfig({
       configureServer(server) {
         // the demo account reviews car reports here only (its password is public), see server/auth.ts
         if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) !== "0") enableDemoAccount({ admin: true });
-        // sign-in first: without a session nothing of the app is served
+        // the same gate as in production: sign-in page and auth API; guests go on to the app with the lite data
         server.middlewares.use((req, res, next) => {
           authGate(req, res)
             .then((handled) => {
@@ -136,7 +136,7 @@ export default defineConfig({
         });
       },
     },
-    dataPlugin(), // after mip-api: in development the data files sit behind the sign-in gate too
+    dataPlugin(), // after mip-api: in development the premium files are checked as in production (mayRead)
     {
       // Brotli and gzip copies of every built script, style and SVG (file.br, file.gz) for server/app.ts: a Vercel
       // function may not answer with more than 4.5 MB, and the copies spare the function the compression.

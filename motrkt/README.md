@@ -25,9 +25,12 @@ npm start            # http://localhost:4173 (PORT überschreibbar)
 
 ## Anmeldung
 
-Ohne Anmeldung liefert der Server nur die Anmeldeseite (`/anmelden`): App, Marktdaten und API bleiben gesperrt. Dort
-lässt sich auch ein eigenes Konto mit Benutzername und Passwort anlegen; man bleibt dauerhaft angemeldet (die Sitzung
-läuft ein Jahr und verlängert sich bei jedem Besuch), bis man sich abmeldet.
+Ohne Anmeldung ist man Gast: Die App öffnet sich mit den Lite-Daten (Katalog, Marktwerte, Angebote, Auktionskalender,
+Forum zum Lesen ohne Benutzernamen). Watchlist, Preisalarme, Portfolio, gemerkte Inserate und Schreiben im Forum fragen
+nach einem kostenlosen Konto (`useNeedsAccount` in `src/lib/plan.tsx`); die vollständigen Daten bleiben Premium. Auf der
+Anmeldeseite (`/anmelden`, mit `?neu` gleich auf „Konto anlegen“) legt man ein Konto mit Benutzername, E-Mail-Adresse und
+Passwort an; man bleibt dauerhaft angemeldet (die Sitzung läuft ein Jahr und verlängert sich bei jedem Besuch), bis man
+sich abmeldet.
 
 **Demo-Konto zum Testen:** Benutzername `demo`, Passwort `turbo-carrera-8987`
 

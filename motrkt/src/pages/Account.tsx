@@ -6,7 +6,7 @@ import { useStore } from "../state/store";
 import { Card, useConfirm } from "../components/ui";
 import { cn, date } from "../lib/format";
 import { getLang, t } from "../i18n";
-import { usePlan } from "../lib/plan";
+import { signInHref, usePlan } from "../lib/plan";
 import { Crown } from "lucide-react";
 
 const ERR: Record<string, () => string> = {
@@ -27,6 +27,11 @@ export default function Account() {
   const { portfolio, watchlist, alerts } = useStore();
   const demo = me?.username.toLowerCase() === "demo";
   const plan = usePlan();
+  // account settings need an account: a guest goes to the sign-in page and comes back here
+  useEffect(() => {
+    if (plan.guest) window.location.replace(signInHref(false));
+  }, [plan.guest]);
+  if (plan.guest) return null;
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>

@@ -5,7 +5,8 @@ import type { UserCar } from "./userCars";
 import { LITE } from "../data/real/model";
 
 /**
- * Lite and premium. Every account starts as lite: catalogue, market value of each variant, listings, portfolio, forum
+ * Guest, lite and premium. A guest (no account) sees what lite shows but keeps nothing: watchlist, alerts, portfolio,
+ * saved listings and writing in the forum ask for a free account first (useNeedsAccount). Every account starts as lite: catalogue, market value of each variant, listings, portfolio, forum
  * and the auction calendar. Premium adds the analysis behind the value (history, sales, evidence, options), the
  * auction archive, Insights and the Co-Pilot. Premium is earned with a purchase contract or an appraisal
  * (server/userCars.ts); reviewers always have it.
@@ -16,7 +17,16 @@ import { LITE } from "../data/real/model";
  */
 
 /** What the user was looking at when the upgrade dialog opened: it picks the headline. */
-export type LockReason = "general" | "history" | "sales" | "evidence" | "assessment" | "options" | "figures" | "profile" | "auctions" | "insights" | "copilot" | "compare";
+export type LockReason = "general" | "history" | "sales" | "evidence" | "assessment" | "options" | "figures" | "profile" | "auctions" | "insights" | "copilot" | "compare" | AccountReason;
+
+/** What a guest tried that needs an account: the guest version of the dialog (components/premium/Upgrade.tsx) names it. */
+export type AccountReason = "account" | "watchlist" | "alerts" | "portfolio" | "saved" | "forum";
+
+/** The sign-in page, on "create account" or "sign in", coming back to this page afterwards. */
+export function signInHref(register: boolean) {
+  const here = window.location.pathname + window.location.search + window.location.hash;
+  return `/anmelden?${register ? "neu&" : ""}next=${encodeURIComponent(here)}`;
+}
 
 /** Where a lite user stands on the way to premium, from their submissions. */
 export type UnlockStep = "start" | "upload" | "review";
@@ -26,6 +36,8 @@ type Account = { username: string; admin: boolean; demo: boolean; premium: boole
 type Plan = {
   /** false until the first answer of the server (or the cached answer of the last visit) is there */
   ready: boolean;
+  /** no account: the server answered "not signed in" */
+  guest: boolean;
   premium: boolean;
   account: Account | null;
   premiumUntil: string | null;
@@ -70,6 +82,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   // the answer of the last visit, so a premium user never sees the locks flash up while the request runs
   const cached = read(() => localStorage, CACHE_KEY);
   const [account, setAccount] = useState<Account | null>(null);
+  const [guest, setGuest] = useState(false);
   const [real, setReal] = useState<boolean | null>(cached === "premium" ? true : cached === "lite" ? false : null);
   const [cars, setCars] = useState<UserCar[]>([]);
   const [months, setMonths] = useState(12);
@@ -82,6 +95,12 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     loadedAt.current = Date.now();
     try {
       const r = await fetch("/api/auth/me", { credentials: "same-origin" });
+      if (r.status === 401) {
+        setGuest(true);
+        setAccount(null);
+        write(() => localStorage, CACHE_KEY, "lite"); // the next visit starts without waiting, as lite
+        return setReal(false);
+      }
       if (!r.ok) return setReal((p) => p ?? false);
       const j = (await r.json()) as Partial<Account>;
       const acc: Account = {
@@ -92,6 +111,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
         premiumUntil: j.premiumUntil ?? null,
       };
       setAccount(acc);
+      setGuest(false);
       setReal(acc.premium);
       write(() => localStorage, CACHE_KEY, acc.premium ? "premium" : "lite");
       if (known.current === false && acc.premium) toast(t("Premium ist freigeschaltet. Viel Freude damit!", "Premium is unlocked. Enjoy!"));
@@ -138,6 +158,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     const step: UnlockStep = cars.some((c) => c.status === "pending") ? "review" : cars.some((c) => c.status === "awaiting_contract") ? "upload" : "start";
     return {
       ready: real !== null,
+      guest,
       premium: real === true && !previewing,
       account,
       premiumUntil: account?.premiumUntil ?? null,
@@ -150,7 +171,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       closeUpgrade,
       refresh,
     };
-  }, [real, preview, account, cars, months, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
+  }, [real, guest, preview, account, cars, months, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
 
   return <PlanContext.Provider value={value}>{children}</PlanContext.Provider>;
 }
@@ -159,4 +180,19 @@ export function usePlan(): Plan {
   const ctx = useContext(PlanContext);
   if (!ctx) throw new Error("usePlan must be used inside <PlanProvider>");
   return ctx;
+}
+
+/**
+ * For the things a guest cannot keep: runs `action` for an account, and for a guest opens the dialog that asks for a
+ * free account instead (naming what they tried).
+ */
+export function useNeedsAccount() {
+  const { guest, openUpgrade } = usePlan();
+  return useCallback(
+    (reason: AccountReason, action: () => void) => {
+      if (guest) openUpgrade(reason);
+      else action();
+    },
+    [guest, openUpgrade],
+  );
 }

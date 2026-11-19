@@ -8,7 +8,8 @@ import { FORUM_CATEGORIES, FORUM_KINDS, FORUM_SORTS, FORUM_STATUS, oneOf } from 
 
 /**
  * Forum per variant (db/migrations/005_forum.sql, 012_forum_structure.sql), shown at the bottom of each model page.
- * Signed-in users read and write; a user whose own car of this variant was approved with its contract or appraisal
+ * Everyone reads, guests too, but a guest sees no usernames (the authors wrote for members, not for the open web);
+ * signed-in users write, report and see the names. A user whose own car of this variant was approved with its contract or appraisal
  * (user_cars) is marked as a verified owner. Every topic sits in a category and is a question or a discussion; the
  * author of a question (or a reviewer) marks the reply that answered it. Authors remove their own posts, reviewers
  * (MIP_ADMINS) hide posts and topics; rows stay in the database (hidden_at), nothing is deleted.
@@ -115,10 +116,14 @@ async function readBody(req: IncomingMessage): Promise<Record<string, unknown> |
 }
 
 export async function handleForum(req: IncomingMessage, res: ServerResponse, url: URL) {
-  const user = await currentUser(req);
-  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  const signedIn = await currentUser(req);
+  // guests only read: writing, reporting and the reviewers' list need an account
+  if (!signedIn && (req.method !== "GET" || url.pathname === "/api/forum/meldungen")) return sendJson(res, 401, { error: "not signed in" });
   if (req.method !== "GET" && !sameOrigin(req)) return sendJson(res, 403, { error: "origin" });
-  const admin = isAdmin(user);
+  const user = signedIn ?? { id: "", username: "" }; // a guest owns nothing and has reported nothing
+  const admin = signedIn ? isAdmin(signedIn) : false;
+  // usernames go to members only; a guest gets "" and the app shows "Mitglied"
+  const name = <T extends string | null>(n: T): T => (signedIn || n === null ? n : ("" as T));
   const [, , , a, b, c] = url.pathname.split("/"); // "", "api", "forum", a, b, c
 
   // ---------------------------------------------------------------- latest topics everywhere
@@ -130,7 +135,7 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
              (select left(p.body, 220) from forum_posts p where p.topic_id = t.id and p.hidden_at is null order by p.created_at limit 1) as first
       from forum_topics t where t.hidden_at is null order by t.last_post_at desc limit ${limit}`;
     return sendJson(res, 200, {
-      topics: topics.map((x) => ({ id: x.id, variant: x.variant_id, title: x.title, category: x.category, username: x.username, createdAt: x.created_at, lastPostAt: x.last_post_at, posts: x.posts, excerpt: x.first })),
+      topics: topics.map((x) => ({ id: x.id, variant: x.variant_id, title: x.title, category: x.category, username: name(x.username), createdAt: x.created_at, lastPostAt: x.last_post_at, posts: x.posts, excerpt: x.first })),
     });
   }
 
@@ -185,12 +190,12 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
         from forum_posts p where p.topic_id = ${topic.id} order by p.created_at, p.id`;
       return sendJson(res, 200, {
         topic: {
-          id: topic.id, variant: topic.variant_id, title: topic.title, username: topic.username, createdAt: topic.created_at, hidden: Boolean(topic.hidden_at),
+          id: topic.id, variant: topic.variant_id, title: topic.title, username: name(topic.username), createdAt: topic.created_at, hidden: Boolean(topic.hidden_at),
           category: topic.category, kind: topic.kind, solvedPost: topic.solved_post_id, canEdit,
         },
         posts: posts.map((p) => ({
           id: p.id,
-          username: p.username,
+          username: name(p.username),
           owner: owners.has(ownerKey(topic.variant_id, p.user_id)),
           createdAt: p.created_at,
           editedAt: p.edited_at,
@@ -312,8 +317,8 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
       return sendJson(res, 200, {
         topics: topics.slice(0, PAGE).map((x) => ({
           id: x.id, variant: x.variant_id, title: x.title, category: x.category, kind: x.kind, solved: x.solved,
-          username: x.username, owner: owners.has(ownerKey(x.variant_id, x.user_id)), mine: x.user_id === user.id,
-          createdAt: x.created_at, lastPostAt: x.last_post_at, lastUsername: x.last_username, posts: x.posts,
+          username: name(x.username), owner: owners.has(ownerKey(x.variant_id, x.user_id)), mine: x.user_id === user.id,
+          createdAt: x.created_at, lastPostAt: x.last_post_at, lastUsername: name(x.last_username), posts: x.posts,
           // while searching: the passage that was found, not the beginning of the topic
           excerpt: x.hit ? excerptAround(x.hit, terms) : excerptStart(x.first),
         })),

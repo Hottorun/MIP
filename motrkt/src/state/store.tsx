@@ -137,9 +137,17 @@ function useStoreValue() {
   useEffect(() => {
     let live = true;
     fetch(SYNC_URL, { credentials: "same-origin" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j: { state: Partial<Persisted> | null; sync: boolean; owner?: string } | null) => {
+      .then((r) => (r.status === 401 ? { guest: true } : r.ok ? r.json() : null))
+      .then((j: { state: Partial<Persisted> | null; sync: boolean; owner?: string; guest?: undefined } | { guest: true } | null) => {
         if (!live) return void (sync.current = "off");
+        // A guest keeps nothing (src/lib/plan.tsx): lists left in this browser by an account whose session ran out
+        // are not shown. They stay on the server and come back with the next sign-in.
+        if (j?.guest) {
+          sync.current = "off";
+          hiddenItems = { watchlist: [], portfolio: [], alerts: [] };
+          setState((s) => ({ ...DEFAULT_STATE, lastVariantId: s.lastVariantId }));
+          return;
+        }
         const foreign = leftByAnotherAccount(j?.owner);
         const empty = () => {
           hiddenItems = { watchlist: [], portfolio: [], alerts: [] };

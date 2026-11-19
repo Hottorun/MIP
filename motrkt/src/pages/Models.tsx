@@ -13,7 +13,7 @@ import { valueSpread } from "../data/real/model";
 import { CarImage } from "../components/CarImage";
 import { ChartTooltipBox, Delta, Empty, Modal, Pill, Segmented, axisProps, Money } from "../components/ui";
 import { LockedValue } from "../components/premium/Locked";
-import { usePlan } from "../lib/plan";
+import { useNeedsAccount, usePlan } from "../lib/plan";
 import { t } from "../i18n";
 import { tr } from "../i18n/terms";
 import { UPCOMING_BRANDS, upcomingBrandById, type UpcomingBrand } from "../data/upcoming";
@@ -108,6 +108,8 @@ export default function Models() {
   const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
   const { watchlist, toggleWatch, toast } = useStore();
+  const needsAccount = useNeedsAccount();
+  const watch = (id: string) => needsAccount("watchlist", () => toggleWatch(id)); // a guest is asked for an account
   const brandId = params.get("marke") ?? "";
   const modelId = params.get("modell") ?? "";
   const generationId = params.get("generation") ?? "";
@@ -361,7 +363,7 @@ export default function Models() {
                     v={v}
                     watched={watchlist.includes(v.id)}
                     compared={compare.includes(v.id)}
-                    onWatch={() => toggleWatch(v.id)}
+                    onWatch={() => watch(v.id)}
                     onCompare={() => toggleCompare(v.id)}
                     onOpen={() => navigate(`/markt/${v.id}`)}
                   />
@@ -407,7 +409,7 @@ export default function Models() {
                 return (
                   <tr key={v.id} onClick={() => navigate(`/markt/${v.id}`)} tabIndex={0} role="link" onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); navigate(`/markt/${v.id}`); } }}>
                     <td onClick={(e) => e.stopPropagation()}>
-                      <button onClick={() => toggleWatch(v.id)} aria-label="Watchlist" className={watchlist.includes(v.id) ? "text-gold" : "text-faint hover:text-ink"}>
+                      <button onClick={() => watch(v.id)} aria-label="Watchlist" className={watchlist.includes(v.id) ? "text-gold" : "text-faint hover:text-ink"}>
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
                       </button>
                     </td>

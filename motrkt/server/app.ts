@@ -62,7 +62,7 @@ function securityHeaders(req: IncomingMessage, res: ServerResponse) {
 export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
   securityHeaders(req, res);
   try {
-    if (await authGate(req, res)) return; // sign-in page, auth API, or no session
+    if (await authGate(req, res)) return; // sign-in page, auth API, legal pages for guests
   } catch (err) {
     console.error(err);
     res.statusCode = 500;
@@ -100,7 +100,7 @@ export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
     file = join(DIST, "index.html"); // SPA fallback
   }
   res.setHeader("Content-Type", TYPES[extname(file)] ?? "application/octet-stream");
-  // "private": everything here is behind the sign-in, so no shared cache (Vercel's CDN, proxies) may keep a copy
+  // "private": the full data differs per account (premium or not), so no shared cache (Vercel's CDN, proxies) may keep a copy
   // assets/ and data/ carry a content hash in the name (vite.config.ts), so they may be kept for a year
   res.setHeader(
     "Cache-Control",

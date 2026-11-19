@@ -107,7 +107,9 @@ export function search(query: string, limit = 9, lite = false): SearchHit[] {
       if (hits.length >= limit + 3) break;
       if (!hasWords(x.title, terms)) continue;
       const v = variantById.get(x.variant);
-      hits.push({ kind: KIND.topic, label: x.title, detail: `${v ? variantTitle(v) : x.variant} · ${x.username}`, href: `/markt/${x.variant}?thema=${x.id}#forum` });
+      const where = v ? variantTitle(v) : x.variant;
+      // a guest gets no usernames (server/forum.ts)
+      hits.push({ kind: KIND.topic, label: x.title, detail: x.username ? `${where} · ${x.username}` : where, href: `/markt/${x.variant}?thema=${x.id}#forum` });
     }
     let n = 0;
     for (const l of shopListings()) {
