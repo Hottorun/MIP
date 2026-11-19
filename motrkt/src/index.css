@@ -156,9 +156,9 @@
       --color-rose: #e08a9a;
       --color-accent: #729da4;
       --color-accent-2: #9dbcc0;
-      --color-accent-soft: #16363c;
-      --color-accent-fill: #16363c;
-      --color-accent-fill-2: #1e4a52;
+      --color-accent-soft: #1f2c2e;
+      --color-accent-fill: #223337;
+      --color-accent-fill-2: #2b4146;
       --color-menu: #172427;
       --color-menu-2: #1a2b2f;
       --color-menu-head: #172427;
@@ -167,13 +167,13 @@
       --color-on-accent: #eeeae1;
       --color-gold-soft: #33291a;
       --color-cobalt: #729da4;
-      --color-cobalt-soft: #16363c;
+      --color-cobalt-soft: #1f2c2e;
       --color-red: #ee8a7a;
       --color-red-soft: #3a201d;
       --color-up-soft: #1d3220;
       --color-down-soft: #3a201d;
-      --color-night: #0b1d20;
-      --color-night-2: #12333a;
+      --color-night: #172427;
+      --color-night-2: #172427;
       --color-series-1: #1b9aa3;
       --color-series-2: #b5802f;
       --color-series-3: #6478cf;
@@ -200,9 +200,9 @@
     --color-rose: #e08a9a;
     --color-accent: #729da4;
     --color-accent-2: #9dbcc0;
-    --color-accent-soft: #16363c;
-    --color-accent-fill: #16363c;
-    --color-accent-fill-2: #1e4a52;
+    --color-accent-soft: #1f2c2e;
+    --color-accent-fill: #223337;
+    --color-accent-fill-2: #2b4146;
     --color-menu: #172427;
     --color-menu-2: #1a2b2f;
     --color-menu-head: #172427;
@@ -211,13 +211,13 @@
     --color-on-accent: #eeeae1;
     --color-gold-soft: #33291a;
     --color-cobalt: #729da4;
-    --color-cobalt-soft: #16363c;
+    --color-cobalt-soft: #1f2c2e;
     --color-red: #ee8a7a;
     --color-red-soft: #3a201d;
     --color-up-soft: #1d3220;
     --color-down-soft: #3a201d;
-    --color-night: #0b1d20;
-    --color-night-2: #12333a;
+    --color-night: #172427;
+    --color-night-2: #172427;
     --color-series-1: #1b9aa3;
     --color-series-2: #b5802f;
     --color-series-3: #6478cf;
@@ -385,6 +385,17 @@
     --color-accent-fill: #47a7b8;
     --color-accent-fill-2: #7fc0cc;
     --color-on-accent: #10272b;
+  }
+  /* dark theme: the band's accents as calm as the rest of the dark theme */
+  :root[data-theme="dark"] .night-band {
+    --color-accent: #8fb0b5;
+    --color-accent-fill: #729da4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .night-band {
+      --color-accent: #8fb0b5;
+      --color-accent-fill: #729da4;
+    }
   }
 }
 
