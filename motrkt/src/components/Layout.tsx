@@ -53,8 +53,8 @@ export function Layout() {
         <span className="hidden text-on-night/65 sm:inline">
           {" "}
           {t(
-            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen seit 2015.`,
-            `Market values from ${num(N_AUCTIONS)} auction results since 2015.`,
+            `Marktwerte aus ${num(N_AUCTIONS)} Auktionsergebnissen, Händler- und Privatverkäufen.`,
+            `Market values from ${num(N_AUCTIONS)} auction results, dealer and private sales.`,
           )}
         </span>
       </div>
