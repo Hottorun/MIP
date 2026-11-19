@@ -132,6 +132,8 @@ export type Listing = {
   /** null where the listing does not state it */
   mileage: number | null;
   price: number;
+  /** The dealer states no price ("Preis auf Anfrage"); price is 0 then and must not be shown or compared. */
+  onRequest?: boolean;
   country: string;
   city: string;
   seller: string;

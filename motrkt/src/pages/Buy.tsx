@@ -5,6 +5,7 @@ import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, H
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getAllListings, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
+import { onRequestListings } from "../data/real/onRequest";
 import { getMetrics } from "../data/market";
 import type { Listing, Model, Variant } from "../data/types";
 import { cn, curSign, date, eur, flag, fromDisplay, km, num, pct, liters, safeUrl } from "../lib/format";
@@ -44,8 +45,17 @@ function enrich(list: Listing[]): Enriched[] {
     const kmFactor = mileageAdjustment(v, l);
     const fair = value * condFactor * kmFactor;
     // Variants with too few records have no market value to compare against.
-    return { l, v, value, condFactor, kmFactor, fair, deal: v.measured ? l.price / fair - 1 : null };
+    return { l, v, value, condFactor, kmFactor, fair, deal: v.measured && !l.onRequest ? l.price / fair - 1 : null };
   });
+}
+
+/** Sort key for the price orders: listings without a price ("auf Anfrage") go last either way. */
+const priceRank = (l: Listing, dir: 1 | -1) => (l.onRequest ? dir * Number.MAX_VALUE : l.price);
+
+/** The asking price, or "Preis auf Anfrage" where the dealer states none. */
+function AskPrice({ l, className }: { l: Listing; className?: string }) {
+  if (l.onRequest) return <span className={cn("font-serif italic text-muted", className)}>{t("Preis auf Anfrage", "Price on request")}</span>;
+  return <Money value={l.price} className={className} />;
 }
 
 /** Sort key for "best price": listings without an assessment go last. */
@@ -127,7 +137,7 @@ export default function Buy() {
     const saved = new Set(savedListings);
     return all.filter(({ l, v, deal }) => {
       if (variantFilter && v.id !== variantFilter.id) return false;
-      if (l.price < pMin || l.price > pMax) return false;
+      if (!l.onRequest && (l.price < pMin || l.price > pMax)) return false;
       if (l.year < yFrom || l.year > yTo) return false;
       if (kMax < Infinity && (l.mileage === null || l.mileage > kMax)) return false;
       if (seller && l.sellerType !== seller) return false;
@@ -162,8 +172,8 @@ export default function Buy() {
     });
     const cmp: Record<SortKey, (a: Enriched, b: Enriched) => number> = {
       deal: (a, b) => dealRank(a) - dealRank(b),
-      priceAsc: (a, b) => a.l.price - b.l.price,
-      priceDesc: (a, b) => b.l.price - a.l.price,
+      priceAsc: (a, b) => priceRank(a.l, 1) - priceRank(b.l, 1),
+      priceDesc: (a, b) => priceRank(b.l, -1) - priceRank(a.l, -1),
       newest: (a, b) => b.l.listedAt - a.l.listedAt,
       mileage: (a, b) => (a.l.mileage ?? Number.MAX_SAFE_INTEGER) - (b.l.mileage ?? Number.MAX_SAFE_INTEGER),
     };
@@ -434,7 +444,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
       </div>
       <h3 className="mt-1 truncate font-serif text-[18px] leading-snug decoration-line-2 underline-offset-4 group-hover:underline">{variantTitle(v, { brand: false })}</h3>
       <div className="mt-2 flex items-baseline justify-between gap-3 border-t border-line pt-2">
-        <Money value={l.price} className="text-[17px]" />
+        <AskPrice l={l} className="text-[17px]" />
         <span className="min-w-0 truncate text-[13px] text-muted">
           {flag(l.country)} {place(l)}
         </span>
@@ -447,7 +457,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
   const { l, v } = e;
   const { watchlist, toggleWatch, addHolding, toast } = useStore();
   const [added, setAdded] = useState(false);
-  const d = dealLabel(e.deal);
+  const d = l.onRequest ? { label: t("Preis auf Anfrage", "Price on request"), tone: "neutral" as const } : dealLabel(e.deal);
   const watched = watchlist.includes(v.id);
   const m = getMetrics(v.id);
   const lite = !usePlan().premium; // the value's history is premium (src/lib/plan.tsx)
@@ -521,7 +531,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
           >
             <Star className="size-4" fill={watched ? "currentColor" : "none"} /> {watched ? t("Auf der Watchlist", "On the watchlist") : t("Zur Watchlist", "Add to watchlist")}
           </button>
-          <button
+          {!l.onRequest && <button
             className="btn"
             disabled={added}
             onClick={() => {
@@ -531,7 +541,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
             }}
           >
             <Briefcase className="size-4" /> {added ? t("Im Portfolio", "In portfolio") : t("Als gekauft ins Portfolio", "Add to portfolio as bought")}
-          </button>
+          </button>}
         </>
       }
     >
@@ -572,7 +582,14 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                 <span className="text-sm font-semibold">{t("Preisbewertung", "Price assessment")}</span>
                 <Pill tone={d.tone}>{d.label}</Pill>
               </div>
-              {e.deal === null ? (
+              {l.onRequest ? (
+                <p className="text-xs text-muted">
+                  {t(
+                    "Der Händler nennt keinen Preis. Den fairen Wert dieser Variante finden Sie in den Marktdaten.",
+                    "The dealer states no price. The fair value of this variant is in the market data.",
+                  )}
+                </p>
+              ) : e.deal === null ? (
                 <p className="text-xs text-muted">
                   {t(
                     "Für diese Variante gibt es zu wenige belegte Auktionsergebnisse für einen Marktwert.",
@@ -624,7 +641,7 @@ function ListingModal({ e, all, onClose, onOpen }: { e: Enriched; all: Enriched[
                         {s.l.year} · {km(s.l.mileage)} · {flag(s.l.country)} {place(s.l)}
                       </div>
                       <div className="flex items-center justify-between gap-2">
-                        <Money value={s.l.price} className="text-[15px]" />
+                        <AskPrice l={s.l} className="text-[15px]" />
                         <Pill tone={sd.tone} className="text-[10px]">
                           {s.deal === null ? "–" : pct(s.deal)}
                         </Pill>
@@ -728,7 +745,7 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
 const BUY_SOURCES = new Set(["Karero", "Janzen Klassik"]);
 let buyCache: Listing[] | undefined;
 function buyListings(): Listing[] {
-  buyCache ??= getAllListings().filter((l) => BUY_SOURCES.has(l.source));
+  buyCache ??= [...getAllListings().filter((l) => BUY_SOURCES.has(l.source)), ...onRequestListings()];
   return buyCache;
 }
 
