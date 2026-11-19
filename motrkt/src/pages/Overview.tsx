@@ -33,7 +33,8 @@ import {
   axisProps,
   Money,
 } from "../components/ui";
-import { Lock } from "../components/premium/Locked";
+import { Lock, LockedValue } from "../components/premium/Locked";
+import { usePlan } from "../lib/plan";
 import { yearTicks } from "../components/insights/palette";
 import { t } from "../i18n";
 
@@ -384,8 +385,10 @@ function IndexRange({ data }: { data: { value: number }[] }) {
   );
 }
 
-/** Endless band of the cars sold last (names only) under the stage; pauses on hover, scrolls by hand with reduced motion. */
+/** Endless band of the cars sold last, with their hammer prices, under the stage; pauses on hover, scrolls by hand with
+ * reduced motion. Lite (src/lib/plan.tsx): which cars sold is free, the prices are premium. */
 function SalesTicker({ sales }: { sales: Sale[] }) {
+  const lite = !usePlan().premium;
   if (!sales.length) return null;
   const items = (copy: number) =>
     sales.map((s) => {
@@ -403,6 +406,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
           >
             {variantTitle(v, { brand: false })}
           </Link>
+          {lite ? <LockedValue reason="sales" sample="000.000 €" className="text-[15px]" /> : <Money value={s.price} sale={s} className="text-[15px]" />}
           <span className="pl-4 text-gold/60" aria-hidden>
             ◆
           </span>
@@ -421,7 +425,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
       >
         <ul
           className="ticker-track flex w-max"
-          style={{ ["--ticker-duration" as string]: `${sales.length * 2.5}s` }}
+          style={{ ["--ticker-duration" as string]: `${sales.length * 4}s` }}
         >
           {items(0)}
           {items(1)}
