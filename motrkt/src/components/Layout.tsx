@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock } from "lucide-react";
+import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight } from "lucide-react";
 import { useMe } from "../lib/userCars";
 import { usePlan } from "../lib/plan";
 import { signOut } from "../lib/session";
@@ -20,14 +20,15 @@ import { useTheme } from "../lib/theme";
 // What the market values rest on: auction results (Europe and US) and asking prices.
 const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL + (MODEL_CHANNELS.US_PCM ?? 0);
 
-const NAV_LEFT = [
+type NavEntry = { to: string; label: string; premium?: boolean };
+const NAV_LEFT: NavEntry[] = [
   { to: "/", get label() { return t("Start", "Home"); } },
   { to: "/modelle", get label() { return t("Modelle", "Models"); } },
   { to: "/auktionen", get label() { return t("Auktionen", "Auctions"); } },
   { to: "/kaufen", get label() { return t("Kaufen", "Buy"); } },
 ];
 // premium: locked for a lite user (src/lib/plan.tsx); the entries stay in the menu and lead to a preview of the page
-const NAV_RIGHT = [
+const NAV_RIGHT: NavEntry[] = [
   { to: "/insights", label: "Insights", premium: true },
   { to: "/ai", label: "Co-Pilot", premium: true },
 ];
@@ -120,16 +121,23 @@ function Wordmark({ className }: { className?: string }) {
   );
 }
 
-function NavItem({ to, label, premium }: { to: string; label: string; premium?: boolean }) {
+function useNavState(to: string, premium?: boolean) {
   const { pathname } = useLocation();
   const plan = usePlan();
-  const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
-  const locked = premium && plan.ready && !plan.premium;
+  return { active: to === "/" ? pathname === "/" : pathname.startsWith(to), locked: !!premium && plan.ready && !plan.premium };
+}
+
+/** Desktop header: quiet tabs; the current one sits on a soft accent pill. */
+function NavItem({ to, label, premium }: NavEntry) {
+  const { active, locked } = useNavState(to, premium);
   return (
     <NavLink
       to={to}
       title={locked ? t("Teil von Premium", "Part of premium") : undefined}
-      className={cn("inline-flex items-center gap-1.5 border-b py-1 text-[14.5px] transition-colors", active ? "border-accent text-ink" : "border-transparent text-muted hover:text-accent")}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[14.5px] font-medium tracking-[0.01em] transition-colors",
+        active ? "bg-accent-soft text-accent" : "text-ink/65 hover:text-ink",
+      )}
     >
       {label}
       {locked && (
@@ -137,6 +145,32 @@ function NavItem({ to, label, premium }: { to: string; label: string; premium?: 
           <Lock className="size-3 text-gold" strokeWidth={2} aria-hidden />
           <span className="sr-only">{t("(Premium)", "(premium)")}</span>
         </>
+      )}
+    </NavLink>
+  );
+}
+
+/**
+ * Mobile menu: numbered section names in the serif on the petrol panel. The current one in gold with a gold rule
+ * at its edge; the others reveal an arrow on hover.
+ */
+function MenuRow({ to, label, premium, index }: NavEntry & { index: number }) {
+  const { active, locked } = useNavState(to, premium);
+  return (
+    <NavLink to={to} aria-current={active ? "page" : undefined} className="group relative flex items-baseline gap-4 py-3.5">
+      {active && <span className="absolute top-1/2 -left-5 h-7 w-[3px] -translate-y-1/2 rounded-r-full bg-[#d3ad66] sm:-left-8" aria-hidden />}
+      <span className={cn("w-5 shrink-0 text-[10.5px] font-medium tracking-[0.2em] tabular-nums", active ? "text-[#d3ad66]" : "text-white/30")}>{String(index + 1).padStart(2, "0")}</span>
+      <span className={cn("flex-1 font-serif text-[25px] leading-none transition-colors", active ? "text-[#e4c486]" : "text-white group-hover:text-[#e4c486]")}>{label}</span>
+      {locked ? (
+        <span className="inline-flex shrink-0 items-center gap-1 self-center rounded-full border border-[#d3ad66]/45 px-2 py-0.5 text-[9.5px] font-semibold tracking-[0.16em] text-[#e4c486] uppercase">
+          <Lock className="size-2.5" strokeWidth={2.25} aria-hidden /> Premium
+        </span>
+      ) : (
+        <ArrowRight
+          className={cn("size-4 shrink-0 self-center transition-all", active ? "text-[#d3ad66]" : "-translate-x-1 text-white/0 group-hover:translate-x-0 group-hover:text-white/60")}
+          strokeWidth={1.5}
+          aria-hidden
+        />
       )}
     </NavLink>
   );
@@ -168,15 +202,15 @@ function Header() {
           <button className="-ml-1 p-1 text-ink lg:hidden" onClick={() => setMenuOpen((o) => !o)} aria-label={t("Menü", "Menu")} aria-expanded={menuOpen}>
             {menuOpen ? <X className="size-5" strokeWidth={1.5} /> : <Menu className="size-5" strokeWidth={1.5} />}
           </button>
-          <nav className="hidden items-center gap-7 lg:flex" aria-label={t("Hauptnavigation", "Main navigation")}>
+          <nav className="hidden items-center gap-1 lg:flex" aria-label={t("Hauptnavigation", "Main navigation")}>
             {NAV_LEFT.map((n) => (
-              <NavItem key={n.to} to={n.to} label={n.label} />
+              <NavItem key={n.to} {...n} />
             ))}
           </nav>
         </div>
         <Wordmark />
         <div className="flex items-center justify-end gap-7">
-          <nav className="hidden items-center gap-7 lg:flex" aria-label={t("Weitere Bereiche", "More sections")}>
+          <nav className="hidden items-center gap-1 lg:flex" aria-label={t("Weitere Bereiche", "More sections")}>
             {NAV_RIGHT.map((n) => (
               <NavItem key={n.to} {...n} />
             ))}
@@ -193,16 +227,20 @@ function Header() {
         </div>
       </div>
       {menuOpen && (
-        <nav className="animate-fade-in border-t border-line bg-bg px-5 py-4 sm:px-8 lg:hidden" aria-label="Navigation">
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-3 font-serif text-lg sm:grid-cols-4">
-            {[...NAV_LEFT, ...NAV_RIGHT].map((n) => (
+        <nav
+          className="animate-fade-in relative overflow-hidden bg-gradient-to-b from-accent-fill to-[#0b2024] px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
+          aria-label="Navigation"
+        >
+          <div className="pointer-events-none absolute -top-28 -right-20 size-64 rounded-full bg-[#d3ad66]/[0.07] blur-3xl" aria-hidden />
+          <ul className="relative grid divide-y divide-white/[0.08] md:grid-flow-col md:grid-cols-2 md:grid-rows-3 md:gap-x-10">
+            {[...NAV_LEFT, ...NAV_RIGHT].map((n, i) => (
               <li key={n.to}>
-                <NavItem {...n} />
+                <MenuRow {...n} index={i} />
               </li>
             ))}
           </ul>
-          <div className="mt-4 flex items-center justify-between border-t border-line pt-3 sm:hidden">
-            <span className="text-[13px] text-muted">{t("Sprache", "Language")}</span>
+          <div className="relative mt-2 flex items-center justify-between border-t border-white/10 pt-3 sm:hidden">
+            <span className="font-serif text-[13px] text-white/40 italic">Carbay</span>
             <LangSwitch />
           </div>
         </nav>
