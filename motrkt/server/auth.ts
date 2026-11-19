@@ -454,12 +454,14 @@ const LOGIN_PAGE = `<!doctype html>
   * { box-sizing: border-box; }
   html, body { height:100%; }
   body { margin:0; background:#10272b; color:var(--ink); font:15px/1.5 "Instrument Sans","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  /* The photo is its own layer, fixed to the window: however tall the card gets (sign in or create account), the photo
+     keeps its size and crop. */
+  .photo { position:fixed; inset:0; background:#10272b url(${LOGIN_PHOTO}) 50% 100% / cover no-repeat; }
+  .photo::after { content:""; position:absolute; inset:0;
+                  background:linear-gradient(90deg, rgb(var(--night) / .9) 0%, rgb(var(--night) / .62) 30%, rgb(var(--night) / .08) 58%, transparent 100%),
+                             linear-gradient(0deg, rgb(var(--night) / .55) 0%, transparent 22%); }
   .stage { position:relative; min-height:100%; display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:48px; align-items:start;
-           padding:clamp(28px,5vh,56px) clamp(28px,4.5vw,72px) 72px; background:#10272b url(${LOGIN_PHOTO}) 50% 100% / cover no-repeat; }
-  .stage::before { content:""; position:absolute; inset:0; pointer-events:none;
-                   background:linear-gradient(90deg, rgb(var(--night) / .9) 0%, rgb(var(--night) / .62) 30%, rgb(var(--night) / .08) 58%, transparent 100%),
-                              linear-gradient(0deg, rgb(var(--night) / .55) 0%, transparent 22%); }
-  .stage > * { position:relative; }
+           padding:clamp(28px,5vh,56px) clamp(28px,4.5vw,72px) 72px; }
   .intro { color:var(--on-night); max-width:520px; }
   .logo { margin:0 0 30px; line-height:0; }
   .logo img { height:64px; width:auto; }
@@ -469,9 +471,10 @@ const LOGIN_PAGE = `<!doctype html>
   .facts { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:14px; color:rgb(243 239 230 / .88); }
   .facts li { display:flex; align-items:center; gap:10px; }
   .facts li::before { content:""; width:16px; height:1px; background:var(--gold); flex:none; }
-  .credit { position:absolute; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .55); }
-  .card { background:var(--panel); color:var(--ink); border-top:2px solid var(--gold-line); box-shadow:0 30px 80px -24px rgb(0 0 0 / .6); }
-  .form { padding:30px 30px 22px; }
+  .credit { position:fixed; margin:0; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .55); }
+  .card { display:flex; flex-direction:column; background:var(--panel); color:var(--ink); border-top:2px solid var(--gold-line); box-shadow:0 30px 80px -24px rgb(0 0 0 / .6); }
+  .form { flex:1; display:flex; flex-direction:column; padding:30px 30px 22px; }
+  #form { flex:1; display:flex; flex-direction:column; }
   .form h2 { margin:0 0 4px; font:400 28px/1.15 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; }
   .form .sub { margin:0 0 22px; font-size:13.5px; color:var(--muted); }
   .tabs { display:flex; gap:6px; padding:4px; margin:0 0 22px; background:var(--bg); border:1px solid var(--line); border-radius:999px; }
@@ -485,28 +488,30 @@ const LOGIN_PAGE = `<!doctype html>
   .submit:hover { background:var(--accent2); }
   .submit:disabled { opacity:.6; cursor:default; }
   .err { color:var(--down); font-size:14px; margin:12px 0 0; min-height:1.2em; }
-  .note { font-size:12.5px; line-height:1.45; color:var(--muted); margin:14px 0 0; } .note a { color:inherit; }
+  .note { font-size:12.5px; line-height:1.45; color:var(--muted); margin:auto 0 0; padding-top:14px; } .note a, .note button { color:inherit; }
+  .note button { background:none; border:0; padding:0; font:inherit; text-decoration:underline; cursor:pointer; }
   .foot { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:12px 30px; border-top:1px solid var(--line); font-size:12px; color:var(--faint); }
   .lang button { background:none; border:0; font:inherit; letter-spacing:.08em; color:var(--faint); cursor:pointer; padding:2px 4px; }
   .lang button[aria-pressed="true"] { color:var(--ink); font-weight:600; }
   .legal a { color:var(--faint); text-decoration:none; margin-left:14px; } .legal a:hover { color:var(--ink); }
   @media (max-width: 900px) {
     body { background:var(--bg); }
+    .photo { display:none; }
     .stage { display:block; padding:0; background:var(--bg); }
-    .stage::before { display:none; }
     .intro { max-width:none; padding:0 22px 52px; background:rgb(var(--night)); }
     .intro::before { content:""; display:block; margin:0 -22px 22px; aspect-ratio:16 / 9;
                      background:linear-gradient(0deg, rgb(var(--night)) 0%, transparent 35%), linear-gradient(180deg, rgb(var(--night) / .75) 0%, transparent 32%), url(${LOGIN_PHOTO_SMALL}) 50% 50% / cover no-repeat; }
     .logo { position:absolute; top:18px; left:22px; margin:0; } .logo img { height:40px; }
     .rule, .facts { display:none; }
     .claim { font-size:30px; text-shadow:none; } .tag { font-size:15.5px; margin:0; }
-    .credit { top:calc(56.25vw - 22px); bottom:auto; right:12px; }
+    .credit { position:absolute; top:calc(56.25vw - 22px); bottom:auto; right:12px; }
     .card { margin:-30px 14px 28px; }
     .form { padding:24px 22px 20px; } .foot { padding:12px 22px; }
   }
 </style>
 </head>
 <body>
+<div class="photo" aria-hidden="true"></div>
 <main class="stage">
   <section class="intro">
     <h1 class="logo"><img src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width="133" height="64" /></h1>
@@ -541,6 +546,7 @@ const LOGIN_PAGE = `<!doctype html>
         </div>
         <button class="submit" id="submit" type="submit"></button>
         <p class="err" id="err" role="alert"></p>
+        <p class="note" id="note-login"><span data-de="Neu bei Carbay? " data-en="New to Carbay? "></span><button type="button" id="to-register" data-de="Konto anlegen" data-en="Create an account"></button><span data-de=", ohne E-Mail-Adresse." data-en=", no email address needed."></span></p>
         <p class="note" id="note" hidden><span data-de="Für das Konto speichern wir nur Benutzernamen und einen Hash des Passworts, keine E-Mail-Adresse. Details in der " data-en="For the account we store only the username and a hash of the password, no email address. Details in the "></span><a href="/datenschutz" data-de="Datenschutzerklärung" data-en="privacy notice"></a>.</p>
       </form>
     </div>
@@ -559,14 +565,14 @@ const LOGIN_PAGE = `<!doctype html>
   var mode = "login";
   var T = {
     de: { login: "Anmelden", register: "Konto anlegen", title_login: "Willkommen zurück", sub_login: "Melden Sie sich mit Ihrem Benutzernamen an.",
-          title_reg: "Konto anlegen", sub_reg: "Benutzername und Passwort genügen, keine E-Mail-Adresse.", uhint: "3–30 Zeichen: Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich", phint: "Mindestens 8 Zeichen",
+          title_reg: "Konto anlegen", sub_reg: "Benutzername und Passwort genügen.", uhint: "3–30 Zeichen: Buchstaben, Ziffern, . - _", phint: "Mindestens 8 Zeichen",
           wrong_credentials: "Benutzername oder Passwort stimmt nicht.", username_taken: "Dieser Benutzername ist schon vergeben.",
           username_invalid: "Benutzername: 3–30 Zeichen, nur Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich.",
           password_length: "Das Passwort braucht mindestens 8 Zeichen.", password_is_username: "Das Passwort darf nicht der Benutzername sein.",
           mismatch: "Die Passwörter stimmen nicht überein.", too_many: "Zu viele Versuche. Bitte in 15 Minuten erneut versuchen.",
           empty: "Bitte Benutzername und Passwort eingeben.", network: "Keine Verbindung zum Server." },
     en: { login: "Sign in", register: "Create account", title_login: "Welcome back", sub_login: "Sign in with your username.",
-          title_reg: "Create an account", sub_reg: "A username and password are all it takes, no email address.", uhint: "3–30 characters: letters, digits, dot, hyphen, underscore", phint: "At least 8 characters",
+          title_reg: "Create an account", sub_reg: "A username and password are all it takes.", uhint: "3–30 characters: letters, digits, . - _", phint: "At least 8 characters",
           wrong_credentials: "Username or password is wrong.", username_taken: "This username is already taken.",
           username_invalid: "Username: 3–30 characters, only letters, digits, dot, hyphen, underscore.",
           password_length: "The password needs at least 8 characters.", password_is_username: "The password must not be the username.",
@@ -584,6 +590,7 @@ const LOGIN_PAGE = `<!doctype html>
     $("tab-register").setAttribute("aria-selected", String(reg));
     $("repeat-wrap").hidden = !reg;
     $("note").hidden = !reg;
+    $("note-login").hidden = reg;
     $("password").autocomplete = reg ? "new-password" : "current-password";
     $("uhint").textContent = reg ? T[lang].uhint : "";
     $("phint").textContent = reg ? T[lang].phint : "";
@@ -592,10 +599,24 @@ const LOGIN_PAGE = `<!doctype html>
     $("sub").textContent = T[lang][reg ? "sub_reg" : "sub_login"];
     $("err").textContent = "";
   }
+  // The card keeps the height of the taller mode (create account), so switching tabs moves nothing.
+  var card = document.querySelector(".card");
+  function lock() {
+    var keep = mode, keepErr = $("err").textContent;
+    card.style.minHeight = "";
+    mode = "register"; render();
+    var h = card.offsetHeight;
+    mode = keep; render();
+    $("err").textContent = keepErr;
+    card.style.minHeight = h + "px";
+  }
+  var lastW = 0;
+  window.addEventListener("resize", function () { if (window.innerWidth !== lastW) { lastW = window.innerWidth; lock(); } });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(lock);
   $("tab-login").onclick = function () { mode = "login"; render(); };
-  $("tab-register").onclick = function () { mode = "register"; render(); };
+  $("tab-register").onclick = $("to-register").onclick = function () { mode = "register"; render(); };
   document.querySelectorAll("[data-lang]").forEach(function (b) {
-    b.onclick = function () { lang = b.getAttribute("data-lang"); try { localStorage.setItem("mip-lang", lang); } catch (e) {} render(); };
+    b.onclick = function () { lang = b.getAttribute("data-lang"); try { localStorage.setItem("mip-lang", lang); } catch (e) {} render(); lock(); };
   });
   $("form").onsubmit = function (e) {
     e.preventDefault();
@@ -618,6 +639,8 @@ const LOGIN_PAGE = `<!doctype html>
       .catch(function () { $("err").textContent = T[lang].network; $("submit").disabled = false; });
   };
   render();
+  lastW = window.innerWidth;
+  lock();
   $("username").focus();
   // Demo link (QR code): /anmelden#demo=<password> signs in as the shared demo account. The part after # never
   // reaches the server or its logs, and it is taken out of the address before signing in.
