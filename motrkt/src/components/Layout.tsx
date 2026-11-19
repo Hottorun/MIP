@@ -115,7 +115,7 @@ class PageErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
 function Wordmark({ className }: { className?: string }) {
   return (
     <Link to="/" className={cn("flex items-center", className)} aria-label={t("Carbay Startseite", "Carbay home")}>
-      <LogoWordmark height={44} />
+      <LogoWordmark height={52} />
     </Link>
   );
 }

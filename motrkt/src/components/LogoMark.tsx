@@ -1,6 +1,6 @@
 // Carbay logo (public/brand/): the script wordmark (Italianno, outlined paths) and the square mark with its C, for
 // small places such as the favicon and the loading state.
-const WORDMARK_RATIO = 408.6 / 195.4;
+const WORDMARK_RATIO = 411.6 / 198.4;
 
 export function LogoWordmark({ height = 44, light = false, className }: { height?: number; light?: boolean; className?: string }) {
   const w = Math.round(height * WORDMARK_RATIO);
