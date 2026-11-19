@@ -112,7 +112,7 @@ export default function Buy() {
   const setPreferLive = (v: boolean) => setFilters({ quelle: v ? "" : "demo" });
   const liveAvailable = live.listings.length > 0;
   const showingLive = preferLive && liveAvailable;
-  const source = showingLive ? live.listings : getAllListings();
+  const source = showingLive ? live.listings : buyListings();
   const all = useMemo(() => enrich(source), [source]);
   const brandModels = models.filter((m) => !brand || m.brandId === brand);
 
@@ -178,7 +178,7 @@ export default function Buy() {
     if (!selectedId) return undefined;
     const hit = all.find((e) => e.l.id === selectedId);
     if (hit || !showingLive) return hit;
-    return enrich(getAllListings().filter((l) => l.id === selectedId))[0];
+    return enrich(buyListings().filter((l) => l.id === selectedId))[0];
   }, [all, selectedId, showingLive]);
   const openListing = (id: string | null) => {
     const next = new URLSearchParams(params);
@@ -221,7 +221,7 @@ export default function Buy() {
               "Every listing set against its fair market value, adjusted for condition and mileage.",
             )}
           </p>
-          <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} sourceLabel={showingLive ? t("Live von mobile.de", "Live from mobile.de") : t("Von Classic Trader und Händlerseiten", "From Classic Trader and dealer sites")} />
+          <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} sourceLabel={showingLive ? t("Live von mobile.de", "Live from mobile.de") : t("Von Karero und Janzen Klassik", "From Karero and Janzen Klassik")} />
         </div>
         <dl className="flex divide-x divide-line overflow-x-auto">
           {[
@@ -724,6 +724,14 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
+/** Dealers whose listings the buy page shows; the other sources stay in the data (model pages, market comparison) but are hidden here. */
+const BUY_SOURCES = new Set(["Karero", "Janzen Klassik"]);
+let buyCache: Listing[] | undefined;
+function buyListings(): Listing[] {
+  buyCache ??= getAllListings().filter((l) => BUY_SOURCES.has(l.source));
+  return buyCache;
+}
+
 function SourceBar({
   live,
   preferLive,
@@ -750,7 +758,7 @@ function SourceBar({
           mobile.de live
         </button>
         <button className={cn("rounded px-2 py-0.5", !preferLive ? "bg-gold/20 text-gold-2" : "text-muted")} onClick={() => setPreferLive(false)}>
-          {t("Classic Trader und Händler", "Classic Trader and dealers")}
+          {t("Karero und Janzen Klassik", "Karero and Janzen Klassik")}
         </button>
       </span>
       {live.status === "loading" && (
