@@ -354,7 +354,7 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
 }
 
 // ------------------------------------------------------------------------------------------------ gate
-const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-touch-icon.png", "/brand/carbay-wordmark.svg"]);
+const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-touch-icon.png", "/brand/carbay-wordmark.svg", "/brand/carbay-wordmark-light.svg"]);
 // the typefaces are served from this site (public/fonts), not from Google; the sign-in page needs them too
 const isOpen = (path: string) => OPEN.has(path) || /^\/fonts\/[\w.-]+\.(woff2|txt)$/.test(path);
 
@@ -416,6 +416,8 @@ export function safeNext(n: string | null) {
 
 // ------------------------------------------------------------------------------------------------ sign-in page
 // Standalone page (no app bundle): the app and its data load only after sign-in.
+/** Porsche press photo of the 993 Turbo S, also on the home page (src/data/real/launch.json). */
+const LOGIN_PHOTO = "https://porschepictures.flowcenter.de/pmdb/thumbnail.cgi?id=256119&w=1920&h=1280&crop=0&public=1&cs=4f14ffed9872f291";
 const LOGIN_PAGE = `<!doctype html>
 <html lang="de">
 <head>
@@ -424,84 +426,142 @@ const LOGIN_PAGE = `<!doctype html>
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
 <link rel="icon" href="/favicon-32.png?v=3" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
-<link rel="preload" href="/fonts/jost-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-<meta name="theme-color" content="#efe7d7" />
+<link rel="preload" href="/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<meta name="theme-color" content="#10272b" />
 <title>Anmelden – Carbay</title>
 <style>
-  @font-face { font-family:"Jost"; font-style:normal; font-weight:300 600; font-display:swap; src:url(/fonts/jost-latin-ext-wght-normal.woff2) format("woff2");
+  @font-face { font-family:"Instrument Sans"; font-style:normal; font-weight:400 700; font-display:swap; src:url(/fonts/instrument-sans-latin-ext-wght-normal.woff2) format("woff2");
     unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-  @font-face { font-family:"Jost"; font-style:normal; font-weight:300 600; font-display:swap; src:url(/fonts/jost-latin-wght-normal.woff2) format("woff2");
+  @font-face { font-family:"Instrument Sans"; font-style:normal; font-weight:400 700; font-display:swap; src:url(/fonts/instrument-sans-latin-wght-normal.woff2) format("woff2");
     unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-  :root { --bg:#efe7d7; --panel:#f7f2e8; --line:#dccfb8; --line2:#c6b699; --ink:#3a2a1d; --muted:#78624d; --faint:#a38f77; --gold:#8b6232; --down:#9a3b2c; }
+  @font-face { font-family:"Source Serif 4"; font-style:italic; font-weight:200 900; font-display:swap; src:url(/fonts/source-serif-4-latin-opsz-italic.woff2) format("woff2");
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  /* the app's colours (src/index.css). Wide screens: the form on the left, the 993 Turbo S photo of the home page on the
+     right at full height, petrol towards the bottom under the claim. Narrow screens: photo head, form below. */
+  :root { --bg:#f6f4ef; --panel:#fcfbf8; --field:#ffffff; --line:#e0dbd2; --line2:#c6bfb3; --ink:#1f1d1a; --muted:#5e5952; --faint:#8b847a;
+          --accent:#16363c; --accent2:#0e2529; --on-accent:#f6f4ef; --night:16 39 43; --gold:#d3ad66; --gold-line:#c9a35e; --on-night:#f3efe6; --down:#a33a2b;
+          --mark:url(/brand/carbay-wordmark.svg); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg:#121412; --panel:#161816; --field:#212422; --line:#2f3330; --line2:#4a4f4b; --ink:#eeeae1; --muted:#b4ada1; --faint:#8d877d;
+          --accent:#729da4; --accent2:#9dbcc0; --on-accent:#121412; --night:23 36 39; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
+  }
+  :root[data-theme="dark"] { --bg:#121412; --panel:#161816; --field:#212422; --line:#2f3330; --line2:#4a4f4b; --ink:#eeeae1; --muted:#b4ada1; --faint:#8d877d;
+          --accent:#729da4; --accent2:#9dbcc0; --on-accent:#121412; --night:23 36 39; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
   * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px 16px;
-         background:var(--bg); color:var(--ink); font:15px/1.5 "Jost","Futura","Century Gothic",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-  main { width:100%; max-width:380px; }
-  .logo { text-align:center; margin:0 0 10px; line-height:0; }
-  .logo img { height:64px; width:auto; }
-  .tag { text-align:center; color:var(--muted); font-size:13.5px; margin:0 0 28px; }
-  .card { background:var(--panel); border:1px solid var(--line); padding:26px 24px 22px; }
-  .tabs { display:flex; border-bottom:1px solid var(--line); margin:-4px 0 20px; }
-  .tabs button { flex:1; background:none; border:0; border-bottom:1.5px solid transparent; margin-bottom:-1px; padding:8px 0 10px;
-                 font:inherit; font-size:14px; letter-spacing:.06em; color:var(--faint); cursor:pointer; }
-  .tabs button[aria-selected="true"] { color:var(--ink); border-color:var(--ink); }
-  label { display:block; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
-  input { width:100%; font:inherit; font-size:16px; color:var(--ink); background:#fbf8f2; border:1px solid var(--line2); padding:10px 12px; margin:0 0 4px; border-radius:0; }
-  input:focus { outline:1.5px solid var(--ink); outline-offset:0; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--panel); color:var(--ink); font:15px/1.5 "Instrument Sans","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  .stage { min-height:100%; display:grid; grid-template-columns:minmax(420px, 40%) minmax(0,1fr); }
+  .side { display:flex; flex-direction:column; padding:36px clamp(28px,4.5vw,64px) 24px; background:var(--panel); }
+  .logo { margin:0; line-height:0; }
+  .logo img { height:50px; width:auto; }
+  .logo .dark { display:none; }
+  .form { width:100%; max-width:380px; margin:auto 0; padding:40px 0; }
+  .form h2 { margin:0 0 6px; font:400 34px/1.15 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; }
+  .form .sub { margin:0 0 26px; font-size:14px; color:var(--muted); }
+  .tabs { display:flex; gap:6px; padding:4px; margin:0 0 24px; background:var(--bg); border:1px solid var(--line); border-radius:999px; }
+  .tabs button { flex:1; background:none; border:0; border-radius:999px; padding:7px 0; font:inherit; font-size:14px; font-weight:500; color:var(--muted); cursor:pointer; transition:background .15s,color .15s; }
+  .tabs button[aria-selected="true"] { background:var(--accent); color:var(--on-accent); }
+  label { display:block; font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
+  input { width:100%; font:inherit; font-size:16px; color:var(--ink); background:var(--field); border:1px solid var(--line2); padding:11px 12px; margin:0 0 4px; border-radius:4px; }
+  input:focus { outline:2px solid var(--accent); outline-offset:-1px; border-color:transparent; }
   .hint { font-size:12.5px; color:var(--faint); margin:0 0 16px; min-height:1em; }
-  .submit { width:100%; margin-top:6px; padding:12px; background:var(--ink); color:var(--bg); border:0; font:inherit; font-size:14px; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
-  .submit:hover { background:var(--gold); }
+  .submit { width:100%; margin-top:6px; padding:13px; background:var(--accent); color:var(--on-accent); border:0; border-radius:4px; font:inherit; font-size:14px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:background .15s; }
+  .submit:hover { background:var(--accent2); }
   .submit:disabled { opacity:.6; cursor:default; }
   .err { color:var(--down); font-size:14px; margin:12px 0 0; min-height:1.2em; }
-  .lang { text-align:center; margin-top:18px; font-size:12.5px; letter-spacing:.08em; }
-  .lang button { background:none; border:0; font:inherit; color:var(--faint); cursor:pointer; padding:2px 4px; }
-  .lang button[aria-pressed="true"] { color:var(--ink); }
-  .legal { text-align:center; margin-top:14px; font-size:12px; } .legal a { color:var(--faint); text-decoration:none; margin:0 6px; } .legal a:hover { color:var(--ink); }
   .note { font-size:12.5px; line-height:1.45; color:var(--muted); margin:14px 0 0; } .note a { color:inherit; }
+  .foot { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:12px; color:var(--faint); }
+  .lang button { background:none; border:0; font:inherit; letter-spacing:.08em; color:var(--faint); cursor:pointer; padding:2px 4px; }
+  .lang button[aria-pressed="true"] { color:var(--ink); font-weight:600; }
+  .legal a { color:var(--faint); text-decoration:none; margin-left:14px; } .legal a:hover { color:var(--ink); }
+  .visual { position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; padding:48px clamp(28px,5vw,72px) 56px; color:var(--on-night);
+            background:#10272b url(${LOGIN_PHOTO}) 88% 50% / cover no-repeat; border-left:2px solid var(--gold-line); }
+  .visual::before { content:""; position:absolute; inset:0; pointer-events:none;
+                    background:linear-gradient(0deg, rgb(var(--night) / .97) 0%, rgb(var(--night) / .78) 30%, rgb(var(--night) / .15) 62%, rgb(var(--night) / .35) 100%); }
+  .visual > * { position:relative; }
+  .rule { width:56px; height:1px; background:var(--gold); margin:0 0 22px; }
+  .claim { margin:0 0 12px; max-width:560px; font:400 46px/1.07 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; color:#fbf8f1; }
+  .tag { margin:0 0 26px; font:italic 18px/1.45 "Source Serif 4","Iowan Old Style",Georgia,serif; color:rgb(243 239 230 / .75); }
+  .facts { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:10px 28px; font-size:14px; color:rgb(243 239 230 / .85); }
+  .facts li { display:flex; align-items:center; gap:10px; }
+  .facts li::before { content:""; width:16px; height:1px; background:var(--gold); flex:none; }
+  .credit { position:absolute; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .45); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .logo .light { display:none; } :root:not([data-theme="light"]) .logo .dark { display:inline; } }
+  :root[data-theme="dark"] .logo .light { display:none; } :root[data-theme="dark"] .logo .dark { display:inline; }
+  @media (max-width: 900px) {
+    .stage { position:relative; display:flex; flex-direction:column-reverse; }
+    .visual { min-height:340px; padding:28px 22px 30px; border-left:0; border-bottom:2px solid var(--gold-line); background-position:80% 50%; }
+    .claim { font-size:30px; } .tag { font-size:15.5px; margin-bottom:0; } .facts, .rule { display:none; }
+    .visual::before { background:linear-gradient(0deg, rgb(var(--night) / .95) 0%, rgb(var(--night) / .55) 38%, rgb(var(--night) / .2) 65%, rgb(var(--night) / .7) 100%); }
+    .credit { right:12px; bottom:8px; }
+    .side { padding:24px 22px 22px; }
+    .logo { position:absolute; top:22px; left:22px; z-index:2; } .logo .light { display:none !important; } .logo .dark { display:inline !important; } .logo img { height:42px; }
+    .form { max-width:none; padding:26px 0 30px; margin:0; }
+    .form h2 { font-size:28px; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1 class="logo"><img src="/brand/carbay-wordmark.svg" alt="Carbay" width="134" height="64" /></h1>
-  <p class="tag" data-de="Marktintelligenz für Sportwagen" data-en="Market intelligence for sports cars"></p>
-  <div class="card">
-    <div class="tabs" role="tablist">
-      <button type="button" role="tab" id="tab-login" aria-selected="true" data-de="Anmelden" data-en="Sign in"></button>
-      <button type="button" role="tab" id="tab-register" aria-selected="false" data-de="Konto anlegen" data-en="Create account"></button>
-    </div>
-    <form id="form" novalidate>
-      <label for="username" data-de="Benutzername" data-en="Username"></label>
-      <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="30" />
-      <p class="hint" id="uhint"></p>
-      <label for="password" data-de="Passwort" data-en="Password"></label>
-      <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200" />
-      <p class="hint" id="phint"></p>
-      <div id="repeat-wrap" hidden>
-        <label for="password2" data-de="Passwort wiederholen" data-en="Repeat password"></label>
-        <input id="password2" type="password" autocomplete="new-password" maxlength="200" />
-        <p class="hint"></p>
+<main class="stage">
+  <section class="side">
+    <h1 class="logo"><img class="light" src="/brand/carbay-wordmark.svg?v=2" alt="Carbay" width="104" height="50" /><img class="dark" src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width="104" height="50" /></h1>
+    <div class="form">
+      <h2 id="title"></h2>
+      <p class="sub" id="sub"></p>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-login" aria-selected="true" data-de="Anmelden" data-en="Sign in"></button>
+        <button type="button" role="tab" id="tab-register" aria-selected="false" data-de="Konto anlegen" data-en="Create account"></button>
       </div>
-      <button class="submit" id="submit" type="submit"></button>
-      <p class="err" id="err" role="alert"></p>
-      <p class="note" id="note" hidden><span data-de="Für das Konto speichern wir nur Benutzernamen und einen Hash des Passworts, keine E-Mail-Adresse. Details in der " data-en="For the account we store only the username and a hash of the password, no email address. Details in the "></span><a href="/datenschutz" data-de="Datenschutzerklärung" data-en="privacy notice"></a>.</p>
-    </form>
-  </div>
-  <div class="lang"><button type="button" data-lang="de">DE</button> | <button type="button" data-lang="en">EN</button></div>
-  <p class="legal"><a href="/impressum">Impressum</a><a href="/datenschutz" data-de="Datenschutz" data-en="Privacy"></a></p>
+      <form id="form" novalidate>
+        <label for="username" data-de="Benutzername" data-en="Username"></label>
+        <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required maxlength="30" />
+        <p class="hint" id="uhint"></p>
+        <label for="password" data-de="Passwort" data-en="Password"></label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200" />
+        <p class="hint" id="phint"></p>
+        <div id="repeat-wrap" hidden>
+          <label for="password2" data-de="Passwort wiederholen" data-en="Repeat password"></label>
+          <input id="password2" type="password" autocomplete="new-password" maxlength="200" />
+          <p class="hint"></p>
+        </div>
+        <button class="submit" id="submit" type="submit"></button>
+        <p class="err" id="err" role="alert"></p>
+        <p class="note" id="note" hidden><span data-de="Für das Konto speichern wir nur Benutzernamen und einen Hash des Passworts, keine E-Mail-Adresse. Details in der " data-en="For the account we store only the username and a hash of the password, no email address. Details in the "></span><a href="/datenschutz" data-de="Datenschutzerklärung" data-en="privacy notice"></a>.</p>
+      </form>
+    </div>
+    <div class="foot">
+      <span class="lang"><button type="button" data-lang="de">DE</button> | <button type="button" data-lang="en">EN</button></span>
+      <span class="legal"><a href="/impressum">Impressum</a><a href="/datenschutz" data-de="Datenschutz" data-en="Privacy"></a></span>
+    </div>
+  </section>
+  <section class="visual">
+    <div class="rule"></div>
+    <p class="claim" data-de="Was Ihre Leidenschaft heute wert ist." data-en="What your passion is worth today."></p>
+    <p class="tag" data-de="Marktintelligenz für Sportwagen" data-en="Market intelligence for sports cars"></p>
+    <ul class="facts">
+      <li data-de="Marktwerte aus echten Verkäufen" data-en="Market values from real sales"></li>
+      <li data-de="Täglich aktualisiert" data-en="Updated daily"></li>
+      <li data-de="Marktdaten seit 2015" data-en="Market data since 2015"></li>
+    </ul>
+    <p class="credit" data-de="Foto: Porsche AG" data-en="Photo: Porsche AG"></p>
+  </section>
 </main>
 <script>
 (function () {
+  try { var th = localStorage.getItem("mip-theme"); if (th === "light" || th === "dark") document.documentElement.setAttribute("data-theme", th); } catch (e) {}
   var lang = "de";
   try { lang = (localStorage.getItem("mip-lang") || localStorage.getItem("motrkt-lang")) === "en" ? "en" : "de"; } catch (e) {}
   var mode = "login";
   var T = {
-    de: { login: "Anmelden", register: "Konto anlegen", uhint: "3–30 Zeichen: Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich", phint: "Mindestens 8 Zeichen",
+    de: { login: "Anmelden", register: "Konto anlegen", title_login: "Willkommen zurück", sub_login: "Melden Sie sich mit Ihrem Benutzernamen an.",
+          title_reg: "Konto anlegen", sub_reg: "Benutzername und Passwort genügen, keine E-Mail-Adresse.", uhint: "3–30 Zeichen: Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich", phint: "Mindestens 8 Zeichen",
           wrong_credentials: "Benutzername oder Passwort stimmt nicht.", username_taken: "Dieser Benutzername ist schon vergeben.",
           username_invalid: "Benutzername: 3–30 Zeichen, nur Buchstaben, Ziffern, Punkt, Bindestrich, Unterstrich.",
           password_length: "Das Passwort braucht mindestens 8 Zeichen.", password_is_username: "Das Passwort darf nicht der Benutzername sein.",
           mismatch: "Die Passwörter stimmen nicht überein.", too_many: "Zu viele Versuche. Bitte in 15 Minuten erneut versuchen.",
           empty: "Bitte Benutzername und Passwort eingeben.", network: "Keine Verbindung zum Server." },
-    en: { login: "Sign in", register: "Create account", uhint: "3–30 characters: letters, digits, dot, hyphen, underscore", phint: "At least 8 characters",
+    en: { login: "Sign in", register: "Create account", title_login: "Welcome back", sub_login: "Sign in with your username.",
+          title_reg: "Create an account", sub_reg: "A username and password are all it takes, no email address.", uhint: "3–30 characters: letters, digits, dot, hyphen, underscore", phint: "At least 8 characters",
           wrong_credentials: "Username or password is wrong.", username_taken: "This username is already taken.",
           username_invalid: "Username: 3–30 characters, only letters, digits, dot, hyphen, underscore.",
           password_length: "The password needs at least 8 characters.", password_is_username: "The password must not be the username.",
@@ -523,6 +583,8 @@ const LOGIN_PAGE = `<!doctype html>
     $("uhint").textContent = reg ? T[lang].uhint : "";
     $("phint").textContent = reg ? T[lang].phint : "";
     $("submit").textContent = T[lang][mode];
+    $("title").textContent = T[lang][reg ? "title_reg" : "title_login"];
+    $("sub").textContent = T[lang][reg ? "sub_reg" : "sub_login"];
     $("err").textContent = "";
   }
   $("tab-login").onclick = function () { mode = "login"; render(); };
@@ -575,7 +637,7 @@ const LOGIN_CSP = [
   `script-src 'sha256-${LOGIN_SCRIPT_HASH}'`,
   "style-src 'unsafe-inline'",
   "font-src 'self'",
-  "img-src 'self'",
+  "img-src 'self' https://porschepictures.flowcenter.de",
   "connect-src 'self'",
   "base-uri 'none'",
   "form-action 'self'",
