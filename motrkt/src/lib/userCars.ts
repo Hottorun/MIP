@@ -5,7 +5,7 @@ import { t } from "../i18n";
 
 export type CarStatus = "awaiting_contract" | "pending" | "approved" | "rejected" | "expired";
 
-/** What a report rests on: a purchase contract (car bought or sold) or an appraisal of a car the user owns. */
+/** What a report rests on: a purchase contract (car bought or sold). "gutachten" (an appraisal of a car the user owns) was a second kind until November 2026 and lives on only in reports from then. */
 export type Kind = "kaufvertrag" | "gutachten";
 export type ValueBasis = "marktwert" | "wiederbeschaffungswert" | "wiederherstellungswert";
 
@@ -142,7 +142,7 @@ export const COUNTERPARTY = (c: string | null) =>
 export const ACCEPT = "application/pdf,image/jpeg,image/png,image/webp";
 export const MAX_BYTES = 4 * 1024 * 1024;
 
-/** Uploads the document (contract or appraisal); photos above the limit are scaled down in the browser first. */
+/** Uploads the purchase contract; photos above the limit are scaled down in the browser first. */
 export async function uploadContract(id: string, file: File) {
   let body: Blob = file;
   let type = file.type;

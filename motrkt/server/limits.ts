@@ -10,6 +10,7 @@ export const LIMITS = {
   contract: { max: 10, minutes: 24 * 60 }, // contract uploads per user and day (the AI check runs on each)
   mobilede: { max: 600, minutes: 60 }, // mobile.de searches per user and hour (one app start needs a few dozen)
   fehler: { max: 30, minutes: 60 }, // browser error reports per user and hour
+  checkout: { max: 20, minutes: 60 }, // Stripe Checkout pages opened or confirmed per user and hour (server/payments.ts)
   losfotos: { max: 300, minutes: 60 }, // lot pages read for photos per user and hour (cached lots do not count)
 } as const;
 

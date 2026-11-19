@@ -77,7 +77,7 @@ function PortfolioPage() {
   const [range, setRange] = useState<RangeKey>("5J");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Holding | undefined>();
-  // a holding the user wants to prove with a contract or an appraisal: the section below starts its form from it
+  // a holding the user wants to prove with its purchase contract: the section below starts its form from it
   const [proving, setProving] = useState<Holding | undefined>();
 
   const rows = useMemo(
@@ -264,8 +264,8 @@ function PortfolioPage() {
                         <td className="text-right">
                           <button
                             className="btn btn-ghost p-1.5"
-                            aria-label={t("Mit Kaufvertrag oder Wertgutachten belegen", "Prove with a contract or an appraisal")}
-                            title={t("Mit Kaufvertrag oder Wertgutachten belegen und Premium erhalten", "Prove with a contract or an appraisal and get premium")}
+                            aria-label={t("Mit Kaufvertrag belegen", "Prove with the purchase contract")}
+                            title={t("Mit Kaufvertrag belegen und Premium erhalten", "Prove with the purchase contract and get premium")}
                             onClick={() => {
                               setProving(r.h);
                               document.getElementById("melden")?.scrollIntoView({ behavior: "smooth" });

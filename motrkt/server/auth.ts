@@ -55,7 +55,7 @@ export function isAdmin(user: { id: string; username: string }) {
   return names.includes(user.username.toLowerCase());
 }
 
-/** Premium runs while premium_until lies in the future (server/userCars.ts sets it); reviewers always have it. */
+/** Premium runs while premium_until lies in the future (an approved contract or a payment sets it, server/premium.ts); reviewers always have it. */
 export const premiumActive = (premiumUntil: Date | string | null | undefined, admin = false, now = Date.now()) =>
   admin || (premiumUntil != null && new Date(premiumUntil).getTime() > now);
 
@@ -191,7 +191,7 @@ const mailLang = (v: unknown): "de" | "en" => (v === "en" ? "en" : "de");
  * Links in mails point at MIP_PUBLIC_URL (https://carbay.app), never at the Host header of the request: a forged Host
  * would otherwise send a password-reset link to someone else's site. Locally the dev server's own address.
  */
-function publicUrl(req: IncomingMessage) {
+export function publicUrl(req: IncomingMessage) {
   const set = process.env.MIP_PUBLIC_URL?.replace(/\/+$/, "");
   if (set) return set;
   if (process.env.VERCEL || process.env.NODE_ENV === "production") return "https://carbay.app";
@@ -547,11 +547,14 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   const topics = await sql`select id, variant_id, title, created_at, hidden_at from forum_topics where user_id = ${user.id} order by created_at`;
   const posts = await sql`select id, topic_id, body, created_at, edited_at, hidden_at from forum_posts where user_id = ${user.id} order by created_at`;
   const sessions = await sql`select expires_at from sessions where user_id = ${user.id}`;
+  // without the table (migration 014 not applied yet) nobody has paid
+  const [{ has }] = await sql<{ has: boolean }[]>`select to_regclass('premium_payments') is not null as has`;
+  const payments = has ? await sql`select id, paid_at, months, amount, currency, refunded_at from premium_payments where user_id = ${user.id} order by paid_at` : [];
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Content-Disposition", `attachment; filename="carbay-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
   res.setHeader("Cache-Control", "no-store");
-  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, forum: { topics, posts, reports }, sessions }, null, 2));
+  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, payments, forum: { topics, posts, reports }, sessions }, null, 2));
 }
 
 /**
@@ -586,6 +589,10 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
     await tx`delete from rate_events where key like ${"%:" + user.id}`;
     await tx`update forum_topics set user_id = ${gone}, username = '[gelöscht]' where user_id = ${user.id}`;
     await tx`update forum_posts set user_id = ${gone}, username = '[gelöscht]' where user_id = ${user.id}`;
+    // payments stay as bookkeeping, without the account (the receipt itself is with Stripe); skipped while the
+    // table does not exist yet (migration 014)
+    const [{ has }] = await tx<{ has: boolean }[]>`select to_regclass('premium_payments') is not null as has`;
+    if (has) await tx`update premium_payments set user_id = ${gone} where user_id = ${user.id}`;
     await tx`delete from users where id = ${user.id}`;
   });
   setCookie(req, res, "", 0);

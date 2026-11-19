@@ -68,7 +68,7 @@ function text(v: unknown, [min, max]: readonly [number, number]) {
 const hasUserCars = async () => (await db()<{ ok: boolean }[]>`select to_regclass('user_cars') is not null as ok`)[0].ok;
 
 const ownerKey = (variant: string, userId: string) => `${variant}\n${userId}`;
-/** Users with an approved car of one of these variants (purchase contract or appraisal checked), as ownerKey(variant, user). */
+/** Users with an approved car of one of these variants (purchase contract checked), as ownerKey(variant, user). */
 async function verifiedOwners(variants: string[]): Promise<Set<string>> {
   if (!(await hasUserCars())) return new Set();
   const rows = await db()<{ user_id: string; variant_id: string }[]>`

@@ -8,21 +8,25 @@ import { canStoreContracts, seal, unseal } from "./contractVault.ts";
 import { currentUser, isAdmin, isDemo } from "./auth.ts";
 import { db } from "./db.ts";
 import { overLimit } from "./limits.ts";
+import { PREMIUM_MONTHS, recomputePremium } from "./premium.ts";
 
 /**
- * "Mein Fahrzeug melden": users enter a car and upload the document that proves it (db/migrations/004_user_cars.sql,
- * 011_appraisals.sql). Two kinds: a purchase contract for a car they bought or sold ("kaufvertrag"), or an appraisal
- * of a car they own ("gutachten", Wertgutachten). If the user allows it, Claude pre-checks the document; a reviewer
- * (MIP_ADMINS) approves or rejects it. Either decision deletes the document, and so does the clock a day after the
- * upload. Approval gives the user PREMIUM_MONTHS of free premium access. A purchase price enters the market model on
- * the next daily run (scripts/db/export-user-cars.ts); an appraised value is an opinion, not a sale, and stays out.
+ * "Mein Fahrzeug melden": users enter a car they bought or sold and upload the purchase contract that proves it
+ * (db/migrations/004_user_cars.sql). If the user allows it, Claude pre-checks the document; a reviewer (MIP_ADMINS)
+ * approves or rejects it. Either decision deletes the document, and so does the clock a day after the upload.
+ * Approval gives the user PREMIUM_MONTHS of free premium access (server/premium.ts), and the price enters the market
+ * model on the next daily run (scripts/db/export-user-cars.ts).
+ *
+ * Appraisals (Wertgutachten, kind = 'gutachten', db/migrations/011_appraisals.sql) were a second way until November
+ * 2026 and are no longer taken: no new report, no new upload, no AI check. The ones approved before stay with their
+ * account (and keep the premium they earned); the reviewer can still decide one that was pending at the change.
  *
  * Data protection (DATENSCHUTZ.md): the document is stored encrypted (server/contractVault.ts), the consent is kept
  * with its time and wording, every reviewer access is logged (contract_access), the user can delete any of their
  * reports at any time, and what is left undecided or rejected is removed after the periods below.
  *
  *   GET    /api/fahrzeuge                     the user's own reports
- *   POST   /api/fahrzeuge                     new report (JSON, kind: "kaufvertrag" | "gutachten") -> { id }
+ *   POST   /api/fahrzeuge                     new report (JSON) -> { id }
  *   PUT    /api/fahrzeuge/:id/vertrag         the document (PDF, JPEG, PNG or WebP as the raw body, at most 4 MB)
  *   DELETE /api/fahrzeuge/:id                 delete a report with its contract; an approved one is detached from the
  *                                             account instead and stays in the market model without chassis number
@@ -32,21 +36,12 @@ import { overLimit } from "./limits.ts";
  *   POST   /api/pruefung/:id                  reviewers: { decision: "approve" | "reject", note, corrections }
  */
 
-export const PREMIUM_MONTHS = 12;
-
-/** Until when premium runs for approvals at these times (ascending): each adds PREMIUM_MONTHS to what is still running. */
-export function premiumFrom(approvals: Date[]): Date | null {
-  return approvals.reduce<Date | null>((until, at) => {
-    const next = new Date(until && until > at ? until : at);
-    next.setUTCMonth(next.getUTCMonth() + PREMIUM_MONTHS);
-    return next;
-  }, null);
-}
+export { PREMIUM_MONTHS };
 /** The wording of the consent in the form (src/components/portfolio/UserCars.tsx); change it together with that text. */
 export const CONSENT_VERSION = "2026-11-18-2";
 // Retention: how long a report may sit before it is removed without anyone asking.
 export const RETENTION = {
-  documentHours: 24, // an uploaded contract or appraisal is gone this long after the upload at the latest, decided or not
+  documentHours: 24, // an uploaded contract is gone this long after the upload at the latest, decided or not
   awaitingDays: 30, // entered, but no document uploaded: the report is deleted
   decidedDays: 90, // rejected or expired: the report is deleted this long after the decision
   accessLogDays: 365, // lines in contract_access
@@ -73,10 +68,6 @@ const VARIANTS = new Map((variantIds as [string, string][]).map(([id, name]) => 
 const CURRENCIES = new Set(["EUR", "CHF", "GBP", "USD", "SEK", "DKK", "NOK", "CAD"]);
 const COUNTRY = /^[A-Z]{2}$/;
 const VIN = /^[A-HJ-NPR-Z0-9 -]{5,20}$/i; // older Porsches have short chassis numbers (e.g. 9113101234)
-export const KINDS = ["kaufvertrag", "gutachten"] as const;
-export type Kind = (typeof KINDS)[number];
-/** What an appraisal states: the market value, or what replacing or rebuilding the car would cost. */
-const VALUE_BASES = new Set(["marktwert", "wiederbeschaffungswert", "wiederherstellungswert"]);
 
 type Row = Record<string, unknown> & { id: string; user_id: string; status: string };
 
@@ -99,17 +90,12 @@ const realDate = (d: string) => /^\d{4}-\d{2}-\d{2}$/.test(d) && !Number.isNaN(D
 const optS = (v: unknown, max = 200) => s(v, max) || null;
 const optB = (v: unknown) => (typeof v === "boolean" ? v : null);
 
-/**
- * Validated report from the form, or the field errors. An appraisal ("gutachten") has no role and no counterparty but
- * names its appraiser and what the value stands for; `price` is the appraised value, `sale_date` the appraisal's date.
- */
+/** Validated report from the form (a purchase contract; any other `kind` is turned down), or the field errors. */
 export function parseReport(b: Record<string, unknown>, today = new Date().toISOString().slice(0, 10)) {
   const e: Record<string, string> = {};
-  const kind: Kind = b.kind === undefined ? "kaufvertrag" : (s(b.kind) as Kind);
-  if (!KINDS.includes(kind)) e.kind = "kind";
-  const appraisal = kind === "gutachten";
-  const role = appraisal ? null : s(b.role);
-  if (!appraisal && role !== "kauf" && role !== "verkauf") e.role = "role";
+  if (b.kind !== undefined && b.kind !== "kaufvertrag") e.kind = "kind";
+  const role = s(b.role);
+  if (role !== "kauf" && role !== "verkauf") e.role = "role";
   const variant_id = s(b.variant_id);
   if (!VARIANTS.has(variant_id)) e.variant_id = "variant";
   const title = s(b.title, 120) || VARIANTS.get(variant_id) || "";
@@ -127,19 +113,15 @@ export function parseReport(b: Record<string, unknown>, today = new Date().toISO
   if (!realDate(sale_date) || sale_date > today || sale_date < "2000-01-01") e.sale_date = "date";
   const country = s(b.country).toUpperCase();
   if (!COUNTRY.test(country)) e.country = "country";
-  const counterparty = appraisal ? null : s(b.counterparty);
-  if (!appraisal && !["privat", "haendler", "auktion"].includes(counterparty ?? "")) e.counterparty = "counterparty";
-  const appraiser = appraisal ? s(b.appraiser, 80) : null;
-  if (appraisal && (appraiser ?? "").length < 2) e.appraiser = "appraiser";
-  const value_basis = appraisal ? s(b.value_basis) : null;
-  if (appraisal && !VALUE_BASES.has(value_basis ?? "")) e.value_basis = "value_basis";
+  const counterparty = s(b.counterparty);
+  if (!["privat", "haendler", "auktion"].includes(counterparty)) e.counterparty = "counterparty";
   const steering = optS(b.steering);
   if (steering && steering !== "links" && steering !== "rechts") e.steering = "steering";
   const condition = optS(b.condition, 4);
   if (condition && !/^[1-5][+-]?$/.test(condition)) e.condition = "condition";
   if (b.consent !== true) e.consent = "consent";
   const report = {
-    kind, role, variant_id, title, build_year, vin, km, price, currency, sale_date, country, counterparty, appraiser, value_basis,
+    kind: "kaufvertrag" as const, role, variant_id, title, build_year, vin, km, price, currency, sale_date, country, counterparty,
     body: optS(b.body, 40), gearbox: optS(b.gearbox, 40), steering, color_ext: optS(b.color_ext, 60), color_int: optS(b.color_int, 60),
     condition, matching_numbers: optB(b.matching_numbers), accident_free: optB(b.accident_free), notes: optS(b.notes, 2000),
     ai_consent: b.ai_consent === true, // optional: the pre-check by Anthropic runs only with it
@@ -155,28 +137,21 @@ const VISIBLE = [
 ] as const;
 
 function entered(r: Row): Entered {
-  const car = {
-    title: String(r.title), variantName: VARIANTS.get(String(r.variant_id)) ?? String(r.variant_id),
-    build_year: Number(r.build_year), vin: String(r.vin), km: Number(r.km),
-  };
-  const day = String(r.sale_date instanceof Date ? r.sale_date.toISOString().slice(0, 10) : r.sale_date);
-  if (r.kind === "gutachten")
-    return {
-      kind: "gutachten", ...car, value: Number(r.price), currency: String(r.currency), value_basis: String(r.value_basis ?? ""),
-      appraisal_date: day, appraiser: String(r.appraiser ?? ""), condition: r.condition ? String(r.condition) : null, country: String(r.country),
-    };
   return {
-    kind: "kaufvertrag", role: r.role === "kauf" ? "Nutzer hat gekauft" : "Nutzer hat verkauft", ...car, price: Number(r.price),
-    currency: String(r.currency), sale_date: day, country: String(r.country), counterparty: String(r.counterparty),
+    role: r.role === "kauf" ? "Nutzer hat gekauft" : "Nutzer hat verkauft", title: String(r.title),
+    variantName: VARIANTS.get(String(r.variant_id)) ?? String(r.variant_id), build_year: Number(r.build_year), vin: String(r.vin),
+    km: Number(r.km), price: Number(r.price), currency: String(r.currency),
+    sale_date: String(r.sale_date instanceof Date ? r.sale_date.toISOString().slice(0, 10) : r.sale_date),
+    country: String(r.country), counterparty: String(r.counterparty),
   };
 }
 
 /** Still within its day: an older document is treated as gone even before a sweep has removed it. */
 const fresh = () => db()`coalesce(contract_at, created_at) > now() - make_interval(hours => ${DOCUMENT_HOURS})`;
 
-/** Runs the AI check for a report with a document and stores the result (or the error) with it. Only with the user's consent. */
+/** Runs the AI check for a contract and stores the result (or the error) with it. Only with the user's consent. */
 async function runCheck(id: string) {
-  const [r] = await db()<Row[]>`select * from user_cars where id = ${id} and contract is not null and ai_consent and ${fresh()}`;
+  const [r] = await db()<Row[]>`select * from user_cars where id = ${id} and kind = 'kaufvertrag' and contract is not null and ai_consent and ${fresh()}`;
   if (!r) return;
   let result: unknown;
   try {
@@ -246,11 +221,12 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
       await db()`insert into user_cars ${db()({ id: newId, user_id: user.id, ...report, consent_at: new Date(), consent_version: CONSENT_VERSION })}`;
       return sendJson(res, 201, { id: newId });
     }
-    const [own] = id ? await db()<Row[]>`select id, user_id, status, ai_consent from user_cars where id = ${id} and user_id = ${user.id}` : [];
+    const [own] = id ? await db()<Row[]>`select id, user_id, status, kind, ai_consent from user_cars where id = ${id} and user_id = ${user.id}` : [];
     if (!own) return sendJson(res, 404, { error: "Not found" });
     if (sub === "vertrag" && req.method === "PUT") {
       // an expired report (its document was deleted after a day without a decision) takes a fresh upload
       if (!["awaiting_contract", "pending", "expired"].includes(own.status)) return sendJson(res, 409, { error: "decided" });
+      if (own.kind !== "kaufvertrag") return sendJson(res, 409, { error: "retired" }); // appraisals are no longer taken
       const type = String(req.headers["content-type"] ?? "").split(";")[0].trim().toLowerCase();
       if (!TYPES.has(type)) return sendJson(res, 415, { error: "type" });
       let file: Buffer;
@@ -288,7 +264,8 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
       // Withdrawing the consent. An approved car is part of the market values, so it stays, but without anything that
       // leads to a person: no account, no chassis number, no notes (what deleting the account does too,
       // server/auth.ts). The premium it earned goes with it: what is left is what the user's other approved cars
-      // give, none without any. Every other report goes with its contract and everything entered.
+      // and payments give (server/premium.ts), none without any. Every other report goes with its contract and
+      // everything entered.
       if (own.status === "approved") {
         await db().begin(async (tx) => {
           await tx`select 1 from users where id = ${user.id} for update`;
@@ -296,9 +273,7 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
                                 contract_name = null, ai_check = null, contract_deleted_at = coalesce(contract_deleted_at, now())
                                 where id = ${own.id} and user_id = ${user.id} and status = 'approved'`;
           if (!done.count) return;
-          const rest = await tx<{ at: Date }[]>`select coalesce(reviewed_at, created_at) as at from user_cars
-                                                where user_id = ${user.id} and status = 'approved' order by 1`;
-          await tx`update users set premium_until = ${premiumFrom(rest.map((r) => r.at))} where id = ${user.id}`;
+          await recomputePremium(tx, user.id);
         });
       } else await db()`delete from user_cars where id = ${own.id}`;
       return sendJson(res, 200, { ok: true });
@@ -316,7 +291,7 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
                               from user_cars c where status in ('approved', 'rejected') order by reviewed_at desc limit 50`;
       return sendJson(res, 200, { open, done });
     }
-    const [r] = id ? await db()<Row[]>`select id, user_id, status, contract_type, contract_name, ai_consent from user_cars where id = ${id}` : [];
+    const [r] = id ? await db()<Row[]>`select id, user_id, status, kind, contract_type, contract_name, ai_consent from user_cars where id = ${id}` : [];
     if (!r) return sendJson(res, 404, { error: "Not found" });
     if (sub === "vertrag" && req.method === "GET") {
       const [f] = await db()<{ contract: Buffer | null }[]>`select contract from user_cars where id = ${r.id} and ${fresh()}`;
@@ -344,6 +319,7 @@ export async function handleUserCars(req: IncomingMessage, res: ServerResponse, 
     if (sub === "ki" && req.method === "POST") {
       if (r.status !== "pending") return sendJson(res, 409, { error: "decided" });
       if (!r.ai_consent) return sendJson(res, 409, { error: "no_ai_consent" });
+      if (r.kind !== "kaufvertrag") return sendJson(res, 409, { error: "retired" });
       await logAccess(r.id, user.username, "ai_check");
       await runCheck(r.id);
       const [x] = await db()`select ai_check, ai_checked_at from user_cars where id = ${r.id}`;

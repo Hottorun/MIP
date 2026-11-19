@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Check, Crown, FileCheck2, FileSignature, FileText, Lock, ShieldCheck, Stamp, Trash2, Upload, X } from "lucide-react";
+import { ArrowRight, Check, CreditCard, Crown, FileCheck2, FileSignature, FileText, Lock, ShieldCheck, Trash2, Upload, X } from "lucide-react";
 import { variantById, variantTitle } from "../../data/db";
 import { getMetrics } from "../../data/market";
 import type { Holding } from "../../data/types";
@@ -10,30 +10,31 @@ import { tr } from "../../i18n/terms";
 import { CarImage } from "../CarImage";
 import { VariantPicker } from "../VariantPicker";
 import { Pill, Section, useConfirm } from "../ui";
-import { usePlan } from "../../lib/plan";
+import { offerPrice, usePlan } from "../../lib/plan";
 import {
   ACCEPT, COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, MAX_BYTES, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, uploadContract,
   type Kind, type UserCar,
 } from "../../lib/userCars";
 
 /**
- * "Premium freischalten" on the portfolio page (#melden): the user proves a car with a document and gets premium for
- * it once a reviewer has approved it (server/userCars.ts). Two documents count: the purchase contract of a car bought
- * or sold, and an appraisal (Wertgutachten) of a car the user owns. What happens to the document is said loudly
- * (PrivacyBand), in the words of the privacy notice (src/legal.ts section 4).
+ * "Premium freischalten" on the portfolio page (#melden), the two ways side by side. Free: the user proves a car they
+ * bought or sold with its purchase contract and gets premium once a reviewer has approved it (server/userCars.ts);
+ * what happens to the document is said loudly (PrivacyBand), in the words of the privacy notice (src/legal.ts
+ * section 4). Paid, where payment is set up: buying it (server/payments.ts).
+ *
+ * Appraisals (Wertgutachten) were a way too until November 2026. The form no longer takes them; the list still shows
+ * the ones submitted before.
  */
 
 const COUNTRIES = ["DE", "AT", "CH", "NL", "BE", "LU", "FR", "IT", "ES", "GB", "DK", "SE", "NO", "PL", "CZ", "US", "CA"];
 const CURRENCIES = ["EUR", "CHF", "GBP", "USD", "SEK", "DKK", "NOK", "CAD"];
-/** Who usually writes appraisals of classic cars in Germany; any other name can be typed. */
-const APPRAISERS = ["Classic Data", "Classic Analytics", "TÜV Süd Classic", "TÜV Rheinland", "TÜV Nord", "DEKRA", "GTÜ Classic", "KÜS", "FSP"];
 const today = () => new Date().toISOString().slice(0, 10);
 const parseNum = (s: string) => Number(isEn() ? s.replace(/[,\s]/g, "") : s.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
-/** "den Kaufvertrag" / "das Wertgutachten" and friends, where a sentence names the document. */
+/** "den Kaufvertrag" / "das Wertgutachten" where a line of the list names the document (appraisals: submissions from before). */
 const doc = (kind: Kind) =>
   kind === "gutachten"
-    ? { the: t("das Wertgutachten", "the appraisal"), The: t("Das Wertgutachten", "The appraisal"), short: t("Gutachten", "appraisal") }
-    : { the: t("den Kaufvertrag", "the purchase contract"), The: t("Der Kaufvertrag", "The purchase contract"), short: t("Vertrag", "contract") };
+    ? { the: t("das Wertgutachten", "the appraisal"), The: t("Das Wertgutachten", "The appraisal") }
+    : { the: t("den Kaufvertrag", "the purchase contract"), The: t("Der Kaufvertrag", "The purchase contract") };
 
 type Draft = {
   role: "kauf" | "verkauf";
@@ -47,8 +48,6 @@ type Draft = {
   sale_date: string;
   country: string;
   counterparty: "privat" | "haendler" | "auktion";
-  appraiser: string;
-  value_basis: "marktwert" | "wiederbeschaffungswert" | "wiederherstellungswert";
   body: string;
   gearbox: string;
   steering: string;
@@ -61,44 +60,40 @@ type Draft = {
 };
 
 /** An empty form, or one started from a car of the portfolio: what the holding knows is filled in, the rest stays open. */
-function startDraft(kind: Kind, from?: Holding): Draft {
-  const bought = from && kind === "kaufvertrag";
+function startDraft(from?: Holding): Draft {
   const day = from ? new Date(from.purchaseDate).toISOString().slice(0, 10) : "";
   return {
     role: "kauf", variant_id: from?.variantId ?? "", title: "", build_year: "", vin: "", km: from?.mileage ? String(from.mileage) : "",
     // a holding's purchase price is kept in euros, whatever currency the page shows
-    price: bought ? String(Math.round(from.purchasePrice)) : "", currency: "EUR", sale_date: bought && day >= "2000-01-01" ? day : "",
-    country: "DE", counterparty: "privat", appraiser: "", value_basis: "marktwert", body: "", gearbox: "", steering: "links",
+    price: from ? String(Math.round(from.purchasePrice)) : "", currency: "EUR", sale_date: from && day >= "2000-01-01" ? day : "",
+    country: "DE", counterparty: "privat", body: "", gearbox: "", steering: "links",
     color_ext: from?.color ? tr(from.color) : "", color_int: "", condition: from?.condition ?? "", matching_numbers: "", accident_free: "", notes: "",
   };
 }
 
-const FIELD_ERR: Record<string, (kind: Kind) => string> = {
-  kind: () => t("Bitte Kaufvertrag oder Wertgutachten wählen.", "Please choose purchase contract or appraisal."),
+const FIELD_ERR: Record<string, () => string> = {
   role: () => t("Bitte Kauf oder Verkauf wählen.", "Please choose bought or sold."),
   variant_id: () => t("Bitte ein Fahrzeug wählen.", "Please choose a car."),
   build_year: () => t("Bitte ein gültiges Baujahr eingeben.", "Please enter a valid build year."),
-  vin: (k) => t(`Bitte die Fahrgestellnummer (FIN) wie im ${doc(k).short} eingeben.`, `Please enter the chassis number (VIN) as in the ${doc(k).short}.`),
+  vin: () => t("Bitte die Fahrgestellnummer (FIN) wie im Vertrag eingeben.", "Please enter the chassis number (VIN) as in the contract."),
   km: () => t("Bitte den Kilometerstand eingeben.", "Please enter the mileage."),
-  price: (k) => (k === "gutachten" ? t("Bitte den Wert laut Gutachten eingeben.", "Please enter the value as in the appraisal.") : t("Bitte den Kaufpreis wie im Vertrag eingeben.", "Please enter the price as in the contract.")),
+  price: () => t("Bitte den Kaufpreis wie im Vertrag eingeben.", "Please enter the price as in the contract."),
   currency: () => t("Bitte eine Währung wählen.", "Please choose a currency."),
-  sale_date: (k) => t(`Bitte das Datum des ${k === "gutachten" ? "Gutachtens" : "Vertrags"} eingeben (nicht in der Zukunft).`, `Please enter the ${doc(k).short} date (not in the future).`),
+  sale_date: () => t("Bitte das Datum des Vertrags eingeben (nicht in der Zukunft).", "Please enter the contract date (not in the future)."),
   country: () => t("Bitte ein Land wählen.", "Please choose a country."),
   counterparty: () => t("Bitte wählen.", "Please choose."),
-  appraiser: () => t("Bitte angeben, wer das Gutachten erstellt hat (z. B. Classic Data).", "Please state who wrote the appraisal (e.g. Classic Data)."),
-  value_basis: () => t("Bitte wählen, welchen Wert das Gutachten nennt.", "Please choose which value the appraisal states."),
   condition: () => t("Note 1 bis 5, z. B. 2+.", "Grade 1 to 5, e.g. 2+."),
   consent: () => t("Bitte bestätigen.", "Please confirm."),
-  file: (k) => t(`Bitte ${doc(k).the} hochladen (PDF oder Foto, höchstens 4 MB).`, `Please upload ${doc(k).the} (PDF or photo, at most 4 MB).`),
+  file: () => t("Bitte den Kaufvertrag hochladen (PDF oder Foto, höchstens 4 MB).", "Please upload the purchase contract (PDF or photo, at most 4 MB)."),
 };
 
 /** What went wrong with an upload, in words: the server's answer decides (server/userCars.ts). */
-const uploadError = (e: unknown, kind: Kind) => {
+const uploadError = (e: unknown) => {
   const { message, status } = e as { message?: string; status?: number };
   if (message === "storage") return t("Der Upload ist gerade nicht möglich. Ihre Angaben sind gespeichert; bitte versuchen Sie es später noch einmal.", "Uploads are not possible right now. Your details are saved; please try again later.");
   if (message === "demo") return t("Mit dem geteilten Demo-Konto lassen sich keine Fahrzeuge melden. Bitte legen Sie ein eigenes Konto an.", "The shared demo account cannot report cars. Please create your own account.");
   if (status === 429) return t("Heute wurden schon viele Dokumente hochgeladen. Bitte morgen weiter.", "Many documents uploaded today already. Please continue tomorrow.");
-  return FIELD_ERR.file(kind);
+  return FIELD_ERR.file();
 };
 
 /**
@@ -177,14 +172,12 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
   );
 }
 
-/** One of the two ways to premium, as a tile: what the document is, what must be readable in it, and the way in. */
-function KindTile({ kind, months, onStart }: { kind: Kind; months: number; onStart: () => void }) {
-  const appraisal = kind === "gutachten";
-  const Icon = appraisal ? Stamp : FileSignature;
-  const color = appraisal ? "var(--color-cobalt)" : "var(--color-gold)";
-  const needs = appraisal
-    ? [t("Wertgutachten als PDF oder Foto", "Appraisal as PDF or photo"), t("Fahrzeug, Fahrgestellnummer, Wert und Datum lesbar", "Car, chassis number, value and date readable"), t("Von Classic Data, TÜV, DEKRA, GTÜ oder einem Sachverständigen", "By Classic Data, TÜV, DEKRA, GTÜ or an independent expert")]
-    : [t("Kaufvertrag als PDF oder Foto", "Purchase contract as PDF or photo"), t("Fahrzeug, Fahrgestellnummer, Preis und Datum lesbar", "Car, chassis number, price and date readable"), t("Kauf oder Verkauf, privat, vom Händler oder aus einer Auktion", "Purchase or sale, private, dealer or auction")];
+/** One of the ways to premium, as a tile: what it is, what it takes, and the way in. */
+function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, action, error }: {
+  icon: typeof FileSignature; color: string; eyebrow: string; title: string; text: string; points: string[];
+  /** months of premium this way gives */
+  months: number; action: ReactNode; error?: string;
+}) {
   return (
     <article className="stat-tile flex flex-col" style={{ ["--tile-color" as string]: color }}>
       <div className="relative z-[1] flex items-center gap-2.5">
@@ -192,17 +185,13 @@ function KindTile({ kind, months, onStart }: { kind: Kind; months: number; onSta
           <Icon className="size-[18px]" strokeWidth={1.6} aria-hidden />
         </span>
         <span className="eyebrow" style={{ color }}>
-          {appraisal ? t("Für Ihr Fahrzeug im Besitz", "For a car you own") : t("Gekauft oder verkauft", "Bought or sold")}
+          {eyebrow}
         </span>
       </div>
-      <h3 className="relative z-[1] mt-4 font-display text-[28px] leading-tight">{KIND_LABEL(kind)}</h3>
-      <p className="relative z-[1] mt-2 text-[14.5px] text-muted">
-        {appraisal
-          ? t("Ein Gutachten belegt Wert und Zustand Ihres Fahrzeugs. Wir prüfen es und stellen den Gutachtenwert unserem Marktwert gegenüber.", "An appraisal documents the value and condition of your car. We check it and set the appraised value against our market value.")
-          : t("Ihr Vertrag belegt einen echten Preis. Nach der Prüfung geht er anonym in unsere Marktwerte ein und macht sie für alle genauer.", "Your contract documents a real price. Once checked it enters our market values anonymously and makes them more accurate for everyone.")}
-      </p>
+      <h3 className="relative z-[1] mt-4 font-display text-[28px] leading-tight">{title}</h3>
+      <p className="relative z-[1] mt-2 text-[14.5px] text-muted">{text}</p>
       <ul className="relative z-[1] mt-4 space-y-1.5 text-[13.5px] text-muted">
-        {needs.map((n) => (
+        {points.map((n) => (
           <li key={n} className="flex gap-2">
             <Check className="mt-0.5 size-3.5 shrink-0" style={{ color }} strokeWidth={2.2} aria-hidden />
             {n}
@@ -210,15 +199,75 @@ function KindTile({ kind, months, onStart }: { kind: Kind; months: number; onSta
         ))}
       </ul>
       <div className="relative z-[1] mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
-        <button className="btn btn-gold" onClick={onStart}>
-          {appraisal ? t("Gutachten einreichen", "Submit an appraisal") : t("Kaufvertrag einreichen", "Submit a contract")}
-        </button>
+        {action}
         <span className="inline-flex items-center gap-1.5 text-[13.5px] text-ink">
           <Crown className="size-4 text-gold" strokeWidth={1.6} aria-hidden />
           {t(`${months} Monate Premium`, `${months} months of premium`)}
         </span>
       </div>
+      {error && (
+        <p className="relative z-[1] mt-3 text-[13.5px] text-down" role="alert">
+          {error}
+        </p>
+      )}
     </article>
+  );
+}
+
+/** The free way: the purchase contract of a car bought or sold. */
+function ContractTile({ months, onStart }: { months: number; onStart: () => void }) {
+  return (
+    <WayTile
+      months={months}
+      icon={FileSignature}
+      color="var(--color-gold)"
+      eyebrow={t("Kostenlos · gekauft oder verkauft", "Free · bought or sold")}
+      title={t("Kaufvertrag", "Purchase contract")}
+      text={t("Ihr Vertrag belegt einen echten Preis. Nach der Prüfung geht er anonym in unsere Marktwerte ein und macht sie für alle genauer.", "Your contract documents a real price. Once checked it enters our market values anonymously and makes them more accurate for everyone.")}
+      points={[t("Kaufvertrag als PDF oder Foto", "Purchase contract as PDF or photo"), t("Fahrzeug, Fahrgestellnummer, Preis und Datum lesbar", "Car, chassis number, price and date readable"), t("Kauf oder Verkauf, privat, vom Händler oder aus einer Auktion", "Purchase or sale, private, dealer or auction")]}
+      action={
+        <button className="btn btn-gold" onClick={onStart}>
+          {t("Kaufvertrag einreichen", "Submit a contract")}
+        </button>
+      }
+    />
+  );
+}
+
+/** The paid way (lib/plan.tsx `offer`, server/payments.ts): the button leads to Stripe's payment page and back here. */
+function BuyTile() {
+  const { offer, buy } = usePlan();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  if (!offer) return null;
+  return (
+    <WayTile
+      icon={CreditCard}
+      months={offer.months}
+      color="var(--color-cobalt)"
+      eyebrow={t("Sofort · ohne Dokument", "At once · no document")}
+      title={t("Premium kaufen", "Buy premium")}
+      text={t(`Sie zahlen einmal ${offerPrice(offer)} und Premium ist sofort für ${offer.months} Monate freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `You pay ${offerPrice(offer)} once and premium is unlocked at once for ${offer.months} months. No review, no waiting.`)}
+      points={[t("Einmalige Zahlung, kein Abo", "One payment, no subscription"), t("Verlängert sich nicht von selbst", "Does not renew by itself"), t("Sichere Zahlung über Stripe; Karten- und Kontodaten sehen wir nicht", "Secure payment through Stripe; we never see card or bank details")]}
+      error={error}
+      action={
+        <button
+          className="btn btn-gold"
+          disabled={busy}
+          onClick={async () => {
+            setBusy(true);
+            setError("");
+            const failed = await buy(); // on success the browser is on its way to the payment page
+            if (failed) {
+              setError(failed);
+              setBusy(false);
+            }
+          }}
+        >
+          {busy ? t("Zahlungsseite wird geöffnet …", "Opening the payment page …") : t(`Für ${offerPrice(offer)} kaufen`, `Buy for ${offerPrice(offer)}`)}
+        </button>
+      }
+    />
   );
 }
 
@@ -227,11 +276,11 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
   const [premiumUntil, setPremiumUntil] = useState<string | null>(null);
   const [months, setMonths] = useState(12);
   const [loadError, setLoadError] = useState(false);
-  const [form, setForm] = useState<Kind | null>(null);
-  const [notice, setNotice] = useState<{ kind: Kind; partial: boolean } | null>(null);
+  const [form, setForm] = useState(false);
+  const [notice, setNotice] = useState<{ partial: boolean } | null>(null);
   const top = useRef<HTMLDivElement>(null);
 
-  const { refresh } = usePlan();
+  const { refresh, offer } = usePlan();
   // `changed`: after a submission, upload or deletion, so the premium button and the locks follow at once
   const load = (changed = false) =>
     api<{ cars: UserCar[]; premiumUntil: string | null; premiumMonths: number }>("/api/fahrzeuge")
@@ -250,14 +299,14 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
   const premium = premiumUntil && new Date(premiumUntil) > new Date();
   const from = prefill && variantById.get(prefill.variantId);
   const toTop = () => requestAnimationFrame(() => top.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
-  const start = (kind: Kind) => {
-    setForm(kind);
+  const start = () => {
+    setForm(true);
     setNotice(null);
     toTop();
   };
-  const finish = (kind: Kind, partial: boolean) => {
-    setForm(null);
-    setNotice({ kind, partial });
+  const finish = (partial: boolean) => {
+    setForm(false);
+    setNotice({ partial });
     onPrefillClear?.();
     load(true);
     toTop();
@@ -268,7 +317,11 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
       tone="gold"
       eyebrow="Premium"
       title={t("Premium freischalten", "Unlock premium")}
-      sub={t(`Kaufvertrag oder Wertgutachten einreichen, ${months} Monate Premium erhalten`, `Submit a purchase contract or an appraisal, get ${months} months of premium`)}
+      sub={
+        offer
+          ? t(`Mit einem Kaufvertrag kostenlos oder für ${offerPrice(offer)} kaufen`, `Free with a purchase contract, or buy it for ${offerPrice(offer)}`)
+          : t(`Kaufvertrag einreichen, ${months} Monate Premium erhalten`, `Submit a purchase contract, get ${months} months of premium`)
+      }
       actions={
         premium ? (
           <span className="inline-flex items-center gap-2 text-[14px]">
@@ -285,12 +338,12 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
             <div>
               {notice.partial
                 ? t(
-                    `Die Angaben sind gespeichert, aber ${doc(notice.kind).the} konnten wir nicht hochladen. Laden Sie das Dokument unten in der Liste erneut hoch.`,
-                    `The details are saved, but ${doc(notice.kind).the} could not be uploaded. Upload the document again from the list below.`,
+                    "Die Angaben sind gespeichert, aber den Kaufvertrag konnten wir nicht hochladen. Laden Sie das Dokument unten in der Liste erneut hoch.",
+                    "The details are saved, but the purchase contract could not be uploaded. Upload the document again from the list below.",
                   )
                 : t(
-                    `Danke! Ihre Angaben und ${doc(notice.kind).the} haben wir erhalten. Das Ergebnis der Prüfung sehen Sie unten; das Dokument löschen wir mit der Entscheidung, spätestens nach ${DOCUMENT_HOURS} Stunden.`,
-                    `Thank you! We have received your details and ${doc(notice.kind).the}. You will see the result of the review below; we delete the document with the decision, after ${DOCUMENT_HOURS} hours at the latest.`,
+                    `Danke! Ihre Angaben und den Kaufvertrag haben wir erhalten. Das Ergebnis der Prüfung sehen Sie unten; das Dokument löschen wir mit der Entscheidung, spätestens nach ${DOCUMENT_HOURS} Stunden.`,
+                    `Thank you! We have received your details and the purchase contract. You will see the result of the review below; we delete the document with the decision, after ${DOCUMENT_HOURS} hours at the latest.`,
                   )}
             </div>
           </div>
@@ -298,7 +351,7 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
 
         {form ? (
           <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
-            <ReportForm key={form + (prefill?.id ?? "")} kind={form} from={prefill} months={months} onCancel={() => (setForm(null), onPrefillClear?.())} onDone={() => finish(form, false)} onPartial={() => finish(form, true)} />
+            <ReportForm key={prefill?.id ?? ""} from={prefill} months={months} onCancel={() => (setForm(false), onPrefillClear?.())} onDone={() => finish(false)} onPartial={() => finish(true)} />
             <div className="lg:sticky lg:top-28">
               <PrivacyBand compact />
             </div>
@@ -309,21 +362,22 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[3px] border border-accent/30 bg-accent-soft px-4 py-3 text-[14.5px]">
                 <span className="min-w-0 flex-1">
                   {t("Für Ihr Portfolio-Fahrzeug", "For your portfolio car")} <span className="font-serif text-[16px]">{variantTitle(from)}</span>
-                  {t(": Womit möchten Sie es belegen? Die bekannten Angaben übernehmen wir.", ": which document do you have? We carry over what we know.")}
+                  {t(": Reichen Sie den Kaufvertrag ein. Die bekannten Angaben übernehmen wir.", ": submit its purchase contract. We carry over what we know.")}
                 </span>
                 <button className="inline-flex items-center gap-1 text-[13px] text-muted hover:text-ink" onClick={onPrefillClear}>
                   <X className="size-3.5" aria-hidden /> {t("Verwerfen", "Dismiss")}
                 </button>
               </div>
             )}
-            <div className="grid gap-6 md:grid-cols-2">
-              <KindTile kind="kaufvertrag" months={months} onStart={() => start("kaufvertrag")} />
-              <KindTile kind="gutachten" months={months} onStart={() => start("gutachten")} />
+            <div className={cn("grid gap-6", offer && "md:grid-cols-2")}>
+              <ContractTile months={months} onStart={start} />
+              <BuyTile />
             </div>
-            <ol className="grid gap-x-10 gap-y-5 sm:grid-cols-3">
+            {offer && <h3 className="!mt-12 font-serif text-[21px]">{t("So geht es mit dem Kaufvertrag", "How the purchase contract works")}</h3>}
+            <ol className={cn("grid gap-x-10 gap-y-5 sm:grid-cols-3", offer && "!mt-5")}>
               {[
-                [t("Angaben eintragen", "Enter the details"), t("Fahrzeug, Fahrgestellnummer, Preis oder Wert und Datum, genau wie im Dokument.", "Car, chassis number, price or value and date, exactly as in the document.")],
-                [t("Dokument hochladen", "Upload the document"), t("PDF oder Foto, gern geschwärzt. Wir vergleichen es mit Ihren Angaben.", "PDF or photo, redacted if you like. We compare it with your details.")],
+                [t("Angaben eintragen", "Enter the details"), t("Fahrzeug, Fahrgestellnummer, Preis und Datum, genau wie im Vertrag.", "Car, chassis number, price and date, exactly as in the contract.")],
+                [t("Kaufvertrag hochladen", "Upload the contract"), t("PDF oder Foto, gern geschwärzt. Wir vergleichen es mit Ihren Angaben.", "PDF or photo, redacted if you like. We compare it with your details.")],
                 [t("Premium erhalten", "Get premium"), t(`Nach der Freigabe schalten wir ${months} Monate Premium frei. Jede weitere Freigabe verlängert.`, `Once approved we unlock ${months} months of premium. Every further approval extends it.`)],
               ].map(([h, b], i) => (
                 <li key={h} className="flex gap-4">
@@ -367,6 +421,7 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
   const d = doc(car.kind);
   // an expired report lost its document after a day without a decision and takes a new one
   const open = car.status === "awaiting_contract" || car.status === "pending" || car.status === "expired";
+  const takesUpload = open && !appraisal; // appraisals are no longer taken (server/userCars.ts)
   const deadline = car.status === "pending" && car.contract_at ? new Date(new Date(car.contract_at).getTime() + DOCUMENT_HOURS * 3_600_000) : null;
   const { confirm, dialog: confirmDialog } = useConfirm();
   const remove = async () => {
@@ -416,7 +471,12 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
             {t("Hinweis der Prüfung", "Review note")}: {car.review_note}
           </div>
         )}
-        {car.status === "expired" && (
+        {open && appraisal && car.status !== "pending" && (
+          <div className="mt-1.5 max-w-xl text-[13.5px] text-muted">
+            {t("Wertgutachten nehmen wir nicht mehr an. Premium erhalten Sie mit einem Kaufvertrag oder durch Kauf.", "We no longer take appraisals. You get premium with a purchase contract or by buying it.")}
+          </div>
+        )}
+        {car.status === "expired" && !appraisal && (
           <div className="mt-1.5 max-w-xl text-[13.5px] text-muted">
             {t(
               `Wir bewahren kein Dokument länger als ${DOCUMENT_HOURS} Stunden auf. Die Prüfung war bis dahin nicht abgeschlossen, deshalb ist ${d.the} gelöscht. Ihre Angaben sind noch da: Laden Sie das Dokument einfach erneut hoch.`,
@@ -441,7 +501,7 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
         {err && <div className="mt-1.5 text-[13.5px] text-down" role="alert">{err}</div>}
       </div>
       <div className="flex shrink-0 flex-wrap items-center gap-2">
-        {open && (
+        {takesUpload && (
           <>
             <input
               ref={fileRef}
@@ -457,7 +517,7 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
                   await uploadContract(car.id, f);
                   onChange();
                 } catch (x) {
-                  setErr(uploadError(x, car.kind));
+                  setErr(uploadError(x));
                 } finally {
                   setBusy(false);
                   e.target.value = ""; // the same file can be chosen again after an error
@@ -497,7 +557,7 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
 }
 
 /** The document: drop it here or pick it. Shows the chosen file and, right at the upload, what happens to it. */
-function Dropzone({ kind, file, onFile, error }: { kind: Kind; file: File | null; onFile: (f: File | null) => void; error?: string }) {
+function Dropzone({ file, onFile, error }: { file: File | null; onFile: (f: File | null) => void; error?: string }) {
   const input = useRef<HTMLInputElement>(null);
   const [over, setOver] = useState(false);
   const size = file ? (file.size > 1_048_576 ? `${num(file.size / 1_048_576, 1)} MB` : `${Math.max(1, Math.round(file.size / 1024))} KB`) : "";
@@ -539,7 +599,7 @@ function Dropzone({ kind, file, onFile, error }: { kind: Kind; file: File | null
         >
           <Upload className="size-6 text-accent" strokeWidth={1.4} aria-hidden />
           <span className="font-serif text-[17px] text-ink">
-            {kind === "gutachten" ? t("Wertgutachten hierher ziehen oder auswählen", "Drop the appraisal here or choose it") : t("Kaufvertrag hierher ziehen oder auswählen", "Drop the contract here or choose it")}
+            {t("Kaufvertrag hierher ziehen oder auswählen", "Drop the contract here or choose it")}
           </span>
           <span className="text-[13px] text-muted">{t("PDF oder Foto (JPEG, PNG, WebP), höchstens 4 MB", "PDF or photo (JPEG, PNG, WebP), at most 4 MB")}</span>
         </button>
@@ -548,9 +608,7 @@ function Dropzone({ kind, file, onFile, error }: { kind: Kind; file: File | null
         <Lock className="mt-0.5 size-3.5 shrink-0 text-accent" strokeWidth={1.8} aria-hidden />
         <span>
           <strong className="font-semibold text-ink">{t(`Verschlüsselt gespeichert, nach spätestens ${DOCUMENT_HOURS} Stunden gelöscht.`, `Stored encrypted, deleted after ${DOCUMENT_HOURS} hours at the latest.`)}</strong>{" "}
-          {kind === "gutachten"
-            ? t("Namen, Anschriften, Kennzeichen und Unterschriften dürfen Sie schwärzen; Fahrzeug, Fahrgestellnummer, Wert, Datum und Gutachter müssen lesbar sein.", "You may black out names, addresses, number plates and signatures; the car, chassis number, value, date and appraiser must stay readable.")
-            : t("Namen, Anschriften, Unterschriften und Bankdaten dürfen Sie schwärzen; Fahrzeug, Fahrgestellnummer, Preis und Datum müssen lesbar sein.", "You may black out names, addresses, signatures and bank details; the car, chassis number, price and date must stay readable.")}
+          {t("Namen, Anschriften, Unterschriften und Bankdaten dürfen Sie schwärzen; Fahrzeug, Fahrgestellnummer, Preis und Datum müssen lesbar sein.", "You may black out names, addresses, signatures and bank details; the car, chassis number, price and date must stay readable.")}
         </span>
       </p>
       {error && <p className="mt-1 text-xs text-down">{error}</p>}
@@ -573,9 +631,8 @@ function Step({ n, title, sub, children }: { n: number; title: string; sub?: str
   );
 }
 
-function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind: Kind; from?: Holding; months: number; onCancel: () => void; onDone: () => void; onPartial: () => void }) {
-  const appraisal = kind === "gutachten";
-  const [d, setD] = useState<Draft>(() => startDraft(kind, from));
+function ReportForm({ from, months, onCancel, onDone, onPartial }: { from?: Holding; months: number; onCancel: () => void; onDone: () => void; onPartial: () => void }) {
+  const [d, setD] = useState<Draft>(() => startDraft(from));
   const [file, setFile] = useState<File | null>(null);
   const [consent, setConsent] = useState(false);
   const [aiConsent, setAiConsent] = useState(false);
@@ -588,14 +645,13 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
     const e: Record<string, string> = {};
     const price = parseNum(d.price);
     const km = d.km.trim() === "" ? NaN : parseNum(d.km);
-    const bad = (k: string) => (e[k] = FIELD_ERR[k](kind));
+    const bad = (k: string) => (e[k] = FIELD_ERR[k]());
     if (!variantById.has(d.variant_id)) bad("variant_id");
     if (!/^\d{4}$/.test(d.build_year)) bad("build_year");
     if (d.vin.replace(/\s/g, "").length < 5) bad("vin");
     if (!Number.isFinite(km) || km < 0) bad("km");
     if (!Number.isFinite(price) || price < 500) bad("price");
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d.sale_date) || d.sale_date > today()) bad("sale_date");
-    if (appraisal && d.appraiser.trim().length < 2) bad("appraiser");
     if (d.condition && !/^[1-5][+-]?$/.test(d.condition)) bad("condition");
     // checked before the report is saved: a file the server would turn down (HEIC, Word …) must not leave a report without a document behind
     if (!file || !ACCEPT.split(",").includes(file.type) || (file.size > MAX_BYTES && !file.type.startsWith("image/"))) bad("file");
@@ -611,19 +667,19 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...d, kind, build_year: Number(d.build_year), km: Math.round(km), price, appraiser: d.appraiser.trim(),
+          ...d, build_year: Number(d.build_year), km: Math.round(km), price,
           matching_numbers: tri(d.matching_numbers), accident_free: tri(d.accident_free), consent, ai_consent: aiConsent,
         }),
       }));
     } catch (err) {
       const fields = (err as { body?: { fields?: Record<string, string> } }).body?.fields ?? {};
-      setErrors(Object.fromEntries(Object.keys(fields).map((k) => [k, (FIELD_ERR[k] ?? FIELD_ERR.counterparty)(kind)])));
+      setErrors(Object.fromEntries(Object.keys(fields).map((k) => [k, (FIELD_ERR[k] ?? FIELD_ERR.counterparty)()])));
       const { status, message } = err as { status?: number; message?: string };
       setMsg(
         status === 429
           ? t("Heute wurde schon viel eingereicht. Bitte morgen weiter.", "A lot was submitted today already. Please continue tomorrow.")
           : message === "demo"
-            ? uploadError(err, kind)
+            ? uploadError(err)
             : Object.keys(fields).length
               ? t("Bitte die markierten Felder prüfen.", "Please check the marked fields.")
               : t("Die Einreichung konnte nicht gespeichert werden. Bitte später noch einmal versuchen.", "The submission could not be saved. Please try again later."),
@@ -655,7 +711,7 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
   );
   const condition = (
     <div>
-      <label className="label">{appraisal ? t("Zustandsnote laut Gutachten", "Condition grade in the appraisal") : t("Zustandsnote (1–5)", "Condition grade (1–5)")}</label>
+      <label className="label">{t("Zustandsnote (1–5)", "Condition grade (1–5)")}</label>
       <input className={field("condition")} maxLength={2} placeholder={t("z. B. 2+", "e.g. 2+")} value={d.condition} onChange={(e) => set("condition", e.target.value)} />
       {err("condition")}
     </div>
@@ -672,10 +728,10 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
     >
       <header className="flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-5 sm:px-7">
         <div>
-          <div className="eyebrow" style={{ color: appraisal ? "var(--color-cobalt)" : "var(--color-gold)" }}>
+          <div className="eyebrow text-gold">
             {t(`${months} Monate Premium nach der Freigabe`, `${months} months of premium once approved`)}
           </div>
-          <h3 className="mt-1 font-display text-[28px] leading-tight">{appraisal ? t("Wertgutachten einreichen", "Submit an appraisal") : t("Kaufvertrag einreichen", "Submit a purchase contract")}</h3>
+          <h3 className="mt-1 font-display text-[28px] leading-tight">{t("Kaufvertrag einreichen", "Submit a purchase contract")}</h3>
         </div>
         <button type="button" className="btn btn-ghost px-3 py-1.5 text-[13px]" disabled={busy} onClick={onCancel}>
           <X className="size-4" aria-hidden /> {t("Abbrechen", "Cancel")}
@@ -684,24 +740,22 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
 
       <Step n={1} title={t("Fahrzeug", "Car")}>
         <VariantPicker value={d.variant_id} onChange={(id) => (set("variant_id", id), setErrors((x) => ({ ...x, variant_id: "" })))} error={errors.variant_id || undefined} />
-        {!appraisal && (
-          <div className="mt-4">
-            <span className="label">{t("Was haben Sie gemacht?", "What did you do?")}</span>
-            <div className="flex flex-wrap gap-2">
-              {(["kauf", "verkauf"] as const).map((r) => (
-                <button type="button" key={r} className={cn("chip px-3 py-1.5 text-[14px]", d.role === r && "chip-active")} aria-pressed={d.role === r} onClick={() => set("role", r)}>
-                  {r === "kauf" ? t("Ich habe das Auto gekauft", "I bought the car") : t("Ich habe das Auto verkauft", "I sold the car")}
-                </button>
-              ))}
-            </div>
+        <div className="mt-4">
+          <span className="label">{t("Was haben Sie gemacht?", "What did you do?")}</span>
+          <div className="flex flex-wrap gap-2">
+            {(["kauf", "verkauf"] as const).map((r) => (
+              <button type="button" key={r} className={cn("chip px-3 py-1.5 text-[14px]", d.role === r && "chip-active")} aria-pressed={d.role === r} onClick={() => set("role", r)}>
+                {r === "kauf" ? t("Ich habe das Auto gekauft", "I bought the car") : t("Ich habe das Auto verkauft", "I sold the car")}
+              </button>
+            ))}
           </div>
-        )}
+        </div>
       </Step>
 
-      <Step n={2} title={appraisal ? t("Angaben laut Gutachten", "Details as in the appraisal") : t("Angaben laut Vertrag", "Details as in the contract")} sub={t("genau wie im Dokument", "exactly as in the document")}>
+      <Step n={2} title={t("Angaben laut Vertrag", "Details as in the contract")} sub={t("genau wie im Dokument", "exactly as in the document")}>
         <div className="grid grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2">
           <div>
-            <label className="label">{appraisal ? t("Wert laut Gutachten", "Value as in the appraisal") : t("Kaufpreis laut Vertrag", "Price as in the contract")}</label>
+            <label className="label">{t("Kaufpreis laut Vertrag", "Price as in the contract")}</label>
             <div className="flex gap-2">
               <input className={field("price")} inputMode="decimal" value={d.price} onChange={(e) => set("price", e.target.value)} />
               <select className="input w-24 shrink-0" aria-label={t("Währung", "Currency")} value={d.currency} onChange={(e) => set("currency", e.target.value)}>
@@ -713,38 +767,10 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
             {err("price")}
           </div>
           <div>
-            <label className="label">{appraisal ? t("Datum des Gutachtens", "Appraisal date") : t("Datum des Kaufvertrags", "Contract date")}</label>
+            <label className="label">{t("Datum des Kaufvertrags", "Contract date")}</label>
             <input className={field("sale_date")} type="date" max={today()} value={d.sale_date} onChange={(e) => set("sale_date", e.target.value)} />
             {err("sale_date")}
           </div>
-          {appraisal && (
-            <>
-              <div>
-                <label className="label">{t("Art des Werts", "Kind of value")}</label>
-                <select className="input" value={d.value_basis} onChange={(e) => set("value_basis", e.target.value as Draft["value_basis"])}>
-                  {(["marktwert", "wiederbeschaffungswert", "wiederherstellungswert"] as const).map((b) => (
-                    <option key={b} value={b}>
-                      {VALUE_BASIS_LABEL(b)}
-                    </option>
-                  ))}
-                </select>
-                {err("value_basis")}
-              </div>
-              <div>
-                <label className="label">{t("Organisation des Gutachters", "Appraiser's organisation")}</label>
-                <input className={field("appraiser")} list="mip-appraisers" maxLength={80} placeholder={t("z. B. Classic Data", "e.g. Classic Data")} value={d.appraiser} onChange={(e) => set("appraiser", e.target.value)} />
-                <datalist id="mip-appraisers">
-                  {APPRAISERS.map((a) => (
-                    <option key={a} value={a} />
-                  ))}
-                  <option value={t("Freier Sachverständiger", "Independent expert")} />
-                </datalist>
-                <p className="mt-1 text-xs text-muted">{t("Kein Personenname nötig: bei freien Gutachtern genügt „Freier Sachverständiger“.", "No personal name needed: for independent appraisers “Independent expert” is enough.")}</p>
-                {err("appraiser")}
-              </div>
-              {condition}
-            </>
-          )}
           <div>
             <label className="label">{t("Fahrgestellnummer (FIN)", "Chassis number (VIN)")}</label>
             <input className={cn(field("vin"), "uppercase")} value={d.vin} maxLength={30} autoCapitalize="characters" spellCheck={false} onChange={(e) => set("vin", e.target.value)} />
@@ -756,31 +782,29 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
             {err("build_year")}
           </div>
           <div>
-            <label className="label">{appraisal ? t("Kilometerstand laut Gutachten", "Mileage in the appraisal (km)") : t("Kilometerstand", "Mileage (km)")}</label>
+            <label className="label">{t("Kilometerstand", "Mileage (km)")}</label>
             <input className={field("km")} inputMode="numeric" value={d.km} onChange={(e) => set("km", e.target.value)} />
             {err("km")}
           </div>
           <div>
-            <label className="label">{appraisal ? t("Land des Gutachtens", "Country of the appraisal") : t("Land des Verkaufs", "Country of sale")}</label>
+            <label className="label">{t("Land des Verkaufs", "Country of sale")}</label>
             <select className="input" value={d.country} onChange={(e) => set("country", e.target.value)}>
               {COUNTRIES.map((c) => (
                 <option key={c}>{c}</option>
               ))}
             </select>
           </div>
-          {!appraisal && (
-            <div>
-              <label className="label">{d.role === "kauf" ? t("Gekauft von", "Bought from") : t("Verkauft an", "Sold to")}</label>
-              <select className="input" value={d.counterparty} onChange={(e) => set("counterparty", e.target.value as Draft["counterparty"])}>
-                <option value="privat">{t("Privatperson", "Private person")}</option>
-                <option value="haendler">{t("Händler", "Dealer")}</option>
-                <option value="auktion">{t("Auktion", "Auction")}</option>
-              </select>
-            </div>
-          )}
+          <div>
+            <label className="label">{d.role === "kauf" ? t("Gekauft von", "Bought from") : t("Verkauft an", "Sold to")}</label>
+            <select className="input" value={d.counterparty} onChange={(e) => set("counterparty", e.target.value as Draft["counterparty"])}>
+              <option value="privat">{t("Privatperson", "Private person")}</option>
+              <option value="haendler">{t("Händler", "Dealer")}</option>
+              <option value="auktion">{t("Auktion", "Auction")}</option>
+            </select>
+          </div>
         </div>
 
-        <details className="group mt-5 rounded-[3px] border border-line bg-panel-2/60" open={Boolean(errors.condition && !appraisal) || undefined}>
+        <details className="group mt-5 rounded-[3px] border border-line bg-panel-2/60" open={Boolean(errors.condition) || undefined}>
           <summary className="cursor-pointer list-none px-4 py-2.5 text-[14px] text-ink marker:hidden">
             <span className="mr-2 inline-block text-accent transition-transform group-open:rotate-90" aria-hidden>
               ›
@@ -816,7 +840,7 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
                 <option value="rechts">{t("Rechtslenker", "Right-hand drive")}</option>
               </select>
             </div>
-            {!appraisal && condition}
+            {condition}
             <div>
               <label className="label">{t("Außenfarbe", "Exterior colour")}</label>
               <input className="input" maxLength={60} value={d.color_ext} onChange={(e) => set("color_ext", e.target.value)} />
@@ -835,8 +859,8 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
         </details>
       </Step>
 
-      <Step n={3} title={appraisal ? t("Wertgutachten", "Appraisal") : t("Kaufvertrag", "Purchase contract")}>
-        <Dropzone kind={kind} file={file} onFile={(f) => (setFile(f), setErrors((x) => ({ ...x, file: "" })))} error={errors.file || undefined} />
+      <Step n={3} title={t("Kaufvertrag", "Purchase contract")}>
+        <Dropzone file={file} onFile={(f) => (setFile(f), setErrors((x) => ({ ...x, file: "" })))} error={errors.file || undefined} />
       </Step>
 
       <Step n={4} title={t("Einwilligung", "Consent")}>
@@ -844,15 +868,10 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
           <label className={cn("flex items-start gap-3 rounded-[3px] border bg-panel-2/60 p-4 text-[13.5px] leading-relaxed", errors.consent ? "border-down" : "border-line")}>
             <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" checked={consent} onChange={(e) => (setConsent(e.target.checked), setErrors((x) => ({ ...x, consent: "" })))} />
             <span>
-              {appraisal
-                ? t(
-                    "Ich bestätige, dass die Angaben stimmen und das Gutachten mein Fahrzeug betrifft. Ich willige ein, dass Carbay meine Angaben und das Wertgutachten speichert, ein Prüfer von Carbay das Gutachten mit den Angaben vergleicht, das Gutachten mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen, gelöscht wird und Wert, Datum, Zustandsnote und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer als Vergleichswert in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Einreichung hier lösche; nach der Freigabe bleiben Wert, Datum und Fahrzeugdaten anonym in der Marktanalyse.",
-                    "I confirm that the details are correct and that the appraisal concerns my car. I consent to Carbay storing my details and the appraisal, a Carbay reviewer comparing the appraisal with the details, the appraisal being deleted with the decision, 24 hours after the upload at the latest, and value, date, condition grade and car details entering the market analysis as a reference value, without my name and without the chassis number. I can withdraw this consent at any time by deleting the submission here; after approval, value, date and car details stay in the market analysis, anonymously.",
-                  )
-                : t(
+              {t(
                     "Ich bestätige, dass die Angaben stimmen und ich an diesem Kauf oder Verkauf beteiligt war. Ich willige ein, dass Carbay meine Angaben und den Kaufvertrag speichert, ein Prüfer von Carbay den Vertrag mit den Angaben vergleicht, der Vertrag mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen, gelöscht wird und Preis, Datum und Fahrzeugdaten ohne meinen Namen und ohne Fahrgestellnummer in die Marktanalyse eingehen. Die Einwilligung kann ich jederzeit widerrufen, indem ich die Einreichung hier lösche; nach der Freigabe bleiben Preis, Datum und Fahrzeugdaten anonym in der Marktanalyse.",
                     "I confirm that the details are correct and that I was party to this purchase or sale. I consent to Carbay storing my details and the purchase contract, a Carbay reviewer comparing the contract with the details, the contract being deleted with the decision, 24 hours after the upload at the latest, and price, date and car details entering the market analysis without my name and without the chassis number. I can withdraw this consent at any time by deleting the submission here; after approval, price, date and car details stay in the market analysis, anonymously.",
-                  )}{" "}
+              )}{" "}
               <Link to="/datenschutz" className="link">
                 {t("Datenschutzerklärung", "Privacy notice")}
               </Link>
@@ -864,8 +883,8 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
             <span>
               <span className="text-ink">{t("Optional: schnellere Prüfung mit KI.", "Optional: faster review with AI.")}</span>{" "}
               {t(
-                `Ich willige ein, dass ${appraisal ? "das Gutachten" : "der Vertrag"} zur Vorprüfung an den KI-Dienst von Anthropic (USA) übermittelt wird. Anthropic verwendet das Dokument nicht zum Training seiner Modelle. Für die dorthin übermittelte Kopie gelten die Aufbewahrungsfristen von Anthropic. Ohne dieses Häkchen verlässt das Dokument unseren Server nicht und ein Mensch prüft von Hand; das kann länger dauern.`,
-                `I consent to the ${doc(kind).short} being sent to Anthropic's AI service (USA) for a pre-check. Anthropic does not use the document to train its models. The copy sent there is subject to Anthropic's retention periods. Without this tick the document does not leave our server and a person checks by hand, which can take longer.`,
+                "Ich willige ein, dass der Vertrag zur Vorprüfung an den KI-Dienst von Anthropic (USA) übermittelt wird. Anthropic verwendet das Dokument nicht zum Training seiner Modelle. Für die dorthin übermittelte Kopie gelten die Aufbewahrungsfristen von Anthropic. Ohne dieses Häkchen verlässt das Dokument unseren Server nicht und ein Mensch prüft von Hand; das kann länger dauern.",
+                "I consent to the contract being sent to Anthropic's AI service (USA) for a pre-check. Anthropic does not use the document to train its models. The copy sent there is subject to Anthropic's retention periods. Without this tick the document does not leave our server and a person checks by hand, which can take longer.",
               )}
             </span>
           </label>
@@ -874,7 +893,7 @@ function ReportForm({ kind, from, months, onCancel, onDone, onPartial }: { kind:
 
       <footer className="flex flex-wrap items-center gap-3 border-t border-line px-5 py-5 sm:px-7">
         <button type="submit" className="btn btn-gold px-5" disabled={busy}>
-          {busy ? t("Wird gesendet …", "Sending …") : appraisal ? t("Gutachten einreichen", "Submit appraisal") : t("Kaufvertrag einreichen", "Submit contract")}
+          {busy ? t("Wird gesendet …", "Sending …") : t("Kaufvertrag einreichen", "Submit contract")}
         </button>
         <button type="button" className="btn" disabled={busy} onClick={onCancel}>
           {t("Abbrechen", "Cancel")}

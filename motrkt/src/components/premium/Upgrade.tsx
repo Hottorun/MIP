@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Check, Clock, Crown, FileUp, ShieldCheck, UserPlus, X } from "lucide-react";
-import { signInHref, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
+import { ArrowRight, Check, Clock, Crown, FileUp, Lock, ShieldCheck, UserPlus, X } from "lucide-react";
+import { offerPrice, signInHref, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
 import { DOCUMENT_HOURS } from "../../lib/userCars";
 import { getAllSales } from "../../data/generate";
 import { variants } from "../../data/db";
@@ -11,8 +11,10 @@ import { Modal } from "../ui";
 
 /**
  * The way from lite to premium, in two parts: the floating button that is on every page of a lite user, and the
- * dialog it opens (so does every locked block). The dialog says what premium adds, what it costs (a document, not
- * money) and where the user stands, and leads to the form on the portfolio page (components/portfolio/UserCars.tsx).
+ * dialog it opens (so does every locked block). The dialog says what premium adds and shows the two ways to it:
+ * buying it (where payment is set up, lib/plan.tsx `offer`; the button leads to Stripe's payment page) and the purchase
+ * contract, free, with where the user stands and the way to the form on the portfolio page
+ * (components/portfolio/UserCars.tsx).
  */
 
 const UNLOCK_PATH = "/portfolio#melden";
@@ -94,13 +96,15 @@ export function UpgradeDialog() {
  * first step is a free account. Leads to the sign-in page and back to this page afterwards.
  */
 function AccountDialog() {
-  const { upgrade, closeUpgrade, months } = usePlan();
+  const { upgrade, closeUpgrade, months, offer } = usePlan();
   const premiumReason = !ACCOUNT_REASONS.has(upgrade.reason);
   const free = [
     t("Watchlist und Preisalarme für jede Variante", "Watchlist and price alerts for every variant"),
     t("Portfolio: der heutige Wert Ihrer Fahrzeuge", "Portfolio: what your cars are worth today"),
     t("Angebote merken und im Forum mitschreiben", "Save listings and write in the forum"),
-    t(`Premium freischalten: ${months} Monate für einen Beleg, ohne Abo`, `Unlock premium: ${months} months for one document, no subscription`),
+    offer
+      ? t(`Premium freischalten: mit einem Kaufvertrag kostenlos oder für ${offerPrice(offer)}, ohne Abo`, `Unlock premium: free with a purchase contract or for ${offerPrice(offer)}, no subscription`)
+      : t(`Premium freischalten: ${months} Monate für einen Kaufvertrag, ohne Abo`, `Unlock premium: ${months} months for one purchase contract, no subscription`),
   ];
   return (
     <Modal open={upgrade.open} onClose={closeUpgrade} title={t("Kostenloses Konto", "Free account")} bare>
@@ -116,8 +120,10 @@ function AccountDialog() {
             <p className="mt-3 text-[14.5px] leading-relaxed text-on-night/75">
               {premiumReason
                 ? t(
-                    "Premium beginnt mit einem kostenlosen Konto. Danach schalten Sie es mit einem Kaufvertrag oder Wertgutachten frei.",
-                    "Premium starts with a free account. You then unlock it with a purchase contract or an appraisal.",
+                    offer
+                      ? "Premium beginnt mit einem kostenlosen Konto. Danach schalten Sie es mit einem Kaufvertrag frei oder kaufen es."
+                      : "Premium beginnt mit einem kostenlosen Konto. Danach schalten Sie es mit einem Kaufvertrag frei.",
+                    offer ? "Premium starts with a free account. You then unlock it with a purchase contract, or buy it." : "Premium starts with a free account. You then unlock it with a purchase contract.",
                   )
                 : t("Ohne Konto sehen Sie den Marktwert. Mit Konto behalten Sie, was Sie interessiert.", "Without an account you see the market value. With one you keep what interests you.")}
             </p>
@@ -170,8 +176,19 @@ function AccountDialog() {
 }
 
 function PremiumDialog() {
-  const { upgrade, closeUpgrade, months, step, preview, setPreview } = usePlan();
+  const { upgrade, closeUpgrade, months, step, preview, setPreview, offer, buy } = usePlan();
   const navigate = useNavigate();
+  const [buying, setBuying] = useState(false);
+  const [buyError, setBuyError] = useState("");
+  const purchase = async () => {
+    setBuying(true);
+    setBuyError("");
+    const failed = await buy(); // on success the browser is on its way to the payment page: the button stays busy
+    if (failed) {
+      setBuyError(failed);
+      setBuying(false);
+    }
+  };
   const go = () => {
     closeUpgrade();
     navigate(UNLOCK_PATH);
@@ -186,12 +203,15 @@ function PremiumDialog() {
     t("Co-Pilot: Ihre Fragen, beantwortet aus den Marktdaten", "Co-Pilot: your questions, answered from the market data"),
   ];
   const steps: [string, string][] = [
-    [t("Angaben eintragen", "Enter the details"), t("Fahrzeug, Preis oder Wert und Datum, wie im Dokument.", "Car, price or value and date, as in the document.")],
-    [t("Dokument hochladen", "Upload the document"), t("Kaufvertrag oder Wertgutachten, gern geschwärzt.", "Purchase contract or appraisal, redacted if you like.")],
+    [t("Angaben eintragen", "Enter the details"), t("Fahrzeug, Preis und Datum, wie im Vertrag.", "Car, price and date, as in the contract.")],
+    [t("Kaufvertrag hochladen", "Upload the contract"), t("Als PDF oder Foto, gern geschwärzt.", "As a PDF or photo, redacted if you like.")],
     [t(`${months} Monate Premium`, `${months} months of premium`), t("Nach unserer Prüfung, jede weitere Freigabe verlängert.", "After our review; every further approval extends it.")],
   ];
   const done = step === "review" ? 2 : step === "upload" ? 1 : 0;
-  const cta = step === "review" ? t("Einreichung ansehen", "View my submission") : step === "upload" ? t("Dokument hochladen", "Upload the document") : t("Jetzt freischalten", "Unlock now");
+  const cta = step === "review" ? t("Einreichung ansehen", "View my submission") : step === "upload" ? t("Dokument hochladen", "Upload the document") : offer ? t("Kaufvertrag einreichen", "Submit a contract") : t("Jetzt freischalten", "Unlock now");
+  // with an offer and nothing submitted yet the contract is one of two choices: a line says how it works; the three
+  // steps come back once a submission is under way, where they show how far it is
+  const showSteps = !offer || step !== "start";
 
   return (
     <Modal open={upgrade.open} onClose={closeUpgrade} title="Carbay Premium" bare>
@@ -233,45 +253,107 @@ function PremiumDialog() {
           <button className="btn btn-ghost absolute top-3 right-3 p-1.5" onClick={closeUpgrade} aria-label={t("Schließen", "Close")} data-close>
             <X className="size-4" />
           </button>
-          <div className="eyebrow text-gold">{step === "start" ? t("So schalten Sie frei", "How to unlock") : t("Ihr Stand", "Where you stand")}</div>
-          <div className="mt-3 flex items-baseline gap-3">
-            <span className="font-display text-[44px] leading-none">{t("0 €", "€0")}</span>
-            <span className="text-[14px] text-muted">{t(`für ${months} Monate`, `for ${months} months`)}</span>
+          <div className="eyebrow text-gold">
+            {step !== "start" ? t("Ihr Stand", "Where you stand") : offer ? t("Zwei Wege zu Premium", "Two ways to premium") : t("So schalten Sie frei", "How to unlock")}
           </div>
-          <p className="mt-2 text-[14px] leading-relaxed text-muted">
-            {t(
-              "Kein Abo, keine Zahlungsdaten. Sie belegen ein Fahrzeug, das Sie gekauft, verkauft oder begutachten lassen haben. Ihr Beleg fließt anonym in die Marktanalyse ein.",
-              "No subscription, no payment details. You prove a car you bought, sold or had appraised. Your record enters the market analysis anonymously.",
-            )}
+
+          {offer && (
+            <>
+              <section className="mt-3.5 rounded-[6px] border border-gold/45 bg-gold-soft/50 p-5" aria-labelledby="premium-buy">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <h3 id="premium-buy" className="font-serif text-[18px]">
+                    {t("Premium kaufen", "Buy premium")}
+                  </h3>
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-display text-[34px] leading-none">{offerPrice(offer)}</span>
+                    <span className="text-[13.5px] text-muted">{t(`für ${offer.months} Monate`, `for ${offer.months} months`)}</span>
+                  </div>
+                </div>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-muted">
+                  {t("Sofort freigeschaltet. Einmalige Zahlung, kein Abo: Es verlängert sich nicht von selbst.", "Unlocked at once. One payment, no subscription: it does not renew by itself.")}
+                </p>
+                <button className="premium-cta mt-4" onClick={purchase} disabled={buying}>
+                  {buying ? (
+                    t("Zahlungsseite wird geöffnet …", "Opening the payment page …")
+                  ) : (
+                    <>
+                      {t("Jetzt kaufen", "Buy now")} <ArrowRight className="size-4" aria-hidden />
+                    </>
+                  )}
+                </button>
+                {buyError && (
+                  <p className="mt-2 text-[13px] text-down" role="alert">
+                    {buyError}
+                  </p>
+                )}
+                <p className="mt-3 flex gap-2 text-[12.5px] leading-relaxed text-faint">
+                  <Lock className="mt-0.5 size-3.5 shrink-0" strokeWidth={1.7} aria-hidden />
+                  {t("Sichere Zahlung über Stripe. Ihre Karten- und Kontodaten sehen wir nicht.", "Secure payment through Stripe. We never see your card or bank details.")}
+                </p>
+              </section>
+              <div className="my-4 flex items-center gap-3 text-[11.5px] font-semibold tracking-[0.16em] text-faint uppercase" aria-hidden>
+                <span className="h-px flex-1 bg-line" />
+                {t("oder", "or")}
+                <span className="h-px flex-1 bg-line" />
+              </div>
+            </>
+          )}
+
+          {offer ? (
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h3 className="font-serif text-[18px]">{t("Mit Kaufvertrag", "With a purchase contract")}</h3>
+              <div className="flex items-baseline gap-2">
+                <span className="font-display text-[34px] leading-none">{t("0 €", "€0")}</span>
+                <span className="text-[13.5px] text-muted">{t(`für ${months} Monate`, `for ${months} months`)}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 flex items-baseline gap-3">
+              <span className="font-display text-[44px] leading-none">{t("0 €", "€0")}</span>
+              <span className="text-[14px] text-muted">{t(`für ${months} Monate`, `for ${months} months`)}</span>
+            </div>
+          )}
+          <p className={cn("mt-2 leading-relaxed text-muted", offer ? "text-[13.5px]" : "text-[14px]")}>
+            {offer
+              ? t(
+                  "Sie belegen ein Fahrzeug, das Sie gekauft oder verkauft haben: Angaben eintragen, Kaufvertrag hochladen, wir prüfen. Der Preis fließt anonym in die Marktanalyse ein.",
+                  "You prove a car you bought or sold: enter the details, upload the purchase contract, we check it. The price enters the market analysis anonymously.",
+                )
+              : t(
+                  "Kein Abo, keine Zahlungsdaten. Sie belegen ein Fahrzeug, das Sie gekauft oder verkauft haben. Ihr Kaufvertrag fließt anonym in die Marktanalyse ein.",
+                  "No subscription, no payment details. You prove a car you bought or sold. Your purchase contract enters the market analysis anonymously.",
+                )}
           </p>
 
-          <ol className="mt-6 space-y-4">
-            {steps.map(([head, body], i) => {
-              const state = i < done ? "done" : i === done ? "now" : "next";
-              return (
-                <li key={head} className="flex gap-3.5">
-                  <span
-                    className={cn(
-                      "grid size-7 shrink-0 place-items-center rounded-full border text-[13px] font-semibold tabular-nums",
-                      state === "done" ? "border-up bg-up-soft text-up" : state === "now" ? "border-gold bg-gold-soft text-gold-2" : "border-line-2 text-faint",
-                    )}
-                  >
-                    {state === "done" ? <Check className="size-3.5" strokeWidth={2.6} aria-label={t("erledigt", "done")} /> : i + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <div className={cn("font-serif text-[16.5px] leading-snug", state === "next" && "text-muted")}>
-                      {i === 2 && step === "review" ? t("Prüfung läuft", "Under review") : head}
+          {showSteps && (
+            <ol className="mt-6 space-y-4">
+              {steps.map(([head, body], i) => {
+                const state = i < done ? "done" : i === done ? "now" : "next";
+                return (
+                  <li key={head} className="flex gap-3.5">
+                    <span
+                      className={cn(
+                        "grid size-7 shrink-0 place-items-center rounded-full border text-[13px] font-semibold tabular-nums",
+                        state === "done" ? "border-up bg-up-soft text-up" : state === "now" ? "border-gold bg-gold-soft text-gold-2" : "border-line-2 text-faint",
+                      )}
+                    >
+                      {state === "done" ? <Check className="size-3.5" strokeWidth={2.6} aria-label={t("erledigt", "done")} /> : i + 1}
+                    </span>
+                    <div className="min-w-0">
+                      <div className={cn("font-serif text-[16.5px] leading-snug", state === "next" && "text-muted")}>
+                        {i === 2 && step === "review" ? t("Prüfung läuft", "Under review") : head}
+                      </div>
+                      <div className="text-[13.5px] text-muted">
+                        {i === 2 && step === "review" ? t(`Danach schalten wir ${months} Monate Premium frei.`, `After that we unlock ${months} months of premium.`) : body}
+                      </div>
                     </div>
-                    <div className="text-[13.5px] text-muted">
-                      {i === 2 && step === "review" ? t(`Danach schalten wir ${months} Monate Premium frei.`, `After that we unlock ${months} months of premium.`) : body}
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+                  </li>
+                );
+              })}
+            </ol>
+          )}
 
-          <button className="premium-cta mt-7" onClick={go}>
+          <button className={offer ? "btn mt-4 w-full py-2.5 text-[14.5px]" : "premium-cta mt-7"} onClick={go}>
             {cta} <ArrowRight className="size-4" aria-hidden />
           </button>
           <p className="mt-3 flex gap-2 text-[12.5px] leading-relaxed text-faint">
@@ -310,7 +392,7 @@ function PremiumDialog() {
 
 /** The band at the top of a page that is premium as a whole (Insights, Co-Pilot): what the page is and the way in. */
 export function PremiumBanner({ reason, title, children }: { reason: LockReason; title: ReactNode; children: ReactNode }) {
-  const { openUpgrade, months } = usePlan();
+  const { openUpgrade, months, offer } = usePlan();
   return (
     <div className="night-band relative overflow-hidden rounded-[8px] px-6 py-6 sm:px-8 sm:py-7">
       <span className="pointer-events-none absolute -top-28 -right-20 size-72 rounded-full bg-[radial-gradient(circle,rgba(228,196,134,0.2),transparent_65%)]" aria-hidden />
@@ -327,7 +409,11 @@ export function PremiumBanner({ reason, title, children }: { reason: LockReason;
           <button className="premium-cta sm:w-auto" onClick={() => openUpgrade(reason)}>
             {t("Premium freischalten", "Unlock premium")} <ArrowRight className="size-4" aria-hidden />
           </button>
-          <div className="mt-2 text-center text-[12.5px] text-on-night/60">{t(`0 € für ${months} Monate, mit einem Beleg`, `€0 for ${months} months, with one document`)}</div>
+          <div className="mt-2 text-center text-[12.5px] text-on-night/60">
+            {offer
+              ? t(`Mit Kaufvertrag kostenlos oder für ${offerPrice(offer)}`, `Free with a purchase contract or for ${offerPrice(offer)}`)
+              : t(`0 € für ${months} Monate, mit einem Kaufvertrag`, `€0 for ${months} months, with one purchase contract`)}
+          </div>
         </div>
       </div>
     </div>

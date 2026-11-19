@@ -6,7 +6,7 @@ import { useStore } from "../state/store";
 import { Card, useConfirm } from "../components/ui";
 import { cn, date } from "../lib/format";
 import { getLang, t } from "../i18n";
-import { signInHref, usePlan } from "../lib/plan";
+import { offerPrice, signInHref, usePlan } from "../lib/plan";
 import { Crown } from "lucide-react";
 
 const ERR: Record<string, () => string> = {
@@ -27,6 +27,13 @@ export default function Account() {
   const { portfolio, watchlist, alerts } = useStore();
   const demo = me?.username.toLowerCase() === "demo";
   const plan = usePlan();
+  // what this account has bought (server/payments.ts); empty where payment is not set up
+  const [payments, setPayments] = useState<{ paid_at: string; months: number; amount: string; currency: string; refunded_at: string | null }[]>([]);
+  useEffect(() => {
+    api<{ payments?: typeof payments }>("/api/premium/angebot")
+      .then((j) => setPayments(j.payments ?? []))
+      .catch(() => {});
+  }, []);
   // account settings need an account: a guest goes to the sign-in page and comes back here
   useEffect(() => {
     if (plan.guest) window.location.replace(signInHref(false));
@@ -55,7 +62,7 @@ export default function Account() {
             <p className="mt-1 text-[14px] text-muted">
               {plan.premium
                 ? me?.premiumUntil && Date.parse(me.premiumUntil) > Date.now()
-                  ? t(`Aktiv bis ${date(Date.parse(me.premiumUntil))}. Jeder weitere geprüfte Beleg verlängert um ${plan.months} Monate.`, `Active until ${date(Date.parse(me.premiumUntil))}. Every further verified document adds ${plan.months} months.`)
+                  ? t(`Aktiv bis ${date(Date.parse(me.premiumUntil))}. ${plan.offer ? "Ein weiterer geprüfter Kaufvertrag oder ein Kauf verlängert." : `Jeder weitere geprüfte Kaufvertrag verlängert um ${plan.months} Monate.`}`, `Active until ${date(Date.parse(me.premiumUntil))}. ${plan.offer ? "A further verified purchase contract or a purchase extends it." : `Every further verified purchase contract adds ${plan.months} months.`}`)
                   : demo
                     ? t("Das Demo-Konto zeigt Carbay mit allen Premium-Funktionen.", "The demo account shows Carbay with every premium feature.")
                     : t("Als Prüfer haben Sie Premium dauerhaft.", "As a reviewer you have premium permanently.")
@@ -71,6 +78,22 @@ export default function Account() {
             </button>
           )}
         </div>
+        {payments.length > 0 && (
+          <div className="mt-4 border-t border-line pt-4">
+            <div className="eyebrow">{t("Käufe", "Purchases")}</div>
+            <ul className="mt-2 space-y-1 text-[14px] text-muted">
+              {payments.map((p) => (
+                <li key={p.paid_at} className="flex flex-wrap gap-x-2">
+                  <span className="text-ink">{date(Date.parse(p.paid_at))}</span>
+                  <span>
+                    {t(`${p.months} Monate Premium`, `${p.months} months of premium`)} · {offerPrice({ amount: Number(p.amount), currency: p.currency, months: p.months })}
+                    {p.refunded_at && ` · ${t("erstattet", "refunded")}`}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {me?.admin && (
           <label className="mt-4 flex cursor-pointer items-start gap-2.5 border-t border-line pt-4 text-[14px]">
             <input type="checkbox" className="mt-1 accent-[var(--color-gold)]" checked={plan.preview} onChange={(e) => plan.setPreview(e.target.checked)} />

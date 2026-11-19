@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 import { useStore } from "../state/store";
-import { t } from "../i18n";
+import { isEn, locale, t } from "../i18n";
 import type { UserCar } from "./userCars";
 import { LITE } from "../data/real/model";
 
@@ -8,8 +9,8 @@ import { LITE } from "../data/real/model";
  * Guest, lite and premium. A guest (no account) sees what lite shows but keeps nothing: watchlist, alerts, portfolio,
  * saved listings and writing in the forum ask for a free account first (useNeedsAccount). Every account starts as lite: catalogue, market value of each variant, listings, portfolio, forum
  * and the auction calendar. Premium adds the analysis behind the value (history, sales, evidence, options), the
- * auction archive, Insights and the Co-Pilot. Premium is earned with a purchase contract or an appraisal
- * (server/userCars.ts); reviewers always have it.
+ * auction archive, Insights and the Co-Pilot. Two ways lead to premium: a purchase contract of a car bought or sold
+ * (free, server/userCars.ts) or buying it (server/payments.ts, where payment is set up); reviewers always have it.
  *
  * The locks on the pages are presentation; what makes them hold is the data. A lite account's browser gets the lite
  * copies of the market data (scripts/data/lite.ts: no value histories, no sale prices), the server refuses it the
@@ -28,6 +29,13 @@ export function signInHref(register: boolean) {
   return `/anmelden?${register ? "neu&" : ""}next=${encodeURIComponent(here)}`;
 }
 
+/** What premium costs to buy (server/payments.ts). Without one the purchase contract is the only way. */
+export type Offer = { amount: number; currency: string; months: number };
+
+/** "49 €", "9,90 CHF": the offer's price in the app's language. */
+export const offerPrice = (o: Offer) =>
+  new Intl.NumberFormat(locale(), { style: "currency", currency: o.currency, minimumFractionDigits: Number.isInteger(o.amount) ? 0 : 2 }).format(o.amount);
+
 /** Where a lite user stands on the way to premium, from their submissions. */
 export type UnlockStep = "start" | "upload" | "review";
 
@@ -41,8 +49,12 @@ type Plan = {
   premium: boolean;
   account: Account | null;
   premiumUntil: string | null;
-  /** months of premium one approved document earns */
+  /** months of premium one approved purchase contract earns */
   months: number;
+  /** premium for money, where payment is set up */
+  offer: Offer | null;
+  /** Opens the payment page for this account (the browser leaves the app); resolves to what to tell the user if that failed. */
+  buy: () => Promise<string | null>;
   step: UnlockStep;
   /** a reviewer looking at the app as a lite user (Account page) */
   preview: boolean;
@@ -86,6 +98,8 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   const [real, setReal] = useState<boolean | null>(cached === "premium" ? true : cached === "lite" ? false : null);
   const [cars, setCars] = useState<UserCar[]>([]);
   const [months, setMonths] = useState(12);
+  const [offer, setOffer] = useState<Offer | null>(null);
+  const navigate = useNavigate();
   const [preview, setPreviewState] = useState(() => read(() => sessionStorage, PREVIEW_KEY) === "1");
   const [upgrade, setUpgrade] = useState<Plan["upgrade"]>({ open: false, reason: "general" });
   const known = useRef<boolean | null>(null); // what the server said last, to notice the moment premium starts
@@ -135,15 +149,51 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     }
   }, [toast]);
 
+  // Back from the payment page ("?premium=bezahlt&cs=<session>", server/payments.ts): the marks leave the address, the
+  // server confirms the payment and grants it (the webhook does the same, whichever comes first), then the plan loads.
+  const returned = useRef(false);
+  const confirmPayment = useCallback(async () => {
+    const q = new URLSearchParams(window.location.search);
+    const session = q.get("cs");
+    if (returned.current || q.get("premium") !== "bezahlt" || !session) return;
+    returned.current = true;
+    q.delete("premium");
+    q.delete("cs");
+    navigate({ pathname: window.location.pathname, search: q.toString(), hash: window.location.hash }, { replace: true });
+    let status = "";
+    try {
+      const r = await fetch("/api/premium/bestaetigen", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session }),
+      });
+      status = r.ok ? String(((await r.json()) as { status?: string }).status ?? "") : "";
+    } catch {
+      /* the webhook grants it anyway */
+    }
+    toast(
+      status === "paid"
+        ? t("Zahlung erhalten. Premium ist freigeschaltet. Viel Freude damit!", "Payment received. Premium is unlocked. Enjoy!")
+        : status === "open"
+          ? t("Die Zahlung wurde nicht abgeschlossen.", "The payment was not completed.")
+          : t("Danke! Premium startet, sobald Ihre Zahlung eingegangen ist.", "Thank you! Premium starts as soon as your payment has arrived."),
+    );
+  }, [navigate, toast]);
+
   useEffect(() => {
-    void load();
+    void confirmPayment().then(load);
+    fetch("/api/premium/angebot", { credentials: "same-origin" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j: { offer?: Offer | null } | null) => setOffer(j?.offer ?? null))
+      .catch(() => {});
     // a review is decided while the user is away: look again when they come back to the tab
     const onVisible = () => {
       if (document.visibilityState === "visible" && known.current !== true && Date.now() - loadedAt.current > RECHECK_MS) void load();
     };
     document.addEventListener("visibilitychange", onVisible);
     return () => document.removeEventListener("visibilitychange", onVisible);
-  }, [load]);
+  }, [load, confirmPayment]);
 
   const setPreview = useCallback((on: boolean) => {
     write(() => sessionStorage, PREVIEW_KEY, on ? "1" : null);
@@ -152,6 +202,27 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   const openUpgrade = useCallback((reason: LockReason = "general") => setUpgrade({ open: true, reason }), []);
   const closeUpgrade = useCallback(() => setUpgrade((u) => ({ ...u, open: false })), []);
   const refresh = useCallback(() => void load(), [load]);
+  const buy = useCallback(async () => {
+    const failed = t("Die Zahlungsseite ließ sich nicht öffnen. Bitte später noch einmal versuchen.", "The payment page could not be opened. Please try again later.");
+    try {
+      const r = await fetch("/api/premium/kaufen", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ back: window.location.pathname + window.location.search + window.location.hash, lang: isEn() ? "en" : "de" }),
+      });
+      const j = (await r.json().catch(() => ({}))) as { url?: string; error?: string };
+      if (r.ok && j.url) {
+        window.location.assign(j.url);
+        return null;
+      }
+      if (j.error === "demo") return t("Mit dem geteilten Demo-Konto lässt sich nichts kaufen. Bitte legen Sie ein eigenes Konto an.", "The shared demo account cannot buy anything. Please create your own account.");
+      if (r.status === 429) return t("Zu viele Versuche. Bitte in einer Stunde noch einmal.", "Too many attempts. Please try again in an hour.");
+      return failed;
+    } catch {
+      return failed;
+    }
+  }, []);
 
   const value = useMemo<Plan>(() => {
     const previewing = preview && Boolean(account?.admin);
@@ -163,6 +234,8 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       account,
       premiumUntil: account?.premiumUntil ?? null,
       months,
+      offer,
+      buy,
       step,
       preview: previewing,
       setPreview,
@@ -171,7 +244,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       closeUpgrade,
       refresh,
     };
-  }, [real, guest, preview, account, cars, months, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
+  }, [real, guest, preview, account, cars, months, offer, buy, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
 
   return <PlanContext.Provider value={value}>{children}</PlanContext.Provider>;
 }

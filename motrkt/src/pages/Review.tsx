@@ -20,7 +20,7 @@ const DECIDE_ERR: Record<string, () => string> = {
   "Not found": () => t("Diese Meldung gibt es nicht mehr (vom Nutzer gelöscht).", "This report no longer exists (deleted by the user)."),
 };
 
-/** Reviewers (MIP_ADMINS): check the users' car reports against their contracts or appraisals, then approve or reject. */
+/** Reviewers (MIP_ADMINS): check the users' car reports against their purchase contracts, then approve or reject. (Appraisals: only reports from before November 2026.) */
 export default function Review() {
   const me = useMe();
   const [data, setData] = useState<{ open: ReviewCar[]; done: ReviewCar[] } | null>(null);
@@ -41,8 +41,8 @@ export default function Review() {
         <h1 className="font-display text-[34px] leading-tight">{t("Prüfung der Nutzerfahrzeuge", "Review of user cars")}</h1>
         <p className="mt-1 text-[14px] text-muted">
           {t(
-            `Angaben mit dem Kaufvertrag oder Wertgutachten vergleichen. Freigeben schaltet dem Nutzer Premium frei; ein Kaufpreis geht in die nächste Marktwert-Berechnung (nachts) ein, ein Gutachtenwert nicht. Beide Entscheidungen löschen das Dokument, und ohne Entscheidung wird es ${DOCUMENT_HOURS} Stunden nach dem Hochladen gelöscht: dann muss der Nutzer es erneut hochladen. Jedes Öffnen wird mit Ihrem Namen protokolliert; Dokumente bitte nicht speichern, drucken oder weitergeben.`,
-            `Compare the entries with the purchase contract or appraisal. Approving gives the user premium; a purchase price enters the next market value run (nightly), an appraised value does not. Both decisions delete the document, and without a decision it is deleted ${DOCUMENT_HOURS} hours after the upload: the user then has to upload it again. Every opening is logged with your name; please do not save, print or pass on documents.`,
+            `Angaben mit dem Kaufvertrag vergleichen. Freigeben schaltet dem Nutzer Premium frei; ein Kaufpreis geht in die nächste Marktwert-Berechnung (nachts) ein, ein Gutachtenwert nicht. Beide Entscheidungen löschen das Dokument, und ohne Entscheidung wird es ${DOCUMENT_HOURS} Stunden nach dem Hochladen gelöscht: dann muss der Nutzer es erneut hochladen. Jedes Öffnen wird mit Ihrem Namen protokolliert; Dokumente bitte nicht speichern, drucken oder weitergeben.`,
+            `Compare the entries with the purchase contract. Approving gives the user premium; a purchase price enters the next market value run (nightly), an appraised value does not. Both decisions delete the document, and without a decision it is deleted ${DOCUMENT_HOURS} hours after the upload: the user then has to upload it again. Every opening is logged with your name; please do not save, print or pass on documents.`,
           )}
         </p>
       </div>

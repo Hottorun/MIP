@@ -43,21 +43,23 @@ Adresse kurz gesperrt (ein Name allein erst nach 50 Fehlversuchen von beliebigen
 mutwillig sperren kann). Je Konto gelten außerdem Budgets (`server/limits.ts`, Tabelle `db/migrations/006_rate_limits.sql`):
 60 Co-Pilot-Antworten und 600 mobile.de-Abfragen je Stunde, 10 Dokument-Uploads je Tag.
 
-## Premium freischalten: Kaufvertrag oder Wertgutachten (Portfolio, `/portfolio#melden`)
+## Premium freischalten: Kaufvertrag oder Kauf (Portfolio, `/portfolio#melden`)
 
-Nutzer belegen ein Auto mit einem Dokument (PDF oder Foto, höchstens 4 MB) und erhalten nach der Freigabe Premium.
-Zwei Wege, beide im Abschnitt „Premium freischalten“ auf der Portfolio-Seite (`src/components/portfolio/UserCars.tsx`,
-auch über das Kontomenü erreichbar, `/fahrzeug-melden` leitet dorthin; in der Bestandstabelle startet das Symbol
-neben „Bearbeiten“ das Formular mit den Angaben des Fahrzeugs):
+Zwei Wege führen zu Premium, beide im Abschnitt „Premium freischalten“ auf der Portfolio-Seite
+(`src/components/portfolio/UserCars.tsx`) und im Premium-Dialog (`src/components/premium/Upgrade.tsx`):
 
-- **Kaufvertrag** (`kind = 'kaufvertrag'`): ein Auto, das der Nutzer gekauft oder verkauft hat. Der geprüfte Preis geht
-  in die Marktwerte ein.
-- **Wertgutachten** (`kind = 'gutachten'`): ein Auto im Besitz des Nutzers, bewertet von Classic Data, TÜV, DEKRA, GTÜ
-  oder einem Sachverständigen. Zusätzliche Felder: Organisation des Gutachters, Art des Werts (Marktwert,
-  Wiederbeschaffungs- oder Wiederherstellungswert), Zustandsnote. Ein Gutachtenwert ist kein Verkaufspreis:
-  `scripts/db/export-user-cars.ts` lässt ihn aus, das Marktmodell sieht ihn nicht.
+- **Kaufvertrag (kostenlos):** Der Nutzer belegt ein Auto, das er gekauft oder verkauft hat, mit dem Kaufvertrag (PDF
+  oder Foto, höchstens 4 MB) und erhält nach der Freigabe 12 Monate Premium. Der geprüfte Preis geht in die Marktwerte
+  ein. Ablauf siehe unten.
+- **Kauf (Stripe):** einmalige Zahlung für eine feste Laufzeit, kein Abo. Erscheint nur, wenn Stripe eingerichtet ist;
+  siehe „Bezahlen“ weiter unten.
 
-Der Ablauf ist für beide gleich; unten steht er für den Kaufvertrag.
+Wertgutachten waren bis November 2026 ein weiterer Weg und werden nicht mehr angenommen (kein neues Formular, kein
+Upload, keine KI-Prüfung). Früher freigegebene Gutachten (`kind = 'gutachten'`) bleiben im Konto sichtbar und behalten
+ihr Premium; ins Marktmodell gingen sie nie ein (`scripts/db/export-user-cars.ts`).
+
+Zum Formular gelangt man auch über das Kontomenü (`/fahrzeug-melden` leitet dorthin); in der Bestandstabelle startet das
+Symbol neben „Bearbeiten“ das Formular mit den Angaben des Fahrzeugs.
 
 1. **Daten**: Variante, Bezeichnung, Baujahr, Fahrgestellnummer, Kilometerstand, Preis mit Währung, Vertragsdatum,
    Land, Gegenseite (privat, Händler, Auktion), dazu optional Karosserie, Getriebe, Lenkung, Farben, Zustandsnote,
@@ -76,14 +78,14 @@ Der Ablauf ist für beide gleich; unten steht er für den Kaufvertrag.
    Dokument 24 Stunden nach dem Hochladen gelöscht** (Status „Dokument gelöscht“, `expired`); der Nutzer lädt es dann
    an derselben Meldung erneut hoch. Prüfer sollten also täglich hineinsehen; die Prüfseite zeigt die Restzeit.
 4. **Freigabe**: Der Nutzer erhält 12 Monate Premium (`users.premium_until`, verlängert sich bei jeder weiteren
-   Freigabe). Ein Bezahlbereich existiert noch nicht, bis dahin sieht jeder alles.
+   Freigabe und bei jedem Kauf, `server/premium.ts`).
 5. **Analyse**: Der tägliche Lauf (`daily.sh`) exportiert die freigegebenen Fahrzeuge aus Postgres
    (`scripts/db/export-user-cars.ts`) ohne FIN und ohne Nutzer in eine temporäre Datei, die `model.py` wie einen
    dokumentierten Verkauf liest (Quelle „Carbay-Nutzer (Kaufvertrag geprüft)“). Danach gelten die üblichen Regeln
    (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
 
 **Löschen:** Der Nutzer kann jede Meldung selbst löschen. Eine freigegebene wird dabei nur vom Konto gelöst (ohne FIN,
-Notizen und KI-Ergebnis) und bleibt anonym im Modell; das dafür gewährte Premium entfällt (es bleibt, was andere freigegebene Meldungen ergeben). Ohne Zutun gelten die Fristen in `RETENTION` (`server/userCars.ts`):
+Notizen und KI-Ergebnis) und bleibt anonym im Modell; das dafür gewährte Premium entfällt (es bleibt, was andere freigegebene Meldungen und Käufe ergeben). Ohne Zutun gelten die Fristen in `RETENTION` (`server/userCars.ts`):
 hochgeladene Dokumente 24 Stunden (auf Supabase löscht sie ein pg_cron-Lauf alle 15 Minuten, angelegt von
 `db/migrations/011_appraisals.sql`; `sweepUserCars` tut dasselbe bei Seitenaufrufen), Meldungen ohne Dokument nach
 30 Tagen, abgelehnte und abgelaufene Meldungen 90 Tage nach der Entscheidung. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
@@ -91,6 +93,37 @@ hochgeladene Dokumente 24 Stunden (auf Supabase löscht sie ein pg_cron-Lauf all
 Prüfer sind die Benutzernamen in `MIP_ADMINS` (kommagetrennt). Nur der Vite-Entwicklungsserver (`npm run dev`) macht
 zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht über `MIP_ADMINS`, weil das Passwort
 öffentlich ist. Tabelle: `db/migrations/004_user_cars.sql`, `011_appraisals.sql`.
+
+### Bezahlen (Stripe)
+
+Premium lässt sich kaufen, sobald Stripe eingerichtet ist (`server/payments.ts`, Tabelle `db/migrations/014_payments.sql`).
+Ohne die Variablen unten bleibt alles wie zuvor: kein Preis, kein Kaufen-Knopf, der Kaufvertrag ist der einzige Weg.
+
+Ablauf: „Jetzt kaufen“ öffnet die Zahlungsseite von Stripe (Checkout, Weiterleitung; die App lädt kein Stripe-Skript
+und sieht keine Kartendaten). Nach der Zahlung kommt der Nutzer auf die Seite zurück, von der er kam; der Server fragt
+die Zahlung bei Stripe ab und schaltet frei. Derselbe Schritt läuft über den Webhook, falls der Nutzer das Fenster
+vorher schließt oder eine Lastschrift erst Tage später eingeht. Jede Zahlung zählt genau einmal. Eine volle Erstattung
+in Stripe nimmt die gekauften Monate wieder weg. Käufe stehen unter `/konto` und im Datenexport.
+
+Einrichten:
+
+1. `npm run db:migrate:prod` (Tabelle `premium_payments`), **vor** dem Setzen der Variablen.
+2. In Stripe ein Produkt „Carbay Premium“ mit einem **einmaligen** Preis anlegen (kein Abo-Preis; Betrag inklusive
+   Umsatzsteuer, denn die App zeigt genau diesen Betrag). Die Laufzeit ist 12 Monate; ein anderer Wert steht in den
+   Metadaten des Preises als `months` (z. B. `months = 1`).
+3. Webhook anlegen: Endpunkt `https://carbay.app/api/stripe/webhook`, Ereignisse `checkout.session.completed`,
+   `checkout.session.async_payment_succeeded`, `charge.refunded`.
+4. In Vercel setzen (Production): `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID` (`price_…`), `STRIPE_WEBHOOK_SECRET`
+   (`whsec_…`), dazu `MIP_PUBLIC_URL=https://carbay.app`. Optional: `STRIPE_REQUIRE_TERMS=1` (Käufer muss die in Stripe
+   hinterlegten AGB bestätigen), `STRIPE_AUTOMATIC_TAX=1` (Stripe Tax), `STRIPE_PROMO_CODES=1` (Feld für Gutscheincodes).
+5. Erst mit Testschlüsseln (`sk_test_…`) und der Testkarte 4242 4242 4242 4242 prüfen, dann die Live-Schlüssel setzen.
+
+Lokal testen: die Variablen in `.env`, dann `stripe listen --forward-to localhost:5173/api/stripe/webhook` (Stripe CLI;
+gibt das `whsec_…` für `.env` aus). Auch ohne Webhook schaltet die Rückkehr von der Zahlungsseite frei.
+
+Vor dem Verkauf an Verbraucher zu klären (nicht Teil des Codes): AGB mit Widerrufsbelehrung für digitale Leistungen,
+Preisangabe mit Umsatzsteuer, Rechnung bzw. Beleg (Stripe kann Belege per E-Mail schicken), AV-Vertrag mit Stripe.
+Siehe `DATENSCHUTZ.md`.
 
 ## Konto, Impressum, Datenschutz
 
@@ -124,7 +157,7 @@ Fundstelle hervorgehoben), über die Bereiche links nach Kategorie filtern (mit 
 Status (offene Fragen, geklärt, von Besitzern, eigene) und sortieren (zuletzt aktiv, neueste, meiste Antworten);
 „Ganze Baureihe zeigen“ nimmt die Themen der Schwestervarianten hinzu. Übersicht, einzelnes Thema und das Formular
 für ein neues Thema teilen sich denselben Aufbau: schmale Spalte zur Orientierung, daneben der Inhalt. Autor und Prüfer ordnen ein Thema
-nachträglich anders ein. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag oder Wertgutachten gemeldet hat,
+nachträglich anders ein. Wer ein Auto dieser Variante mit geprüftem Kaufvertrag gemeldet hat,
 trägt das Abzeichen „Besitzer“. Autoren bearbeiten und löschen eigene Beiträge, andere melden Beiträge an die Prüfer
 (`/pruefung` zeigt gemeldete Beiträge mit Begründung), Prüfer (`MIP_ADMINS`) blenden Beiträge und ganze Themen aus;
 die Zeilen bleiben mit `hidden_at` in der Datenbank. Je Nutzer und Stunde höchstens 30 Beiträge und 5 Themen; Themen
@@ -141,9 +174,10 @@ Auktionen, `?haus=`). Server: `server/forum.ts`, gemeinsame Kennungen: `src/lib/
 | Variable | Zweck |
 |---|---|
 | `DATABASE_URL` | Postgres für Konten, Sitzungen und Marktdaten (auf Vercel auch `POSTGRES_URL`) |
-| `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge und Wertgutachten mit Claude (ohne: lokaler Analysemodus, Dokumente von Hand prüfen) |
+| `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge mit Claude (ohne: lokaler Analysemodus, Dokumente von Hand prüfen) |
 | `MIP_ADMINS` | Benutzernamen der Prüfer für gemeldete Fahrzeuge, kommagetrennt |
 | `MIP_TRUST_PROXY` | `1`, wenn `npm start` hinter einem eigenen Reverse-Proxy (nginx, Caddy) läuft: Client-Adresse für die Anmeldebremse aus `X-Forwarded-For`; auf Vercel nicht nötig |
+| `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET` | Premium kaufen über Stripe (siehe „Bezahlen“); ohne sie gibt es keinen Kauf |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |
 
 Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell nur Porsche).
