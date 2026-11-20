@@ -1,5 +1,5 @@
 {
- "asOf": "2026-11-19",
+ "asOf": "2026-11-20",
  "sales": [
   {
    "house": "Gooding & Company",
@@ -75,7 +75,7 @@
    "place": "",
    "country": "US",
    "url": "https://www.mecum.com/auctions/kissimmee-2027/",
-   "porsche": 31,
+   "porsche": 35,
    "online": false
   },
   {
