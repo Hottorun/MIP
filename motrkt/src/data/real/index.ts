@@ -21,8 +21,8 @@ export type Photo = {
   caption?: string;
   /** CSS object-position for the full-width front page stage, which crops (e.g. "50% 95%"). */
   position?: string;
-  /** "contain": the car fills this picture to its edges, so preview tiles show it whole (on a blurred copy) instead of cropping. */
-  fit?: "contain";
+  /** CSS object-position for the preview tiles (16:9, cropped to fill), when the middle would cut the car (e.g. "50% 40%"). */
+  tile?: string;
   /** Width / height of the image as served (uncropped). All photos of one variant share one format: 16:9 or 3:2. */
   ratio?: number;
 };

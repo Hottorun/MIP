@@ -2258,7 +2258,6 @@
    "page": "https://newsroom.porsche.com/es/2023/deportes-estilo-de-vida/PLA-Porsche-912-Karmann-Coupe-1968-Javier-Torres-Chile.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.631
   },
   {
@@ -2415,7 +2414,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-917-30-Spyder.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.498
   },
   {
@@ -2486,7 +2484,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-GT1-‘98.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.498
   },
   {
@@ -2557,7 +2554,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-Carrera-RSR.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.498
   },
   {
@@ -2706,7 +2702,6 @@
    "page": "https://newsroom.porsche.com/en_AU/2021/history/70-years-porsche-in-australia-944-turbo-cup-24557.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.578
   }
  ],
@@ -2717,7 +2712,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/Porsche-Museum/Porsche-911-Carrera-2-Cup.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.498
   },
   {
@@ -3004,7 +2998,6 @@
    "page": "https://newsroom.porsche.com/en/press-kits/60-Years-Porsche-911.html",
    "author": "© Porsche AG",
    "license": "Pressefoto, Porsche Newsroom",
-   "fit": "contain",
    "ratio": 1.5
   }
  ],
@@ -3178,7 +3171,6 @@
    "author": "Elise240SX",
    "license": "CC BY-SA 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "fit": "contain",
    "ratio": 1.966
   },
   {
@@ -4019,7 +4011,6 @@
    "author": "Elise240SX",
    "license": "CC BY-SA 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "fit": "contain",
    "ratio": 1.881
   },
   {
@@ -4054,14 +4045,14 @@
  ],
  "porsche-356-356-b-carrera-1600-gs-gt-coupe": [
   {
-   "file": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/1961_Porsche_356_Carrera_GT.jpg/1920px-1961_Porsche_356_Carrera_GT.jpg",
-   "caption": "Porsche 356 B Carrera GT (1961), Hampton Court Concours 2023",
-   "page": "https://commons.wikimedia.org/wiki/File:1961_Porsche_356_Carrera_GT.jpg",
-   "author": "MrWalkr",
-   "license": "CC BY-SA 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-   "fit": "contain",
-   "ratio": 1.443
+   "file": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Porsche_356_Carrera_%285463626428%29.jpg",
+   "caption": "Porsche 356 B Carrera Coupé, 2011",
+   "page": "https://commons.wikimedia.org/wiki/File:Porsche_356_Carrera_%285463626428%29.jpg",
+   "author": "nakhon100",
+   "license": "CC BY 2.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+   "exact": false,
+   "ratio": 1.333
   }
  ],
  "porsche-911-f-modell-t-2-2": [
