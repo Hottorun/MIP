@@ -17,6 +17,7 @@ const ERR: Record<string, () => string> = {
   email_invalid: () => t("Bitte eine gültige E-Mail-Adresse eingeben.", "Please enter a valid email address."),
   email_taken: () => t("Diese E-Mail-Adresse gehört schon zu einem anderen Konto.", "This email address already belongs to another account."),
   too_many: () => t("Zu viele Versuche. Bitte in 15 Minuten erneut versuchen.", "Too many attempts. Please try again in 15 minutes."),
+  subscription: () => t("Ihr Abo ließ sich gerade nicht kündigen, deshalb wurde das Konto nicht gelöscht. Bitte später noch einmal versuchen.", "Your subscription could not be cancelled just now, so the account was not deleted. Please try again later."),
   mail_failed: () => t("Die E-Mail konnte nicht verschickt werden. Bitte später noch einmal versuchen.", "The email could not be sent. Please try again later."),
 };
 const errText = (e: unknown) => (ERR[(e as Error).message] ?? (() => t("Das hat nicht geklappt. Bitte später noch einmal versuchen.", "That did not work. Please try again later.")))();
@@ -28,7 +29,11 @@ export default function Account() {
   const demo = me?.username.toLowerCase() === "demo";
   const plan = usePlan();
   // what this account has bought (server/payments.ts); empty where payment is not set up
-  const [payments, setPayments] = useState<{ paid_at: string; months: number; amount: string; currency: string; refunded_at: string | null }[]>([]);
+  const [payments, setPayments] = useState<{ paid_at: string; months: number; amount: string; currency: string; refunded_at: string | null; covers_until?: string | null }[]>([]);
+  const sub = plan.subscription;
+  const day = (iso: string | null) => (iso ? date(Date.parse(iso)) : "–");
+  const [managing, setManaging] = useState(false);
+  const [manageError, setManageError] = useState("");
   useEffect(() => {
     api<{ payments?: typeof payments }>("/api/premium/angebot")
       .then((j) => setPayments(j.payments ?? []))
@@ -60,7 +65,13 @@ export default function Account() {
               {plan.premium ? "Premium" : "Lite"}
             </div>
             <p className="mt-1 text-[14px] text-muted">
-              {plan.premium
+              {sub?.status === "past_due"
+                ? t("Die letzte Abbuchung für Ihr Abo ist fehlgeschlagen. Bitte prüfen Sie Ihr Zahlungsmittel unter „Abo verwalten“.", "The last charge for your subscription failed. Please check your payment method under “Manage subscription”.")
+                : plan.premium && sub
+                  ? sub.status === "ending"
+                    ? t(`Ihr Abo ist gekündigt, es wird nichts mehr abgebucht. Premium bleibt bis ${day(sub.until)}.`, `Your subscription is cancelled and nothing more will be charged. Premium stays until ${day(sub.until)}.`)
+                    : t(`Ihr Abo läuft. Nächste Abbuchung am ${day(sub.until)}.`, `Your subscription is running. Next charge on ${day(sub.until)}.`)
+                  : plan.premium
                 ? me?.premiumUntil && Date.parse(me.premiumUntil) > Date.now()
                   ? t(`Aktiv bis ${date(Date.parse(me.premiumUntil))}. ${plan.offer ? "Ein weiterer geprüfter Kaufvertrag oder ein Kauf verlängert." : `Jeder weitere geprüfte Kaufvertrag verlängert um ${plan.months} Monate.`}`, `Active until ${date(Date.parse(me.premiumUntil))}. ${plan.offer ? "A further verified purchase contract or a purchase extends it." : `Every further verified purchase contract adds ${plan.months} months.`}`)
                   : demo
@@ -72,21 +83,44 @@ export default function Account() {
                   )}
             </p>
           </div>
-          {!plan.premium && (
-            <button className="premium-cta sm:w-auto" onClick={() => plan.openUpgrade("general")}>
-              {t("Premium freischalten", "Unlock premium")}
+          {sub ? (
+            <button
+              className="btn"
+              disabled={managing}
+              onClick={async () => {
+                setManaging(true);
+                setManageError("");
+                const failed = await plan.manage(); // on success the browser is on its way to Stripe
+                if (failed) {
+                  setManageError(failed);
+                  setManaging(false);
+                }
+              }}
+            >
+              {managing ? t("Wird geöffnet …", "Opening …") : sub.status === "ending" ? t("Abo verwalten", "Manage subscription") : t("Abo verwalten oder kündigen", "Manage or cancel subscription")}
             </button>
+          ) : (
+            !plan.premium && (
+              <button className="premium-cta sm:w-auto" onClick={() => plan.openUpgrade("general")}>
+                {t("Premium freischalten", "Unlock premium")}
+              </button>
+            )
           )}
         </div>
+        {manageError && (
+          <p className="mt-2 text-[13.5px] text-down" role="alert">
+            {manageError}
+          </p>
+        )}
         {payments.length > 0 && (
           <div className="mt-4 border-t border-line pt-4">
-            <div className="eyebrow">{t("Käufe", "Purchases")}</div>
+            <div className="eyebrow">{t("Zahlungen", "Payments")}</div>
             <ul className="mt-2 space-y-1 text-[14px] text-muted">
               {payments.map((p) => (
                 <li key={p.paid_at} className="flex flex-wrap gap-x-2">
                   <span className="text-ink">{date(Date.parse(p.paid_at))}</span>
                   <span>
-                    {t(`${p.months} Monate Premium`, `${p.months} months of premium`)} · {offerPrice({ amount: Number(p.amount), currency: p.currency, months: p.months })}
+                    {p.covers_until ? t(`Premium-Abo bis ${day(p.covers_until)}`, `Premium subscription until ${day(p.covers_until)}`) : t(`${p.months} Monate Premium`, `${p.months} months of premium`)} · {offerPrice({ amount: Number(p.amount), currency: p.currency, months: p.months })}
                     {p.refunded_at && ` · ${t("erstattet", "refunded")}`}
                   </span>
                 </li>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseReport } from "./userCars.ts";
-import { premiumFrom } from "./premium.ts";
+import { premiumFrom, premiumUntil } from "./premium.ts";
 
 const valid = {
   role: "kauf", variant_id: "porsche-911-964-carrera-rs", build_year: 1992, vin: "WP0ZZZ96ZNS490123", km: 48000, price: 350000,
@@ -60,5 +60,17 @@ describe("premiumFrom (premium left after a report is removed)", () => {
     // a payment in June on top of an approval in March: the twelve months start when the first twelve end
     expect(premiumFrom([{ at: d("2026-06-01"), months: 12 }, d("2026-03-10")])).toEqual(d("2028-03-10"));
     expect(premiumFrom([d("2026-03-10"), { at: d("2026-06-01"), months: 3 }])).toEqual(d("2027-06-10"));
+  });
+});
+
+describe("premiumUntil (grants and subscription periods together)", () => {
+  const d = (iso: string) => new Date(iso + "T00:00:00Z");
+  it("keeps premium three days past the latest period a subscription paid for", () => {
+    expect(premiumUntil([], [d("2026-12-20"), d("2027-01-20")])).toEqual(d("2027-01-23"));
+    expect(premiumUntil([], [])).toBeNull();
+  });
+  it("takes the later of the two: a contract's months do not add to a subscription", () => {
+    expect(premiumUntil([d("2026-03-10")], [d("2026-12-20")])).toEqual(d("2027-03-10"));
+    expect(premiumUntil([d("2026-03-10")], [d("2027-06-20")])).toEqual(d("2027-06-23"));
   });
 });

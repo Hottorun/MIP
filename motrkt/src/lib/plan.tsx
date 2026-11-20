@@ -29,12 +29,24 @@ export function signInHref(register: boolean) {
   return `/anmelden?${register ? "neu&" : ""}next=${encodeURIComponent(here)}`;
 }
 
-/** What premium costs to buy (server/payments.ts). Without one the purchase contract is the only way. */
-export type Offer = { amount: number; currency: string; months: number };
+/**
+ * What premium costs to buy (server/payments.ts). Without one the purchase contract is the only way. `recurring`: a
+ * subscription charged every `months` months; otherwise one payment for `months` months.
+ */
+export type Offer = { amount: number; currency: string; months: number; recurring?: boolean };
+/** The account's subscription: running, cancelled to the end of the paid period, or with a payment that failed. */
+export type Subscription = { status: "active" | "ending" | "past_due"; until: string | null };
 
 /** "49 €", "9,90 CHF": the offer's price in the app's language. */
 export const offerPrice = (o: Offer) =>
   new Intl.NumberFormat(locale(), { style: "currency", currency: o.currency, minimumFractionDigits: Number.isInteger(o.amount) ? 0 : 2 }).format(o.amount);
+
+/** "im Monat", "im Jahr", "alle 3 Monate": how often a subscription is charged. */
+export const offerEvery = (o: Offer) =>
+  o.months === 1 ? t("im Monat", "a month") : o.months === 12 ? t("im Jahr", "a year") : t(`alle ${o.months} Monate`, `every ${o.months} months`);
+
+/** "9,90 € im Monat" for a subscription, "49 €" for a one-time payment. */
+export const offerRate = (o: Offer) => (o.recurring ? `${offerPrice(o)} ${offerEvery(o)}` : offerPrice(o));
 
 /** Where a lite user stands on the way to premium, from their submissions. */
 export type UnlockStep = "start" | "upload" | "review";
@@ -55,6 +67,10 @@ type Plan = {
   offer: Offer | null;
   /** Opens the payment page for this account (the browser leaves the app); resolves to what to tell the user if that failed. */
   buy: () => Promise<string | null>;
+  /** the account's subscription, if it has one that is not over */
+  subscription: Subscription | null;
+  /** Opens Stripe's page for the subscription (cancel, payment method, invoices); resolves like `buy`. */
+  manage: () => Promise<string | null>;
   step: UnlockStep;
   /** a reviewer looking at the app as a lite user (Account page) */
   preview: boolean;
@@ -99,6 +115,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   const [cars, setCars] = useState<UserCar[]>([]);
   const [months, setMonths] = useState(12);
   const [offer, setOffer] = useState<Offer | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
   const navigate = useNavigate();
   const [preview, setPreviewState] = useState(() => read(() => sessionStorage, PREVIEW_KEY) === "1");
   const [upgrade, setUpgrade] = useState<Plan["upgrade"]>({ open: false, reason: "general" });
@@ -185,7 +202,10 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     void confirmPayment().then(load);
     fetch("/api/premium/angebot", { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j: { offer?: Offer | null } | null) => setOffer(j?.offer ?? null))
+      .then((j: { offer?: Offer | null; subscription?: Subscription | null } | null) => {
+        setOffer(j?.offer ?? null);
+        setSubscription(j?.subscription ?? null);
+      })
       .catch(() => {});
     // a review is decided while the user is away: look again when they come back to the tab
     const onVisible = () => {
@@ -216,8 +236,29 @@ export function PlanProvider({ children }: { children: ReactNode }) {
         window.location.assign(j.url);
         return null;
       }
+      if (j.error === "subscribed") return t("Sie haben bereits ein Abo. Sie verwalten es unter „Konto“.", "You already have a subscription. You manage it under “Account”.");
       if (j.error === "demo") return t("Mit dem geteilten Demo-Konto lässt sich nichts kaufen. Bitte legen Sie ein eigenes Konto an.", "The shared demo account cannot buy anything. Please create your own account.");
       if (r.status === 429) return t("Zu viele Versuche. Bitte in einer Stunde noch einmal.", "Too many attempts. Please try again in an hour.");
+      return failed;
+    } catch {
+      return failed;
+    }
+  }, []);
+
+  const manage = useCallback(async () => {
+    const failed = t("Die Abo-Verwaltung ließ sich nicht öffnen. Bitte später noch einmal versuchen.", "The subscription page could not be opened. Please try again later.");
+    try {
+      const r = await fetch("/api/premium/verwalten", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ back: window.location.pathname + window.location.search + window.location.hash, lang: isEn() ? "en" : "de" }),
+      });
+      const j = (await r.json().catch(() => ({}))) as { url?: string };
+      if (r.ok && j.url) {
+        window.location.assign(j.url);
+        return null;
+      }
       return failed;
     } catch {
       return failed;
@@ -236,6 +277,8 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       months,
       offer,
       buy,
+      subscription,
+      manage,
       step,
       preview: previewing,
       setPreview,
@@ -244,7 +287,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       closeUpgrade,
       refresh,
     };
-  }, [real, guest, preview, account, cars, months, offer, buy, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
+  }, [real, guest, preview, account, cars, months, offer, buy, subscription, manage, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
 
   return <PlanContext.Provider value={value}>{children}</PlanContext.Provider>;
 }

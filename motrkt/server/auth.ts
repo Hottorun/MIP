@@ -578,6 +578,13 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
   const got = await hashPassword(password.slice(0, PW_MAX), full.salt);
   if (!timingSafeEqual(got, Buffer.from(full.hash, "hex"))) return sendJson(res, 400, { error: "wrong_password" });
   const gone = "deleted:" + sha(user.id).slice(0, 16); // stable, not traceable to the name
+  // a running subscription ends at Stripe first: while that fails the account stays, so nobody is charged for a deleted one
+  try {
+    await (await import("./payments.ts")).cancelSubscriptions(user.id);
+  } catch (err) {
+    console.error("Konto löschen: Abo ließ sich nicht kündigen", err);
+    return sendJson(res, 502, { error: "subscription" });
+  }
   await db().begin(async (tx) => {
     await tx`delete from sessions where user_id = ${user.id}`;
     await tx`delete from email_tokens where user_id = ${user.id}`;

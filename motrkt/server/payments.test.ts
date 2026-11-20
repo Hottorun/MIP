@@ -1,15 +1,21 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { paidSession, priceOffer, returnUrl, verifySignature, type CheckoutSession } from "./payments.ts";
+import { paidInvoice, paidSession, priceOffer, returnUrl, verifySignature, type CheckoutSession, type Invoice } from "./payments.ts";
 
 describe("priceOffer (what the Stripe price sells)", () => {
   it("takes a one-time price, twelve months unless its metadata says otherwise", () => {
-    expect(priceOffer({ id: "price_1", active: true, type: "one_time", unit_amount: 4900, currency: "eur" })).toEqual({ amount: 49, currency: "EUR", months: 12 });
-    expect(priceOffer({ id: "price_1", type: "one_time", unit_amount: 990, currency: "chf", metadata: { months: "1" } })).toEqual({ amount: 9.9, currency: "CHF", months: 1 });
+    expect(priceOffer({ id: "price_1", active: true, type: "one_time", unit_amount: 4900, currency: "eur" })).toEqual({ amount: 49, currency: "EUR", months: 12, recurring: false });
+    expect(priceOffer({ id: "price_1", type: "one_time", unit_amount: 990, currency: "chf", metadata: { months: "1" } })).toEqual({ amount: 9.9, currency: "CHF", months: 1, recurring: false });
     expect(priceOffer({ id: "price_1", type: "one_time", unit_amount: 4900, currency: "eur", metadata: { months: "viele" } })?.months).toBe(12);
   });
-  it("offers nothing for a subscription price, an inactive one or one without a fixed amount", () => {
-    expect(priceOffer({ id: "price_1", active: true, type: "recurring", unit_amount: 4900, currency: "eur" })).toBeNull();
+  it("takes a subscription price charged by month or year", () => {
+    expect(priceOffer({ id: "price_1", active: true, type: "recurring", unit_amount: 990, currency: "eur", recurring: { interval: "month", interval_count: 1, usage_type: "licensed" } })).toEqual({ amount: 9.9, currency: "EUR", months: 1, recurring: true });
+    expect(priceOffer({ id: "price_1", type: "recurring", unit_amount: 9900, currency: "eur", recurring: { interval: "year" } })).toMatchObject({ months: 12, recurring: true });
+    expect(priceOffer({ id: "price_1", type: "recurring", unit_amount: 2500, currency: "eur", recurring: { interval: "month", interval_count: 3 } })).toMatchObject({ months: 3, recurring: true });
+  });
+  it("offers nothing for a price by week or usage, an inactive one or one without a fixed amount", () => {
+    expect(priceOffer({ id: "price_1", active: true, type: "recurring", unit_amount: 300, currency: "eur", recurring: { interval: "week" } })).toBeNull();
+    expect(priceOffer({ id: "price_1", active: true, type: "recurring", unit_amount: 300, currency: "eur", recurring: { interval: "month", usage_type: "metered" } })).toBeNull();
     expect(priceOffer({ id: "price_1", active: false, type: "one_time", unit_amount: 4900, currency: "eur" })).toBeNull();
     expect(priceOffer({ id: "price_1", active: true, type: "one_time", unit_amount: null, currency: "eur" })).toBeNull();
   });
@@ -21,15 +27,25 @@ describe("paidSession (which Checkout Sessions grant premium)", () => {
     payment_intent: "pi_1", metadata: { product: "carbay_premium", user_id: "user-1", months: "12" },
   };
   it("reads account, months and amount from a paid session", () => {
-    expect(paidSession(session)).toEqual({ id: "cs_test_a1", userId: "user-1", months: 12, amount: 49, currency: "EUR", paymentIntent: "pi_1" });
+    expect(paidSession(session)).toEqual({
+      id: "cs_test_a1", userId: "user-1", months: 12, amount: 49, currency: "EUR", paymentIntent: "pi_1", customer: null, subscription: null, coversUntil: null,
+    });
     expect(paidSession({ ...session, payment_intent: { id: "pi_2" } })?.paymentIntent).toBe("pi_2");
   });
   it("counts a session a discount code paid for in full", () => {
     expect(paidSession({ ...session, payment_status: "no_payment_required", amount_total: 0, payment_intent: null })).toMatchObject({ amount: 0, paymentIntent: null });
   });
-  it("grants nothing before the money is there (bank debit) or for a subscription", () => {
+  it("grants nothing before the money is there (bank debit)", () => {
     expect(paidSession({ ...session, payment_status: "unpaid" })).toBeNull();
-    expect(paidSession({ ...session, mode: "subscription" })).toBeNull();
+  });
+  it("grants the first invoice of a subscription, under the invoice as the key", () => {
+    const invoice: Invoice = { id: "in_1", status: "paid", customer: "cus_1", subscription: "sub_1", payment_intent: "pi_9", amount_paid: 990, currency: "eur", lines: { data: [{ period: { end: 1_800_000_000 } }] } };
+    const sub: CheckoutSession = { ...session, mode: "subscription", payment_intent: null, customer: "cus_1", metadata: { ...session.metadata!, months: "1" }, invoice };
+    expect(paidSession(sub)).toEqual({
+      id: "in_1", userId: "user-1", months: 1, amount: 9.9, currency: "EUR", paymentIntent: "pi_9", customer: "cus_1", subscription: "sub_1", coversUntil: new Date(1_800_000_000_000),
+    });
+    expect(paidSession({ ...sub, invoice: "in_1" })).toBeNull(); // the invoice was not read with the session
+    expect(paidSession({ ...sub, invoice: { ...invoice, status: "open" } })).toBeNull();
   });
   it("ignores sessions of other products of the same Stripe account", () => {
     expect(paidSession({ ...session, metadata: { months: "12", user_id: "user-1" } })).toBeNull();
@@ -40,6 +56,22 @@ describe("paidSession (which Checkout Sessions grant premium)", () => {
     expect(paidSession({ ...session, client_reference_id: null })).toBeNull();
     expect(paidSession({ ...session, metadata: { ...session.metadata!, months: "0" } })).toBeNull();
     expect(paidSession({ ...session, metadata: { ...session.metadata!, months: "1.5" } })).toBeNull();
+  });
+});
+
+describe("paidInvoice (a paid invoice of a subscription)", () => {
+  const invoice: Invoice = { id: "in_2", status: "paid", customer: { id: "cus_1" }, subscription: "sub_1", payment_intent: { id: "pi_3" }, amount_paid: 990, currency: "eur", lines: { data: [{ period: { end: 1_800_000_000 } }] } };
+  it("covers the period the invoice paid for", () => {
+    expect(paidInvoice(invoice, "user-1", 1)).toMatchObject({ id: "in_2", customer: "cus_1", subscription: "sub_1", paymentIntent: "pi_3", coversUntil: new Date(1_800_000_000_000) });
+  });
+  it("reads the subscription where newer API versions keep it", () => {
+    expect(paidInvoice({ ...invoice, subscription: undefined, parent: { subscription_details: { subscription: "sub_7" } } }, "user-1", 1)?.subscription).toBe("sub_7");
+  });
+  it("grants nothing for an unpaid invoice, one without a subscription or without a period", () => {
+    expect(paidInvoice({ ...invoice, status: "open" }, "user-1", 1)).toBeNull();
+    expect(paidInvoice({ ...invoice, subscription: null }, "user-1", 1)).toBeNull();
+    expect(paidInvoice({ ...invoice, lines: { data: [] } }, "user-1", 1)).toBeNull();
+    expect(paidInvoice(invoice, "user-1", 0)).toBeNull();
   });
 });
 

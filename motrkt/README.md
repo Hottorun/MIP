@@ -96,33 +96,55 @@ zusätzlich das Demo-Konto zum Prüfer; `npm start` und Vercel nie, auch nicht �
 
 ### Bezahlen (Stripe)
 
-Premium lässt sich kaufen, sobald Stripe eingerichtet ist (`server/payments.ts`, Tabelle `db/migrations/014_payments.sql`).
-Ohne die Variablen unten bleibt alles wie zuvor: kein Preis, kein Kaufen-Knopf, der Kaufvertrag ist der einzige Weg.
+Premium lässt sich kaufen, sobald Stripe eingerichtet ist (`server/payments.ts`, Tabellen `db/migrations/014_payments.sql`
+und `015_subscriptions.sql`). Ohne die Variablen unten oder ohne die Tabellen bleibt alles wie zuvor: kein Preis, kein
+Kaufen-Knopf, der Kaufvertrag ist der einzige Weg.
 
-Ablauf: „Jetzt kaufen“ öffnet die Zahlungsseite von Stripe (Checkout, Weiterleitung; die App lädt kein Stripe-Skript
-und sieht keine Kartendaten). Nach der Zahlung kommt der Nutzer auf die Seite zurück, von der er kam; der Server fragt
-die Zahlung bei Stripe ab und schaltet frei. Derselbe Schritt läuft über den Webhook, falls der Nutzer das Fenster
-vorher schließt oder eine Lastschrift erst Tage später eingeht. Jede Zahlung zählt genau einmal. Eine volle Erstattung
-in Stripe nimmt die gekauften Monate wieder weg. Käufe stehen unter `/konto` und im Datenexport.
+Der Preis in Stripe entscheidet, was verkauft wird:
+
+- **Wiederkehrender Preis** (pro Monat oder pro Jahr): ein **Abo**. Jede bezahlte Rechnung hält Premium für den
+  bezahlten Zeitraum (plus drei Tage Kulanz, falls eine Abbuchung erst beim zweiten Versuch klappt). Es verlängert sich
+  von selbst, bis der Nutzer unter `/konto` → „Abo verwalten oder kündigen“ kündigt (Kundenportal von Stripe); Premium
+  bleibt dann bis zum Ende des bezahlten Zeitraums. Ein Konto hat höchstens ein Abo. Wer sein Konto löscht, dessen Abo
+  endet bei Stripe sofort. Monate aus einem Kaufvertrag zählen nicht obendrauf: es gilt das spätere Datum.
+- **Einmaliger Preis**: eine Zahlung für 12 Monate (anderer Wert in den Metadaten des Preises als `months`), nichts
+  verlängert sich. Die Monate kommen zu dem hinzu, was noch läuft.
+
+Ablauf: Der Knopf öffnet die Zahlungsseite von Stripe (Checkout, Weiterleitung; die App lädt kein Stripe-Skript und
+sieht keine Kartendaten). Nach der Zahlung kommt der Nutzer auf die Seite zurück, von der er kam; der Server fragt die
+Zahlung bei Stripe ab und schaltet frei. Derselbe Schritt läuft über den Webhook, falls der Nutzer das Fenster vorher
+schließt oder eine Lastschrift erst Tage später eingeht; die Verlängerungen eines Abos kommen nur über den Webhook
+(`invoice.paid`). Jede Zahlung zählt genau einmal. Eine volle Erstattung in Stripe nimmt weg, was die Zahlung gab.
+Zahlungen stehen unter `/konto` und im Datenexport.
 
 Einrichten:
 
-1. `npm run db:migrate:prod` (Tabelle `premium_payments`), **vor** dem Setzen der Variablen.
-2. In Stripe ein Produkt „Carbay Premium“ mit einem **einmaligen** Preis anlegen (kein Abo-Preis; Betrag inklusive
-   Umsatzsteuer, denn die App zeigt genau diesen Betrag). Die Laufzeit ist 12 Monate; ein anderer Wert steht in den
-   Metadaten des Preises als `months` (z. B. `months = 1`).
-3. Webhook anlegen: Endpunkt `https://carbay.app/api/stripe/webhook`, Ereignisse `checkout.session.completed`,
-   `checkout.session.async_payment_succeeded`, `charge.refunded`.
-4. In Vercel setzen (Production): `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID` (`price_…`), `STRIPE_WEBHOOK_SECRET`
-   (`whsec_…`), dazu `MIP_PUBLIC_URL=https://carbay.app`. Optional: `STRIPE_REQUIRE_TERMS=1` (Käufer muss die in Stripe
-   hinterlegten AGB bestätigen), `STRIPE_AUTOMATIC_TAX=1` (Stripe Tax), `STRIPE_PROMO_CODES=1` (Feld für Gutscheincodes).
-5. Erst mit Testschlüsseln (`sk_test_…`) und der Testkarte 4242 4242 4242 4242 prüfen, dann die Live-Schlüssel setzen.
+1. `npm run db:migrate:prod` (Migrationen 014 und 015), **vor** dem Setzen der Variablen. Ohne sie zeigt die App
+   keinen Preis.
+2. In Stripe ein Produkt „Carbay Premium“ mit einem Preis anlegen: wiederkehrend (monatlich oder jährlich) für ein Abo
+   oder einmalig. Betrag inklusive Umsatzsteuer, denn die App zeigt genau diesen Betrag.
+3. Webhook anlegen: Endpunkt `https://www.carbay.app/api/stripe/webhook` (mit `www`: `carbay.app` leitet dorthin um,
+   und Stripe folgt keinen Weiterleitungen), Ereignisse `checkout.session.completed`,
+   `checkout.session.async_payment_succeeded`, `invoice.paid`, `charge.refunded`.
+4. Nur beim Abo: in Stripe das Kundenportal einschalten (Einstellungen → Billing → Kundenportal, einmal speichern;
+   Kündigen erlauben, am besten „zum Ende des Abrechnungszeitraums“). Ohne das öffnet sich „Abo verwalten“ nicht.
+5. In Vercel setzen (Production): `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID` (`price_…`), `STRIPE_WEBHOOK_SECRET`
+   (`whsec_…`), dazu `MIP_PUBLIC_URL=https://www.carbay.app`. Optional: `STRIPE_REQUIRE_TERMS=1` (Käufer muss die in
+   Stripe hinterlegten AGB bestätigen), `STRIPE_AUTOMATIC_TAX=1` (Stripe Tax), `STRIPE_PROMO_CODES=1` (Feld für
+   Gutscheincodes). Danach neu deployen.
+6. Erst mit Testschlüsseln (`sk_test_…`) und der Testkarte 4242 4242 4242 4242 lokal prüfen, dann die Live-Schlüssel
+   in Vercel setzen.
+
+Die Anfragen an Stripe nennen eine feste API-Version (`STRIPE_VERSION` in `server/payments.ts`); Ereignisse des
+Webhooks liest der Server deshalb nicht aus, sondern fragt das Objekt selbst noch einmal ab.
 
 Lokal testen: die Variablen in `.env`, dann `stripe listen --forward-to localhost:5173/api/stripe/webhook` (Stripe CLI;
 gibt das `whsec_…` für `.env` aus). Auch ohne Webhook schaltet die Rückkehr von der Zahlungsseite frei.
 
 Vor dem Verkauf an Verbraucher zu klären (nicht Teil des Codes): AGB mit Widerrufsbelehrung für digitale Leistungen,
 Preisangabe mit Umsatzsteuer, Rechnung bzw. Beleg (Stripe kann Belege per E-Mail schicken), AV-Vertrag mit Stripe.
+Beim Abo zusätzlich: ob der Weg zur Kündigung (Konto → „Abo verwalten oder kündigen“ → Seite von Stripe) den Vorgaben
+zur Kündigungsschaltfläche genügt (§ 312k BGB).
 Siehe `DATENSCHUTZ.md`.
 
 ## Konto, Impressum, Datenschutz

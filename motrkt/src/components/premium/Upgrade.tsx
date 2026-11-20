@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Check, Clock, Crown, FileUp, Lock, ShieldCheck, UserPlus, X } from "lucide-react";
-import { offerPrice, signInHref, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
+import { offerEvery, offerPrice, offerRate, signInHref, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
 import { DOCUMENT_HOURS } from "../../lib/userCars";
 import { getAllSales } from "../../data/generate";
 import { variants } from "../../data/db";
@@ -103,7 +103,7 @@ function AccountDialog() {
     t("Portfolio: der heutige Wert Ihrer Fahrzeuge", "Portfolio: what your cars are worth today"),
     t("Angebote merken und im Forum mitschreiben", "Save listings and write in the forum"),
     offer
-      ? t(`Premium freischalten: mit einem Kaufvertrag kostenlos oder für ${offerPrice(offer)}, ohne Abo`, `Unlock premium: free with a purchase contract or for ${offerPrice(offer)}, no subscription`)
+      ? t(`Premium freischalten: mit einem Kaufvertrag kostenlos oder für ${offerRate(offer)}${offer.recurring ? "" : ", ohne Abo"}`, `Unlock premium: free with a purchase contract or for ${offerRate(offer)}${offer.recurring ? "" : ", no subscription"}`)
       : t(`Premium freischalten: ${months} Monate für einen Kaufvertrag, ohne Abo`, `Unlock premium: ${months} months for one purchase contract, no subscription`),
   ];
   return (
@@ -262,22 +262,24 @@ function PremiumDialog() {
               <section className="mt-3.5 rounded-[6px] border border-gold/45 bg-gold-soft/50 p-5" aria-labelledby="premium-buy">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                   <h3 id="premium-buy" className="font-serif text-[18px]">
-                    {t("Premium kaufen", "Buy premium")}
+                    {offer.recurring ? t("Premium abonnieren", "Subscribe to premium") : t("Premium kaufen", "Buy premium")}
                   </h3>
                   <div className="flex items-baseline gap-2">
                     <span className="font-display text-[34px] leading-none">{offerPrice(offer)}</span>
-                    <span className="text-[13.5px] text-muted">{t(`für ${offer.months} Monate`, `for ${offer.months} months`)}</span>
+                    <span className="text-[13.5px] text-muted">{offer.recurring ? offerEvery(offer) : t(`für ${offer.months} Monate`, `for ${offer.months} months`)}</span>
                   </div>
                 </div>
                 <p className="mt-2 text-[13.5px] leading-relaxed text-muted">
-                  {t("Sofort freigeschaltet. Einmalige Zahlung, kein Abo: Es verlängert sich nicht von selbst.", "Unlocked at once. One payment, no subscription: it does not renew by itself.")}
+                  {offer.recurring
+                    ? t("Sofort freigeschaltet. Verlängert sich von selbst und ist jederzeit im Konto kündbar, zum Ende des bezahlten Zeitraums.", "Unlocked at once. It renews by itself and can be cancelled in your account at any time, to the end of the period you paid for.")
+                    : t("Sofort freigeschaltet. Einmalige Zahlung, kein Abo: Es verlängert sich nicht von selbst.", "Unlocked at once. One payment, no subscription: it does not renew by itself.")}
                 </p>
                 <button className="premium-cta mt-4" onClick={purchase} disabled={buying}>
                   {buying ? (
                     t("Zahlungsseite wird geöffnet …", "Opening the payment page …")
                   ) : (
                     <>
-                      {t("Jetzt kaufen", "Buy now")} <ArrowRight className="size-4" aria-hidden />
+                      {offer.recurring ? t("Jetzt abonnieren", "Subscribe now") : t("Jetzt kaufen", "Buy now")} <ArrowRight className="size-4" aria-hidden />
                     </>
                   )}
                 </button>
@@ -411,7 +413,7 @@ export function PremiumBanner({ reason, title, children }: { reason: LockReason;
           </button>
           <div className="mt-2 text-center text-[12.5px] text-on-night/60">
             {offer
-              ? t(`Mit Kaufvertrag kostenlos oder für ${offerPrice(offer)}`, `Free with a purchase contract or for ${offerPrice(offer)}`)
+              ? t(`Mit Kaufvertrag kostenlos oder für ${offerRate(offer)}`, `Free with a purchase contract or for ${offerRate(offer)}`)
               : t(`0 € für ${months} Monate, mit einem Kaufvertrag`, `€0 for ${months} months, with one purchase contract`)}
           </div>
         </div>

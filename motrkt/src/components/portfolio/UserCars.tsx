@@ -10,7 +10,7 @@ import { tr } from "../../i18n/terms";
 import { CarImage } from "../CarImage";
 import { VariantPicker } from "../VariantPicker";
 import { Pill, Section, useConfirm } from "../ui";
-import { offerPrice, usePlan } from "../../lib/plan";
+import { offerRate, usePlan } from "../../lib/plan";
 import {
   ACCEPT, COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, MAX_BYTES, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, uploadContract,
   type Kind, type UserCar,
@@ -173,10 +173,10 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
 }
 
 /** One of the ways to premium, as a tile: what it is, what it takes, and the way in. */
-function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, action, error }: {
+function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, gives, action, error }: {
   icon: typeof FileSignature; color: string; eyebrow: string; title: string; text: string; points: string[];
-  /** months of premium this way gives */
-  months: number; action: ReactNode; error?: string;
+  /** months of premium this way gives; `gives` says it in other words (a subscription has no fixed length) */
+  months: number; gives?: string; action: ReactNode; error?: string;
 }) {
   return (
     <article className="stat-tile flex flex-col" style={{ ["--tile-color" as string]: color }}>
@@ -202,7 +202,7 @@ function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, acti
         {action}
         <span className="inline-flex items-center gap-1.5 text-[13.5px] text-ink">
           <Crown className="size-4 text-gold" strokeWidth={1.6} aria-hidden />
-          {t(`${months} Monate Premium`, `${months} months of premium`)}
+          {gives ?? t(`${months} Monate Premium`, `${months} months of premium`)}
         </span>
       </div>
       {error && (
@@ -240,15 +240,26 @@ function BuyTile() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   if (!offer) return null;
+  const sub = Boolean(offer.recurring);
   return (
     <WayTile
       icon={CreditCard}
       months={offer.months}
+      gives={sub ? t("Premium, solange das Abo läuft", "Premium while the subscription runs") : undefined}
       color="var(--color-cobalt)"
       eyebrow={t("Sofort · ohne Dokument", "At once · no document")}
-      title={t("Premium kaufen", "Buy premium")}
-      text={t(`Sie zahlen einmal ${offerPrice(offer)} und Premium ist sofort für ${offer.months} Monate freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `You pay ${offerPrice(offer)} once and premium is unlocked at once for ${offer.months} months. No review, no waiting.`)}
-      points={[t("Einmalige Zahlung, kein Abo", "One payment, no subscription"), t("Verlängert sich nicht von selbst", "Does not renew by itself"), t("Sichere Zahlung über Stripe; Karten- und Kontodaten sehen wir nicht", "Secure payment through Stripe; we never see card or bank details")]}
+      title={sub ? t("Premium abonnieren", "Subscribe to premium") : t("Premium kaufen", "Buy premium")}
+      text={
+        sub
+          ? t(`Für ${offerRate(offer)} ist Premium sofort freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `For ${offerRate(offer)} premium is unlocked at once. No review, no waiting.`)
+          : t(`Sie zahlen einmal ${offerRate(offer)} und Premium ist sofort für ${offer.months} Monate freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `You pay ${offerRate(offer)} once and premium is unlocked at once for ${offer.months} months. No review, no waiting.`)
+      }
+      points={[
+        ...(sub
+          ? [t("Verlängert sich von selbst", "Renews by itself"), t("Jederzeit im Konto kündbar, zum Ende des bezahlten Zeitraums", "Cancel in your account at any time, to the end of the period you paid for")]
+          : [t("Einmalige Zahlung, kein Abo", "One payment, no subscription"), t("Verlängert sich nicht von selbst", "Does not renew by itself")]),
+        t("Sichere Zahlung über Stripe; Karten- und Kontodaten sehen wir nicht", "Secure payment through Stripe; we never see card or bank details"),
+      ]}
       error={error}
       action={
         <button
@@ -264,7 +275,7 @@ function BuyTile() {
             }
           }}
         >
-          {busy ? t("Zahlungsseite wird geöffnet …", "Opening the payment page …") : t(`Für ${offerPrice(offer)} kaufen`, `Buy for ${offerPrice(offer)}`)}
+          {busy ? t("Zahlungsseite wird geöffnet …", "Opening the payment page …") : sub ? t(`Für ${offerRate(offer)} abonnieren`, `Subscribe for ${offerRate(offer)}`) : t(`Für ${offerRate(offer)} kaufen`, `Buy for ${offerRate(offer)}`)}
         </button>
       }
     />
@@ -319,7 +330,7 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
       title={t("Premium freischalten", "Unlock premium")}
       sub={
         offer
-          ? t(`Mit einem Kaufvertrag kostenlos oder für ${offerPrice(offer)} kaufen`, `Free with a purchase contract, or buy it for ${offerPrice(offer)}`)
+          ? t(`Mit einem Kaufvertrag kostenlos oder für ${offerRate(offer)}`, `Free with a purchase contract or for ${offerRate(offer)}`)
           : t(`Kaufvertrag einreichen, ${months} Monate Premium erhalten`, `Submit a purchase contract, get ${months} months of premium`)
       }
       actions={
