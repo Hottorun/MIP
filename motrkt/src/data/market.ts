@@ -348,7 +348,8 @@ export type PortfolioPoint = { t: number; value: number | null; cost: number | n
 export function portfolioHistory(holdings: Holding[]): PortfolioPoint[] {
   if (!holdings.length) return [];
   const weeks: number[] = [];
-  for (let t = SERIES_START; t <= AS_OF; t += WEEK) weeks.push(t);
+  // the same weeks as the price series (getSeries), so the last point is the holdings' current value
+  for (let i = 0; i < WEEKS; i++) weeks.push(SERIES_START + i * WEEK);
   const lastT = weeks[weeks.length - 1];
   const bought = (h: Holding) => Math.min(h.purchaseDate, lastT);
   const start = Math.min(...holdings.map(bought));
