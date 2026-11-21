@@ -44,7 +44,9 @@ import { AGB, OPERATOR_LINE, PRICE_NOTE, SITE, WIDERRUF, WIDERRUF_INTRO, plainTe
 // STRIPE_API_BASE: only to run the flow against a stand-in for Stripe in a local test
 const api = () => process.env.STRIPE_API_BASE?.replace(/\/+$/, "") || "https://api.stripe.com/v1";
 /** Marks the Checkout Sessions of this app: the Stripe account may sell other things, and their events arrive here too. */
-const PRODUCT = "carbay_premium";
+const PRODUCT = "cartag_premium";
+/** The same mark from before the rename to Cartag (21 November 2026): subscriptions started then still renew with it. */
+const isOurs = (product: unknown) => product === PRODUCT || product === "carbay_premium";
 const OFFER_TTL = 10 * 60_000;
 /** A webhook older than this is not accepted (Stripe's own default): a captured request cannot be replayed later. */
 const WEBHOOK_TOLERANCE_S = 300;
@@ -255,7 +257,7 @@ export function paidInvoice(inv: Invoice, userId: string, months: number): Paid 
 /** What a Checkout Session grants, or null when it is not a paid premium purchase of this app. */
 export function paidSession(s: CheckoutSession): Paid | null {
   const meta = s.metadata ?? {};
-  if ((s.mode !== "payment" && s.mode !== "subscription") || meta.product !== PRODUCT) return null;
+  if ((s.mode !== "payment" && s.mode !== "subscription") || !isOurs(meta.product)) return null;
   // "no_payment_required": a discount code covered the whole price
   if (s.payment_status !== "paid" && s.payment_status !== "no_payment_required") return null;
   const months = Number(meta.months);
@@ -368,7 +370,7 @@ async function invoicePaid(id: string) {
   const subscription = subscriptionOf(inv);
   if (!subscription) return; // not a subscription's invoice
   const meta = inv.subscription_details?.metadata ?? inv.parent?.subscription_details?.metadata ?? {};
-  let account = meta.product === PRODUCT && meta.user_id ? { user_id: meta.user_id, months: Number(meta.months) } : null;
+  let account = isOurs(meta.product) && meta.user_id ? { user_id: meta.user_id, months: Number(meta.months) } : null;
   // without the marks on the invoice: the account that already paid for this subscription
   if (!account) [account = null] = await db()<{ user_id: string; months: number }[]>`select user_id, months from premium_payments where subscription = ${subscription} order by paid_at desc limit 1`;
   const paid = account && paidInvoice(inv, account.user_id, account.months);

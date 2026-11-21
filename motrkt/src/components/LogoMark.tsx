@@ -15,6 +15,6 @@ export function LogoWordmark({ height = 44, light = false, className }: { height
 }
 
 export function LogoMark({ size = 34, className }: { size?: number; className?: string }) {
-  return <img src="/brand/carbay-mark.svg" alt="" width={size} height={size} className={className} aria-hidden="true" />;
+  return <img src="/brand/cartag-mark.svg" alt="" width={size} height={size} className={className} aria-hidden="true" />;
 }
 

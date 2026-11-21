@@ -1,12 +1,11 @@
 Font: Italianno (Regular, version 1.100) by Robert E. Leuschke (TypeSETit)
 Source: https://github.com/google/fonts/tree/main/ofl/italianno (upstream https://github.com/googlefonts/italianno)
-Used in: cartag-wordmark.svg and cartag-wordmark-light.svg (with the alternate t, "t.ss03"), and the earlier
-carbay-wordmark.svg and carbay-wordmark-light.svg.
+Used in: cartag-wordmark.svg and cartag-wordmark-light.svg (with the alternate t, "t.ss03").
 
 Font: Great Vibes (Regular, version 1.103) by Robert E. Leuschke (TypeSETit), glyph "C.ss02" (stylistic set 2)
 Source: https://github.com/google/fonts/tree/main/ofl/greatvibes (upstream https://github.com/googlefonts/great-vibes)
 Copyright 2010 The Great Vibes Pro Project Authors (https://github.com/googlefonts/great-vibes)
-Used in: carbay-mark.svg, favicon.svg, favicon-32.png and apple-touch-icon.png.
+Used in: cartag-mark.svg, favicon.svg, favicon-32.png and apple-touch-icon.png.
 
 Both fonts are licensed under the SIL Open Font License 1.1 (below). The glyphs were converted to vector outlines;
 no font file is embedded or distributed.

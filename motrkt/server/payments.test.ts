@@ -56,13 +56,17 @@ describe("monthLater (one month's notice)", () => {
 describe("paidSession (which Checkout Sessions grant premium)", () => {
   const session: CheckoutSession = {
     id: "cs_test_a1", mode: "payment", status: "complete", payment_status: "paid", client_reference_id: "user-1", amount_total: 4900, currency: "eur",
-    payment_intent: "pi_1", metadata: { product: "carbay_premium", user_id: "user-1", months: "12" },
+    payment_intent: "pi_1", metadata: { product: "cartag_premium", user_id: "user-1", months: "12" },
   };
   it("reads account, months and amount from a paid session", () => {
     expect(paidSession(session)).toEqual({
       id: "cs_test_a1", userId: "user-1", months: 12, amount: 49, currency: "EUR", paymentIntent: "pi_1", customer: null, subscription: null, coversUntil: null,
     });
     expect(paidSession({ ...session, payment_intent: { id: "pi_2" } })?.paymentIntent).toBe("pi_2");
+  });
+  it("still accepts the mark from before the rename to Cartag", () => {
+    expect(paidSession({ ...session, metadata: { ...session.metadata, product: "carbay_premium" } })?.userId).toBe("user-1");
+    expect(paidSession({ ...session, metadata: { ...session.metadata, product: "other" } })).toBeNull();
   });
   it("counts a session a discount code paid for in full", () => {
     expect(paidSession({ ...session, payment_status: "no_payment_required", amount_total: 0, payment_intent: null })).toMatchObject({ amount: 0, paymentIntent: null });

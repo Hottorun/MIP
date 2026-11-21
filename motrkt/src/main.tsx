@@ -25,7 +25,7 @@ const en = (() => {
   }
   return !navigator.language.toLowerCase().startsWith("de");
 })();
-root.innerHTML = `<div class="flex min-h-screen flex-col items-center justify-center gap-4 font-display text-muted italic"><img src="/brand/carbay-mark.svg" alt="" width="56" height="56" class="animate-pulse" /><span>${en ? "One moment …" : "Einen Moment …"}</span></div>`;
+root.innerHTML = `<div class="flex min-h-screen flex-col items-center justify-center gap-4 font-display text-muted italic"><img src="/brand/cartag-mark.svg" alt="" width="56" height="56" class="animate-pulse" /><span>${en ? "One moment …" : "Einen Moment …"}</span></div>`;
 
 loadDataset()
   .then(() => import("./bootstrap"))
