@@ -1,12 +1,11 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Bell, CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, TrendingUp, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight, LogIn, UserPlus } from "lucide-react";
+import { CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight, LogIn, UserPlus } from "lucide-react";
 import { useMe } from "../lib/userCars";
 import { signInHref, usePlan } from "../lib/plan";
 import { signOut } from "../lib/session";
 import { PremiumFab, UpgradeDialog } from "./premium/Upgrade";
 import { useStore } from "../state/store";
-import { useNotifications } from "../state/notifications";
 import { prepareSearch, search, type SearchHit } from "../lib/search";
 import { cn, date, num, usdRate } from "../lib/format";
 import { t, useLang, type Lang } from "../i18n";
@@ -221,7 +220,6 @@ function Header() {
             <button className="p-2 text-ink transition-colors hover:text-accent" onClick={() => setSearchOpen(true)} aria-label={t("Suche öffnen", "Open search")}>
               <Search className="size-[19px]" strokeWidth={1.5} />
             </button>
-            <NotificationBell />
             <GuestSignIn />
             <UserMenu />
             <ThemeSwitch />
@@ -365,62 +363,6 @@ function useClickOutside(open: boolean, close: () => void) {
 }
 
 const dropdown = "brand-reset animate-fade-in absolute right-0 z-40 mt-2 rounded-box border border-line bg-panel shadow-[0_24px_50px_-20px_rgba(20,20,20,0.22)]";
-
-function NotificationBell() {
-  const [open, setOpen] = useState(false);
-  const { items, unread, read } = useNotifications();
-  const { markNotificationsRead } = useStore();
-  const ref = useClickOutside(open, () => setOpen(false));
-  const navigate = useNavigate();
-  const icon = { alert: AlertCircle, sale: TrendingUp };
-  return (
-    <div className="relative" ref={ref}>
-      <button className="relative p-2 text-ink transition-colors hover:text-accent" onClick={() => setOpen((o) => !o)} aria-label={t(`Benachrichtigungen (${unread} ungelesen)`, `Notifications (${unread} unread)`)}>
-        <Bell className="size-[19px]" strokeWidth={1.5} />
-        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red ring-2 ring-menu" />}
-      </button>
-      {open && (
-        <div className={cn(dropdown, "w-[min(92vw,380px)] overflow-hidden")}>
-          <div className="flex items-baseline justify-between border-b border-line px-5 py-3">
-            <span className="font-display text-[17px]">{t("Benachrichtigungen", "Notifications")}</span>
-            <button className="text-[13px] text-muted hover:text-ink disabled:opacity-40" disabled={!unread} onClick={() => markNotificationsRead(items.map((n) => n.id))}>
-              {t("Alle gelesen", "Mark all read")}
-            </button>
-          </div>
-          {items.length === 0 ? (
-            <div className="px-5 py-8 text-center text-[14px] text-muted">{t("Noch nichts Neues. Preisalarme legen Sie auf der Seite eines Fahrzeugs an.", "Nothing new yet. You can set price alerts on a car's page.")}</div>
-          ) : (
-            <ul className="max-h-[60vh] overflow-y-auto">
-              {items.map((n) => {
-                const Icon = icon[n.kind];
-                return (
-                  <li key={n.id}>
-                    <button
-                      className="flex w-full gap-3 border-b border-line/60 px-5 py-3 text-left hover:bg-panel-2"
-                      onClick={() => {
-                        markNotificationsRead([n.id]);
-                        setOpen(false);
-                        navigate(n.href);
-                      }}
-                    >
-                      <Icon className="mt-0.5 size-4 shrink-0 text-faint" strokeWidth={1.5} />
-                      <span className="min-w-0 flex-1">
-                        <span className={cn("block text-[14px]", read.has(n.id) ? "text-muted" : "text-ink")}>{n.title}</span>
-                        <span className="block text-[13px] text-muted">{n.body}</span>
-                        <span className="block text-[12px] text-faint">{date(n.time)}</span>
-                      </span>
-                      {!read.has(n.id) && <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" />}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 function UserMenu() {
   const [open, setOpen] = useState(false);
