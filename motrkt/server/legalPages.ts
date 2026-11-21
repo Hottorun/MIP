@@ -1,5 +1,5 @@
 import type { ServerResponse } from "node:http";
-import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, operatorComplete, type LegalSection } from "../src/legal.ts";
+import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, REPRESENTED, operatorComplete, type LegalSection } from "../src/legal.ts";
 import { AGB, WIDERRUF, WIDERRUF_INTRO } from "../src/terms.ts";
 
 /**
@@ -49,7 +49,7 @@ const TITLE: Record<LegalPath, [string, string]> = {
 
 function operator(en: boolean) {
   const or = (v: string, label: string) => (v ? esc(v) : `<span class="miss">[${esc(label)}]</span>`);
-  return `<p>${or(OPERATOR.name, "Name")}<br>${or(OPERATOR.street, en ? "Street" : "Straße")}<br>${or(OPERATOR.city, en ? "Postcode City" : "PLZ Ort")}, ${esc(OPERATOR.country)}<br>${en ? "Email" : "E-Mail"}: ${or(OPERATOR.email, "E-Mail")}${OPERATOR.phone ? `<br>${en ? "Phone" : "Telefon"}: ${esc(OPERATOR.phone)}` : ""}</p>`;
+  return `<p>${or(OPERATOR.name, "Name")}<br>${REPRESENTED[0] ? esc(REPRESENTED[en ? 1 : 0]) + "<br>" : ""}${or(OPERATOR.street, en ? "Street" : "Straße")}<br>${or(OPERATOR.city, en ? "Postcode City" : "PLZ Ort")}, ${esc(OPERATOR.country)}<br>${en ? "Email" : "E-Mail"}: ${or(OPERATOR.email, "E-Mail")}${OPERATOR.phone ? `<br>${en ? "Phone" : "Telefon"}: ${esc(OPERATOR.phone)}` : ""}</p>`;
 }
 
 function sections(list: LegalSection[], en: boolean) {

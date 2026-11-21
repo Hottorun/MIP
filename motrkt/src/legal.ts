@@ -5,7 +5,9 @@
  * the pages show a warning instead of pretending to be complete.
  */
 export const OPERATOR = {
-  name: "Ferdinand Reimer", // legal name of the operator, e.g. "Element GmbH" or "Max Mustermann"
+  name: "Ferdinand Reimer und Dimitris Kern GbR", // legal name of the operator, e.g. "Element GmbH" or "Max Mustermann"
+  // a partnership (GbR) has no register entry: the partners who represent it are named instead. Empty for one person or a registered company.
+  partners: ["Ferdinand Reimer", "Dimitris Kern"],
   street: "Stengelstraße 19", // "Musterstraße 1"
   city: "80805 München", // "10115 Berlin"
   country: "Deutschland",
@@ -15,6 +17,11 @@ export const OPERATOR = {
   register: "", // optional: "Amtsgericht Berlin-Charlottenburg, HRB 123456"
   vatId: "", // optional: "DE123456789"
 };
+
+/** "Represented by its partners: A and B", under the operator's name in Impressum and privacy notice; empty without partners. */
+export const REPRESENTED: [string, string] = OPERATOR.partners.length
+  ? [`Vertreten durch die Gesellschafter: ${OPERATOR.partners.join(" und ")}`, `Represented by its partners: ${OPERATOR.partners.join(" and ")}`]
+  : ["", ""];
 
 export const operatorComplete = () => Boolean(OPERATOR.name && OPERATOR.street && OPERATOR.city && OPERATOR.email && OPERATOR.responsible);
 

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, operatorComplete, type LegalSection } from "../legal";
+import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, REPRESENTED, operatorComplete, type LegalSection } from "../legal";
 import { isEn, t } from "../i18n";
 
 /**
@@ -26,6 +26,12 @@ function Operator() {
     <p>
       {or(OPERATOR.name, t("Name", "Name"))}
       <br />
+      {REPRESENTED[0] && (
+        <>
+          {t(...REPRESENTED)}
+          <br />
+        </>
+      )}
       {or(OPERATOR.street, t("Straße", "Street"))}
       <br />
       {or(OPERATOR.city, t("PLZ Ort", "Postcode City"))}, {OPERATOR.country}

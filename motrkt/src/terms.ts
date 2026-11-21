@@ -29,6 +29,10 @@ export const PRICE_NOTE: [string, string] =
 export const TERMS_AS_OF: [string, string] = ["21. November 2026", "21 November 2026"];
 
 const phone = OPERATOR.phone ? [`, Telefon: ${OPERATOR.phone}`, `, phone: ${OPERATOR.phone}`] : ["", ""];
+// a partnership: who represents it, for the sentence of the terms that names the contracting party
+const partners = OPERATOR.partners.length
+  ? [`, vertreten durch die Gesellschafter ${OPERATOR.partners.join(" und ")}`, `, represented by its partners ${OPERATOR.partners.join(" and ")}`]
+  : ["", ""];
 /** Name, address, phone and email in one line, as the withdrawal notice and the terms name the operator. */
 export const OPERATOR_LINE: [string, string] = [
   `${OPERATOR.name}, ${OPERATOR.street}, ${OPERATOR.city}, ${OPERATOR.country}${phone[0]}, E-Mail: ${OPERATOR.email}`,
@@ -101,8 +105,8 @@ export const AGB: LegalSection[] = [
     heading: ["1. Geltung und Vertragspartner", "1. Scope and contracting party"],
     paragraphs: [
       [
-        `Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung von Cartag (${SITE}) und für alle Verträge über Cartag Premium und über zusätzliche Suchaufträge. Ihr Vertragspartner ist ${OPERATOR_LINE[0]} („wir“).`,
-        `These terms apply to the use of Cartag (${SITE}) and to all contracts for Cartag Premium and for further search orders. Your contracting party is ${OPERATOR_LINE[1]} (“we”). This is a translation; the German text is the binding one.`,
+        `Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung von Cartag (${SITE}) und für alle Verträge über Cartag Premium und über zusätzliche Suchaufträge. Ihr Vertragspartner ist ${OPERATOR_LINE[0]}${partners[0]} („wir“).`,
+        `These terms apply to the use of Cartag (${SITE}) and to all contracts for Cartag Premium and for further search orders. Your contracting party is ${OPERATOR_LINE[1]}${partners[1]} (“we”). This is a translation; the German text is the binding one.`,
       ],
       [
         "Verbraucher im Sinne dieser Bedingungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden können.",
