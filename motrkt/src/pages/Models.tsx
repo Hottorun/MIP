@@ -483,7 +483,7 @@ function ListValue({ v, value, compact, className }: { v: Variant; value: number
   );
 }
 
-/** Without a market value: the median hammer price of the few recorded sales, marked as such; "keine Daten" without any. */
+/** Without a market value: the median hammer price of the few recorded sales, marked "ca." like an uncertain value (the tooltip says it is no market value); "keine Daten" without any. */
 function FewValue({ v, compact, className }: { v: Variant; compact?: boolean; className?: string }) {
   const mid = fewRecordsMedian(v.id);
   if (!mid) return <span className={cn("text-[13px] text-faint", className)} title={t("Zu wenige Belege für einen Marktwert", "Too few records for a market value")}>{t("keine Daten", "no data")}</span>;
@@ -493,7 +493,7 @@ function FewValue({ v, compact, className }: { v: Variant; compact?: boolean; cl
   );
   return (
     <span className={cn("whitespace-nowrap text-muted", className)} title={tip}>
-      <span className="mr-1 text-[0.8em] text-faint">≈</span>
+      <span className="mr-1 text-[0.8em] text-faint">{t("ca.", "approx.")}</span>
       <Money value={Math.round(mid.value / 1000) * 1000} compact={compact} />
     </span>
   );
