@@ -5,13 +5,13 @@
  * the pages show a warning instead of pretending to be complete.
  */
 export const OPERATOR = {
-  name: "", // legal name of the operator, e.g. "Element GmbH" or "Max Mustermann"
-  street: "", // "Musterstraße 1"
-  city: "", // "10115 Berlin"
+  name: "Ferdinand Reimer", // legal name of the operator, e.g. "Element GmbH" or "Max Mustermann"
+  street: "Stengelstraße 19", // "Musterstraße 1"
+  city: "80805 München", // "10115 Berlin"
   country: "Deutschland",
-  email: "", // contact and privacy requests
+  email: "reimerferdinand@gmail.com", // contact and privacy requests
   phone: "", // optional
-  responsible: "", // person responsible for content (§ 18 Abs. 2 MStV), may equal name
+  responsible: "Ferdinand Reimer", // person responsible for content (§ 18 Abs. 2 MStV), may equal name
   register: "", // optional: "Amtsgericht Berlin-Charlottenburg, HRB 123456"
   vatId: "", // optional: "DE123456789"
 };
@@ -64,8 +64,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     list: true,
     paragraphs: [
       [
-        "Für ein Konto brauchen wir einen Benutzernamen, ein Passwort und eine E-Mail-Adresse, nicht Ihren Namen. Die E-Mail-Adresse nutzen wir nur für Ihr Konto (Bestätigung der Adresse, Zurücksetzen des Passworts), nicht für Werbung.",
-        "An account needs a username, a password and an email address, not your name. We use the email address for your account only (confirming the address, resetting the password), never for advertising.",
+        "Für ein Konto brauchen wir einen Benutzernamen, ein Passwort und eine E-Mail-Adresse, nicht Ihren Namen. Die E-Mail-Adresse nutzen wir nur für Ihr Konto (Code bei der Registrierung, Bestätigung einer geänderten Adresse, Zurücksetzen des Passworts), nicht für Werbung.",
+        "An account needs a username, a password and an email address, not your name. We use the email address for your account only (the code at sign-up, confirming a changed address, resetting the password), never for advertising.",
       ],
       [
         "Wir setzen keine Werbedienste, keine Tracking-Cookies und keine eingebundenen Inhalte sozialer Netzwerke ein. Seitenaufrufe zählen wir ohne Cookies und ohne Sie über den Tag hinaus wiederzuerkennen (Abschnitt 3, „Reichweitenmessung“). Schriften liefern wir von unserem eigenen Server aus.",
@@ -93,8 +93,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     heading: ["3. Welche Daten wir verarbeiten", "3. What data we process"],
     paragraphs: [
       [
-        "Konto: Benutzername, E-Mail-Adresse und der Zeitpunkt ihrer Bestätigung, ein Hash des Passworts (niemals das Passwort selbst), Zeitpunkt der Registrierung und ggf. das Ablaufdatum eines Premium-Zugangs. An die E-Mail-Adresse schicken wir nur Nachrichten zum Konto: einen Link zur Bestätigung der Adresse (48 Stunden gültig) und, wenn Sie es anfordern, einen Link zum Zurücksetzen des Passworts (eine Stunde gültig); von diesen Links speichern wir nur einen Hash. Für die Anmeldung setzen wir ein notwendiges Sitzungs-Cookie (mip_sid), das ein Jahr gilt und bei jedem Besuch verlängert wird; gespeichert wird nur ein Hash des Sitzungsschlüssels. Fehlgeschlagene Anmeldeversuche zählen wir 24 Stunden lang unter einem Hash aus Benutzername und IP-Adresse, um Angriffe auf Passwörter zu bremsen; die IP-Adresse selbst speichern wir dabei nicht.",
-        "Account: username, email address and the time it was confirmed, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. We send only account messages to the email address: a link to confirm the address (valid for 48 hours) and, if you request it, a link to reset the password (valid for one hour); of these links we store only a hash. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
+        "Konto: Benutzername, E-Mail-Adresse und der Zeitpunkt ihrer Bestätigung, ein Hash des Passworts (niemals das Passwort selbst), Zeitpunkt der Registrierung und ggf. das Ablaufdatum eines Premium-Zugangs. An die E-Mail-Adresse schicken wir nur Nachrichten zum Konto: bei der Registrierung einen 6-stelligen Code (15 Minuten gültig), erst nach dessen Eingabe entsteht das Konto; bis dahin halten wir Ihre Angaben aus dem Formular (Benutzername, E-Mail-Adresse, Hash des Passworts) höchstens 15 Minuten vor. Ändern Sie die Adresse später, schicken wir einen Link zur Bestätigung (48 Stunden gültig), und wenn Sie es anfordern, einen Link zum Zurücksetzen des Passworts (eine Stunde gültig). Von Codes und Links speichern wir nur einen Hash. Für die Anmeldung setzen wir ein notwendiges Sitzungs-Cookie (mip_sid), das ein Jahr gilt und bei jedem Besuch verlängert wird; gespeichert wird nur ein Hash des Sitzungsschlüssels. Fehlgeschlagene Anmeldeversuche zählen wir 24 Stunden lang unter einem Hash aus Benutzername und IP-Adresse, um Angriffe auf Passwörter zu bremsen; die IP-Adresse selbst speichern wir dabei nicht.",
+        "Account: username, email address and the time it was confirmed, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. We send only account messages to the email address: at sign-up a 6-digit code (valid for 15 minutes); the account is created only once it is entered, and until then we keep your form entries (username, email address, hash of the password) for 15 minutes at most. If you change the address later we send a link to confirm it (valid for 48 hours), and, if you request it, a link to reset the password (valid for one hour). Of codes and links we store only a hash. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
       ],
       [
         "Ohne Konto: Katalog, Marktwerte, Angebote, Auktionskalender und Forum können Sie ohne Konto ansehen. Dabei setzen wir kein Cookie und speichern nichts über Sie, außer den Server-Protokollen des Hosting-Anbieters und der Reichweitenmessung (siehe unten).",
