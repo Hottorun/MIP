@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createHash, randomBytes, randomInt, randomUUID, scrypt, timingSafeEqual } from "node:crypto";
 import { TLSSocket } from "node:tls";
+import { waitUntil } from "@vercel/functions";
 import demoAccount from "./demo-account.json" with { type: "json" };
 import { readText } from "./body.ts";
 import { db } from "./db.ts";
@@ -16,6 +17,11 @@ import { accountMail, codeMail, sendMail } from "./mail.ts";
  * SHA-256 of each session token. Every account has an email address (db/migrations/013_email.sql), used only to confirm
  * it and to reset the password (server/mail.ts); accounts from before it are asked for one once (src/components/EmailGate.tsx). Sessions last a year and are renewed on every visit, so a user stays signed in until
  * they sign out.
+ *
+ * A forgotten password: "Passwort vergessen?" on the sign-in page (/anmelden?vergessen opens there) or in the account
+ * (/konto, for whoever is still signed in) sends a link to the account's address, valid for an hour and once
+ * (/passwort-neu#<token>). The page checks the link when it opens, stores the new password, signs every other device
+ * out, and the address gets a note that the password was changed (as after a change in the account).
  */
 
 const COOKIE = "mip_sid";
@@ -28,6 +34,8 @@ const EMAIL_MAX = 254;
 const EMAIL = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
 const VERIFY_HOURS = 48;
 const RESET_HOURS = 1;
+// Reset links per account and day, whoever asks and from wherever: nobody's inbox is flooded through "forgot password".
+const RESET_MAILS_DAY = 10;
 
 type User = { id: string; username: string; salt: string; hash: string };
 
@@ -159,8 +167,9 @@ const MAX_FAILS = 8;
 const MAX_FAILS_NAME = 50;
 // The counters are kept under a hash of the key, so the table holds no readable names or IP addresses.
 const failKey = (key: string) => sha("auth-failure:" + key);
-async function blocked(key: string, max = MAX_FAILS) {
-  const [{ n }] = await db()<{ n: number }[]>`select count(*)::int as n from auth_failures where key = ${failKey(key)} and at > now() - interval '15 minutes'`;
+/** Whether `max` entries are counted under the key within the last `minutes` (a day at most: fail() keeps no more). */
+async function blocked(key: string, max = MAX_FAILS, minutes = 15) {
+  const [{ n }] = await db()<{ n: number }[]>`select count(*)::int as n from auth_failures where key = ${failKey(key)} and at > now() - make_interval(mins => ${minutes})`;
   return n >= max;
 }
 async function fail(key: string) {
@@ -266,6 +275,44 @@ async function sendResetMail(req: IncomingMessage, user: { id: string; username:
   );
 }
 
+/**
+ * Tells the account's address that its password was changed (reset by link or changed in the account): an owner who
+ * did not do it learns of it and can set a new one, which signs everyone else out.
+ */
+async function sendPasswordChangedMail(req: IncomingMessage, user: { id: string; username: string }, lang: "de" | "en") {
+  const [row] = await db()<{ email: string | null }[]>`select email from users where id = ${user.id}`;
+  if (!row?.email) return;
+  const de = lang === "de";
+  await sendMail(
+    accountMail({
+      to: row.email,
+      subject: de ? "Ihr Cartag-Passwort wurde geändert" : "Your Cartag password was changed",
+      hello: de ? `Guten Tag, ${user.username},` : `Hello ${user.username},`,
+      body: de
+        ? "das Passwort Ihres Cartag-Kontos wurde soeben geändert. Waren Sie das selbst, ist nichts weiter zu tun. Falls nicht, legen Sie über den Button sofort ein neues Passwort fest; dabei werden alle Geräte abgemeldet."
+        : "the password of your Cartag account has just been changed. If that was you, there is nothing more to do. If not, use the button to set a new password right away; this signs out every device.",
+      button: de ? "Neues Passwort anfordern" : "Request a new password",
+      link: `${publicUrl(req)}/anmelden?vergessen`,
+      after: de
+        ? "Diese Nachricht geht bei jeder Änderung des Passworts an die Adresse Ihres Kontos."
+        : "This message goes to your account's address whenever the password is changed.",
+    }),
+  );
+}
+
+/**
+ * "Forgot password" for whoever `login` names, if anyone: a link to the account's address, at most RESET_MAILS_DAY a
+ * day per account. Runs after the answer has gone out (handleAuth), so it has nothing to report.
+ */
+async function forgotPassword(req: IncomingMessage, login: string, lang: "de" | "en") {
+  const user = await userByLogin(login);
+  if (!user || isDemo(user)) return;
+  const [row] = await db()<{ email: string | null }[]>`select email from users where id = ${user.id}`;
+  if (!row?.email || (await blocked("forgot-mail:" + user.id, RESET_MAILS_DAY, 24 * 60))) return;
+  await fail("forgot-mail:" + user.id);
+  await sendResetMail(req, user, row.email, lang);
+}
+
 // Sign-up codes (signup_codes, db/migrations/016_signup_codes.sql): 6 digits, 15 minutes, 5 tries, 5 sends.
 const CODE_MINUTES = 15;
 const CODE_TRIES = 5;
@@ -291,8 +338,11 @@ async function sendCodeMail(username: string, email: string, code: string, lang:
   );
 }
 
-/** Mail failures are logged, not shown: the account works without the mail, and the link can be sent again. */
-const tryMail = (p: Promise<void>) => p.catch((e) => console.error("mail", (e as Error).message));
+/**
+ * Mail that goes out after the answer: the answer does not wait for it, and a failure is logged, not shown (the link
+ * can be requested again). On Vercel waitUntil keeps the function alive for it; elsewhere the process stays up anyway.
+ */
+const later = (mail: Promise<void>) => waitUntil(mail.catch((e) => console.error("mail", (e as Error).message)));
 
 // ------------------------------------------------------------------------------------------------ API
 function sendJson(res: ServerResponse, status: number, body: unknown) {
@@ -338,6 +388,7 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
   if (req.method !== "POST" || !sameOrigin(req)) return sendJson(res, 404, { error: "Not found" });
 
   if (path === "/api/auth/password") return changePassword(req, res);
+  if (path === "/api/auth/password/forgot") return forgotSignedIn(req, res);
   if (path === "/api/auth/delete") return deleteAccount(req, res);
   if (path === "/api/auth/email") return setEmail(req, res);
   if (path === "/api/auth/resend") return resendVerify(req, res);
@@ -458,21 +509,22 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
     return sendJson(res, 200, { username: user.username });
   }
 
-  // "Forgot password": the answer is always the same, so it does not reveal which names or addresses have an account.
+  // "Forgot password": the answer is always the same and goes out before the account is looked up, so neither its
+  // text nor the time it takes reveals which names or addresses have an account.
   if (path === "/api/auth/forgot") {
-    const login = typeof body.login === "string" ? body.login.trim() : "";
+    const login = typeof body.login === "string" ? body.login.trim().slice(0, EMAIL_MAX) : "";
     if ((await blocked("forgot:" + ip, 5)) || (login && (await blocked("forgot:" + login.toLowerCase(), 3)))) return sendJson(res, 429, { error: "too_many" });
     await fail("forgot:" + ip);
     if (login) {
       await fail("forgot:" + login.toLowerCase());
-      const user = await userByLogin(login);
-      const [row] = user ? await db()<{ email: string | null }[]>`select email from users where id = ${user.id}` : [];
-      if (user && row?.email) await tryMail(sendResetMail(req, user, row.email, mailLang(body.lang)));
+      later(forgotPassword(req, login, mailLang(body.lang)));
     }
     return sendJson(res, 200, { ok: true });
   }
 
-  if (path === "/api/auth/reset") {
+  // The link from the reset mail. "…/check" only says whether it still works and whose account it is, so the page can
+  // say so before anyone types a new password; the link is used up when the password is stored.
+  if (path === "/api/auth/reset" || path === "/api/auth/reset/check") {
     if (await blocked("reset:" + ip)) return sendJson(res, 429, { error: "too_many" });
     const token = typeof body.token === "string" ? body.token : "";
     const [t] = token
@@ -483,6 +535,7 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
       await fail("reset:" + ip);
       return sendJson(res, 400, { error: "link_invalid" });
     }
+    if (path === "/api/auth/reset/check") return sendJson(res, 200, { username: user.username });
     if (password.length < PW_MIN || password.length > PW_MAX) return sendJson(res, 400, { error: "password_length" });
     if (password.toLowerCase() === user.username.toLowerCase()) return sendJson(res, 400, { error: "password_is_username" });
     const salt = randomBytes(16).toString("hex");
@@ -496,6 +549,7 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
     });
     await clearFailures("login:" + user.username.toLowerCase());
     await startSession(req, res, user.id);
+    later(sendPasswordChangedMail(req, user, mailLang(body.lang)));
     return sendJson(res, 200, { username: user.username });
   }
   return sendJson(res, 404, { error: "Not found" });
@@ -621,8 +675,38 @@ async function changePassword(req: IncomingMessage, res: ServerResponse) {
     await tx`update users set salt = ${salt}, hash = ${hash} where id = ${user.id}`;
     // every other browser is signed out; this one keeps its session
     await tx`delete from sessions where user_id = ${user.id} and token_hash <> ${sha(token ?? "")}`;
+    await tx`delete from email_tokens where user_id = ${user.id} and kind = 'reset'`; // a reset link still in the inbox is void
   });
+  later(sendPasswordChangedMail(req, user, mailLang(body.lang)));
   return sendJson(res, 200, { ok: true });
+}
+
+/**
+ * "Forgot password" for whoever is signed in (/konto): sessions last a year, so the password is often forgotten long
+ * before the session ends, and changing it asks for the current one. The link goes to the account's address; the
+ * answer names it, since it is the account's own.
+ */
+async function forgotSignedIn(req: IncomingMessage, res: ServerResponse) {
+  const user = await currentUser(req);
+  if (!user) return sendJson(res, 401, { error: "not signed in" });
+  if (isDemo(user)) return sendJson(res, 403, { error: "demo" });
+  let body: Record<string, unknown> = {};
+  try {
+    body = await readBody(req);
+  } catch {
+    /* language only */
+  }
+  if (await blocked("mail:" + user.id, 5)) return sendJson(res, 429, { error: "too_many" });
+  const [row] = await db()<{ email: string | null }[]>`select email from users where id = ${user.id}`;
+  if (!row?.email) return sendJson(res, 400, { error: "no_email" });
+  await fail("mail:" + user.id);
+  try {
+    await sendResetMail(req, user, row.email, mailLang(body.lang));
+  } catch (e) {
+    console.error("mail", (e as Error).message);
+    return sendJson(res, 502, { error: "mail_failed" });
+  }
+  return sendJson(res, 200, { ok: true, email: row.email });
 }
 
 /** Everything stored about the account as one JSON file (data portability); the contract files are not included. */
@@ -976,8 +1060,10 @@ const LOGIN_PAGE = `<!doctype html>
   // /passwort-neu#<token> is the link from the reset mail; the token is taken out of the address at once
   var query = new URLSearchParams(location.search);
   // /anmelden?neu opens on "create account" (the app's buttons for guests link there)
-  var mode = location.pathname === "/passwort-neu" ? "reset" : query.has("neu") ? "register" : "login";
-  var resetToken = mode === "reset" ? location.hash.slice(1) : "";
+  // and /anmelden?vergessen on "forgot password" (the link in the mail about a changed password)
+  var mode = location.pathname === "/passwort-neu" ? "reset" : query.has("neu") ? "register" : query.has("vergessen") ? "forgot" : "login";
+  // resetUser: whose account the link is for, once the server has confirmed the link (reset/check)
+  var resetToken = mode === "reset" ? location.hash.slice(1) : "", resetUser = "";
   // the sign-up waiting for its code (step 2): its id from the server and the address the code went to
   var pending = "", pendingEmail = "";
   if (mode === "reset") { try { history.replaceState(null, "", location.pathname); } catch (e) {} }
@@ -990,7 +1076,7 @@ const LOGIN_PAGE = `<!doctype html>
           title_login: "Willkommen zurück", sub_login: "Melden Sie sich mit Benutzername oder E-Mail an.",
           title_register: "Konto anlegen", sub_register: "In einer Minute startklar.",
           title_forgot: "Passwort vergessen", sub_forgot: "Wir schicken Ihnen einen Link für ein neues Passwort.",
-          title_reset: "Neues Passwort", sub_reset: "Legen Sie ein neues Passwort für Ihr Konto fest.",
+          title_reset: "Neues Passwort", sub_reset: "Legen Sie ein neues Passwort für Ihr Konto fest.", sub_reset_user: "Legen Sie ein neues Passwort für das Konto {user} fest.",
           ulabel: "Benutzername", ulabel_login: "Benutzername oder E-Mail", plabel: "Passwort", plabel_reset: "Neues Passwort",
           uhint: "3–30 Zeichen: Buchstaben, Ziffern, . - _", phint: "Mindestens 8 Zeichen",
           sent: "Gehört zu dieser Angabe ein Konto, ist ein Link an die hinterlegte E-Mail-Adresse unterwegs. Er gilt eine Stunde.",
@@ -1009,7 +1095,7 @@ const LOGIN_PAGE = `<!doctype html>
           title_login: "Welcome back", sub_login: "Sign in with your username or email.",
           title_register: "Create an account", sub_register: "Ready in a minute.",
           title_forgot: "Forgot password", sub_forgot: "We will send you a link to set a new password.",
-          title_reset: "New password", sub_reset: "Set a new password for your account.",
+          title_reset: "New password", sub_reset: "Set a new password for your account.", sub_reset_user: "Set a new password for the account {user}.",
           ulabel: "Username", ulabel_login: "Username or email", plabel: "Password", plabel_reset: "New password",
           uhint: "3–30 characters: letters, digits, . - _", phint: "At least 8 characters",
           sent: "If an account belongs to this entry, a link is on its way to its email address. It is valid for one hour.",
@@ -1025,7 +1111,7 @@ const LOGIN_PAGE = `<!doctype html>
   function render() {
     var L = T[lang];
     document.documentElement.lang = lang;
-    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – Cartag";
+    document.title = (mode === "forgot" || mode === "reset" ? L["title_" + mode] : lang === "de" ? "Anmelden" : "Sign in") + " – Cartag";
     document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = el.getAttribute("data-" + lang); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     var reg = mode === "register", login = mode === "login", forgot = mode === "forgot", reset = mode === "reset", code = mode === "code";
@@ -1050,7 +1136,7 @@ const LOGIN_PAGE = `<!doctype html>
     $("phint").textContent = reg || reset ? L.phint : "";
     $("submit").textContent = L[mode];
     $("title").textContent = L["title_" + mode];
-    $("sub").textContent = L["sub_" + mode].replace("{email}", pendingEmail);
+    $("sub").textContent = (reset && resetUser ? L.sub_reset_user : L["sub_" + mode]).replace("{email}", pendingEmail).replace("{user}", resetUser);
     $("err").textContent = "";
     $("ok").hidden = true;
   }
@@ -1078,6 +1164,8 @@ const LOGIN_PAGE = `<!doctype html>
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(lock);
   function go(m) { mode = m; render(); (m === "reset" ? $("password") : m === "code" ? $("code") : $("username")).focus(); }
+  // a reset link that no longer works leads straight to requesting a new one
+  function expired() { resetToken = ""; resetUser = ""; $("username").value = ""; go("forgot"); $("err").textContent = T[lang].link_invalid; }
   $("tab-login").onclick = function () { go("login"); };
   // from the code step "back" returns to the filled-in sign-up form, else to signing in
   $("to-login").onclick = function () { if (mode === "code") { pending = ""; $("code").value = ""; go("register"); } else go("login"); };
@@ -1097,6 +1185,7 @@ const LOGIN_PAGE = `<!doctype html>
       .then(function (x) {
         $("submit").disabled = false;
         if (x.ok) return done(x.j);
+        if (x.j.error === "link_invalid") return expired();
         $("err").textContent = T[lang][x.j.error] || (mode === "login" ? T[lang].wrong_credentials : T[lang].failed);
         if (mode === "code" && x.j.error === "code_expired") { $("code").disabled = true; $("resend").hidden = true; }
       })
@@ -1124,8 +1213,8 @@ const LOGIN_PAGE = `<!doctype html>
     if (mode === "reset") {
       if (!p) { $("err").textContent = T[lang].empty; return; }
       if (p !== p2) { $("err").textContent = T[lang].mismatch; return; }
-      if (!resetToken) { $("err").textContent = T[lang].link_invalid; return; }
-      return post("reset", { token: resetToken, password: p }, function () { enter("/"); });
+      if (!resetToken) return expired();
+      return post("reset", { token: resetToken, password: p, lang: lang }, function () { enter("/"); });
     }
     if (!u || !p || (mode === "register" && !em)) { $("err").textContent = T[lang].empty; return; }
     if (mode === "register" && em.indexOf("@") < 1) { $("err").textContent = T[lang].email_invalid; return; }
@@ -1143,6 +1232,12 @@ const LOGIN_PAGE = `<!doctype html>
   lastW = window.innerWidth;
   lock();
   (mode === "reset" ? $("password") : $("username")).focus();
+  // The link from the reset mail is checked at once: a used or expired one says so before a password is typed. A
+  // working one names its account; the hidden username field lets a password manager file the new password under it.
+  if (mode === "reset") {
+    if (!resetToken) expired();
+    else post("reset/check", { token: resetToken }, function (j) { resetUser = j.username; $("username").value = j.username; render(); });
+  }
   // Demo link (QR code): /anmelden#demo=<password> signs in as the shared demo account. The part after # never
   // reaches the server or its logs, and it is taken out of the address before signing in.
   var demo = /^#demo=(.+)$/.exec(location.hash);

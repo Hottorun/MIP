@@ -33,6 +33,16 @@ Passwort an; es entsteht erst, wenn der 6-stellige Code aus der Mail an diese Ad
 Resend, `server/mail.ts`; lokal ohne `RESEND_API_KEY` steht der Code im Server-Log). Man bleibt dauerhaft angemeldet (die Sitzung läuft ein Jahr und verlängert sich bei jedem Besuch), bis man
 sich abmeldet.
 
+**Passwort vergessen:** „Passwort vergessen?“ auf der Anmeldeseite (`/anmelden?vergessen` öffnet gleich dort) nimmt
+Benutzername oder E-Mail-Adresse und schickt einen Link an die Adresse des Kontos (`POST /api/auth/forgot`). Die Antwort
+ist immer dieselbe und geht hinaus, bevor das Konto gesucht wird; je Konto gibt es höchstens 10 Links am Tag. Wer noch
+angemeldet ist, fordert den Link unter `/konto` an („Passwort vergessen? Link per E-Mail senden“,
+`POST /api/auth/password/forgot`). Der Link (`/passwort-neu#<Schlüssel>`) gilt eine Stunde und einmal; die Seite prüft
+ihn beim Öffnen (`POST /api/auth/reset/check`), nennt das Konto und führt bei einem abgelaufenen Link direkt zum Anfordern
+eines neuen. Mit dem neuen Passwort (`POST /api/auth/reset`) ist man angemeldet, alle anderen Geräte sind abgemeldet,
+und an die Adresse des Kontos geht ein Hinweis, dass das Passwort geändert wurde (ebenso nach einer Änderung unter
+`/konto`). Lokal ohne `RESEND_API_KEY` stehen Link und Hinweis im Server-Log.
+
 **Demo-Konto zum Testen:** Benutzername `demo`, Passwort `turbo-carrera-8987`
 
 Das Demo-Konto ist bei `npm run dev` immer aktiv (abschalten mit `MIP_DEMO_ACCOUNT=0`). Weil dieses Repository
@@ -167,7 +177,7 @@ Siehe `DATENSCHUTZ.md`.
 
 ## Konto, Impressum, Datenschutz
 
-Unter `/konto` ändern Nutzer ihr Passwort (andere Browser werden abgemeldet), laden alle zu ihrem Konto gespeicherten
+Unter `/konto` ändern Nutzer ihr Passwort (andere Browser werden abgemeldet; wer das aktuelle vergessen hat, lässt sich dort den Link zum Zurücksetzen schicken), laden alle zu ihrem Konto gespeicherten
 Daten als JSON herunter und löschen ihr Konto (Sitzungen, gespeicherte Daten, Zähler und alle nicht freigegebenen
 Meldungen samt Verträgen werden gelöscht; freigegebene Fahrzeuge ohne FIN und Forumsbeiträge bleiben ohne
 Kontobezug). Das Demo-Konto kann nichts davon. Beim Abmelden löscht die App ihre Kopie der Kontodaten aus dem

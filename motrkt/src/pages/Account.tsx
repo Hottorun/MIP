@@ -18,6 +18,7 @@ const ERR: Record<string, () => string> = {
   email_taken: () => t("Diese E-Mail-Adresse gehört schon zu einem anderen Konto.", "This email address already belongs to another account."),
   too_many: () => t("Zu viele Versuche. Bitte in 15 Minuten erneut versuchen.", "Too many attempts. Please try again in 15 minutes."),
   subscription: () => t("Ihr Abo ließ sich gerade nicht kündigen, deshalb wurde das Konto nicht gelöscht. Bitte später noch einmal versuchen.", "Your subscription could not be cancelled just now, so the account was not deleted. Please try again later."),
+  no_email: () => t("Zu diesem Konto ist keine E-Mail-Adresse hinterlegt.", "This account has no email address."),
   mail_failed: () => t("Die E-Mail konnte nicht verschickt werden. Bitte später noch einmal versuchen.", "The email could not be sent. Please try again later."),
 };
 const errText = (e: unknown) => (ERR[(e as Error).message] ?? (() => t("Das hat nicht geklappt. Bitte später noch einmal versuchen.", "That did not work. Please try again later.")))();
@@ -278,6 +279,7 @@ function EmailCard({ me, disabled, reload }: { me: Me | null; disabled: boolean;
   );
 }
 
+/** Change the password with the current one; whoever has forgotten it gets the reset link by mail (the session lasts a year, memory often less). */
 function PasswordCard({ disabled }: { disabled: boolean }) {
   const { toast } = useStore();
   const [current, setCurrent] = useState("");
@@ -291,11 +293,23 @@ function PasswordCard({ disabled }: { disabled: boolean }) {
     if (next !== repeat) return setErr(t("Die Wiederholung stimmt nicht überein.", "The repeated password does not match."));
     setBusy(true);
     try {
-      await api("/api/auth/password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ current, next }) });
+      await api("/api/auth/password", json({ current, next, lang: getLang() }));
       setCurrent("");
       setNext("");
       setRepeat("");
       toast(t("Passwort geändert. Andere Browser sind abgemeldet.", "Password changed. Other browsers are signed out."));
+    } catch (x) {
+      setErr(errText(x));
+    } finally {
+      setBusy(false);
+    }
+  };
+  const forgot = async () => {
+    setErr("");
+    setBusy(true);
+    try {
+      const { email } = await api<{ email: string }>("/api/auth/password/forgot", json({ lang: getLang() }));
+      toast(t(`Link für ein neues Passwort an ${email} geschickt. Er gilt eine Stunde.`, `Link for a new password sent to ${email}. It is valid for one hour.`));
     } catch (x) {
       setErr(errText(x));
     } finally {
@@ -308,6 +322,11 @@ function PasswordCard({ disabled }: { disabled: boolean }) {
         <div>
           <label className="label" htmlFor="pw-current">{t("Aktuelles Passwort", "Current password")}</label>
           <input id="pw-current" className="input" type="password" autoComplete="current-password" value={current} onChange={(e) => setCurrent(e.target.value)} required disabled={disabled} />
+          {!disabled && (
+            <button type="button" className="link mt-1.5 text-[13px]" onClick={forgot} disabled={busy}>
+              {t("Passwort vergessen? Link per E-Mail senden", "Forgot your password? Send a link by email")}
+            </button>
+          )}
         </div>
         <div>
           <label className="label" htmlFor="pw-next">{t("Neues Passwort (mindestens 8 Zeichen)", "New password (at least 8 characters)")}</label>
