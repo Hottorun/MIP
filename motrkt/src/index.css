@@ -44,7 +44,7 @@
  * up the palette; the dark theme redefines each one further down.
  */
 @theme {
-  --color-bg: #f1f5f4;
+  --color-bg: #f7f3ec;
   --color-panel: #ffffff;
   --color-panel-2: var(--base-panel-2);
   --color-panel-3: var(--base-panel-3);
@@ -611,12 +611,17 @@ body {
   animation: gallery-in-prev 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* The data line above the header: one shade darker than the header, its gradient at the same angle, so the two read
-   as layers of one band. Between them runs a brass hairline like the trim strip on a car: brightest in the middle,
-   fading out to both sides, with a short glint that travels along it every few seconds. */
+/* The data line above the header: half a shade darker than the header (halfway between its petrol and the night
+   tone), its gradient at the same angle, so the two read as layers of one band with a gentle step between them.
+   Between them runs a brass hairline like the trim strip on a car: brightest in the middle, fading out to both
+   sides, with a short glint that travels along it every few seconds. */
 .top-seam {
   position: relative;
-  background: linear-gradient(100deg, var(--color-night) 0%, var(--color-night-2) 100%);
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--color-menu) 50%, var(--color-night)) 0%,
+    color-mix(in srgb, var(--color-menu-2) 50%, var(--color-night-2)) 100%
+  );
 }
 .top-seam::after {
   content: "";
