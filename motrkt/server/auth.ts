@@ -690,7 +690,7 @@ const LOGIN_PAGE = `<!doctype html>
     unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   /* the app's colours (src/index.css). Wide screens: the photo across the whole page (Porsche tower above, Carrera GT
      below), the claim on the left over a petrol veil, the form card on the right. Narrow screens: photo head, form below. */
-  :root { --bg:#f7f3ec; --panel:#ffffff; --field:#ffffff; --line:#d8e3e0; --line2:#b4c8c4; --ink:#0b1d20; --muted:#4a6064; --faint:#71878a;
+  :root { --bg:#f7f3ec; --panel:#ffffff; --field:#ffffff; --line:#e3dccf; --line2:#cbbfa9; --ink:#0b1d20; --muted:#4a6064; --faint:#71878a;
           --accent:#0f3a41; --accent2:#0a2a2f; --on-accent:#f1f5f4; --night:10 39 44; --gold:#d3ad66; --gold-line:#c9a35e; --on-night:#f2f4f4; --down:#b0342a; }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) { --bg:#0b0d0e; --panel:#131617; --field:#191d1e; --line:#252a2c; --line2:#3a4245; --ink:#eef1f2; --muted:#a2acb1; --faint:#7a858b;

@@ -124,13 +124,13 @@
     --base-ink: #0b1d20;
     --base-muted: #4a6064;
     --base-faint: #71878a;
-    --base-line: #d8e3e0;
-    --base-line-2: #b4c8c4;
+    --base-line: #e3dccf;
+    --base-line-2: #cbbfa9;
     --base-accent: #125560;
     --base-accent-2: #0f3a41;
     --base-accent-soft: #d9ebe8;
-    --base-panel-2: #e8f0ee;
-    --base-panel-3: #d9e6e3;
+    --base-panel-2: #efe9de;
+    --base-panel-3: #e5dccb;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
