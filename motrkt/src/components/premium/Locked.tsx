@@ -3,6 +3,7 @@ import { ArrowRight, Crown, Lock as LockIcon } from "lucide-react";
 import { usePlan, type LockReason } from "../../lib/plan";
 import { cn } from "../../lib/format";
 import { t } from "../../i18n";
+import { AdSlot } from "./AdSlot";
 
 /**
  * The locks of the lite version (src/lib/plan.tsx). A locked block keeps its heading and shows its content softly
@@ -37,20 +38,24 @@ export function Locked({ children, className, ...info }: LockInfo & { children: 
 export function LockedBody({ children, reason, height = 280, className }: LockInfo & { children: ReactNode; className?: string }) {
   const { openUpgrade } = usePlan();
   return (
-    <div className={cn("lock group/lock relative min-h-[96px]", className)}>
-      {/* the content is real, so the preview looks like the page it stands for; it takes no focus, clicks or screen reader */}
-      <div className="lock-clip" style={{ maxHeight: height }} inert aria-hidden>
-        <div className="lock-blur">
-          <LockContext.Provider value={null}>{children}</LockContext.Provider>
+    <div className={className}>
+      <div className="lock group/lock relative min-h-[96px]">
+        {/* the content is real, so the preview looks like the page it stands for; it takes no focus, clicks or screen reader */}
+        <div className="lock-clip" style={{ maxHeight: height }} inert aria-hidden>
+          <div className="lock-blur">
+            <LockContext.Provider value={null}>{children}</LockContext.Provider>
+          </div>
         </div>
+        <button type="button" onClick={() => openUpgrade(reason)} className="absolute inset-0 grid cursor-pointer place-items-center p-4">
+          <span className="lock-pill">
+            <LockIcon className="size-3.5 shrink-0 text-gold-2" strokeWidth={1.8} aria-hidden />
+            {t("Mit Premium freischalten", "Unlock with premium")}
+            <ArrowRight className="size-3.5 shrink-0 text-muted transition-transform group-hover/lock:translate-x-0.5" aria-hidden />
+          </span>
+        </button>
       </div>
-      <button type="button" onClick={() => openUpgrade(reason)} className="absolute inset-0 grid cursor-pointer place-items-center p-4">
-        <span className="lock-pill">
-          <LockIcon className="size-3.5 shrink-0 text-gold-2" strokeWidth={1.8} aria-hidden />
-          {t("Mit Premium freischalten", "Unlock with premium")}
-          <ArrowRight className="size-3.5 shrink-0 text-muted transition-transform group-hover/lock:translate-x-0.5" aria-hidden />
-        </span>
-      </button>
+      {/* the room the lock frees carries an ad (data/ads.ts); the pill above stays the way to premium */}
+      <AdSlot className="mt-4" />
     </div>
   );
 }
