@@ -1,11 +1,11 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { createHash, randomBytes, randomUUID, scrypt, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, randomInt, randomUUID, scrypt, timingSafeEqual } from "node:crypto";
 import { TLSSocket } from "node:tls";
 import demoAccount from "./demo-account.json" with { type: "json" };
 import { readText } from "./body.ts";
 import { db } from "./db.ts";
 import { sendLegalPage } from "./legalPages.ts";
-import { accountMail, sendMail } from "./mail.ts";
+import { accountMail, codeMail, sendMail } from "./mail.ts";
 
 /**
  * Accounts with username and password. Without a session a visitor is a guest: the app and the lite market data are
@@ -255,6 +255,31 @@ async function sendResetMail(req: IncomingMessage, user: { id: string; username:
   );
 }
 
+// Sign-up codes (signup_codes, db/migrations/016_signup_codes.sql): 6 digits, 15 minutes, 5 tries, 5 sends.
+const CODE_MINUTES = 15;
+const CODE_TRIES = 5;
+const CODE_SENDS = 5;
+const newCode = () => String(randomInt(0, 1_000_000)).padStart(6, "0");
+const codeHash = (id: string, code: string) => sha("signup-code:" + id + ":" + code);
+
+async function sendCodeMail(username: string, email: string, code: string, lang: "de" | "en") {
+  const de = lang === "de";
+  await sendMail(
+    codeMail({
+      to: email,
+      subject: de ? `${code} ist Ihr Cartag-Code` : `${code} is your Cartag code`,
+      hello: de ? `Guten Tag, ${username},` : `Hello ${username},`,
+      body: de
+        ? "mit diesem Code bestätigen Sie Ihre E-Mail-Adresse und schließen die Anmeldung bei Cartag ab:"
+        : "use this code to confirm your email address and finish creating your Cartag account:",
+      code,
+      after: de
+        ? `Der Code gilt ${CODE_MINUTES} Minuten. Haben Sie kein Konto bei Cartag angelegt, können Sie diese E-Mail ignorieren; ohne den Code entsteht kein Konto.`
+        : `The code is valid for ${CODE_MINUTES} minutes. If you did not create a Cartag account, you can ignore this email; without the code no account is created.`,
+    }),
+  );
+}
+
 /** Mail failures are logged, not shown: the account works without the mail, and the link can be sent again. */
 const tryMail = (p: Promise<void>) => p.catch((e) => console.error("mail", (e as Error).message));
 
@@ -332,16 +357,74 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
     if (!validEmail(email)) return sendJson(res, 400, { error: "email_invalid" });
     if (await userByName(username)) return sendJson(res, 409, { error: "username_taken" });
     if (await emailTaken(email, "")) return sendJson(res, 409, { error: "email_taken" });
+    // Step 1 of 2: nothing is created yet. The entries wait in signup_codes and a 6-digit code goes to the address;
+    // the account exists only once that code comes back (register/confirm), so every account owns its address.
     const salt = randomBytes(16).toString("hex");
     const hash = (await hashPassword(password, salt)).toString("hex");
-    const user: User = { id: randomUUID(), username, salt, hash };
-    // the unique indexes on lower(username) and lower(email) settle two sign-ups racing for the same name or address
-    const added = await db()`insert into users (id, username, salt, hash, email) values (${user.id}, ${username}, ${salt}, ${hash}, ${email}) on conflict do nothing`;
-    if (!added.count) return sendJson(res, 409, { error: (await emailTaken(email, "")) ? "email_taken" : "username_taken" });
+    const lang = mailLang(body.lang);
+    const id = randomBytes(24).toString("base64url");
+    const code = newCode();
+    await db()`delete from signup_codes where expires_at < now() or lower(email) = lower(${email}) or lower(username) = lower(${username})`;
+    await db()`insert into signup_codes (id, username, email, salt, hash, lang, code_hash, expires_at)
+               values (${id}, ${username}, ${email}, ${salt}, ${hash}, ${lang}, ${codeHash(id, code)}, now() + make_interval(mins => ${CODE_MINUTES}))`;
     await fail("reg:" + ip); // counts sign-ups too: at most a few new accounts per address and quarter hour
+    try {
+      await sendCodeMail(username, email, code, lang);
+    } catch (e) {
+      console.error("mail", (e as Error).message);
+      await db()`delete from signup_codes where id = ${id}`;
+      return sendJson(res, 502, { error: "mail_failed" });
+    }
+    return sendJson(res, 202, { pending: id, email });
+  }
+
+  // Step 2 of 2: the code from the mail. Five wrong codes end the sign-up; the brake per address stops guessing
+  // across many sign-ups.
+  if (path === "/api/auth/register/confirm") {
+    if (await blocked("code:" + ip)) return sendJson(res, 429, { error: "too_many" });
+    const id = typeof body.pending === "string" ? body.pending : "";
+    const code = typeof body.code === "string" ? body.code.replace(/\s+/g, "") : "";
+    const [p] = id
+      ? await db()<{ username: string; email: string; salt: string; hash: string; code_hash: string; attempts: number }[]>`
+          select username, email, salt, hash, code_hash, attempts from signup_codes where id = ${id} and expires_at > now()`
+      : [];
+    if (!p || p.attempts >= CODE_TRIES) return sendJson(res, 410, { error: "code_expired" });
+    if (!/^\d{6}$/.test(code) || !timingSafeEqual(Buffer.from(codeHash(id, code)), Buffer.from(p.code_hash))) {
+      await fail("code:" + ip);
+      await db()`update signup_codes set attempts = attempts + 1 where id = ${id}`;
+      return sendJson(res, 400, { error: p.attempts + 1 >= CODE_TRIES ? "code_expired" : "code_wrong" });
+    }
+    const user: User = { id: randomUUID(), username: p.username, salt: p.salt, hash: p.hash };
+    // the unique indexes on lower(username) and lower(email) settle two sign-ups racing for the same name or address
+    const added = await db()`insert into users (id, username, salt, hash, email, email_verified_at)
+                             values (${user.id}, ${p.username}, ${p.salt}, ${p.hash}, ${p.email}, now()) on conflict do nothing`;
+    await db()`delete from signup_codes where id = ${id}`;
+    if (!added.count) return sendJson(res, 409, { error: (await emailTaken(p.email, "")) ? "email_taken" : "username_taken" });
     await startSession(req, res, user.id);
-    await tryMail(sendVerifyMail(req, user, email, mailLang(body.lang)));
-    return sendJson(res, 201, { username });
+    return sendJson(res, 201, { username: p.username });
+  }
+
+  // A new code for the same sign-up (the mail did not arrive): the old code stops working, at most 5 per sign-up.
+  if (path === "/api/auth/register/resend") {
+    if (await blocked("resend:" + ip, 5)) return sendJson(res, 429, { error: "too_many" });
+    await fail("resend:" + ip);
+    const id = typeof body.pending === "string" ? body.pending : "";
+    const [p] = id
+      ? await db()<{ username: string; email: string; lang: string; sends: number }[]>`
+          select username, email, lang, sends from signup_codes where id = ${id} and expires_at > now() and attempts < ${CODE_TRIES}`
+      : [];
+    if (!p) return sendJson(res, 410, { error: "code_expired" });
+    if (p.sends >= CODE_SENDS) return sendJson(res, 429, { error: "too_many" });
+    const code = newCode();
+    await db()`update signup_codes set code_hash = ${codeHash(id, code)}, attempts = 0, sends = sends + 1,
+               expires_at = now() + make_interval(mins => ${CODE_MINUTES}) where id = ${id}`;
+    try {
+      await sendCodeMail(p.username, p.email, code, mailLang(p.lang));
+    } catch (e) {
+      console.error("mail", (e as Error).message);
+      return sendJson(res, 502, { error: "mail_failed" });
+    }
+    return sendJson(res, 200, { ok: true });
   }
 
   if (path === "/api/auth/login") {
@@ -828,6 +911,11 @@ const LOGIN_PAGE = `<!doctype html>
           <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="200" />
           <div class="pwrow"><p class="hint" id="phint"></p><button type="button" class="linkbtn" id="to-forgot" data-de="Passwort vergessen?" data-en="Forgot password?"></button></div>
         </div>
+        <div id="row-code" hidden>
+          <label for="code" data-de="Bestätigungscode" data-en="Confirmation code"></label>
+          <input id="code" name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" spellcheck="false" />
+          <div class="pwrow"><p class="hint" data-de="6 Ziffern, 15 Minuten gültig" data-en="6 digits, valid for 15 minutes"></p><button type="button" class="linkbtn" id="resend" data-de="Code erneut senden" data-en="Send the code again"></button></div>
+        </div>
         <div id="repeat-wrap" hidden>
           <label for="password2" data-de="Passwort wiederholen" data-en="Repeat password"></label>
           <input id="password2" type="password" autocomplete="new-password" maxlength="200" />
@@ -858,9 +946,15 @@ const LOGIN_PAGE = `<!doctype html>
   // /anmelden?neu opens on "create account" (the app's buttons for guests link there)
   var mode = location.pathname === "/passwort-neu" ? "reset" : query.has("neu") ? "register" : "login";
   var resetToken = mode === "reset" ? location.hash.slice(1) : "";
+  // the sign-up waiting for its code (step 2): its id from the server and the address the code went to
+  var pending = "", pendingEmail = "";
   if (mode === "reset") { try { history.replaceState(null, "", location.pathname); } catch (e) {} }
   var T = {
-    de: { login: "Anmelden", register: "Konto anlegen", forgot: "Link senden", reset: "Passwort speichern",
+    de: { login: "Anmelden", register: "Weiter", forgot: "Link senden", reset: "Passwort speichern", code: "Konto anlegen",
+          title_code: "E-Mail bestätigen", sub_code: "Wir haben einen 6-stelligen Code an {email} geschickt. Geben Sie ihn hier ein, dann ist Ihr Konto angelegt.",
+          code_wrong: "Der Code stimmt nicht. Bitte prüfen Sie ihn noch einmal.", code_expired: "Der Code ist abgelaufen oder wurde zu oft falsch eingegeben. Bitte die Anmeldung neu starten.",
+          code_empty: "Bitte den 6-stelligen Code aus der E-Mail eingeben.", code_sent: "Ein neuer Code ist unterwegs. Der vorige gilt nicht mehr.",
+          mail_failed: "Die E-Mail konnte nicht verschickt werden. Bitte prüfen Sie die Adresse oder versuchen Sie es gleich noch einmal.",
           title_login: "Willkommen zurück", sub_login: "Melden Sie sich mit Benutzername oder E-Mail an.",
           title_register: "Konto anlegen", sub_register: "In einer Minute startklar.",
           title_forgot: "Passwort vergessen", sub_forgot: "Wir schicken Ihnen einen Link für ein neues Passwort.",
@@ -875,7 +969,11 @@ const LOGIN_PAGE = `<!doctype html>
           link_invalid: "Der Link ist abgelaufen oder wurde schon benutzt. Fordern Sie einfach einen neuen an.",
           mismatch: "Die Passwörter stimmen nicht überein.", too_many: "Zu viele Versuche. Bitte in 15 Minuten erneut versuchen.",
           empty: "Bitte alle Felder ausfüllen.", network: "Keine Verbindung zum Server.", failed: "Das hat nicht geklappt. Bitte erneut versuchen." },
-    en: { login: "Sign in", register: "Create account", forgot: "Send link", reset: "Save password",
+    en: { login: "Sign in", register: "Continue", forgot: "Send link", reset: "Save password", code: "Create account",
+          title_code: "Confirm your email", sub_code: "We sent a 6-digit code to {email}. Enter it here and your account is created.",
+          code_wrong: "The code is not right. Please check it again.", code_expired: "The code has expired or was entered wrongly too often. Please start the sign-up again.",
+          code_empty: "Please enter the 6-digit code from the email.", code_sent: "A new code is on its way. The previous one no longer works.",
+          mail_failed: "The email could not be sent. Please check the address or try again in a moment.",
           title_login: "Welcome back", sub_login: "Sign in with your username or email.",
           title_register: "Create an account", sub_register: "Ready in a minute.",
           title_forgot: "Forgot password", sub_forgot: "We will send you a link to set a new password.",
@@ -898,19 +996,20 @@ const LOGIN_PAGE = `<!doctype html>
     document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – Cartag";
     document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = el.getAttribute("data-" + lang); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
-    var reg = mode === "register", login = mode === "login", forgot = mode === "forgot", reset = mode === "reset";
+    var reg = mode === "register", login = mode === "login", forgot = mode === "forgot", reset = mode === "reset", code = mode === "code";
     $("form").setAttribute("data-mode", mode); // the layout of the fields in a flat window follows it (styles above)
     document.querySelector(".tabs").hidden = !(login || reg);
     $("tab-login").setAttribute("aria-selected", String(login));
     $("tab-register").setAttribute("aria-selected", String(reg));
-    $("row-user").hidden = reset;
+    $("row-user").hidden = reset || code;
+    $("row-code").hidden = !code;
     $("row-email").hidden = !reg;
-    $("row-pw").hidden = forgot;
+    $("row-pw").hidden = forgot || code;
     $("repeat-wrap").hidden = !(reg || reset);
     $("to-forgot").hidden = !login;
     $("note-login").hidden = !login;
     $("note").hidden = !reg;
-    $("note-back").hidden = !(forgot || reset);
+    $("note-back").hidden = !(forgot || reset || code);
     $("ulabel").textContent = reg ? L.ulabel : L.ulabel_login;
     $("plabel").textContent = reset ? L.plabel_reset : L.plabel;
     $("username").maxLength = reg ? 30 : 254;
@@ -919,7 +1018,7 @@ const LOGIN_PAGE = `<!doctype html>
     $("phint").textContent = reg || reset ? L.phint : "";
     $("submit").textContent = L[mode];
     $("title").textContent = L["title_" + mode];
-    $("sub").textContent = L["sub_" + mode];
+    $("sub").textContent = L["sub_" + mode].replace("{email}", pendingEmail);
     $("err").textContent = "";
     $("ok").hidden = true;
   }
@@ -946,8 +1045,13 @@ const LOGIN_PAGE = `<!doctype html>
     lastW = window.innerWidth; lastH = window.innerHeight; lock();
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(lock);
-  function go(m) { mode = m; render(); (m === "reset" ? $("password") : $("username")).focus(); }
-  $("tab-login").onclick = $("to-login").onclick = function () { go("login"); };
+  function go(m) { mode = m; render(); (m === "reset" ? $("password") : m === "code" ? $("code") : $("username")).focus(); }
+  $("tab-login").onclick = function () { go("login"); };
+  // from the code step "back" returns to the filled-in sign-up form, else to signing in
+  $("to-login").onclick = function () { if (mode === "code") { pending = ""; $("code").value = ""; go("register"); } else go("login"); };
+  $("resend").onclick = function () {
+    post("register/resend", { pending: pending }, function () { $("code").value = ""; $("ok").textContent = T[lang].code_sent; $("ok").hidden = false; $("code").focus(); });
+  };
   $("tab-register").onclick = $("to-register").onclick = function () { go("register"); };
   $("to-forgot").onclick = function () { go("forgot"); };
   document.querySelectorAll("[data-lang]").forEach(function (b) {
@@ -960,8 +1064,9 @@ const LOGIN_PAGE = `<!doctype html>
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (x) {
         $("submit").disabled = false;
-        if (x.ok) return done();
+        if (x.ok) return done(x.j);
         $("err").textContent = T[lang][x.j.error] || (mode === "login" ? T[lang].wrong_credentials : T[lang].failed);
+        if (mode === "code" && x.j.error === "code_expired") { $("code").disabled = true; $("resend").hidden = true; }
       })
       .catch(function () { $("err").textContent = T[lang].network; $("submit").disabled = false; });
   }
@@ -979,6 +1084,11 @@ const LOGIN_PAGE = `<!doctype html>
       if (!u) { $("err").textContent = T[lang].empty; return; }
       return post("forgot", { login: u, lang: lang }, function () { $("ok").textContent = T[lang].sent; $("ok").hidden = false; });
     }
+    if (mode === "code") {
+      var c = $("code").value.replace(/\\s+/g, "");
+      if (!/^\\d{6}$/.test(c)) { $("err").textContent = T[lang].code_empty; return; }
+      return post("register/confirm", { pending: pending, code: c }, function () { enter(); });
+    }
     if (mode === "reset") {
       if (!p) { $("err").textContent = T[lang].empty; return; }
       if (p !== p2) { $("err").textContent = T[lang].mismatch; return; }
@@ -988,7 +1098,14 @@ const LOGIN_PAGE = `<!doctype html>
     if (!u || !p || (mode === "register" && !em)) { $("err").textContent = T[lang].empty; return; }
     if (mode === "register" && em.indexOf("@") < 1) { $("err").textContent = T[lang].email_invalid; return; }
     if (mode === "register" && p !== p2) { $("err").textContent = T[lang].mismatch; return; }
-    post(mode, mode === "register" ? { username: u, email: em, password: p, lang: lang } : { username: u, password: p }, function () { enter(); });
+    if (mode === "register") {
+      return post("register", { username: u, email: em, password: p, lang: lang }, function (j) {
+        pending = j.pending; pendingEmail = j.email;
+        $("code").value = ""; $("code").disabled = false; $("resend").hidden = false;
+        go("code");
+      });
+    }
+    post(mode, { username: u, password: p }, function () { enter(); });
   };
   render();
   lastW = window.innerWidth;

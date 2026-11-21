@@ -51,3 +51,18 @@ export function accountMail(o: { to: string; subject: string; hello: string; bod
 </div></div></body></html>`;
   return { to: o.to, subject: o.subject, text, html };
 }
+
+/** A mail with a one-time code instead of a button (the sign-up): greeting, one paragraph, the code large, a closing line. */
+export function codeMail(o: { to: string; subject: string; hello: string; body: string; code: string; after: string }): Mail {
+  const text = `${o.hello}\n\n${o.body}\n\n${o.code}\n\n${o.after}\n\nCartag`;
+  const html = `<!doctype html><html><body style="margin:0;background:#f6f4ef;font-family:Helvetica,Arial,sans-serif;color:#1f1d1a">
+<div style="max-width:520px;margin:0 auto;padding:32px 24px">
+<div style="font-family:Georgia,serif;font-style:italic;font-size:26px;color:#16363c;margin-bottom:24px">Cartag</div>
+<div style="background:#fcfbf8;border-top:2px solid #c9a35e;padding:28px 26px">
+<p style="margin:0 0 14px;font-size:15px">${esc(o.hello)}</p>
+<p style="margin:0 0 22px;font-size:15px;line-height:1.5">${esc(o.body)}</p>
+<p style="margin:0 0 22px;font-family:Menlo,Consolas,monospace;font-size:32px;font-weight:700;letter-spacing:.3em;color:#16363c">${esc(o.code)}</p>
+<p style="margin:18px 0 0;font-size:13px;color:#5e5952;line-height:1.5">${esc(o.after)}</p>
+</div></div></body></html>`;
+  return { to: o.to, subject: o.subject, text, html };
+}
