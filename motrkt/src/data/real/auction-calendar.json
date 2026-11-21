@@ -1,5 +1,5 @@
 {
- "asOf": "2026-11-20",
+ "asOf": "2026-11-21",
  "sales": [
   {
    "house": "Gooding & Company",
@@ -10,17 +10,6 @@
    "country": "",
    "url": "https://www.goodingco.com/",
    "porsche": 9,
-   "online": false
-  },
-  {
-   "house": "RM Sotheby's",
-   "name": "The Munich Auction 2026",
-   "date": "2026-11-20",
-   "end": null,
-   "place": "",
-   "country": "DE",
-   "url": "https://rmsothebys.com/auctions/mu26/",
-   "porsche": 13,
    "online": false
   },
   {
@@ -75,7 +64,7 @@
    "place": "",
    "country": "US",
    "url": "https://www.mecum.com/auctions/kissimmee-2027/",
-   "porsche": 35,
+   "porsche": 36,
    "online": false
   },
   {
