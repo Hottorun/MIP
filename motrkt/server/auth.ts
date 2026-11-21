@@ -647,11 +647,19 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   // without the table (migration 014 not applied yet) nobody has paid
   const [{ has }] = await sql<{ has: boolean }[]>`select to_regclass('premium_payments') is not null as has`;
   const payments = has ? await sql`select id, paid_at, months, amount, currency, refunded_at from premium_payments where user_id = ${user.id} order by paid_at` : [];
+  const [{ has: hasOrders }] = await sql<{ has: boolean }[]>`select to_regclass('search_orders') is not null as has`;
+  const searchOrders = hasOrders
+    ? await sql`select id, title, query, variant_title, price_max, year_from, year_to, km_max, active, created_at, updated_at, last_run_at, summary from search_orders where user_id = ${user.id} order by created_at`
+    : [];
+  const [{ has: hasSearchPayments }] = await sql<{ has: boolean }[]>`select to_regclass('search_payments') is not null as has`;
+  const searchPayments = hasSearchPayments
+    ? await sql`select id, paid_at, quantity, amount, currency, covers_until, refunded_at from search_payments where user_id = ${user.id} order by paid_at`
+    : [];
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Content-Disposition", `attachment; filename="cartag-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
   res.setHeader("Cache-Control", "no-store");
-  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, payments, notices, forum: { topics, posts, reports }, sessions }, null, 2));
+  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, payments, notices, searchOrders, searchPayments, forum: { topics, posts, reports }, sessions }, null, 2));
 }
 
 /**
@@ -677,7 +685,7 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
   const gone = "deleted:" + sha(user.id).slice(0, 16); // stable, not traceable to the name
   // a running subscription ends at Stripe first: while that fails the account stays, so nobody is charged for a deleted one
   try {
-    await (await import("./payments.ts")).cancelSubscriptions(user.id);
+    await (await import("./payments.ts")).cancelAllSubscriptions(user.id);
   } catch (err) {
     console.error("Konto löschen: Abo ließ sich nicht kündigen", err);
     return sendJson(res, 502, { error: "subscription" });
@@ -697,6 +705,12 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
     // table does not exist yet (migration 014)
     const [{ has }] = await tx<{ has: boolean }[]>`select to_regclass('premium_payments') is not null as has`;
     if (has) await tx`update premium_payments set user_id = ${gone} where user_id = ${user.id}`;
+    // search orders with their matches (server/searchApi.ts); skipped while the table does not exist yet (migration 017)
+    const [{ has: orders }] = await tx<{ has: boolean }[]>`select to_regclass('search_orders') is not null as has`;
+    if (orders) await tx`delete from search_orders where user_id = ${user.id}`;
+    // payments for further search orders stay as bookkeeping, without the account, like premium's
+    const [{ has: paid }] = await tx<{ has: boolean }[]>`select to_regclass('search_payments') is not null as has`;
+    if (paid) await tx`update search_payments set user_id = ${gone} where user_id = ${user.id}`;
     await tx`delete from users where id = ${user.id}`;
   });
   setCookie(req, res, "", 0);

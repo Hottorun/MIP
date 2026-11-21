@@ -11,6 +11,7 @@ export const LIMITS = {
   mobilede: { max: 600, minutes: 60 }, // mobile.de searches per user and hour (one app start needs a few dozen)
   fehler: { max: 30, minutes: 60 }, // browser error reports per user and hour
   checkout: { max: 20, minutes: 60 }, // Stripe Checkout pages opened or confirmed per user and hour (server/payments.ts)
+  suchauftrag: { max: 20, minutes: 24 * 60 }, // search orders created, changed or run again per user and day (Claude analyses each)
   losfotos: { max: 300, minutes: 60 }, // lot pages read for photos per user and hour (cached lots do not count)
 } as const;
 

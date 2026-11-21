@@ -7,6 +7,7 @@ import { handleForum } from "./forum.ts";
 import { handleLotPhotos } from "./lotPhotos.ts";
 import { handleUserState } from "./userState.ts";
 import { handlePayments } from "./payments.ts";
+import { handleSearch } from "./searchApi.ts";
 import { hasCredentials } from "./contractCheck.ts";
 import { currentUser, isPremium } from "./auth.ts";
 import { overLimit } from "./limits.ts";
@@ -197,6 +198,7 @@ export async function handleApi(req: IncomingMessage, res: ServerResponse) {
   if (/^\/api\/(fahrzeuge|pruefung)(\/|$)/.test(url.pathname)) return handleUserCars(req, res, url);
   if (url.pathname.startsWith("/api/premium/") || url.pathname === "/api/stripe/webhook") return handlePayments(req, res, url);
   if (url.pathname.startsWith("/api/forum/")) return handleForum(req, res, url);
+  if (/^\/api\/(suchagent|suchquellen)(\/|$)/.test(url.pathname)) return handleSearch(req, res, url);
   if (url.pathname === "/api/zustand") return handleUserState(req, res);
   if (url.pathname === "/api/losfotos") return handleLotPhotos(req, res, url);
   if (url.pathname === "/api/fehler" && req.method === "POST") return handleClientError(req, res);

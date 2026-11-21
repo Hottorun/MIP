@@ -18,7 +18,7 @@ import { LITE } from "../data/real/model";
  */
 
 /** What the user was looking at when the upgrade dialog opened: it picks the headline. */
-export type LockReason = "general" | "history" | "sales" | "evidence" | "assessment" | "options" | "figures" | "profile" | "auctions" | "insights" | "copilot" | "compare" | AccountReason;
+export type LockReason = "general" | "history" | "sales" | "evidence" | "assessment" | "options" | "figures" | "profile" | "auctions" | "insights" | "copilot" | "agent" | "compare" | AccountReason;
 
 /** What a guest tried that needs an account: the guest version of the dialog (components/premium/Upgrade.tsx) names it. */
 export type AccountReason = "account" | "watchlist" | "alerts" | "portfolio" | "saved" | "forum";

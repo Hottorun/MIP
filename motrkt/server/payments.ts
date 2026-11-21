@@ -7,6 +7,7 @@ import { overLimit } from "./limits.ts";
 import { PREMIUM_MONTHS, coveredUntil, recomputePremium } from "./premium.ts";
 import { sendMail, textMail } from "./mail.ts";
 import { AGB, OPERATOR_LINE, PRICE_NOTE, SITE, WIDERRUF, WIDERRUF_INTRO, plainText } from "../src/terms.ts";
+import { cancelSearchSubscriptions, searchInvoicePaid, searchRefund, searchSessionPaid, searchSubscriptionEnded } from "./searchPayments.ts";
 
 /**
  * Buying premium: the second way next to the purchase contract (server/userCars.ts). The payment page is Stripe's
@@ -106,6 +107,8 @@ export type CheckoutSession = {
 type StripeEvent = { type?: string; data?: { object?: Record<string, unknown> } };
 
 const key = () => process.env.STRIPE_SECRET_KEY?.trim() ?? "";
+/** Stripe can be called at all: enough for the search orders' subscription (server/searchPayments.ts), which has a price of its own. */
+export const stripeConfigured = () => Boolean(key());
 const priceId = () => process.env.STRIPE_PRICE_ID?.trim() ?? "";
 const yearlyPriceId = () => process.env.STRIPE_PRICE_ID_YEARLY?.trim() ?? "";
 export const paymentsConfigured = () => Boolean(key() && (priceId() || yearlyPriceId()));
@@ -369,6 +372,7 @@ async function invoicePaid(id: string) {
   const inv = await stripe<Invoice>("GET", `/invoices/${encodeURIComponent(id)}`);
   const subscription = subscriptionOf(inv);
   if (!subscription) return; // not a subscription's invoice
+  if (await searchInvoicePaid(inv)) return; // the subscription for further search orders (server/searchPayments.ts)
   const meta = inv.subscription_details?.metadata ?? inv.parent?.subscription_details?.metadata ?? {};
   let account = isOurs(meta.product) && meta.user_id ? { user_id: meta.user_id, months: Number(meta.months) } : null;
   // without the marks on the invoice: the account that already paid for this subscription
@@ -480,6 +484,12 @@ export async function cancelSubscriptions(userId: string) {
   }
 }
 
+/** Every subscription of the account, premium and further search orders, before the account is deleted (server/auth.ts). */
+export async function cancelAllSubscriptions(userId: string) {
+  await cancelSubscriptions(userId);
+  await cancelSearchSubscriptions(userId);
+}
+
 /**
  * A subscription that is over at Stripe before the period it paid for (cancelled with notice by stopRenewal, or ended
  * by hand after an extraordinary cancellation): premium from it ends with it. What the account's other payments and
@@ -549,12 +559,15 @@ async function handleWebhook(req: IncomingMessage, res: ServerResponse) {
       const session = await readSession(object.id);
       const paid = paidSession(session);
       if (paid) await grant(paid, session.locale === "en");
+      else await searchSessionPaid(session);
     } else if (event.type === "invoice.paid" && typeof object.id === "string") {
       await invoicePaid(object.id);
     } else if (event.type === "charge.refunded" && object.refunded === true && typeof object.payment_intent === "string") {
       await refund(object.payment_intent);
+      await searchRefund(object.payment_intent);
     } else if (event.type === "customer.subscription.deleted" && typeof object.id === "string") {
       await subscriptionEnded(object.id);
+      await searchSubscriptionEnded(object.id);
     }
   } catch (err) {
     console.error("stripe webhook (npm run db:migrate?)", err);

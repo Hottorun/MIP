@@ -14,6 +14,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const Credits = lazy(() => import("./pages/Credits"));
 const Review = lazy(() => import("./pages/Review"));
 const Account = lazy(() => import("./pages/Account"));
+const SearchAgent = lazy(() => import("./pages/SearchAgent"));
+const SearchSources = lazy(() => import("./pages/SearchSources"));
 const Impressum = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Impressum })));
 const Datenschutz = lazy(() => import("./pages/Legal").then((m) => ({ default: m.Datenschutz })));
 
@@ -35,6 +37,8 @@ export function App() {
         <Route path="insights" element={<Insights />} />
         <Route path="kaufen" element={<Buy />} />
         <Route path="ai" element={<AiPage />} />
+        <Route path="suchagent" element={<SearchAgent />} />
+        <Route path="suchquellen" element={<SearchSources />} />
         <Route path="bildnachweise" element={<Credits />} />
         <Route path="fahrzeug-melden" element={<Navigate to="/portfolio#melden" replace />} />
         <Route path="pruefung" element={<Review />} />

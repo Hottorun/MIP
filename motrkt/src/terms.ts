@@ -43,8 +43,8 @@ const vatSentence: [string, string] =
       : ["Alle Preise sind Endpreise in Euro; sie enthalten die gesetzliche Umsatzsteuer, soweit sie anfällt.", "All prices are final prices in euros; they include statutory VAT where it applies."];
 
 export const WIDERRUF_INTRO: [string, string] = [
-  "Wenn Sie Cartag Premium als Verbraucher bestellen, steht Ihnen das folgende Widerrufsrecht zu. Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden können.",
-  "If you order Cartag Premium as a consumer, you have the following right of withdrawal. A consumer is any natural person who enters into a transaction for purposes that are predominantly outside their trade, business or profession. This is a translation; the German text is the binding one.",
+  "Wenn Sie Cartag Premium oder zusätzliche Suchaufträge als Verbraucher bestellen, steht Ihnen das folgende Widerrufsrecht zu. Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden können.",
+  "If you order Cartag Premium or further search orders as a consumer, you have the following right of withdrawal. A consumer is any natural person who enters into a transaction for purposes that are predominantly outside their trade, business or profession. This is a translation; the German text is the binding one.",
 ];
 
 export const WIDERRUF: LegalSection[] = [
@@ -101,8 +101,8 @@ export const AGB: LegalSection[] = [
     heading: ["1. Geltung und Vertragspartner", "1. Scope and contracting party"],
     paragraphs: [
       [
-        `Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung von Cartag (${SITE}) und für alle Verträge über Cartag Premium. Ihr Vertragspartner ist ${OPERATOR_LINE[0]} („wir“).`,
-        `These terms apply to the use of Cartag (${SITE}) and to all contracts for Cartag Premium. Your contracting party is ${OPERATOR_LINE[1]} (“we”). This is a translation; the German text is the binding one.`,
+        `Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung von Cartag (${SITE}) und für alle Verträge über Cartag Premium und über zusätzliche Suchaufträge. Ihr Vertragspartner ist ${OPERATOR_LINE[0]} („wir“).`,
+        `These terms apply to the use of Cartag (${SITE}) and to all contracts for Cartag Premium and for further search orders. Your contracting party is ${OPERATOR_LINE[1]} (“we”). This is a translation; the German text is the binding one.`,
       ],
       [
         "Verbraucher im Sinne dieser Bedingungen ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden können.",
@@ -155,6 +155,10 @@ export const AGB: LegalSection[] = [
         "Premium erhalten Sie außerdem ohne Zahlung als Dank für einen von uns geprüften Kaufvertrag (Ziffer 9).",
         "You also receive premium without payment as a thank-you for a purchase contract we have verified (section 9).",
       ],
+      [
+        "Suchagent: Mit einem Suchauftrag beschreiben Sie ein Fahrzeug, das Sie suchen. Der Suchagent (ein KI-System) gleicht den Auftrag einmal täglich mit dem Bestand von Händlern ab, die wir auswählen, und zeigt Ihnen passende Angebote und eine Einschätzung der Marktlage. In Premium sind drei Suchaufträge enthalten, in der kostenlosen Nutzung keiner. Weitere Suchaufträge können Sie mit jedem Konto als Abo dazubuchen, zum angezeigten Preis je Suchauftrag und Abrechnungszeitraum; die Bestellung läuft wie in dieser Ziffer beschrieben über die Zahlungsseite von Stripe, und wir nehmen sie an, indem wir die Suchaufträge für Ihr Konto freischalten. Für dieses Abo gelten die Regeln dieser Bedingungen für Abos entsprechend (Ziffern 5 bis 7, 11). Dass der Agent ein bestimmtes Fahrzeug findet, alle Angebote am Markt erfasst oder die Angaben der Händler zutreffen, ist nicht geschuldet. Endet das Abo oder Premium, ruhen die Suchaufträge, die über die dann noch enthaltene Zahl hinausgehen; sie werden nicht gelöscht.",
+        "Search agent: with a search order you describe a car you are looking for. Once a day the search agent (an AI system) compares the order with the stock of dealers we select and shows you matching listings and an assessment of the market. Premium includes three search orders, the free use none. With any account you can add further search orders as a subscription, at the price shown per search order and billing period; the order is placed on Stripe's payment page as described in this section, and we accept it by unlocking the search orders for your account. The rules of these terms for subscriptions apply to this subscription accordingly (sections 5 to 7, 11). We do not owe that the agent finds a particular car, covers every listing on the market, or that the dealers' details are correct. If the subscription or premium ends, the search orders beyond the number then still included rest; they are not deleted.",
+      ],
     ],
   },
   {
@@ -178,8 +182,8 @@ export const AGB: LegalSection[] = [
         "Subscription: the subscription runs for the chosen billing period (e.g. one month) and renews for the same period each time unless you cancel. You may cancel at any time to the end of the paid period; premium stays until then. If the billing period is longer than one month, you may, after the first period has ended, cancel at any time with one month's notice; we refund the share already paid for the time after the end of the contract.",
       ],
       [
-        `So kündigen Sie: im Konto unter „Abo verwalten oder kündigen“, ohne Anmeldung über „Verträge hier kündigen“ (${SITE}/kuendigen) oder mit einer Nachricht an die oben genannte Adresse. Wir bestätigen jede Kündigung per E-Mail.`,
-        `How to cancel: in your account under “Manage or cancel subscription”, without signing in via “Cancel contracts here” (${SITE}/kuendigen), or with a message to the address above. We confirm every cancellation by email.`,
+        `So kündigen Sie: im Konto (für Suchaufträge beim Suchagenten) unter „Abo verwalten oder kündigen“, ohne Anmeldung über „Verträge hier kündigen“ (${SITE}/kuendigen) oder mit einer Nachricht an die oben genannte Adresse. Wir bestätigen jede Kündigung per E-Mail.`,
+        `How to cancel: in your account (for search orders at the search agent) under “Manage or cancel subscription”, without signing in via “Cancel contracts here” (${SITE}/kuendigen), or with a message to the address above. We confirm every cancellation by email.`,
       ],
       [
         "Einmalkauf: Ein einmalig bezahlter Premium-Zeitraum endet von selbst; er verlängert sich nicht und muss nicht gekündigt werden.",
@@ -251,8 +255,8 @@ export const AGB: LegalSection[] = [
     heading: ["11. Mängelrechte", "11. Rights in case of defects"],
     paragraphs: [
       [
-        "Für Cartag Premium gelten die gesetzlichen Mängelrechte für digitale Produkte (§§ 327 ff. BGB). Während der Laufzeit halten wir Premium in vertragsgemäßem Zustand und stellen erforderliche Aktualisierungen bereit; da Cartag im Browser läuft, müssen Sie dafür nichts installieren.",
-        "The statutory rights for defects in digital products (§§ 327 et seq. BGB) apply to Cartag Premium. During the term we keep premium in conformity with the contract and provide the necessary updates; as Cartag runs in the browser, you need not install anything for this.",
+        "Für Cartag Premium und die Suchaufträge gelten die gesetzlichen Mängelrechte für digitale Produkte (§§ 327 ff. BGB). Während der Laufzeit halten wir Premium in vertragsgemäßem Zustand und stellen erforderliche Aktualisierungen bereit; da Cartag im Browser läuft, müssen Sie dafür nichts installieren.",
+        "The statutory rights for defects in digital products (§§ 327 et seq. BGB) apply to Cartag Premium and the search orders. During the term we keep premium in conformity with the contract and provide the necessary updates; as Cartag runs in the browser, you need not install anything for this.",
       ],
     ],
   },

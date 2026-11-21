@@ -24,9 +24,13 @@ export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", 
 /** The contracts a declaration can name; the keys are what the forms send. */
 export const CONTRACTS: Record<string, [string, string]> = {
   abo: ["Cartag Premium (Abo)", "Cartag Premium (subscription)"],
+  suchauftrag: ["Zusätzliche Suchaufträge (Abo)", "Further search orders (subscription)"],
   einmal: ["Cartag Premium (Einmalkauf)", "Cartag Premium (one-time purchase)"],
   kaufvertrag: ["Cartag Premium für einen geprüften Kaufvertrag", "Cartag Premium for a verified purchase contract"],
 };
+
+/** The contracts that run until cancelled: what the cancellation form offers. */
+export const SUBSCRIPTIONS = ["abo", "suchauftrag"];
 
 const LABEL: Record<LegalPath, [string, string]> = {
   impressum: ["Impressum", "Impressum"],
@@ -92,7 +96,7 @@ function cancellationForm(en: boolean, f?: FormState) {
 ${formError(f)}
 <form method="post" action="/kuendigen${en ? "?lang=en" : ""}">
   <label for="k-vertrag">${t("Vertrag", "Contract")}</label>
-  <select id="k-vertrag" name="vertrag"><option value="abo">${esc(CONTRACTS.abo[en ? 1 : 0])}</option></select>
+  <select id="k-vertrag" name="vertrag">${SUBSCRIPTIONS.map((k) => `<option value="${k}"${chosen(f, "vertrag", k)}>${esc(CONTRACTS[k][en ? 1 : 0])}</option>`).join("")}</select>
   <fieldset><legend>${t("Art der Kündigung", "Kind of cancellation")}</legend>
     <label class="pick"><input type="radio" name="art" value="ordentlich"${picked(f, "art", "ordentlich", true)}> ${t("Ordentliche Kündigung", "Ordinary cancellation")}</label>
     <label class="pick"><input type="radio" name="art" value="ausserordentlich"${picked(f, "art", "ausserordentlich")}> ${t("Außerordentliche Kündigung (fristlos, aus wichtigem Grund)", "Extraordinary cancellation (without notice, for good cause)")}</label>

@@ -219,8 +219,10 @@ Auktionen, `?haus=`). Server: `server/forum.ts`, gemeinsame Kennungen: `src/lib/
 | `DATABASE_URL` | Postgres für Konten, Sitzungen und Marktdaten (auf Vercel auch `POSTGRES_URL`) |
 | `ANTHROPIC_API_KEY` | AI Co-Pilot und KI-Vorprüfung der Kaufverträge mit Claude (ohne: lokaler Analysemodus, Dokumente von Hand prüfen) |
 | `MIP_ADMINS` | Benutzernamen der Prüfer für gemeldete Fahrzeuge, kommagetrennt |
+| `CRON_SECRET` | Schlüssel für den täglichen Lauf des Suchagenten (siehe „Suchagent“); ohne ihn startet der Lauf nicht |
 | `MIP_TRUST_PROXY` | `1`, wenn `npm start` hinter einem eigenen Reverse-Proxy (nginx, Caddy) läuft: Client-Adresse für die Anmeldebremse aus `X-Forwarded-For`; auf Vercel nicht nötig |
 | `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET` | Premium kaufen über Stripe (siehe „Bezahlen“); ohne sie gibt es keinen Kauf |
+| `STRIPE_SEARCH_PRICE_ID` | Abo-Preis für einen zusätzlichen Suchauftrag (siehe „Suchagent“); ohne ihn gibt es nur die in Premium enthaltenen |
 | `STRIPE_PRICE_ID_YEARLY` | optional: Jahresabo zur Wahl neben dem Abo aus `STRIPE_PRICE_ID` |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |
 
@@ -268,6 +270,37 @@ npm run dev
 
 Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenvergleich, Kaufrisiko, Auktionstrends und Portfolio direkt aus den Marktdaten berechnet.
 
+## Suchagent
+
+Kunden mit Konto richten unter `/suchagent` Suchaufträge ein (Freitext, optional Variante aus dem Katalog, Preis,
+Baujahr, Laufleistung). Wie viele laufen dürfen: ohne Konto keiner, mit Lite keiner inklusive, mit Premium drei; dazu
+kann jedes Konto weitere als Abo buchen, ein Preis je Auftrag (siehe unten). Prüfer (`MIP_ADMINS`) tragen unter `/suchquellen` die Bestandsseiten von Händlern oder
+einzelne Inserate ein. Einmal täglich liest Claude Opus 5.5 (`claude-opus-5-5`) jede Quelle und gleicht danach jeden
+Auftrag mit dem gelesenen Bestand ab:
+
+- **Lesen** (`server/searchAgent.ts`, `scanSource`): Claude ruft die Seite über das Werkzeug „web fetch“ von Anthropic
+  ab (läuft auf deren Servern, auf die Website des Händlers beschränkt, höchstens 10 Seiten je Quelle) und gibt die
+  Fahrzeuge als Liste zurück. Seiten, die den Bestand erst per JavaScript nachladen, kann es nicht lesen; das steht dann
+  bei der Quelle. Links auf andere Websites werden verworfen (`server/searchJobs.ts`).
+- **Abgleichen** (`matchOrder`): je Auftrag die passenden Fahrzeuge mit Punktzahl, Begründung und offenen Fragen, dazu
+  drei bis fünf Sätze zur Marktlage; mit Variante fließt unser Marktwert ein. Hat sich am Bestand für einen Auftrag
+  nichts geändert, wird er nicht erneut ausgewertet.
+- **Täglicher Lauf**: Vercel ruft `/api/suchagent/cron` auf (`vercel.json`, 5:30 UTC) und schickt dabei
+  `Authorization: Bearer $CRON_SECRET`. Der Lauf arbeitet die Warteschlange in Schritten zu je vier Quellen ab; jeder
+  Schritt startet den nächsten als eigene Anfrage. Neue Quellen und neue oder geänderte Aufträge laufen sofort.
+- **Kosten**: `/suchquellen` zeigt je Lauf Dauer, abgerufene Seiten und geschätzte Kosten (Token zu Listenpreisen).
+- **Weitere Suchaufträge im Abo** (`server/searchPayments.ts`): In Stripe einen wiederkehrenden Preis anlegen (z. B.
+  6,90 € pro Monat, Produkt „Zusätzlicher Suchauftrag“) und seine ID als `STRIPE_SEARCH_PRICE_ID` setzen;
+  `STRIPE_SECRET_KEY` und `STRIPE_WEBHOOK_SECRET` sind die von Premium, der Webhook braucht dieselben Ereignisse
+  (dazu `customer.subscription.deleted`). Jeder Kauf ist ein eigenes Abo mit seiner Anzahl (auf der Zahlungsseite
+  änderbar); die jüngste bezahlte Rechnung eines Abos sagt, wie viele Aufträge es bis wann trägt (`search_payments`).
+  Aufträge über dem Kontingent ruhen (die ältesten laufen zuerst) und werden nicht gelöscht. Kündigen: Kundenportal
+  von Stripe („Abo verwalten oder kündigen“ beim Suchagenten) oder ohne Anmeldung über `/kuendigen`. Ohne die
+  Preis-ID wird nichts verkauft; Premium-Konten haben dann ihre drei Aufträge, Lite-Konten keinen.
+
+Einrichten: `npm run db:migrate` (`017_search_agent.sql`), in Vercel `CRON_SECRET` setzen (z. B. `openssl rand -hex 32`)
+und neu deployen; `ANTHROPIC_API_KEY` ist dieselbe Variable wie für den Co-Pilot.
+
 ## Bereiche
 
 | Route | Inhalt |
@@ -281,6 +314,8 @@ Ohne Zugangsdaten antwortet ein lokaler Analysemodus, der Ausblick, Variantenver
 | `/kaufen` | Aktuelle Inserate (Classic Trader, Händlerseiten, optional mobile.de) mit Deal-Score gegenüber dem fairen Marktwert, Preissenkungen aus der täglichen Erfassung (Filter „Preis gesenkt“, Preisverlauf im Inserat) |
 | `/konto` | Passwort, Datenexport, Konto löschen |
 | `/ai` | Co-Pilot im Vollbild mit Prompt-Bibliothek |
+| `/suchagent` | Suchagent (Konto nötig; Premium drei Aufträge inklusive, weitere im Abo): Suchaufträge des Kunden, tägliche Treffer aus dem Bestand ausgewählter Händler, Marktlage je Auftrag |
+| `/suchquellen` | Nur Prüfer: Händlerseiten und Inserate, die der Suchagent liest; Ergebnis je Quelle, Läufe und Kosten |
 
 ## Daten
 

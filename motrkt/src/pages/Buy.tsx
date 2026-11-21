@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useStickyParams } from "../lib/sticky";
-import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, RefreshCw, Search, Star, TrendingDown, X } from "lucide-react";
+import { ArrowUpDown, Briefcase, ChevronDown, SlidersHorizontal, ExternalLink, Heart, Loader2, Radar, RefreshCw, Search, Star, TrendingDown, X } from "lucide-react";
 import { MODEL_CATEGORIES, brandById, brands, generationById, genName, modelById, modelName, models, variantById, variantShortTitle, variantTitle, yearsLabel } from "../data/db";
 import { AS_OF, CONDITION_FACTOR, COUNTRY_NAMES, DAY, getSeries } from "../data/generate";
 import { useLiveListings } from "../state/liveListings";
@@ -228,6 +228,11 @@ export default function Buy() {
             )}
           </p>
           <SourceBar live={live} preferLive={preferLive} setPreferLive={setPreferLive} sourceLabel={showingLive ? t("Live von mobile.de", "Live from mobile.de") : t("Von Karero und Janzen Klassik", "From Karero and Janzen Klassik")} />
+          {/* the search agent (src/pages/SearchAgent.tsx) watches further dealers every day */}
+          <Link to="/suchagent" className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] text-muted transition-colors hover:text-accent">
+            <Radar className="size-3.5 text-gold" strokeWidth={1.6} aria-hidden />
+            {t("Nichts Passendes dabei? Der Suchagent prüft täglich weitere Händler für Sie.", "Nothing that fits? The search agent checks further dealers for you every day.")}
+          </Link>
         </div>
         <dl className="flex divide-x divide-line overflow-x-auto">
           {[

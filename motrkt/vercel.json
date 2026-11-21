@@ -10,5 +10,6 @@
       "excludeFiles": "{dist/cars/**,public/**}"
     }
   },
+  "crons": [{ "path": "/api/suchagent/cron", "schedule": "30 5 * * *" }],
   "rewrites": [{ "source": "/(.*)", "destination": "/api/server" }]
 }

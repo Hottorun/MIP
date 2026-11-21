@@ -5,9 +5,10 @@ import { OPERATOR_LINE } from "../src/terms.ts";
 import { currentUser, isDemo, throttled } from "./auth.ts";
 import { readText } from "./body.ts";
 import { db } from "./db.ts";
-import { CONTRACTS, type LegalPath, noticePage, sendHtml, sendLegalPage } from "./legalPages.ts";
+import { CONTRACTS, SUBSCRIPTIONS, type LegalPath, noticePage, sendHtml, sendLegalPage } from "./legalPages.ts";
 import { sendMail, textMail } from "./mail.ts";
 import { stopRenewal } from "./payments.ts";
+import { stopSearchRenewal } from "./searchPayments.ts";
 
 /**
  * The terms and the two declarations a customer can make without signing in (server/legalPages.ts has the pages):
@@ -91,7 +92,8 @@ async function submit(req: IncomingMessage, res: ServerResponse, kind: Kind, en:
   if (kind === "widerruf" && !v.name) return again(t("Bitte geben Sie Ihren Namen an.", "Please give your name."));
   if (v.bestellt && !DAY.test(v.bestellt)) v.bestellt = "";
   if (kind === "kuendigen" && v.zeitpunkt === "datum" && (!DAY.test(v.datum) || Number.isNaN(Date.parse(v.datum)))) return again(t("Bitte geben Sie das Datum an, zu dem der Vertrag enden soll, oder wählen Sie „zum nächstmöglichen Zeitpunkt“.", "Please give the date on which the contract should end, or choose “at the earliest possible date”."));
-  const contract = CONTRACTS[kind === "kuendigen" ? "abo" : v.vertrag] ? (kind === "kuendigen" ? "abo" : v.vertrag) : "abo";
+  // a cancellation names a subscription (premium unless the form says the search orders'), a withdrawal any contract
+  const contract = kind === "kuendigen" ? (SUBSCRIPTIONS.includes(v.vertrag) ? v.vertrag : "abo") : CONTRACTS[v.vertrag] ? v.vertrag : "abo";
   const extraordinary = kind === "kuendigen" && v.art === "ausserordentlich";
   const onDate = kind === "kuendigen" && v.zeitpunkt === "datum" ? v.datum : "";
 
@@ -178,6 +180,23 @@ async function submit(req: IncomingMessage, res: ServerResponse, kind: Kind, en:
       outcome = "Stripe war nicht erreichbar: das Abo bitte von Hand in Stripe kündigen.";
     }
   }
+  // The subscriptions for further search orders (server/searchPayments.ts): none of them is renewed any more. A wished
+  // date after the paid period is set by hand, as above.
+  if (account && contract === "suchauftrag") {
+    try {
+      const sub = await stopSearchRenewal(account.id);
+      if (sub) {
+        until = sub.until;
+        stopped = !(onDate && !extraordinary && sub.until && Date.parse(onDate) > Date.parse(sub.until) + 86_400_000);
+        outcome =
+          `Verlängerung der Abos für Suchaufträge bei Stripe beendet; bezahlt bis ${sub.until ? day(sub.until, false) : "unbekannt"}.` +
+          (stopped ? "" : ` Gewünschtes Ende ${day(onDate, false)} liegt später: bitte in Stripe das Kündigungsdatum von Hand setzen.`);
+      } else outcome = "Konto gefunden, kein laufendes Abo für Suchaufträge bei Stripe.";
+    } catch (err) {
+      console.error("Erklärung: Stripe (Suchaufträge)", err);
+      outcome = "Stripe war nicht erreichbar: die Abos für Suchaufträge bitte von Hand in Stripe kündigen.";
+    }
+  }
   if (stored) await db()`update contract_notices set outcome = ${outcome} where id = ${id}`.catch(() => {});
 
   // ---------------------------------------------------------------------------------------------- tell the operator
@@ -217,6 +236,8 @@ async function submit(req: IncomingMessage, res: ServerResponse, kind: Kind, en:
 
   // --------------------------------------------------------------------------------------------- confirm the sender
   const end = until ? day(until, en) : "";
+  // what the paid period still gives: premium, or the search orders beyond those the plan includes
+  const kept = contract === "suchauftrag" ? t("laufen Ihre zusätzlichen Suchaufträge", "your further search orders run") : t("läuft Premium", "premium runs");
   const what =
     kind === "widerruf"
       ? [
@@ -233,7 +254,7 @@ async function submit(req: IncomingMessage, res: ServerResponse, kind: Kind, en:
             ? t(`Ihr Abo endet am ${end}; es wird nichts mehr abgebucht, und Premium bleibt bis dahin erhalten. Den Betrag, den Sie für die Zeit danach bereits gezahlt haben, erstatten wir Ihnen anteilig auf das Zahlungsmittel, mit dem Sie bezahlt haben.`, `Your subscription ends on ${end}; nothing more will be charged, and premium stays until then. We refund the share you have already paid for the time after that to the means of payment you used.`) +
               (extraordinary ? t(" Ob das Abo wegen des genannten Grundes schon früher endet, prüfen wir und melden uns bei Ihnen.", " We will check whether the subscription ends earlier because of the reason you gave and get back to you.") : "")
             : stopped
-            ? t(`Die Verlängerung Ihres Abos ist beendet; es wird nichts mehr abgebucht.${end ? ` Der bezahlte Zeitraum und damit Premium läuft bis zum ${end}.` : ""}${extraordinary ? " Ob das Abo wegen des genannten Grundes schon früher endet, prüfen wir und melden uns bei Ihnen." : ""}`, `The renewal of your subscription has been stopped; nothing more will be charged.${end ? ` The paid period, and with it premium, runs until ${end}.` : ""}${extraordinary ? " We will check whether the subscription ends earlier because of the reason you gave and get back to you." : ""}`)
+            ? t(`Die Verlängerung Ihres Abos ist beendet; es wird nichts mehr abgebucht.${end ? ` Bis zum Ende des bezahlten Zeitraums am ${end} ${kept} weiter.` : ""}${extraordinary ? " Ob das Abo wegen des genannten Grundes schon früher endet, prüfen wir und melden uns bei Ihnen." : ""}`, `The renewal of your subscription has been stopped; nothing more will be charged.${end ? ` Until the end of the paid period on ${end} ${kept} on.` : ""}${extraordinary ? " We will check whether the subscription ends earlier because of the reason you gave and get back to you." : ""}`)
             : t("Wir ordnen Ihre Kündigung Ihrem Vertrag zu und beenden ihn zum genannten Zeitpunkt. Sollten wir dazu eine Rückfrage haben, melden wir uns. Ihre Kündigung ist unabhängig davon zum unten genannten Zeitpunkt eingegangen.", "We will match your cancellation to your contract and end it at the time stated. If we have a question about it, we will get in touch. Your cancellation was received at the time stated below regardless."),
         ];
   let mailed = false;

@@ -78,6 +78,7 @@ const HEADLINE: Record<LockReason, () => string> = {
   auctions: () => t("Jedes Auktionsergebnis, durchsuchbar.", "Every auction result, searchable."),
   insights: () => t("Der Marktbericht, Kapitel für Kapitel.", "The market report, chapter by chapter."),
   copilot: () => t("Fragen Sie die Daten.", "Ask the data."),
+  agent: () => t("Ein Agent, der täglich für Sie sucht.", "An agent that searches for you every day."),
   compare: () => t("Varianten Seite an Seite vergleichen.", "Compare variants side by side."),
   account: () => t("Ihr Cartag, mit kostenlosem Konto.", "Your Cartag, with a free account."),
   watchlist: () => t("Behalten Sie Ihre Favoriten im Blick.", "Keep an eye on your favourites."),

@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, useRef, useState, type ErrorInfo, type ReactNode } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight, LogIn, UserPlus } from "lucide-react";
+import { CornerDownLeft, Menu, Moon, Search, Sun, X, CheckCircle2, AlertCircle, Info, Upload, User, LogOut, ShieldCheck, Settings, Briefcase, Crown, Lock, ArrowRight, LogIn, UserPlus, Radar } from "lucide-react";
 import { useMe } from "../lib/userCars";
 import { signInHref, usePlan } from "../lib/plan";
 import { signOut } from "../lib/session";
@@ -20,12 +20,14 @@ import { useTheme } from "../lib/theme";
 // What the market values rest on: auction results (Europe and US) and asking prices.
 const N_AUCTIONS = MODEL_CHANNELS.EU_AUC + MODEL_CHANNELS.US_AUC + MODEL_CHANNELS.US_ONL + (MODEL_CHANNELS.US_PCM ?? 0);
 
-type NavEntry = { to: string; label: string; premium?: boolean };
+/** `wide`: in the bar only from 1280 px, where the wordmark stays centred with it (always in the phone menu, the account menu and the footer). */
+type NavEntry = { to: string; label: string; premium?: boolean; wide?: boolean };
 const NAV_LEFT: NavEntry[] = [
   { to: "/", get label() { return t("Start", "Home"); } },
   { to: "/modelle", get label() { return t("Modelle", "Models"); } },
   { to: "/auktionen", get label() { return t("Auktionen", "Auctions"); } },
   { to: "/kaufen", get label() { return t("Kaufen", "Buy"); } },
+  { to: "/suchagent", get label() { return t("Suchagent", "Search agent"); }, wide: true },
 ];
 // premium: locked for a lite user (src/lib/plan.tsx); the entries stay in the menu and lead to a preview of the page
 const NAV_RIGHT: NavEntry[] = [
@@ -129,14 +131,15 @@ function useNavState(to: string, premium?: boolean) {
 }
 
 /** Desktop header: tabs in petrol (gold of the logo in the dark theme); the current one sits on a soft accent pill. */
-function NavItem({ to, label, premium }: NavEntry) {
+function NavItem({ to, label, premium, wide }: NavEntry) {
   const { active, locked } = useNavState(to, premium);
   return (
     <NavLink
       to={to}
       title={locked ? t("Teil von Premium", "Part of premium") : undefined}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[14.5px] font-medium tracking-[0.01em] transition-colors",
+        "items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[14.5px] font-medium tracking-[0.01em] whitespace-nowrap transition-colors",
+        wide ? "hidden xl:inline-flex" : "inline-flex",
         active ? "bg-accent-soft text-nav" : "text-nav/70 hover:text-nav",
       )}
     >
@@ -239,7 +242,7 @@ function Header() {
         >
           <div className="theme-light-only pointer-events-none absolute -right-24 -bottom-32 size-80 rounded-full bg-[#d3ad66]/[0.09] blur-3xl" aria-hidden />
           <div className="theme-light-only pointer-events-none absolute -bottom-24 -left-24 size-72 rounded-full bg-[#5fb3c2]/[0.08] blur-3xl" aria-hidden />
-          <ul className="relative grid md:grid-flow-col md:grid-cols-2 md:grid-rows-3 md:gap-x-10">
+          <ul className="relative grid md:grid-flow-col md:grid-cols-2 md:grid-rows-4 md:gap-x-10">
             {[...NAV_LEFT, ...NAV_RIGHT].map((n, i) => (
               <li key={n.to} className="menu-row border-b border-white/[0.08]" style={{ animationDelay: `${60 + i * 35}ms` }}>
                 <MenuRow {...n} index={i} />
@@ -408,6 +411,9 @@ function UserMenu() {
           <Link to="/portfolio" className={item} onClick={() => setOpen(false)}>
             <Briefcase className="size-3.5 text-muted" /> Portfolio
           </Link>
+          <Link to="/suchagent" className={item} onClick={() => setOpen(false)}>
+            <Radar className="size-3.5 text-muted" /> {t("Suchagent", "Search agent")}
+          </Link>
           {plan.premium ? (
             <Link to="/portfolio#melden" className={item} onClick={() => setOpen(false)}>
               <Crown className="size-3.5 text-gold" /> {t("Premium verlängern", "Extend premium")}
@@ -426,6 +432,11 @@ function UserMenu() {
           {me?.admin && (
             <Link to="/pruefung" className={item} onClick={() => setOpen(false)}>
               <ShieldCheck className="size-3.5 text-muted" /> {t("Prüfung", "Review")}
+            </Link>
+          )}
+          {me?.admin && (
+            <Link to="/suchquellen" className={item} onClick={() => setOpen(false)}>
+              <Radar className="size-3.5 text-muted" /> {t("Suchquellen", "Search sources")}
             </Link>
           )}
           {me?.admin && (
@@ -511,6 +522,7 @@ function Footer() {
     { to: "/kaufen", label: t("Kaufen", "Buy") },
     { to: "/insights", label: "Insights" },
     { to: "/ai", label: "Co-Pilot" },
+    { to: "/suchagent", label: t("Suchagent", "Search agent") },
     { to: "/portfolio", label: "Portfolio" },
   ];
   return (
