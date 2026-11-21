@@ -443,6 +443,7 @@ export async function handleAuth(req: IncomingMessage, res: ServerResponse, url:
     }
     await clearFailures(key);
     await startSession(req, res, user.id);
+    await db()`delete from signup_codes where expires_at < now()`; // unconfirmed sign-ups go once their code has run out
     return sendJson(res, 200, { username: user.username });
   }
 

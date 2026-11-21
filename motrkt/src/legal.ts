@@ -26,6 +26,12 @@ export const MISSING_NOTE: [string, string] = [
   "Operator details are missing: fill in src/legal.ts (name, address, email, responsible person). Until then this page is incomplete.",
 ];
 
+/** Under the controller's address in the privacy notice (section 1): how to reach us, and why there is no DPO. */
+export const CONTROLLER_NOTE: [string, string] = [
+  "Für alle Fragen zum Datenschutz und zur Ausübung Ihrer Rechte erreichen Sie uns unter der oben genannten E-Mail-Adresse oder per Post. Einen Datenschutzbeauftragten haben wir nicht benannt, da wir dazu nicht verpflichtet sind (Art. 37 DSGVO, § 38 BDSG).",
+  "For any questions about data protection and to exercise your rights, contact us at the email address above or by post. We have not appointed a data protection officer, as we are not required to (Art. 37 GDPR, § 38 BDSG).",
+];
+
 export const IMPRESSUM: LegalSection[] = [
   {
     heading: ["Haftung für Inhalte", "Liability for content"],
@@ -68,12 +74,12 @@ export const DATENSCHUTZ: LegalSection[] = [
         "An account needs a username, a password and an email address, not your name. We use the email address for your account only (the code at sign-up, confirming a changed address, resetting the password), never for advertising.",
       ],
       [
-        "Wir setzen keine Werbedienste, keine Tracking-Cookies und keine eingebundenen Inhalte sozialer Netzwerke ein. Seitenaufrufe zählen wir ohne Cookies und ohne Sie über den Tag hinaus wiederzuerkennen (Abschnitt 3, „Reichweitenmessung“). Schriften liefern wir von unserem eigenen Server aus.",
-        "We use no advertising services, no tracking cookies and no embedded social network content. Page views are counted without cookies and without recognising you beyond the day (section 3, “Audience measurement”). Typefaces are served from our own server.",
+        "Wir setzen keine Werbedienste, keine Tracking-Cookies und keine eingebundenen Inhalte sozialer Netzwerke ein. In der kostenlosen Version zeigen wir gekennzeichnete Anzeigen; sie liegen auf unserem Server, und an Werbepartner übermitteln wir nichts. Seitenaufrufe zählen wir ohne Cookies und ohne Sie über den Tag hinaus wiederzuerkennen (Abschnitt 3, „Reichweitenmessung“). Schriften liefern wir von unserem eigenen Server aus; manche Fotos lädt Ihr Browser direkt bei deren Anbietern (Abschnitt 3, „Fotos“).",
+        "We use no advertising services, no tracking cookies and no embedded social network content. In the free version we show ads marked as such; they are stored on our server, and we send nothing to advertising partners. Page views are counted without cookies and without recognising you beyond the day (section 3, “Audience measurement”). Typefaces are served from our own server; some photos are loaded by your browser directly from their providers (section 3, “Photos”).",
       ],
       [
-        "Anwendung und Datenbank laufen in Rechenzentren in Frankfurt am Main.",
-        "The application and the database run in data centres in Frankfurt am Main.",
+        "Anwendung und Datenbank laufen in Rechenzentren in Frankfurt am Main. Einige Dienstleister sitzen in den USA (E-Mail-Versand, KI, Teile der Reichweitenmessung und der Zahlungsabwicklung); die Übermittlung ist dort jeweils abgesichert (Abschnitt 6).",
+        "The application and the database run in data centres in Frankfurt am Main. Some service providers are based in the USA (email delivery, AI, parts of the audience measurement and of payment processing); each transfer there is safeguarded (section 6).",
       ],
       [
         "Hochgeladene Kaufverträge speichern wir verschlüsselt, nur für die Prüfung, und löschen sie mit der Entscheidung, spätestens 24 Stunden nach dem Hochladen. Namen, Anschriften, Unterschriften und Bankdaten dürfen Sie vorher schwärzen.",
@@ -93,8 +99,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     heading: ["3. Welche Daten wir verarbeiten", "3. What data we process"],
     paragraphs: [
       [
-        "Konto: Benutzername, E-Mail-Adresse und der Zeitpunkt ihrer Bestätigung, ein Hash des Passworts (niemals das Passwort selbst), Zeitpunkt der Registrierung und ggf. das Ablaufdatum eines Premium-Zugangs. An die E-Mail-Adresse schicken wir nur Nachrichten zum Konto: bei der Registrierung einen 6-stelligen Code (15 Minuten gültig), erst nach dessen Eingabe entsteht das Konto; bis dahin halten wir Ihre Angaben aus dem Formular (Benutzername, E-Mail-Adresse, Hash des Passworts) höchstens 15 Minuten vor. Ändern Sie die Adresse später, schicken wir einen Link zur Bestätigung (48 Stunden gültig), und wenn Sie es anfordern, einen Link zum Zurücksetzen des Passworts (eine Stunde gültig). Von Codes und Links speichern wir nur einen Hash. Für die Anmeldung setzen wir ein notwendiges Sitzungs-Cookie (mip_sid), das ein Jahr gilt und bei jedem Besuch verlängert wird; gespeichert wird nur ein Hash des Sitzungsschlüssels. Fehlgeschlagene Anmeldeversuche zählen wir 24 Stunden lang unter einem Hash aus Benutzername und IP-Adresse, um Angriffe auf Passwörter zu bremsen; die IP-Adresse selbst speichern wir dabei nicht.",
-        "Account: username, email address and the time it was confirmed, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. We send only account messages to the email address: at sign-up a 6-digit code (valid for 15 minutes); the account is created only once it is entered, and until then we keep your form entries (username, email address, hash of the password) for 15 minutes at most. If you change the address later we send a link to confirm it (valid for 48 hours), and, if you request it, a link to reset the password (valid for one hour). Of codes and links we store only a hash. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
+        "Konto: Benutzername, E-Mail-Adresse und der Zeitpunkt ihrer Bestätigung, ein Hash des Passworts (niemals das Passwort selbst), Zeitpunkt der Registrierung und ggf. das Ablaufdatum eines Premium-Zugangs. An die E-Mail-Adresse schicken wir nur Nachrichten zum Konto: bei der Registrierung einen 6-stelligen Code (15 Minuten gültig), erst nach dessen Eingabe entsteht das Konto; bis dahin halten wir Ihre Angaben aus dem Formular (Benutzername, E-Mail-Adresse, Hash des Passworts) vor. Wird der Code nicht rechtzeitig eingegeben, löschen wir diese Angaben nach Ablauf des Codes. Ändern Sie die Adresse später, schicken wir einen Link zur Bestätigung (48 Stunden gültig), und wenn Sie es anfordern, einen Link zum Zurücksetzen des Passworts (eine Stunde gültig). Von Codes und Links speichern wir nur einen Hash. Für die Anmeldung setzen wir ein notwendiges Sitzungs-Cookie (mip_sid), das ein Jahr gilt und bei jedem Besuch verlängert wird; gespeichert wird nur ein Hash des Sitzungsschlüssels. Fehlgeschlagene Anmeldeversuche zählen wir 24 Stunden lang unter einem Hash aus Benutzername und IP-Adresse, um Angriffe auf Passwörter zu bremsen; die IP-Adresse selbst speichern wir dabei nicht.",
+        "Account: username, email address and the time it was confirmed, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. We send only account messages to the email address: at sign-up a 6-digit code (valid for 15 minutes); the account is created only once it is entered, and until then we keep your form entries (username, email address, hash of the password). If the code is not entered in time, we delete these entries once the code has expired. If you change the address later we send a link to confirm it (valid for 48 hours), and, if you request it, a link to reset the password (valid for one hour). Of codes and links we store only a hash. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
       ],
       [
         "Ohne Konto: Katalog, Marktwerte, Angebote, Auktionskalender und Forum können Sie ohne Konto ansehen. Dabei setzen wir kein Cookie und speichern nichts über Sie, außer den Server-Protokollen des Hosting-Anbieters und der Reichweitenmessung (siehe unten).",
@@ -123,6 +129,14 @@ export const DATENSCHUTZ: LegalSection[] = [
       [
         "Server-Protokolle: Beim Abruf der Seite verarbeitet unser Hosting-Anbieter technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Adresse, Browser) in Protokollen. Fehler der Anwendung protokollieren wir mit der Fehlermeldung, der Seite und der Browserkennung, ohne Benutzernamen.",
         "Server logs: when the site is accessed our hosting provider processes technically necessary data (IP address, time, requested address, browser) in logs. Application errors are logged with the error message, the page and the browser identification, without the username.",
+      ],
+      [
+        "Fotos: Bilder der Modelle, das Foto auf der Anmeldeseite sowie Fotos von Inseraten und Auktionslosen liegen nicht auf unserem Server, sondern werden von Ihrem Browser direkt beim jeweiligen Anbieter geladen (Abschnitt 6). Dieser erhält dabei technisch bedingt Ihre IP-Adresse, den Zeitpunkt, die Adresse des Bildes und Angaben zu Ihrem Browser, nicht aber, von welcher unserer Seiten Sie kommen. Weitere Daten über Sie geben wir diesen Anbietern nicht.",
+        "Photos: pictures of the models, the photo on the sign-in page and photos of listings and auction lots are not stored on our server but loaded by your browser directly from the respective provider (section 6). For technical reasons the provider receives your IP address, the time, the address of the picture and details of your browser, but not which of our pages you came from. We pass no data about you to these providers.",
+      ],
+      [
+        "Anzeigen: In der kostenlosen Version und ohne Konto zeigen wir unter gesperrten Premium-Bereichen gekennzeichnete Anzeigen. Bild und Text liegen auf unserem Server; die Auswahl richtet sich nur nach der aufgerufenen Seite, nicht nach Ihrer Person. Wir zählen weder Einblendungen noch Klicks und übermitteln nichts an Werbepartner. Erst wenn Sie eine Anzeige anklicken, öffnet sich die Seite des Partners, der dann wie jede Website Ihre IP-Adresse erhält, aber nicht erfährt, dass Sie von uns kommen. Mit Premium sehen Sie keine Anzeigen.",
+        "Ads: in the free version and without an account we show ads, marked as such, under locked premium sections. Picture and text are stored on our server; the choice depends only on the page you open, not on you. We count neither impressions nor clicks and send nothing to advertising partners. Only when you click an ad does the partner's page open, which then, like any website, receives your IP address but does not learn that you came from us. With premium you see no ads.",
       ],
       [
         "Reichweitenmessung: Um zu sehen, welche Seiten wie oft aufgerufen werden, nutzen wir Vercel Web Analytics (siehe Abschnitt 6). Je Seitenaufruf werden der Zeitpunkt, die Adresse der Seite ohne Parameter, die Seite, von der Sie kommen, der ungefähre Standort (Land, Region, Stadt, aus der IP-Adresse abgeleitet), Betriebssystem, Browser und Gerätetyp erfasst. Die Messung setzt kein Cookie und legt nichts im Speicher Ihres Browsers ab. Besucher unterscheidet Vercel nach eigenen Angaben über einen Hash aus Daten der Anfrage, der nach 24 Stunden verworfen wird; über mehrere Tage oder über andere Websites hinweg werden Sie damit nicht wiedererkannt. Mit Ihrem Konto verknüpfen wir die Messung nicht.",
@@ -181,6 +195,10 @@ export const DATENSCHUTZ: LegalSection[] = [
     list: true,
     paragraphs: [
       ["Bereitstellung des Kontos und der Funktionen einschließlich Co-Pilot und Forum: Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).", "Providing the account and its functions including the Co-Pilot and the forum: performance of a contract (Art. 6 (1) (b) GDPR)."],
+      [
+        "Laden von Fotos direkt bei deren Anbietern: berechtigtes Interesse an einer bebilderten Darstellung der Fahrzeuge (Art. 6 Abs. 1 lit. f DSGVO).",
+        "Loading photos directly from their providers: legitimate interest in illustrating the cars (Art. 6 (1) (f) GDPR).",
+      ],
       ["Bereitstellung der ohne Konto zugänglichen Seiten, Sicherheit, Missbrauchsabwehr, Zugriffs- und Fehlerprotokolle, Moderation des Forums: berechtigtes Interesse an einem sicheren und rechtmäßigen Betrieb (Art. 6 Abs. 1 lit. f DSGVO).", "Providing the pages open without an account, security, abuse prevention, access and error logs, forum moderation: legitimate interest in secure and lawful operation (Art. 6 (1) (f) GDPR)."],
       [
         "Reichweitenmessung: berechtigtes Interesse daran, zu verstehen, wie das Angebot genutzt wird, und es danach zu verbessern (Art. 6 Abs. 1 lit. f DSGVO).",
@@ -229,8 +247,16 @@ export const DATENSCHUTZ: LegalSection[] = [
         "AI services: Anthropic, PBC, San Francisco, USA. We send Anthropic the messages you write to the Co-Pilot together with market data and, where present, your portfolio and watchlist, and uploaded purchase contracts with your car details if you have consented to the AI pre-check. Your username is not transmitted. Anthropic does not use data from these requests to train its models. The transfer to the USA is safeguarded by standard contractual clauses.",
       ],
       [
-        "Inserate und Auktionslose: Live-Angebote und Losseiten fragt unser Server bei mobile.de (mobile.de GmbH) und den Auktionshäusern ab; dabei werden keine Daten über Sie übermittelt. Fotos von Inseraten und Losen lädt Ihr Browser direkt vom jeweiligen Anbieter (z. B. Classic Trader, Händlerseiten, mobile.de, Auktionshäuser), der dabei Ihre IP-Adresse erhält, aber nicht erfährt, von welcher Seite Sie kommen.",
-        "Listings and auction lots: our server queries live listings and lot pages from mobile.de (mobile.de GmbH) and the auction houses; no data about you is transmitted. Photos of listings and lots are loaded by your browser directly from the respective provider (e.g. Classic Trader, dealer sites, mobile.de, auction houses), which receives your IP address but does not learn which page you came from.",
+        "Inserate und Auktionslose: Live-Angebote und Losseiten fragt unser Server bei mobile.de (mobile.de GmbH) und den Auktionshäusern ab; dabei werden keine Daten über Sie übermittelt. Fotos von Inseraten und Losen lädt Ihr Browser direkt vom jeweiligen Anbieter (z. B. Classic Trader, Händlerseiten, mobile.de, Auktionshäuser, auch in den USA und im Vereinigten Königreich), der dabei Ihre IP-Adresse erhält, aber nicht erfährt, von welcher Seite Sie kommen.",
+        "Listings and auction lots: our server queries live listings and lot pages from mobile.de (mobile.de GmbH) and the auction houses; no data about you is transmitted. Photos of listings and lots are loaded by your browser directly from the respective provider (e.g. Classic Trader, dealer sites, mobile.de, auction houses, including some in the USA and the United Kingdom), which receives your IP address but does not learn which page you came from.",
+      ],
+      [
+        "Fotos der Modelle und der Anmeldeseite lädt Ihr Browser von: Dr. Ing. h.c. F. Porsche AG, Stuttgart (newsroom.porsche.com, porschepictures.flowcenter.de), Wikimedia Foundation, Inc., San Francisco, USA (upload.wikimedia.org), sowie den Verlagsseiten von evo und Auto Express, Vereinigtes Königreich (images.evo.co.uk, images.autoexpress.co.uk). Für das Vereinigte Königreich besteht ein Angemessenheitsbeschluss der EU-Kommission. Für die Wikimedia Foundation besteht keine Zertifizierung unter dem EU-US Data Privacy Framework; übermittelt werden dorthin nur die Daten, die beim Abruf eines Bildes technisch anfallen.",
+        "Photos of the models and of the sign-in page are loaded by your browser from: Dr. Ing. h.c. F. Porsche AG, Stuttgart (newsroom.porsche.com, porschepictures.flowcenter.de), Wikimedia Foundation, Inc., San Francisco, USA (upload.wikimedia.org), and the publisher sites of evo and Auto Express, United Kingdom (images.evo.co.uk, images.autoexpress.co.uk). For the United Kingdom an adequacy decision of the European Commission applies. The Wikimedia Foundation is not certified under the EU-US Data Privacy Framework; only the data that arises technically when a picture is fetched is transmitted there.",
+      ],
+      [
+        "Werbepartner erhalten von uns keine Daten. Klicken Sie eine Anzeige an, sind Sie auf der Seite des Partners, für die dessen Datenschutzerklärung gilt.",
+        "Advertising partners receive no data from us. If you click an ad you are on the partner's page, to which the partner's privacy policy applies.",
       ],
       [
         "Darüber hinaus geben wir Daten nur weiter, wenn wir gesetzlich dazu verpflichtet sind. Wir verkaufen keine personenbezogenen Daten.",
@@ -259,6 +285,7 @@ export const DATENSCHUTZ: LegalSection[] = [
       ["Protokoll der Zugriffe auf Verträge: ein Jahr.", "Log of accesses to contracts: one year."],
       ["Angaben zu Käufen (Zeitpunkt, Betrag, Laufzeit, Kennungen bei Stripe): solange die handels- und steuerrechtlichen Aufbewahrungsfristen laufen. Zahlungsdaten bei Stripe: nach dessen Fristen.", "Details of purchases (time, amount, period, Stripe's identifiers): for as long as the retention periods of commercial and tax law run. Payment data at Stripe: according to its retention periods."],
       ["Zähler für Anmeldeversuche und Anfragen: etwa 24 Stunden.", "Counters for sign-in attempts and requests: about 24 hours."],
+      ["An Anthropic übermittelte Anfragen des Co-Piloten und der KI-Vorprüfung: nach dessen Fristen. Der Gesprächsverlauf in Ihrem Browser: bis Sie ihn löschen oder sich abmelden.", "Requests sent to Anthropic by the Co-Pilot and the AI pre-check: according to its retention periods. The conversation in your browser: until you delete it or sign out."],
       ["Protokolle des Hosting-Anbieters: nach dessen Fristen.", "The hosting provider's logs: according to its retention periods."],
       ["Reichweitenmessung: Der Hash, der Besucher unterscheidet, wird nach 24 Stunden verworfen; die Zählungen bleiben nach den Fristen von Vercel gespeichert.", "Audience measurement: the hash that tells visitors apart is discarded after 24 hours; the counts are kept according to Vercel's retention periods."],
       [
@@ -275,8 +302,12 @@ export const DATENSCHUTZ: LegalSection[] = [
         "You have the right of access, rectification, erasure, restriction of processing, data portability and objection to processing based on legitimate interests (Art. 15 to 21 GDPR). You can withdraw consent at any time with effect for the future. Much of this you can do yourself: under “Account” (/konto) you download your data as a file, change your password and delete your account; in the portfolio you delete car reports, in the forum your own posts. For anything else, write to the email address above; we answer within one month.",
       ],
       [
-        "Sie haben außerdem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren, insbesondere an Ihrem Wohnort oder am Sitz des Verantwortlichen (Art. 77 DSGVO).",
-        "You also have the right to lodge a complaint with a data protection supervisory authority, in particular where you live or where the controller is established (Art. 77 GDPR).",
+        "Widerspruchsrecht (Art. 21 DSGVO): Verarbeitungen, die auf unserem berechtigten Interesse beruhen (Art. 6 Abs. 1 lit. f DSGVO, siehe Abschnitt 5), können Sie jederzeit aus Gründen, die sich aus Ihrer besonderen Situation ergeben, widersprechen. Wir verarbeiten Ihre Daten dann nicht mehr für diesen Zweck, es sei denn, wir können zwingende schutzwürdige Gründe nachweisen, die Ihre Interessen überwiegen, oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen. Eine formlose Nachricht an die oben genannte E-Mail-Adresse genügt.",
+        "Right to object (Art. 21 GDPR): you may object at any time, on grounds relating to your particular situation, to processing based on our legitimate interest (Art. 6 (1) (f) GDPR, see section 5). We will then no longer process your data for that purpose unless we can demonstrate compelling legitimate grounds that override your interests, or the processing serves the establishment, exercise or defence of legal claims. An informal message to the email address above is enough.",
+      ],
+      [
+        "Sie haben außerdem das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren, insbesondere an Ihrem Wohnort oder am Sitz des Verantwortlichen (Art. 77 DSGVO). Für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach, www.lda.bayern.de.",
+        "You also have the right to lodge a complaint with a data protection supervisory authority, in particular where you live or where the controller is established (Art. 77 GDPR). The authority responsible for us is the Bavarian Data Protection Authority (Bayerisches Landesamt für Datenschutzaufsicht, BayLDA), Promenade 18, 91522 Ansbach, Germany, www.lda.bayern.de.",
       ],
       [
         "Eine automatisierte Entscheidungsfindung einschließlich Profiling (Art. 22 DSGVO) findet nicht statt.",

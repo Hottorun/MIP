@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, operatorComplete, type LegalSection } from "../legal";
+import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, operatorComplete, type LegalSection } from "../legal";
 import { isEn, t } from "../i18n";
 
 /**
@@ -94,6 +94,7 @@ export function Datenschutz() {
         <div className="mt-3">
           <Operator />
         </div>
+        <p className="mt-3">{t(...CONTROLLER_NOTE)}</p>
       </section>
       <Sections sections={DATENSCHUTZ} />
     </Page>

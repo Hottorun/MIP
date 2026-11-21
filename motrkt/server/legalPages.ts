@@ -1,5 +1,5 @@
 import type { ServerResponse } from "node:http";
-import { DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, operatorComplete, type LegalSection } from "../src/legal.ts";
+import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, operatorComplete, type LegalSection } from "../src/legal.ts";
 
 /**
  * Impressum and privacy notice for visitors without a session (the sign-in page links here; both must be reachable
@@ -29,7 +29,7 @@ export function legalPage(which: "impressum" | "datenschutz", en: boolean): stri
         (OPERATOR.vatId ? `<p>${en ? "VAT identification number pursuant to § 27a UStG" : "Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG"}: ${esc(OPERATOR.vatId)}</p>` : "") +
         `<h2>${en ? "Responsible for content pursuant to § 18 (2) MStV" : "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV"}</h2><p>${OPERATOR.responsible ? esc(OPERATOR.responsible) : `<span class="miss">[${en ? "Responsible person" : "Verantwortliche Person"}]</span>`}</p>` +
         sections(IMPRESSUM, en)
-      : `<h2>${en ? "1. Controller" : "1. Verantwortlicher"}</h2>${operator(en)}${sections(DATENSCHUTZ, en)}`;
+      : `<h2>${en ? "1. Controller" : "1. Verantwortlicher"}</h2>${operator(en)}<p>${esc(CONTROLLER_NOTE[en ? 1 : 0])}</p>${sections(DATENSCHUTZ, en)}`;
   const other = which === "impressum" ? "datenschutz" : "impressum";
   return `<!doctype html>
 <html lang="${en ? "en" : "de"}">
