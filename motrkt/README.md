@@ -111,6 +111,19 @@ Der Preis in Stripe entscheidet, was verkauft wird:
 - **Einmaliger Preis**: eine Zahlung für 12 Monate (anderer Wert in den Metadaten des Preises als `months`), nichts
   verlängert sich. Die Monate kommen zu dem hinzu, was noch läuft.
 
+**Monatlich und jährlich nebeneinander:** `STRIPE_PRICE_ID_YEARLY` nennt einen zweiten Preis desselben Produkts, ein
+Abo pro Jahr. Die App zeigt dann beide Zeiträume zur Wahl (vorgewählt ist der jährliche, mit der Ersparnis je Monat
+in Prozent), und der gewählte Preis geht an die Zahlungsseite. Angeboten wird er nur neben einem Abo-Preis mit
+kürzerem Zeitraum in derselben Währung; passt er nicht, steht das im Log und es bleibt beim einen Preis. Ohne die
+Variable ändert sich nichts. Soll es nur das Jahresabo geben, genügt der Jahrespreis als `STRIPE_PRICE_ID`.
+
+Für das Jahresabo gilt Nr. 6 der AGB (§ 309 Nr. 9 BGB): Nach dem ersten Jahr ist es jederzeit mit einer Frist von
+einem Monat kündbar, der Rest wird anteilig erstattet. Der Code dazu: Eine Kündigung über `/kuendigen` in einem
+bereits verlängerten Jahr beendet das Abo bei Stripe einen Monat später (oder zum späteren Wunschdatum) statt zum
+Ende des Jahres; die Mail an den Betreiber nennt die Teilerstattung als Aufgabe, **erstatten muss er von Hand**. Das
+Kundenportal von Stripe kündigt dagegen immer zum Ende des bezahlten Zeitraums. Endet ein Abo bei Stripe vor dem
+Ende des bezahlten Zeitraums, endet Premium mit ihm (Ereignis `customer.subscription.deleted`).
+
 Ablauf: Der Knopf öffnet die Zahlungsseite von Stripe (Checkout, Weiterleitung; die App lädt kein Stripe-Skript und
 sieht keine Kartendaten). Nach der Zahlung kommt der Nutzer auf die Seite zurück, von der er kam; der Server fragt die
 Zahlung bei Stripe ab und schaltet frei. Derselbe Schritt läuft über den Webhook, falls der Nutzer das Fenster vorher
@@ -124,13 +137,14 @@ Einrichten:
    keinen Preis.
 2. In Stripe ein Produkt „Cartag Premium“ mit einem Preis anlegen: wiederkehrend (monatlich oder jährlich) für ein Abo
    oder einmalig. Betrag inklusive Umsatzsteuer, denn die App zeigt genau diesen Betrag.
-3. Webhook anlegen: Endpunkt `https://www.carbay.app/api/stripe/webhook` (mit `www`: `carbay.app` leitet dorthin um,
+3. Webhook anlegen: Endpunkt `https://www.cartag.info/api/stripe/webhook` (mit `www`: `cartag.info` leitet dorthin um,
    und Stripe folgt keinen Weiterleitungen), Ereignisse `checkout.session.completed`,
-   `checkout.session.async_payment_succeeded`, `invoice.paid`, `charge.refunded`.
+   `checkout.session.async_payment_succeeded`, `invoice.paid`, `charge.refunded`, `customer.subscription.deleted`.
 4. Nur beim Abo: in Stripe das Kundenportal einschalten (Einstellungen → Billing → Kundenportal, einmal speichern;
    Kündigen erlauben, am besten „zum Ende des Abrechnungszeitraums“). Ohne das öffnet sich „Abo verwalten“ nicht.
 5. In Vercel setzen (Production): `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID` (`price_…`), `STRIPE_WEBHOOK_SECRET`
-   (`whsec_…`), dazu `MIP_PUBLIC_URL=https://www.carbay.app`. Optional: `STRIPE_REQUIRE_TERMS=1` (Käufer muss die in
+   (`whsec_…`), dazu `MIP_PUBLIC_URL=https://www.cartag.info`. Optional: `STRIPE_PRICE_ID_YEARLY` (Jahresabo neben
+   dem Monatsabo, siehe oben), `STRIPE_REQUIRE_TERMS=1` (Käufer muss die in
    Stripe hinterlegten AGB bestätigen), `STRIPE_AUTOMATIC_TAX=1` (Stripe Tax), `STRIPE_PROMO_CODES=1` (Feld für
    Gutscheincodes). Danach neu deployen.
 6. Erst mit Testschlüsseln (`sk_test_…`) und der Testkarte 4242 4242 4242 4242 lokal prüfen, dann die Live-Schlüssel
@@ -142,10 +156,13 @@ Webhooks liest der Server deshalb nicht aus, sondern fragt das Objekt selbst noc
 Lokal testen: die Variablen in `.env`, dann `stripe listen --forward-to localhost:5173/api/stripe/webhook` (Stripe CLI;
 gibt das `whsec_…` für `.env` aus). Auch ohne Webhook schaltet die Rückkehr von der Zahlungsseite frei.
 
-Vor dem Verkauf an Verbraucher zu klären (nicht Teil des Codes): AGB mit Widerrufsbelehrung für digitale Leistungen,
-Preisangabe mit Umsatzsteuer, Rechnung bzw. Beleg (Stripe kann Belege per E-Mail schicken), AV-Vertrag mit Stripe.
-Beim Abo zusätzlich: ob der Weg zur Kündigung (Konto → „Abo verwalten oder kündigen“ → Seite von Stripe) den Vorgaben
-zur Kündigungsschaltfläche genügt (§ 312k BGB).
+Für den Verkauf an Verbraucher gibt es im Code: AGB (`/agb`) und Widerrufsbelehrung mit Widerrufsfunktion (`/widerruf`,
+§ 356a BGB), die Kündigungsseite ohne Anmeldung (`/kuendigen`, § 312k BGB; beendet die Verlängerung bei Stripe, wenn die
+E-Mail-Adresse zu einem Konto mit Abo gehört) und die Bestellbestätigung per E-Mail mit beiden Texten. Texte in
+`src/terms.ts`, Seiten in `server/legalPages.ts`, Verarbeitung in `server/notices.ts`, Tabelle `contract_notices`
+(Migration 018). Jeder Widerruf und jede Kündigung geht zusätzlich per Mail an die Adresse im Impressum: erstatten muss
+der Betreiber von Hand, binnen 14 Tagen. Nicht Teil des Codes: `VAT` in `src/terms.ts` setzen (Umsatzsteuer oder
+§ 19 UStG), Telefonnummer im Impressum, Belegversand in Stripe, AV-Vertrag mit Stripe.
 Siehe `DATENSCHUTZ.md`.
 
 ## Konto, Impressum, Datenschutz
@@ -162,7 +179,8 @@ Betreiberangaben). Die App lädt nichts von Dritten nach außer Fotos von Insera
 Werbung, Schriften aus `public/fonts` statt von Google Fonts, ein einziges notwendiges Cookie und deshalb kein
 Cookie-Banner. Seitenaufrufe zählt Vercel Web Analytics ohne Cookies (`src/bootstrap.tsx`): nur im gebauten Stand,
 Skript und Anfragen laufen über die eigene Adresse (`/_vercel/insights/…`), übermittelt wird die Adresse der Seite
-ohne das, was auf `?` oder `#` folgt. Auf Supabase ist für alle Tabellen Row Level Security eingeschaltet
+ohne das, was auf `?` oder `#` folgt. Genauso misst Vercel Speed Insights die Ladezeiten (Core Web Vitals,
+`/_vercel/speed-insights/…`). Auf Supabase ist für alle Tabellen Row Level Security eingeschaltet
 (`db/migrations/010_row_level_security.sql`); **neue Tabellen brauchen dieselbe Zeile.** Impressum und Datenschutzerklärung (`/impressum`, `/datenschutz`) zeigen die Texte aus `src/legal.ts`; ohne
 Sitzung liefert sie der Server als eigene Seiten (`server/legalPages.ts`), damit sie von der Anmeldeseite aus
 erreichbar sind. **Vor der Veröffentlichung `OPERATOR` in `src/legal.ts` ausfüllen** – solange Angaben fehlen,
@@ -203,6 +221,7 @@ Auktionen, `?haus=`). Server: `server/forum.ts`, gemeinsame Kennungen: `src/lib/
 | `MIP_ADMINS` | Benutzernamen der Prüfer für gemeldete Fahrzeuge, kommagetrennt |
 | `MIP_TRUST_PROXY` | `1`, wenn `npm start` hinter einem eigenen Reverse-Proxy (nginx, Caddy) läuft: Client-Adresse für die Anmeldebremse aus `X-Forwarded-For`; auf Vercel nicht nötig |
 | `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `STRIPE_WEBHOOK_SECRET` | Premium kaufen über Stripe (siehe „Bezahlen“); ohne sie gibt es keinen Kauf |
+| `STRIPE_PRICE_ID_YEARLY` | optional: Jahresabo zur Wahl neben dem Abo aus `STRIPE_PRICE_ID` |
 | `MOBILEDE_USERNAME`, `MOBILEDE_PASSWORD` | Live-Inserate über die offizielle [mobile.de Search API](https://services.mobile.de/docs/search-api.html) (Zugang über den mobile.de-Kundenservice) |
 
 Angezeigte Marken: `src/config.ts` (`ENABLED_BRANDS`, aktuell nur Porsche).
@@ -228,7 +247,9 @@ laden sie nicht neu. Im Dev-Server kommen sie direkt aus `src/data/real`.
 5. Deployen (Push auf `main` oder `vercel --prod`).
 6. Für die Reichweitenmessung im Projekt unter „Analytics“ Web Analytics einschalten und noch einmal deployen: erst
    dann liefert Vercel `/_vercel/insights/script.js` aus. Mit `npm start` außerhalb von Vercel gibt es die Adresse
-   nicht; das Skript lädt dann nicht (eine Zeile in der Konsole), die App läuft normal.
+   nicht; das Skript lädt dann nicht (eine Zeile in der Konsole), die App läuft normal. Dasselbe gilt für die
+   Ladezeiten: im Projekt unter „Speed Insights“ einschalten und noch einmal deployen
+   (`/_vercel/speed-insights/script.js`).
 
 Das tägliche Update (`scripts/market/daily.sh`) lädt neue Marktdaten in die Datenbank, wenn `DATABASE_URL` gesetzt ist.
 

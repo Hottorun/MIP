@@ -8,7 +8,7 @@ import { PremiumFab, UpgradeDialog } from "./premium/Upgrade";
 import { useStore } from "../state/store";
 import { prepareSearch, search, type SearchHit } from "../lib/search";
 import { cn, date, num, usdRate } from "../lib/format";
-import { t, useLang, type Lang } from "../i18n";
+import { legalHref, t, useLang, type Lang } from "../i18n";
 import { ImportModal } from "./ImportModal";
 import { EmailGate } from "./EmailGate";
 import { AS_OF } from "../data/generate";
@@ -558,9 +558,14 @@ function Footer() {
       </div>
       <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line px-5 py-6 text-[12.5px] text-faint sm:px-8">
         <span>© {new Date(AS_OF).getFullYear()} Cartag</span>
-        <span className="flex gap-5">
+        <span className="flex flex-wrap gap-x-5 gap-y-1">
           <Link to="/impressum" className="hover:text-ink">Impressum</Link>
           <Link to="/datenschutz" className="hover:text-ink">{t("Datenschutz", "Privacy")}</Link>
+          {/* served by the server for everyone, signed in or not (server/notices.ts): plain links, not routes of the app.
+              The last two are the buttons of § 356a and § 312k BGB and belong on every page. */}
+          <a href={legalHref("/agb")} className="hover:text-ink">{t("AGB", "Terms")}</a>
+          <a href={legalHref("/widerruf")} className="hover:text-ink">{t("Vertrag widerrufen", "Withdraw from contract")}</a>
+          <a href={legalHref("/kuendigen")} className="hover:text-ink">{t("Verträge hier kündigen", "Cancel contracts here")}</a>
           <span>{t("Keine Anlageberatung.", "Not investment advice.")}</span>
         </span>
       </div>

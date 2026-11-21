@@ -24,6 +24,8 @@ let current: Lang = detect();
 
 export const getLang = (): Lang => current;
 export const isEn = () => current === "en";
+/** A page the server renders itself (terms, withdrawal, cancellation: server/legalPages.ts), in the app's language. */
+export const legalHref = (path: string) => (current === "en" ? `${path}?lang=en` : path);
 /** Locale for Intl formatting. */
 export const locale = () => (current === "en" ? "en-GB" : "de-DE");
 

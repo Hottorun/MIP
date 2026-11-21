@@ -4,6 +4,9 @@ import variantIds from "../scripts/market/variant_ids.json" with { type: "json" 
 import { readText } from "./body.ts";
 import { currentUser, isAdmin } from "./auth.ts";
 import { db } from "./db.ts";
+import { sendMail, textMail } from "./mail.ts";
+import { OPERATOR } from "../src/legal.ts";
+import { SITE } from "../src/terms.ts";
 import { FORUM_CATEGORIES, FORUM_KINDS, FORUM_SORTS, FORUM_STATUS, oneOf } from "../src/lib/forumShared.ts";
 
 /**
@@ -106,6 +109,64 @@ async function tooMany(userId: string) {
   return { posts: posts >= MAX_POSTS_HOUR, topics: topics >= MAX_TOPICS_HOUR };
 }
 
+/**
+ * A reviewer hid somebody's post or topic: the author gets the decision with its reasons and the ways to contest it
+ * (Art. 17 of Regulation (EU) 2022/2065), whoever reported the post gets the outcome (Art. 16 (5)). By mail to the
+ * account's address, in German and English (the forum knows no language per user). A mail that cannot be sent is
+ * logged; the post stays hidden.
+ */
+async function moderationNotice(o: { authorId: string; reporterIds: string[]; topic: boolean; title: string; excerpt: string; reason: string }) {
+  try {
+    const ids = [...new Set([o.authorId, ...o.reporterIds])].filter(Boolean);
+    if (!ids.length) return;
+    const users = await db()<{ id: string; username: string; email: string | null }[]>`select id, username, email from users where id in ${db()(ids)}`;
+    const when = (en: boolean) => new Intl.DateTimeFormat(en ? "en-GB" : "de-DE", { dateStyle: "long", timeStyle: "short", timeZone: "Europe/Berlin" }).format(new Date());
+    const what = (en: boolean) => (o.topic ? (en ? `Topic “${o.title}”` : `Thema „${o.title}“`) : en ? `“${o.excerpt}” (topic “${o.title}”)` : `„${o.excerpt}“ (Thema „${o.title}“)`);
+    const reported = o.reporterIds.length > 0;
+    const author = users.find((u) => u.id === o.authorId);
+    if (author?.email) {
+      await sendMail(
+        textMail({
+          to: author.email,
+          subject: o.topic ? "Ihr Forumsthema wurde ausgeblendet – Cartag" : "Ihr Forumsbeitrag wurde ausgeblendet – Cartag",
+          text: [
+            `Guten Tag ${author.username},`,
+            `ein Prüfer von Cartag hat ${o.topic ? "Ihr Thema" : "Ihren Beitrag"} im Forum ausgeblendet. ${o.topic ? "Das Thema ist" : "Der Beitrag ist"} für andere dauerhaft nicht mehr sichtbar. Ihr Konto ist davon nicht betroffen.`,
+            [`Betroffen: ${what(false)}`, `Entscheidung vom: ${when(false)}`, `Anlass: ${reported ? "Meldung durch einen Nutzer" : "eigene Prüfung"}`, `Grund: ${o.reason || "Nach unserer Prüfung verstößt der Inhalt gegen die Forumsregeln."}`, `Grundlage: Forumsregeln, Ziffer 10 unserer AGB (https://${SITE}/agb)`, "Die Entscheidung hat ein Mensch getroffen, ohne automatisierte Mittel."].join("\n"),
+            `Sind Sie nicht einverstanden? Schreiben Sie uns binnen sechs Monaten an ${OPERATOR.email}, am besten mit kurzer Begründung; wir prüfen die Entscheidung dann erneut, kostenlos. Daneben steht Ihnen der Weg zu einer zertifizierten außergerichtlichen Streitbeilegungsstelle (Art. 21 der Verordnung (EU) 2022/2065) und zu den Gerichten offen.`,
+            "– – –",
+            `Hello ${author.username},`,
+            `a Cartag reviewer has hidden your ${o.topic ? "topic" : "post"} in the forum. It is permanently no longer visible to others. Your account is not affected.`,
+            [`Concerned: ${what(true)}`, `Decided on: ${when(true)}`, `Prompted by: ${reported ? "a report from a user" : "our own review"}`, `Reason: ${o.reason || "On review, the content breaks the forum rules."}`, `Basis: forum rules, section 10 of our terms (https://${SITE}/agb?lang=en)`, "The decision was made by a person, without automated means."].join("\n"),
+            `Do you disagree? Write to us at ${OPERATOR.email} within six months, ideally with a short explanation; we will then review the decision again, free of charge. You may also turn to a certified out-of-court dispute settlement body (Art. 21 of Regulation (EU) 2022/2065) or to the courts.`,
+            "Cartag",
+          ].join("\n\n"),
+        }),
+      ).catch((err) => console.error("Forum: Mitteilung an den Verfasser", err));
+    }
+    for (const r of users.filter((u) => u.id !== o.authorId && u.email && o.reporterIds.includes(u.id))) {
+      await sendMail(
+        textMail({
+          to: r.email!,
+          subject: "Ihre Meldung im Forum: Beitrag ausgeblendet – Cartag",
+          text: [
+            `Guten Tag ${r.username},`,
+            `Sie haben im Forum einen Beitrag gemeldet (${what(false)}). Ein Prüfer hat ihn geprüft und ${o.topic ? "das Thema" : "den Beitrag"} am ${when(false)} ausgeblendet. Die Entscheidung hat ein Mensch getroffen. Vielen Dank für den Hinweis.`,
+            `Sind Sie mit der Entscheidung nicht einverstanden, schreiben Sie uns binnen sechs Monaten an ${OPERATOR.email}.`,
+            "– – –",
+            `Hello ${r.username},`,
+            `you reported a post in the forum (${what(true)}). A reviewer has checked it and hidden the ${o.topic ? "topic" : "post"} on ${when(true)}. The decision was made by a person. Thank you for letting us know.`,
+            `If you disagree with the decision, write to us at ${OPERATOR.email} within six months.`,
+            "Cartag",
+          ].join("\n\n"),
+        }),
+      ).catch((err) => console.error("Forum: Mitteilung an den Meldenden", err));
+    }
+  } catch (err) {
+    console.error("Forum: Mitteilung zur Moderation", err);
+  }
+}
+
 async function readBody(req: IncomingMessage): Promise<Record<string, unknown> | null> {
   try {
     const v = JSON.parse((await readText(req, 30_000)) || "{}");
@@ -177,7 +238,12 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
     }
     if (c === "ausblenden" && req.method === "POST") {
       if (!admin) return sendJson(res, 403, { error: "forbidden" });
-      await db()`update forum_topics set hidden_at = now(), hidden_by = ${user.username} where id = ${topic.id} and hidden_at is null`;
+      const why = text((await readBody(req))?.reason, REASON) || "";
+      const hidden = await db()`update forum_topics set hidden_at = now(), hidden_by = ${user.username} where id = ${topic.id} and hidden_at is null`;
+      if (hidden.count && topic.user_id !== user.id) {
+        const reporters = await db()<{ user_id: string }[]>`select distinct r.user_id from forum_reports r join forum_posts p on p.id = r.post_id where p.topic_id = ${topic.id}`;
+        await moderationNotice({ authorId: topic.user_id, reporterIds: reporters.map((r) => r.user_id), topic: true, title: topic.title, excerpt: "", reason: why });
+      }
       return sendJson(res, 200, { ok: true });
     }
     if (c) return sendJson(res, 404, { error: "Not found" });
@@ -238,13 +304,19 @@ export async function handleForum(req: IncomingMessage, res: ServerResponse, url
 
   // ---------------------------------------------------------------- one post: hide, edit, report
   if (a === "beitrag" && b) {
-    const [p] = await db()<{ id: string; user_id: string }[]>`select id, user_id from forum_posts where id = ${b} and hidden_at is null`;
+    const [p] = await db()<{ id: string; user_id: string; body: string; title: string }[]>`
+      select p.id, p.user_id, p.body, t.title from forum_posts p join forum_topics t on t.id = p.topic_id where p.id = ${b} and p.hidden_at is null`;
     if (!p) return sendJson(res, 404, { error: "Not found" });
     if (c === "ausblenden" && req.method === "POST") {
       if (!admin && p.user_id !== user.id) return sendJson(res, 403, { error: "forbidden" });
       // the author's own removal erases the text (right to erasure); a reviewer hiding someone else's post keeps it
       if (p.user_id === user.id) await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username}, body = '' where id = ${p.id}`;
-      else await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username} where id = ${p.id}`;
+      else {
+        const why = text((await readBody(req))?.reason, REASON) || "";
+        await db()`update forum_posts set hidden_at = now(), hidden_by = ${user.username} where id = ${p.id}`;
+        const reporters = await db()<{ user_id: string }[]>`select user_id from forum_reports where post_id = ${p.id}`;
+        await moderationNotice({ authorId: p.user_id, reporterIds: reporters.map((r) => r.user_id), topic: false, title: p.title, excerpt: p.body.length > 200 ? p.body.slice(0, 200) + " …" : p.body, reason: why });
+      }
       // a removed reply no longer answers its question
       await db()`update forum_topics set solved_post_id = null, solved_at = null where solved_post_id = ${p.id}`;
       return sendJson(res, 200, { ok: true });

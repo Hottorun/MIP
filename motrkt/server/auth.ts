@@ -167,6 +167,16 @@ async function fail(key: string) {
   await db()`delete from auth_failures where at < now() - interval '1 day'`;
   await db()`insert into auth_failures (key) values (${failKey(key)})`;
 }
+/**
+ * The same brake for forms open to everyone (server/notices.ts): counts one use for this address and says whether
+ * `max` in a quarter hour are already used up. Kept like the others, under a hash.
+ */
+export async function throttled(req: IncomingMessage, kind: string, max = MAX_FAILS) {
+  const key = kind + ":" + clientIp(req);
+  if (await blocked(key, max)) return true;
+  await fail(key);
+  return false;
+}
 const clearFailures = (key: string) => db()`delete from auth_failures where key = ${failKey(key)}`;
 /**
  * Client address: behind Vercel's proxy from the header Vercel sets (not spoofable there); behind one's own reverse
@@ -188,13 +198,14 @@ const validEmail = (e: string) => e.length <= EMAIL_MAX && EMAIL.test(e);
 const mailLang = (v: unknown): "de" | "en" => (v === "en" ? "en" : "de");
 
 /**
- * Links in mails point at MIP_PUBLIC_URL (https://carbay.app), never at the Host header of the request: a forged Host
+ * Links in mails and the way back from Stripe point at MIP_PUBLIC_URL (https://www.cartag.info, with www: cartag.info
+ * redirects there and the session cookie belongs to that host), never at the Host header of the request: a forged Host
  * would otherwise send a password-reset link to someone else's site. Locally the dev server's own address.
  */
 export function publicUrl(req: IncomingMessage) {
   const set = process.env.MIP_PUBLIC_URL?.replace(/\/+$/, "");
   if (set) return set;
-  if (process.env.VERCEL || process.env.NODE_ENV === "production") return "https://carbay.app";
+  if (process.env.VERCEL || process.env.NODE_ENV === "production") return "https://www.cartag.info";
   return `http://${req.headers.host ?? "localhost:5173"}`;
 }
 
@@ -631,6 +642,8 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   const topics = await sql`select id, variant_id, title, created_at, hidden_at from forum_topics where user_id = ${user.id} order by created_at`;
   const posts = await sql`select id, topic_id, body, created_at, edited_at, hidden_at from forum_posts where user_id = ${user.id} order by created_at`;
   const sessions = await sql`select expires_at from sessions where user_id = ${user.id}`;
+  // withdrawals and cancellations declared for this account (server/notices.ts); no table yet: none
+  const notices = await sql`select kind, contract, details, outcome, received_at from contract_notices where user_id = ${user.id} order by received_at`.catch(() => []);
   // without the table (migration 014 not applied yet) nobody has paid
   const [{ has }] = await sql<{ has: boolean }[]>`select to_regclass('premium_payments') is not null as has`;
   const payments = has ? await sql`select id, paid_at, months, amount, currency, refunded_at from premium_payments where user_id = ${user.id} order by paid_at` : [];
@@ -638,7 +651,7 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Content-Disposition", `attachment; filename="cartag-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
   res.setHeader("Cache-Control", "no-store");
-  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, payments, forum: { topics, posts, reports }, sessions }, null, 2));
+  res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, payments, notices, forum: { topics, posts, reports }, sessions }, null, 2));
 }
 
 /**
@@ -831,6 +844,7 @@ const LOGIN_PAGE = `<!doctype html>
   .lang button { background:none; border:0; font:inherit; letter-spacing:.08em; color:var(--faint); cursor:pointer; padding:2px 4px; }
   .lang button[aria-pressed="true"] { color:var(--ink); font-weight:600; }
   .legal a { color:var(--faint); text-decoration:none; margin-left:14px; } .legal a:hover { color:var(--ink); }
+  .foot.foot2 { justify-content:flex-end; border-top:0; padding-top:0; }
   /* Wide but not tall windows (a laptop, a window dragged flat): the card tightens so that all of it, down to the
      button and the links below it, is on the screen without scrolling. First with less air between the fields; in a
      flatter window "create account" also sets its four fields in two columns on a wider card. */
@@ -932,7 +946,10 @@ const LOGIN_PAGE = `<!doctype html>
     </div>
     <div class="foot">
       <span class="lang"><button type="button" data-lang="de">DE</button> | <button type="button" data-lang="en">EN</button></span>
-      <span class="legal"><a href="/impressum">Impressum</a><a href="/datenschutz" data-de="Datenschutz" data-en="Privacy"></a></span>
+      <span class="legal"><a href="/impressum">Impressum</a><a href="/datenschutz" data-de="Datenschutz" data-en="Privacy"></a><a href="/agb" data-de="AGB" data-en="Terms"></a></span>
+    </div>
+    <div class="foot foot2">
+      <span class="legal"><a href="/widerruf" data-de="Vertrag widerrufen" data-en="Withdraw from contract"></a><a href="/kuendigen" data-de="Verträge hier kündigen" data-en="Cancel contracts here"></a></span>
     </div>
   </section>
   <p class="credit" data-de="Foto: Porsche AG" data-en="Photo: Porsche AG"></p>

@@ -8,6 +8,10 @@ import { isEn, t } from "../i18n";
 import { Card, Pill } from "../components/ui";
 import { COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, useMe, type ReviewCar } from "../lib/userCars";
 
+/** A reviewer hiding somebody's post says why: the author is told by email, with this reason (server/forum.ts). Null: cancelled. */
+const askReason = () => window.prompt(t("Grund der Entscheidung. Er geht per E-Mail an den Verfasser:", "Reason for the decision. It is emailed to the author:"), "");
+const withReason = (reason: string) => ({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reason }) });
+
 /** Amounts as typed: "350.000" / "350000,50" in German, "350,000" / "350000.50" in English. */
 const parseNum = (s: string) => Number(isEn() ? s.replace(/[,\s]/g, "") : s.replace(/\./g, "").replace(/\s/g, "").replace(",", "."));
 
@@ -105,7 +109,9 @@ function ReportedPosts() {
             <button
               className="text-[12.5px] text-faint hover:text-down"
               onClick={async () => {
-                await api(`/api/forum/beitrag/${p.id}/ausblenden`, { method: "POST" }).catch(() => {});
+                const reason = askReason();
+                if (reason === null) return;
+                await api(`/api/forum/beitrag/${p.id}/ausblenden`, withReason(reason)).catch(() => {});
                 load();
               }}
             >

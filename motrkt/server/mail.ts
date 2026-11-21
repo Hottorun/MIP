@@ -49,6 +49,20 @@ export function accountMail(o: { to: string; subject: string; hello: string; bod
   return { to: o.to, subject: o.subject, text, html };
 }
 
+/**
+ * A mail that is all text: the confirmation of an order with the terms attached, of a withdrawal or a cancellation,
+ * a notice from the forum's reviewers. Paragraphs are separated by an empty line; the HTML keeps the line breaks.
+ */
+export function textMail(o: { to: string; subject: string; text: string }): Mail {
+  const html = `<!doctype html><html><body style="margin:0;background:#f6f4ef;font-family:Helvetica,Arial,sans-serif;color:#1f1d1a">
+<div style="max-width:620px;margin:0 auto;padding:32px 24px">
+<div style="font-family:Georgia,serif;font-style:italic;font-size:26px;color:#16363c;margin-bottom:24px">Cartag</div>
+<div style="background:#fcfbf8;border-top:2px solid #c9a35e;padding:28px 26px">
+${o.text.split(/\n{2,}/).map((p) => `<p style="margin:0 0 14px;font-size:14.5px;line-height:1.55;white-space:pre-wrap">${esc(p)}</p>`).join("\n")}
+</div></div></body></html>`;
+  return { to: o.to, subject: o.subject, text: o.text, html };
+}
+
 /** A mail with a one-time code instead of a button (the sign-up): greeting, one paragraph, the code large, a closing line. */
 export function codeMail(o: { to: string; subject: string; hello: string; body: string; code: string; after: string }): Mail {
   const text = `${o.hello}\n\n${o.body}\n\n${o.code}\n\n${o.after}\n\nCartag`;

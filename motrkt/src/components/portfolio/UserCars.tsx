@@ -10,7 +10,8 @@ import { tr } from "../../i18n/terms";
 import { CarImage } from "../CarImage";
 import { VariantPicker } from "../VariantPicker";
 import { Pill, Section, useConfirm } from "../ui";
-import { offerRate, usePlan } from "../../lib/plan";
+import { offerCancel, offerRate, useOfferChoice, usePlan } from "../../lib/plan";
+import { PlanPicker } from "../premium/PlanPicker";
 import {
   ACCEPT, COUNTERPARTY, DOCUMENT_HOURS, KIND_LABEL, MAX_BYTES, STATUS_LABEL, STATUS_TONE, VALUE_BASIS_LABEL, api, uploadContract,
   type Kind, type UserCar,
@@ -108,10 +109,11 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
       t("dann ist Ihr Dokument gelöscht", "then your document is deleted"),
       t("Mit der Entscheidung der Prüfung, spätestens 24 Stunden nach dem Hochladen. Automatisch.", "With the review decision, 24 hours after the upload at the latest. Automatically."),
     ],
-    // deliberately plain text like its two neighbours, not a seal or badge: a seal would suggest a certification (DATENSCHUTZ.md section 1)
+    // a fact like its two neighbours, not a claim of compliance or a seal: "DSGVO-konform" would be advertising that
+    // has to hold in every respect (DATENSCHUTZ.md section 1), the encryption simply is what the server does
     [
-      t("DSGVO-konform", "GDPR compliant"),
-      t("so verarbeiten wir Ihr Dokument", "how we process your document"),
+      "AES-256",
+      t("so ist Ihr Dokument verschlüsselt", "how your document is encrypted"),
       t("Nur mit Ihrer Einwilligung, nur für die Prüfung und verschlüsselt gespeichert.", "Only with your consent, only for the review, and stored encrypted."),
     ],
     ["Frankfurt, DE", t("Serverstandort in der EU", "servers in the EU"), t("Anwendung und Datenbank laufen in Frankfurt am Main.", "Application and database run in Frankfurt am Main.")],
@@ -173,10 +175,12 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
 }
 
 /** One of the ways to premium, as a tile: what it is, what it takes, and the way in. */
-function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, gives, action, error }: {
+function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, gives, choice, action, error }: {
   icon: typeof FileSignature; color: string; eyebrow: string; title: string; text: string; points: string[];
   /** months of premium this way gives; `gives` says it in other words (a subscription has no fixed length) */
-  months: number; gives?: string; action: ReactNode; error?: string;
+  months: number; gives?: string;
+  /** a choice to make before the action (the plan, where two are on sale) */
+  choice?: ReactNode; action: ReactNode; error?: string;
 }) {
   return (
     <article className="stat-tile flex flex-col" style={{ ["--tile-color" as string]: color }}>
@@ -198,7 +202,8 @@ function WayTile({ icon: Icon, color, eyebrow, title, text, points, months, give
           </li>
         ))}
       </ul>
-      <div className="relative z-[1] mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
+      {choice && <div className="relative z-[1] mt-5">{choice}</div>}
+      <div className={cn("relative z-[1] mt-auto flex flex-wrap items-center justify-between gap-3", choice ? "pt-4" : "pt-6")}>
         {action}
         <span className="inline-flex items-center gap-1.5 text-[13.5px] text-ink">
           <Crown className="size-4 text-gold" strokeWidth={1.6} aria-hidden />
@@ -234,9 +239,13 @@ function ContractTile({ months, onStart }: { months: number; onStart: () => void
   );
 }
 
-/** The paid way (lib/plan.tsx `offer`, server/payments.ts): the button leads to Stripe's payment page and back here. */
+/**
+ * The paid way (lib/plan.tsx `offers`, server/payments.ts): the button leads to Stripe's payment page and back here.
+ * Where a subscription is sold by month and by year, the tile names both prices and the user picks one.
+ */
 function BuyTile() {
-  const { offer, buy } = usePlan();
+  const { offers, buy } = usePlan();
+  const [offer, choose] = useOfferChoice();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   if (!offer) return null;
@@ -251,16 +260,17 @@ function BuyTile() {
       title={sub ? t("Premium abonnieren", "Subscribe to premium") : t("Premium kaufen", "Buy premium")}
       text={
         sub
-          ? t(`Für ${offerRate(offer)} ist Premium sofort freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `For ${offerRate(offer)} premium is unlocked at once. No review, no waiting.`)
+          ? t(`Für ${offers.map(offerRate).join(" oder ")} ist Premium sofort freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `For ${offers.map(offerRate).join(" or ")} premium is unlocked at once. No review, no waiting.`)
           : t(`Sie zahlen einmal ${offerRate(offer)} und Premium ist sofort für ${offer.months} Monate freigeschaltet. Ohne Prüfung, ohne Wartezeit.`, `You pay ${offerRate(offer)} once and premium is unlocked at once for ${offer.months} months. No review, no waiting.`)
       }
       points={[
         ...(sub
-          ? [t("Verlängert sich von selbst", "Renews by itself"), t("Jederzeit im Konto kündbar, zum Ende des bezahlten Zeitraums", "Cancel in your account at any time, to the end of the period you paid for")]
+          ? [t("Verlängert sich von selbst", "Renews by itself"), offerCancel(offer)]
           : [t("Einmalige Zahlung, kein Abo", "One payment, no subscription"), t("Verlängert sich nicht von selbst", "Does not renew by itself")]),
         t("Sichere Zahlung über Stripe; Karten- und Kontodaten sehen wir nicht", "Secure payment through Stripe; we never see card or bank details"),
       ]}
       error={error}
+      choice={offers.length > 1 ? <PlanPicker offers={offers} chosen={offer} onChoose={choose} /> : undefined}
       action={
         <button
           className="btn btn-gold"
@@ -268,7 +278,7 @@ function BuyTile() {
           onClick={async () => {
             setBusy(true);
             setError("");
-            const failed = await buy(); // on success the browser is on its way to the payment page
+            const failed = await buy(offer); // on success the browser is on its way to the payment page
             if (failed) {
               setError(failed);
               setBusy(false);

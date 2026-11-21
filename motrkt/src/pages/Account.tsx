@@ -5,7 +5,7 @@ import { api, useMeReload, type Me } from "../lib/userCars";
 import { useStore } from "../state/store";
 import { Card, useConfirm } from "../components/ui";
 import { cn, date } from "../lib/format";
-import { getLang, t } from "../i18n";
+import { getLang, legalHref, t } from "../i18n";
 import { offerPrice, signInHref, usePlan } from "../lib/plan";
 import { Crown } from "lucide-react";
 
@@ -112,6 +112,12 @@ export default function Account() {
             {manageError}
           </p>
         )}
+        {/* the withdrawal and cancellation buttons (§ 356a, § 312k BGB), also where a customer looks for them first */}
+        <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-muted">
+          <a href={legalHref("/kuendigen")} className="link">{t("Verträge hier kündigen", "Cancel contracts here")}</a>
+          <a href={legalHref("/widerruf")} className="link">{t("Vertrag widerrufen", "Withdraw from contract")}</a>
+          <a href={legalHref("/agb")} className="link">{t("AGB", "Terms")}</a>
+        </p>
         {payments.length > 0 && (
           <div className="mt-4 border-t border-line pt-4">
             <div className="eyebrow">{t("Zahlungen", "Payments")}</div>

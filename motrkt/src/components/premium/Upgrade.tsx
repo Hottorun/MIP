@@ -1,18 +1,21 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Check, Clock, Crown, FileUp, Lock, ShieldCheck, UserPlus, X } from "lucide-react";
-import { offerEvery, offerPrice, offerRate, signInHref, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
+import { offerCancel, offerEvery, offerPrice, offerRate, signInHref, useOfferChoice, usePlan, type AccountReason, type LockReason, type UnlockStep } from "../../lib/plan";
 import { DOCUMENT_HOURS } from "../../lib/userCars";
 import { getAllSales } from "../../data/generate";
 import { variants } from "../../data/db";
 import { cn, num } from "../../lib/format";
-import { t } from "../../i18n";
+import { isEn, legalHref, t } from "../../i18n";
+import { PRICE_NOTE } from "../../terms";
 import { Modal } from "../ui";
+import { PlanPicker } from "./PlanPicker";
 
 /**
  * The way from lite to premium, in two parts: the floating button that is on every page of a lite user, and the
  * dialog it opens (so does every locked block). The dialog says what premium adds and shows the two ways to it:
- * buying it (where payment is set up, lib/plan.tsx `offer`; the button leads to Stripe's payment page) and the purchase
+ * buying it (where payment is set up, lib/plan.tsx `offers`, with the choice between them where a subscription is sold
+ * by month and by year; the button leads to Stripe's payment page) and the purchase
  * contract, free, with where the user stands and the way to the form on the portfolio page
  * (components/portfolio/UserCars.tsx).
  */
@@ -176,14 +179,15 @@ function AccountDialog() {
 }
 
 function PremiumDialog() {
-  const { upgrade, closeUpgrade, months, step, preview, setPreview, offer, buy } = usePlan();
+  const { upgrade, closeUpgrade, months, step, preview, setPreview, offers, buy } = usePlan();
+  const [offer, choose] = useOfferChoice(); // the plan the price, the texts and the button are about
   const navigate = useNavigate();
   const [buying, setBuying] = useState(false);
   const [buyError, setBuyError] = useState("");
   const purchase = async () => {
     setBuying(true);
     setBuyError("");
-    const failed = await buy(); // on success the browser is on its way to the payment page: the button stays busy
+    const failed = await buy(offer ?? undefined); // on success the browser is on its way to the payment page: the button stays busy
     if (failed) {
       setBuyError(failed);
       setBuying(false);
@@ -269,10 +273,23 @@ function PremiumDialog() {
                     <span className="text-[13.5px] text-muted">{offer.recurring ? offerEvery(offer) : t(`für ${offer.months} Monate`, `for ${offer.months} months`)}</span>
                   </div>
                 </div>
+                <PlanPicker offers={offers} chosen={offer} onChoose={choose} className="mt-3" />
                 <p className="mt-2 text-[13.5px] leading-relaxed text-muted">
                   {offer.recurring
-                    ? t("Sofort freigeschaltet. Verlängert sich von selbst und ist jederzeit im Konto kündbar, zum Ende des bezahlten Zeitraums.", "Unlocked at once. It renews by itself and can be cancelled in your account at any time, to the end of the period you paid for.")
+                    ? t(`Sofort freigeschaltet. Verlängert sich von selbst. ${offerCancel(offer)}.`, `Unlocked at once. It renews by itself. ${offerCancel(offer)}.`)
                     : t("Sofort freigeschaltet. Einmalige Zahlung, kein Abo: Es verlängert sich nicht von selbst.", "Unlocked at once. One payment, no subscription: it does not renew by itself.")}
+                </p>
+                {/* what applies to the order, before the button that leads to it: price note, terms, right of withdrawal */}
+                <p className="mt-2 text-[12.5px] leading-relaxed text-muted">
+                  {PRICE_NOTE[isEn() ? 1 : 0].replace(/^./, (c) => c.toUpperCase())}. {t("Es gelten unsere ", "Our ")}
+                  <a href={legalHref("/agb")} target="_blank" rel="noopener" className="link">
+                    {t("AGB", "terms")}
+                  </a>
+                  {t(". Sie können den Vertrag binnen 14 Tagen widerrufen: ", " apply. You may withdraw from the contract within 14 days: ")}
+                  <a href={legalHref("/widerruf")} target="_blank" rel="noopener" className="link">
+                    {t("Widerrufsbelehrung", "withdrawal notice")}
+                  </a>
+                  .
                 </p>
                 <button className="premium-cta mt-4" onClick={purchase} disabled={buying}>
                   {buying ? (

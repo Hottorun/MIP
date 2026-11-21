@@ -4,6 +4,7 @@ import { extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { handleApi } from "./api.ts";
 import { authGate, enableDemoAccount, mayRead } from "./auth.ts";
+import { handleNoticePages } from "./notices.ts";
 
 /**
  * The production request handler: sign-in gate, APIs and the built app from dist/. Used by the local server
@@ -62,6 +63,7 @@ function securityHeaders(req: IncomingMessage, res: ServerResponse) {
 export async function handleRequest(req: IncomingMessage, res: ServerResponse) {
   securityHeaders(req, res);
   try {
+    if (await handleNoticePages(req, res)) return; // terms, withdrawal, cancellation: for everyone, signed in or not
     if (await authGate(req, res)) return; // sign-in page, auth API, legal pages for guests
   } catch (err) {
     console.error(err);

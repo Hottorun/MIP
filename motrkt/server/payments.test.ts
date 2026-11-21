@@ -1,6 +1,6 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { paidInvoice, paidSession, priceOffer, returnUrl, verifySignature, type CheckoutSession, type Invoice } from "./payments.ts";
+import { monthLater, paidInvoice, paidSession, plans, priceOffer, returnUrl, verifySignature, type CheckoutSession, type Invoice, type Offer } from "./payments.ts";
 
 describe("priceOffer (what the Stripe price sells)", () => {
   it("takes a one-time price, twelve months unless its metadata says otherwise", () => {
@@ -18,6 +18,38 @@ describe("priceOffer (what the Stripe price sells)", () => {
     expect(priceOffer({ id: "price_1", active: true, type: "recurring", unit_amount: 300, currency: "eur", recurring: { interval: "month", usage_type: "metered" } })).toBeNull();
     expect(priceOffer({ id: "price_1", active: false, type: "one_time", unit_amount: 4900, currency: "eur" })).toBeNull();
     expect(priceOffer({ id: "price_1", active: true, type: "one_time", unit_amount: null, currency: "eur" })).toBeNull();
+  });
+});
+
+describe("plans (what is on sale: one price, or a subscription by month and by year)", () => {
+  const monthly: Offer = { amount: 9.9, currency: "EUR", months: 1, recurring: true };
+  const yearly: Offer = { amount: 99, currency: "EUR", months: 12, recurring: true };
+  const once: Offer = { amount: 49, currency: "EUR", months: 12, recurring: false };
+  it("offers the yearly subscription next to a shorter one, the shorter first", () => {
+    expect(plans(monthly, yearly)).toEqual([monthly, yearly]);
+    expect(plans({ ...monthly, months: 3 }, yearly)).toHaveLength(2);
+  });
+  it("stays with the one price without a yearly one, and sells the yearly one alone", () => {
+    expect(plans(monthly, null)).toEqual([monthly]);
+    expect(plans(once, null)).toEqual([once]);
+    expect(plans(null, yearly)).toEqual([yearly]);
+    expect(plans(null, null)).toEqual([]);
+  });
+  it("leaves the yearly price out where it is not a second billing period of the same subscription", () => {
+    expect(plans(once, yearly)).toEqual([once]); // a one-time purchase and a subscription are not one choice
+    expect(plans(yearly, yearly)).toEqual([yearly]);
+    expect(plans(monthly, { ...yearly, currency: "CHF" })).toEqual([monthly]);
+    expect(plans(monthly, { ...yearly, months: 6 })).toEqual([monthly]); // not charged once a year
+    expect(plans(monthly, once)).toEqual([monthly]);
+    expect(plans(null, once)).toEqual([]);
+  });
+});
+
+describe("monthLater (one month's notice)", () => {
+  it("keeps the day of the month, or takes the month's last", () => {
+    expect(monthLater(new Date("2027-03-15T10:00:00Z")).toISOString()).toBe("2027-04-15T10:00:00.000Z");
+    expect(monthLater(new Date("2027-01-31T10:00:00Z")).toISOString()).toBe("2027-02-28T10:00:00.000Z");
+    expect(monthLater(new Date("2027-12-31T10:00:00Z")).toISOString()).toBe("2028-01-31T10:00:00.000Z");
   });
 });
 
@@ -67,6 +99,15 @@ describe("paidInvoice (a paid invoice of a subscription)", () => {
   it("reads the subscription where newer API versions keep it", () => {
     expect(paidInvoice({ ...invoice, subscription: undefined, parent: { subscription_details: { subscription: "sub_7" } } }, "user-1", 1)?.subscription).toBe("sub_7");
   });
+  it("takes the billing period from the invoice where it names one (a plan changed on the customer portal)", () => {
+    const end = 1_800_000_000;
+    const year = { period: { start: end - 365 * 86_400, end } };
+    expect(paidInvoice({ ...invoice, lines: { data: [year] } }, "user-1", 1)?.months).toBe(12);
+    expect(paidInvoice({ ...invoice, lines: { data: [{ period: { start: end - 31 * 86_400, end } }] } }, "user-1", 12)?.months).toBe(1);
+    // a credit for the unused rest of the old plan next to the new year: the line that reaches furthest counts
+    expect(paidInvoice({ ...invoice, lines: { data: [{ period: { start: end - 365 * 86_400, end: end - 350 * 86_400 } }, year] } }, "user-1", 1)).toMatchObject({ months: 12, coversUntil: new Date(end * 1000) });
+    expect(paidInvoice(invoice, "user-1", 1)?.months).toBe(1); // no start of the period: as the subscription was started
+  });
   it("grants nothing for an unpaid invoice, one without a subscription or without a period", () => {
     expect(paidInvoice({ ...invoice, status: "open" }, "user-1", 1)).toBeNull();
     expect(paidInvoice({ ...invoice, subscription: null }, "user-1", 1)).toBeNull();
@@ -77,9 +118,9 @@ describe("paidInvoice (a paid invoice of a subscription)", () => {
 
 describe("returnUrl (the way back from Checkout)", () => {
   it("keeps the page, its query and its anchor, and leaves Stripe's placeholder unencoded", () => {
-    expect(returnUrl("https://carbay.app", "/")).toBe("https://carbay.app/?premium=bezahlt&cs={CHECKOUT_SESSION_ID}");
-    expect(returnUrl("https://carbay.app", "/markt/porsche-911-964-carrera-rs?thema=7#forum")).toBe(
-      "https://carbay.app/markt/porsche-911-964-carrera-rs?thema=7&premium=bezahlt&cs={CHECKOUT_SESSION_ID}#forum",
+    expect(returnUrl("https://www.cartag.info", "/")).toBe("https://www.cartag.info/?premium=bezahlt&cs={CHECKOUT_SESSION_ID}");
+    expect(returnUrl("https://www.cartag.info", "/markt/porsche-911-964-carrera-rs?thema=7#forum")).toBe(
+      "https://www.cartag.info/markt/porsche-911-964-carrera-rs?thema=7&premium=bezahlt&cs={CHECKOUT_SESSION_ID}#forum",
     );
   });
 });

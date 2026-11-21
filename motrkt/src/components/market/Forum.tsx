@@ -10,6 +10,10 @@ import { api } from "../../lib/userCars";
 import { signInHref, useNeedsAccount, usePlan } from "../../lib/plan";
 import { FORUM_CATEGORIES, FORUM_SORTS, type ForumCategory, type ForumKind, type ForumSort, type ForumStatus } from "../../lib/forumShared";
 
+/** A reviewer hiding somebody's post says why: the author is told by email, with this reason (server/forum.ts). Null: cancelled. */
+const askReason = () => window.prompt(t("Grund der Entscheidung. Er geht per E-Mail an den Verfasser:", "Reason for the decision. It is emailed to the author:"), "");
+const withReason = (reason: string) => ({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reason }) });
+
 /**
  * Forum of one variant at the bottom of its page (server/forum.ts). Three views: the overview (areas on the left,
  * search, status tabs and the topics), one topic as a conversation, and the form for a new topic. Topics are
@@ -743,9 +747,11 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
     load();
   }, [id]);
 
-  async function hide(postId: string) {
+  async function hide(postId: string, mine: boolean) {
     if (!(await confirm(t("Diesen Beitrag entfernen?", "Remove this post?"), { confirmLabel: t("Entfernen", "Remove") }))) return;
-    await api(`/api/forum/beitrag/${postId}/ausblenden`, { method: "POST" }).catch(() => {});
+    const reason = mine ? "" : askReason();
+    if (reason === null) return;
+    await api(`/api/forum/beitrag/${postId}/ausblenden`, withReason(reason)).catch(() => {});
     load();
   }
   async function saveEdit() {
@@ -848,7 +854,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                 </button>
               )}
               {p.canHide && (
-                <button className="hover:text-down" onClick={() => hide(p.id)}>
+                <button className="hover:text-down" onClick={() => hide(p.id, Boolean(p.mine))}>
                   {p.mine ? t("Löschen", "Delete") : t("Ausblenden", "Hide")}
                 </button>
               )}
@@ -971,7 +977,9 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                       className="hover:text-down"
                       onClick={async () => {
                         if (!(await confirm(t("Ganzes Thema ausblenden?", "Hide the whole topic?"), { confirmLabel: t("Ausblenden", "Hide") }))) return;
-                        await api(`/api/forum/thema/${id}/ausblenden`, { method: "POST" }).catch(() => {});
+                        const reason = askReason();
+                        if (reason === null) return;
+                        await api(`/api/forum/thema/${id}/ausblenden`, withReason(reason)).catch(() => {});
                         onBack();
                       }}
                     >

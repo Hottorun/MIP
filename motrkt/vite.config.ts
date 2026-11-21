@@ -9,6 +9,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { handleApi } from "./server/api.ts";
 import { authGate, enableDemoAccount, mayRead } from "./server/auth.ts";
+import { handleNoticePages } from "./server/notices.ts";
 
 /**
  * The market data files (src/data/real) are not bundled into the script: the app fetches them at start
@@ -126,7 +127,9 @@ export default defineConfig({
         if ((process.env.MIP_DEMO_ACCOUNT ?? process.env.MOTRKT_DEMO_ACCOUNT) !== "0") enableDemoAccount({ admin: true });
         // the same gate as in production: sign-in page and auth API; guests go on to the app with the lite data
         server.middlewares.use((req, res, next) => {
-          authGate(req, res)
+          // first the pages for everyone (terms, withdrawal, cancellation), as in server/app.ts
+          handleNoticePages(req, res)
+            .then((done) => done || authGate(req, res))
             .then((handled) => {
               if (handled) return;
               if (!req.url?.startsWith("/api/")) return next();

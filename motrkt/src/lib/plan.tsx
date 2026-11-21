@@ -48,6 +48,22 @@ export const offerEvery = (o: Offer) =>
 /** "9,90 € im Monat" for a subscription, "49 €" for a one-time payment. */
 export const offerRate = (o: Offer) => (o.recurring ? `${offerPrice(o)} ${offerEvery(o)}` : offerPrice(o));
 
+/** "Monatlich", "Jährlich", "Alle 3 Monate": the name of a plan where two are on offer. */
+export const offerPlan = (o: Offer) => (o.months === 1 ? t("Monatlich", "Monthly") : o.months === 12 ? t("Jährlich", "Yearly") : t(`Alle ${o.months} Monate`, `Every ${o.months} months`));
+
+/** By how many percent an offer is cheaper per month than `base` (the shortest plan), rounded down; 0 when it is not. */
+export const offerSaving = (o: Offer, base: Offer) => Math.max(0, Math.floor((1 - o.amount / o.months / (base.amount / base.months)) * 100 + 1e-9));
+
+/**
+ * How a subscription can be cancelled, as the terms have it (src/terms.ts, section 6): to the end of the paid period,
+ * and a period longer than a month, once it has renewed, also with one month's notice.
+ */
+export const offerCancel = (o: Offer) => {
+  if (o.months === 1) return t("Jederzeit im Konto kündbar, zum Ende des bezahlten Zeitraums", "Cancel in your account at any time, to the end of the period you paid for");
+  const first = o.months === 12 ? t("dem ersten Jahr", "the first year") : t("dem ersten Abrechnungszeitraum", "the first billing period");
+  return t(`Jederzeit kündbar zum Ende des bezahlten Zeitraums, nach ${first} auch mit einer Frist von einem Monat`, `Cancel at any time to the end of the period you paid for, after ${first} also with one month's notice`);
+};
+
 /** Where a lite user stands on the way to premium, from their submissions. */
 export type UnlockStep = "start" | "upload" | "review";
 
@@ -63,10 +79,12 @@ type Plan = {
   premiumUntil: string | null;
   /** months of premium one approved purchase contract earns */
   months: number;
-  /** premium for money, where payment is set up */
+  /** premium for money, where payment is set up: the first of `offers`, the one the pages name a price from */
   offer: Offer | null;
-  /** Opens the payment page for this account (the browser leaves the app); resolves to what to tell the user if that failed. */
-  buy: () => Promise<string | null>;
+  /** all plans on sale, the shortest billing period first: one, or a subscription charged by month and by year */
+  offers: Offer[];
+  /** Opens the payment page for this account and plan (the browser leaves the app); resolves to what to tell the user if that failed. */
+  buy: (plan?: Offer) => Promise<string | null>;
   /** the account's subscription, if it has one that is not over */
   subscription: Subscription | null;
   /** Opens Stripe's page for the subscription (cancel, payment method, invoices); resolves like `buy`. */
@@ -114,7 +132,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   const [real, setReal] = useState<boolean | null>(cached === "premium" ? true : cached === "lite" ? false : null);
   const [cars, setCars] = useState<UserCar[]>([]);
   const [months, setMonths] = useState(12);
-  const [offer, setOffer] = useState<Offer | null>(null);
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const navigate = useNavigate();
   const [preview, setPreviewState] = useState(() => read(() => sessionStorage, PREVIEW_KEY) === "1");
@@ -202,8 +220,8 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     void confirmPayment().then(load);
     fetch("/api/premium/angebot", { credentials: "same-origin" })
       .then((r) => (r.ok ? r.json() : null))
-      .then((j: { offer?: Offer | null; subscription?: Subscription | null } | null) => {
-        setOffer(j?.offer ?? null);
+      .then((j: { offer?: Offer | null; offers?: Offer[]; subscription?: Subscription | null } | null) => {
+        setOffers(j?.offers ?? (j?.offer ? [j.offer] : []));
         setSubscription(j?.subscription ?? null);
       })
       .catch(() => {});
@@ -222,14 +240,14 @@ export function PlanProvider({ children }: { children: ReactNode }) {
   const openUpgrade = useCallback((reason: LockReason = "general") => setUpgrade({ open: true, reason }), []);
   const closeUpgrade = useCallback(() => setUpgrade((u) => ({ ...u, open: false })), []);
   const refresh = useCallback(() => void load(), [load]);
-  const buy = useCallback(async () => {
+  const buy = useCallback(async (plan?: Offer) => {
     const failed = t("Die Zahlungsseite ließ sich nicht öffnen. Bitte später noch einmal versuchen.", "The payment page could not be opened. Please try again later.");
     try {
       const r = await fetch("/api/premium/kaufen", {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ back: window.location.pathname + window.location.search + window.location.hash, lang: isEn() ? "en" : "de" }),
+        body: JSON.stringify({ back: window.location.pathname + window.location.search + window.location.hash, lang: isEn() ? "en" : "de", months: plan?.months }),
       });
       const j = (await r.json().catch(() => ({}))) as { url?: string; error?: string };
       if (r.ok && j.url) {
@@ -275,7 +293,8 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       account,
       premiumUntil: account?.premiumUntil ?? null,
       months,
-      offer,
+      offer: offers[0] ?? null,
+      offers,
       buy,
       subscription,
       manage,
@@ -287,7 +306,7 @@ export function PlanProvider({ children }: { children: ReactNode }) {
       closeUpgrade,
       refresh,
     };
-  }, [real, guest, preview, account, cars, months, offer, buy, subscription, manage, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
+  }, [real, guest, preview, account, cars, months, offers, buy, subscription, manage, upgrade, setPreview, openUpgrade, closeUpgrade, refresh]);
 
   return <PlanContext.Provider value={value}>{children}</PlanContext.Provider>;
 }
@@ -296,6 +315,17 @@ export function usePlan(): Plan {
   const ctx = useContext(PlanContext);
   if (!ctx) throw new Error("usePlan must be used inside <PlanProvider>");
   return ctx;
+}
+
+/**
+ * The plan the user picks where two are on sale (components/premium/PlanPicker.tsx). Until they pick, it is the one
+ * with the longest billing period: the lowest price per month.
+ */
+export function useOfferChoice(): [Offer | null, (o: Offer) => void] {
+  const { offers } = usePlan();
+  const [months, setMonths] = useState<number | null>(null);
+  const chosen = offers.find((o) => o.months === months) ?? offers[offers.length - 1] ?? null;
+  return [chosen, useCallback((o: Offer) => setMonths(o.months), [])];
 }
 
 /**
