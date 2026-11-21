@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, REPRESENTED, operatorComplete, type LegalSection } from "../legal";
+import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, REPRESENTED, RESPONSIBLE_NOTE, operatorComplete, type LegalSection } from "../legal";
 import { isEn, t } from "../i18n";
 
 /**
@@ -85,7 +85,15 @@ export function Impressum() {
       </section>
       <section>
         <h2 className="mt-8 font-display text-xl">{t("Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", "Responsible for content pursuant to § 18 (2) MStV")}</h2>
-        <p className="mt-3">{OPERATOR.responsible || <span className="text-down">[{t("Verantwortliche Person", "Responsible person")}]</span>}</p>
+        <p className="mt-3">
+          {OPERATOR.responsible || <span className="text-down">[{t("Verantwortliche Person", "Responsible person")}]</span>}
+          {OPERATOR.responsible && RESPONSIBLE_NOTE[0] && (
+            <>
+              <br />
+              {t(...RESPONSIBLE_NOTE)}
+            </>
+          )}
+        </p>
       </section>
       <Sections sections={IMPRESSUM} />
     </Page>

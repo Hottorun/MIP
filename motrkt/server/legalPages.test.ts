@@ -46,6 +46,7 @@ describe("legal pages (server/legalPages.ts)", () => {
     for (const which of ["impressum", "datenschutz"] as const) {
       expect(legalPage(which, false)).toContain("Ferdinand Reimer und Dimitris Kern GbR<br>Vertreten durch die Gesellschafter: Ferdinand Reimer und Dimitris Kern<br>");
     }
+    expect(legalPage("impressum", false)).toContain("<p>Ferdinand Reimer und Dimitris Kern<br>Beide gemeinsam für alle Inhalte. Anschrift wie oben.</p>");
     expect(legalPage("agb", false)).toContain("vertreten durch die Gesellschafter Ferdinand Reimer und Dimitris Kern („wir“)");
     expect(legalPage("widerruf", false)).toContain("müssen Sie uns (Ferdinand Reimer und Dimitris Kern GbR, Stengelstraße 19");
   });

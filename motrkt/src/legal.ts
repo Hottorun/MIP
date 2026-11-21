@@ -13,7 +13,7 @@ export const OPERATOR = {
   country: "Deutschland",
   email: "reimerferdinand@gmail.com", // contact and privacy requests
   phone: "", // optional
-  responsible: "Ferdinand Reimer", // person responsible for content (§ 18 Abs. 2 MStV), may equal name
+  responsible: "Ferdinand Reimer und Dimitris Kern", // responsible for content (§ 18 Abs. 2 MStV), may equal name; several: see RESPONSIBLE_NOTE
   register: "", // optional: "Amtsgericht Berlin-Charlottenburg, HRB 123456"
   vatId: "", // optional: "DE123456789"
 };
@@ -22,6 +22,12 @@ export const OPERATOR = {
 export const REPRESENTED: [string, string] = OPERATOR.partners.length
   ? [`Vertreten durch die Gesellschafter: ${OPERATOR.partners.join(" und ")}`, `Represented by its partners: ${OPERATOR.partners.join(" and ")}`]
   : ["", ""];
+
+/**
+ * Under the names of those responsible for content. Where several are named, § 18 Abs. 2 Satz 2 MStV wants it said
+ * which part each one answers for (here: both for everything), and each needs an address.
+ */
+export const RESPONSIBLE_NOTE: [string, string] = OPERATOR.partners.length > 1 ? ["Beide gemeinsam für alle Inhalte. Anschrift wie oben.", "Both jointly for all content. Address as above."] : ["", ""];
 
 export const operatorComplete = () => Boolean(OPERATOR.name && OPERATOR.street && OPERATOR.city && OPERATOR.email && OPERATOR.responsible);
 
