@@ -20,6 +20,7 @@ import {
 } from "../data/market";
 import type { Sale } from "../data/types";
 import { mixHouses } from "../lib/houseMix";
+import { isLotPage } from "../lib/lotPages";
 import { cn, date, flag, num } from "../lib/format";
 import { CALENDAR_AS_OF, HOUSE_CALENDARS, calendarSales } from "../data/real/auction-calendar";
 import { locale } from "../i18n";
@@ -381,27 +382,50 @@ function IndexRange({ data }: { data: { value: number }[] }) {
 }
 
 /** Endless band of the cars sold last, with their hammer prices, under the stage; pauses on hover, scrolls by hand with
- * reduced motion. Lite (src/lib/plan.tsx): which cars sold is free, the prices are premium. */
+ * reduced motion. An entry opens the lot at the auction house in a new tab; a sale without a lot page of its own leads
+ * to the car's market page. Lite (src/lib/plan.tsx): which cars sold is free, the prices are premium, so the entry
+ * leads to the market page and not to the lot, where the price stands. */
 function SalesTicker({ sales }: { sales: Sale[] }) {
   const lite = !usePlan().premium;
   if (!sales.length) return null;
   const items = (copy: number) =>
     sales.map((s) => {
       const v = variantById.get(s.variantId)!;
+      const lot = !lite && s.url && isLotPage(s.url) ? s.url : null;
+      const tabIndex = copy > 0 ? -1 : undefined;
       return (
         <li
           key={`${copy}-${s.id}-${s.variantId}`}
           className="flex shrink-0 items-baseline gap-3 px-7"
           aria-hidden={copy > 0 || undefined}
         >
-          <Link
-            to={`/markt/${v.id}`}
-            tabIndex={copy > 0 ? -1 : undefined}
-            className="font-display text-[15px] font-semibold hover:underline hover:underline-offset-4"
-          >
-            {variantTitle(v, { brand: false })}
-          </Link>
-          {lite ? <LockedValue reason="sales" sample="000.000 €" className="text-[15px]" /> : <Money value={s.price} sale={s} className="text-[15px]" />}
+          {lot ? (
+            <a
+              href={lot}
+              target="_blank"
+              rel="noreferrer"
+              tabIndex={tabIndex}
+              title={t(`Los bei ${s.house} öffnen`, `Open the lot at ${s.house}`)}
+              className="group flex items-baseline gap-3"
+            >
+              <span className="font-display text-[15px] font-semibold group-hover:underline group-hover:underline-offset-4">
+                {variantTitle(v, { brand: false })}
+              </span>
+              <Money value={s.price} sale={s} className="text-[15px]" />
+              <ExternalLink className="size-3 shrink-0 self-center text-faint transition-colors group-hover:text-accent" aria-hidden />
+            </a>
+          ) : (
+            <>
+              <Link
+                to={`/markt/${v.id}`}
+                tabIndex={tabIndex}
+                className="font-display text-[15px] font-semibold hover:underline hover:underline-offset-4"
+              >
+                {variantTitle(v, { brand: false })}
+              </Link>
+              {lite ? <LockedValue reason="sales" sample="000.000 €" className="text-[15px]" /> : <Money value={s.price} sale={s} className="text-[15px]" />}
+            </>
+          )}
           <span className="pl-4 text-gold/60" aria-hidden>
             ◆
           </span>
