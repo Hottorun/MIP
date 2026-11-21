@@ -7,7 +7,9 @@ usage: python3 -I bonhamsfetch.py WORK [--lot-pages N]
    WORK/web/bonhams/key.json). Query: "porsche" in the lot title, department Cars (MOT-CAR), sold or bought in
    (SOLD, BI), hammer time since 2015-01-01; 250 lots per request, about 5 requests. Each lot carries the sale id, lot
    number, title with chassis number, local hammer time, sale country and currency, and the price including buyer's
-   premium ("hammerPremium", what Bonhams shows as "Sold for"). The whole list is fetched on every run.
+   premium ("hammerPremium", what Bonhams shows as "Sold for"). The whole list is fetched on every run. Lots whose
+   symbols say they are subject to VAT ("†" on hammer price and premium, "NMT" on the hammer price) get that VAT added
+   at the rate of the country of sale (vat.py); import VAT ("Ω", "*") is refunded on export and not added.
 2. Sale names: from the "auctions-search" collection, 100 sales per request, once per sale (cached in
    WORK/web/bonhams/sales.json).
 3. Mileage: from the lot's catalogue text ("catalogDesc"), fetched 50 lots per request, once per lot and only for
@@ -24,6 +26,7 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify import classify
+from vat import bonhams_vat
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 SITE = "https://cars.bonhams.com"
@@ -248,9 +251,17 @@ for x, title, chassis, date, sold, amt in cands:
         m = re.search(r'<div class="LotName">(.*?)</div>', desc, re.S)
         chassis = split_title(m.group(1))[1] if m else ""
     s = sales.get(x["auctionId"]) or {}
+    country = (x.get("country") or {}).get("code") or s.get("country") or ""
+    # lots marked as subject to VAT (scripts/market/vat.py): the buyer paid that on top of "Sold for"
+    vat, base = bonhams_vat(x.get("symbols"), country) if sold else (None, None)
+    if vat:
+        on = amt if base == "full" else (x.get("price") or {}).get("hammerPrice") or 0
+        print("VAT %.1f%% on %s on top:" % (vat * 100, "hammer price" if base == "hammer" else "full price"), x["auctionId"],
+              lot_no(x), title, amt, "->", amt + round(on * vat), flush=True)
+        amt += round(on * vat)
     out.append(dict(id=x["id"], code=x["auctionId"], lot=lot_no(x), title=title,
-                    date=date, sold=sold, amt=amt, cur=(x.get("currency") or {}).get("iso_code") or None,
-                    country=(x.get("country") or {}).get("code") or s.get("country") or "", chassis=chassis, km=km_of(desc),
+                    date=date, sold=sold, amt=amt, vat=vat, cur=(x.get("currency") or {}).get("iso_code") or None,
+                    country=country, chassis=chassis, km=km_of(desc),
                     url="https://www.bonhams.com/auction/%s/lot/%s/" % (x["auctionId"], x["lotId"]), sale=s.get("name") or ""))
 json.dump(out, open(os.path.join(DIR, "bonhams.json"), "w"), ensure_ascii=False)
 print(len(out), "Bonhams results since 2015;", new_pages, "new lot texts;", sum(1 for o in out if o["km"]), "with mileage", flush=True)

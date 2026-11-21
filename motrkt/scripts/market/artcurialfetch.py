@@ -14,6 +14,8 @@ Artcurial's site loads its data from a JSON API (https://www.artcurial.com/ace);
    so every row here is sold. The price is Artcurial's own price with premium (finalPrice); the few sold lots without
    one (missing, or equal to the hammer price) are skipped. A page the API cannot serve (HTTP 500 on one broken lot)
    is fetched again in smaller pages so that only the broken lot is lost.
+   Lots sold "HT" ("L'adjudication du lot est HT", "This lot is sold VAT excluded": VAT on top of hammer price and
+   premium) get that VAT added to finalPrice at the rate of the country of sale (vat.py).
 3. Chassis number from the lot's chassis field or the description header ("Châssis n° ..."); mileage only where the
    description states the current odometer reading ("odometer", "compteur", "kilométrage", "km d'origine", a highlight like
    "- Only 21,525km"), in km rounded to 100.
@@ -25,6 +27,7 @@ from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify import classify
+from vat import vat_rate, with_vat
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 BASE = "https://www.artcurial.com"
@@ -292,8 +295,14 @@ for first, last, ref, s, ses in todo:
             continue
         lot = "%s%s" % (x["index"], "" if (x.get("subIndex") or "a") == "a" else x["subIndex"])
         seen.add(x["uuid"])
+        # lots sold "HT" (VAT on top of hammer price and premium, scripts/market/vat.py), in any of the lot's languages
+        vat = vat_rate(" ".join(html.unescape(re.sub(r"<[^>]+>", " ", v.get("descriptionWithHtml") or ""))
+                                for v in (x.get("descriptions") or {}).values()), cc) if sold else None
+        if vat:
+            print("VAT %.1f%% on top:" % (vat * 100), ref, lot, title, int(round(amt)), "->", with_vat(int(round(amt)), vat), flush=True)
+            amt = with_vat(int(round(amt)), vat)
         out.append(dict(id=x["uuid"], code=ref, lot=lot, title=title, date=day, sold=sold,
-                        amt=int(round(amt)) if sold else None, cur=x.get("currency") or ("EUR" if sold else None),
+                        amt=int(round(amt)) if sold else None, vat=vat, cur=x.get("currency") or ("EUR" if sold else None),
                         country=cc, chassis=chassis_of(e), km=km_of(e),
                         url="%s/en/sales/%s/lots/%s-%s" % (BASE, ref, x["index"], x.get("subIndex") or "a"),
                         sale=text(s.get("name"))))

@@ -21,7 +21,10 @@ JSON endpoints of its own (Joomla, index.php?option=…&format=json); this scrip
    its unit, miles or km; used as the stated odometer reading, in km rounded to 100; empty or 0 in most records before
    2017, and without a unit it is not used), the estimate, the session and, for timed online sales, the lot's closing
    time. Fetched once per lot (cached in WORK/web/iconic/lots/<lot id>.json); --lot-pages N stops after N new lot
-   records (for a first test run). Prices and sold/unsold always come from the lot list, never from the record.
+   records (for a first test run). Prices and sold/unsold always come from the lot list, never from the record. The
+   catalogue text is not kept, only whether it says the lot is subject to VAT on the full purchase price (vat.py, rate
+   of the UK); such a price gets that VAT added. Records fetched before 21 November 2026 were not checked; a probe of
+   316 sold cars from 1995 on found none.
 4. Sale day: a timed online lot is dated by its own closing time, a live lot by the sale's first day. Live sales whose
    record has a later last day (most two-day events are listed as two sales) take the day of the lot's session from
    one lot page per session ("This lot was auctioned on Saturday 21st October, 2017 at 2.00pm …"), cached in
@@ -38,6 +41,7 @@ from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify import classify
+from vat import vat_rate, with_vat
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 BASE = "https://www.iconicauctioneers.com/"
@@ -237,6 +241,8 @@ try:
                 print("lot", x["id"], "no record:", str((r or {}).get("message") if isinstance(r, dict) else r)[:200], flush=True)
                 continue
             lot = r["lot"]
+            # the catalogue text is not kept; only what it says about VAT on the full purchase price (vat.py)
+            lot["vat_text"] = vat_rate(text(lot.get("cat_desc_html") or ""), "GB")
             for k in ("cat_desc_html", "meta_description", "images", "buyer_list", "payee_list", "contract_list"): lot.pop(k, None)
             save(lot, p); new_pages += 1
         recs[x["id"]] = json.load(open(p))
@@ -282,6 +288,10 @@ for s, x in cands:
     amt = int(round(num(x.get("sold_price"))))
     sold = amt > 0
     cur = CURRENCY.get(x.get("currencySymbol") or lot.get("currencySymbol") or "", "GBP")
+    vat = lot.get("vat_text") if sold else None
+    if vat:
+        print("VAT %.1f%% on top:" % (vat * 100), s["auction_number"], x["id"], title, amt, "->", with_vat(amt, vat), flush=True)
+        amt = with_vat(amt, vat)
     # some online sales of 2025 print no lot number (0); their catalogue reference ("REC17033-2") keeps lots apart
     lot_no = str(x.get("total_lot_number") or "").strip()
     if lot_no in ("", "0"): lot_no = "%s%s" % (lot.get("lot_number") or "", lot.get("suffix") or "")
@@ -289,7 +299,7 @@ for s, x in cands:
     low, high = int(num(lot.get("low_estimate"))), int(num(lot.get("high_estimate")))
     seen.add(x["id"])
     row = dict(id=str(x["id"]), code=s["auction_number"], lot=lot_no, title=title, date=date, sold=sold,
-               amt=amt if sold else None, cur=cur, country=country_of(s, venue), chassis=chassis_of(lot), km=km_of(lot),
+               amt=amt if sold else None, vat=vat, cur=cur, country=country_of(s, venue), chassis=chassis_of(lot), km=km_of(lot),
                url=BASE + x["lot_url"] if x.get("lot_url") else BASE + "index.php?option=com_bidding&view=commission&layout=details&id=%s" % x["id"],
                sale=text(s.get("name")))
     if not sold and low and high >= low: row["est"] = [low, high, cur]
