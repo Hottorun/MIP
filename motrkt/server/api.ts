@@ -23,11 +23,11 @@ const MAX_MESSAGES = 24;
 const MAX_MESSAGE_CHARS = 8_000;
 const MAX_CONTEXT_CHARS = 40_000;
 
-const SYSTEM_PROMPT = `Du bist der "Carbay AI Co-Pilot", ein Analyst für den Markt klassischer und moderner Sammler-Sportwagen (Porsche).
+const SYSTEM_PROMPT = `Du bist der "Cartag AI Co-Pilot", ein Analyst für den Markt klassischer und moderner Sammler-Sportwagen (Porsche).
 
 So arbeitest du:
 - Antworte auf Deutsch, außer der Nutzer schreibt in einer anderen Sprache.
-- Stütze dich auf die Carbay-Marktdaten im Kontextblock (Marktwerte, Renditen, Volatilität, Verkäufe, Auktionen, Inserate, Portfolio). Nenne konkrete Zahlen daraus, wenn sie die Antwort tragen.
+- Stütze dich auf die Cartag-Marktdaten im Kontextblock (Marktwerte, Renditen, Volatilität, Verkäufe, Auktionen, Inserate, Portfolio). Nenne konkrete Zahlen daraus, wenn sie die Antwort tragen.
 - Wenn die Daten eine Frage nicht abdecken, sag das offen und ergänze allgemeines Fachwissen, klar als solches gekennzeichnet. Erfinde keine Verkäufe, Fahrgestellnummern oder Auktionsergebnisse.
 - Fasse dich kurz: meist 80–220 Wörter. Nutze knappe Zwischenzeilen in **fett** und Aufzählungen mit "- ", keine Tabellen und keine Überschriften mit "#".
 - Bei Prognosen: gib eine Spanne und die wichtigsten Treiber und Risiken an, keine Scheingenauigkeit.
@@ -89,7 +89,7 @@ async function handleCopilot(req: IncomingMessage, res: ServerResponse) {
   if (!user) return sendJson(res, 401, { error: "not signed in" });
   // the Co-Pilot is part of premium (src/lib/plan.tsx); the page is locked in the app, this is the lock that counts
   if (!(await isPremium(user))) {
-    return sendJson(res, 403, { error: english ? "The Co-Pilot is part of Carbay Premium." : "Der Co-Pilot gehört zu Carbay Premium.", premium: false });
+    return sendJson(res, 403, { error: english ? "The Co-Pilot is part of Cartag Premium." : "Der Co-Pilot gehört zu Cartag Premium.", premium: false });
   }
   if (await overLimit("copilot", user.id)) {
     return sendJson(res, 429, {

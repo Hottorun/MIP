@@ -25,7 +25,7 @@ const rows = ok
   : [];
 const clean = (v: unknown) => String(v ?? "").replace(/[;\n\r]/g, ",");
 const lines = rows.map((r) =>
-  [r.id, r.sale_date.toISOString().slice(0, 10), "Carbay-Nutzer (Kaufvertrag geprüft)", "Verkauf", "", clean(r.title), r.build_year, Number(r.price), r.currency,
+  [r.id, r.sale_date.toISOString().slice(0, 10), "Cartag-Nutzer (Kaufvertrag geprüft)", "Verkauf", "", clean(r.title), r.build_year, Number(r.price), r.currency,
    r.km, r.counterparty === "haendler" ? "Händler" : r.counterparty === "auktion" ? "Auktion" : "Privat", r.country, r.variant_id].join(";"),
 );
 writeFileSync(out, ["id;datum;quelle;art;url;fahrzeug;baujahr;preis;waehrung;km;anbieter;land;variant_id", ...lines].join("\n") + "\n");

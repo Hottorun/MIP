@@ -37,7 +37,7 @@ export function PremiumFab() {
       </button>
     );
   const copy: Record<UnlockStep, [string, string]> = {
-    start: ["Carbay Premium", t("Jetzt freischalten", "Unlock now")],
+    start: ["Cartag Premium", t("Jetzt freischalten", "Unlock now")],
     upload: [t("Premium · Schritt 2 von 3", "Premium · step 2 of 3"), t("Dokument hochladen", "Upload the document")],
     review: [t("Premium · Schritt 3 von 3", "Premium · step 3 of 3"), t("Prüfung läuft", "Under review")],
   };
@@ -76,7 +76,7 @@ const HEADLINE: Record<LockReason, () => string> = {
   insights: () => t("Der Marktbericht, Kapitel für Kapitel.", "The market report, chapter by chapter."),
   copilot: () => t("Fragen Sie die Daten.", "Ask the data."),
   compare: () => t("Varianten Seite an Seite vergleichen.", "Compare variants side by side."),
-  account: () => t("Ihr Carbay, mit kostenlosem Konto.", "Your Carbay, with a free account."),
+  account: () => t("Ihr Cartag, mit kostenlosem Konto.", "Your Cartag, with a free account."),
   watchlist: () => t("Behalten Sie Ihre Favoriten im Blick.", "Keep an eye on your favourites."),
   alerts: () => t("Wir melden uns, wenn der Preis passt.", "We let you know when the price is right."),
   portfolio: () => t("Was Ihre Sammlung heute wert ist.", "What your collection is worth today."),
@@ -114,7 +114,7 @@ function AccountDialog() {
           <div className="relative flex-1">
             <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] text-[#e4c486] uppercase">
               {premiumReason ? <Crown className="size-4" strokeWidth={1.7} aria-hidden /> : <UserPlus className="size-4" strokeWidth={1.7} aria-hidden />}
-              {premiumReason ? "Carbay Premium" : t("Kostenloses Konto", "Free account")}
+              {premiumReason ? "Cartag Premium" : t("Kostenloses Konto", "Free account")}
             </div>
             <h2 className="mt-4 font-display text-[30px] leading-[1.12] text-on-night sm:text-[34px]">{HEADLINE[upgrade.reason]()}</h2>
             <p className="mt-3 text-[14.5px] leading-relaxed text-on-night/75">
@@ -214,14 +214,14 @@ function PremiumDialog() {
   const showSteps = !offer || step !== "start";
 
   return (
-    <Modal open={upgrade.open} onClose={closeUpgrade} title="Carbay Premium" bare>
+    <Modal open={upgrade.open} onClose={closeUpgrade} title="Cartag Premium" bare>
       <div className="grid max-h-[86vh] overflow-y-auto md:grid-cols-[1.05fr_1fr]">
         <div className="night-band relative flex flex-col overflow-hidden px-7 py-8 sm:px-9 sm:py-10">
           <span className="pointer-events-none absolute -top-24 -right-24 size-64 rounded-full bg-[radial-gradient(circle,rgba(228,196,134,0.22),transparent_65%)]" aria-hidden />
           <div className="relative flex-1">
             <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] text-[#e4c486] uppercase">
               <Crown className="size-4" strokeWidth={1.7} aria-hidden />
-              Carbay Premium
+              Cartag Premium
             </div>
             <h2 className="mt-4 font-display text-[30px] leading-[1.12] text-on-night sm:text-[34px]">{HEADLINE[upgrade.reason]()}</h2>
             <p className="mt-3 text-[14.5px] leading-relaxed text-on-night/75">
@@ -402,7 +402,7 @@ export function PremiumBanner({ reason, title, children }: { reason: LockReason;
         <div className="max-w-2xl min-w-0">
           <div className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] text-[#e4c486] uppercase">
             <Crown className="size-4" strokeWidth={1.7} aria-hidden />
-            {t("Teil von Carbay Premium", "Part of Carbay Premium")}
+            {t("Teil von Cartag Premium", "Part of Cartag Premium")}
           </div>
           <div className="mt-2 font-display text-[24px] leading-snug text-on-night sm:text-[27px]">{title}</div>
           <p className="mt-1.5 text-[14.5px] leading-relaxed text-on-night/75">{children}</p>

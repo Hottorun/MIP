@@ -43,7 +43,7 @@ export function inLang<T>(l: Lang, fn: () => T): T {
   }
 }
 
-export const appTitle = () => t("Carbay – Marktintelligenz für Sportwagen", "Carbay – Market intelligence for sports cars");
+export const appTitle = () => t("Cartag – Marktintelligenz für Sportwagen", "Cartag – Market intelligence for sports cars");
 
 // Before the first render, so the static German <title> from index.html never shows in English.
 if (typeof document !== "undefined") {

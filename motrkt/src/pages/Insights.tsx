@@ -938,7 +938,7 @@ function AuctionMarket() {
     <Section
       eyebrow={chapterLabel("auktionen")}
       title={t("Auktionsmarkt", "Auction market")}
-      sub={t("Wie viele Lose einen Käufer finden, wann versteigert wird und bei welchem Haus. Alle erfassten Lose der Varianten auf Carbay, verkauft und nicht verkauft.", "How many lots find a buyer, when sales happen and at which house. All recorded lots of the variants on Carbay, sold and unsold.")}
+      sub={t("Wie viele Lose einen Käufer finden, wann versteigert wird und bei welchem Haus. Alle erfassten Lose der Varianten auf Cartag, verkauft und nicht verkauft.", "How many lots find a buyer, when sales happen and at which house. All recorded lots of the variants on Cartag, sold and unsold.")}
     >
       <div className="grid gap-6 lg:grid-cols-2">
         <Card title={t("Verkaufsquote je Jahr", "Sell-through per year")} sub={t("Anteil der Lose mit Zuschlag", "Share of lots that sold")}>

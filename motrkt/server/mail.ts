@@ -1,7 +1,7 @@
 /**
  * Account emails (confirm the address, reset the password) through Brevo's transactional API (EU provider, data
  * processing agreement, see DATENSCHUTZ.md). Configuration: BREVO_API_KEY, MAIL_FROM (an address verified as sender
- * at Brevo), MAIL_FROM_NAME (default "Carbay"). Without a key the mail is not sent: in development it is printed to
+ * at Brevo), MAIL_FROM_NAME (default "Cartag"). Without a key the mail is not sent: in development it is printed to
  * the console so the links can be tried, in production sendMail throws.
  */
 
@@ -23,7 +23,7 @@ export async function sendMail(mail: Mail): Promise<void> {
     method: "POST",
     headers: { "api-key": key, "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({
-      sender: { name: process.env.MAIL_FROM_NAME || "Carbay", email: from },
+      sender: { name: process.env.MAIL_FROM_NAME || "Cartag", email: from },
       to: [{ email: mail.to }],
       subject: mail.subject,
       textContent: mail.text,
@@ -38,10 +38,10 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&
 
 /** A plain account mail: greeting, one paragraph, one button, a closing line. Text and HTML say the same. */
 export function accountMail(o: { to: string; subject: string; hello: string; body: string; button: string; link: string; after: string }): Mail {
-  const text = `${o.hello}\n\n${o.body}\n\n${o.link}\n\n${o.after}\n\nCarbay`;
+  const text = `${o.hello}\n\n${o.body}\n\n${o.link}\n\n${o.after}\n\nCartag`;
   const html = `<!doctype html><html><body style="margin:0;background:#f6f4ef;font-family:Helvetica,Arial,sans-serif;color:#1f1d1a">
 <div style="max-width:520px;margin:0 auto;padding:32px 24px">
-<div style="font-family:Georgia,serif;font-style:italic;font-size:26px;color:#16363c;margin-bottom:24px">Carbay</div>
+<div style="font-family:Georgia,serif;font-style:italic;font-size:26px;color:#16363c;margin-bottom:24px">Cartag</div>
 <div style="background:#fcfbf8;border-top:2px solid #c9a35e;padding:28px 26px">
 <p style="margin:0 0 14px;font-size:15px">${esc(o.hello)}</p>
 <p style="margin:0 0 22px;font-size:15px;line-height:1.5">${esc(o.body)}</p>

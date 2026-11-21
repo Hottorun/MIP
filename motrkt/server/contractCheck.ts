@@ -82,7 +82,7 @@ const SCHEMA = {
   },
 };
 
-const PROMPT = `Du prüfst für Carbay, eine Marktdaten-App für klassische Porsche, einen hochgeladenen Kaufvertrag. Ein Nutzer hat ein Auto gekauft oder verkauft und die Daten unten selbst eingetragen. Wir übernehmen den Preis nur in unsere Marktanalyse, wenn der Vertrag die Angaben belegt. Am Ende entscheidet ein Mensch; deine Prüfung bereitet das vor.
+const PROMPT = `Du prüfst für Cartag, eine Marktdaten-App für klassische Porsche, einen hochgeladenen Kaufvertrag. Ein Nutzer hat ein Auto gekauft oder verkauft und die Daten unten selbst eingetragen. Wir übernehmen den Preis nur in unsere Marktanalyse, wenn der Vertrag die Angaben belegt. Am Ende entscheidet ein Mensch; deine Prüfung bereitet das vor.
 
 So gehst du vor:
 - Lies aus dem Dokument nur ab, was dort tatsächlich steht. Was fehlt oder unleserlich ist, bleibt null. Rate nicht.

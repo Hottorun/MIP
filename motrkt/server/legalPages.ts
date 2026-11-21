@@ -38,7 +38,7 @@ export function legalPage(which: "impressum" | "datenschutz", en: boolean): stri
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
 <meta name="theme-color" content="#16363c" />
-<title>${esc(title)} – Carbay</title>
+<title>${esc(title)} – Cartag</title>
 <style>
   /* the app's colours (src/index.css), dark with the system setting */
   :root { --bg:#f6f4ef; --panel:#fcfbf8; --line:#e0dbd2; --ink:#1f1d1a; --muted:#5e5952; --accent:#16363c; --down:#a33a2b; }
@@ -61,7 +61,7 @@ export function legalPage(which: "impressum" | "datenschutz", en: boolean): stri
   <h1>${esc(title)}</h1>
   ${operatorComplete() ? "" : `<p class="warn">${esc(MISSING_NOTE[en ? 1 : 0])}</p>`}
   ${body}
-  <footer>© Carbay</footer>
+  <footer>© Cartag</footer>
 </main>
 </body>
 </html>`;

@@ -44,7 +44,7 @@ export default function Market() {
   useEffect(() => {
     if (variant) {
       setLastVariant(variant.id);
-      document.title = `${variantTitle(variant)} – Carbay`;
+      document.title = `${variantTitle(variant)} – Cartag`;
     }
     return () => {
       document.title = appTitle();

@@ -3,7 +3,7 @@ import { onRequestListings } from "./real/onRequest";
 import type { Listing } from "./types";
 
 /**
- * The cars Carbay offers for sale: the dealers we work with (Karero and Janzen Klassik), with and without a stated
+ * The cars Cartag offers for sale: the dealers we work with (Karero and Janzen Klassik), with and without a stated
  * price. Every place that shows or counts "for sale now" (buy page, variant page, search, co-pilot) reads this list,
  * so the numbers agree. The other tracked listings (Classic Trader, further dealers) stay in the data and keep feeding
  * the statistics (typical mileage, countries), but are not offered.

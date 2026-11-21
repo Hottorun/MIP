@@ -78,8 +78,8 @@ export function ImportModal({ open, onClose }: { open: boolean; onClose: () => v
       <div className="space-y-4 text-sm">
         <p className="text-muted">
           {t(
-            "Laden Sie Auktionsergebnisse und Verkäufe hoch, die Sie verwenden dürfen (eigene Aufzeichnungen, lizenzierte Datensätze, manuell erfasste Ergebnisse). Varianten mit Auktionsergebnissen im Marktmodell behalten dessen Werte; für Varianten ohne belegte Verkäufe leitet Carbay Marktwert und Trend aus Ihren importierten Preisen ab (ab 3 Verkäufen in 24 Monaten; ab 8 Verkäufen über mindestens 3 Jahre auch die Rendite).",
-            "Upload auction results and sales you are allowed to use (your own records, licensed data sets, manually collected results). Variants with auction results in the market model keep its values; for variants without recorded sales Carbay derives market value and trend from your imported prices (from 3 sales in 24 months; the return from 8 sales over at least 3 years).",
+            "Laden Sie Auktionsergebnisse und Verkäufe hoch, die Sie verwenden dürfen (eigene Aufzeichnungen, lizenzierte Datensätze, manuell erfasste Ergebnisse). Varianten mit Auktionsergebnissen im Marktmodell behalten dessen Werte; für Varianten ohne belegte Verkäufe leitet Cartag Marktwert und Trend aus Ihren importierten Preisen ab (ab 3 Verkäufen in 24 Monaten; ab 8 Verkäufen über mindestens 3 Jahre auch die Rendite).",
+            "Upload auction results and sales you are allowed to use (your own records, licensed data sets, manually collected results). Variants with auction results in the market model keep its values; for variants without recorded sales Cartag derives market value and trend from your imported prices (from 3 sales in 24 months; the return from 8 sales over at least 3 years).",
           )}
         </p>
         <div className="rounded-lg border border-line bg-panel-2 p-3 text-xs text-muted">

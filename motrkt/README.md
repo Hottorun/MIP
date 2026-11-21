@@ -81,7 +81,7 @@ Symbol neben „Bearbeiten“ das Formular mit den Angaben des Fahrzeugs.
    Freigabe und bei jedem Kauf, `server/premium.ts`).
 5. **Analyse**: Der tägliche Lauf (`daily.sh`) exportiert die freigegebenen Fahrzeuge aus Postgres
    (`scripts/db/export-user-cars.ts`) ohne FIN und ohne Nutzer in eine temporäre Datei, die `model.py` wie einen
-   dokumentierten Verkauf liest (Quelle „Carbay-Nutzer (Kaufvertrag geprüft)“). Danach gelten die üblichen Regeln
+   dokumentierten Verkauf liest (Quelle „Cartag-Nutzer (Kaufvertrag geprüft)“). Danach gelten die üblichen Regeln
    (Ausreißer, Gewichtung). Die Daten landen nicht im öffentlichen Repository und nicht im Actions-Cache.
 
 **Löschen:** Der Nutzer kann jede Meldung selbst löschen. Eine freigegebene wird dabei nur vom Konto gelöst (ohne FIN,
@@ -121,7 +121,7 @@ Einrichten:
 
 1. `npm run db:migrate:prod` (Migrationen 014 und 015), **vor** dem Setzen der Variablen. Ohne sie zeigt die App
    keinen Preis.
-2. In Stripe ein Produkt „Carbay Premium“ mit einem Preis anlegen: wiederkehrend (monatlich oder jährlich) für ein Abo
+2. In Stripe ein Produkt „Cartag Premium“ mit einem Preis anlegen: wiederkehrend (monatlich oder jährlich) für ein Abo
    oder einmalig. Betrag inklusive Umsatzsteuer, denn die App zeigt genau diesen Betrag.
 3. Webhook anlegen: Endpunkt `https://www.carbay.app/api/stripe/webhook` (mit `www`: `carbay.app` leitet dorthin um,
    und Stripe folgt keinen Weiterleitungen), Ereignisse `checkout.session.completed`,

@@ -419,11 +419,11 @@ export async function handlePayments(req: IncomingMessage, res: ServerResponse, 
         locale: english ? "en" : "de",
         "custom_text[submit][message]": offer.recurring
           ? english
-            ? `Carbay Premium for your account, charged ${every}. It renews by itself; you can cancel at any time in your account, to the end of the period you paid for.`
-            : `Carbay Premium für Ihr Konto, Abbuchung ${every}. Verlängert sich von selbst; kündbar jederzeit in Ihrem Konto, zum Ende des bezahlten Zeitraums.`
+            ? `Cartag Premium for your account, charged ${every}. It renews by itself; you can cancel at any time in your account, to the end of the period you paid for.`
+            : `Cartag Premium für Ihr Konto, Abbuchung ${every}. Verlängert sich von selbst; kündbar jederzeit in Ihrem Konto, zum Ende des bezahlten Zeitraums.`
           : english
-            ? `${offer.months} months of Carbay Premium for your account. One payment, no subscription: it does not renew by itself.`
-            : `${offer.months} Monate Carbay Premium für Ihr Konto. Einmalige Zahlung, kein Abo: Es verlängert sich nicht von selbst.`,
+            ? `${offer.months} months of Cartag Premium for your account. One payment, no subscription: it does not renew by itself.`
+            : `${offer.months} Monate Cartag Premium für Ihr Konto. Einmalige Zahlung, kein Abo: Es verlängert sich nicht von selbst.`,
         // who subscribed before stays the same customer at Stripe
         ...(known?.customer ? { customer: known.customer } : u?.email ? { customer_email: u.email } : {}),
         // the buyer must accept the terms linked in the Stripe account (Settings → Public details) before paying

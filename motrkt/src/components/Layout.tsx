@@ -117,7 +117,7 @@ class PageErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
 
 function Wordmark({ className }: { className?: string }) {
   return (
-    <Link to="/" className={cn("flex items-center", className)} aria-label={t("Carbay Startseite", "Carbay home")}>
+    <Link to="/" className={cn("flex items-center", className)} aria-label={t("Cartag Startseite", "Cartag home")}>
       <LogoWordmark height={52} light />
     </Link>
   );
@@ -249,7 +249,7 @@ function Header() {
             ))}
           </ul>
           <div className="relative flex items-center justify-between pt-3.5 sm:hidden">
-            <span className="font-display text-[13px] text-white/40 italic">Carbay</span>
+            <span className="font-display text-[13px] text-white/40 italic">Cartag</span>
             <LangSwitch />
           </div>
         </nav>
@@ -615,7 +615,7 @@ function Footer() {
         </div>
       </div>
       <div className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-line px-5 py-6 text-[12.5px] text-faint sm:px-8">
-        <span>© {new Date(AS_OF).getFullYear()} Carbay</span>
+        <span>© {new Date(AS_OF).getFullYear()} Cartag</span>
         <span className="flex gap-5">
           <Link to="/impressum" className="hover:text-ink">Impressum</Link>
           <Link to="/datenschutz" className="hover:text-ink">{t("Datenschutz", "Privacy")}</Link>

@@ -21,5 +21,5 @@ createServer((req, res) =>
     res.end();
   }),
 ).listen(PORT, () => {
-  console.log(`Carbay läuft auf http://localhost:${PORT}`);
+  console.log(`Cartag läuft auf http://localhost:${PORT}`);
 });

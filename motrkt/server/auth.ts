@@ -222,13 +222,13 @@ async function sendVerifyMail(req: IncomingMessage, user: { id: string; username
       subject: de ? "Bitte bestätigen Sie Ihre E-Mail-Adresse" : "Please confirm your email address",
       hello: de ? `Guten Tag, ${user.username},` : `Hello ${user.username},`,
       body: de
-        ? "bitte bestätigen Sie, dass diese E-Mail-Adresse zu Ihrem Carbay-Konto gehört. Wir nutzen sie nur für Ihr Konto, etwa um ein vergessenes Passwort zurückzusetzen."
-        : "please confirm that this email address belongs to your Carbay account. We use it for your account only, for instance to reset a forgotten password.",
+        ? "bitte bestätigen Sie, dass diese E-Mail-Adresse zu Ihrem Cartag-Konto gehört. Wir nutzen sie nur für Ihr Konto, etwa um ein vergessenes Passwort zurückzusetzen."
+        : "please confirm that this email address belongs to your Cartag account. We use it for your account only, for instance to reset a forgotten password.",
       button: de ? "Adresse bestätigen" : "Confirm address",
       link,
       after: de
-        ? `Der Link gilt ${VERIFY_HOURS} Stunden. Haben Sie kein Konto bei Carbay angelegt, können Sie diese E-Mail ignorieren.`
-        : `The link is valid for ${VERIFY_HOURS} hours. If you did not create a Carbay account, you can ignore this email.`,
+        ? `Der Link gilt ${VERIFY_HOURS} Stunden. Haben Sie kein Konto bei Cartag angelegt, können Sie diese E-Mail ignorieren.`
+        : `The link is valid for ${VERIFY_HOURS} hours. If you did not create a Cartag account, you can ignore this email.`,
     }),
   );
 }
@@ -241,11 +241,11 @@ async function sendResetMail(req: IncomingMessage, user: { id: string; username:
   await sendMail(
     accountMail({
       to: email,
-      subject: de ? "Neues Passwort für Carbay" : "New password for Carbay",
+      subject: de ? "Neues Passwort für Cartag" : "New password for Cartag",
       hello: de ? `Guten Tag, ${user.username},` : `Hello ${user.username},`,
       body: de
-        ? "für Ihr Carbay-Konto wurde ein neues Passwort angefordert. Über den Button legen Sie es fest; danach sind alle anderen Geräte abgemeldet."
-        : "a new password was requested for your Carbay account. Use the button to set it; all other devices are signed out afterwards.",
+        ? "für Ihr Cartag-Konto wurde ein neues Passwort angefordert. Über den Button legen Sie es fest; danach sind alle anderen Geräte abgemeldet."
+        : "a new password was requested for your Cartag account. Use the button to set it; all other devices are signed out afterwards.",
       button: de ? "Neues Passwort festlegen" : "Set a new password",
       link,
       after: de
@@ -552,7 +552,7 @@ async function exportAccount(req: IncomingMessage, res: ServerResponse) {
   const payments = has ? await sql`select id, paid_at, months, amount, currency, refunded_at from premium_payments where user_id = ${user.id} order by paid_at` : [];
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Content-Disposition", `attachment; filename="carbay-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
+  res.setHeader("Content-Disposition", `attachment; filename="cartag-${user.username.replace(/[^\w.-]/g, "_")}-${new Date().toISOString().slice(0, 10)}.json"`);
   res.setHeader("Cache-Control", "no-store");
   res.end(JSON.stringify({ exported_at: new Date().toISOString(), account, state: state ?? null, cars, payments, forum: { topics, posts, reports }, sessions }, null, 2));
 }
@@ -682,7 +682,7 @@ const LOGIN_PAGE = `<!doctype html>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 <link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 <meta name="theme-color" content="#0d2327" />
-<title>Anmelden – Carbay</title>
+<title>Anmelden – Cartag</title>
 <style>
   @font-face { font-family:"Geist"; font-style:normal; font-weight:100 900; font-display:swap; src:url(/fonts/geist-latin-ext-wght-normal.woff2) format("woff2");
     unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
@@ -836,7 +836,7 @@ const LOGIN_PAGE = `<!doctype html>
         <button class="submit" id="submit" type="submit"></button>
         <p class="err" id="err" role="alert"></p>
         <p class="ok" id="ok" role="status" hidden></p>
-        <p class="note" id="note-login"><span data-de="Neu bei Carbay? " data-en="New to Carbay? "></span><button type="button" id="to-register" data-de="Konto anlegen" data-en="Create an account"></button></p>
+        <p class="note" id="note-login"><span data-de="Neu bei Cartag? " data-en="New to Cartag? "></span><button type="button" id="to-register" data-de="Konto anlegen" data-en="Create an account"></button></p>
         <p class="note" id="note" hidden><span data-de="Ihre E-Mail-Adresse nutzen wir nur für Ihr Konto, nicht für Werbung. Details in der " data-en="We use your email address for your account only, never for advertising. Details in the "></span><a href="/datenschutz" data-de="Datenschutzerklärung" data-en="privacy notice"></a>.</p>
         <p class="note" id="note-back" hidden><button type="button" id="to-login" data-de="Zurück zur Anmeldung" data-en="Back to sign in"></button></p>
       </form>
@@ -895,7 +895,7 @@ const LOGIN_PAGE = `<!doctype html>
   function render() {
     var L = T[lang];
     document.documentElement.lang = lang;
-    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – Carbay";
+    document.title = (lang === "de" ? "Anmelden" : "Sign in") + " – Cartag";
     document.querySelectorAll("[data-de]").forEach(function (el) { el.textContent = el.getAttribute("data-" + lang); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     var reg = mode === "register", login = mode === "login", forgot = mode === "forgot", reset = mode === "reset";
