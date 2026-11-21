@@ -14,6 +14,7 @@ import gzip, html, json, os, re, sys, time, urllib.error, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify import classify
+from vat import vat_rate, with_vat
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
 BASE = "https://rmsothebys.com"
@@ -203,8 +204,11 @@ for it, (vid, body, gear, year), code, amt, cur, ask in cands:
         open(p, "w").write(h); new_pages += 1
     page = open(p, errors="ignore").read()
     chassis, km = lot_details(page)
+    # "VATQ": VAT on the full purchase price comes on top of the published result (scripts/market/vat.py)
+    vat = vat_rate(text(page), it.get("countryCode")) if it["valueType"] == "Sold" else None
+    if vat: print("VAT %.1f%% on top:" % (vat * 100), code, it["lot"], text(it["publicName"])[:60], amt, "->", with_vat(amt, vat), cur, flush=True)
     out.append(dict(id=it["id"], code=code, lot=it["lot"], ref=it["referenceId"], title=text(it["publicName"]), date=date,
-                    sold=it["valueType"] == "Sold", amt=amt if it["valueType"] == "Sold" else None, cur=cur,
+                    sold=it["valueType"] == "Sold", amt=with_vat(amt, vat) if it["valueType"] == "Sold" else None, cur=cur, vat=vat,
                     country=it.get("countryCode") or "", chassis=chassis, km=km, url=it["link"], sale=it["header"], est=[ask[0], ask[0], ask[1]] if ask else estimate_of(page)))
 json.dump(out, open(os.path.join(DIR, "rm.json"), "w"), ensure_ascii=False)
 print(len(out), "RM Sotheby's results since 2015;", new_pages, "new lot pages", flush=True)
