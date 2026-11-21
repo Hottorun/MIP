@@ -86,9 +86,12 @@ def price_of(value):
     return (int(re.sub(r"\D", "", m.group(1))), m.group(2)) if m else (None, None)
 
 
-# results only: sold lots with a price and lots that went unsold; still-for-sale, upcoming and asking-price lots are not
+# results only: sold lots with a price and lots that went unsold; still-for-sale and upcoming lots are not. A lot that
+# went unsold and is offered afterwards at an asking price ("Asking", auctioned) counts as unsold; the asking price is
+# not a result and is not used.
 cands = []
 for it in lots.values():
+    if it.get("auctioned") and it["valueType"] == "Asking": it["valueType"] = "Not Sold"
     if not it.get("auctioned") or it["valueType"] not in ("Sold", "Not Sold"): continue
     amt, cur = price_of(it["value"])
     if it["valueType"] == "Sold" and not amt: continue

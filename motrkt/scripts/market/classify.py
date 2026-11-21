@@ -25,6 +25,7 @@ EXCL = ["modif", "powered", "backdat", "restomod", "singer", "reimagin", "outlaw
 SPECIAL = re.compile(r"prototype|\bimsa\b|\bscca\b|\bt/r\b|914/6 r\b|914/6 ['\"]?gt|\bm471\b|gt specification|carrera 4 leichtbau|\bctr\b"
                      r"|tag turbo|bandama|turbo gts|retro rod|magnum|rocket|club coupe|\b993 gt\b|\b993 club ?sport|gt3[- ]r\b|gt2[- ]?r\b|\bn[-/]gt\b"
                      r"|super 90 gt|super gt\b")
+ORIGINAL_BODY = re.compile(r"\s+by\s+(?:reutter|karmann|drauz|d'ieteren)\s*$", re.I)
 # variants so rare that results before 2015 are kept as well (listed in the app; the market value still counts only
 # results since 2015, model.py)
 EARLY_RESULTS = {P + "911-gt1-911-gt1-strassenversion"}
@@ -518,6 +519,9 @@ def classify(title, note=""):
     sp = split(title)
     if not sp: return None
     pre, y, model = sp
+    # the factory's own coachbuilders ("356 A 1600 Speedster by Reutter", "912 Coupe by Karmann") are the series car;
+    # " by " otherwise marks a replica or tuner build and is rejected below (EXCL)
+    model = ORIGINAL_BODY.sub("", model)
     note = norm(note).lower()
     if note: model = model + " " + note
     full = (pre + " " + model).lower()
