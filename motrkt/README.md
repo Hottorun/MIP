@@ -29,7 +29,8 @@ Ohne Anmeldung ist man Gast: Die App öffnet sich mit den Lite-Daten (Katalog, M
 Forum zum Lesen ohne Benutzernamen). Watchlist, Preisalarme, Portfolio, gemerkte Inserate und Schreiben im Forum fragen
 nach einem kostenlosen Konto (`useNeedsAccount` in `src/lib/plan.tsx`); die vollständigen Daten bleiben Premium. Auf der
 Anmeldeseite (`/anmelden`, mit `?neu` gleich auf „Konto anlegen“) legt man ein Konto mit Benutzername, E-Mail-Adresse und
-Passwort an; man bleibt dauerhaft angemeldet (die Sitzung läuft ein Jahr und verlängert sich bei jedem Besuch), bis man
+Passwort an; es entsteht erst, wenn der 6-stellige Code aus der Mail an diese Adresse eingegeben ist (Versand über
+Resend, `server/mail.ts`; lokal ohne `RESEND_API_KEY` steht der Code im Server-Log). Man bleibt dauerhaft angemeldet (die Sitzung läuft ein Jahr und verlängert sich bei jedem Besuch), bis man
 sich abmeldet.
 
 **Demo-Konto zum Testen:** Benutzername `demo`, Passwort `turbo-carrera-8987`

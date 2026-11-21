@@ -1,37 +1,34 @@
 /**
- * Account emails (confirm the address, reset the password) through Brevo's transactional API (EU provider, data
- * processing agreement, see DATENSCHUTZ.md). Configuration: BREVO_API_KEY, MAIL_FROM (an address verified as sender
- * at Brevo), MAIL_FROM_NAME (default "Cartag"). Without a key the mail is not sent: in development it is printed to
- * the console so the links can be tried, in production sendMail throws.
+ * Account emails (sign-up code, confirm a changed address, reset the password) through Resend's API (data processing
+ * agreement, see DATENSCHUTZ.md). Configuration: RESEND_API_KEY, MAIL_FROM (an address on a domain verified at
+ * Resend), MAIL_FROM_NAME (default "Cartag"). Without a key the mail is not sent: in development it is printed to the
+ * console so codes and links can be tried, in production sendMail throws.
  */
 
 export type Mail = { to: string; subject: string; text: string; html: string };
 
 export function mailConfigured() {
-  return Boolean(process.env.BREVO_API_KEY && process.env.MAIL_FROM);
+  return Boolean(process.env.RESEND_API_KEY && process.env.MAIL_FROM);
 }
 
+/** Sends one mail; throws when it was not accepted. */
 export async function sendMail(mail: Mail): Promise<void> {
-  const key = process.env.BREVO_API_KEY;
+  const key = process.env.RESEND_API_KEY;
   const from = process.env.MAIL_FROM;
   if (!key || !from) {
-    if (process.env.VERCEL || process.env.NODE_ENV === "production") throw new Error("mail not configured (BREVO_API_KEY, MAIL_FROM)");
-    console.log(`\n[mail – not sent, no BREVO_API_KEY] to ${mail.to}: ${mail.subject}\n${mail.text}\n`);
+    if (process.env.VERCEL || process.env.NODE_ENV === "production") throw new Error("mail not configured (RESEND_API_KEY, MAIL_FROM)");
+    console.log(`\n[mail – not sent, no RESEND_API_KEY] to ${mail.to}: ${mail.subject}\n${mail.text}\n`);
     return;
   }
-  const r = await fetch("https://api.brevo.com/v3/smtp/email", {
+  // the display name in quotes, so a comma or similar in MAIL_FROM_NAME cannot break the address
+  const name = (process.env.MAIL_FROM_NAME || "Cartag").replace(/["\\\r\n]/g, "");
+  const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { "api-key": key, "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({
-      sender: { name: process.env.MAIL_FROM_NAME || "Cartag", email: from },
-      to: [{ email: mail.to }],
-      subject: mail.subject,
-      textContent: mail.text,
-      htmlContent: mail.html,
-    }),
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ from: `"${name}" <${from}>`, to: [mail.to], subject: mail.subject, text: mail.text, html: mail.html }),
     signal: AbortSignal.timeout(10_000),
   });
-  if (!r.ok) throw new Error(`brevo ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  if (!r.ok) throw new Error(`resend ${r.status}: ${(await r.text()).slice(0, 200)}`);
 }
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
