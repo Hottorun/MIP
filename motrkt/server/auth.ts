@@ -607,7 +607,7 @@ async function deleteAccount(req: IncomingMessage, res: ServerResponse) {
 }
 
 // ------------------------------------------------------------------------------------------------ gate
-const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-touch-icon.png", "/brand/carbay-wordmark.svg", "/brand/carbay-wordmark-light.svg"]);
+const OPEN = new Set(["/anmelden", "/favicon.svg", "/favicon-32.png", "/apple-touch-icon.png", "/brand/cartag-wordmark.svg", "/brand/cartag-wordmark-light.svg"]);
 // the typefaces are served from this site (public/fonts), not from Google; the sign-in page needs them too
 const isOpen = (path: string) => OPEN.has(path) || /^\/fonts\/[\w.-]+\.(woff2|txt)$/.test(path);
 
@@ -793,7 +793,7 @@ const LOGIN_PAGE = `<!doctype html>
 <div class="photo" aria-hidden="true"></div>
 <main class="stage">
   <section class="intro">
-    <h1 class="logo"><img src="/brand/carbay-wordmark-light.svg?v=2" alt="Carbay" width="133" height="64" /></h1>
+    <h1 class="logo"><img src="/brand/cartag-wordmark-light.svg" alt="Cartag" width="123" height="64" /></h1>
     <div class="rule"></div>
     <p class="claim" data-de="Was Ihre Leidenschaft heute wert ist." data-en="What your passion is worth today."></p>
     <p class="tag" data-de="Marktintelligenz für Sportwagen" data-en="Market intelligence for sports cars"></p>
