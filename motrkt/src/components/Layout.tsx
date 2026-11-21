@@ -41,14 +41,14 @@ export function Layout() {
     window.scrollTo({ top: 0 });
   }, [pathname]);
   const wait = (
-    <div className="flex flex-col items-center gap-4 py-24 font-serif text-muted italic">
+    <div className="flex flex-col items-center gap-4 py-24 font-display text-muted italic">
       <LogoMark size={56} className="animate-pulse" />
       {t("Einen Moment …", "One moment …")}
     </div>
   );
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="night-band border-b border-band-line px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
+      <div className="night-band top-seam px-4 py-2 text-center text-[12.5px] tracking-[0.02em]">
         <span className="mr-2 inline-block size-1.5 -translate-y-px rounded-full bg-accent align-middle shadow-[0_0_0_3px_rgba(71,167,184,0.25)]" aria-hidden />
         <span className="text-on-night/90">{t("Marktdaten vom", "Market data as of")} {date(AS_OF)}.</span>
         <span className="hidden text-on-night/65 sm:inline">
@@ -97,7 +97,7 @@ class PageErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
     if (!this.state.error) return this.props.children;
     return (
       <div className="mx-auto max-w-md py-24 text-center">
-        <h1 className="font-serif text-2xl">{t("Diese Seite konnte nicht angezeigt werden.", "This page could not be shown.")}</h1>
+        <h1 className="font-display text-heading text-2xl">{t("Diese Seite konnte nicht angezeigt werden.", "This page could not be shown.")}</h1>
         <p className="mt-3 text-sm text-muted">
           {t("Ein Fehler ist aufgetreten. Neu laden hilft meist; sonst bitte später noch einmal versuchen.", "Something went wrong. Reloading usually helps; otherwise please try again later.")}
         </p>
@@ -118,7 +118,7 @@ class PageErrorBoundary extends Component<{ children: ReactNode }, { error: Erro
 function Wordmark({ className }: { className?: string }) {
   return (
     <Link to="/" className={cn("flex items-center", className)} aria-label={t("Carbay Startseite", "Carbay home")}>
-      <LogoWordmark height={52} />
+      <LogoWordmark height={52} light />
     </Link>
   );
 }
@@ -162,7 +162,7 @@ function MenuRow({ to, label, premium, index }: NavEntry & { index: number }) {
     <NavLink to={to} aria-current={active ? "page" : undefined} className="group relative flex items-baseline gap-4 py-3.5">
       {active && <span className="absolute top-1/2 -left-5 h-7 w-[3px] -translate-y-1/2 rounded-r-full bg-[#d3ad66] sm:-left-8" aria-hidden />}
       <span className={cn("w-5 shrink-0 text-[10.5px] font-medium tracking-[0.2em] tabular-nums", active ? "text-[#d3ad66]" : "text-white/30")}>{String(index + 1).padStart(2, "0")}</span>
-      <span className={cn("flex-1 font-serif text-[25px] leading-none transition-colors", active ? "text-[#f1dcae]" : "text-[#d3ad66] group-hover:text-[#ecd29c]")}>{label}</span>
+      <span className={cn("flex-1 font-display text-[25px] leading-none transition-colors", active ? "text-[#f1dcae]" : "text-[#d3ad66] group-hover:text-[#ecd29c]")}>{label}</span>
       {locked ? (
         <span className="inline-flex shrink-0 items-center gap-1 self-center rounded-full border border-[#d3ad66]/45 px-2 py-0.5 text-[9.5px] font-semibold tracking-[0.16em] text-[#e4c486] uppercase">
           <Lock className="size-2.5" strokeWidth={2.25} aria-hidden /> Premium
@@ -198,7 +198,7 @@ function Header() {
   }, []);
 
   return (
-    <header className={cn("sticky top-0 z-30 border-b backdrop-blur-sm transition-colors", menuOpen ? "border-transparent bg-menu-head" : "border-line bg-menu-head/95")}>
+    <header className={cn("brand-band sticky top-0 z-30 border-b transition-colors", menuOpen ? "border-transparent" : "border-white/10")}>
       <div className="mx-auto grid h-[72px] max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center gap-6 px-5 sm:px-8">
         <div className="flex items-center gap-7">
           <button className="-ml-1 p-1 text-ink lg:hidden" onClick={() => setMenuOpen((o) => !o)} aria-label={t("Menü", "Menu")} aria-expanded={menuOpen}>
@@ -230,21 +230,26 @@ function Header() {
         </div>
       </div>
       {menuOpen && (
+        // the page behind the open menu, dimmed towards the menu's petrol; a tap on it closes the menu
+        <div className="menu-scrim absolute inset-x-0 top-full h-[100dvh] lg:hidden" onClick={() => setMenuOpen(false)} aria-hidden />
+      )}
+      {menuOpen && (
+        // drops out of the header over the page, in the header's own gradient, so the two read as one surface
         <nav
-          className="animate-fade-in relative overflow-hidden bg-linear-to-b from-menu to-menu-2 border-t border-menu-line px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
+          className="menu-drop brand-band absolute inset-x-0 top-full overflow-hidden rounded-b-panel px-5 pt-2 pb-4 text-white [--color-ink:#f4f1ea] [--color-muted:rgb(255_255_255/0.5)] [--color-faint:rgb(255_255_255/0.3)] sm:px-8 lg:hidden"
           aria-label="Navigation"
         >
           <div className="theme-light-only pointer-events-none absolute -right-24 -bottom-32 size-80 rounded-full bg-[#d3ad66]/[0.09] blur-3xl" aria-hidden />
           <div className="theme-light-only pointer-events-none absolute -bottom-24 -left-24 size-72 rounded-full bg-[#5fb3c2]/[0.08] blur-3xl" aria-hidden />
           <ul className="relative grid md:grid-flow-col md:grid-cols-2 md:grid-rows-3 md:gap-x-10">
             {[...NAV_LEFT, ...NAV_RIGHT].map((n, i) => (
-              <li key={n.to} className="border-b border-white/[0.08]">
+              <li key={n.to} className="menu-row border-b border-white/[0.08]" style={{ animationDelay: `${60 + i * 35}ms` }}>
                 <MenuRow {...n} index={i} />
               </li>
             ))}
           </ul>
           <div className="relative flex items-center justify-between pt-3.5 sm:hidden">
-            <span className="font-serif text-[13px] text-white/40 italic">Carbay</span>
+            <span className="font-display text-[13px] text-white/40 italic">Carbay</span>
             <LangSwitch />
           </div>
         </nav>
@@ -275,7 +280,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div ref={ref} className="animate-fade-in absolute inset-x-0 top-full border-b border-line bg-bg shadow-[0_30px_60px_-30px_rgba(20,20,20,0.22)]">
+    <div ref={ref} className="brand-reset animate-fade-in absolute inset-x-0 top-full border-b border-line bg-bg shadow-[0_30px_60px_-30px_rgba(20,20,20,0.22)]">
       <div className="mx-auto max-w-[760px] px-5 pt-6 pb-8">
         <div className="flex items-center gap-3 border-b border-ink pb-2">
           <Search className="size-5 shrink-0 text-muted" strokeWidth={1.5} />
@@ -300,7 +305,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
               }
             }}
             placeholder={t("Modell, Inserat, Forum, FIN oder Auktions-ID", "Model, listing, forum, VIN or auction ID")}
-            className="min-w-0 flex-1 bg-transparent font-serif text-[22px] placeholder:text-faint focus:outline-none"
+            className="min-w-0 flex-1 bg-transparent font-display text-[22px] placeholder:text-faint focus:outline-none"
             aria-label={t("Suche", "Search")}
           />
           <button onClick={onClose} aria-label={t("Suche schließen", "Close search")} className="text-muted hover:text-ink">
@@ -309,7 +314,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
         </div>
         {q.trim().length >= 2 ? (
           hits.length === 0 ? (
-            <p className="py-8 text-center font-serif text-muted italic">{t(`Keine Treffer für „${q}“.`, `No results for “${q}”.`)}</p>
+            <p className="py-8 text-center font-display text-muted italic">{t(`Keine Treffer für „${q}“.`, `No results for “${q}”.`)}</p>
           ) : (
             <ul className="mt-3 max-h-[55vh] overflow-y-auto">
               {hits.map((h, i) => (
@@ -322,7 +327,7 @@ function SearchOverlay({ onClose }: { onClose: () => void }) {
                   >
                     <span className="w-20 shrink-0 text-[12.5px] text-faint">{h.kind}</span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-serif text-[16px]">{h.label}</span>
+                      <span className="block truncate font-display text-[16px]">{h.label}</span>
                       <span className="block truncate text-[13px] text-muted">{h.detail}</span>
                     </span>
                     {i === active && <CornerDownLeft className="size-3.5 self-center text-faint" />}
@@ -359,7 +364,7 @@ function useClickOutside(open: boolean, close: () => void) {
   return ref;
 }
 
-const dropdown = "animate-fade-in absolute right-0 z-40 mt-2 rounded-[3px] border border-line bg-panel shadow-[0_24px_50px_-20px_rgba(20,20,20,0.22)]";
+const dropdown = "brand-reset animate-fade-in absolute right-0 z-40 mt-2 rounded-box border border-line bg-panel shadow-[0_24px_50px_-20px_rgba(20,20,20,0.22)]";
 
 function NotificationBell() {
   const [open, setOpen] = useState(false);
@@ -372,12 +377,12 @@ function NotificationBell() {
     <div className="relative" ref={ref}>
       <button className="relative p-2 text-ink transition-colors hover:text-accent" onClick={() => setOpen((o) => !o)} aria-label={t(`Benachrichtigungen (${unread} ungelesen)`, `Notifications (${unread} unread)`)}>
         <Bell className="size-[19px]" strokeWidth={1.5} />
-        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red ring-2 ring-bg" />}
+        {unread > 0 && <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red ring-2 ring-menu" />}
       </button>
       {open && (
         <div className={cn(dropdown, "w-[min(92vw,380px)] overflow-hidden")}>
           <div className="flex items-baseline justify-between border-b border-line px-5 py-3">
-            <span className="font-serif text-[17px]">{t("Benachrichtigungen", "Notifications")}</span>
+            <span className="font-display text-[17px]">{t("Benachrichtigungen", "Notifications")}</span>
             <button className="text-[13px] text-muted hover:text-ink disabled:opacity-40" disabled={!unread} onClick={() => markNotificationsRead(items.map((n) => n.id))}>
               {t("Alle gelesen", "Mark all read")}
             </button>
@@ -433,7 +438,7 @@ function UserMenu() {
       {open && plan.guest && (
         <div className={cn(dropdown, "w-64 py-2")}>
           <div className="px-3 pt-1 pb-2">
-            <div className="font-serif text-[16px]">{t("Ohne Konto", "No account")}</div>
+            <div className="font-display text-[16px]">{t("Ohne Konto", "No account")}</div>
             <p className="mt-0.5 text-[13px] leading-snug text-muted">{t("Mit kostenlosem Konto behalten Sie Watchlist, Portfolio und Preisalarme.", "A free account keeps your watchlist, portfolio and price alerts.")}</p>
           </div>
           <div className="my-1 border-t border-line" />
@@ -449,7 +454,7 @@ function UserMenu() {
         <div className={cn(dropdown, "w-64 py-2")}>
           <div className="px-3 pt-1 pb-2">
             <div className="flex items-center gap-2">
-              <span className="truncate font-serif text-[16px]">{username ?? t("Konto", "Account")}</span>
+              <span className="truncate font-display text-[16px]">{username ?? t("Konto", "Account")}</span>
               {plan.ready && (
                 <span className={cn("shrink-0 rounded-full px-2 py-px text-[10.5px] font-semibold tracking-[0.1em] uppercase", plan.premium ? "bg-gold-soft text-gold-2" : "bg-panel-3 text-muted")}>
                   {plan.premium ? "Premium" : "Lite"}
@@ -511,7 +516,7 @@ function GuestSignIn() {
   const { guest } = usePlan();
   if (!guest) return null;
   return (
-    <a href={signInHref(false)} className="mr-1 hidden rounded-[4px] border border-line-2 px-3 py-1.5 text-[13.5px] font-medium whitespace-nowrap text-ink transition-colors hover:border-accent hover:text-accent md:inline-flex">
+    <a href={signInHref(false)} className="mr-1 hidden rounded-card border border-line-2 px-3 py-1.5 text-[13.5px] font-medium whitespace-nowrap text-ink transition-colors hover:border-accent hover:text-accent md:inline-flex">
       {t("Anmelden", "Sign in")}
     </a>
   );
@@ -567,12 +572,12 @@ function Footer() {
     { to: "/portfolio", label: "Portfolio" },
   ];
   return (
-    <footer className="mt-16 border-t-[3px] border-accent/70 bg-panel-2">
+    <footer className="brand-band mt-16 border-t-[3px] border-gold/70">
       <div className="mx-auto grid max-w-[1360px] gap-12 px-5 pt-16 pb-12 sm:px-8 md:grid-cols-[1.2fr_1fr_1.3fr] md:gap-16">
         <div>
-          <LogoWordmark height={60} />
+          <LogoWordmark height={60} light />
           <span className="mt-6 block h-[3px] w-14 rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-gold))]" aria-hidden="true" />
-          <p className="mt-5 max-w-[16rem] font-serif text-[16px] leading-relaxed text-muted italic">
+          <p className="mt-5 max-w-[16rem] font-display text-[16px] leading-relaxed text-muted italic">
             {t("Marktwerte, Verkäufe und Angebote von Sportwagen, vom Klassiker bis zum Neuwagen.", "Market values, sales and listings of sports cars, from classics to new cars.")}
           </p>
         </div>
@@ -630,7 +635,7 @@ function Toasts({ raised }: { raised?: boolean }) {
       {toasts.map((item) => {
         const Icon = icons[item.tone];
         return (
-          <div key={item.id} className="animate-fade-in pointer-events-auto flex items-center gap-3 rounded-[2px] bg-ink px-4 py-3 text-[14px] text-bg shadow-lg">
+          <div key={item.id} className="animate-fade-in pointer-events-auto flex items-center gap-3 rounded-tag bg-ink px-4 py-3 text-[14px] text-bg shadow-lg">
             <Icon className={cn("size-4", item.tone === "error" ? "text-[#e7a493]" : "text-bg/70")} strokeWidth={1.5} />
             {item.message}
             <button onClick={() => dismissToast(item.id)} className="ml-1 text-bg/60 hover:text-bg" aria-label={t("Schließen", "Close")}>

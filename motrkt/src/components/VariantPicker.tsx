@@ -117,10 +117,10 @@ export function VariantPicker({
 
   if (chosen && !open) {
     return (
-      <div className={cn("flex items-center gap-4 rounded-[3px] border bg-panel p-2.5", error ? "border-down" : "border-line-2")}>
-        <CarImage variant={chosen} className="aspect-[16/10] w-28 shrink-0 rounded-[2px] sm:w-36" label={variantTitle(chosen)} />
+      <div className={cn("flex items-center gap-4 rounded-box border bg-panel p-2.5", error ? "border-down" : "border-line-2")}>
+        <CarImage variant={chosen} className="aspect-[16/10] w-28 shrink-0 rounded-tag sm:w-36" label={variantTitle(chosen)} />
         <div className="min-w-0 flex-1">
-          <div className="font-serif text-[18px] leading-snug">{variantTitle(chosen)}</div>
+          <div className="font-display text-[18px] leading-snug">{variantTitle(chosen)}</div>
           <div className="mt-0.5 text-[13px] text-muted">
             {yearsLabel(chosen.years)} · {productionLabel(chosen)}
           </div>
@@ -143,7 +143,7 @@ export function VariantPicker({
   }
 
   return (
-    <div className={cn("rounded-[3px] border bg-panel", error ? "border-down" : "border-line-2")}>
+    <div className={cn("rounded-box border bg-panel", error ? "border-down" : "border-line-2")}>
       <div className="relative border-b border-line">
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-faint" strokeWidth={1.75} aria-hidden />
         <input
@@ -176,7 +176,7 @@ export function VariantPicker({
         {(query || chosen) && (
           <button
             type="button"
-            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-[2px] p-1 text-faint hover:text-ink"
+            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-tag p-1 text-faint hover:text-ink"
             aria-label={query ? t("Suche leeren", "Clear search") : t("Schließen", "Close")}
             onClick={() => (query ? (setQuery(""), input.current?.focus()) : setOpen(false))}
           >
@@ -223,7 +223,7 @@ export function VariantPicker({
 
       <ul ref={list} id={listId} role="listbox" aria-label={t("Fahrzeuge", "Cars")} className="max-h-72 overflow-y-auto overscroll-contain">
         {results.length === 0 && (
-          <li className="px-4 py-8 text-center font-serif text-[15px] text-muted italic">
+          <li className="px-4 py-8 text-center font-display text-[15px] text-muted italic">
             {t("Kein Fahrzeug gefunden. Versuchen Sie es mit Generation und Modell, z. B. „964 Turbo“.", "No car found. Try generation and model, e.g. “964 Turbo”.")}
           </li>
         )}
@@ -247,9 +247,9 @@ export function VariantPicker({
                 onMouseMove={() => active !== i && setActive(i)}
                 onClick={() => pick(v)}
               >
-                <CarImage variant={v} className="aspect-[16/10] w-[72px] shrink-0 rounded-[2px]" />
+                <CarImage variant={v} className="aspect-[16/10] w-[72px] shrink-0 rounded-tag" />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-serif text-[15.5px] text-ink">{variantTitle(v, { brand: false, gen: searching || !!genId || model.generationIds.length < 2 ? undefined : false })}</span>
+                  <span className="block truncate font-display text-[15.5px] text-ink">{variantTitle(v, { brand: false, gen: searching || !!genId || model.generationIds.length < 2 ? undefined : false })}</span>
                   <span className="block truncate text-[12.5px] text-muted">
                     {yearsLabel(v.years)} · {productionLabel(v)}
                   </span>

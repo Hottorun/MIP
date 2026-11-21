@@ -59,7 +59,7 @@ export default function AiPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Co-Pilot</h1>
+        <h1 className="font-display text-heading text-[44px] leading-tight sm:text-[52px]">Co-Pilot</h1>
         <p className="mt-1 text-[14px] text-muted">{t("Fragen Sie nach Bewertung, Vergleich, Kaufrisiko oder Ihrem Portfolio. Die Antworten beruhen auf unseren Marktdaten.", "Ask about valuation, comparisons, purchase risk or your portfolio. Answers are based on our market data.")}</p>
       </div>
 
@@ -102,7 +102,7 @@ function CopilotPreview({ groups }: { groups: ReturnType<typeof promptGroups> })
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Co-Pilot</h1>
+        <h1 className="font-display text-heading text-[44px] leading-tight sm:text-[52px]">Co-Pilot</h1>
         <p className="mt-1 text-[14px] text-muted">{t("Fragen Sie nach Bewertung, Vergleich, Kaufrisiko oder Ihrem Portfolio. Die Antworten beruhen auf unseren Marktdaten.", "Ask about valuation, comparisons, purchase risk or your portfolio. Answers are based on our market data.")}</p>
       </div>
       <PremiumBanner reason="copilot" title={t("Ein Analyst, der jede unserer Zahlen kennt", "An analyst who knows every one of our figures")}>

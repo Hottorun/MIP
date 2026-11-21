@@ -31,7 +31,7 @@ export function PremiumFab() {
         </span>
         <span className="text-left leading-tight">
           <span className="block text-[10px] font-semibold tracking-[0.16em] text-[#e4c486] uppercase">{t("Kostenlos", "Free")}</span>
-          <span className="block font-serif text-[16px]">{t("Konto anlegen", "Create an account")}</span>
+          <span className="block font-display text-[16px]">{t("Konto anlegen", "Create an account")}</span>
         </span>
         <ArrowRight className="size-4 text-[#e4c486] transition-transform group-hover:translate-x-0.5" aria-hidden />
       </button>
@@ -49,7 +49,7 @@ export function PremiumFab() {
       </span>
       <span className="text-left leading-tight">
         <span className="block text-[10px] font-semibold tracking-[0.16em] text-[#e4c486] uppercase">{copy[step][0]}</span>
-        <span className="block font-serif text-[16px]">{copy[step][1]}</span>
+        <span className="block font-display text-[16px]">{copy[step][1]}</span>
       </span>
       {step === "review" ? (
         <span className="relative ml-0.5 flex size-2" aria-hidden>
@@ -259,9 +259,9 @@ function PremiumDialog() {
 
           {offer && (
             <>
-              <section className="mt-3.5 rounded-[6px] border border-gold/45 bg-gold-soft/50 p-5" aria-labelledby="premium-buy">
+              <section className="mt-3.5 rounded-panel border border-gold/45 bg-gold-soft/50 p-5" aria-labelledby="premium-buy">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 id="premium-buy" className="font-serif text-[18px]">
+                  <h3 id="premium-buy" className="font-display text-[18px]">
                     {offer.recurring ? t("Premium abonnieren", "Subscribe to premium") : t("Premium kaufen", "Buy premium")}
                   </h3>
                   <div className="flex items-baseline gap-2">
@@ -303,7 +303,7 @@ function PremiumDialog() {
 
           {offer ? (
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h3 className="font-serif text-[18px]">{t("Mit Kaufvertrag", "With a purchase contract")}</h3>
+              <h3 className="font-display text-[18px]">{t("Mit Kaufvertrag", "With a purchase contract")}</h3>
               <div className="flex items-baseline gap-2">
                 <span className="font-display text-[34px] leading-none">{t("0 €", "€0")}</span>
                 <span className="text-[13.5px] text-muted">{t(`für ${months} Monate`, `for ${months} months`)}</span>
@@ -342,7 +342,7 @@ function PremiumDialog() {
                       {state === "done" ? <Check className="size-3.5" strokeWidth={2.6} aria-label={t("erledigt", "done")} /> : i + 1}
                     </span>
                     <div className="min-w-0">
-                      <div className={cn("font-serif text-[16.5px] leading-snug", state === "next" && "text-muted")}>
+                      <div className={cn("font-display text-[16.5px] leading-snug", state === "next" && "text-muted")}>
                         {i === 2 && step === "review" ? t("Prüfung läuft", "Under review") : head}
                       </div>
                       <div className="text-[13.5px] text-muted">
@@ -396,7 +396,7 @@ function PremiumDialog() {
 export function PremiumBanner({ reason, title, children }: { reason: LockReason; title: ReactNode; children: ReactNode }) {
   const { openUpgrade, months, offer } = usePlan();
   return (
-    <div className="night-band relative overflow-hidden rounded-[8px] px-6 py-6 sm:px-8 sm:py-7">
+    <div className="night-band relative overflow-hidden rounded-panel px-6 py-6 sm:px-8 sm:py-7">
       <span className="pointer-events-none absolute -top-28 -right-20 size-72 rounded-full bg-[radial-gradient(circle,rgba(228,196,134,0.2),transparent_65%)]" aria-hidden />
       <div className="relative flex flex-wrap items-center justify-between gap-x-10 gap-y-5">
         <div className="max-w-2xl min-w-0">

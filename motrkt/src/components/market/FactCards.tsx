@@ -102,7 +102,7 @@ function OptionPicker({ variant, picked, onPick }: { variant: Variant; picked: s
                 <span
                   aria-hidden
                   className={cn(
-                    "flex size-[18px] shrink-0 items-center justify-center rounded-[3px] border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-gold/50",
+                    "flex size-[18px] shrink-0 items-center justify-center rounded-box border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-gold/50",
                     on ? "border-accent-fill bg-accent-fill text-on-accent" : "border-line-2",
                   )}
                 >

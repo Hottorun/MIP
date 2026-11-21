@@ -220,8 +220,8 @@ export default function Buy() {
       <header className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         <div className="max-w-2xl">
           <div className="text-[11px] font-medium tracking-[0.18em] text-gold uppercase">{t("Marktplatz", "Marketplace")}</div>
-          <h1 className="mt-2 font-display text-[44px] leading-[1.05] sm:text-[56px]">{t("Kaufen", "Buy")}</h1>
-          <p className="mt-3 font-serif text-[17px] leading-relaxed text-muted italic">
+          <h1 className="mt-2 font-display text-heading text-[44px] leading-[1.05] sm:text-[56px]">{t("Kaufen", "Buy")}</h1>
+          <p className="mt-3 font-display text-[17px] leading-relaxed text-muted italic">
             {t(
               "Jedes Angebot im Vergleich zum fairen Marktwert, bereinigt um Zustand und Laufleistung.",
               "Every listing set against its fair market value, adjusted for condition and mileage.",
@@ -236,7 +236,7 @@ export default function Buy() {
             [t("Modelle", "Models"), num(modelsListed)],
           ].map(([k, val]) => (
             <div key={k} className="px-4 first:pl-0 last:pr-0 sm:px-7">
-              <dd className="font-serif text-[30px] leading-none tabular-nums sm:text-[34px]">{val}</dd>
+              <dd className="font-display text-[30px] leading-none tabular-nums sm:text-[34px]">{val}</dd>
               <dt className="mt-2 text-[10.5px] tracking-[0.1em] whitespace-nowrap text-muted uppercase sm:text-[11px] sm:tracking-[0.12em]">{k}</dt>
             </div>
           ))}
@@ -244,7 +244,7 @@ export default function Buy() {
       </header>
 
       <div className="z-20 -mx-5 lg:sticky lg:top-[72px] px-5 py-2 backdrop-blur-sm sm:-mx-8 sm:px-8" style={{ background: "color-mix(in srgb, var(--color-bg) 88%, transparent)" }}>
-        <div className="rounded-[3px] border border-line bg-panel px-4 py-3 text-[14px] shadow-[0_1px_0_rgba(31,29,26,0.03)]">
+        <div className="rounded-box border border-line bg-panel px-4 py-3 text-[14px] shadow-[0_1px_0_rgba(31,29,26,0.03)]">
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <div className="flex w-full items-center gap-2 sm:w-64">
               <Search className="size-4 shrink-0 text-faint" strokeWidth={1.5} />
@@ -343,7 +343,7 @@ export default function Buy() {
           </span>
         )}
         <span className="ml-auto text-[13px] text-muted">
-          <span className="font-serif text-[16px] text-ink tabular-nums">{num(filtered.length)}</span> {t("Inserate", "listings")}
+          <span className="font-display text-[16px] text-ink tabular-nums">{num(filtered.length)}</span> {t("Inserate", "listings")}
           {topDeals > 0 && (
             <>
               {" · "}
@@ -401,22 +401,22 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
   const d = dealLabel(e.deal);
   const badge =
     e.deal === null ? null : d.tone === "up" ? (
-      <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-up shadow-sm">{t(`${pct(-e.deal, { digits: 0, signed: false })} unter Marktwert`, `${pct(-e.deal, { digits: 0, signed: false })} below value`)}</span>
+      <span className="rounded-tag bg-bg/95 px-2 py-1 text-[11.5px] text-up shadow-sm">{t(`${pct(-e.deal, { digits: 0, signed: false })} unter Marktwert`, `${pct(-e.deal, { digits: 0, signed: false })} below value`)}</span>
     ) : d.tone === "down" ? (
-      <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-down shadow-sm">{t(`${pct(e.deal, { digits: 0, signed: false })} über Marktwert`, `${pct(e.deal, { digits: 0, signed: false })} above value`)}</span>
+      <span className="rounded-tag bg-bg/95 px-2 py-1 text-[11.5px] text-down shadow-sm">{t(`${pct(e.deal, { digits: 0, signed: false })} über Marktwert`, `${pct(e.deal, { digits: 0, signed: false })} above value`)}</span>
     ) : (
-      <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-muted shadow-sm">{d.label}</span>
+      <span className="rounded-tag bg-bg/95 px-2 py-1 text-[11.5px] text-muted shadow-sm">{d.label}</span>
     );
   return (
     <article className="group cursor-pointer" onClick={onOpen} tabIndex={0} role="button" onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onOpen(); } }}>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-[3px] bg-panel-3">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-box bg-panel-3">
         <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         {(badge || isReduced(l)) && (
           <div className="absolute top-3 left-3 flex flex-col items-start gap-1">
             {badge}
             {isReduced(l) && (
-              <span className="rounded-[2px] bg-bg/95 px-2 py-1 text-[11.5px] text-up shadow-sm">
+              <span className="rounded-tag bg-bg/95 px-2 py-1 text-[11.5px] text-up shadow-sm">
                 {t(`Preis ${pct(-l.priceChange!, { digits: 0, signed: false })} gesenkt`, `Price cut ${pct(-l.priceChange!, { digits: 0, signed: false })}`)}
               </span>
             )}
@@ -438,7 +438,7 @@ function ListingCard({ e, saved, onSave, onOpen }: { e: Enriched; saved: boolean
       <div className="mt-4 text-[11px] tracking-[0.1em] text-faint uppercase">
         {l.year} · {km(l.mileage)}
       </div>
-      <h3 className="mt-1 truncate font-serif text-[18px] leading-snug decoration-line-2 underline-offset-4 group-hover:underline">{variantTitle(v, { brand: false })}</h3>
+      <h3 className="mt-1 truncate font-display text-[18px] leading-snug decoration-line-2 underline-offset-4 group-hover:underline">{variantTitle(v, { brand: false })}</h3>
       <div className="mt-2 flex items-baseline justify-between gap-3 border-t border-line pt-2">
         <AskPrice l={l} className="text-[17px]" />
         <span className="min-w-0 truncate text-[13px] text-muted">
@@ -694,7 +694,7 @@ function ModelMenu({
     setOpen(false);
   };
   const row = (active: boolean, n: number) =>
-    cn("flex w-full items-baseline justify-between gap-3 rounded-[2px] px-2 py-1 text-left text-[14px] transition-colors", active ? "bg-ink text-bg" : n === 0 ? "text-faint hover:bg-panel-2" : "text-ink hover:bg-panel-2");
+    cn("flex w-full items-baseline justify-between gap-3 rounded-tag px-2 py-1 text-left text-[14px] transition-colors", active ? "bg-ink text-bg" : n === 0 ? "text-faint hover:bg-panel-2" : "text-ink hover:bg-panel-2");
   return (
     <div ref={ref} className="relative">
       <button className={cn(barSelect, "inline-flex items-center gap-1.5")} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="true">
@@ -702,7 +702,7 @@ function ModelMenu({
         <ChevronDown className={cn("size-3.5 text-muted transition-transform", open && "rotate-180")} strokeWidth={1.5} />
       </button>
       {open && (
-        <div className="absolute top-full left-0 z-30 mt-4 w-[min(640px,calc(100vw-48px))] rounded-[3px] border border-line bg-bg p-4 shadow-lg">
+        <div className="absolute top-full left-0 z-30 mt-4 w-[min(640px,calc(100vw-48px))] rounded-box border border-line bg-bg p-4 shadow-lg">
           <button className={cn(row(!value, total), "mb-3 w-auto")} onClick={() => pick("")}>
             {t("Alle Modelle", "All models")} <span className={cn("tabular-nums text-[12px]", !value ? "text-bg/70" : "text-faint")}>{num(total)}</span>
           </button>

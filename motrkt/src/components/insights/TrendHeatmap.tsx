@@ -76,7 +76,7 @@ export function TrendHeatmap() {
             {rows.map(({ v, m, cells }) => (
               <tr key={v.id} className="group cursor-pointer" onClick={() => navigate(`/markt/${v.id}`)}>
                 <td className="max-w-64 truncate pr-2 whitespace-nowrap group-hover:text-accent">
-                  <Link to={`/markt/${v.id}`} onClick={(e) => e.stopPropagation()} className="truncate font-serif text-[13.5px]">
+                  <Link to={`/markt/${v.id}`} onClick={(e) => e.stopPropagation()} className="truncate font-display text-[13.5px]">
                     {variantTitle(v, { brand: false })}
                   </Link>
                 </td>

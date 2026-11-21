@@ -37,7 +37,7 @@ export default function Credits() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-serif text-3xl">{t("Bildnachweise & Quellen", "Image credits & sources")}</h1>
+          <h1 className="font-display text-heading text-3xl">{t("Bildnachweise & Quellen", "Image credits & sources")}</h1>
           <p className="mt-1 text-sm text-muted">
             {t(
               `${stats.photos} Fotos von Porsche, Fachmagazinen und Fotografen · ${stats.colors} recherchierte Präsentationsfarben · ${stats.specs} Varianten mit belegten Spezifikationen`,

@@ -62,7 +62,7 @@ export function SectionNav({ items, deps }: { items: NavItem[]; deps?: unknown }
             }}
             aria-current={active === i.id ? "location" : undefined}
             className={cn(
-              "shrink-0 rounded-[3px] px-2.5 py-1.5 text-[13.5px] whitespace-nowrap transition-colors",
+              "shrink-0 rounded-box px-2.5 py-1.5 text-[13.5px] whitespace-nowrap transition-colors",
               active === i.id ? "bg-accent-fill text-on-accent" : "text-muted hover:bg-panel-3 hover:text-ink",
             )}
           >

@@ -34,7 +34,7 @@ export function Listings({ variant, body = null }: { variant: Variant; body?: Bo
                 <ListingPhoto src={l.images?.[0]} alt={l.title} className="size-full" />
               </div>
               <div className="mt-3 flex items-baseline justify-between gap-4">
-                <span className="truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
+                <span className="truncate font-display text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">
                   {variantTitle(variant, { brand: false })}
                 </span>
                 <AskPrice l={l} className="shrink-0 text-[16px]" />

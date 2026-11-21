@@ -38,7 +38,7 @@ export default function Review() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-[34px] leading-tight">{t("Prüfung der Nutzerfahrzeuge", "Review of user cars")}</h1>
+        <h1 className="font-display text-heading text-[34px] leading-tight">{t("Prüfung der Nutzerfahrzeuge", "Review of user cars")}</h1>
         <p className="mt-1 text-[14px] text-muted">
           {t(
             `Angaben mit dem Kaufvertrag vergleichen. Freigeben schaltet dem Nutzer Premium frei; ein Kaufpreis geht in die nächste Marktwert-Berechnung (nachts) ein, ein Gutachtenwert nicht. Beide Entscheidungen löschen das Dokument, und ohne Entscheidung wird es ${DOCUMENT_HOURS} Stunden nach dem Hochladen gelöscht: dann muss der Nutzer es erneut hochladen. Jedes Öffnen wird mit Ihrem Namen protokolliert; Dokumente bitte nicht speichern, drucken oder weitergeben.`,
@@ -93,7 +93,7 @@ function ReportedPosts() {
         {posts.map((p) => (
           <li key={p.id} className="space-y-1 py-3">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <Link to={`/markt/${p.variant}?thema=${p.topic}#forum`} className="font-serif text-[16px] hover:underline">
+              <Link to={`/markt/${p.variant}?thema=${p.topic}#forum`} className="font-display text-[16px] hover:underline">
                 {p.title}
               </Link>
               <span className="text-[12.5px] text-muted">

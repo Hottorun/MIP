@@ -190,7 +190,7 @@ function Kpi({ label, value, delta, note }: { label: string; value: ReactNode; d
   return (
     <div className="min-w-0 border-t border-line pt-3">
       <dt className="text-[13px] text-muted">{label}</dt>
-      <dd className="mt-1 font-serif text-[30px] leading-none tabular-nums">{value}</dd>
+      <dd className="mt-1 font-display text-[30px] leading-none tabular-nums">{value}</dd>
       {(delta || note) && (
         <dd className="mt-2 text-[13px] text-muted">
           {delta} {note}
@@ -279,7 +279,7 @@ function HeroKpi({ label, value, delta, note, chart, chartNote, className }: { l
     <div className={cn("flex min-w-0 flex-col justify-between gap-4", className)}>
       <div>
         <dt className="text-[13px] text-muted">{label}</dt>
-        <dd className="mt-2 font-serif text-[36px] leading-none tabular-nums sm:text-[40px]">{value}</dd>
+        <dd className="mt-2 font-display text-[36px] leading-none tabular-nums sm:text-[40px]">{value}</dd>
         {(delta || note) && (
           <dd className="mt-2 text-[12.5px] text-muted">
             {delta} {note}
@@ -347,7 +347,7 @@ function InsightsHero() {
   return (
     <header>
       <div className="eyebrow text-accent">{t(`Marktbericht · Stand ${date(AS_OF)}`, `Market report · as of ${date(AS_OF)}`)}</div>
-      <h1 className="mt-2 font-display text-[44px] leading-tight sm:text-[52px]">Insights</h1>
+      <h1 className="mt-2 font-display text-heading text-[44px] leading-tight sm:text-[52px]">Insights</h1>
       <p className="mt-1 max-w-3xl text-[14.5px] leading-relaxed text-muted">
         {t(
           `Wertentwicklung, Auktionsgeschehen und was den Preis bestimmt, berechnet aus ${measured} bewerteten Varianten und allen erfassten Auktionsergebnissen.`,
@@ -476,7 +476,7 @@ function KeyFindings() {
               <span className="text-[11.5px] font-semibold tabular-nums text-accent">{String(i + 1).padStart(2, "0")}</span>
               <span className="eyebrow text-muted">{it.kicker}</span>
             </span>
-            <span className="font-serif text-[32px] leading-tight tabular-nums">{it.value}</span>
+            <span className="font-display text-[32px] leading-tight tabular-nums">{it.value}</span>
             <span className="text-[13.5px] leading-snug text-muted">{it.text}</span>
             <span className="mt-auto flex items-center gap-1 pt-1 text-[12.5px] text-ink/60 transition-colors group-hover:text-accent">
               {t("Zum Kapitel", "Go to chapter")} {chapter(it.id)} <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -522,7 +522,7 @@ function MarketTrend() {
       <Card
         title={
           <span className="flex items-baseline gap-3">
-            <span className={cn("font-serif text-[26px] tabular-nums", trendClass(change))}>{pct(change)}</span>
+            <span className={cn("font-display text-[26px] tabular-nums", trendClass(change))}>{pct(change)}</span>
             <span className="text-[13px] font-normal text-muted">{t(`seit ${date(data[0]?.t ?? AS_OF)}`, `since ${date(data[0]?.t ?? AS_OF)}`)}</span>
           </span>
         }
@@ -655,8 +655,8 @@ function Movers() {
           const value = metric === "12m" ? m.change12m : m.cagr5;
           return (
             <li key={v.id}>
-              <Link to={`/markt/${v.id}`} className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-[2px] px-2 py-2.5 transition-colors hover:bg-panel-2 sm:grid-cols-[1.25rem_minmax(0,1fr)_88px_4.5rem]">
-                <span className={cn("font-serif text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
+              <Link to={`/markt/${v.id}`} className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-tag px-2 py-2.5 transition-colors hover:bg-panel-2 sm:grid-cols-[1.25rem_minmax(0,1fr)_88px_4.5rem]">
+                <span className={cn("font-display text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
                 <span className="min-w-0">
                   <span className="block truncate text-[14.5px]">{variantTitle(v)}</span>
                   <span className="text-[12.5px] text-muted tabular-nums">{eur(m.value, { compact: true })}</span>
@@ -712,7 +712,7 @@ function HiddenGems() {
   // with the lite data (no value histories, src/lib/plan.tsx) there is nothing to find: the chapter keeps its
   // heading in the locked preview all the same
   const lock = useLock();
-  if (!gems.length) return lock ? <Section eyebrow={chapterLabel("geheimtipps")} title={t("Geheimtipps", "Hidden gems")} sub={t("Varianten, die unter ihrem langfristigen Wertetrend liegen, aber wieder zulegen.", "Variants trading below their long-term value trend that are gaining again.")}><div className="h-40 rounded-[4px] bg-panel-2" /></Section> : null;
+  if (!gems.length) return lock ? <Section eyebrow={chapterLabel("geheimtipps")} title={t("Geheimtipps", "Hidden gems")} sub={t("Varianten, die unter ihrem langfristigen Wertetrend liegen, aber wieder zulegen.", "Variants trading below their long-term value trend that are gaining again.")}><div className="h-40 rounded-card bg-panel-2" /></Section> : null;
   const shown = all ? gems : gems.slice(0, 6);
   const top = gems[0];
   const topV = variantById.get(top.id)!;
@@ -738,16 +738,16 @@ function HiddenGems() {
           return (
             <li key={g.id} className="border-t border-line first:border-t-0 lg:[&:nth-child(2)]:border-t-0">
               <Link to={`/markt/${g.id}`} className="group grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 py-4 sm:grid-cols-[1.5rem_minmax(0,1fr)_170px_auto]">
-                <span className={cn("font-serif text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
+                <span className={cn("font-display text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
                 <span className="min-w-0">
-                  <span className="block font-serif text-[16px] leading-snug transition-colors group-hover:text-accent sm:truncate">{variantTitle(v)}</span>
+                  <span className="block font-display text-[16px] leading-snug transition-colors group-hover:text-accent sm:truncate">{variantTitle(v)}</span>
                   <span className="text-[12.5px] text-muted tabular-nums">
                     {eur(g.value, { compact: true })} · {t(`${g.sold24} Verkäufe in 2 Jahren`, `${g.sold24} sales in 2 years`)}
                   </span>
                 </span>
                 <MiniChart values={g.spark.map((p) => p.value)} trend={g.spark.map((p) => p.trend)} format={(v) => eur(v, { compact: true })} height={48} className="my-2 hidden sm:block" />
                 <span className="text-right">
-                  <span className="block font-serif text-[20px] leading-none tabular-nums text-accent">{pct(g.gap, { digits: 0 })}</span>
+                  <span className="block font-display text-[20px] leading-none tabular-nums text-accent">{pct(g.gap, { digits: 0 })}</span>
                   <span className="mt-1 block text-[11.5px] whitespace-nowrap text-muted">
                     {t("unter Trend", "below trend")} · <span className="text-up">{pct(g.change3m)}</span> {t("3 Mon.", "3 mo.")}
                   </span>
@@ -802,12 +802,12 @@ function TopSellers() {
                 to={`/markt/${r.id}`}
                 className="group grid grid-cols-[1.5rem_minmax(0,1fr)_3rem] items-center gap-x-4 gap-y-1.5 py-2.5 sm:grid-cols-[1.5rem_minmax(0,16rem)_minmax(0,1fr)_3rem_9rem]"
               >
-                <span className={cn("font-serif text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
-                <span className="min-w-0 font-serif text-[15.5px] leading-snug transition-colors group-hover:text-accent sm:truncate">{variantTitle(v)}</span>
+                <span className={cn("font-display text-[18px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>{i + 1}</span>
+                <span className="min-w-0 font-display text-[15.5px] leading-snug transition-colors group-hover:text-accent sm:truncate">{variantTitle(v)}</span>
                 <span className="col-span-3 col-start-2 row-start-2 h-2 rounded-full bg-panel-2 sm:col-span-1 sm:col-start-3 sm:row-start-1">
                   <span className="block h-full rounded-full" style={{ width: `${(r.sold / top[0].sold) * 100}%`, background: ACCENT, opacity: i === 0 ? 1 : 0.75 }} />
                 </span>
-                <span className="text-right font-serif text-[18px] tabular-nums sm:col-start-4">{r.sold}</span>
+                <span className="text-right font-display text-[18px] tabular-nums sm:col-start-4">{r.sold}</span>
                 <span className="hidden text-right text-[12.5px] text-muted tabular-nums sm:block">
                   {t("Median", "Median")} {eur(r.median, { compact: true })} · <span className={trendClass(r.change12m)}>{pct(r.change12m, { digits: 0 })}</span>
                 </span>

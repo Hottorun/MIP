@@ -200,7 +200,7 @@ export default function Models() {
     <div className={cn("space-y-8", compare.length > 0 && "pb-24")}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Modelle", "Models")}</h1>
+          <h1 className="font-display text-heading text-[44px] leading-tight sm:text-[52px]">{t("Modelle", "Models")}</h1>
           <p className="mt-1 text-[14px] text-muted">
             {upcoming
               ? t("Marktdaten in Vorbereitung", "Market data in preparation")
@@ -259,7 +259,7 @@ export default function Models() {
               <div key={c.id} role="group" aria-label={c.label} className="flex flex-wrap items-center gap-1.5 border-l border-line pl-4">
                 <button
                   className={cn(
-                    "mr-1 rounded-[2px] px-1 text-[13px] font-medium transition-colors hover:text-ink",
+                    "mr-1 rounded-tag px-1 text-[13px] font-medium transition-colors hover:text-ink",
                     familyActive ? "font-semibold text-ink" : "text-muted",
                   )}
                   aria-pressed={familyActive}
@@ -400,7 +400,7 @@ export default function Models() {
                     ]
                   : []),
                 <tr key={`h-${s.key}`} className="pointer-events-none">
-                  <td colSpan={9} className="pt-6 pb-2 font-serif text-[17px] font-bold text-ink">
+                  <td colSpan={9} className="pt-6 pb-2 font-display text-[17px] font-bold text-ink">
                     {s.title} {s.sub && <span className="ml-2 font-sans text-[13px] text-muted">{s.sub}</span>}
                   </td>
                 </tr>,
@@ -413,7 +413,7 @@ export default function Models() {
                         <Star className={cn("size-3.5", watchlist.includes(v.id) && "fill-current")} />
                       </button>
                     </td>
-                    <td className="font-serif font-bold">{variantTitle(v, { gen: false })}</td>
+                    <td className="font-display font-bold">{variantTitle(v, { gen: false })}</td>
                     <td className="text-muted">{yearsLabel(v.years)}</td>
                     <td className="text-right tabular-nums text-muted">{num(v.production)}</td>
                     <td className="text-right">
@@ -438,7 +438,7 @@ export default function Models() {
 
       {compare.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-30 flex justify-center px-4 pb-5">
-          <div className="animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 rounded-[3px] border border-line bg-panel px-5 py-3 shadow-[0_20px_50px_-20px_rgba(20,20,20,0.3)]">
+          <div className="animate-fade-in flex w-full max-w-4xl flex-wrap items-center gap-2 rounded-box border border-line bg-panel px-5 py-3 shadow-[0_20px_50px_-20px_rgba(20,20,20,0.3)]">
             <GitCompare className="size-4 text-muted" strokeWidth={1.5} />
             <span className="text-[14px] text-muted">
               {t("Vergleich", "Comparison")} ({compare.length}/{MAX_COMPARE})
@@ -544,7 +544,7 @@ function BrandTeaser({ brand, onBack }: { brand: UpcomingBrand; onBack: () => vo
         <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-gold">{t("Demnächst", "Coming soon")}</p>
         <h2 className="mt-3 font-display text-[54px] leading-[1.02] sm:text-[72px]">{brand.name}</h2>
         <p className="mt-2 text-[14px] text-muted">{brand.origin}</p>
-        <p className="mt-7 max-w-xl font-serif text-[18px] leading-[1.65] text-ink/90">{brand.intro}</p>
+        <p className="mt-7 max-w-xl font-display text-[18px] leading-[1.65] text-ink/90">{brand.intro}</p>
         <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-muted">
           {t(
             `Marktwerte für ${brand.name} entstehen nach demselben Verfahren wie bei Porsche: aus echten Auktionsergebnissen, Variante für Variante belegt. Bis dahin bleibt die Modellliste bei Porsche.`,
@@ -560,7 +560,7 @@ function BrandTeaser({ brand, onBack }: { brand: UpcomingBrand; onBack: () => vo
         <p className="text-[13px] text-muted">{t("Geplant, unter anderem", "Planned, among others")}</p>
         <ul className="mt-3 border-t border-line">
           {brand.icons.map((name) => (
-            <li key={name} className="border-b border-line py-3.5 font-serif text-[20px] text-ink/75">
+            <li key={name} className="border-b border-line py-3.5 font-display text-[20px] text-ink/75">
               {name}
             </li>
           ))}
@@ -583,7 +583,7 @@ function CategoryHeading({ category, first }: { category: ModelCategory; first: 
 function SectionHeading({ section }: { section: Section }) {
   return (
     <div className="mb-5 flex items-baseline gap-3 border-b border-line pb-2">
-      <h3 className="font-serif text-[24px] leading-tight font-bold text-ink">{section.title}</h3>
+      <h3 className="font-display text-[24px] leading-tight font-bold text-ink">{section.title}</h3>
       {section.sub && <span className="text-[13px] text-muted">{section.sub}</span>}
       <span className="ml-auto text-[13px] text-muted">
         {section.items.length} {section.items.length === 1 ? t("Variante", "variant") : t("Varianten", "variants")}
@@ -632,7 +632,7 @@ function VariantCard({
       onKeyDown={(e) => e.key === "Enter" && e.target === e.currentTarget && onOpen()}
       className="group cursor-pointer"
     >
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden rounded-card">
         <CarImage variant={v} scene="studio" className="block aspect-video w-full" label={variantTitle(v)} />
         <button
           onClick={(e) => {
@@ -650,7 +650,7 @@ function VariantCard({
         </button>
       </div>
       <div className="mt-3 flex items-baseline justify-between gap-3">
-        <span className="min-w-0 truncate font-serif text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false, gen: false })}</span>
+        <span className="min-w-0 truncate font-display text-[16.5px] font-bold group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false, gen: false })}</span>
         {v.measured ? <ListValue v={v} value={m.value} compact className="shrink-0 text-[16px]" /> : <FewValue v={v} compact className="shrink-0 text-[16px]" />}
       </div>
       <div className="mt-0.5 flex items-baseline justify-between gap-3 text-[13px] text-muted">

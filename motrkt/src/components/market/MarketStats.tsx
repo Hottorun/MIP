@@ -214,8 +214,8 @@ export function MarketStats({ variant, body = null }: { variant: Variant; body?:
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="min-w-0 rounded-[4px] border border-line bg-panel px-5 pt-5 pb-5">
-      <h3 className="mb-5 font-serif text-[20px] leading-tight">{title}</h3>
+    <div className="min-w-0 rounded-card border border-line bg-panel px-5 pt-5 pb-5">
+      <h3 className="mb-5 font-display text-[20px] leading-tight">{title}</h3>
       {children}
     </div>
   );

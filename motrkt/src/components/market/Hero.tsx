@@ -122,7 +122,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
   return (
     <div className="lg:sticky lg:top-[112px] lg:self-start">
       <p className="text-[14px] text-muted">{lineage}</p>
-      <h1 className="mt-1 font-display text-[44px] leading-[1.05] sm:text-[52px]">{variantName(variant)}</h1>
+      <h1 className="mt-1 font-display text-heading text-[44px] leading-[1.05] sm:text-[52px]">{variantName(variant)}</h1>
       <p className="mt-2 text-[16px] text-muted">{yearsLabel(variant.years)}</p>
       <BodySwitch variant={variant} body={body} onBody={onBody} />
 
@@ -143,7 +143,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
         actions
       ) : null}
       {!variant.measured || (spread && !picked.length) ? null : (
-      <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+      <div className="relative mt-8 overflow-hidden rounded-panel border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
         <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
         <div className="text-[13px] text-muted">
           {picked.length
@@ -208,7 +208,7 @@ function Summary({ variant, picked, body, onBody }: { variant: Variant; picked: 
       )}
 
       <Locked reason="profile" height={210} className="mt-8">
-        <p className={cn("font-serif text-[16px] leading-[1.7] text-ink/90", !lite && "mt-8")}>{m.thesis}</p>
+        <p className={cn("font-display text-[16px] leading-[1.7] text-ink/90", !lite && "mt-8")}>{m.thesis}</p>
 
         <dl className="mt-8 border-t border-line text-[14px]">
           {facts.map(([k, v]) => (
@@ -299,7 +299,7 @@ function Gallery({ variant }: { variant: Variant }) {
           draggable={false}
           className={cn(slideIn(dir), "size-full", photo.ratio == null || fillsFrame(photo.ratio, ratio) ? "object-cover" : "object-contain")}
         />
-        {photo.premiere && <span className="absolute top-4 left-4 rounded-[2px] bg-bg/90 px-2.5 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
+        {photo.premiere && <span className="absolute top-4 left-4 rounded-tag bg-bg/90 px-2.5 py-1 text-[12.5px] text-ink">{t("Vorstellung", "Launch")}</span>}
         {n > 1 && (
           <>
             <button onClick={() => go(-1)} className={cn(arrowBtn, "left-4")} aria-label={t("Vorheriges Bild", "Previous image")}>
@@ -313,7 +313,7 @@ function Gallery({ variant }: { variant: Variant }) {
       </div>
       <div className="mt-4 flex items-start justify-between gap-6">
         <figcaption className="min-w-0">
-          <div className="font-serif text-[14.5px] text-ink/85 italic">{photoCaption(photo.caption) ?? variantTitle(variant)}</div>
+          <div className="font-display text-[14.5px] text-ink/85 italic">{photoCaption(photo.caption) ?? variantTitle(variant)}</div>
           <PhotoCredit photo={photo} className="mt-0.5 text-[12px] text-faint" />
         </figcaption>
         {n > 1 && (
@@ -370,7 +370,7 @@ function IllustratedGallery({ variant }: { variant: Variant }) {
         </button>
       </div>
       <figcaption className="mt-4 flex justify-between gap-6">
-        <span className="font-serif text-[14.5px] text-ink/85 italic">
+        <span className="font-display text-[14.5px] text-ink/85 italic">
           {GALLERY[index].caption}. {t("Illustration, kein offizielles Herstellerfoto verfügbar.", "Illustration, no official manufacturer photo available.")}
         </span>
         <span className="shrink-0 text-[13px] text-faint tabular-nums">
@@ -493,7 +493,7 @@ function SpreadValue({ variant, spread, value, change, label, lite, children }: 
   const round = (v: number) => Math.round(v / 1000) * 1000;
   const early = variant.years[0] < EARLY_CLASSIC_BEFORE;
   return (
-    <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+    <div className="relative mt-8 overflow-hidden rounded-panel border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
         <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
       <div className="text-[13px] text-muted">{label}</div>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -610,7 +610,7 @@ function NoValue({ variant }: { variant: Variant }) {
   const span = mid ? (mid.from === mid.to ? String(mid.from) : `${mid.from}–${mid.to}`) : "";
   if (mid)
     return (
-      <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+      <div className="relative mt-8 overflow-hidden rounded-panel border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
         <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
         <div className="text-[13px] text-muted">
           {mid.n === 1 ? t("Bisher erzielter Zuschlag", "Hammer price achieved so far") : t("Mittlerer Zuschlag", "Median hammer price")}
@@ -630,10 +630,10 @@ function NoValue({ variant }: { variant: Variant }) {
       </div>
     );
   return (
-    <div className="relative mt-8 overflow-hidden rounded-[6px] border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
+    <div className="relative mt-8 overflow-hidden rounded-panel border border-accent/25 bg-[linear-gradient(135deg,var(--color-accent-soft)_0%,var(--color-panel)_70%)] px-5 pt-5 pb-5 sm:px-6">
         <span className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,var(--color-accent),var(--color-gold))]" aria-hidden />
       <div className="text-[13px] text-muted">{t("Marktwert Deutschland", "Market value, Germany")}</div>
-      <div className="mt-1 font-serif text-[28px] leading-tight">{t("Keine belastbare Datenbasis", "Not enough data")}</div>
+      <div className="mt-1 font-display text-[28px] leading-tight">{t("Keine belastbare Datenbasis", "Not enough data")}</div>
       <p className="mt-2 text-[13px] text-faint">
         {n === 0
           ? t(
@@ -654,13 +654,13 @@ function BodySwitch({ variant, body, onBody }: { variant: Variant } & BodyProps)
   const choices = bodyChoices(variant);
   if (choices.length === 0) return null;
   return (
-    <div className="mt-5 inline-flex flex-wrap rounded-[3px] border border-line p-0.5 text-[13.5px]" role="group" aria-label={t("Karosserie", "Body style")}>
+    <div className="mt-5 inline-flex flex-wrap rounded-box border border-line p-0.5 text-[13.5px]" role="group" aria-label={t("Karosserie", "Body style")}>
       {[null, ...choices].map((b) => (
         <button
           key={b ?? "all"}
           aria-pressed={body === b}
           onClick={() => onBody(b)}
-          className={cn("rounded-[2px] px-3.5 py-1.5 transition-colors", body === b ? "bg-accent-fill text-on-accent" : "text-muted hover:text-ink")}
+          className={cn("rounded-tag px-3.5 py-1.5 transition-colors", body === b ? "bg-accent-fill text-on-accent" : "text-muted hover:text-ink")}
         >
           {b ? tr(b) : t("Alle", "All")}
         </button>

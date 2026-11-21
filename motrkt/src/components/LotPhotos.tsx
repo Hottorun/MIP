@@ -61,10 +61,10 @@ export function LotGallery({ url, house, image }: { url?: string; house: string;
     </a>
   );
 
-  if (lot && photos === null) return <div className="mb-5 aspect-[4/3] w-full animate-pulse rounded-[3px] bg-line/40" aria-label={t("Fotos werden geladen", "Loading photos")} />;
+  if (lot && photos === null) return <div className="mb-5 aspect-[4/3] w-full animate-pulse rounded-box bg-line/40" aria-label={t("Fotos werden geladen", "Loading photos")} />;
   if ((!lot && !own) || !shown.length)
     return (
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-[3px] border border-line px-4 py-3 text-[13px] text-muted">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-box border border-line px-4 py-3 text-[13px] text-muted">
         <span>
           {lot
             ? t(`Fotos dieses Fahrzeugs gibt es auf der Seite von ${house}.`, `Photos of this car are on the ${house} page.`)
@@ -78,7 +78,7 @@ export function LotGallery({ url, house, image }: { url?: string; house: string;
   const drop = (p: string) => setBroken((b) => new Set(b).add(p));
   return (
     <figure className="mb-5">
-      <div className="relative overflow-hidden rounded-[3px] bg-line/30">
+      <div className="relative overflow-hidden rounded-box bg-line/30">
         <img
           key={shown[i]}
           src={shown[i]}
@@ -95,7 +95,7 @@ export function LotGallery({ url, house, image }: { url?: string; house: string;
             <button className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/45 p-1.5 text-white hover:bg-black/65" onClick={() => go(1)} aria-label={t("Nächstes Foto", "Next photo")}>
               <ChevronRight className="size-4" />
             </button>
-            <span className="absolute right-2 bottom-2 rounded-[2px] bg-black/50 px-1.5 py-0.5 text-[11px] text-white tabular-nums">
+            <span className="absolute right-2 bottom-2 rounded-tag bg-black/50 px-1.5 py-0.5 text-[11px] text-white tabular-nums">
               {i + 1} / {shown.length}
             </span>
           </>
@@ -104,7 +104,7 @@ export function LotGallery({ url, house, image }: { url?: string; house: string;
       {shown.length > 1 && (
         <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1">
           {shown.map((p, k) => (
-            <button key={p} onClick={() => setIndex(k)} className={cn("shrink-0 overflow-hidden rounded-[2px] border", k === i ? "border-gold" : "border-transparent opacity-70 hover:opacity-100")} aria-label={t(`Foto ${k + 1}`, `Photo ${k + 1}`)}>
+            <button key={p} onClick={() => setIndex(k)} className={cn("shrink-0 overflow-hidden rounded-tag border", k === i ? "border-gold" : "border-transparent opacity-70 hover:opacity-100")} aria-label={t(`Foto ${k + 1}`, `Photo ${k + 1}`)}>
               <img src={p} alt="" loading="lazy" referrerPolicy="no-referrer" className="h-12 w-16 object-cover" onError={() => drop(p)} />
             </button>
           ))}
@@ -138,7 +138,7 @@ export function LotThumb({ url, house, image, small = false, link = true }: { ur
     // in the results table an empty slot of the same width keeps the car names in line
     return small ? <span className="block h-9 w-12 shrink-0" aria-hidden /> : null;
   return (
-    <span ref={ref} className={cn("block shrink-0 overflow-hidden rounded-[2px] bg-line/30", small ? "h-9 w-12" : "h-14 w-20 sm:h-16 sm:w-24")}>
+    <span ref={ref} className={cn("block shrink-0 overflow-hidden rounded-tag bg-line/30", small ? "h-9 w-12" : "h-14 w-20 sm:h-16 sm:w-24")}>
       {photo &&
         !broken &&
         (link ? (

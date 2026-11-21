@@ -680,30 +680,28 @@ const LOGIN_PAGE = `<!doctype html>
 <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
 <link rel="icon" href="/favicon-32.png?v=3" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
-<link rel="preload" href="/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-<meta name="theme-color" content="#10272b" />
+<link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<meta name="theme-color" content="#0d2327" />
 <title>Anmelden – Carbay</title>
 <style>
-  @font-face { font-family:"Instrument Sans"; font-style:normal; font-weight:400 700; font-display:swap; src:url(/fonts/instrument-sans-latin-ext-wght-normal.woff2) format("woff2");
+  @font-face { font-family:"Geist"; font-style:normal; font-weight:100 900; font-display:swap; src:url(/fonts/geist-latin-ext-wght-normal.woff2) format("woff2");
     unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-  @font-face { font-family:"Instrument Sans"; font-style:normal; font-weight:400 700; font-display:swap; src:url(/fonts/instrument-sans-latin-wght-normal.woff2) format("woff2");
-    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-  @font-face { font-family:"Source Serif 4"; font-style:italic; font-weight:200 900; font-display:swap; src:url(/fonts/source-serif-4-latin-opsz-italic.woff2) format("woff2");
+  @font-face { font-family:"Geist"; font-style:normal; font-weight:100 900; font-display:swap; src:url(/fonts/geist-latin-wght-normal.woff2) format("woff2");
     unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
   /* the app's colours (src/index.css). Wide screens: the photo across the whole page (Porsche tower above, Carrera GT
      below), the claim on the left over a petrol veil, the form card on the right. Narrow screens: photo head, form below. */
-  :root { --bg:#f6f4ef; --panel:#fcfbf8; --field:#ffffff; --line:#e0dbd2; --line2:#c6bfb3; --ink:#1f1d1a; --muted:#5e5952; --faint:#8b847a;
-          --accent:#16363c; --accent2:#0e2529; --on-accent:#f6f4ef; --night:16 39 43; --gold:#d3ad66; --gold-line:#c9a35e; --on-night:#f3efe6; --down:#a33a2b; }
+  :root { --bg:#f1f5f4; --panel:#ffffff; --field:#ffffff; --line:#d8e3e0; --line2:#b4c8c4; --ink:#0b1d20; --muted:#4a6064; --faint:#71878a;
+          --accent:#0f3a41; --accent2:#0a2a2f; --on-accent:#f1f5f4; --night:10 39 44; --gold:#d3ad66; --gold-line:#c9a35e; --on-night:#f2f4f4; --down:#b0342a; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --bg:#121412; --panel:#161816; --field:#212422; --line:#2f3330; --line2:#4a4f4b; --ink:#eeeae1; --muted:#b4ada1; --faint:#8d877d;
-          --accent:#729da4; --accent2:#9dbcc0; --on-accent:#121412; --night:23 36 39; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
+    :root:not([data-theme="light"]) { --bg:#0b0d0e; --panel:#131617; --field:#191d1e; --line:#252a2c; --line2:#3a4245; --ink:#eef1f2; --muted:#a2acb1; --faint:#7a858b;
+          --accent:#6fb5bf; --accent2:#9ccdd4; --on-accent:#0b0d0e; --night:16 27 29; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
   }
-  :root[data-theme="dark"] { --bg:#121412; --panel:#161816; --field:#212422; --line:#2f3330; --line2:#4a4f4b; --ink:#eeeae1; --muted:#b4ada1; --faint:#8d877d;
-          --accent:#729da4; --accent2:#9dbcc0; --on-accent:#121412; --night:23 36 39; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
+  :root[data-theme="dark"] { --bg:#0b0d0e; --panel:#131617; --field:#191d1e; --line:#252a2c; --line2:#3a4245; --ink:#eef1f2; --muted:#a2acb1; --faint:#7a858b;
+          --accent:#6fb5bf; --accent2:#9ccdd4; --on-accent:#0b0d0e; --night:16 27 29; --gold-line:rgb(211 173 102 / .45); --down:#ee8a7a; }
   * { box-sizing: border-box; }
   [hidden] { display:none !important; }
   html, body { height:100%; }
-  body { margin:0; background:#10272b; color:var(--ink); font:15px/1.5 "Instrument Sans","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  body { margin:0; background:#10272b; color:var(--ink); font:15px/1.5 "Geist","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
   /* The photo is its own layer, fixed to the window: however tall the card gets (sign in or create account), the photo
      keeps its size and crop. */
   .photo { position:fixed; inset:0; background:#10272b url(${LOGIN_PHOTO}) 50% 100% / cover no-repeat; }
@@ -716,27 +714,27 @@ const LOGIN_PAGE = `<!doctype html>
   .logo { margin:0 0 30px; line-height:0; }
   .logo img { height:64px; width:auto; }
   .rule { width:56px; height:1px; background:var(--gold); margin:0 0 22px; }
-  .claim { margin:0 0 12px; font:400 50px/1.06 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; color:#fbf8f1; text-shadow:0 1px 18px rgb(0 0 0 / .25); }
-  .tag { margin:0 0 26px; font:italic 18px/1.45 "Source Serif 4","Iowan Old Style",Georgia,serif; color:rgb(243 239 230 / .8); }
+  .claim { margin:0 0 12px; font:600 50px/1.04 "Geist","Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:-.035em; color:#fbf8f1; text-shadow:0 1px 18px rgb(0 0 0 / .25); }
+  .tag { margin:0 0 26px; font:400 18px/1.45 "Geist","Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:-.01em; color:rgb(243 239 230 / .8); }
   .facts { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:14px; color:rgb(243 239 230 / .88); }
   .facts li { display:flex; align-items:center; gap:10px; }
   .facts li::before { content:""; width:16px; height:1px; background:var(--gold); flex:none; }
-  .guest { display:inline-flex; align-items:center; gap:10px; margin-top:32px; padding:11px 20px; border:1px solid var(--gold); border-radius:4px; color:#fbf8f1; text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.02em; transition:background .15s; }
+  .guest { display:inline-flex; align-items:center; gap:10px; margin-top:32px; padding:11px 20px; border:1px solid var(--gold); border-radius:999px; color:#fbf8f1; text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.02em; transition:background .15s; }
   .guest:hover { background:rgb(201 163 94 / .2); }
   .credit { position:fixed; margin:0; right:20px; bottom:14px; font-size:11px; letter-spacing:.04em; color:rgb(243 239 230 / .55); }
-  .card { display:flex; flex-direction:column; background:var(--panel); color:var(--ink); border-top:2px solid var(--gold-line); box-shadow:0 30px 80px -24px rgb(0 0 0 / .6); }
+  .card { display:flex; flex-direction:column; background:var(--panel); border-radius:16px; overflow:hidden; color:var(--ink); box-shadow:0 30px 80px -24px rgb(0 0 0 / .6); }
   .form { flex:1; display:flex; flex-direction:column; padding:30px 30px 22px; }
   #form { flex:1; display:flex; flex-direction:column; }
-  .form h2 { margin:0 0 4px; font:400 28px/1.15 "Source Serif 4","Iowan Old Style",Georgia,serif; letter-spacing:-.01em; }
+  .form h2 { margin:0 0 4px; font:600 26px/1.15 "Geist","Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:-.03em; }
   .form .sub { margin:0 0 22px; font-size:13.5px; color:var(--muted); }
   .tabs { display:flex; gap:6px; padding:4px; margin:0 0 22px; background:var(--bg); border:1px solid var(--line); border-radius:999px; }
   .tabs button { flex:1; background:none; border:0; border-radius:999px; padding:7px 0; font:inherit; font-size:14px; font-weight:500; color:var(--muted); cursor:pointer; transition:background .15s,color .15s; }
   .tabs button[aria-selected="true"] { background:var(--accent); color:var(--on-accent); }
   label { display:block; font-size:11.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 6px; }
-  input { width:100%; font:inherit; font-size:16px; color:var(--ink); background:var(--field); border:1px solid var(--line2); padding:11px 12px; margin:0 0 4px; border-radius:4px; }
-  input:focus { outline:2px solid var(--accent); outline-offset:-1px; border-color:transparent; }
+  input { width:100%; font:inherit; font-size:16px; color:var(--ink); background:var(--field); border:1px solid var(--line2); padding:11px 12px; margin:0 0 4px; border-radius:8px; }
+  input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
   .hint { font-size:12.5px; color:var(--faint); margin:0 0 16px; min-height:1em; }
-  .submit { width:100%; margin-top:6px; padding:13px; background:var(--accent); color:var(--on-accent); border:0; border-radius:4px; font:inherit; font-size:14px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:background .15s; }
+  .submit { width:100%; margin-top:6px; padding:13px; background:var(--accent); color:var(--on-accent); border:0; border-radius:8px; font:inherit; font-size:15px; font-weight:600; letter-spacing:-.005em; cursor:pointer; transition:background .15s; }
   .submit:hover { background:var(--accent2); }
   .submit:disabled { opacity:.6; cursor:default; }
   .err { color:var(--down); font-size:14px; margin:12px 0 0; min-height:1.2em; }

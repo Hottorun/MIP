@@ -156,7 +156,7 @@ export function HoldingForm({
           )}
         </div>
         {!variant && (
-          <p className="col-span-2 py-2 text-center font-serif text-[15px] text-muted italic">
+          <p className="col-span-2 py-2 text-center font-display text-[15px] text-muted italic">
             {t("Wählen Sie Ihr Fahrzeug, dann folgen Kaufpreis, Datum und Zustand.", "Choose your car; purchase price, date and condition follow.")}
           </p>
         )}

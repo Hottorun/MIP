@@ -123,7 +123,7 @@ function PrivacyBand({ compact = false }: { compact?: boolean }) {
     t("Jede Einreichung können Sie jederzeit selbst löschen.", "You can delete any submission yourself at any time."),
   ];
   return (
-    <aside className={cn("night-band rounded-[4px]", compact ? "p-6" : "p-6 sm:p-9")} aria-label={t("Datenschutz", "Data protection")}>
+    <aside className={cn("night-band rounded-card", compact ? "p-6" : "p-6 sm:p-9")} aria-label={t("Datenschutz", "Data protection")}>
       <div className={cn("flex gap-4", compact ? "flex-col" : "flex-col sm:flex-row sm:items-start sm:gap-6")}>
         <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/10">
           <ShieldCheck className="size-6" strokeWidth={1.5} aria-hidden />
@@ -337,14 +337,14 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
         premium ? (
           <span className="inline-flex items-center gap-2 text-[14px]">
             <Crown className="size-4 text-gold" strokeWidth={1.6} aria-hidden />
-            {t("Premium aktiv bis", "Premium active until")} <span className="font-serif text-[16px]">{date(new Date(premiumUntil!).getTime())}</span>
+            {t("Premium aktiv bis", "Premium active until")} <span className="font-display text-[16px]">{date(new Date(premiumUntil!).getTime())}</span>
           </span>
         ) : undefined
       }
     >
       <div id="melden" ref={top} className="scroll-mt-28 space-y-10">
         {notice && (
-          <div className={cn("flex items-start gap-3 rounded-[3px] border p-4 text-[14.5px]", notice.partial ? "border-down/30 bg-down-soft" : "border-up/30 bg-up-soft")} role={notice.partial ? "alert" : "status"}>
+          <div className={cn("flex items-start gap-3 rounded-box border p-4 text-[14.5px]", notice.partial ? "border-down/30 bg-down-soft" : "border-up/30 bg-up-soft")} role={notice.partial ? "alert" : "status"}>
             <FileCheck2 className={cn("mt-0.5 size-5 shrink-0", notice.partial ? "text-down" : "text-up")} strokeWidth={1.5} aria-hidden />
             <div>
               {notice.partial
@@ -370,9 +370,9 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
         ) : (
           <>
             {from && (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[3px] border border-accent/30 bg-accent-soft px-4 py-3 text-[14.5px]">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-box border border-accent/30 bg-accent-soft px-4 py-3 text-[14.5px]">
                 <span className="min-w-0 flex-1">
-                  {t("Für Ihr Portfolio-Fahrzeug", "For your portfolio car")} <span className="font-serif text-[16px]">{variantTitle(from)}</span>
+                  {t("Für Ihr Portfolio-Fahrzeug", "For your portfolio car")} <span className="font-display text-[16px]">{variantTitle(from)}</span>
                   {t(": Reichen Sie den Kaufvertrag ein. Die bekannten Angaben übernehmen wir.", ": submit its purchase contract. We carry over what we know.")}
                 </span>
                 <button className="inline-flex items-center gap-1 text-[13px] text-muted hover:text-ink" onClick={onPrefillClear}>
@@ -384,7 +384,7 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
               <ContractTile months={months} onStart={start} />
               <BuyTile />
             </div>
-            {offer && <h3 className="!mt-12 font-serif text-[21px]">{t("So geht es mit dem Kaufvertrag", "How the purchase contract works")}</h3>}
+            {offer && <h3 className="!mt-12 font-display text-[21px]">{t("So geht es mit dem Kaufvertrag", "How the purchase contract works")}</h3>}
             <ol className={cn("grid gap-x-10 gap-y-5 sm:grid-cols-3", offer && "!mt-5")}>
               {[
                 [t("Angaben eintragen", "Enter the details"), t("Fahrzeug, Fahrgestellnummer, Preis und Datum, genau wie im Vertrag.", "Car, chassis number, price and date, exactly as in the contract.")],
@@ -396,7 +396,7 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
                     {i + 1}
                   </span>
                   <div>
-                    <div className="font-serif text-[18px] leading-snug">{h}</div>
+                    <div className="font-display text-[18px] leading-snug">{h}</div>
                     <div className="mt-1 text-[14px] text-muted">{b}</div>
                   </div>
                 </li>
@@ -407,13 +407,13 @@ export function UserCarsSection({ prefill, onPrefillClear }: { /** A car of the 
         )}
 
         <div>
-          <h3 className="flex items-baseline gap-2 border-b border-line pb-3 font-serif text-[21px]">
+          <h3 className="flex items-baseline gap-2 border-b border-line pb-3 font-display text-[21px]">
             {t("Meine Einreichungen", "My submissions")}
             {!!cars?.length && <span className="font-sans text-[13px] text-muted">{cars.length}</span>}
           </h3>
           {loadError && <p className="pt-4 text-[14px] text-down">{t("Einreichungen konnten nicht geladen werden.", "Submissions could not be loaded.")}</p>}
           {cars && !cars.length && (
-            <p className="py-8 text-center font-serif text-[15px] text-muted italic">{t("Noch nichts eingereicht.", "Nothing submitted yet.")}</p>
+            <p className="py-8 text-center font-display text-[15px] text-muted italic">{t("Noch nichts eingereicht.", "Nothing submitted yet.")}</p>
           )}
           <ul className="divide-y divide-line">{cars?.map((c) => <CarRow key={c.id} car={c} onChange={() => load(true)} />)}</ul>
         </div>
@@ -454,13 +454,13 @@ function CarRow({ car, onChange }: { car: UserCar; onChange: () => void }) {
   return (
     <li className="flex flex-wrap items-start gap-x-5 gap-y-3 py-5">
       {confirmDialog}
-      {v && <CarImage variant={v} className="hidden aspect-[16/10] w-32 shrink-0 rounded-[2px] sm:block" label={variantTitle(v)} />}
+      {v && <CarImage variant={v} className="hidden aspect-[16/10] w-32 shrink-0 rounded-tag sm:block" label={variantTitle(v)} />}
       <div className="min-w-0 flex-1 basis-64">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
           <Pill tone={appraisal ? "cobalt" : "gold"}>{KIND_LABEL(car.kind)}</Pill>
           <Pill tone={STATUS_TONE(car.status)}>{STATUS_LABEL(car.status, car.kind)}</Pill>
         </div>
-        <div className="mt-1.5 font-serif text-[19px] leading-snug">
+        <div className="mt-1.5 font-display text-[19px] leading-snug">
           {v ? (
             <Link to={`/markt/${v.id}`} className="hover:underline hover:decoration-line-2 hover:underline-offset-4">
               {variantTitle(v)}
@@ -576,7 +576,7 @@ function Dropzone({ file, onFile, error }: { file: File | null; onFile: (f: File
     <div>
       <input ref={input} type="file" accept={ACCEPT} className="hidden" onChange={(e) => (onFile(e.target.files?.[0] ?? null), (e.target.value = ""))} />
       {file ? (
-        <div className={cn("flex items-center gap-3 rounded-[3px] border bg-panel-2 px-4 py-3", error ? "border-down" : "border-line-2")}>
+        <div className={cn("flex items-center gap-3 rounded-box border bg-panel-2 px-4 py-3", error ? "border-down" : "border-line-2")}>
           <FileText className="size-6 shrink-0 text-accent" strokeWidth={1.4} aria-hidden />
           <div className="min-w-0 flex-1">
             <div className="truncate text-[14.5px] text-ink">{file.name}</div>
@@ -596,7 +596,7 @@ function Dropzone({ file, onFile, error }: { file: File | null; onFile: (f: File
         <button
           type="button"
           className={cn(
-            "flex w-full flex-col items-center gap-2 rounded-[3px] border border-dashed px-4 py-8 text-center transition-colors",
+            "flex w-full flex-col items-center gap-2 rounded-box border border-dashed px-4 py-8 text-center transition-colors",
             over ? "border-accent bg-accent-soft" : error ? "border-down bg-panel" : "border-line-2 bg-panel hover:border-ink",
           )}
           onClick={() => input.current?.click()}
@@ -609,7 +609,7 @@ function Dropzone({ file, onFile, error }: { file: File | null; onFile: (f: File
           }}
         >
           <Upload className="size-6 text-accent" strokeWidth={1.4} aria-hidden />
-          <span className="font-serif text-[17px] text-ink">
+          <span className="font-display text-[17px] text-ink">
             {t("Kaufvertrag hierher ziehen oder auswählen", "Drop the contract here or choose it")}
           </span>
           <span className="text-[13px] text-muted">{t("PDF oder Foto (JPEG, PNG, WebP), höchstens 4 MB", "PDF or photo (JPEG, PNG, WebP), at most 4 MB")}</span>
@@ -634,7 +634,7 @@ function Step({ n, title, sub, children }: { n: number; title: string; sub?: str
       <legend className="sr-only">{title}</legend>
       <div className="mb-4 flex items-baseline gap-3" aria-hidden>
         <span className="font-display text-[26px] leading-none text-accent">{n}</span>
-        <span className="font-serif text-[19px]">{title}</span>
+        <span className="font-display text-[19px]">{title}</span>
         {sub && <span className="text-[13px] text-muted">{sub}</span>}
       </div>
       {children}
@@ -815,7 +815,7 @@ function ReportForm({ from, months, onCancel, onDone, onPartial }: { from?: Hold
           </div>
         </div>
 
-        <details className="group mt-5 rounded-[3px] border border-line bg-panel-2/60" open={Boolean(errors.condition) || undefined}>
+        <details className="group mt-5 rounded-box border border-line bg-panel-2/60" open={Boolean(errors.condition) || undefined}>
           <summary className="cursor-pointer list-none px-4 py-2.5 text-[14px] text-ink marker:hidden">
             <span className="mr-2 inline-block text-accent transition-transform group-open:rotate-90" aria-hidden>
               ›
@@ -876,7 +876,7 @@ function ReportForm({ from, months, onCancel, onDone, onPartial }: { from?: Hold
 
       <Step n={4} title={t("Einwilligung", "Consent")}>
         <div className="space-y-3">
-          <label className={cn("flex items-start gap-3 rounded-[3px] border bg-panel-2/60 p-4 text-[13.5px] leading-relaxed", errors.consent ? "border-down" : "border-line")}>
+          <label className={cn("flex items-start gap-3 rounded-box border bg-panel-2/60 p-4 text-[13.5px] leading-relaxed", errors.consent ? "border-down" : "border-line")}>
             <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" checked={consent} onChange={(e) => (setConsent(e.target.checked), setErrors((x) => ({ ...x, consent: "" })))} />
             <span>
               {t(
@@ -889,7 +889,7 @@ function ReportForm({ from, months, onCancel, onDone, onPartial }: { from?: Hold
             </span>
           </label>
           {err("consent")}
-          <label className="flex items-start gap-3 rounded-[3px] border border-line p-4 text-[13.5px] leading-relaxed">
+          <label className="flex items-start gap-3 rounded-box border border-line p-4 text-[13.5px] leading-relaxed">
             <input type="checkbox" className="mt-1 size-4 shrink-0 accent-[var(--color-accent)]" checked={aiConsent} onChange={(e) => setAiConsent(e.target.checked)} />
             <span>
               <span className="text-ink">{t("Optional: schnellere Prüfung mit KI.", "Optional: faster review with AI.")}</span>{" "}

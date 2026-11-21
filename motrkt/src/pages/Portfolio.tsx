@@ -32,7 +32,7 @@ function GuestPortfolio() {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
+        <h1 className="font-display text-heading text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
         <p className="mt-1 text-[14px] text-muted">{t("Ihre Sammlung, bewertet zum aktuellen Marktwert nach Zustand.", "Your collection, valued at today's market value for its condition.")}</p>
       </div>
       <div className="grid gap-8 border-y border-line py-10 md:grid-cols-[1.2fr_1fr] md:items-center">
@@ -43,14 +43,14 @@ function GuestPortfolio() {
                 <Icon className="size-[18px]" strokeWidth={1.6} aria-hidden />
               </span>
               <div>
-                <div className="font-serif text-[18px] leading-snug">{head}</div>
+                <div className="font-display text-[18px] leading-snug">{head}</div>
                 <p className="mt-0.5 text-[14px] leading-relaxed text-muted">{body}</p>
               </div>
             </li>
           ))}
         </ul>
-        <div className="rounded-[6px] border border-line bg-panel px-6 py-7 text-center sm:px-8">
-          <div className="font-serif text-[22px] leading-snug">{t("Mit kostenlosem Konto", "With a free account")}</div>
+        <div className="rounded-panel border border-line bg-panel px-6 py-7 text-center sm:px-8">
+          <div className="font-display text-[22px] leading-snug">{t("Mit kostenlosem Konto", "With a free account")}</div>
           <p className="mt-2 text-[14px] leading-relaxed text-muted">{t("In einer Minute angelegt, ohne Abo und ohne Zahlungsdaten.", "Set up in a minute, no subscription and no payment details.")}</p>
           <a className="btn btn-gold mt-6 w-full justify-center" href={signInHref(true)}>
             {t("Kostenlos Konto anlegen", "Create a free account")} <ArrowRight className="size-4" aria-hidden />
@@ -117,7 +117,7 @@ function PortfolioPage() {
       <div>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
+            <h1 className="font-display text-heading text-[44px] leading-tight sm:text-[52px]">Portfolio</h1>
             <p className="mt-1 text-[14px] text-muted">{t("Ihre Sammlung, bewertet zum aktuellen Marktwert nach Zustand.", "Your collection, valued at today's market value for its condition.")}</p>
           </div>
           <button className="btn btn-gold" onClick={openAdd}>
@@ -247,7 +247,7 @@ function PortfolioPage() {
                       <tr key={r.h.id}>
                         <td>
                           <Link to={`/markt/${r.v.id}`} className="block hover:text-gold-2">
-                            <span className="font-serif text-[15.5px]">{variantTitle(r.v, { brand: false })}</span>
+                            <span className="font-display text-[15.5px]">{variantTitle(r.v, { brand: false })}</span>
                             <span className="block text-[12.5px] text-muted">
                               {tr(r.h.color)}, {t("Note", "grade")} {r.h.condition}
                             </span>
@@ -343,7 +343,7 @@ function Kpi({ label, value, tone }: { label: string; value: React.ReactNode; to
   return (
     <div>
       <dt className="kpi-label">{label}</dt>
-      <dd className={cn("mt-1 font-serif text-[30px] leading-tight tabular-nums", tone !== undefined && trendClass(tone))}>{value}</dd>
+      <dd className={cn("mt-1 font-display text-[30px] leading-tight tabular-nums", tone !== undefined && trendClass(tone))}>{value}</dd>
     </div>
   );
 }

@@ -36,7 +36,7 @@ export function WatchlistSection() {
                       <CarImage variant={v} className="aspect-video w-full" label={variantTitle(v)} />
                     </div>
                     <div className="mt-3 flex items-baseline justify-between gap-3">
-                      <span className="min-w-0 truncate font-serif text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
+                      <span className="min-w-0 truncate font-display text-[16px] group-hover:underline group-hover:decoration-line-2 group-hover:underline-offset-4">{variantTitle(v, { brand: false })}</span>
                       {v.measured ? <Money value={m.value} compact className="shrink-0 text-[16px]" /> : <span className="shrink-0 text-[13px] text-faint">{t("keine Daten", "no data")}</span>}
                     </div>
                   </Link>
@@ -85,7 +85,7 @@ export function WatchlistSection() {
               return (
                 <li key={a.id} className="flex items-center gap-4 border-b border-line py-4">
                   <div className="min-w-0 flex-1">
-                    <Link to={`/markt/${v.id}`} className="block truncate font-serif text-[16px] hover:text-gold-2">
+                    <Link to={`/markt/${v.id}`} className="block truncate font-display text-[16px] hover:text-gold-2">
                       {variantTitle(v, { brand: false })}
                     </Link>
                     <div className="text-[13px] text-muted">
@@ -163,7 +163,7 @@ export function AlertModal({ variantId, onClose }: { variantId: string | null; o
       {v && (
         <div className="space-y-3">
           <div>
-            <div className="font-serif text-[17px]">{variantTitle(v)}</div>
+            <div className="font-display text-[17px]">{variantTitle(v)}</div>
             <div className="text-[13px] text-muted">
               {t("Aktueller Marktwert", "Current market value")}: {v.measured ? eur(value) : t("keine Daten (zu wenige Belege)", "no data (too few records)")}
             </div>

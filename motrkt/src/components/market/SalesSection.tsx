@@ -67,7 +67,7 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
       }
     >
       {shown.length === 0 ? (
-        <p className="py-8 font-serif text-muted italic">{t("Für diese Variante sind noch keine Verkäufe erfasst.", "No sales recorded for this variant yet.")}</p>
+        <p className="py-8 font-display text-muted italic">{t("Für diese Variante sind noch keine Verkäufe erfasst.", "No sales recorded for this variant yet.")}</p>
       ) : (
         <ul>
           {shown.map((s) => (
@@ -75,7 +75,7 @@ export function RecentSales({ variant, body = null }: { variant: Variant; body?:
               <div className="flex min-w-0 items-center gap-4">
               <LotThumb url={s.url} house={s.house} image={s.image} />
               <div className="min-w-0">
-                <div className="flex items-baseline gap-2 font-serif text-[16px]">
+                <div className="flex items-baseline gap-2 font-display text-[16px]">
                   {s.url ? (
                     <a href={safeUrl(s.url)} target="_blank" rel="noreferrer" className="inline-flex items-baseline gap-1 truncate hover:text-gold" title={linkTitle(s.url)}>
                       {s.house}

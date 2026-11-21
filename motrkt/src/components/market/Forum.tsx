@@ -109,7 +109,7 @@ function Marked({ text, terms }: { text: string; terms: string[] }) {
     <>
       {text.split(re).map((part, i) =>
         i % 2 ? (
-          <mark key={i} className="rounded-[2px] bg-gold-soft px-0.5 text-ink">
+          <mark key={i} className="rounded-tag bg-gold-soft px-0.5 text-ink">
             {part}
           </mark>
         ) : (
@@ -139,7 +139,7 @@ function Author({ name, owner }: { name: string; owner: boolean }) {
 /** First letter of the name in a circle: gives every post its place in the conversation. */
 function Avatar({ name, dim }: { name: string; dim?: boolean }) {
   return (
-    <span aria-hidden className={cn("flex size-9 shrink-0 items-center justify-center rounded-full bg-panel-3 font-serif text-[16px] text-muted uppercase", dim && "opacity-50")}>
+    <span aria-hidden className={cn("flex size-9 shrink-0 items-center justify-center rounded-full bg-panel-3 font-display text-[16px] text-muted uppercase", dim && "opacity-50")}>
       {shownName(name).replace(/[^\p{L}\p{N}]/gu, "").charAt(0) || "?"}
     </span>
   );
@@ -156,7 +156,7 @@ function TopicMark({ kind, solved }: { kind: ForumKind; solved: boolean }) {
     );
   if (kind === "frage")
     return (
-      <span className={cn(base, "bg-gold-soft font-serif text-[19px] leading-none text-gold")} title={t("Offene Frage", "Open question")}>
+      <span className={cn(base, "bg-gold-soft font-display text-[19px] leading-none text-gold")} title={t("Offene Frage", "Open question")}>
         ?
       </span>
     );
@@ -312,8 +312,8 @@ export function Forum({ variant }: { variant: Variant }) {
             {!list && !error && <p className="text-[14px] text-faint">{t("Themen werden geladen …", "Loading topics …")}</p>}
 
             {untouched && (
-              <div className="rounded-[4px] border border-dashed border-line-2 px-6 py-12 text-center">
-                <h3 className="font-serif text-[22px] leading-snug">{t("Hier hat noch niemand geschrieben.", "Nobody has written here yet.")}</h3>
+              <div className="rounded-card border border-dashed border-line-2 px-6 py-12 text-center">
+                <h3 className="font-display text-[22px] leading-snug">{t("Hier hat noch niemand geschrieben.", "Nobody has written here yet.")}</h3>
                 <p className="mx-auto mt-2 max-w-md text-[14.5px] text-muted">
                   {t(
                     `Stellen Sie die erste Frage zum ${variantTitle(variant, { brand: false })} oder teilen Sie, was Sie über dieses Modell wissen.`,
@@ -404,7 +404,7 @@ export function Forum({ variant }: { variant: Variant }) {
 
                   {!list.topics.length ? (
                     <div className="py-12 text-center">
-                      <p className="font-serif text-[18px] text-muted">
+                      <p className="font-display text-[18px] text-muted">
                         {q
                           ? t(`Nichts gefunden für „${q}“.`, `Nothing found for “${q}”.`)
                           : category && status === "alle"
@@ -473,7 +473,7 @@ function Columns({ rail, children }: { rail: ReactNode; children: ReactNode }) {
 function Back({ onClick, rail }: { onClick: () => void; rail?: boolean }) {
   return (
     <button
-      className={cn("items-center gap-1.5 text-[14.5px] text-muted transition-colors hover:text-ink", rail ? "flex w-full rounded-[3px] px-2 py-2 hover:bg-panel-2" : "mb-6 inline-flex lg:hidden")}
+      className={cn("items-center gap-1.5 text-[14.5px] text-muted transition-colors hover:text-ink", rail ? "flex w-full rounded-box px-2 py-2 hover:bg-panel-2" : "mb-6 inline-flex lg:hidden")}
       onClick={onClick}
     >
       <ChevronLeft className="size-4" /> {t("Alle Themen", "All topics")}
@@ -532,10 +532,10 @@ function TopicRow({ topic: x, terms, here, onOpen }: { topic: Topic; terms: stri
   const other = x.variant !== here ? variantById.get(x.variant) : undefined;
   const n = Math.max(0, x.posts - 1);
   return (
-    <button className="group -mx-3 flex w-[calc(100%+1.5rem)] items-start gap-4 rounded-[3px] px-3 py-5 text-left transition-colors hover:bg-panel-2" onClick={onOpen}>
+    <button className="group -mx-3 flex w-[calc(100%+1.5rem)] items-start gap-4 rounded-box px-3 py-5 text-left transition-colors hover:bg-panel-2" onClick={onOpen}>
       <TopicMark kind={x.kind} solved={x.solved} />
       <span className="block min-w-0 flex-1">
-        <span className="block font-serif text-[19px] leading-snug text-ink decoration-line-2 underline-offset-4 group-hover:underline">
+        <span className="block font-display text-[19px] leading-snug text-ink decoration-line-2 underline-offset-4 group-hover:underline">
           <Marked text={x.title} terms={terms} />
         </span>
         {x.excerpt && (
@@ -554,7 +554,7 @@ function TopicRow({ topic: x, terms, here, onOpen }: { topic: Topic; terms: stri
         </span>
       </span>
       <span className="hidden w-36 shrink-0 text-right whitespace-nowrap sm:block">
-        <span className={cn("block font-serif text-[24px] leading-none tabular-nums", n ? "text-ink" : "text-faint")}>{num(n)}</span>
+        <span className={cn("block font-display text-[24px] leading-none tabular-nums", n ? "text-ink" : "text-faint")}>{num(n)}</span>
         <span className="mt-1 block text-[12.5px] text-faint">{n === 1 ? t("Antwort", "reply") : t("Antworten", "replies")}</span>
         {n > 0 && (
           <span className="mt-1.5 block text-[12px] text-faint">
@@ -589,11 +589,11 @@ function KindChoice({ value, onChange }: { value: ForumKind; onChange: (k: Forum
           role="radio"
           aria-checked={value === o.kind}
           onClick={() => onChange(o.kind)}
-          className={cn("flex items-start gap-3 rounded-[4px] border p-4 text-left transition-colors", value === o.kind ? "border-accent bg-accent-soft" : "border-line hover:border-line-2")}
+          className={cn("flex items-start gap-3 rounded-card border p-4 text-left transition-colors", value === o.kind ? "border-accent bg-accent-soft" : "border-line hover:border-line-2")}
         >
           <TopicMark kind={o.kind} solved={false} />
           <span>
-            <span className="block font-serif text-[17px] text-ink">{o.label}</span>
+            <span className="block font-display text-[17px] text-ink">{o.label}</span>
             <span className="mt-0.5 block text-[13.5px] text-muted">{o.text}</span>
           </span>
         </button>
@@ -627,7 +627,7 @@ function NewTopic({ variant, category: startCategory, onCancel, onDone }: { vari
   const [err, setErr] = useState("");
   const question = kind === "frage";
   const ready = title.trim().length >= 3 && body.trim().length >= 2;
-  const step = "mb-2 block font-serif text-[17px] text-ink";
+  const step = "mb-2 block font-display text-[17px] text-ink";
   const tips = [
     t("Ein Thema je Frage. Der Titel sagt, worum es geht.", "One topic per question. The title says what it is about."),
     t("Nennen Sie Baujahr, Laufleistung und Zustand.", "Give the model year, mileage and condition."),
@@ -651,7 +651,7 @@ function NewTopic({ variant, category: startCategory, onCancel, onDone }: { vari
     >
       <div className="max-w-3xl">
         <Back onClick={onCancel} />
-        <h3 className="font-serif text-[26px] leading-tight">{t(`Neues Thema zum ${variantTitle(variant, { brand: false })}`, `New topic on the ${variantTitle(variant, { brand: false })}`)}</h3>
+        <h3 className="font-display text-[26px] leading-tight">{t(`Neues Thema zum ${variantTitle(variant, { brand: false })}`, `New topic on the ${variantTitle(variant, { brand: false })}`)}</h3>
         <form
           className="mt-7 space-y-8"
           onSubmit={async (e) => {
@@ -865,7 +865,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
           )}
 
           {reporting?.id === p.id && (
-            <div className="mt-3 flex flex-wrap items-end gap-2 rounded-[3px] border border-line bg-panel-2 p-3">
+            <div className="mt-3 flex flex-wrap items-end gap-2 rounded-box border border-line bg-panel-2 p-3">
               <div className="min-w-0 flex-1">
                 <label className="label" htmlFor={`report-${p.id}`}>
                   {t("Was stimmt mit dem Beitrag nicht? (optional)", "What is wrong with this post? (optional)")}
@@ -915,7 +915,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                 )}
               </dl>
               {topic.canEdit && topic.kind === "frage" && !topic.solvedPost && shown > 0 && (
-                <p className="mt-4 rounded-[4px] bg-gold-soft p-3 text-[13px] leading-relaxed text-ink">
+                <p className="mt-4 rounded-card bg-gold-soft p-3 text-[13px] leading-relaxed text-ink">
                   {t("Hilft Ihnen eine Antwort weiter? Markieren Sie sie als Lösung, dann gilt die Frage als geklärt.", "Does a reply help? Mark it as the solution and the question counts as answered.")}
                 </p>
               )}
@@ -940,7 +940,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                   {elsewhere && <span className="text-faint">, {variantTitle(elsewhere, { brand: false })}</span>}
                 </p>
               </div>
-              <h3 className="mt-3 font-serif text-[28px] leading-tight sm:text-[32px]">{topic.title}</h3>
+              <h3 className="mt-3 font-display text-[28px] leading-tight sm:text-[32px]">{topic.title}</h3>
               {(topic.canEdit || thread.admin) && (
                 <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-faint">
                   {topic.canEdit && !filing && (
@@ -983,7 +983,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
             </header>
 
             {/* the opening post: the question, or what the discussion starts from */}
-            {thread.posts[0] && <div className="mt-6 rounded-[4px] border border-line bg-panel p-5 sm:p-6">{renderPost(thread.posts[0], true)}</div>}
+            {thread.posts[0] && <div className="mt-6 rounded-card border border-line bg-panel p-5 sm:p-6">{renderPost(thread.posts[0], true)}</div>}
 
             {solution && (
               <button
@@ -994,12 +994,12 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
               </button>
             )}
 
-            <h4 className="mt-10 border-b border-line pb-3 font-serif text-[19px]">{shown ? replies(shown) : t("Noch keine Antwort", "No replies yet")}</h4>
+            <h4 className="mt-10 border-b border-line pb-3 font-display text-[19px]">{shown ? replies(shown) : t("Noch keine Antwort", "No replies yet")}</h4>
             {answers.length > 0 && (
               <ol className="mt-3">
                 {answers.map((p) => (
                   // the same inset as the opening post, so every author sits on one line down the page
-                  <li key={p.id} className={cn("px-5 py-4 sm:px-6", p.id === topic.solvedPost && "my-2 rounded-[4px] bg-up-soft py-5")}>
+                  <li key={p.id} className={cn("px-5 py-4 sm:px-6", p.id === topic.solvedPost && "my-2 rounded-card bg-up-soft py-5")}>
                     {renderPost(p, false)}
                   </li>
                 ))}
@@ -1007,8 +1007,8 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
             )}
 
             {guest ? (
-              <div className={cn("mt-8 rounded-[4px] border border-dashed border-line-2 px-6 py-7 text-center", answers.length > 0 && "mt-10")}>
-                <div className="font-serif text-[18px]">{t("Antworten Sie mit kostenlosem Konto.", "Reply with a free account.")}</div>
+              <div className={cn("mt-8 rounded-card border border-dashed border-line-2 px-6 py-7 text-center", answers.length > 0 && "mt-10")}>
+                <div className="font-display text-[18px]">{t("Antworten Sie mit kostenlosem Konto.", "Reply with a free account.")}</div>
                 <p className="mx-auto mt-1.5 max-w-md text-[14px] text-muted">{t("Lesen geht ohne Konto. Zum Schreiben melden Sie sich an, dann sehen Sie auch, wer geschrieben hat.", "Reading works without an account. To write, sign in; you then also see who wrote.")}</p>
                 <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
                   <a className="btn btn-gold" href={signInHref(true)}>
@@ -1037,7 +1037,7 @@ function ThreadView({ id, here, onBack }: { id: string; here: string; onBack: ()
                 }
               }}
             >
-              <label className="mb-2 block font-serif text-[17px]" htmlFor="forum-reply">
+              <label className="mb-2 block font-display text-[17px]" htmlFor="forum-reply">
                 {t("Ihre Antwort", "Your reply")}
               </label>
               <textarea

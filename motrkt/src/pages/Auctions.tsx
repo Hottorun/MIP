@@ -249,7 +249,7 @@ export default function Auctions() {
       <div>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-[44px] leading-tight sm:text-[52px]">{t("Auktionen", "Auctions")}</h1>
+            <h1 className="font-display text-heading text-[44px] leading-tight sm:text-[52px]">{t("Auktionen", "Auctions")}</h1>
             <p className="mt-1 text-[14px] text-muted">
               {t(`${num(getAllSales().length)} erfasste Auktionsergebnisse seit 2015`, `${num(getAllSales().length)} recorded auction results since 2015`)}
             </p>
@@ -354,7 +354,7 @@ export default function Auctions() {
           <div className="flex flex-wrap items-baseline gap-x-5 gap-y-2 border-b border-line pb-3">
             <div className="flex w-full flex-wrap items-baseline gap-x-5 gap-y-2">
             <p className="min-w-0 grow basis-[20rem] text-[14px] text-ink">
-              <strong className="font-serif text-[22px] font-normal tabular-nums">{num(sorted.length)}</strong> {t("Ergebnisse", "results")}
+              <strong className="font-display text-[22px] font-normal tabular-nums">{num(sorted.length)}</strong> {t("Ergebnisse", "results")}
             </p>
               <label className="ml-auto inline-flex shrink-0 items-center gap-2 text-[13px] text-muted">
                 {t("Sortieren", "Sort")}
@@ -478,18 +478,18 @@ function UpcomingAuctions() {
         {sales.length === 0 ? (
           <Empty>{t("Die Termine werden mit dem nächsten täglichen Update geladen.", "The dates load with the next daily update.")}</Empty>
         ) : (
-          <ul className="divide-y divide-line overflow-hidden rounded-[3px] border border-line bg-panel">
+          <ul className="divide-y divide-line overflow-hidden rounded-box border border-line bg-panel">
             {visible.map((s) => (
               <li key={`${s.house}|${s.name}|${s.date}`} className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3">
-                <div className="w-14 shrink-0 rounded-[3px] bg-accent-soft py-1.5 text-center text-accent">
-                  <div className="font-serif text-[22px] leading-none">{fmt(s.date, { day: "numeric" })}</div>
+                <div className="w-14 shrink-0 rounded-box bg-accent-soft py-1.5 text-center text-accent">
+                  <div className="font-display text-[22px] leading-none">{fmt(s.date, { day: "numeric" })}</div>
                   <div className="mt-1 text-[10.5px] font-semibold tracking-[0.12em] uppercase">{fmt(s.date, { month: "short" })}</div>
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-[12px] text-muted">
                     {s.house} · {span(s)} · {inDays(s.date)}
                   </div>
-                  <div className="font-serif text-[17px] leading-snug">{s.name}</div>
+                  <div className="font-display text-[17px] leading-snug">{s.name}</div>
                   {(s.place || s.country || s.porsche) && (
                     <div className="text-[12px] text-faint">
                       {s.country && `${flag(s.country)} `}
@@ -577,7 +577,7 @@ function SearchBox({
         </button>
       )}
       {open && any && !exact && (
-        <div className="absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-[6px] border border-line bg-panel py-1.5 shadow-lg" role="listbox">
+        <div className="absolute inset-x-0 top-full z-30 mt-2 overflow-hidden rounded-panel border border-line bg-panel py-1.5 shadow-lg" role="listbox">
           {suggestions.variants.length > 0 && <div className="px-4 pt-1 pb-1 eyebrow text-faint">{t("Modelle", "Models")}</div>}
           {suggestions.variants.map((v) => (
             <button
@@ -591,7 +591,7 @@ function SearchBox({
               }}
               className="flex w-full items-center justify-between gap-4 px-4 py-2 text-left hover:bg-accent-soft"
             >
-              <span className="truncate font-serif text-[15px]">{v.title}</span>
+              <span className="truncate font-display text-[15px]">{v.title}</span>
               <span className="shrink-0 text-[12px] text-faint tabular-nums">
                 {num(v.n)} {t("Ergebnisse", "results")}
               </span>
@@ -625,13 +625,13 @@ function ResultRow({ sale: s, onOpen }: { sale: Sale; onOpen: () => void }) {
   const unsold = s.price === null;
   return (
     <li className="border-b border-line/80">
-      <button onClick={onOpen} className="group grid w-full grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 rounded-[3px] px-2 py-3 text-left transition-colors hover:bg-panel sm:grid-cols-[4.5rem_minmax(0,1fr)_auto_6.5rem]">
-        <span className="relative flex h-12 w-16 items-center justify-center overflow-hidden rounded-[3px] bg-panel-2 sm:w-[4.5rem] [&>span]:!h-full [&>span]:!w-full">
+      <button onClick={onOpen} className="group grid w-full grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 rounded-box px-2 py-3 text-left transition-colors hover:bg-panel sm:grid-cols-[4.5rem_minmax(0,1fr)_auto_6.5rem]">
+        <span className="relative flex h-12 w-16 items-center justify-center overflow-hidden rounded-box bg-panel-2 sm:w-[4.5rem] [&>span]:!h-full [&>span]:!w-full">
           <Gavel className="absolute size-4 text-line-2" aria-hidden />
           <LotThumb url={s.url} house={s.house} image={s.image} small link={false} />
         </span>
         <span className="min-w-0">
-          <span className="block truncate font-serif text-[16px] leading-snug transition-colors group-hover:text-accent">{variantTitle(v, { brand: false })}</span>
+          <span className="block truncate font-display text-[16px] leading-snug transition-colors group-hover:text-accent">{variantTitle(v, { brand: false })}</span>
           <span className="mt-0.5 block truncate text-[12.5px] text-muted">
             {date(s.date)} · {s.house}
             {s.mileage ? ` · ${km(s.mileage)}` : ""}
@@ -644,7 +644,7 @@ function ResultRow({ sale: s, onOpen }: { sale: Sale; onOpen: () => void }) {
               {unsoldPrice(s) && <span className="mt-1 block text-[12px] text-faint">{unsoldPrice(s)}</span>}
             </>
           ) : (
-            <span className="font-serif text-[18px] tabular-nums">
+            <span className="font-display text-[18px] tabular-nums">
               <Money value={s.price} sale={s} />
             </span>
           )}

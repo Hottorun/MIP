@@ -178,7 +178,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
               </div>
               <Link
                 to={`/markt/${current.v.id}`}
-                className="group mt-0.5 inline-flex items-center gap-2 font-serif text-[22px] font-semibold tracking-[-0.01em] sm:text-[26px]"
+                className="group mt-0.5 inline-flex items-center gap-2 font-display text-[22px] font-semibold tracking-[-0.01em] sm:text-[26px]"
               >
                 <span className="truncate underline-offset-4 group-hover:underline">
                   {variantTitle(current.v)}
@@ -253,7 +253,7 @@ export function HeroSlideshow({ children }: { children?: React.ReactNode }) {
                     </span>
                     <span
                       className={cn(
-                        "mt-2.5 block font-serif text-[15px] tabular-nums sm:text-[18px]",
+                        "mt-2.5 block font-display text-[15px] tabular-nums sm:text-[18px]",
                         i !== index && "max-sm:invisible",
                       )}
                     >

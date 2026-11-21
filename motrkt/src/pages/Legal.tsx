@@ -13,8 +13,8 @@ const pick = (pair: [string, string]) => (isEn() ? pair[1] : pair[0]);
 function Page({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="font-serif text-3xl">{title}</h1>
-      {!operatorComplete() && <p className="mt-4 rounded-[3px] border border-down/40 bg-down/5 px-4 py-3 text-[14px] text-down">{pick(MISSING_NOTE)}</p>}
+      <h1 className="font-display text-heading text-3xl">{title}</h1>
+      {!operatorComplete() && <p className="mt-4 rounded-box border border-down/40 bg-down/5 px-4 py-3 text-[14px] text-down">{pick(MISSING_NOTE)}</p>}
       <div className="mt-6 space-y-6 text-[15px] leading-relaxed text-ink/90">{children}</div>
     </div>
   );
@@ -46,7 +46,7 @@ function Sections({ sections }: { sections: LegalSection[] }) {
     <>
       {sections.map((s) => (
         <section key={s.heading[0]}>
-          <h2 className="mt-8 font-serif text-xl">{pick(s.heading)}</h2>
+          <h2 className="mt-8 font-display text-xl">{pick(s.heading)}</h2>
           {s.list ? (
             <ul className="mt-2 list-disc space-y-1 pl-5">
               {s.paragraphs.map((p) => (
@@ -70,7 +70,7 @@ export function Impressum() {
   return (
     <Page title="Impressum">
       <section>
-        <h2 className="font-serif text-xl">{t("Angaben gemäß § 5 DDG", "Information pursuant to § 5 DDG (German Digital Services Act)")}</h2>
+        <h2 className="font-display text-xl">{t("Angaben gemäß § 5 DDG", "Information pursuant to § 5 DDG (German Digital Services Act)")}</h2>
         <div className="mt-3">
           <Operator />
         </div>
@@ -78,7 +78,7 @@ export function Impressum() {
         {OPERATOR.vatId && <p className="mt-3">{t("Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG", "VAT identification number pursuant to § 27a UStG")}: {OPERATOR.vatId}</p>}
       </section>
       <section>
-        <h2 className="mt-8 font-serif text-xl">{t("Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", "Responsible for content pursuant to § 18 (2) MStV")}</h2>
+        <h2 className="mt-8 font-display text-xl">{t("Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", "Responsible for content pursuant to § 18 (2) MStV")}</h2>
         <p className="mt-3">{OPERATOR.responsible || <span className="text-down">[{t("Verantwortliche Person", "Responsible person")}]</span>}</p>
       </section>
       <Sections sections={IMPRESSUM} />
@@ -90,7 +90,7 @@ export function Datenschutz() {
   return (
     <Page title={t("Datenschutzerklärung", "Privacy notice")}>
       <section>
-        <h2 className="font-serif text-xl">{t("1. Verantwortlicher", "1. Controller")}</h2>
+        <h2 className="font-display text-xl">{t("1. Verantwortlicher", "1. Controller")}</h2>
         <div className="mt-3">
           <Operator />
         </div>

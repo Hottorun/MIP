@@ -63,7 +63,7 @@ export default function Market() {
   if (!variant) {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
-        <h1 className="font-display text-3xl">{t("Nicht im Katalog", "Not in the catalogue")}</h1>
+        <h1 className="font-display text-heading text-3xl">{t("Nicht im Katalog", "Not in the catalogue")}</h1>
         <p className="mt-3 text-muted">
           {t("Dieses Fahrzeug führen wir nicht. Im Modellkatalog finden Sie alle erfassten Varianten.", "We don’t cover this car. The model catalogue lists every variant we track.")}
         </p>

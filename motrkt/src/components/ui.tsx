@@ -63,10 +63,10 @@ export function Section({
       <header className="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
         <div className="min-w-0">
           <div className="mb-3 flex items-center gap-3">
-            <span className="block h-[3px] w-9 rounded-full" style={{ background: TONE_COLOR[tone] }} aria-hidden />
+            <span className="block h-[3px] w-9 rounded-full" style={{ background: tone === "accent" ? "linear-gradient(90deg, var(--color-accent-fill-hi), var(--color-gold))" : TONE_COLOR[tone] }} aria-hidden />
             {eyebrow && <span className="eyebrow" style={{ color: TONE_COLOR[tone] }}>{eyebrow}</span>}
           </div>
-          <h2 className="font-display text-[28px] leading-tight sm:text-[32px]">{title}</h2>
+          <h2 className="font-display text-[28px] leading-tight text-heading sm:text-[32px]">{title}</h2>
           {sub && <p className="mt-1 text-[14px] text-muted">{sub}</p>}
         </div>
         {lock ? <PremiumTag className="mb-1" /> : actions && <div className="flex shrink-0 flex-wrap items-center gap-3">{actions}</div>}
@@ -98,7 +98,7 @@ export function Pill({ children, tone = "neutral", className }: { children: Reac
     red: "text-red border-red/30 bg-red-soft",
     neutral: "text-muted border-line-2 bg-panel/70",
   };
-  return <span className={cn("inline-flex items-center gap-1 rounded-[3px] border px-1.5 py-0.5 text-xs whitespace-nowrap", tones[tone], className)}>{children}</span>;
+  return <span className={cn("inline-flex items-center gap-1 rounded-box border px-1.5 py-0.5 text-xs whitespace-nowrap", tones[tone], className)}>{children}</span>;
 }
 
 /** The colour families of the palette; each maps to a CSS token so light and dark themes swap in one place. */
@@ -156,7 +156,7 @@ export function StatTile({
         )}
         <span className="text-[13px] leading-tight text-muted">{label}</span>
       </div>
-      <div className="relative z-[1] mt-3 font-serif text-[30px] leading-none text-ink">{value}</div>
+      <div className="relative z-[1] mt-3 font-display text-[30px] leading-none text-ink">{value}</div>
       {sub && <div className="relative z-[1] mt-2 text-[13px] leading-snug text-muted">{sub}</div>}
       {chart && <div className="relative z-[1] mt-auto pt-3">{chart}</div>}
     </div>
@@ -341,7 +341,7 @@ export function Modal({
         tabIndex={-1}
         className={cn(
           "animate-fade-in w-full border border-line bg-panel shadow-[0_24px_60px_-20px_rgba(20,20,20,0.22)] focus:outline-none",
-          bare ? "max-w-[900px] overflow-hidden rounded-[8px]" : "rounded-[3px]",
+          bare ? "max-w-[900px] overflow-hidden rounded-panel" : "rounded-box",
           !bare && (wide ? "max-w-3xl" : "max-w-lg"),
         )}
         onMouseDown={(e) => e.stopPropagation()}
@@ -351,7 +351,7 @@ export function Modal({
         ) : (
           <>
             <header className="flex items-center justify-between border-b border-line px-6 py-4">
-              <h2 id={titleId} className="font-serif text-xl">{title}</h2>
+              <h2 id={titleId} className="font-display text-xl">{title}</h2>
               <button className="btn btn-ghost -mr-2 p-1.5" onClick={onClose} aria-label={t("Schließen", "Close")} data-close>
                 <X className="size-4" />
               </button>
@@ -377,7 +377,7 @@ export function BrandEmblem({ brandId, size = 20 }: { brandId: string; size?: nu
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden className="shrink-0">
       <circle cx="12" cy="12" r="10.8" fill="none" stroke="var(--color-line-2)" strokeWidth="1" />
-      <text x="12" y="16" textAnchor="middle" fontSize={text.length > 1 ? 8.5 : 11.5} fill="var(--color-ink)" fontFamily="var(--font-serif)">
+      <text x="12" y="16" textAnchor="middle" fontSize={text.length > 1 ? 8.5 : 11.5} fill="var(--color-ink)" fontFamily="var(--font-display)">
         {text}
       </text>
     </svg>
@@ -385,14 +385,14 @@ export function BrandEmblem({ brandId, size = 20 }: { brandId: string; size?: nu
 }
 
 export function Empty({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn("px-4 py-10 text-center font-serif text-[15px] text-muted italic", className)}>{children}</div>;
+  return <div className={cn("px-4 py-10 text-center font-display text-[15px] text-muted italic", className)}>{children}</div>;
 }
 
 /** Shared tooltip body for Recharts charts. */
 export function ChartTooltipBox({ title, rows }: { title: ReactNode; rows: { label: ReactNode; value: ReactNode; color?: string }[] }) {
   return (
-    <div className="rounded-[2px] border border-line-2 bg-panel px-3 py-2 text-[13px] shadow-[0_10px_30px_-12px_rgba(20,20,20,0.2)]">
-      <div className="mb-1 font-serif text-ink">{title}</div>
+    <div className="rounded-tag border border-line-2 bg-panel px-3 py-2 text-[13px] shadow-[0_10px_30px_-12px_rgba(20,20,20,0.2)]">
+      <div className="mb-1 font-display text-ink">{title}</div>
       {rows.map((r, i) => (
         <div key={i} className="flex items-center justify-between gap-4">
           <span className="flex items-center gap-1.5 text-muted">

@@ -46,12 +46,12 @@ export function EmailGate() {
         aria-modal="true"
         aria-labelledby="email-gate-title"
         onSubmit={submit}
-        className="animate-fade-in w-full max-w-md rounded-[3px] border border-line border-t-2 border-t-gold bg-panel px-6 py-6 shadow-[0_24px_60px_-20px_rgba(20,20,20,0.3)]"
+        className="animate-fade-in w-full max-w-md rounded-box border border-line border-t-2 border-t-gold bg-panel px-6 py-6 shadow-[0_24px_60px_-20px_rgba(20,20,20,0.3)]"
       >
         <div className="flex items-center gap-2 text-[11px] tracking-[0.18em] text-gold uppercase">
           <Mail className="size-3.5" aria-hidden /> {t("Neu bei Carbay", "New at Carbay")}
         </div>
-        <h2 id="email-gate-title" className="mt-2 font-serif text-2xl">
+        <h2 id="email-gate-title" className="mt-2 font-display text-2xl">
           {t("Bitte ergänzen Sie Ihre E-Mail-Adresse", "Please add your email address")}
         </h2>
         <p className="mt-2 text-[14px] text-muted">

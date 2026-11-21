@@ -1,230 +1,236 @@
 @import "tailwindcss";
 
 /*
- * Typefaces from this site (public/fonts, SIL Open Font License), not from Google Fonts: no visitor's IP address goes
- * to a third party for them. Variable fonts; the browser fetches the latin-ext file only when a page needs it.
+ * Typeface from this site (public/fonts, SIL Open Font License), not from Google Fonts: no visitor's IP address goes
+ * to a third party for it. Geist, a variable font (weights 100–900) for text, headings and figures alike; the browser
+ * fetches the latin-ext file only when a page needs it.
  */
 @font-face {
-  font-family: "Instrument Sans";
+  font-family: "Geist";
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("/fonts/instrument-sans-latin-ext-wght-normal.woff2") format("woff2");
+  src: url("/fonts/geist-latin-ext-wght-normal.woff2") format("woff2");
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
-  font-family: "Instrument Sans";
+  font-family: "Geist";
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("/fonts/instrument-sans-latin-wght-normal.woff2") format("woff2");
+  src: url("/fonts/geist-latin-wght-normal.woff2") format("woff2");
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face {
-  font-family: "Instrument Sans";
+  font-family: "Geist";
   font-style: italic;
-  font-weight: 400 700;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("/fonts/instrument-sans-latin-ext-wght-italic.woff2") format("woff2");
+  src: url("/fonts/geist-latin-ext-wght-italic.woff2") format("woff2");
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
-  font-family: "Instrument Sans";
+  font-family: "Geist";
   font-style: italic;
-  font-weight: 400 700;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("/fonts/instrument-sans-latin-wght-italic.woff2") format("woff2");
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: "Source Serif 4";
-  font-style: normal;
-  font-weight: 200 900;
-  font-display: swap;
-  src: url("/fonts/source-serif-4-latin-ext-opsz-normal.woff2") format("woff2");
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-@font-face {
-  font-family: "Source Serif 4";
-  font-style: normal;
-  font-weight: 200 900;
-  font-display: swap;
-  src: url("/fonts/source-serif-4-latin-opsz-normal.woff2") format("woff2");
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: "Source Serif 4";
-  font-style: italic;
-  font-weight: 200 900;
-  font-display: swap;
-  src: url("/fonts/source-serif-4-latin-ext-opsz-italic.woff2") format("woff2");
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-@font-face {
-  font-family: "Source Serif 4";
-  font-style: italic;
-  font-weight: 200 900;
-  font-display: swap;
-  src: url("/fonts/source-serif-4-latin-opsz-italic.woff2") format("woff2");
+  src: url("/fonts/geist-latin-wght-italic.woff2") format("woff2");
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
 /*
- * Printed-magazine look: off-white paper, near-black ink, antique gold as the one accent, beige for quiet fills.
- * Token names are kept from the original theme (panel, ink, gold …) so every page picks up the palette.
+ * Clear, precise look: cool off-white surfaces, white cards, near-black ink, deep petrol as the house accent and
+ * brass as its second voice. Token names are kept from the original theme (panel, ink, gold …) so every page picks
+ * up the palette; the dark theme redefines each one further down.
  */
 @theme {
-  --color-bg: #f6f4ef;
-  --color-panel: #fcfbf8;
-  --color-panel-2: #f1eee8;
-  --color-panel-3: #e7e3db;
-  --color-line: #e0dbd2;
-  --color-line-2: #c6bfb3;
-  --color-ink: #1f1d1a;
-  --color-muted: #5e5952;
-  --color-faint: #8b847a;
+  --color-bg: #f1f5f4;
+  --color-panel: #ffffff;
+  --color-panel-2: var(--base-panel-2);
+  --color-panel-3: var(--base-panel-3);
+  --color-line: var(--base-line);
+  --color-line-2: var(--base-line-2);
+  --color-ink: var(--base-ink);
+  --color-muted: var(--base-muted);
+  --color-faint: var(--base-faint);
   --color-gold: #8f6d33;
   --color-gold-2: #6e5326;
   --color-beige: #d6c49d;
-  --color-up: #3d6b40;
-  --color-down: #a33a2b;
+  --color-up: #2f6b3c;
+  --color-down: #b0342a;
   --color-warn: #946616;
   --color-rose: #8e3b4a;
 
   /*
-   * Colour accents: deep petrol (#16363c) is the house accent for links, active states and key figures,
-   * brass (gold) the second voice, cobalt and Indian red the third and fourth. Every accent has a soft tint for fills.
-   * The accent is about 12:1 on cream (accent-2 is the darker shade for hover); the other text colours stay at
-   * >= 4.5:1. The dark theme redefines each token further down: text, lines and marks take a mid petrol of the same
-   * hue there, because #16363c itself would vanish on a dark surface.
-   * accent-fill is the filled state (buttons, active pills) with on-accent as its label colour: it is #16363c in both
-   * themes, as is the soft fill of the dark theme. Cobalt is kept as a token name but is the same petrol.
+   * Colour accents: deep petrol is the house accent for links, active states and key figures (about 9:1 on white,
+   * accent-2 is the darker shade for hover), brass (gold) the second voice. Every accent has a soft tint for fills.
+   * The other text colours stay at >= 4.5:1 (faint, for small print beside a figure, at about 3.6:1).
+   * accent-fill is the filled state (buttons, active pills) with on-accent as its label colour. Cobalt is kept as a
+   * token name but is the same petrol.
    */
-  --color-accent: #16363c;
-  --color-accent-2: #0e2529;
-  --color-accent-soft: #e0ebeb;
-  --color-accent-fill: #16363c;
-  --color-accent-fill-2: #0e2529;
-  --color-menu: #16363c;
-  --color-menu-2: #1f4c55;
-  --color-menu-head: var(--color-bg);
+  --color-accent: var(--base-accent);
+  --color-accent-2: var(--base-accent-2);
+  --color-accent-soft: var(--base-accent-soft);
+  --color-accent-fill: #0f3a41;
+  --color-accent-fill-2: #0a2c31;
+  /* the light end of the petrol gradient on filled buttons and pills, the tone of the narrow-window menu */
+  --color-accent-fill-hi: #1a5a64;
+  --color-menu: #0f3a41;
+  --color-menu-2: #17505a;
+  --color-menu-head: #0f3a41;
   --color-menu-line: #c9a35e;
   --color-band-line: transparent;
   --color-nav: var(--color-accent);
-  --color-on-accent: #f6f4ef;
-  --color-gold-soft: #f3ead8;
-  --color-cobalt: #16363c;
-  --color-cobalt-soft: #e0ebeb;
-  --color-red: #a8322b;
-  --color-red-soft: #f6e3df;
-  --color-up-soft: #e3eedf;
-  --color-down-soft: #f6e2dd;
+  --color-on-accent: #f1f5f4;
+  /* page titles and section headings: deep petrol in the light theme, the ink in the dark one */
+  --color-heading: #0f3a41;
+  --color-gold-soft: #f4ecdc;
+  --color-cobalt: #125560;
+  --color-cobalt-soft: #d9ebe8;
+  --color-red: #b0342a;
+  --color-red-soft: #f8e4e1;
+  --color-up-soft: #e2efe3;
+  --color-down-soft: #f8e3df;
   /* dark bands (top bar, stage, highlight tiles): stay dark in both themes */
-  --color-night: #10272b;
-  --color-night-2: #173a40;
-  --color-on-night: #f3efe6;
+  --color-night: #0a272c;
+  --color-night-2: #12434b;
+  --color-on-night: #f2f4f4;
   /* categorical chart series, validated for colour-vision deficiency on the panel surface (light and dark) */
   --color-series-1: #00899e;
   --color-series-2: #c0862a;
   --color-series-3: #4a63b5;
   --color-series-4: #c2453d;
 
-  --font-sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
-  --font-display: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Geist", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+
+  /* corner radii, from small tags up to large panels (utilities rounded-tag, -box, -card, -panel) */
+  --radius-tag: 6px;
+  --radius-box: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+
+  --shadow-card: 0 1px 2px rgb(11 45 50 / 0.05), 0 1px 1px rgb(11 45 50 / 0.03);
+  --shadow-pop: 0 1px 2px rgb(11 45 50 / 0.06), 0 12px 32px -12px rgb(11 45 50 / 0.24);
 }
 
-/* Dark theme: follows the system unless the visitor picked a theme (data-theme on <html>). */
+/* Dark theme: follows the system unless the visitor picked a theme (data-theme on <html>). The tokens a petrol band
+   (.brand-band) redefines for its own content take their theme value from a --base-* variable, so pop-ups inside such
+   a band (.brand-reset) return to the page's colours. */
 @layer base {
+  :root {
+    /* a faint petrol glow under the header (light theme only) */
+    --page-glow: radial-gradient(1400px 420px at 50% -120px, rgb(15 58 65 / 0.07), transparent 70%);
+    --base-ink: #0b1d20;
+    --base-muted: #4a6064;
+    --base-faint: #71878a;
+    --base-line: #d8e3e0;
+    --base-line-2: #b4c8c4;
+    --base-accent: #125560;
+    --base-accent-2: #0f3a41;
+    --base-accent-soft: #d9ebe8;
+    --base-panel-2: #e8f0ee;
+    --base-panel-3: #d9e6e3;
+  }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --color-bg: #121412;
-      --color-panel: #1a1c1a;
-      --color-panel-2: #212422;
-      --color-panel-3: #2a2d2b;
-      --color-line: #2f3330;
-      --color-line-2: #4a4f4b;
-      --color-ink: #eeeae1;
-      --color-muted: #b4ada1;
-      --color-faint: #8d877d;
+      --color-bg: #0b0d0e;
+      --color-panel: #131617;
+      --base-panel-2: #191d1e;
+      --base-panel-3: #212627;
+      --base-line: #252a2c;
+      --base-line-2: #3a4245;
+      --base-ink: #eef1f2;
+      --color-heading: #eef1f2;
+      --page-glow: none;
+      --base-muted: #a2acb1;
+      --base-faint: #7a858b;
       --color-gold: #d3ad66;
       --color-gold-2: #e4c486;
       --color-beige: #6f6047;
-      --color-up: #86c08a;
-      --color-down: #ee8a7a;
+      --color-up: #7fc38c;
+      --color-down: #f08a7c;
       --color-warn: #e2ac52;
       --color-rose: #e08a9a;
-      --color-accent: #729da4;
-      --color-accent-2: #9dbcc0;
-      --color-accent-soft: #1f2c2e;
-      --color-accent-fill: #223337;
-      --color-accent-fill-2: #2b4146;
-      --color-menu: #172427;
-      --color-menu-2: #1a2b2f;
-      --color-menu-head: #172427;
+      --base-accent: #6fb5bf;
+      --base-accent-2: #9ccdd4;
+      --base-accent-soft: #15262a;
+      --color-accent-fill: #1d4249;
+      --color-accent-fill-2: #25525a;
+      --color-accent-fill-hi: #2b5c64;
+      --color-menu: #111b1d;
+      --color-menu-2: #162325;
+      --color-menu-head: #111b1d;
       --color-menu-line: rgb(211 173 102 / 0.35);
       --color-band-line: rgb(211 173 102 / 0.35);
       --color-nav: #d3ad66;
-      --color-on-accent: #eeeae1;
-      --color-gold-soft: #33291a;
-      --color-cobalt: #729da4;
-      --color-cobalt-soft: #1f2c2e;
-      --color-red: #ee8a7a;
+      --color-on-accent: #eef1f2;
+      --color-gold-soft: #30281a;
+      --color-cobalt: #6fb5bf;
+      --color-cobalt-soft: #15262a;
+      --color-red: #f08a7c;
       --color-red-soft: #3a201d;
-      --color-up-soft: #1d3220;
+      --color-up-soft: #1a3121;
       --color-down-soft: #3a201d;
-      --color-night: #172427;
-      --color-night-2: #172427;
+      --color-night: #101b1d;
+      --color-night-2: #101b1d;
       --color-series-1: #1b9aa3;
       --color-series-2: #b5802f;
       --color-series-3: #6478cf;
       --color-series-4: #d45a50;
+      --shadow-card: none;
+      --shadow-pop: 0 16px 40px -12px rgb(0 0 0 / 0.6);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --color-bg: #121412;
-    --color-panel: #1a1c1a;
-    --color-panel-2: #212422;
-    --color-panel-3: #2a2d2b;
-    --color-line: #2f3330;
-    --color-line-2: #4a4f4b;
-    --color-ink: #eeeae1;
-    --color-muted: #b4ada1;
-    --color-faint: #8d877d;
+    --color-bg: #0b0d0e;
+    --color-panel: #131617;
+    --base-panel-2: #191d1e;
+    --base-panel-3: #212627;
+    --base-line: #252a2c;
+    --base-line-2: #3a4245;
+    --base-ink: #eef1f2;
+    --color-heading: #eef1f2;
+    --page-glow: none;
+    --base-muted: #a2acb1;
+    --base-faint: #7a858b;
     --color-gold: #d3ad66;
     --color-gold-2: #e4c486;
     --color-beige: #6f6047;
-    --color-up: #86c08a;
-    --color-down: #ee8a7a;
+    --color-up: #7fc38c;
+    --color-down: #f08a7c;
     --color-warn: #e2ac52;
     --color-rose: #e08a9a;
-    --color-accent: #729da4;
-    --color-accent-2: #9dbcc0;
-    --color-accent-soft: #1f2c2e;
-    --color-accent-fill: #223337;
-    --color-accent-fill-2: #2b4146;
-    --color-menu: #172427;
-    --color-menu-2: #1a2b2f;
-    --color-menu-head: #172427;
+    --base-accent: #6fb5bf;
+    --base-accent-2: #9ccdd4;
+    --base-accent-soft: #15262a;
+    --color-accent-fill: #1d4249;
+    --color-accent-fill-2: #25525a;
+    --color-accent-fill-hi: #2b5c64;
+    --color-menu: #111b1d;
+    --color-menu-2: #162325;
+    --color-menu-head: #111b1d;
     --color-menu-line: rgb(211 173 102 / 0.35);
     --color-band-line: rgb(211 173 102 / 0.35);
     --color-nav: #d3ad66;
-    --color-on-accent: #eeeae1;
-    --color-gold-soft: #33291a;
-    --color-cobalt: #729da4;
-    --color-cobalt-soft: #1f2c2e;
-    --color-red: #ee8a7a;
+    --color-on-accent: #eef1f2;
+    --color-gold-soft: #30281a;
+    --color-cobalt: #6fb5bf;
+    --color-cobalt-soft: #15262a;
+    --color-red: #f08a7c;
     --color-red-soft: #3a201d;
-    --color-up-soft: #1d3220;
+    --color-up-soft: #1a3121;
     --color-down-soft: #3a201d;
-    --color-night: #172427;
-    --color-night-2: #172427;
+    --color-night: #101b1d;
+    --color-night-2: #101b1d;
     --color-series-1: #1b9aa3;
     --color-series-2: #b5802f;
     --color-series-3: #6478cf;
     --color-series-4: #d45a50;
+    --shadow-card: none;
+    --shadow-pop: 0 16px 40px -12px rgb(0 0 0 / 0.6);
   }
   :root[data-theme="light"] {
     color-scheme: light;
@@ -257,19 +263,21 @@
   }
   body {
     @apply bg-bg font-sans text-ink antialiased;
+    background-image: var(--page-glow);
+    background-repeat: no-repeat;
     font-size: 15px;
     /* proportional figures in running text; columns of numbers use tabular-nums or .money */
   }
   h1,
   h2,
   h3 {
-    @apply font-serif font-normal;
-    font-feature-settings: "tnum" 0, "lnum" 1;
+    @apply font-display font-semibold;
+    font-feature-settings: "tnum" 0;
+    letter-spacing: -0.012em;
   }
   h1,
   h2 {
-    font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.028em;
   }
   ::selection {
     background: color-mix(in srgb, var(--color-accent) 25%, transparent);
@@ -285,8 +293,8 @@
     cursor: default;
   }
   :focus-visible {
-    outline: 1.5px solid var(--color-accent);
-    outline-offset: 3px;
+    outline: 2px solid color-mix(in srgb, var(--color-accent) 70%, transparent);
+    outline-offset: 2px;
   }
   select {
     background-color: transparent;
@@ -295,36 +303,43 @@
 
 @layer components {
   .panel {
-    @apply rounded-[3px] border border-line bg-panel;
+    @apply rounded-card border border-line bg-panel shadow-card;
   }
   .panel-title {
-    @apply font-serif text-[19px] leading-snug text-ink;
+    @apply font-display text-[17px] leading-snug font-semibold tracking-[-0.015em] text-ink;
   }
   .panel-sub {
     @apply font-sans text-[13px] text-muted;
   }
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-[3px] border border-line px-2.5 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-1 text-[13px] text-muted transition-colors hover:border-line-2 hover:text-ink;
   }
   .chip-active {
     @apply border-accent-fill bg-accent-fill text-on-accent hover:border-accent-fill hover:text-on-accent;
+    background-image: linear-gradient(135deg, var(--color-accent-fill) 0%, var(--color-accent-fill-hi) 100%);
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-[2px] border border-line-2 bg-transparent px-4 py-2 text-[14px] text-ink transition-colors hover:border-ink disabled:opacity-40;
+    @apply inline-flex items-center justify-center gap-2 rounded-box border border-line-2 bg-transparent px-4 py-2 text-[14px] font-medium text-ink transition-colors hover:border-ink/50 disabled:opacity-40;
   }
+  /* the filled main button: the petrol gradient of the menu, a brighter sheen on hover */
   .btn-gold {
-    @apply border-accent-fill bg-accent-fill text-on-accent hover:border-accent-fill-2 hover:bg-accent-fill-2;
+    @apply border-accent-fill bg-accent-fill text-on-accent hover:border-accent-fill-2;
+    background-image: linear-gradient(135deg, var(--color-accent-fill) 0%, var(--color-accent-fill-hi) 100%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 6px 16px -10px color-mix(in srgb, var(--color-accent-fill) 80%, transparent);
+  }
+  .btn-gold:hover:not(:disabled) {
+    background-image: linear-gradient(135deg, var(--color-accent-fill-hi) 0%, var(--color-accent-fill) 100%);
   }
   .btn-ghost {
     @apply border-transparent hover:border-transparent hover:bg-panel-3;
   }
   .input {
-    @apply w-full rounded-[2px] border border-line-2 bg-panel px-3 py-2 text-[14px] text-ink placeholder:text-faint focus:border-ink focus:outline-none;
+    @apply w-full rounded-box border border-line-2 bg-panel px-3 py-2 text-[14px] text-ink transition-shadow placeholder:text-faint focus:border-accent focus:ring-3 focus:ring-accent/15 focus:outline-none;
   }
   /* compact filter select in pill form, next to the Segmented control */
   .pill-select {
     @apply cursor-pointer appearance-none rounded-full border border-line bg-panel py-1.5 pr-8 pl-3.5 text-[13px] text-ink hover:border-line-2 focus:border-accent focus:outline-none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b847a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371878a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.75rem center;
   }
@@ -353,7 +368,17 @@
     @apply text-[13px] text-muted;
   }
   .kpi-value {
-    @apply font-serif text-[24px] leading-tight;
+    @apply font-display text-[24px] leading-tight font-semibold tracking-[-0.02em];
+  }
+  /* Amounts: written out in full, in figures of equal width, a touch heavier than the text around them (a weight
+     class on the element still wins) */
+  .money {
+    font-family: var(--font-display);
+    font-feature-settings: "tnum" 1, "kern" 1;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
   }
   /* small caps label above a figure or section */
   .eyebrow {
@@ -361,13 +386,13 @@
   }
   /* figure tile: a soft tinted card with a coloured top rule, used for key figures */
   .stat-tile {
-    @apply relative overflow-hidden rounded-[4px] border border-line bg-panel px-5 pt-5 pb-4;
+    @apply relative overflow-hidden rounded-card border border-line bg-panel px-5 pt-5 pb-4 shadow-card;
   }
   .stat-tile::before {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 3px;
+    height: 2px;
     background: var(--tile-color, var(--color-accent));
   }
   .stat-tile::after {
@@ -375,7 +400,41 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tile-color, var(--color-accent)) 9%, transparent) 0%, transparent 60%);
+    background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--tile-color, var(--color-accent)) 12%, transparent) 0%, transparent 62%);
+  }
+  /*
+   * The petrol band of the site's frame (header, footer), in the tone of the menu that drops down in narrow windows:
+   * a deep petrol gradient in the light theme, the dark theme's menu colour there. Text on it is light, the tabs and
+   * accents are brass. Pop-ups that open inside the band (menus, search) carry .brand-reset and get the page's colours.
+   */
+  .brand-band {
+    background: linear-gradient(100deg, var(--color-menu) 0%, var(--color-menu-2) 100%);
+    color: #eef3f2;
+    --color-ink: #eef3f2;
+    --color-muted: rgb(238 243 242 / 0.7);
+    --color-faint: rgb(238 243 242 / 0.5);
+    --color-line: rgb(255 255 255 / 0.1);
+    --color-line-2: rgb(255 255 255 / 0.24);
+    --color-panel-2: rgb(255 255 255 / 0.06);
+    --color-panel-3: rgb(255 255 255 / 0.1);
+    --color-accent: #e0c48c;
+    --color-accent-2: #ecd5a6;
+    --color-accent-soft: rgb(224 196 140 / 0.14);
+    --color-nav: #e0c48c;
+  }
+  .brand-reset {
+    color: var(--base-ink);
+    --color-ink: var(--base-ink);
+    --color-muted: var(--base-muted);
+    --color-faint: var(--base-faint);
+    --color-line: var(--base-line);
+    --color-line-2: var(--base-line-2);
+    --color-panel-2: var(--base-panel-2);
+    --color-panel-3: var(--base-panel-3);
+    --color-accent: var(--base-accent);
+    --color-accent-2: var(--base-accent-2);
+    --color-accent-soft: var(--base-accent-soft);
+    --color-nav: var(--base-accent);
   }
   /* the dark petrol band used for the top bar and highlight panels */
   .night-band {
@@ -387,17 +446,20 @@
     --color-accent-soft: #16363c;
     --color-accent-fill: #47a7b8;
     --color-accent-fill-2: #7fc0cc;
+    --color-accent-fill-hi: #6fbccb;
     --color-on-accent: #10272b;
   }
   /* dark theme: the band's accents as calm as the rest of the dark theme */
   :root[data-theme="dark"] .night-band {
     --color-accent: #8fb0b5;
     --color-accent-fill: #729da4;
+    --color-accent-fill-hi: #8fb0b5;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .night-band {
       --color-accent: #8fb0b5;
       --color-accent-fill: #729da4;
+      --color-accent-fill-hi: #8fb0b5;
     }
   }
 }
@@ -417,13 +479,6 @@
   to {
     opacity: 1;
   }
-}
-/* Amounts: written out in full, serif lining figures of equal width. */
-.money {
-  font-family: var(--font-serif);
-  font-feature-settings: "lnum" 1, "tnum" 1, "onum" 0, "kern" 1;
-  font-variant-numeric: lining-nums tabular-nums;
-  white-space: nowrap;
 }
 .money-cur {
   margin-right: 0.25em;
@@ -541,6 +596,88 @@ body {
 }
 .gallery-in-prev {
   animation: gallery-in-prev 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The data line above the header: one shade darker than the header, its gradient at the same angle, so the two read
+   as layers of one band. Between them runs a brass hairline like the trim strip on a car: brightest in the middle,
+   fading out to both sides, with a short glint that travels along it every few seconds. */
+.top-seam {
+  position: relative;
+  background: linear-gradient(100deg, var(--color-night) 0%, var(--color-night-2) 100%);
+}
+.top-seam::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgb(224 196 140 / 0.35) 15%, rgb(236 210 156 / 0.85) 50%, rgb(224 196 140 / 0.35) 85%, transparent 100%);
+  box-shadow: 0 0 10px 0 rgb(224 196 140 / 0.28);
+  pointer-events: none;
+}
+.top-seam::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  width: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(255 244 214 / 0.95), transparent);
+  filter: drop-shadow(0 0 4px rgb(255 236 196 / 0.9));
+  opacity: 0;
+  pointer-events: none;
+  animation: seam-glint 9s cubic-bezier(0.45, 0, 0.25, 1) 1.5s infinite;
+}
+@keyframes seam-glint {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+  }
+  34%,
+  100% {
+    transform: translateX(625%);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .top-seam::before {
+    display: none;
+  }
+}
+
+/* Menu of narrow windows: it unrolls from the header's lower edge (same gradient, no seam), its rows follow one by
+   one, and the page behind it dims towards the menu's petrol instead of standing bright beside it. */
+@keyframes menu-drop {
+  from {
+    clip-path: inset(0 0 100% 0 round 0 0 16px 16px);
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 0 0 16px 16px);
+  }
+}
+@keyframes menu-row {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+.menu-drop {
+  box-shadow: 0 28px 60px -24px rgb(6 30 34 / 0.55);
+  animation: menu-drop 0.38s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.menu-row {
+  animation: menu-row 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.menu-scrim {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-menu) 38%, transparent) 0%, color-mix(in srgb, var(--color-menu) 22%, transparent) 100%);
+  backdrop-filter: blur(3px);
+  animation: fade-in 0.3s ease-out both;
 }
 
 /* horizontal scroller without a visible scrollbar (Insights section bar) */
@@ -684,7 +821,7 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.8rem 1.25rem;
-  border-radius: 4px;
+  border-radius: var(--radius-box);
   font-size: 15px;
   font-weight: 600;
   color: #10272b;
@@ -735,3 +872,4 @@ body {
     transition: none;
   }
 }
+

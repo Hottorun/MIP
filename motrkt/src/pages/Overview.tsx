@@ -91,7 +91,7 @@ export default function Overview() {
     <div className="space-y-24">
       <div>
         <HeroSlideshow>
-          <p className="mt-5 max-w-md font-serif text-[16px] leading-relaxed text-white/80 sm:text-[17px] short:mt-3 short:text-[16px] flat:mt-2 flat:max-w-lg flat:text-[15px] squat:hidden">
+          <p className="mt-5 max-w-md font-display text-[16px] leading-relaxed text-white/80 sm:text-[17px] short:mt-3 short:text-[16px] flat:mt-2 flat:max-w-lg flat:text-[15px] squat:hidden">
             {t(
               `Marktwerte aus belegten Verkäufen, Auktionsergebnisse und aktuelle Angebote für ${variants.length} Varianten von ${brands.map((b) => b.name).join(" und ")}.`,
               `Market values from recorded sales, auction results and current listings for ${variants.length} ${brands.map((b) => b.name).join(" and ")} variants.`,
@@ -131,7 +131,7 @@ export default function Overview() {
             <div className="text-[13px] text-muted">
               {t("Gesamtindex, Januar 2015 = 100", "Overall index, January 2015 = 100")}
             </div>
-            <div className="mt-1 font-serif text-[56px] leading-none text-accent">
+            <div className="mt-1 font-display text-[56px] leading-none text-accent">
               {num(index[index.length - 1].value, 0)}
             </div>
             <p className="mt-3 flex items-center gap-2 text-[14px]">
@@ -228,19 +228,19 @@ export default function Overview() {
             const v = variantById.get(id)!;
             return (
               <li key={id}>
-                <Link to={`/markt/${id}`} className="group block overflow-hidden rounded-[4px] border border-line bg-panel transition-shadow hover:shadow-[0_18px_40px_-24px_rgba(11,104,116,0.55)]">
+                <Link to={`/markt/${id}`} className="group block overflow-hidden rounded-card border border-line bg-panel transition-shadow hover:shadow-[0_18px_40px_-24px_rgba(11,104,116,0.55)]">
                   <div className="relative overflow-hidden">
                     <CarImage
                       variant={v}
                       className="aspect-video w-full transition-transform duration-500 group-hover:scale-[1.03]"
                       label={variantTitle(v)}
                     />
-                    <span className="absolute top-3 left-3 flex size-7 items-center justify-center rounded-full bg-night/85 font-serif text-[14px] text-on-night">
+                    <span className="absolute top-3 left-3 flex size-7 items-center justify-center rounded-full bg-night/85 font-display text-[14px] text-on-night">
                       {i + 1}
                     </span>
                   </div>
                   <div className="px-4 pt-3 pb-4">
-                    <div className="font-serif text-[16px] leading-snug group-hover:text-accent">
+                    <div className="font-display text-[16px] leading-snug group-hover:text-accent">
                       {variantTitle(v, { brand: false })}
                     </div>
                     <div className="mt-2 flex items-center justify-between gap-2">
@@ -268,7 +268,7 @@ export default function Overview() {
           }
         >
           {notable.length === 0 ? (
-            <p className="py-8 font-serif text-muted italic">
+            <p className="py-8 font-display text-muted italic">
               {t("In den letzten 30 Tagen wurden keine Verkäufe erfasst.", "No sales were recorded in the last 30 days.")}
             </p>
           ) : (
@@ -280,18 +280,18 @@ export default function Overview() {
                   <li key={s.id + s.variantId}>
                     <Link
                       to={`/markt/${v.id}`}
-                      className="group relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-[4px] border border-line bg-panel px-4 py-3 transition-colors hover:border-accent/50"
+                      className="group relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 overflow-hidden rounded-card border border-line bg-panel px-4 py-3 transition-colors hover:border-accent/50"
                     >
                       <span
                         className="absolute inset-y-0 left-0 bg-accent-soft"
                         style={{ width: `${Math.max(8, share * 100)}%` }}
                         aria-hidden
                       />
-                      <span className={cn("relative font-serif text-[22px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>
+                      <span className={cn("relative font-display text-[22px] leading-none tabular-nums", i === 0 ? "text-accent" : "text-faint")}>
                         {i + 1}
                       </span>
                       <div className="relative min-w-0">
-                        <div className="truncate font-serif text-[16px] group-hover:text-accent">
+                        <div className="truncate font-display text-[16px] group-hover:text-accent">
                           {variantTitle(v, { brand: false })}
                         </div>
                         <div className="mt-0.5 text-[13px] text-muted">
@@ -314,7 +314,7 @@ export default function Overview() {
           sub={t("Die nächsten Termine der Häuser", "The next dates of the houses")}
         >
           {upcoming.length === 0 ? (
-            <p className="py-8 font-serif text-muted italic">
+            <p className="py-8 font-display text-muted italic">
               {t("Die Termine werden mit dem nächsten täglichen Update geladen.", "The dates load with the next daily update.")}
             </p>
           ) : (
@@ -326,16 +326,16 @@ export default function Overview() {
                     target="_blank"
                     rel="noreferrer"
                     title={t("Zur Auktion", "View sale")}
-                    className="group flex items-center gap-4 rounded-[4px] border border-line bg-panel px-3 py-2.5 transition-colors hover:border-accent/50"
+                    className="group flex items-center gap-4 rounded-card border border-line bg-panel px-3 py-2.5 transition-colors hover:border-accent/50"
                   >
-                    <div className="flex w-12 shrink-0 flex-col items-center rounded-[3px] bg-accent-soft py-1.5 text-accent">
-                      <span className="font-serif text-[20px] leading-none">{new Date(c.date).toLocaleDateString(locale(), { day: "numeric", timeZone: "UTC" })}</span>
+                    <div className="flex w-12 shrink-0 flex-col items-center rounded-box bg-accent-soft py-1.5 text-accent">
+                      <span className="font-display text-[20px] leading-none">{new Date(c.date).toLocaleDateString(locale(), { day: "numeric", timeZone: "UTC" })}</span>
                       <span className="mt-0.5 text-[10.5px] font-semibold tracking-[0.1em] uppercase">
                         {new Date(c.date).toLocaleDateString(locale(), { month: "short", timeZone: "UTC" })}
                       </span>
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate font-serif text-[15.5px] leading-snug">{c.name}</div>
+                      <div className="truncate font-display text-[15.5px] leading-snug">{c.name}</div>
                       <div className="truncate text-[12.5px] text-muted">
                         {c.house}
                         {c.country ? ` · ${flag(c.country)} ${c.place}` : c.place ? ` · ${c.place}` : ""}
@@ -397,7 +397,7 @@ function SalesTicker({ sales }: { sales: Sale[] }) {
           <Link
             to={`/markt/${v.id}`}
             tabIndex={copy > 0 ? -1 : undefined}
-            className="font-serif text-[15px] font-semibold hover:underline hover:underline-offset-4"
+            className="font-display text-[15px] font-semibold hover:underline hover:underline-offset-4"
           >
             {variantTitle(v, { brand: false })}
           </Link>
