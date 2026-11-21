@@ -13,7 +13,7 @@ import { date, eur, flag, fromDisplay, km, num, pct, saleAmount } from "../lib/f
 import { BrandEmblem, ChartTooltipBox, Delta, DeltaBadge, Empty, Modal, Section, Segmented, StatTile, axisProps, Money } from "../components/ui";
 import { getLang, locale, t } from "../i18n";
 import { tr } from "../i18n/terms";
-import { unsoldPrice } from "../lib/unsold";
+import { estimateRange, unsoldPrice } from "../lib/unsold";
 import { LotGallery, LotThumb } from "../components/LotPhotos";
 import { useStickyState } from "../lib/sticky";
 import { hasWords } from "../lib/words";
@@ -672,7 +672,7 @@ function SaleModal({ sale, onClose }: { sale: Sale | null; onClose: () => void }
     [t("Transaktions-ID", "Transaction ID"), <span className="font-mono">{sale.id}</span>],
     [t("FIN", "VIN"), <span className="font-mono">{sale.vin}</span>],
     [t("Preis", "Price"), sale.price === null ? <span className="text-down">{t("nicht verkauft", "not sold")}</span> : <Money value={sale.price} sale={sale} className="text-[17px]" />],
-    [t("Schätzung", "Estimate"), sale.estimateLow && sale.estimateHigh ? `${eur(sale.estimateLow, { rounded: true })} – ${eur(sale.estimateHigh, { rounded: true })}` : "–"],
+    [t("Schätzung", "Estimate"), sale.estimateLow && sale.estimateHigh ? estimateRange(sale.estimateLow, sale.estimateHigh) : "–"],
     ...(sale.price === null && sale.highBid ? [[t("Höchstgebot (kein Verkauf)", "High bid (not sold)"), saleAmount(sale.highBid, sale, { rounded: true })] as [string, React.ReactNode]] : []),
     [t("Zuschlag vs. Schätzung", "Hammer price vs. estimate"), mid && sale.price ? <Delta value={sale.price / mid - 1} /> : "–"],
     [t("vs. Marktwert (damals)", "Vs. market value (at the time)"), sale.price === null ? "–" : <Delta value={sale.trend} />],

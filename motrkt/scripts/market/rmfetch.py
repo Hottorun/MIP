@@ -87,20 +87,21 @@ def price_of(value):
 
 
 # results only: sold lots with a price and lots that went unsold; still-for-sale and upcoming lots are not. A lot that
-# went unsold and is offered afterwards at an asking price ("Asking", auctioned) counts as unsold; the asking price is
-# not a result and is not used.
+# went unsold and is offered afterwards at an asking price ("Asking", auctioned) counts as unsold; its current asking
+# price takes the place of the estimate (shown in the app, never part of the market value).
 cands = []
 for it in lots.values():
+    amt, cur = price_of(it["value"])
+    ask = [amt, cur] if it.get("auctioned") and it["valueType"] == "Asking" and amt else None
     if it.get("auctioned") and it["valueType"] == "Asking": it["valueType"] = "Not Sold"
     if not it.get("auctioned") or it["valueType"] not in ("Sold", "Not Sold"): continue
-    amt, cur = price_of(it["value"])
     if it["valueType"] == "Sold" and not amt: continue
     # sales named with a year before 2015 ("Amelia Island 2008") are not needed: skips their sale and lot pages
     y = re.search(r"\b(19\d\d|20\d\d)\b", it.get("header") or "")
     if y and int(y.group(1)) < 2015: continue
     c = classify(it["publicName"])
     code = code_of(it["link"])
-    if c and code: cands.append((it, c, code, amt, cur))
+    if c and code: cands.append((it, c, code, amt, cur, ask))
 print(len(cands), "auction results assigned to a variant", flush=True)
 
 
@@ -191,7 +192,7 @@ def estimate_of(h):
 
 
 out, new_pages = [], 0
-for it, (vid, body, gear, year), code, amt, cur in cands:
+for it, (vid, body, gear, year), code, amt, cur, ask in cands:
     date = sales.get(code)
     if not date or date < "2015-01-01": continue
     p = os.path.join(DIR, "lots", "%s-%s.html" % (code, it["referenceId"] or it["lot"]))
@@ -204,6 +205,6 @@ for it, (vid, body, gear, year), code, amt, cur in cands:
     chassis, km = lot_details(page)
     out.append(dict(id=it["id"], code=code, lot=it["lot"], ref=it["referenceId"], title=text(it["publicName"]), date=date,
                     sold=it["valueType"] == "Sold", amt=amt if it["valueType"] == "Sold" else None, cur=cur,
-                    country=it.get("countryCode") or "", chassis=chassis, km=km, url=it["link"], sale=it["header"], est=estimate_of(page)))
+                    country=it.get("countryCode") or "", chassis=chassis, km=km, url=it["link"], sale=it["header"], est=[ask[0], ask[0], ask[1]] if ask else estimate_of(page)))
 json.dump(out, open(os.path.join(DIR, "rm.json"), "w"), ensure_ascii=False)
 print(len(out), "RM Sotheby's results since 2015;", new_pages, "new lot pages", flush=True)

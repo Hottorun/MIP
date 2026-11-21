@@ -10,7 +10,12 @@ const R = { rounded: true };
  */
 export function unsoldPrice(s: Pick<Sale, "price" | "estimateLow" | "estimateHigh" | "highBid" | "currency" | "priceOriginal">): string | null {
   if (s.price !== null) return null;
-  if (s.estimateLow && s.estimateHigh) return t(`Schätzung ${eur(s.estimateLow, R)} – ${eur(s.estimateHigh, R)}`, `Estimate ${eur(s.estimateLow, R)} – ${eur(s.estimateHigh, R)}`);
+  if (s.estimateLow && s.estimateHigh) return t(`Schätzung ${estimateRange(s.estimateLow, s.estimateHigh)}`, `Estimate ${estimateRange(s.estimateLow, s.estimateHigh)}`);
   if (s.highBid) return t(`Höchstgebot ${eur(s.highBid, R)}`, `High bid ${saleAmount(s.highBid, s, R)}`);
   return null;
+}
+
+/** "400.000 € – 450.000 €", or one amount where low and high are the same (RM's asking price after the sale stands in for the estimate). */
+export function estimateRange(low: number, high: number): string {
+  return low === high ? eur(low, R) : `${eur(low, R)} – ${eur(high, R)}`;
 }

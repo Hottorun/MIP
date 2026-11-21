@@ -123,7 +123,7 @@ export function buildContext(focusVariantId: string | undefined, portfolio: Hold
       `Letzte Transaktionen:`,
       ...sales.slice(0, 10).map(
         (s) =>
-          `  - ${date(s.date)} ${s.source} ${s.house} (${s.id}): ${s.price ? eur(s.price) : "nicht verkauft"}${s.estimateLow ? ` [Schätzung ${eur(s.estimateLow)}–${eur(s.estimateHigh)}]` : ""}, Zustand ${s.condition}, ${km(s.mileage)}, ${s.color}, ${s.body}/${s.gearbox}, Käufer ${s.buyerCountry}, vs. Marktwert ${pct(s.trend)}`,
+          `  - ${date(s.date)} ${s.source} ${s.house} (${s.id}): ${s.price ? eur(s.price) : "nicht verkauft"}${s.estimateLow ? ` [Schätzung ${s.estimateLow === s.estimateHigh ? eur(s.estimateLow) : `${eur(s.estimateLow)}–${eur(s.estimateHigh)}`}]` : ""}, Zustand ${s.condition}, ${km(s.mileage)}, ${s.color}, ${s.body}/${s.gearbox}, Käufer ${s.buyerCountry}, vs. Marktwert ${pct(s.trend)}`,
       ),
       `Angebote in Europa (echte Inserate, ohne Nachbauten, Umbauten, Unfall- und Projektfahrzeuge und unplausible Preise): ${asksFor(focus.id).filter((a) => !a.excluded).length}${asksFor(focus.id).filter((a) => !a.excluded).length ? `, ${asksFor(focus.id).filter((a) => !a.excluded).slice(0, 8).map((a) => `${a.title} ${a.year}, ${a.km ? km(a.km) : "km unbekannt"}, ${eur(a.eur)}, ${a.seller}, ${a.country}`).join(" | ")}` : ""}`,
       "",
