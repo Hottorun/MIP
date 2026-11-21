@@ -1,5 +1,5 @@
 import type { ServerResponse } from "node:http";
-import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, REPRESENTED, RESPONSIBLE_NOTE, operatorComplete, type LegalSection } from "../src/legal.ts";
+import { CONTROLLER_NOTE, DATENSCHUTZ, IMPRESSUM, MISSING_NOTE, OPERATOR, REPRESENTED, operatorComplete, type LegalSection } from "../src/legal.ts";
 import { AGB, WIDERRUF, WIDERRUF_INTRO } from "../src/terms.ts";
 
 /**
@@ -174,7 +174,7 @@ export function legalPage(which: LegalPath, en: boolean, o: PageOptions = {}): s
       ? `<h2>${en ? "Information pursuant to § 5 DDG" : "Angaben gemäß § 5 DDG"}</h2>${operator(en)}` +
         (OPERATOR.register ? `<p>${esc(OPERATOR.register)}</p>` : "") +
         (OPERATOR.vatId ? `<p>${en ? "VAT identification number pursuant to § 27a UStG" : "Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG"}: ${esc(OPERATOR.vatId)}</p>` : "") +
-        `<h2>${en ? "Responsible for content pursuant to § 18 (2) MStV" : "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV"}</h2><p>${OPERATOR.responsible ? esc(OPERATOR.responsible) + (RESPONSIBLE_NOTE[0] ? "<br>" + esc(RESPONSIBLE_NOTE[en ? 1 : 0]) : "") : `<span class="miss">[${en ? "Responsible person" : "Verantwortliche Person"}]</span>`}</p>` +
+        `<h2>${en ? "Responsible for content pursuant to § 18 (2) MStV" : "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV"}</h2><p>${OPERATOR.responsible ? esc(OPERATOR.responsible) : `<span class="miss">[${en ? "Responsible person" : "Verantwortliche Person"}]</span>`}</p>` +
         sections(IMPRESSUM, en)
       : which === "datenschutz"
         ? `<h2>${en ? "1. Controller" : "1. Verantwortlicher"}</h2>${operator(en)}<p>${esc(CONTROLLER_NOTE[i])}</p>${sections(DATENSCHUTZ, en)}`

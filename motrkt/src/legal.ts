@@ -11,9 +11,9 @@ export const OPERATOR = {
   street: "Stengelstraße 19", // "Musterstraße 1"
   city: "80805 München", // "10115 Berlin"
   country: "Deutschland",
-  email: "reimerferdinand@gmail.com", // contact and privacy requests
+  email: "info@cartag.info", // contact and privacy requests; received by Resend (DATENSCHUTZ.md, "E-Mail-Postfach")
   phone: "", // optional
-  responsible: "Ferdinand Reimer und Dimitris Kern", // responsible for content (§ 18 Abs. 2 MStV), may equal name; several: see RESPONSIBLE_NOTE
+  responsible: "Ferdinand Reimer und Dimitris Kern", // responsible for content (§ 18 Abs. 2 MStV), may equal name
   register: "", // optional: "Amtsgericht Berlin-Charlottenburg, HRB 123456"
   vatId: "", // optional: "DE123456789"
 };
@@ -22,12 +22,6 @@ export const OPERATOR = {
 export const REPRESENTED: [string, string] = OPERATOR.partners.length
   ? [`Vertreten durch die Gesellschafter: ${OPERATOR.partners.join(" und ")}`, `Represented by its partners: ${OPERATOR.partners.join(" and ")}`]
   : ["", ""];
-
-/**
- * Under the names of those responsible for content. Where several are named, § 18 Abs. 2 Satz 2 MStV wants it said
- * which part each one answers for (here: both for everything), and each needs an address.
- */
-export const RESPONSIBLE_NOTE: [string, string] = OPERATOR.partners.length > 1 ? ["Beide gemeinsam für alle Inhalte. Anschrift wie oben.", "Both jointly for all content. Address as above."] : ["", ""];
 
 export const operatorComplete = () => Boolean(OPERATOR.name && OPERATOR.street && OPERATOR.city && OPERATOR.email && OPERATOR.responsible);
 
@@ -166,8 +160,8 @@ export const DATENSCHUTZ: LegalSection[] = [
         "Forum: topics and posts are stored with your username and time. Signed-in users see them with your username; visitors without an account can read them but see no usernames. If you remove a post of your own, we delete its text. If a reviewer hides someone else's post, it stays stored but is no longer shown; we tell the author the decision by email, with reasons. If you report a post, we store the report with your reason and tell you by email when the post has been hidden. Author and reporter learn nothing about each other.",
       ],
       [
-        "Kontakt per E-Mail: Schreiben Sie uns, verarbeiten wir Ihre E-Mail-Adresse und den Inhalt Ihrer Nachricht, um Ihr Anliegen zu beantworten. Unser Postfach liegt bei Google (Gmail, siehe Abschnitt 6). Bitte schicken Sie uns per E-Mail keine Kaufverträge oder andere vertrauliche Unterlagen; dafür ist der verschlüsselte Upload im Portfolio da.",
-        "Contact by email: if you write to us, we process your email address and the content of your message to answer your request. Our mailbox is hosted by Google (Gmail, see section 6). Please do not email us purchase contracts or other confidential documents; the encrypted upload in the portfolio is there for that.",
+        "Kontakt per E-Mail: Schreiben Sie uns, verarbeiten wir Ihre E-Mail-Adresse und den Inhalt Ihrer Nachricht, um Ihr Anliegen zu beantworten. Nachrichten an diese Adresse empfängt unser E-Mail-Dienstleister Resend (siehe Abschnitt 6). Bitte schicken Sie uns per E-Mail keine Kaufverträge oder andere vertrauliche Unterlagen; dafür ist der verschlüsselte Upload im Portfolio da.",
+        "Contact by email: if you write to us, we process your email address and the content of your message to answer your request. Messages to this address are received by our email provider Resend (see section 6). Please do not email us purchase contracts or other confidential documents; the encrypted upload in the portfolio is there for that.",
       ],
       [
         "Server-Protokolle: Beim Abruf der Seite verarbeitet unser Hosting-Anbieter technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Adresse, Browser) in Protokollen. Fehler der Anwendung protokollieren wir mit der Fehlermeldung, der Seite und der Browserkennung, ohne Benutzernamen.",
@@ -290,12 +284,8 @@ export const DATENSCHUTZ: LegalSection[] = [
         "Database: Supabase, Inc. (Postgres database in the Frankfurt region), holding accounts, sessions, stored data, car reports, encrypted contracts, details of purchases, declarations of withdrawal and cancellation, and forum posts. A data processing agreement with standard contractual clauses is in place with Supabase.",
       ],
       [
-        "E-Mail-Versand: Resend (Plus Five Five, Inc., USA) verschickt unsere Nachrichten zum Konto und zum Vertrag, etwa den Code bei der Registrierung, die Bestellbestätigung oder die Bestätigung einer Kündigung. Resend erhält dafür Ihre E-Mail-Adresse, Ihren Benutzernamen und den Inhalt der Nachricht; die Daten werden in den USA verarbeitet. Mit Resend besteht ein Vertrag zur Auftragsverarbeitung; Resend ist unter dem EU-US Data Privacy Framework zertifiziert, zusätzlich gelten Standardvertragsklauseln.",
-        "Email delivery: Resend (Plus Five Five, Inc., USA) sends our messages about the account and the contract, such as the code at sign-up, the order confirmation or the confirmation of a cancellation. For this Resend receives your email address, your username and the content of the message; the data is processed in the USA. A data processing agreement is in place with Resend; Resend is certified under the EU-US Data Privacy Framework and standard contractual clauses apply in addition.",
-      ],
-      [
-        "E-Mail-Postfach: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland (Gmail). Dort gehen die Nachrichten ein, die Sie an die oben genannte E-Mail-Adresse schreiben, und von dort antworten wir. Daten können dabei an Google LLC in die USA übermittelt werden; Google LLC ist unter dem EU-US Data Privacy Framework zertifiziert.",
-        "Email mailbox: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland (Gmail). Messages you send to the email address above arrive there, and we answer from there. Data may be transferred to Google LLC in the USA; Google LLC is certified under the EU-US Data Privacy Framework.",
+        "E-Mail: Resend (Plus Five Five, Inc., USA) verschickt unsere Nachrichten zum Konto und zum Vertrag, etwa den Code bei der Registrierung, die Bestellbestätigung oder die Bestätigung einer Kündigung, und empfängt die Nachrichten, die Sie an die oben genannte E-Mail-Adresse schreiben. Resend erhält dafür Ihre E-Mail-Adresse, Ihren Benutzernamen und den Inhalt der Nachricht; die Daten werden in den USA verarbeitet. Mit Resend besteht ein Vertrag zur Auftragsverarbeitung; Resend ist unter dem EU-US Data Privacy Framework zertifiziert, zusätzlich gelten Standardvertragsklauseln.",
+        "Email: Resend (Plus Five Five, Inc., USA) sends our messages about the account and the contract, such as the code at sign-up, the order confirmation or the confirmation of a cancellation, and receives the messages you send to the email address above. For this Resend receives your email address, your username and the content of the message; the data is processed in the USA. A data processing agreement is in place with Resend; Resend is certified under the EU-US Data Privacy Framework and standard contractual clauses apply in addition.",
       ],
       [
         "Zahlungen: Stripe Payments Europe, Ltd., 1 Grand Canal Street Lower, Grand Canal Dock, Dublin, Irland. Stripe stellt die Zahlungsseite bereit und wickelt die Zahlung ab. Dabei verarbeitet Stripe Ihre Zahlungsdaten, Ihre E-Mail-Adresse, Angaben zum Kauf und technische Daten Ihres Geräts, teils in unserem Auftrag, teils in eigener Verantwortung (etwa zur Betrugsvorbeugung und zur Erfüllung eigener gesetzlicher Pflichten). Daten können dabei an Stripe, Inc. in die USA übermittelt werden; Stripe ist unter dem EU-US Data Privacy Framework zertifiziert, zusätzlich gelten Standardvertragsklauseln. Näheres in der Datenschutzerklärung von Stripe (stripe.com/de/privacy).",
