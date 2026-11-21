@@ -52,7 +52,7 @@ export const IMPRESSUM: LegalSection[] = [
 ];
 
 /** Date of the privacy notice's wording, shown at its end. Change it with every change to DATENSCHUTZ. */
-export const PRIVACY_AS_OF: [string, string] = ["20. November 2026", "20 November 2026"];
+export const PRIVACY_AS_OF: [string, string] = ["21. November 2026", "21 November 2026"];
 
 /**
  * The privacy notice. Every sentence describes what the code does: when a storage period (server/userCars.ts
@@ -68,8 +68,8 @@ export const DATENSCHUTZ: LegalSection[] = [
         "An account needs a username, a password and an email address, not your name. We use the email address for your account only (confirming the address, resetting the password), never for advertising.",
       ],
       [
-        "Wir setzen keine Analyse- oder Werbedienste, keine Tracking-Cookies und keine eingebundenen Inhalte sozialer Netzwerke ein. Schriften liefern wir von unserem eigenen Server aus.",
-        "We use no analytics or advertising services, no tracking cookies and no embedded social network content. Typefaces are served from our own server.",
+        "Wir setzen keine Werbedienste, keine Tracking-Cookies und keine eingebundenen Inhalte sozialer Netzwerke ein. Seitenaufrufe zählen wir ohne Cookies und ohne Sie über den Tag hinaus wiederzuerkennen (Abschnitt 3, „Reichweitenmessung“). Schriften liefern wir von unserem eigenen Server aus.",
+        "We use no advertising services, no tracking cookies and no embedded social network content. Page views are counted without cookies and without recognising you beyond the day (section 3, “Audience measurement”). Typefaces are served from our own server.",
       ],
       [
         "Anwendung und Datenbank laufen in Rechenzentren in Frankfurt am Main.",
@@ -97,8 +97,8 @@ export const DATENSCHUTZ: LegalSection[] = [
         "Account: username, email address and the time it was confirmed, a hash of the password (never the password itself), registration time and, where applicable, the expiry of premium access. We send only account messages to the email address: a link to confirm the address (valid for 48 hours) and, if you request it, a link to reset the password (valid for one hour); of these links we store only a hash. Signing in sets one necessary session cookie (mip_sid), valid for a year and renewed on every visit; only a hash of the session key is stored. Failed sign-in attempts are counted for 24 hours under a hash of username and IP address to slow down password attacks; the IP address itself is not stored.",
       ],
       [
-        "Ohne Konto: Katalog, Marktwerte, Angebote, Auktionskalender und Forum können Sie ohne Konto ansehen. Dabei setzen wir kein Cookie und speichern nichts über Sie, außer den Server-Protokollen des Hosting-Anbieters (siehe unten).",
-        "Without an account: you can view the catalogue, market values, listings, auction calendar and forum without an account. We set no cookie and store nothing about you, apart from the hosting provider's server logs (see below).",
+        "Ohne Konto: Katalog, Marktwerte, Angebote, Auktionskalender und Forum können Sie ohne Konto ansehen. Dabei setzen wir kein Cookie und speichern nichts über Sie, außer den Server-Protokollen des Hosting-Anbieters und der Reichweitenmessung (siehe unten).",
+        "Without an account: you can view the catalogue, market values, listings, auction calendar and forum without an account. We set no cookie and store nothing about you, apart from the hosting provider's server logs and the audience measurement (see below).",
       ],
       [
         "Nutzung der App: Watchlist, Portfolio (Fahrzeuge mit Kaufpreis, Kaufdatum, Laufleistung, Zustand, Farbe, Notiz), Preisalarme, gemerkte Inserate, gelesene Benachrichtigungen und die zuletzt geöffnete Variante speichern wir je Konto auf dem Server, damit sie auf allen Geräten verfügbar sind; der Browser hält eine Kopie, die beim Abmelden gelöscht wird. Zur Begrenzung der Nutzung von Co-Pilot, mobile.de-Abfragen und Uploads zählen wir Anfragen je Konto für etwa 24 Stunden.",
@@ -123,6 +123,10 @@ export const DATENSCHUTZ: LegalSection[] = [
       [
         "Server-Protokolle: Beim Abruf der Seite verarbeitet unser Hosting-Anbieter technisch notwendige Daten (IP-Adresse, Zeitpunkt, aufgerufene Adresse, Browser) in Protokollen. Fehler der Anwendung protokollieren wir mit der Fehlermeldung, der Seite und der Browserkennung, ohne Benutzernamen.",
         "Server logs: when the site is accessed our hosting provider processes technically necessary data (IP address, time, requested address, browser) in logs. Application errors are logged with the error message, the page and the browser identification, without the username.",
+      ],
+      [
+        "Reichweitenmessung: Um zu sehen, welche Seiten wie oft aufgerufen werden, nutzen wir Vercel Web Analytics (siehe Abschnitt 6). Je Seitenaufruf werden der Zeitpunkt, die Adresse der Seite ohne Parameter, die Seite, von der Sie kommen, der ungefähre Standort (Land, Region, Stadt, aus der IP-Adresse abgeleitet), Betriebssystem, Browser und Gerätetyp erfasst. Die Messung setzt kein Cookie und legt nichts im Speicher Ihres Browsers ab. Besucher unterscheidet Vercel nach eigenen Angaben über einen Hash aus Daten der Anfrage, der nach 24 Stunden verworfen wird; über mehrere Tage oder über andere Websites hinweg werden Sie damit nicht wiedererkannt. Mit Ihrem Konto verknüpfen wir die Messung nicht.",
+        "Audience measurement: to see which pages are opened how often we use Vercel Web Analytics (see section 6). For each page view it records the time, the address of the page without parameters, the page you came from, the approximate location (country, region, city, derived from the IP address), operating system, browser and device type. The measurement sets no cookie and puts nothing into your browser's storage. According to Vercel, visitors are told apart by a hash made from data of the request, which is discarded after 24 hours; you are not recognised across several days or across other websites. We do not link the measurement to your account.",
       ],
     ],
   },
@@ -179,6 +183,10 @@ export const DATENSCHUTZ: LegalSection[] = [
       ["Bereitstellung des Kontos und der Funktionen einschließlich Co-Pilot und Forum: Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).", "Providing the account and its functions including the Co-Pilot and the forum: performance of a contract (Art. 6 (1) (b) GDPR)."],
       ["Bereitstellung der ohne Konto zugänglichen Seiten, Sicherheit, Missbrauchsabwehr, Zugriffs- und Fehlerprotokolle, Moderation des Forums: berechtigtes Interesse an einem sicheren und rechtmäßigen Betrieb (Art. 6 Abs. 1 lit. f DSGVO).", "Providing the pages open without an account, security, abuse prevention, access and error logs, forum moderation: legitimate interest in secure and lawful operation (Art. 6 (1) (f) GDPR)."],
       [
+        "Reichweitenmessung: berechtigtes Interesse daran, zu verstehen, wie das Angebot genutzt wird, und es danach zu verbessern (Art. 6 Abs. 1 lit. f DSGVO).",
+        "Audience measurement: legitimate interest in understanding how the service is used and improving it accordingly (Art. 6 (1) (f) GDPR).",
+      ],
+      [
         "Fahrzeugmeldung, Prüfung des Kaufvertrags und Nutzung der geprüften Daten in der Marktwertberechnung: Ihre Einwilligung bei der Meldung (Art. 6 Abs. 1 lit. a DSGVO). Die KI-Vorprüfung durch Anthropic beruht auf Ihrer gesonderten Einwilligung. Beide können Sie jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie die Meldung löschen.",
         "Car reports, review of the purchase contract and use of the verified data in the market value calculation: your consent given with the report (Art. 6 (1) (a) GDPR). The AI pre-check by Anthropic rests on your separate consent. You can withdraw both at any time with effect for the future by deleting the report.",
       ],
@@ -201,8 +209,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     list: true,
     paragraphs: [
       [
-        "Hosting: Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. Die Anwendung läuft in der Region Frankfurt. Mit Vercel besteht ein Vertrag zur Auftragsverarbeitung; Vercel ist unter dem EU-US Data Privacy Framework zertifiziert, zusätzlich gelten Standardvertragsklauseln.",
-        "Hosting: Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. The application runs in the Frankfurt region. A data processing agreement is in place with Vercel; Vercel is certified under the EU-US Data Privacy Framework and standard contractual clauses apply in addition.",
+        "Hosting und Reichweitenmessung: Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. Die Anwendung läuft in der Region Frankfurt; die Daten der Reichweitenmessung (Vercel Web Analytics) können auch in den USA verarbeitet werden. Mit Vercel besteht ein Vertrag zur Auftragsverarbeitung; Vercel ist unter dem EU-US Data Privacy Framework zertifiziert, zusätzlich gelten Standardvertragsklauseln.",
+        "Hosting and audience measurement: Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. The application runs in the Frankfurt region; the data of the audience measurement (Vercel Web Analytics) may also be processed in the USA. A data processing agreement is in place with Vercel; Vercel is certified under the EU-US Data Privacy Framework and standard contractual clauses apply in addition.",
       ],
       [
         "Datenbank: Supabase, Inc. (Postgres-Datenbank in der Region Frankfurt), in der Konten, Sitzungen, gespeicherte Daten, Fahrzeugmeldungen, verschlüsselte Verträge, Angaben zu Käufen sowie Forumsbeiträge liegen. Mit Supabase besteht ein Vertrag zur Auftragsverarbeitung mit Standardvertragsklauseln.",
@@ -234,8 +242,8 @@ export const DATENSCHUTZ: LegalSection[] = [
     heading: ["7. Cookies und Speicher im Browser", "7. Cookies and browser storage"],
     paragraphs: [
       [
-        "Wir setzen ein einziges Cookie: das Sitzungs-Cookie mip_sid, das Sie angemeldet hält; ohne Konto setzen wir keines. Im Speicher Ihres Browsers (localStorage, sessionStorage) liegen außerdem Sprache und Farbschema, eine Kopie Ihrer Watchlist und Ihres Portfolios, der Gesprächsverlauf des Co-Piloten sowie zuletzt gewählte Filter; ohne Konto nur Sprache, Farbschema, zuletzt geöffnete Variante und Filter. All das ist für die von Ihnen gewünschten Funktionen unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG); eine Einwilligung und ein Cookie-Banner sind deshalb nicht nötig. Beim Abmelden löschen wir diese Daten bis auf Sprache und Farbschema aus dem Browser. Die Zahlungsseite beim Kauf von Premium ist eine Seite von Stripe; für die Cookies dort ist Stripe verantwortlich.",
-        "We set a single cookie: the session cookie mip_sid, which keeps you signed in; without an account we set none. Your browser's storage (localStorage, sessionStorage) also holds language and colour scheme, a copy of your watchlist and portfolio, the Co-Pilot conversation and the filters you last chose; without an account only language, colour scheme, the last opened variant and filters. All of this is strictly necessary for the functions you asked for (§ 25 (2) no. 2 TDDDG); consent and a cookie banner are therefore not required. When you sign out we delete this data from the browser, except language and colour scheme. The payment page for buying premium is a page of Stripe; Stripe is responsible for the cookies there.",
+        "Wir setzen ein einziges Cookie: das Sitzungs-Cookie mip_sid, das Sie angemeldet hält; ohne Konto setzen wir keines. Im Speicher Ihres Browsers (localStorage, sessionStorage) liegen außerdem Sprache und Farbschema, eine Kopie Ihrer Watchlist und Ihres Portfolios, der Gesprächsverlauf des Co-Piloten sowie zuletzt gewählte Filter; ohne Konto nur Sprache, Farbschema, zuletzt geöffnete Variante und Filter. All das ist für die von Ihnen gewünschten Funktionen unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG); eine Einwilligung und ein Cookie-Banner sind deshalb nicht nötig. Die Reichweitenmessung (Abschnitt 3) setzt kein Cookie und legt nichts in diesem Speicher ab. Beim Abmelden löschen wir diese Daten bis auf Sprache und Farbschema aus dem Browser. Die Zahlungsseite beim Kauf von Premium ist eine Seite von Stripe; für die Cookies dort ist Stripe verantwortlich.",
+        "We set a single cookie: the session cookie mip_sid, which keeps you signed in; without an account we set none. Your browser's storage (localStorage, sessionStorage) also holds language and colour scheme, a copy of your watchlist and portfolio, the Co-Pilot conversation and the filters you last chose; without an account only language, colour scheme, the last opened variant and filters. All of this is strictly necessary for the functions you asked for (§ 25 (2) no. 2 TDDDG); consent and a cookie banner are therefore not required. The audience measurement (section 3) sets no cookie and puts nothing into this storage. When you sign out we delete this data from the browser, except language and colour scheme. The payment page for buying premium is a page of Stripe; Stripe is responsible for the cookies there.",
       ],
     ],
   },
@@ -252,6 +260,7 @@ export const DATENSCHUTZ: LegalSection[] = [
       ["Angaben zu Käufen (Zeitpunkt, Betrag, Laufzeit, Kennungen bei Stripe): solange die handels- und steuerrechtlichen Aufbewahrungsfristen laufen. Zahlungsdaten bei Stripe: nach dessen Fristen.", "Details of purchases (time, amount, period, Stripe's identifiers): for as long as the retention periods of commercial and tax law run. Payment data at Stripe: according to its retention periods."],
       ["Zähler für Anmeldeversuche und Anfragen: etwa 24 Stunden.", "Counters for sign-in attempts and requests: about 24 hours."],
       ["Protokolle des Hosting-Anbieters: nach dessen Fristen.", "The hosting provider's logs: according to its retention periods."],
+      ["Reichweitenmessung: Der Hash, der Besucher unterscheidet, wird nach 24 Stunden verworfen; die Zählungen bleiben nach den Fristen von Vercel gespeichert.", "Audience measurement: the hash that tells visitors apart is discarded after 24 hours; the counts are kept according to Vercel's retention periods."],
       [
         "Bei Löschung des Kontos löschen wir E-Mail-Adresse, Sitzungen, gespeicherte Daten, Zähler, Ihre Meldungen von Forumsbeiträgen und alle nicht freigegebenen Fahrzeugmeldungen samt Dokumenten. Freigegebene Fahrzeugdaten (ohne Fahrgestellnummer, Notizen und KI-Ergebnis), Forumsbeiträge (ohne Ihren Benutzernamen) und die Angaben zu Käufen (ohne Verbindung zu Ihrem Konto, für die gesetzliche Aufbewahrung) bleiben erhalten; Forumsbeiträge können Sie vorher selbst löschen.",
         "When an account is deleted we delete the email address, sessions, stored data, counters, your reports of forum posts and all car reports that are not approved, with their documents. Approved car data (without chassis number, notes and AI result), forum posts (without your username) and the details of purchases (without the link to your account, for the retention the law requires) remain; you can delete forum posts yourself beforehand.",

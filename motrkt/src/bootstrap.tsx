@@ -1,17 +1,28 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { Analytics, type BeforeSendEvent } from "@vercel/analytics/react";
 import { StoreProvider } from "./state/store";
 import { LiveListingsProvider } from "./state/liveListings";
 import { App } from "./App";
 import { LangProvider } from "./i18n";
 import { PlanProvider } from "./lib/plan";
 
+/**
+ * Page views for Vercel Web Analytics carry the path only: what follows "?" or "#" (filters, the marks of a returning
+ * payment, src/lib/plan.tsx) stays in the browser.
+ */
+const pathOnly = (event: BeforeSendEvent): BeforeSendEvent => ({ ...event, url: event.url.split(/[?#]/)[0] });
+
 /** Renders the app. Imported by main.tsx only after the market data is loaded (src/data/real/dataset.ts). */
 export function start(root: HTMLElement) {
   root.replaceChildren();
   createRoot(root).render(
     <StrictMode>
+      {/* Counts page views without cookies (Vercel Web Analytics, see src/legal.ts). Its script and its requests
+          stay on this origin (/_vercel/insights/…), so the content-security policy (server/app.ts) needs no
+          exception. Only in the built app: the development script would load from another host. */}
+      {import.meta.env.PROD && <Analytics mode="production" beforeSend={pathOnly} />}
       <BrowserRouter>
         <StoreProvider>
           <LiveListingsProvider>

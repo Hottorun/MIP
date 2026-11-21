@@ -157,9 +157,11 @@ Browser, damit der Nächste am selben Gerät sie weder sieht noch in sein Konto 
 
 **Datenschutz:** [`DATENSCHUTZ.md`](DATENSCHUTZ.md) hält fest, was verarbeitet wird (Verzeichnis nach Art. 30 DSGVO),
 welche Schutzmaßnahmen der Code umsetzt und was der Betreiber noch selbst erledigen muss (Schlüssel, AV-Verträge,
-Betreiberangaben). Die App lädt nichts von Dritten nach außer Fotos von Inseraten und Auktionslosen: keine Analyse,
-keine Werbung, Schriften aus `public/fonts` statt von Google Fonts, ein einziges notwendiges Cookie und deshalb kein
-Cookie-Banner. Auf Supabase ist für alle Tabellen Row Level Security eingeschaltet
+Betreiberangaben). Die App lädt nichts von Dritten nach außer Fotos von Inseraten und Auktionslosen: keine
+Werbung, Schriften aus `public/fonts` statt von Google Fonts, ein einziges notwendiges Cookie und deshalb kein
+Cookie-Banner. Seitenaufrufe zählt Vercel Web Analytics ohne Cookies (`src/bootstrap.tsx`): nur im gebauten Stand,
+Skript und Anfragen laufen über die eigene Adresse (`/_vercel/insights/…`), übermittelt wird die Adresse der Seite
+ohne das, was auf `?` oder `#` folgt. Auf Supabase ist für alle Tabellen Row Level Security eingeschaltet
 (`db/migrations/010_row_level_security.sql`); **neue Tabellen brauchen dieselbe Zeile.** Impressum und Datenschutzerklärung (`/impressum`, `/datenschutz`) zeigen die Texte aus `src/legal.ts`; ohne
 Sitzung liefert sie der Server als eigene Seiten (`server/legalPages.ts`), damit sie von der Anmeldeseite aus
 erreichbar sind. **Vor der Veröffentlichung `OPERATOR` in `src/legal.ts` ausfüllen** – solange Angaben fehlen,
@@ -223,6 +225,9 @@ laden sie nicht neu. Im Dev-Server kommen sie direkt aus `src/data/real`.
 4. Einmal Tabellen anlegen und Marktdaten laden, mit der Datenbank-URL von Vercel:
    `DATABASE_URL=… npm run db:migrate && DATABASE_URL=… npm run db:import`
 5. Deployen (Push auf `main` oder `vercel --prod`).
+6. Für die Reichweitenmessung im Projekt unter „Analytics“ Web Analytics einschalten und noch einmal deployen: erst
+   dann liefert Vercel `/_vercel/insights/script.js` aus. Mit `npm start` außerhalb von Vercel gibt es die Adresse
+   nicht; das Skript lädt dann nicht (eine Zeile in der Konsole), die App läuft normal.
 
 Das tägliche Update (`scripts/market/daily.sh`) lädt neue Marktdaten in die Datenbank, wenn `DATABASE_URL` gesetzt ist.
 

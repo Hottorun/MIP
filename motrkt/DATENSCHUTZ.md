@@ -18,6 +18,7 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 | Werbung mit „DSGVO-konform“ | **Steht jetzt auf der Seite** (Datenschutz-Band im Portfolio, `src/components/portfolio/UserCars.tsx`). Eine Zertifizierung ist dafür nicht nötig, aber die Aussage muss stimmen: **vor dem Deploy alle Punkte dieser Tabelle erledigen**, sonst ist sie irreführende Werbung (§ 5 UWG). Bewusst als Satz, nicht als Siegel: kein „zertifiziert“, „geprüft“ oder Prüfzeichen ohne echte Zertifizierung (Art. 42 DSGVO). |
 | AV-Vertrag Supabase | Im Supabase-Dashboard den Auftragsverarbeitungsvertrag (DPA) abschließen und ablegen. Dabei prüfen, dass das Projekt in `eu-central-1` (Frankfurt) liegt; die Datenschutzerklärung sagt das so. |
 | AV-Vertrag Vercel | Der DPA ist Teil der Vercel-Bedingungen; Fassung herunterladen und ablegen. Funktionsregion ist `fra1` (`vercel.json`). |
+| Reichweitenmessung | Im Vercel-Projekt unter „Analytics“ Web Analytics einschalten und danach neu deployen; vorher lädt das Skript nicht und es wird nichts gezählt. Der DPA von Vercel deckt den Dienst mit ab. Prüfen lassen: Das Skript von Vercel liest bei jedem Seitenaufruf den Schlüssel `__va_attribution` aus dem `localStorage` (leer, solange die App niemanden über `identify` kennzeichnet, was sie nicht tut) und schreibt nichts; ob dieser Lesezugriff unter § 25 TDDDG ohne Einwilligung bleibt, ist eine rechtliche Einschätzung. |
 | E-Mail (Brevo) | Konto bei Brevo anlegen, Absenderadresse (z. B. `konto@carbay.app`) und Domain verifizieren (SPF, DKIM, DMARC), API-Schlüssel erzeugen. In Vercel für Production und Preview setzen: `BREVO_API_KEY`, `MAIL_FROM`, optional `MAIL_FROM_NAME` (Standard „Cartag“) und `MIP_PUBLIC_URL=https://carbay.app`. Ohne Schlüssel verschickt der Server auf Vercel keine Mails (Registrierung geht trotzdem, der Link lässt sich unter „Konto“ erneut senden). |
 | AV-Vertrag Brevo | Den Auftragsverarbeitungsvertrag von Brevo abschließen und ablegen. Die Liste der Unterauftragsverarbeiter prüfen: Die Datenschutzerklärung sagt „in der EU verarbeitet“; stimmt das für den Transaktionsversand nicht, den Satz anpassen. Im Brevo-Konto Öffnungs- und Klick-Tracking für Transaktionsmails ausschalten (die Erklärung erwähnt kein Tracking). |
 | Migration E-Mail | `013_email.sql` auf der Produktionsdatenbank ausführen (`npm run db:migrate:prod`, Adresse in `.env.production.local`), **vor dem Deploy**: ohne die Spalte `email` schlagen Registrierung und Anmeldung fehl. |
@@ -47,6 +48,7 @@ Diese Punkte lassen sich nicht im Code erledigen. Solange sie offen sind, stimmt
 | Nutzungszähler | Zähler je Konto für Co-Pilot, mobile.de, Uploads, Fehlermeldungen | Nutzer | Missbrauch und Kosten begrenzen | Art. 6 (1) f | Supabase | etwa 24 Stunden |
 | Fehlerprotokoll | Fehlermeldung, Seite, Browserkennung; kein Benutzername | Nutzer | Fehler finden | Art. 6 (1) f | Vercel (Runtime-Logs) | nach den Fristen von Vercel |
 | Server-Protokolle | IP-Adresse, Zeit, Adresse, Browser | Besucher | Betrieb, Sicherheit | Art. 6 (1) f | Vercel | nach den Fristen von Vercel |
+| Reichweitenmessung | Je Seitenaufruf: Zeit, Adresse der Seite ohne Parameter, Herkunftsseite, Land/Region/Stadt, Betriebssystem, Browser, Gerätetyp; Besucher-Hash aus Daten der Anfrage, nach 24 Stunden verworfen. Kein Cookie, kein Benutzername | Besucher, Nutzer | Sehen, welche Seiten genutzt werden | Art. 6 (1) f | Vercel (Web Analytics) | Hash nach 24 Stunden, Zählungen nach den Fristen von Vercel |
 
 Keine besonderen Kategorien (Art. 9), kein Profiling, keine automatisierte Entscheidung (Art. 22): die KI bereitet
 die Prüfung vor, ein Mensch entscheidet.
@@ -63,14 +65,16 @@ die Prüfung vor, ein Mensch entscheidet.
   keinem Server-Protokoll); „Passwort vergessen“ antwortet immer gleich und verrät nicht, welche Konten es gibt; nach
   dem Zurücksetzen sind alle Geräte abgemeldet.
 - **Zugang:** ohne Sitzung (Gast) die App mit den Lite-Marktdaten und das Forum zum Lesen ohne Benutzernamen; kein
-  Cookie, nichts pro Besucher gespeichert. Konto-Daten, Speichern, Schreiben, Co-Pilot und die vollständigen
+  Cookie, nichts pro Besucher gespeichert außer der Reichweitenmessung. Konto-Daten, Speichern, Schreiben, Co-Pilot und die vollständigen
   Marktdaten nur mit Konto (`authGate`, `mayRead`, je API die Prüfung auf `currentUser`). Verträge öffnen nur Prüfer
   (`MIP_ADMINS`), jeder Zugriff landet in `contract_access`. Das geteilte Demo-Konto kann keine Fahrzeuge melden.
 - **Datenbank:** Row Level Security auf allen Tabellen, damit die Data-API von Supabase nichts herausgibt
   (`db/migrations/010_row_level_security.sql`); die App greift direkt als Eigentümer zu.
 - **Browser:** strenge Content-Security-Policy (Skripte und Schriften nur von der eigenen Adresse), kein Framing,
   `Referrer-Policy: same-origin`, hochgeladene Dateien werden dem Prüfer in einer Sandbox ohne Skripte gezeigt.
-- **Keine Dritten im Browser:** keine Analyse, keine Werbung, Schriften aus `public/fonts`. Fotos von Inseraten und
+- **Keine Dritten im Browser:** keine Werbung, Schriften aus `public/fonts`. Die Reichweitenmessung (Vercel Web
+  Analytics, `src/bootstrap.tsx`) lädt ihr Skript von der eigenen Adresse (`/_vercel/insights/…`), setzt kein Cookie,
+  schreibt nichts in den Browser-Speicher und bekommt Seitenadressen ohne das, was auf `?` oder `#` folgt. Fotos von Inseraten und
   Auktionslosen lädt der Browser beim Anbieter, ohne Referrer.
 - **Datensparsamkeit:** Konto ohne Namen, E-Mail-Adresse nur für Nachrichten zum Konto (keine Werbung, kein Tracking); Schwärzen des Vertrags ausdrücklich erlaubt; Anmeldezähler nur
   als Hash; Fehlerprotokoll ohne Benutzernamen; Export ins Marktmodell ohne Fahrgestellnummer und Nutzer
